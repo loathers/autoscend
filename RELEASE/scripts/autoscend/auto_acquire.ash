@@ -638,7 +638,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[mafia thumb ring], 1, 0);
 		}
 
-		if((storage_amount($item[can of rain-doh]) > 0) && glover_usable($item[Can Of Rain-Doh]) && (pullXWhenHaveY($item[can of Rain-doh], 1, 0)))
+		if((storage_amount($item[can of rain-doh]) > 0) && auto_is_valid($item[Can Of Rain-Doh]) && (pullXWhenHaveY($item[can of Rain-doh], 1, 0)))
 		{
 			if(item_amount($item[Can of Rain-doh]) > 0)
 			{
@@ -646,11 +646,11 @@ int handlePulls(int day)
 				put_closet(1, $item[empty rain-doh can]);
 			}
 		}
-		if(storage_amount($item[Buddy Bjorn]) > 0 && pathHasFamiliar())
+		if(storage_amount($item[Buddy Bjorn]) > 0 && auto_is_valid($item[Buddy Bjorn]) && pathHasFamiliar())
 		{
 			pullXWhenHaveY($item[Buddy Bjorn], 1, 0);
 		}
-		if((storage_amount($item[Camp Scout Backpack]) > 0) && !possessEquipment($item[Buddy Bjorn]) && glover_usable($item[Camp Scout Backpack]))
+		if((storage_amount($item[Camp Scout Backpack]) > 0) && !possessEquipment($item[Buddy Bjorn]) && auto_is_valid($item[Camp Scout Backpack]))
 		{
 			pullXWhenHaveY($item[Camp Scout Backpack], 1, 0);
 		}
@@ -710,13 +710,13 @@ int handlePulls(int day)
 			}
 		}
 
-		if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && glover_usable($item[Over-The-Shoulder Folder Holder]))
+		if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && auto_is_valid($item[Over-The-Shoulder Folder Holder]))
 		{
 			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
 		}
 		if((my_primestat() == $stat[Muscle]) && !in_heavyrains() && !in_wotsf()) // no need for shields in way of the surprising fist
 		{
-			if((closet_amount($item[Fake Washboard]) == 0) && glover_usable($item[Fake Washboard]))
+			if((closet_amount($item[Fake Washboard]) == 0) && auto_is_valid($item[Fake Washboard]))
 			{
 				pullXWhenHaveY($item[Fake Washboard], 1, 0);
 			}
@@ -749,7 +749,7 @@ int handlePulls(int day)
 			{
 				pullXWhenHaveY($item[Thor\'s Pliers], 1, 0);
 			}
-			if(glover_usable($item[Basaltamander Buckler]))
+			if(auto_is_valid($item[Basaltamander Buckler]))
 			{
 				pullXWhenHaveY($item[Basaltamander Buckler], 1, 0);
 			}
@@ -766,14 +766,14 @@ int handlePulls(int day)
 
 		if(!in_heavyrains() && pathHasFamiliar())
 		{
-			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && glover_usable($item[Snow Suit]))
+			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && auto_is_valid($item[Snow Suit]))
 			{
 				pullXWhenHaveY($item[snow suit], 1, 0);
 			}
 			boolean famStatEq = possessEquipment($item[fuzzy polar bear ears]) || possessEquipment($item[miniature goose mask]) || possessEquipment($item[tiny glowing red nose]);
 			
 			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) &&
-			!famStatEq && glover_usable($item[Filthy Child Leash]))
+			!famStatEq && auto_is_valid($item[Filthy Child Leash]))
 			{
 				pullXWhenHaveY($item[Filthy Child Leash], 1, 0);
 			}
@@ -784,7 +784,7 @@ int handlePulls(int day)
 			pullXWhenHaveY($item[Shore Inc. Ship Trip Scrip], 3, 0);
 		}
 
-		if(!in_glover())
+		if(auto_is_valid($item[Infinite BACON Machine]))
 		{
 			pullXWhenHaveY($item[Infinite BACON Machine], 1, 0);
 		}
@@ -794,7 +794,7 @@ int handlePulls(int day)
 			string temp = visit_url("storage.php?action=pull&whichitem1=" + to_int($item[Bastille Battalion Control Rig]) + "&howmany1=1&pwd");
 		}
 
-		if(!in_pokefam())
+		if(!in_pokefam() && auto_is_valid($item[Replica Bat-oomerang]))
 		{
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
@@ -867,7 +867,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && !in_glover())
+	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && auto_is_valid($item[Detuned Radio]))
 	{
 		buyUpTo(1, $item[Detuned Radio]);
 		auto_setMCDToCap();
@@ -901,11 +901,11 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(item_amount($item[Seal Tooth]) == 0)
+	if(item_amount($item[Seal Tooth]) == 0 && auto_is_valid($item[Seal Tooth]))
 	{
 		//saucerors want to use sealtooth to delay so that mortar shell delivers final blow for weaksauce MP explosion
 		//TODO: add delaying for mortar for other classes in combat and then remove the sauceror requirement here.
-		if( my_meat() > 7500 || (my_class() == $class[Sauceror] && canUse($skill[Stuffed Mortar Shell])) )
+		if(my_meat() > 7500 || (my_class() == $class[Sauceror] && canUse($skill[Stuffed Mortar Shell])))
 		{
 			acquireHermitItem($item[Seal Tooth]);
 		}
