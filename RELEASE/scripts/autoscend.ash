@@ -1391,6 +1391,7 @@ boolean autosellCrap()
 	}
 	foreach it in $items[dense meat stack, meat stack,  //quest rewards that are better off as meat. If we ever need it we can freely recreate them at no loss.
 	Blue Money Bag, Red Money Bag, White Money Bag,  //vampyre path boss rewards and major source of meat in run.
+	Space Blanket, //can be inside MayDay package. Only purpose is to sell for meat
 	Void Stone] //dropped by Void Fights when Cursed Magnifying Glass is equiped. Only purpose is to sell for meat
 	{
 		if(item_amount(it) > 0)
