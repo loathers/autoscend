@@ -658,7 +658,7 @@ boolean auto_pre_adventure()
 	enforceMLInPreAdv();
 	
 	// Last minute switching for garbage tote. But only if nothing called on januaryToteAcquire this turn.
-	if(!get_property("auto_januaryToteAcquireCalledThisTurn").to_boolean())
+	if(!get_property("auto_januaryToteAcquireCalledThisTurn").to_boolean() && auto_is_valid($item[Wad of Used Tape]))
 	{
 		januaryToteAcquire($item[Wad Of Used Tape]);
 	}

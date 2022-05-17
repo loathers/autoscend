@@ -1639,6 +1639,7 @@ boolean canBurnDelay(location loc);
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);
 boolean auto_is_valid(skill sk);
+boolean auto_is_valid(effect eff);
 void auto_log(string s, string color, int log_level);
 void auto_log_error(string s);
 void auto_log_warning(string s, string color);
