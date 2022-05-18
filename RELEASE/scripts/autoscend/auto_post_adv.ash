@@ -160,7 +160,7 @@ boolean auto_post_adventure()
 		use(1, $item[Creepy Voodoo Doll]);
 	}
 	// mayday supply package drops from first combat of the day if you have this IOTM
-	if(item_amount($itemp[MayDay&trade; supply package]) > 0 && auto_is_valid($item[MayDay&trade; supply package]))
+	if(item_amount($item[MayDay&trade; supply package]) > 0 && auto_is_valid($item[MayDay&trade; supply package]))
 	{
 		use(1, $item[MayDay&trade; supply package]);
 	}
