@@ -363,11 +363,11 @@ boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 	{
 		return true;
 	}
-	if(get_property("_milkOfMagnesiumUsed").to_boolean())
+	if(get_property("_milkOfMagnesiumUsed").to_boolean() || get_property("milkOfMagnesiumActive").to_boolean())
 	{
 		return true;
 	}
-	if(fullness_left() == 0)
+	if(fullness_limit() == 0)
 	{
 		return false;
 	}
@@ -389,7 +389,7 @@ boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 			{
 				cli_execute("make " + $item[Milk Of Magnesium]);
 			}
-			else if((freeCrafts() > 0) && have_skill($skill[Rapid Prototyping]))
+			else if(freeCrafts() > 0)
 			{
 				cli_execute("make " + $item[Milk Of Magnesium]);
 			}
@@ -401,7 +401,7 @@ boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 
 boolean consumeMilkOfMagnesiumIfUnused()
 {
-	if(get_property("_milkOfMagnesiumUsed").to_boolean() || item_amount($item[Milk Of Magnesium]) < 1)
+	if(get_property("_milkOfMagnesiumUsed").to_boolean() || get_property("milkOfMagnesiumActive").to_boolean() || item_amount($item[Milk Of Magnesium]) < 1)
 	{
 		return false;
 	}
@@ -1441,7 +1441,7 @@ boolean auto_autoConsumeOne(string type)
 	
 	ConsumeAction bestAction = auto_findBestConsumeAction(type);
 
-	if (bestAction.it == $item[none])
+	if (bestAction.it == $item[none] && bestAction.cafeId == 0)
 	{
 		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
 		return false;
@@ -1467,6 +1467,7 @@ boolean auto_autoConsumeOne(string type)
 item auto_autoConsumeOneSimulation(string type)
 {
 	ConsumeAction bestAction = auto_findBestConsumeAction(type);
+	if(bestAction.it == $item[none]) return bestAction.cafeId.to_item();	//this can only find an existing item for daily specials
 	return bestAction.it;
 }
 
