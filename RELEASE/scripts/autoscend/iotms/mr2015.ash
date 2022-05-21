@@ -386,7 +386,7 @@ boolean chateaumantegna_usePainting(string option)
 	}
 	if(get_property("chateauMonster") == $monster[Ninja Snowman Assassin])
 	{
-		if((item_amount($item[Ninja Carabiner]) > 0) && (item_amount($item[Ninja Crampons]) > 0) && (item_amount($item[Ninja Rope]) > 0))
+		if(((my_maxhp() <= expected_damage($monster[ninja snowman assassin]) * 1.2) && jump_chance($monster[ninja snowman assassin]) < 100 ) || ((item_amount($item[Ninja Carabiner]) > 0) && (item_amount($item[Ninja Crampons]) > 0) && (item_amount($item[Ninja Rope]) > 0)))
 		{
 			return false;
 		}
