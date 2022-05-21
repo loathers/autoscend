@@ -270,7 +270,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 		
 		//free kills can get more benefit from 1 turn of a double item bonus effect in zones that need high item
-		if(have_effect($effect[Steely-Eyed Squint]) == 1 && $locations[The Haunted Wine Cellar,The Haunted Laundry Room,The Hatching Chamber,The Feeding Chamber,The Guards' Chamber] contains my_location())
+		if(have_effect($effect[Steely-Eyed Squint]) == 1 && $locations[The Haunted Wine Cellar,The Haunted Laundry Room,The Hatching Chamber,The Feeding Chamber,The Royal Guard Chamber] contains my_location())
 		{
 			wantInstaKill = true;
 		}
