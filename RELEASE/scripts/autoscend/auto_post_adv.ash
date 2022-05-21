@@ -320,13 +320,10 @@ boolean auto_post_adventure()
 		{
 			use_skill(1, $skill[Disco Nap]);
 		}
-		else if(isGeneralStoreAvailable())
+		else if(isGeneralStoreAvailable() && auto_is_valid($item[Anti-Anti-Antidote]))
 		{
 			buyUpTo(1, $item[Anti-Anti-Antidote], 30);
-			if(!in_glover())
-			{
-				use(1, $item[Anti-Anti-Antidote]);
-			}
+			use(1, $item[Anti-Anti-Antidote]);
 		}
 	}
 
