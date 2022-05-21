@@ -2624,9 +2624,9 @@ boolean careAboutDrops(monster mon)
 		//We could refine this to get rid of all the all stars / lines mobs but meh.
 		if(($monster[Astronomer] != mon) && ((item_amount($item[Star]) < 8) || (item_amount($item[Line]) < 7)))
 		{
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	if($monsters[Blooper, Ghost] contains mon)
@@ -3156,6 +3156,11 @@ boolean auto_is_valid(skill sk)
 {
 	//do not check check for B in bees hate you path. it only restricts items and not skills.
 	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
+}
+
+boolean auto_is_valid(effect eff)
+{
+	return glover_usable(eff.to_string());
 }
 
 void auto_log(string s, string color, int log_level)
