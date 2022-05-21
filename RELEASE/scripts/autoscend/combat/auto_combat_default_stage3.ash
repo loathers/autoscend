@@ -209,7 +209,32 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 		if (canUse($skill[Curse Of Weaksauce]) && my_class() == $class[Sauceror] && doWeaksauce)
 		{
-			return useSkill($skill[Curse Of Weaksauce]);
+			//Saucerors use Weaksauce to get MP, but no more MP will be coming if there isn't enough MP left to cast a spell, mortar can not have been launched yet at this point
+			//if mp >= 60 Weaksauce has probably been cast above already
+			int MPafterWeaksauce = my_mp() - mp_cost($skill[Curse Of Weaksauce]);
+			boolean canCastAfterWeaksauce;
+			foreach sp in $skills[Saucestorm,Stuffed Mortar Shell,Saucegeyser]
+			{
+				if(canUse(sp,false) && MPafterWeaksauce >= mp_cost(sp))
+				{
+					canCastAfterWeaksauce = true;
+					break;
+				}
+			}
+			if(!canCastAfterWeaksauce)
+			{	if(canUse($skill[Wave of Sauce], false) && (monster_element(enemy) != $element[hot]) && MPafterWeaksauce >= mp_cost($skill[Wave of Sauce]))
+				{
+					canCastAfterWeaksauce = true;
+				}
+				else if(canUse($skill[Saucecicle], false) && (monster_element(enemy) != $element[cold]) && MPafterWeaksauce >= mp_cost($skill[Saucecicle]))
+				{
+					canCastAfterWeaksauce = true;
+				}
+			}
+			if(canCastAfterWeaksauce)
+			{
+				return useSkill($skill[Curse Of Weaksauce]);
+			}
 		}
 
 		if(canUse($skill[Detect Weakness]))
@@ -566,6 +591,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 	}
 	
+	//weaksauce has probably already been cast in one of several checks above, except when above 150 ML, or without itchy curse finger or mp < 60
 	if(canUse($skill[Curse Of Weaksauce]) && (my_class() == $class[Sauceror]) && (my_mp() >= 32 || haveUsed($skill[Stuffed Mortar Shell])) && doWeaksauce)
 	{
 		return useSkill($skill[Curse Of Weaksauce]);
@@ -575,7 +601,10 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	if(my_class() == $class[Turtle Tamer] && canUse($skill[Spirit Snap]) && my_mp() > 80)
 	{
 		//storm turtle blessings makes spirit snap cause 15/20/25% buffed muscle as DoT for rest of combat
-		if(have_effect($effect[Blessing of the Storm Tortoise]) > 0 || have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0 || have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0)
+		//must not block stage4 so should not use if it will kill the monster
+		if((have_effect($effect[Blessing of the Storm Tortoise]) > 0 && monster_hp() > 0.15*my_buffedstat($stat[muscle]))|| 
+		(have_effect($effect[Grand Blessing of the Storm Tortoise]) > 0 && monster_hp() > 0.20*my_buffedstat($stat[muscle])) || 
+		(have_effect($effect[Glorious Blessing of the Storm Tortoise]) > 0 && monster_hp() > 0.25*my_buffedstat($stat[muscle])))
 		{
 			return useSkill($skill[Spirit Snap]);
 		}

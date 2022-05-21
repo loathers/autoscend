@@ -541,7 +541,7 @@ void bedtime_pulls()
 	if(internalQuestStatus("questL11Desert") < 1)
 	{
 		int gnasirProgress = get_property("gnasirProgress").to_int();
-		if ((gnasirProgress & 16) == 0)
+		if ((gnasirProgress & 16) == 0 && auto_is_valid($item[drum machine]))
 		{
 			pullXWhenHaveY($item[drum machine], 1, 0);
 		}
@@ -778,7 +778,11 @@ boolean doBedtime()
 	{
 		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");
 		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");
-		visit_url("clan_viplounge.php?preaction=poolgame&stance=3");
+		if(auto_is_valid($effect[Hustlin\']))
+		{
+			visit_url("clan_viplounge.php?preaction=poolgame&stance=3");
+		}
+		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");		
 	}
 	if(is_unrestricted($item[Colorful Plastic Ball]) && !get_property("_ballpit").to_boolean() && (get_clan_id() != -1))
 	{
@@ -786,7 +790,7 @@ boolean doBedtime()
 	}
 	if (get_property("telescopeUpgrades").to_int() > 0 && internalQuestStatus("questL13Final") < 0)
 	{
-		if(get_property("telescopeLookedHigh") == "false")
+		if(get_property("telescopeLookedHigh") == "false" && auto_is_valid($effect[Starry-Eyed]))
 		{
 			cli_execute("telescope high");
 		}
@@ -804,7 +808,7 @@ boolean doBedtime()
 		}
 	}
 
-	if((my_daycount() == 1) && (possessEquipment($item[Thor\'s Pliers]) || (freeCrafts() > 0)) && !possessEquipment($item[Chrome Sword]) && !inAftercore() && !in_tcrs())
+	if((my_daycount() == 1) && (possessEquipment($item[Thor\'s Pliers]) || (freeCrafts() > 0)) && !possessEquipment($item[Chrome Sword]) && auto_is_valid($item[chrome sword]) && !inAftercore() && !in_tcrs())
 	{
 		item oreGoal = to_item(get_property("trapperOre"));
 		int need = 1;
@@ -813,7 +817,8 @@ boolean doBedtime()
 		{
 			need = 4;
 		}
-		if (!haveAdvSmithing) {
+		if (!haveAdvSmithing)
+		{
 			auto_log_info('No Super-Advanced Meatsmithing for chrome sword crafting!');
 		}
 		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isArmoryAvailable() && haveAdvSmithing)
@@ -895,6 +900,10 @@ boolean doBedtime()
 				{
 					cli_execute("shower ice");
 				}
+				else if(in_glover())
+				{
+					cli_execute("shower mp"); // can't use the effects or the ice
+				}
 				else
 				{
 					cli_execute("shower " + my_primestat());
@@ -966,16 +975,34 @@ boolean doBedtime()
 		int enhances = auto_sourceTerminalEnhanceLeft();
 		while(enhances > 0)
 		{
-			auto_sourceTerminalEnhance("items");
-			auto_sourceTerminalEnhance("meat");
-			enhances -= 2;
+			if(in_glover())
+			{
+				auto_sourceTerminalEnhance("damage");
+				enhances -= 1;				
+			}
+			else
+			{
+				auto_sourceTerminalEnhance("items");
+				auto_sourceTerminalEnhance("meat");
+				enhances -= 2;
+			}
 		}
 	}
 
 	// Is +50% to all stats the best choice here? I don't know!
-	spacegateVaccine($effect[Broad-Spectrum Vaccine]);
+	if(auto_is_valid($effect[Broad-Spectrum Vaccine]))
+	{
+		spacegateVaccine($effect[Broad-Spectrum Vaccine]);
+	}
 
-	zataraSeaside("item");
+	if(!auto_is_valid($effect[There\'s No N In Love]))
+	{
+		zataraSeaside("familiar");
+	}
+	else
+	{
+		zataraSeaside("item");
+	}
 
 	if(is_unrestricted($item[Source Terminal]) && (get_campground() contains $item[Source Terminal]))
 	{
@@ -1106,7 +1133,7 @@ boolean doBedtime()
 		use(1, $item[School of Hard Knocks Diploma]);
 	}
 
-	if(!get_property("_lyleFavored").to_boolean())
+	if(!get_property("_lyleFavored").to_boolean() && auto_is_valid($effect[Favored by Lyle]))
 	{
 		string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 	}
@@ -1232,17 +1259,20 @@ boolean doBedtime()
 		bedtime_pulls();
 		pullsNeeded("evaluate");
 
+		acquireMilkOfMagnesiumIfUnused(true);
+		consumeMilkOfMagnesiumIfUnused();
+
 		if(have_skill($skill[Calculate the Universe]) && auto_is_valid($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int()))
 		{
 			auto_log_info("You can still Calculate the Universe!", "blue");
 		}
 
-		if(is_unrestricted($item[Deck of Every Card]) && (item_amount($item[Deck of Every Card]) > 0) && (get_property("_deckCardsDrawn").to_int() < 15))
+		if(is_unrestricted($item[Deck of Every Card]) && (item_amount($item[Deck of Every Card]) > 0) && (get_property("_deckCardsDrawn").to_int() < 15) && auto_is_valid($item[Deck of Every Card]))
 		{
 			auto_log_info("You have a Deck of Every Card and " + (15 - get_property("_deckCardsDrawn").to_int()) + " draws remaining!", "blue");
 		}
 
-		if(is_unrestricted($item[Time-Spinner]) && (item_amount($item[Time-Spinner]) > 0) && (get_property("_timeSpinnerMinutesUsed").to_int() < 10) && glover_usable($item[Time-Spinner]))
+		if(is_unrestricted($item[Time-Spinner]) && (item_amount($item[Time-Spinner]) > 0) && (get_property("_timeSpinnerMinutesUsed").to_int() < 10) && auto_is_valid($item[Time-Spinner]))
 		{
 			auto_log_info("You have " + (10 - get_property("_timeSpinnerMinutesUsed").to_int()) + " minutes left to Time-Spinner!", "blue");
 		}
@@ -1252,7 +1282,7 @@ boolean doBedtime()
 			auto_log_info("You can still fight a Chateau Mangtegna Painting today.", "blue");
 		}
 
-		if(!get_property("_streamsCrossed").to_boolean() && possessEquipment($item[Protonic Accelerator Pack]))
+		if(!get_property("_streamsCrossed").to_boolean() && possessEquipment($item[Protonic Accelerator Pack]) && auto_is_valid($effect[Total Protonic Reversal]))
 		{
 			cli_execute("crossstreams");
 		}
