@@ -35,5 +35,4 @@ void tootGetMeat()
 	}
 	auto_autosell(min(5, item_amount($item[hamethyst])), $item[hamethyst]);
 	auto_autosell(min(5, item_amount($item[baconstone])), $item[baconstone]);
-	auto_autosell(min(5, item_amount($item[porquoise])), $item[porquoise]);
 }
