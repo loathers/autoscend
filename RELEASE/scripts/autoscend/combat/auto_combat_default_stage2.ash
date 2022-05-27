@@ -52,7 +52,8 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	//instakill using [Pair of Stomping Boots] iotm familiar which will produce spleen consumables
 	if((my_familiar() == $familiar[Pair of Stomping Boots]) && (get_property("_bootStomps").to_int()) < 7 && instakillable(enemy) && get_property("bootsCharged").to_boolean())
 	{
-		if(!($monsters[Dairy Goat, Lobsterfrogman, Writing Desk] contains enemy) && !($locations[The Laugh Floor, Infernal Rackets Backstage] contains my_location()) && canUse($skill[Release the boots]))
+		//neither the below checks nor careAboutDrops are complete enough
+		if(!($monsters[Dairy Goat, Lobsterfrogman] contains enemy) && !careAboutDrops(enemy) && !($locations[The Laugh Floor, Infernal Rackets Backstage] contains my_location()) && canUse($skill[Release the boots]))
 		{
 			return useSkill($skill[Release the boots]);
 		}
