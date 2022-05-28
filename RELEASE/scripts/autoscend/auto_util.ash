@@ -3453,8 +3453,12 @@ boolean auto_wantToSniff(monster enemy, location loc)
 	location locCache = my_location();
 	set_location(loc);
 	boolean [monster] toSniff = auto_getMonsters("sniff");
+	if(toSniff[enemy] && appearance_rates(loc,true)[enemy] < 100)
+	{
+		return true;
+	}
 	set_location(locCache);
-	return toSniff[enemy];
+	return false;
 }
 
 boolean auto_wantToYellowRay(monster enemy, location loc)
