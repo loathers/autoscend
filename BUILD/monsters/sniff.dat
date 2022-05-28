@@ -1,4 +1,4 @@
-pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed
+pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed;prop:hiddenApartmentProgress<7
 Writing Desk	!prop:writingDesksDefeated=5
 cabinet of Dr. Limpieza
 Dairy Goat	loc:The Goatlet
