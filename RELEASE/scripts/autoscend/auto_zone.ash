@@ -746,27 +746,23 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[The Hidden Apartment Building]:
-		boolean cursed = have_effect($effect[Thrice-Cursed]) > 0;
-		totalTurnsSpent = $location[the hidden apartment building].turns_spent;
-		delayForNextNoncombat = 7 - (totalTurnsSpent - 9) % 8;
-		if(totalTurnsSpent < 9)
-		{
-			delayForNextNoncombat = 8 - totalTurnsSpent;
+		if (internalQuestStatus("questL11Curses") < 2) {
+			if (loc.turns_spent < 9) {
+				value = 8 - loc.turns_spent;
+			} else {
+				value = 7 - (loc.turns_spent - 9) % 8;
+			}
 		}
-		if(auto_haveQueuedForcedNonCombat())
-		{
-			delayForNextNoncombat = 0;
-		}
-		return cursed && delayForNextNoncombat == 0;
+		break;
 	case $location[The Hidden Office Building]:
-		boolean hasMcCluskyFile = $item[McClusky file (complete)].available_amount() > 0;
-		totalTurnsSpent = $location[the hidden office building].turns_spent;
-		delayForNextNoncombat = 4 - (totalTurnsSpent - 1) % 5;
-		if(auto_haveQueuedForcedNonCombat())
-		{
-			delayForNextNoncombat = 0;
+		if (internalQuestStatus("questL11Business") < 2) {
+			if (loc.turns_spent < 6) {
+				value = 5 - loc.turns_spent;
+			} else {
+				value = 4 - (loc.turns_spent - 1) % 5;
+			}
 		}
-		return hasMcCluskyFile && delayForNextNoncombat == 0;
+		break;
 	case $location[The Spooky Forest]:
 		value = 5 - loc.turns_spent;
 		break;
