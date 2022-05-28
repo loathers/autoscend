@@ -197,6 +197,23 @@ boolean L7_crypt()
 		{
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
+		else if(auto_have_familiar($familiar[Nosy Nose]) && auto_is_valid($skill[Get a Good Whiff of This Guy]) && 
+		appearance_rates($location[The Defiled Niche])[$monster[dirty old lihc]] < 100)
+		{
+			boolean nosyOldLihcs;
+			if(get_property("cyrptNicheEvilness").to_int() > (29 + evilBonus))
+			{
+				nosyOldLihcs = true;	//several dirty old lihc worth of evilness left so want to whiff dirty old lihc if we meet one
+			}
+			else if(isSniffed($monster[dirty old lihc],$skill[Get a Good Whiff of This Guy]) && get_property("cyrptNicheEvilness").to_int() > (26 + evilBonus))
+			{
+				nosyOldLihcs = true;	//familiar whiff skill is increasing chances of dirty old lihc
+			}
+			if(nosyOldLihcs)
+			{
+				handleFamiliar($familiar[Nosy Nose]);
+			}
+		}
 
 		if(get_property("cyrptNicheEvilness").to_int() >= 28)
 		{
