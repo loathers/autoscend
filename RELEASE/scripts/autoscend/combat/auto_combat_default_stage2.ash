@@ -5,7 +5,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	
 	//if we want to olfact in stage 4 then we should delay stage 2 until we olfact.
 	//we do not want to olfact now because we should do stage 3 first to stun and/or debuff the enemy first before olfacting.
-	if(!combat_status_check("sniffed") && !isSniffed(enemy) && auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
+	if(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
 	{
 		auto_log_debug("Skipping stage 2 of combat for now as we intend to olfact [" +enemy+ "]");
 		return "";
