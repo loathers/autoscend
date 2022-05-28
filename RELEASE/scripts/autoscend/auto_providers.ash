@@ -559,6 +559,27 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 	{
 		uneffect($effect[Flared Nostrils]);
 	}
+	
+	if(!doEquips)
+	{	//if trying to provide without equipment then value provided by current equipment is not being locked
+		//equipment may be changed in pre adv after the provider returns success
+		//so may need to raise goal value to take into account what is provided by current equipment
+		string unequipsString;
+		foreach sl in $slots[hat,weapon,off-hand,back,shirt,pants,acc1,acc2,acc3,familiar]
+		{
+			//simulate removing all gear regardless of individual res modifiers, must account for familiar weight or outfit bonus
+			if(equipped_item(sl) != $item[none]) unequipsString += "unequip " + sl + "; ";
+		}
+		if(unequipsString != "")
+		{
+			cli_execute("speculate quiet; " + unequipsString);
+			foreach ele in amt
+			{
+				//add amount below goal that would be lost without current gear
+				amt[ele] += max(0,(min(amt[ele],numeric_modifier(ele + " resistance")) - simValue(ele + " resistance")));
+			}
+		}
+	}
 
 	int [element] delta;
 
