@@ -73,6 +73,7 @@ int cyrptEvilBonus()
 	//returns value of regularly available bonus to evil reduction
 	int cyrptBonus = (auto_hasRetrocape() && auto_forceEquipSword(true)) ? 1 : 0;
 	cyrptBonus += (possessEquipment($item[gravy boat]) && auto_is_valid($item[gravy boat])) ? 1 : 0;
+	cyrptBonus += (is_pete() && get_property("peteMotorbikeCowling") == "Ghost Vacuum") ? 1 : 0;
 	return cyrptBonus;
 }
 
