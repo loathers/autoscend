@@ -443,7 +443,7 @@ boolean LX_unlockManorSecondFloor() {
 
 	auto_log_info("Well, we need writing desks", "blue");
 	auto_log_info("Going to the library!", "blue");
-	if(get_property("writingDesksDefeated").to_int() <= 3 || isSniffed($monster[Writing Desk], $skill[Get a Good Whiff of This Guy]))
+	if(get_property("writingDesksDefeated").to_int() <= 3 || get_property("nosyNoseMonster").to_monster() == $monster[Writing Desk])
 	{
 		// nose sniff is weak so probably want fairy familiar first. this condition should change if banshee librarian is added as a YR target for killing jar
 		if((item_amount($item[killing jar]) > 0 || is_banished($monster[banshee librarian])) && 
@@ -459,6 +459,7 @@ boolean LX_unlockManorSecondFloor() {
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a writing desk.");
 		}
+	}
 	return autoAdv($location[The Haunted Library]);
 }
 
@@ -602,7 +603,7 @@ boolean LX_getLadySpookyravensFinestGown() {
 			{	//non 0 value for elegant before 7 is spurious
 				ornateRate += elegantRate;	//not a real rate but only correct for the purpose of checking if it is 100
 			}
-			if(ornateRate < 100)
+			if(ornateRate < 99.9)
 			{
 				handleFamiliar($familiar[Nosy Nose]);
 			}
@@ -1741,7 +1742,7 @@ boolean L11_hiddenCity()
 				else if(appearance_rates($location[The Hidden Office Building],true)[$monster[pygmy witch accountant]] >= 20 &&	item_amount($item[McClusky file (complete)]) == 0)
 				{
 					//once done with curses will want witch accountants
-					if(item_amount($item[McClusky file (page 4)]) == 0 || isSniffed($monster[pygmy witch accountant], $skill[Get a Good Whiff of This Guy]))
+					if(item_amount($item[McClusky file (page 4)]) == 0 || get_property("nosyNoseMonster").to_monster() == $monster[pygmy witch accountant])
 					{
 						handleFamiliar($familiar[Nosy Nose]);
 					}
@@ -1885,7 +1886,7 @@ boolean L11_hiddenCity()
 			if(auto_have_familiar($familiar[Nosy Nose]) && auto_is_valid($skill[Get a Good Whiff of This Guy]) && 
 			appearance_rates($location[The Hidden Hospital],true)[$monster[pygmy witch surgeon]] < 100)
 			{
-				if(surgeonGearWanted >= 2 || isSniffed($monster[pygmy witch surgeon], $skill[Get a Good Whiff of This Guy]))
+				if(surgeonGearWanted >= 2 || get_property("nosyNoseMonster").to_monster() == $monster[pygmy witch surgeon])
 				{
 					handleFamiliar($familiar[Nosy Nose]);	//whiff increases chance of witch accountant
 				}
@@ -2833,7 +2834,7 @@ boolean L11_palindome()
 			}
 			if(noseDudesOn)
 			{
-				boolean whiffedBob = isSniffed($monster[Racecar Bob],$skill[Get a Good Whiff of This Guy]) || isSniffed($monster[Bob Racecar],$skill[Get a Good Whiff of This Guy]);
+				boolean whiffedBob = get_property("nosyNoseMonster").to_monster() == $monster[Racecar Bob] || get_property("nosyNoseMonster").to_monster() == $monster[Bob Racecar];
 				if(is_banished($monster[Flock of Stab-bats]) && is_banished($monster[Taco Cat]) && is_banished($monster[Tan Gnat]) && is_banished($monster[Evil Olive]))
 				{
 					//only dudes left already
