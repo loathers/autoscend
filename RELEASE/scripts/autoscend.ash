@@ -1,4 +1,4 @@
-since r26239;	// combat lover's locket support
+since r26405;	// mayday package and cosmic bowling ball preff support
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
