@@ -4067,7 +4067,7 @@ boolean enforceMLInPreAdv()
 {
 	if((get_property("auto_MLSafetyLimit") != "") && (!contains_text(get_property("auto_maximize_current"), "ml")))
 	{
-		if(get_property("auto_MLSafetyLimit").to_int() == 0)
+		if(get_property("auto_MLSafetyLimit").to_int() == -1)
 		{
 			// prevent all ML being equiped if limit is 0
 			addToMaximize("-1000ml");
