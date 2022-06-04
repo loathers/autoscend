@@ -530,7 +530,10 @@ string defaultMaximizeStatement()
 			//pre_adv will tell the maximizer to not value ML over the safety limit (though enforcing that limit is not possible with the maximizer syntax and scoring system)
 			res += ",1.65" + primeStat + " experience";
 		}
-		res += ",5" + primeStat + " experience percent";	//TODO the score to give to experience VS percent depends on how much experience is expected from fights
+		//TODO the score to give to experience VS percent depends on how much experience is expected from fights
+		//mafia now also already adds a base experience percent score to "exp": 
+		// "Consider experience percentage modifier when maximizing for experience, assuming that the monster's base exp will be the player's level * 2"
+		res += ",5" + primeStat + " experience percent";
 	}
 	if(my_basestat(primeStat) > 122)
 	{
