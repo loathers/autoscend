@@ -150,7 +150,7 @@ generic_t zone_needItem(location loc)
 		value = 30.0;
 		break;
 	case $location[The Penultimate Fantasy Airship]:
-		if(!possessEquipment($item[Amulet Of Extreme Plot Significance]) && !possessEquipment($item[Titanium Assault Umbrella]))
+		if(!possessEquipment($item[Amulet Of Extreme Plot Significance]) && !possessEquipment($item[Titanium Assault Umbrella]) && !possessEquipment($item[unbreakable umbrella]))
 		{
 			value = 10.0;
 		}
