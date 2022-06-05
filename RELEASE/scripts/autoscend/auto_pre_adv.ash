@@ -658,7 +658,12 @@ boolean auto_pre_adventure()
 	// if the limit setting has no value then ML has already been given a value indirectly by "exp" in the default maximizer statement
 	if((get_property("auto_MLSafetyLimit") != "") && (!contains_text(get_property("auto_maximize_current"), "ml")))
 	{
-		if(get_property("auto_MLSafetyLimit").to_int() <= highest_available_mcd())
+		if(get_property("auto_MLSafetyLimit").to_int() == -1)
+		{
+			// prevent all ML being equiped if limit is -1 and equip lowest possible ML including going negative
+			addToMaximize("-1000ml");
+		}
+		else if(get_property("auto_MLSafetyLimit").to_int() <= highest_available_mcd())
 		{
 			//mcd can already fill all allowed ML without using equipment slots
 			//if the value is 0 adding ML with 0max is useless, it does not stop the maximizer from picking equipment with ML,
@@ -666,6 +671,7 @@ boolean auto_pre_adventure()
 		}
 		else
 		{
+			// note: maximizer will allow to go above the max value, ML just won't contribute to the total score after the max value
 			addToMaximize("ml " + get_property("auto_MLSafetyLimit").to_int() + "max");
 		}
 	}
