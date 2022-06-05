@@ -779,7 +779,17 @@ boolean auto_handleRetrocape()
 	string settingsProperty = get_property("auto_retrocapeSettings");
 	if (settingsProperty == "")
 	{
-		return false;
+		string capeConfiguration = get_property("retroCapeWashingInstructions");
+		int beatenUpCount = get_property("auto_beatenUpCount").to_int();
+		if (capeConfiguration == "thrill" && beatenUpCount >= 5)
+		{
+			// if currently configured for stats and have been getting beaten up, change to stun
+			settingsProperty = "heck,hold";
+		}
+		else
+		{
+			return false;
+		}	
 	}
 
 	string[int] settings = split_string(settingsProperty, ",");

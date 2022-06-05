@@ -546,7 +546,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		{
 			doLash = true;
 		}
-		if((enemy == $monster[Spunky Princess]) && !possessEquipment($item[Titanium Assault Umbrella]))
+		if((enemy == $monster[Spunky Princess]) && !possessEquipment($item[Titanium Assault Umbrella]) && !possessEquipment($item[unbreakable umbrella]))
 		{
 			doLash = true;
 		}

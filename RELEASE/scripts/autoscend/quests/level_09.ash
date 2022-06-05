@@ -75,12 +75,12 @@ void L9_chasmMaximizeForNoncombat()
 	auto_log_info("Let's assess our scores for blech house", "blue");
 	string best = "mus";
 	location loc = $location[The Smut Orc Logging Camp];
-	string mustry = "100muscle,100weapon damage,1000weapon damage percent";
-	string mystry = "100mysticality,100spell damage,1000 spell damage percent";
-	string moxtry = "100moxie,1000sleaze resistance";
+	string mustry = "1000muscle,1000weapon damage,10000weapon damage percent";
+	string mystry = "1000mysticality,1000spell damage,10000 spell damage percent";
+	string moxtry = "1000moxie,10000sleaze resistance";
 	simMaximizeWith(loc, mustry);
 	float musmus = simValue("Buffed Muscle");
-	float musflat = simValue("Weapon Damage");
+	float musflat = simValue("Weapon Damage");	//incorrectly includes 15% weapon power
 	float musperc = simValue("Weapon Damage Percent");
 	int musscore = floor(square_root((musmus + musflat)/15*(1+musperc/100)));
 	auto_log_info("Muscle score: " + musscore, "blue");
@@ -90,7 +90,7 @@ void L9_chasmMaximizeForNoncombat()
 	float mysperc = simValue("Spell Damage Percent");
 	int mysscore = floor(square_root((mysmys + mysflat)/15*(1+mysperc/100)));
 	auto_log_info("Mysticality score: " + mysscore, "blue");
-	if(mysscore > musscore)
+	if(mysscore >= musscore)	//overwrite equal muscle score if possible because it may be 1 lower than predicted due to the above weapon damage issue
 	{
 		best = "mys";
 	}
@@ -99,7 +99,7 @@ void L9_chasmMaximizeForNoncombat()
 	float moxres = simValue("Sleaze Resistance");
 	int moxscore = floor(square_root(moxmox/30*(1+moxres*0.69)));
 	auto_log_info("Moxie score: " + moxscore, "blue");
-	if(moxscore > mysscore && moxscore > musscore)
+	if(moxscore >= mysscore && moxscore >= musscore)
 	{
 		best = "mox";
 	}
@@ -224,6 +224,9 @@ boolean L9_chasmBuild()
 			set_property("choiceAdventure1345", 0);
 		}
 	}
+	
+	// This adds a tonne of damage and NC progress
+	buffMaintain($effect[Triple-Sized]);
 	
 	if(get_property("smutOrcNoncombatProgress").to_int() == 15)
 	{

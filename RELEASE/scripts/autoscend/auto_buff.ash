@@ -147,6 +147,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	{
 		return false;
 	}
+	
+	if(have_effect(buff) >= turns)
+	{
+		return false;
+	}
 
 	switch(buff)
 	{
@@ -364,6 +369,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Frosty]:						useItem = $item[Frost Flower];					break;
 	case $effect[Frown]:						useSkill = $skill[Frown Muscles];				break;
 	case $effect[Funky Coal Patina]:			useItem = $item[Coal Dust];						break;
+	case $effect[Gaffe Free]:					useItem = $item[Gaffer\'s tape];						break;
 	case $effect[Gelded]:						useItem = $item[Chocolate Filthy Lucre];		break;
 	case $effect[Ghostly Shell]:
 		if(auto_have_skill($skill[Ghostly Shell]) && acquireTotem())
@@ -695,6 +701,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Sweetbreads Flamb&eacute;]:	useItem = $item[Greek Fire];					break;
 	case $effect[Takin\' It Greasy]:			useSkill = $skill[Grease Up];					break;
 	case $effect[Taunt of Horus]:				useItem = $item[Talisman of Horus];				break;
+	case $effect[Temporarily Filtered]:			useItem = $item[Single-use dust mask];			break;
 	case $effect[Temporary Lycanthropy]:		useItem = $item[Blood of the Wereseal];			break;
 	case $effect[Tenacity of the Snapper]:
 		if(auto_have_skill($skill[Tenacity of the Snapper]) && acquireTotem())
@@ -705,6 +712,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[This is Where You\'re a Viking]:useItem = $item[VYKEA woadpaint];				break;
 	case $effect[Throwing Some Shade]:			useItem = $item[Shady Shades];					break;
 	case $effect[Ticking Clock]:				useItem = $item[Cheap wind-up Clock];			break;
+	case $effect[Tingly Tongue]:				useItem = $item[spare battery];					break;
 	case $effect[Toad in the Hole]:				useItem = $item[Anti-anti-antidote];			break;
 	case $effect[Tomato Power]:					useItem = $item[Tomato Juice of Powerful Power];break;
 	case $effect[Tortious]:						useItem = $item[Mocking Turtle];				break;
