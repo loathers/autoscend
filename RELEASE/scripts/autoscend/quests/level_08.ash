@@ -320,19 +320,14 @@ boolean L8_getMineOres()
 		return rainManSummon($monster[mountain man], false, false);
 	}
 	
-	// in softcore we want to pull the ores.
+	// in softcore we want to pull an ore
 	if(!in_hardcore())
 	{
-		if(pulls_remaining() != -1 && pulls_remaining() < (3 - item_amount(oreGoal)))
-		{
-			return false; // if not enough pulls left wait until tomorrow
-		}
-		pullXWhenHaveY(oreGoal, 3 - item_amount(oreGoal), item_amount(oreGoal));
+		pullXWhenHaveY(oreGoal, 1, item_amount(oreGoal));
 		if(item_amount(oreGoal) == 3)
 		{
-			return true;// pulled successfully.
+			return true;// pulled successfully the last ore
 		}
-		// do not return false if failed to pull despite having enough pulls left. It suggests there is some other issue preventing us from pulling so we should go forwards and acquire them.
 	}
 	
 	// use 1 wish if we can guarentee it will be enough via cat burglar
@@ -639,7 +634,7 @@ boolean L8_trapperNinjaLair()
 	// we must use two variables because there are too many special cases. maybe we can survive assassins but not encounter them due to +combat being too low. Copiers and pulls complicate matters. We could copy an assassin even if we cannot encounter it in the lair
 	
 	//check if we can survive a hit or get the jump on NSA
-	if((my_maxhp() <= expected_damage($monster[ninja snowman assassin])) && jump_chance($monster[ninja snowman assassin]) < 100 )
+	if((my_maxhp() <= expected_damage($monster[ninja snowman assassin]) * 1.2) && jump_chance($monster[ninja snowman assassin]) < 100 )
 	{
 		if(isAboutToPowerlevel())
 		{

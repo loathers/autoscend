@@ -1,4 +1,4 @@
-since r26239;	// combat lover's locket support
+since r26405;	// mayday package and cosmic bowling ball preff support
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -569,7 +569,10 @@ void initializeDay(int day)
 		#}
 	}
 
-	auto_saberDailyUpgrade(day);
+	if(auto_is_valid($item[Fourth of May cosplay saber]))
+	{
+		auto_saberDailyUpgrade(day);
+	}
 
 	if((item_amount($item[cursed microwave]) >= 1) && !get_property("_cursedMicrowaveUsed").to_boolean())
 	{
@@ -696,7 +699,7 @@ void initializeDay(int day)
 	}
 
 	// Get emotionally chipped if you have the item.  boris\zombie slayer\ed cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !is_boris() && !in_zombieSlayer() && !isActuallyEd())
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_darkGyffte()))
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -846,13 +849,11 @@ void initializeDay(int day)
 		
 		if(get_property("auto_day_init").to_int() < 2)
 		{
-			if((item_amount($item[Tonic Djinn]) > 0) && !get_property("_tonicDjinn").to_boolean())
-			{
-				set_property("choiceAdventure778", "2");
-				use(1, $item[Tonic Djinn]);
-			}
+			useTonicDjinn();
+			
 			if(item_amount($item[gym membership card]) > 0)
 			{
+				equipStatgainIncreasers();
 				use(1, $item[gym membership card]);
 			}
 
@@ -1064,8 +1065,9 @@ boolean dailyEvents()
 
 	while(zataraClanmate(""));
 
-	if (item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[pocket wish]) && !in_glover())
+	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[genie bottle]) && auto_is_valid($item[pocket wish]) && !in_glover())
 	{
+	//if bottle is valid and pocket wishes are not (such as in glover) then we should save the wishes for use and only convert leftovers into pocket wishes at bedtime
 		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
 		{
 			makeGeniePocket();
@@ -1334,10 +1336,23 @@ void beatenUpResolution()
 
 	if(have_effect($effect[Beaten Up]) > 0)
 	{
-		cli_execute("refresh all");
-		if(have_effect($effect[Beaten Up]) > 0)
+		if(have_effect($effect[Beaten Up]) == 2 && get_property("lastEncounter") == "Dr. Awkward" && internalQuestStatus("questL11Palindome") > 5)
 		{
-			abort("We failed to remove beaten up. Adventuring in the same place that we got beaten in with half stats will just result in us dying again");
+			//beaten up by the quest item when unlocking Dr. Awkward, not by failing a fight
+			set_property("_auto_AwkwardBeatenUp",my_turncount().to_string());
+			auto_log_info("We must have failed to remove beaten up before defeating Dr. Awkward and that hasn't stopped us so far...");
+		}
+		else if(have_effect($effect[Beaten Up]) == 1 && get_property("_auto_AwkwardBeatenUp").to_int() != 0 && my_turncount() - get_property("_auto_AwkwardBeatenUp").to_int() <= 1)
+		{
+			auto_log_info("This should be the last turn of beaten up from Dr. Awkward");
+		}
+		else
+		{
+			cli_execute("refresh all");
+			if(have_effect($effect[Beaten Up]) > 0)
+			{
+				abort("We failed to remove beaten up. Adventuring in the same place that we got beaten in with half stats will just result in us dying again");
+			}
 		}
 	}
 }
@@ -1389,6 +1404,7 @@ boolean autosellCrap()
 	}
 	foreach it in $items[dense meat stack, meat stack,  //quest rewards that are better off as meat. If we ever need it we can freely recreate them at no loss.
 	Blue Money Bag, Red Money Bag, White Money Bag,  //vampyre path boss rewards and major source of meat in run.
+	Space Blanket, //can be inside MayDay package. Only purpose is to sell for meat
 	Void Stone] //dropped by Void Fights when Cursed Magnifying Glass is equiped. Only purpose is to sell for meat
 	{
 		if(item_amount(it) > 0)
@@ -1424,7 +1440,7 @@ boolean autosellCrap()
 		return false;
 	}
 
-	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Chaos Butterfly, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
+	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
 	{
 		if(item_amount(it) > 0)
 		{
@@ -1434,6 +1450,10 @@ boolean autosellCrap()
 	if(item_amount($item[hot wing]) > 3)
 	{
 		auto_autosell(item_amount($item[hot wing]) - 3, $item[hot wing]);
+	}
+	if(item_amount($item[Chaos Butterfly]) > 1)
+	{
+		auto_autosell(item_amount($item[Chaos Butterfly]) - 1, $item[Chaos Butterfly]);
 	}
 	return true;
 }
@@ -1690,6 +1710,7 @@ boolean doTasks()
 	LX_craftAcquireItems();
 	auto_spoonTuneMoon();
 	auto_buyFireworksHat();
+	auto_CMCconsult();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();

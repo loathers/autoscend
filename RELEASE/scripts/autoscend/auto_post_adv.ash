@@ -13,6 +13,9 @@ void auto_beaten_handler()
 	loc += "day:" +my_daycount()+ ":level:" +my_level()+ ":place:" +my_location();
 	set_property("auto_beatenUpLocations", loc);
 	set_property("auto_beatenUpLastAdv", true);
+
+	//try to avoid getting beaten up again
+	buffMaintain($effect[Everything Is Bananas]);
 	
 	if(my_location() == $location[The X-32-F Combat Training Snowman])
 	{
@@ -155,6 +158,11 @@ boolean auto_post_adventure()
 	if(!get_property("_creepyVoodooDollUsed").to_boolean() && (item_amount($item[Creepy Voodoo Doll]) > 0))
 	{
 		use(1, $item[Creepy Voodoo Doll]);
+	}
+	// mayday supply package drops from first combat of the day if you have this IOTM
+	if(item_amount($item[MayDay&trade; supply package]) > 0 && auto_is_valid($item[MayDay&trade; supply package]))
+	{
+		use(1, $item[MayDay&trade; supply package]);
 	}
 
 
@@ -317,13 +325,10 @@ boolean auto_post_adventure()
 		{
 			use_skill(1, $skill[Disco Nap]);
 		}
-		else if(isGeneralStoreAvailable())
+		else if(isGeneralStoreAvailable() && auto_is_valid($item[Anti-Anti-Antidote]))
 		{
 			buyUpTo(1, $item[Anti-Anti-Antidote], 30);
-			if(!in_glover())
-			{
-				use(1, $item[Anti-Anti-Antidote]);
-			}
+			use(1, $item[Anti-Anti-Antidote]);
 		}
 	}
 
@@ -919,6 +924,9 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Carol of the Thrills], 30, 1, 1);		//3MP/adv for non ATs. +3 XP/fight
 			buffMaintain($effect[Aloysius\' Antiphon of Aptitude], 40, 1, 1);	//4MP/adv for non ATs. +3 XP/fight split equally 1 per stat.
 		}
+
+		// items which give stats
+		buffMaintain($effect[Scorched Earth]);
 	}
 
 

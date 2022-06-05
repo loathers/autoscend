@@ -76,6 +76,7 @@ boolean L7_crypt()
 	}
 	if(item_amount($item[chest of the bonerdagon]) == 1)
 	{
+		equipStatgainIncreasers();
 		use(1, $item[chest of the bonerdagon]);
 		return false;
 	}
@@ -222,7 +223,10 @@ boolean L7_crypt()
 		autoEquip($item[Gravy Boat]);
 		knockOffCapePrep();
 
-		spacegateVaccine($effect[Emotional Vaccine]);
+		if(auto_is_valid($effect[Emotional Vaccine]))
+		{
+			spacegateVaccine($effect[Emotional Vaccine]);
+		}
 
 		if(auto_have_familiar($familiar[Space Jellyfish]) && (get_property("_spaceJellyfishDrops").to_int() < 3))
 		{
@@ -261,6 +265,7 @@ boolean L7_crypt()
 		cli_execute("refresh quests");
 		if(item_amount($item[chest of the bonerdagon]) == 1)
 		{
+			equipStatgainIncreasers();
 			use(1, $item[chest of the bonerdagon]);
 			auto_badassBelt(); // mafia doesn't make this any more even if autoCraft = true for some random reason so lets do it manually.
 		}

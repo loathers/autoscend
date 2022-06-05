@@ -369,13 +369,19 @@ boolean autoChooseFamiliar(location place)
 
 	// Blackbird/Crow cut turns in the Black Forest but we only need to equip them
 	// if we don't have them in inventory.
-	if ($location[The Black Forest] == place) {
-		if (!in_bhy()) {
-			if (item_amount($item[Reassembled Blackbird]) == 0 && canChangeToFamiliar($familiar[Reassembled Blackbird])) {
+	if($location[The Black Forest] == place)
+	{
+		if(!in_bhy())
+		{
+			if(item_amount($item[Reassembled Blackbird]) == 0 && canChangeToFamiliar($familiar[Reassembled Blackbird]))
+			{
 				famChoice = $familiar[Reassembled Blackbird];
 			}
-		} else {
-			if (item_amount($item[Reconstituted Crow]) == 0 && canChangeToFamiliar($familiar[Reconstituted Crow])) {
+		}
+		else
+		{
+			if(item_amount($item[Reconstituted Crow]) == 0 && canChangeToFamiliar($familiar[Reconstituted Crow]))
+			{
 				famChoice = $familiar[Reconstituted Crow];
 			}
 		}
@@ -387,7 +393,7 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// places where item drop is required to help save adventures.
-	if ($locations[The Typical Tavern Cellar, The Beanbat Chamber, Cobb's Knob Harem, The Goatlet, Itznotyerzitz Mine,
+	if ($locations[The Typical Tavern Cellar, Guano Junction, The Beanbat Chamber, Cobb's Knob Harem, The Goatlet, Itznotyerzitz Mine,
 	Twin Peak, The Penultimate Fantasy Airship, The Hidden Temple, The Hidden Hospital, The Hidden Bowling Alley, The Haunted Wine Cellar,
 	The Haunted Laundry Room, The Copperhead Club, A Mob of Zeppelin Protesters, Whitey's Grove, The Oasis, The Middle Chamber,
 	Frat House, Hippy Camp, The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hatching Chamber,
@@ -861,16 +867,16 @@ void acquireFamiliars()
 	{
 		return;
 	}
-	
+
 	//Very cheap and very useful IOTM derivative. MP/HP regen. drops lots of useful food and drink early on
-	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]) && canPull($item[tiny barrel]))
+	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]) && canPull($item[tiny barrel]) && auto_is_valid($item[tiny barrel]))
 	{
 		acquireOrPull($item[tiny barrel]);		//mallbuy and pull it if we can
 	}
 	hatchFamiliar($familiar[Lil\' Barrel Mimic]);
 	
 	//stat gains. nonscaling. better at low levels. cheap and easy to acquire in run.
-	if(!have_familiar($familiar[Blood-Faced Volleyball]) && item_amount($item[blood-faced volleyball]) == 0 && my_meat() > meatReserve() + 1500)
+	if(!have_familiar($familiar[Blood-Faced Volleyball]) && item_amount($item[blood-faced volleyball]) == 0 && auto_is_valid($item[seal tooth]) && auto_is_valid($item[volleyball]) && my_meat() > meatReserve() + 1500)
 	{
 		foreach it in $items[volleyball, seal tooth]
 		{

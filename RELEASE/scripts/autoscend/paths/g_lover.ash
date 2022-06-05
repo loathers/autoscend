@@ -5,7 +5,7 @@ boolean in_glover()
 
 void glover_initializeDay(int day)
 {
-	if (!in_glover()) 
+	if(!in_glover()) 
 	{
 		return;
 	}
@@ -49,7 +49,7 @@ boolean glover_usable(string it)
 		return true;
 	}
 	item checkItem = it.to_item();
-	if (checkItem != $item[none] && $items[ninja Carabiner, ninja Crampons, ninja Rope,
+	if(checkItem != $item[none] && $items[ninja Carabiner, ninja Crampons, ninja Rope,
 	eXtreme scarf, snowboarder pants, eXtreme mittens, linoleum ore, chrome ore, asbestos ore,
 	loadstone, amulet of extreme plot significance, titanium assault umbrella, antique machete,
 	half-size scalpel, head mirror, wet stew, UV-resistant compass, Talisman o' Namsilat, Unstable Fulminate,

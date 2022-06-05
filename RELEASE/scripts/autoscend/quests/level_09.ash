@@ -58,6 +58,7 @@ boolean L9_leafletQuest()
 	auto_log_info("Got a leaflet to do", "blue");
 	if(disregardInstantKarma())		//checks a user setting as well as current level
 	{
+		equipStatgainIncreasers();
 		cli_execute("leaflet");		//also gain +200 substats for each stat
 	}
 	else
@@ -163,7 +164,7 @@ boolean L9_chasmBuild()
 	// make sure our progress count is correct before we do anything.
 	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
-	if (!in_glover() && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
+	if (auto_is_valid($item[Smut Orc Keepsake Box]) && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
 	{
  		// fight Smut Orc Pervert from Cargo Shorts for a Smut Orc Keepsake Box
  		use(1, $item[Smut Orc Keepsake Box]);
@@ -273,12 +274,9 @@ boolean L9_chasmBuild()
 
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
 
-		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
+		if(item_amount($item[Smut Orc Keepsake Box]) > 0 && auto_is_valid($item[Smut Orc Keepsake Box]))
 		{
-			if(!in_glover())
-			{
-				use(1, $item[Smut Orc Keepsake Box]);
-			}
+			use(1, $item[Smut Orc Keepsake Box]);
 		}
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 		if(get_property("chasmBridgeProgress").to_int() >= 30)
@@ -311,12 +309,9 @@ boolean L9_chasmBuild()
 		}
 
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
-		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
+		if(item_amount($item[Smut Orc Keepsake Box]) > 0  && auto_is_valid($item[Smut Orc Keepsake Box]))
 		{
-			if(!in_glover())
-			{
-				use(1, $item[Smut Orc Keepsake Box]);
-			}
+			use(1, $item[Smut Orc Keepsake Box]);
 		}
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 		return true;
@@ -536,6 +531,11 @@ boolean L9_aBooPeak()
 		{
 			doThisBoo = true;
 		}
+		//do clue if it is one of the last things to do
+		if(isAboutToPowerlevel() && my_level() >= 13)
+		{
+			doThisBoo = true;
+		}
 
 		if(doThisBoo)
 		{
@@ -559,8 +559,14 @@ boolean L9_aBooPeak()
 			buffMaintain($effect[Red Door Syndrome]);
 			buffMaintain($effect[Well-Oiled]);
 
-			auto_beachCombHead("cold");
-			auto_beachCombHead("spooky");
+			if(auto_is_valid($effect[Cold as Nice]))
+			{
+				auto_beachCombHead("cold");
+			}
+			if(auto_is_valid($effect[Does It Have a Skull In There??]))			
+			{
+				auto_beachCombHead("spooky");
+			}
 
 			set_property("choiceAdventure611", "1");
 			
@@ -697,23 +703,23 @@ boolean L9_twinPeak()
 
 	if(!attempt && needFood)
 	{
-		float food_drop = item_drop_modifier();
-		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()), equipped_item($slot[familiar]));
+		float food_drop = item_drop_modifier() + numeric_modifier("Food Drop");
+		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight"), equipped_item($slot[familiar]));
 		
 		if(my_servant() == $servant[Cat])
 		{
 			food_drop -= numeric_modifier($familiar[Baby Gravy Fairy], "Item Drop", $servant[Cat].level, $item[none]);
 		}
-		if((food_drop < 50) && (food_drop >= 20))
+		if((food_drop < 50) && (food_drop >= 20) && have_effect($effect[Brother Flying Burrito\'s Blessing]) == 0)
 		{
 			if(friars_available() && (!get_property("friarsBlessingReceived").to_boolean()))
 			{
 				cli_execute("friars food");
 			}
-		}
-		if(have_effect($effect[Brother Flying Burrito\'s Blessing]) > 0)
-		{
-			food_drop = food_drop + 30;
+			if(have_effect($effect[Brother Flying Burrito\'s Blessing]) > 0)
+			{
+				food_drop = food_drop + 30;
+			}
 		}
 		if((food_drop < 50.0) && (item_amount($item[Eagle Feather]) > 0) && (have_effect($effect[Eagle Eyes]) == 0))
 		{
@@ -808,32 +814,32 @@ boolean L9_oilPeak()
 		return false;
 	}
 
-	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
+	if(contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
 		boolean needJar = ((oilProgress & 4) == 0) && item_amount($item[Jar Of Oil]) == 0;
-		if (!needJar || in_bhy())
+		if(!needJar || in_bhy())
 		{
 			return false;
 		}
-		else if (item_amount($item[Bubblin' Crude]) >= 12)
+		else if(item_amount($item[Bubblin' Crude]) >= 12)
 		{
 			if(in_glover())
 			{
-				if (item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
+				if(item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
 				{
 					buy($coinmaster[G-Mart], 1, $item[Crude Oil Congealer]);
 				}
-				if (item_amount($item[Crude Oil Congealer]) > 0)
+				if(item_amount($item[Crude Oil Congealer]) > 0)
 				{
 					use(1, $item[Crude Oil Congealer]);
 				}
 			}
-			else if (auto_is_valid($item[Bubblin' Crude]) && creatable_amount($item[Jar Of Oil]) > 0)
+			else if(auto_is_valid($item[Bubblin' Crude]) && creatable_amount($item[Jar Of Oil]) > 0)
 			{
 				create(1, $item[Jar Of Oil]);
 			}
-			if (item_amount($item[Jar Of Oil]) > 0)
+			if(item_amount($item[Jar Of Oil]) > 0)
 			{
 				return true;
 			}

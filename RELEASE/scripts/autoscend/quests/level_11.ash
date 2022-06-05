@@ -1,5 +1,6 @@
 record desert_buff_record
 {
+	item weapon;
 	item offhand;
 	item fam_equip;
 	familiar fam;
@@ -16,10 +17,19 @@ desert_buff_record desertBuffs()
 	boolean lhmValid = canChangeToFamiliar($familiar[Left-Hand Man]);
 	boolean meloValid = canChangeToFamiliar($familiar[Melodramedary]);
 	boolean odrValid = possessUnrestricted($item[Ornate Dowsing Rod]);
+	boolean knifeValid = possessUnrestricted($item[Survival Knife]);
 
 	dbr.fam = $familiar[none];
 	dbr.fam_equip = $item[none];
 	dbr.offhand = $item[none];
+	dbr.weapon = $item[none];
+
+	// No contention for weapon so always use survival knife if we have it
+	if(knifeValid)
+	{
+		dbr.weapon = $item[Survival Knife];
+		dbr.progress += 2;
+	}
 
 	// If we can't use the Ornate dowsing rod
 	if (!odrValid)
@@ -1046,6 +1056,10 @@ boolean L11_aridDesert()
 		{
 			handleFamiliar(dbr.fam);
 		}
+		if (dbr.weapon != $item[none])
+		{
+			autoEquip($slot[weapon], dbr.weapon);
+		}
 		if (dbr.offhand != $item[none])
 		{
 			autoEquip($slot[off-hand], dbr.offhand);
@@ -1593,7 +1607,7 @@ boolean L11_hiddenCity()
 
 
 	//can we handle this zone?
-	if(!in_pokefam())
+	if(!in_pokefam() && !in_darkGyffte())
 	{
 		if(!acquireHP())	//try to restore HP to max.
 		{
@@ -1608,6 +1622,7 @@ boolean L11_hiddenCity()
 	
 	int weapon_ghost_dmg = numeric_modifier("hot damage") + numeric_modifier("cold damage") + numeric_modifier("stench damage") + numeric_modifier("sleaze damage") + numeric_modifier("spooky damage");
 	if(!in_robot() &&
+	!in_darkGyffte() &&
 	weapon_ghost_dmg < 20 &&				//we can not rely on melee/ranged weapon to kill the ghost
 	!acquireMP(30))							//try getting some MP, relying on a spell to kill them instead. TODO verify we have a spell
 	{
@@ -2165,7 +2180,11 @@ boolean L11_redZeppelin()
 	}
 
 	addToMaximize("100sleaze damage,100sleaze spell damage");
-	auto_beachCombHead("sleaze");
+	if(auto_is_valid($effect[Oiled, Slick]))
+	{
+		auto_beachCombHead("sleaze");
+	}
+
 	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
 	{
 		if(possessEquipment(it) && auto_can_equip(it) &&
@@ -2505,7 +2524,7 @@ boolean L11_palindome()
 		return false;
 	}
 
-	if (!possessEquipment($item[Talisman o' Namsilat])) {
+	if (!possessEquipment($item[Talisman o\' Namsilat])) {
 		return false;
 	}
 
@@ -2865,7 +2884,7 @@ boolean L11_unlockEd()
 			cli_execute("make sugar fairy");
 			buffMaintain($effect[Dance of the Sugar Fairy]);
 		}
-		if(have_effect($effect[items.enh]) == 0)
+		if(have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
 		{
 			auto_sourceTerminalEnhance("items");
 		}

@@ -589,3 +589,144 @@ boolean auto_canExtinguisherBeRefilled()
 {
 	return auto_haveFireExtinguisher() && in_wildfire() && !get_property("_fireExtinguisherRefilled").to_boolean();
 }
+
+boolean auto_haveColdMedCabinet()
+{
+	return auto_get_campground() contains $item[cold medicine cabinet] && auto_is_valid($item[cold medicine cabinet]);
+}
+
+int auto_CMCconsultsLeft()
+{
+	if(!auto_haveColdMedCabinet())
+	{
+		return 0;
+	}
+	int consultsUsed = get_property("_coldMedicineConsults").to_int();
+	if(consultsUsed > 5)
+	{
+		auto_log_warning("Mafia's tracking of Cold Medicine Cabinet consults today errored (reported > 5 uses today). Reseting to 5.", "red");
+		consultsUsed = 5;
+	}
+	return 5 - consultsUsed;
+}
+
+boolean auto_shouldUseCMC()
+{
+	return !get_property("auto_doNotUseCMC").to_boolean();
+}
+
+boolean auto_CMCconsultAvailable()
+{
+	if(auto_CMCconsultsLeft() == 0)
+	{
+		return false;
+	}
+	if(!auto_shouldUseCMC())
+	{
+		return false;
+	}
+	int nextConsult = get_property("_nextColdMedicineConsult").to_int();
+	//prior to first use each day, prop value is 0
+	if(nextConsult == 0)
+	{
+		return true;
+	}
+	return total_turns_played() >= nextConsult;
+}
+
+void auto_CMCconsult()
+{
+	//consume previously bought items if conditions are right
+	//perhaps pill was bought yesterday with full spleen
+	if(item_amount($item[Breathitin&trade;]) > 0)
+	{
+		autoChew(1,$item[Breathitin&trade;]);
+	}
+	if(item_amount($item[Homebodyl&trade;]) > 0 && freeCrafts() < 5)
+	{
+		autoChew(1,$item[Homebodyl&trade;]);
+	}
+	//use fleshazole if we don't have much meat
+	if(item_amount($item[Fleshazole&trade;]) > 0 && my_meat() + 2000 < meatReserve() && my_level() >= 5)
+	{
+		autoChew(1,$item[Fleshazole&trade;]);
+	}
+	
+	if(!auto_CMCconsultAvailable())
+	{
+		return;
+	}
+
+	if(get_property("_auto_coldMedicineLocked").to_boolean())
+	{
+		//haven't visited yet since it was last locked so always visit to update available consults
+		set_property("_auto_coldMedicineLocked","false");
+	}
+	else if(auto_CMCconsultsLeft() <= 2 && freeCrafts() >= 5 && possessEquipment($item[ice crown]) && my_meat() >= meatReserve())
+	{
+		//only looking for Breathitin from at least 11 fights spent underground
+		if(my_location().environment != "underground")
+		{
+			//if Breathitin was not available last turn and last location was not underground it will still not be available now so no visit needed
+			return;
+		}
+	}
+
+	int bestOption = -1;
+	item consumableBought = $item[none];
+	string page = visit_url("campground.php?action=workshed");
+	if(contains_text(page, "Breathitin"))
+	{
+		auto_log_info("Buying Breathitin pill from CMC", "blue");
+		bestOption = 5;
+		consumableBought = $item[Breathitin&trade;];
+	}
+	else if(contains_text(page, "Homebodyl") && freeCrafts() < 5)
+	{
+		auto_log_info("Buying Homebodyl pill from CMC", "blue");
+		bestOption = 5;
+		consumableBought = $item[Homebodyl&trade;];
+	}
+	else if(contains_text(page, "ice crown"))
+	{
+		auto_log_info("Buying ice crown from CMC", "blue");
+		bestOption = 1;
+	}
+	else if(contains_text(page, "Fleshazole") && my_meat() + 2000 < meatReserve())
+	{
+		auto_log_info("Buying Fleshazole pill from CMC", "blue");
+		bestOption = 5;
+		consumableBought = $item[Fleshazole&trade;];
+	}
+	else if(auto_CMCconsultsLeft() > 2 && !can_interact())
+	{
+		//reserve the last 2 consults for something more valuable than booze/food
+		//consume logic will drink/eat later
+		if(inebriety_left() > 0)
+		{
+			auto_log_info("Buying booze from CMC", "blue");
+			bestOption = 3;
+		}
+		else if(fullness_left() > 0)
+		{
+			auto_log_info("Buying food from CMC", "blue");
+			bestOption = 2;
+		}
+	}
+
+	if(bestOption != -1)
+	{
+		set_property("_auto_coldMedicineLocked","true");	//when taking a consultation, set property as a reminder to always check again next time consultations are unlocked
+		run_choice(bestOption);
+	}
+
+	if(consumableBought == $item[Breathitin&trade;] || consumableBought == $item[Homebodyl&trade;])
+	{
+		autoChew(1,consumableBought);
+	}
+
+	if(consumableBought == $item[Fleshazole&trade;] && my_meat() < meatReserve() && my_level() >= 5)
+	{
+		autoChew(1,consumableBought);
+	}	
+}

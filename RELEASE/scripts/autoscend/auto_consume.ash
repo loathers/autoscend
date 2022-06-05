@@ -109,12 +109,6 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 
 	int expectedInebriety = toDrink.inebriety * howMany;
 
-	item it = equipped_item($slot[Acc3]);
-	if((it != $item[Mafia Pinky Ring]) && (item_amount($item[Mafia Pinky Ring]) > 0) && ($items[Bucket of Wine, Psychotic Train Wine, Sacramento Wine, Stale Cheer Wine] contains toDrink) && can_equip($item[Mafia Pinky Ring]))
-	{
-		equip($slot[Acc3], $item[Mafia Pinky Ring]);
-	}
-
 	if(canOde(toDrink) && possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
 		if((have_effect($effect[Drunk and Avuncular]) < expectedInebriety) && (item_amount($item[Drunk Uncles Holo-Record]) == 0))
@@ -130,6 +124,14 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		// get enough turns of ode
 		while(acquireMP(mp_cost($skill[The Ode to Booze]), 0) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
 			/*do nothing, the loop condition is doing the work*/;
+	}
+
+	equipStatgainIncreasersFor(toDrink);
+
+	item it = equipped_item($slot[Acc3]);
+	if((it != $item[Mafia Pinky Ring]) && (item_amount($item[Mafia Pinky Ring]) > 0) && ($items[Bucket of Wine, Psychotic Train Wine, Sacramento Wine, Stale Cheer Wine] contains toDrink) && can_equip($item[Mafia Pinky Ring]))
+	{
+		equip($slot[Acc3], $item[Mafia Pinky Ring]);
 	}
 
 	boolean retval = false;
@@ -214,6 +216,8 @@ boolean autoDrinkCafe(int howmany, int id)
 	// we'll get from the drink.
 	if(!gnomads_available()) return false;
 
+	equipStatgainIncreasersFor(id.to_item());
+
 	string name = cafeDrinkName(id);
 	for (int i=0; i<howmany; i++)
 	{
@@ -228,6 +232,8 @@ boolean autoDrinkCafe(int howmany, int id)
 boolean autoEatCafe(int howmany, int id)
 {
 	if(!canadia_available()) return false;
+
+	equipStatgainIncreasersFor(id.to_item());
 
 	string name = cafeFoodName(id);
 	for (int i=0; i<howmany; i++)
@@ -254,6 +260,8 @@ boolean autoChew(int howMany, item toChew)
 	{
 		return false;
 	}
+
+	equipStatgainIncreasersFor(toChew);
 
 	boolean retval = chew(howMany, toChew);
 
@@ -287,6 +295,8 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	{
 		return false;
 	}
+
+	equipStatgainIncreasersFor(toEat);
 
 	int expectedFullness = toEat.fullness * howMany;
 	acquireMilkOfMagnesiumIfUnused(true);
@@ -353,11 +363,11 @@ boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 	{
 		return true;
 	}
-	if(get_property("_milkOfMagnesiumUsed").to_boolean())
+	if(get_property("_milkOfMagnesiumUsed").to_boolean() || get_property("milkOfMagnesiumActive").to_boolean())
 	{
 		return true;
 	}
-	if(fullness_left() == 0)
+	if(fullness_limit() == 0)
 	{
 		return false;
 	}
@@ -379,7 +389,7 @@ boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 			{
 				cli_execute("make " + $item[Milk Of Magnesium]);
 			}
-			else if((freeCrafts() > 0) && have_skill($skill[Rapid Prototyping]))
+			else if(freeCrafts() > 0)
 			{
 				cli_execute("make " + $item[Milk Of Magnesium]);
 			}
@@ -391,7 +401,7 @@ boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 
 boolean consumeMilkOfMagnesiumIfUnused()
 {
-	if(get_property("_milkOfMagnesiumUsed").to_boolean() || item_amount($item[Milk Of Magnesium]) < 1)
+	if(get_property("_milkOfMagnesiumUsed").to_boolean() || get_property("milkOfMagnesiumActive").to_boolean() || item_amount($item[Milk Of Magnesium]) < 1)
 	{
 		return false;
 	}
@@ -1166,23 +1176,47 @@ ConsumeAction auto_bestNightcap()
 	loadConsumables("drink", actions);
 
 	boolean have_ode = auto_have_skill($skill[The Ode to Booze]);
+	int greenBeersDrinkable;
+	int greenBeerAdv;
+	if(contains_text(holiday(),"St\. Sneaky Pete's Day") && gnomads_available() && daily_special() == $item[green beer])
+	{
+		int disposableBeerMeat = max(0,my_meat()-meatReserve());
+		greenBeersDrinkable = min(ceil(10.0/$item[green beer].inebriety), disposableBeerMeat/get_property("_dailySpecialPrice").to_int());
+		if (greenBeersDrinkable > 0)
+		{
+			auto_log_info("May pick a smaller nightcap tonight since we could balance up to " + greenBeersDrinkable + " green beers on top of it", "blue");
+			greenBeerAdv = expectedAdventuresFrom($item[green beer]) + (have_ode ? $item[green beer].inebriety : 0);
+		}
+	}
+	
 	float desirability(int i)
 	{
 		float ret = actions[i].desirability;
 		if (have_ode) ret += actions[i].size;
+		if (greenBeersDrinkable > 0)
+		{
+			//on Sneaky Pete's Day smaller drink action leaves more space for green beers
+			int greenBeerabilityBonus = greenBeerAdv * min(greenBeersDrinkable, max(0,10 - actions[i].size));
+			ret += greenBeerabilityBonus;
+			if(actions[i].it == $item[astral pilsner])
+			{	//astral pilsner's extra advs could make it barely beat larger pulls today due to beers but would still have as much value tomorrow
+				ret -= min(5,greenBeerabilityBonus);
+			}
+		}
 		return ret;
 	}
 
 	int best = 0;
+	float current_best_desirability;
 	for(int i=1; i < count(actions); i++)
 	{
-		if(desirability(i) < desirability(best))
+		if(desirability(i) < current_best_desirability)
 		{
 			// This consumable is less desirable than the best consumable found so far
 			continue;
 		}
 
-		if(desirability(i) == desirability(best) && historical_price(actions[i].it) >= historical_price(actions[best].it))
+		if(desirability(i) == current_best_desirability && historical_price(actions[i].it) >= historical_price(actions[best].it))
 		{
 			// This consumable is just as desirable as the best consumable, but it is more expensive
 			continue;
@@ -1190,6 +1224,7 @@ ConsumeAction auto_bestNightcap()
 
 		// This consumable is either more desirable or equally desirable and cheaper
 		best = i;
+		current_best_desirability = desirability(best);
 	}
 
 	return actions[best];
@@ -1202,6 +1237,63 @@ void auto_printNightcap()
 		return;		//disable it for now. TODO make a custom function for vampyre nightcap drinking specifically
 	}
 	auto_log_info("Nightcap is: " + to_pretty_string(auto_bestNightcap()), "blue");
+}
+
+void auto_overdrinkGreenBeers()
+{
+	//called after nightcap, auto_drinkNightcap() needs to have already made the necessary checks
+	if(!contains_text(holiday(),"St\. Sneaky Pete's Day") || !canDrink($item[green beer], false))
+	{
+		return;
+	}
+	familiar start_fam = my_familiar();
+	if(auto_have_familiar($familiar[Stooper]) //drinking does not break 100fam runs so do not use canChangeToFamiliar
+	&& start_fam != $familiar[Stooper] && pathAllowsChangingFamiliar()) //check if path allows changing familiar
+	{
+		use_familiar($familiar[Stooper]);
+	}
+	
+	int negativeLiver = inebriety_left();
+	if(negativeLiver >= -10 && negativeLiver < 0)
+	{
+		auto_log_info("It's St. Sneaky Pete's Day, can we sneak in any green beers?", "blue");
+		
+		if(gnomads_available())
+		{
+			if (daily_special() == $item[green beer])
+			{
+				ConsumeAction greenBeerAction = MakeConsumeAction(daily_special());
+				greenBeerAction.cafeId = daily_special().to_int();
+				greenBeerAction.it = $item[none];
+				int daily_special_limit = min(my_meat()/get_property("_dailySpecialPrice").to_int(), (inebriety_left()+11)/(daily_special().inebriety));
+				for (int i=0; i < daily_special_limit; i++)
+				{
+					autoConsume(greenBeerAction);
+				}
+			}
+		}
+		
+		//TODO craft green beer?
+		
+		int greenbeer_limit = min(item_amount($item[green beer]), (inebriety_left()+11)/($item[green beer].inebriety));
+		if(greenbeer_limit > 0)
+		{
+			autoDrink(greenbeer_limit, $item[green beer]);
+		}
+		
+		if(inebriety_left() == negativeLiver)
+		{
+			auto_log_info("Could not overdrink any green beer", "blue");
+		}
+		else if(inebriety_left() >= -10)
+		{
+			auto_log_info("Still have " + (11 + inebriety_left()) + " green beer liver space that could not be filled", "blue");
+		}
+	}
+	if(start_fam != my_familiar() && pathAllowsChangingFamiliar())
+	{
+		use_familiar(start_fam);
+	}
 }
 
 void auto_drinkNightcap()
@@ -1221,21 +1313,43 @@ void auto_drinkNightcap()
 	}
 	if(auto_freeCombatsRemaining() > 0)
 	{
+		auto_log_info("Not drinking a nightcap because of " + auto_freeCombatsRemaining() + " remaining free fights", "blue");
 		return;		//do not overdrink if we still have free fights we want to do. undesireable free fights are not counted by that function
 	}
-	//you can't overdrink if already overdrunk. TODO account for green beer on cinco de mayo
-	if(auto_have_familiar($familiar[Stooper]))
+	boolean overdrunk()
 	{
-		if($familiar[Stooper] == my_familiar() && inebriety_left() < 0) return;		//stooper is current familiar and overdrunk
-		else if(inebriety_left() < -1) return;		//stooper not current familiar. but will be overdrunk even if switching to it
+		if(auto_have_familiar($familiar[Stooper]))
+		{
+			if($familiar[Stooper] == my_familiar() && inebriety_left() < 0) return true;		//stooper is current familiar and overdrunk
+			else if(inebriety_left() < -1) return true;		//stooper not current familiar. but will be overdrunk even if switching to it
+		}
+		else if(inebriety_left() < 0) return true;	//we can not use stooper and are overdrunk
+		return false;
 	}
-	else if(inebriety_left() < 0) return;	//we can not use stooper and are overdrunk
+	if(overdrunk())
+	{
+		//you can't overdrink if already overdrunk. except for green beer on cinco de mayo
+		auto_overdrinkGreenBeers();
+		return;
+	}
+	
 	
 	familiar start_fam = my_familiar();
 	if(auto_have_familiar($familiar[Stooper]) //drinking does not break 100fam runs so do not use canChangeToFamiliar
 	&& start_fam != $familiar[Stooper] && pathAllowsChangingFamiliar()) //check if path allows changing familiar
 	{
 		use_familiar($familiar[Stooper]);
+	}
+	
+	if(item_amount($item[Steel Margarita]) > 0)
+	{
+		//LX_steelOrgan may wait to drink the Steel Margarita for Billiards, if drunkenness never went over 12 it could have been skipped
+		//this should only be possible in Avatar of West of Loathing?
+		boolean wontBeOverdrunk = inebriety_left() >= $item[Steel Margarita].inebriety - 5;
+		if(wontBeOverdrunk)
+		{
+			autoDrink(1, $item[Steel Margarita]);
+		}
 	}
 	
 	//fill up remaining liver first. such as stooper space.
@@ -1248,6 +1362,12 @@ void auto_drinkNightcap()
 		abort("Unexpectedly couldn't prep " + to_pretty_string(target));
 	}
 	autoDrink(1, target.it, true); // added a silent flag to autoDrink to avoid the overdrink confirmation popup
+	
+	if(overdrunk())
+	{
+		//another round? (green beers)
+		auto_overdrinkGreenBeers();
+	}
 	
 	if(start_fam != my_familiar() && pathAllowsChangingFamiliar())	//familiar can change when crafting the drink in QT
 	{
@@ -1321,7 +1441,7 @@ boolean auto_autoConsumeOne(string type)
 	
 	ConsumeAction bestAction = auto_findBestConsumeAction(type);
 
-	if (bestAction.it == $item[none])
+	if (bestAction.it == $item[none] && bestAction.cafeId == 0)
 	{
 		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
 		return false;
@@ -1347,6 +1467,7 @@ boolean auto_autoConsumeOne(string type)
 item auto_autoConsumeOneSimulation(string type)
 {
 	ConsumeAction bestAction = auto_findBestConsumeAction(type);
+	if(bestAction.it == $item[none]) return bestAction.cafeId.to_item();	//this can only find an existing item for daily specials
 	return bestAction.it;
 }
 
@@ -1651,10 +1772,9 @@ boolean prepare_food_xp_multi()
 		}
 	}
 	
-	//TODO get [That's Just Cloud-Talk, Man] +25% all
+	//get [That's Just Cloud-Talk, Man] +25% all stats experience is already done by dailyEvents()
 	
-	//if you try to use shorthand maximizer will provide you with buffed stat % instead of stat XP % gains
-	maximize("muscle experience percent, mysticality experience percent, moxie experience percent", false);
+	equipStatgainIncreasers($stats[muscle,mysticality,moxie],true);
 	
 	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
 	return true;

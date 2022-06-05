@@ -481,6 +481,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		Adorable Lookout,
 		Alacri Tea,
 		All Fired Up,
+		Clear Ears\, Can't Lose,
 		Fishy\, Oily,
 		The Glistening,
 		Human-Machine Hybrid,
@@ -493,7 +494,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 	]))
 		return result();
 
-	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0)
+	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0 && auto_is_valid($effect[init.enh]))
 	{
 		if(!speculative)
 			auto_sourceTerminalEnhance("init");
@@ -752,6 +753,8 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			Hyphemariffic,
 			Sleaze-Resistant Trousers,
 			Hyperoffended,
+			Covered in the Rainbow,
+			Temporarily Filtered,
 		]))
 			return result();
 	}
@@ -1015,8 +1018,10 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 			Sugar Rush,
 			Superhuman Sarcasm,
 			Unrunnable Face,
+			Gaffe Free,
 
 			// all-stat effects
+			Confidence of the Votive,
 			Human-Human Hybrid,
 			Industrial Strength Starch,
 			Mutated,
