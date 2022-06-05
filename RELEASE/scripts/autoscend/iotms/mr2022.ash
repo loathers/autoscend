@@ -2,8 +2,7 @@
 
 boolean auto_haveCosmicBowlingBall()
 {
-	// returns true if CBB is available for use, not necessarily if the user has the CBB
-	return item_amount($item[Cosmic Bowling Ball]) > 0;
+	return get_property("hasCosmicBowlingBall").to_boolean();
 }
 
 string auto_bowlingBallCombatString(location place, boolean speculation)
