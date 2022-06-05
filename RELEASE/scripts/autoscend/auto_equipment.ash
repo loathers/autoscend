@@ -192,6 +192,9 @@ item[slot] speculatedMaximizerEquipment(string statement)
 			//there should not be more than 9 or 10 equipment slots and equipment entries come first. so equipment list is done
 			break;
 		}
+		string maximizerText = entry.display;
+		if(contains_text(maximizerText,"unequip "))	continue;
+		if(!contains_text(maximizerText,"equip "))	continue;	//will not know how to handle special actions like "fold ", "umbrella ", ...
 		item maximizerItem = entry.item;
 		if(maximizerItem == $item[none]) continue;
 		slot maximizerItemSlot = maximizerItem.to_slot();
@@ -202,12 +205,32 @@ item[slot] speculatedMaximizerEquipment(string statement)
 			if(weaponPicked && offhandPicked)
 			{
 				//this must be familiar weapon
-				overrideSlot = $slot[familiar];
+				if(my_familiar() == $familiar[Disembodied Hand])
+				{
+					overrideSlot = $slot[familiar];
+				}
+				else
+				{
+					auto_log_debug("There are more weapons than we can wear in speculatedMaximizerEquipment but familiar is not Disembodied Hand, something must be wrong", "gold");
+					continue;
+				}
 			}
 			else if(weaponPicked)
 			{
 				//this must be offhand weapon
-				overrideSlot = $slot[off-hand];
+				if(auto_have_skill($skill[Double-Fisted Skull Smashing]))
+				{
+					overrideSlot = $slot[off-hand];
+				}
+				else if(my_familiar() == $familiar[Disembodied Hand])
+				{
+					overrideSlot = $slot[familiar];	//should have offhandPicked before getting to familiar slot but this could happen if there are no offhand items
+				}
+				else
+				{
+					auto_log_debug("There are more weapons than we can wear in speculatedMaximizerEquipment, something must be wrong", "gold");
+					continue;
+				}
 				offhandPicked = true;
 			}
 			else
@@ -221,7 +244,15 @@ item[slot] speculatedMaximizerEquipment(string statement)
 			if(offhandPicked)
 			{
 				//this must be familiar offhand
-				overrideSlot = $slot[familiar];
+				if(my_familiar() == $familiar[Left-Hand Man])
+				{
+					overrideSlot = $slot[familiar];
+				}
+				else
+				{
+					auto_log_debug("Off-hand slot is getting more than one use in speculatedMaximizerEquipment but familiar is not Left-Hand Man, something must be wrong", "gold");
+					continue;
+				}
 			}
 			else
 			{

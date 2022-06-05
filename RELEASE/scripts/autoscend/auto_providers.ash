@@ -775,6 +775,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			Sleaze-Resistant Trousers,
 			Hyperoffended,
 			Covered in the Rainbow,
+			Temporarily Filtered,
 		]))
 			return result();
 	}
@@ -1038,6 +1039,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 			Sugar Rush,
 			Superhuman Sarcasm,
 			Unrunnable Face,
+			Gaffe Free,
 
 			// all-stat effects
 			Confidence of the Votive,
