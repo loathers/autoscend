@@ -1,5 +1,6 @@
 record desert_buff_record
 {
+	item weapon;
 	item offhand;
 	item fam_equip;
 	familiar fam;
@@ -16,10 +17,19 @@ desert_buff_record desertBuffs()
 	boolean lhmValid = canChangeToFamiliar($familiar[Left-Hand Man]);
 	boolean meloValid = canChangeToFamiliar($familiar[Melodramedary]);
 	boolean odrValid = possessUnrestricted($item[Ornate Dowsing Rod]);
+	boolean knifeValid = possessUnrestricted($item[Survival Knife]);
 
 	dbr.fam = $familiar[none];
 	dbr.fam_equip = $item[none];
 	dbr.offhand = $item[none];
+	dbr.weapon = $item[none];
+
+	// No contention for weapon so always use survival knife if we have it
+	if(knifeValid)
+	{
+		dbr.weapon = $item[Survival Knife];
+		dbr.progress += 2;
+	}
 
 	// If we can't use the Ornate dowsing rod
 	if (!odrValid)
@@ -1045,6 +1055,10 @@ boolean L11_aridDesert()
 		if (dbr.fam != $familiar[none])
 		{
 			handleFamiliar(dbr.fam);
+		}
+		if (dbr.weapon != $item[none])
+		{
+			autoEquip($slot[weapon], dbr.weapon);
 		}
 		if (dbr.offhand != $item[none])
 		{

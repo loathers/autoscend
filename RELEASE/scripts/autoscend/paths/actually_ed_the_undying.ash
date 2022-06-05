@@ -1039,7 +1039,7 @@ void ed_handleAdventureServant(location loc)
 	// but it's also an excellent Ka farming zone and we have to spend a bunch of adventures there
 	if (loc == $location[The Penultimate Fantasy Airship])
 	{
-		if (!possessEquipment($item[Mohawk wig]) || !possessEquipment($item[amulet of extreme plot significance]) || !possessEquipment($item[titanium assault umbrella]))
+		if (!possessEquipment($item[Mohawk wig]) || !possessEquipment($item[amulet of extreme plot significance]) || (!possessEquipment($item[titanium assault umbrella]) && !possessEquipment($item[unbreakable umbrella])))
 		{
 			myServant = $servant[Cat];
 		}

@@ -144,7 +144,7 @@ boolean L10_basement()
 		
 		if(!possessEquipment($item[Amulet of Extreme Plot Significance]))			//only consider umbrella if getting amulet fails somehow
 		{
-			if(!possessEquipment($item[Titanium Assault Umbrella]) && auto_can_equip($item[Titanium Assault Umbrella]))
+			if(!possessEquipment($item[Titanium Assault Umbrella]) && auto_can_equip($item[Titanium Assault Umbrella]) && !possessEquipment($item[unbreakable umbrella]))
 			{
 				pullXWhenHaveY($item[Titanium Assault Umbrella], 1, 0);
 			}
@@ -170,7 +170,10 @@ boolean L10_basement()
 	auto_forceNextNoncombat();
 	if(!autoEquip($item[Amulet of Extreme Plot Significance]))
 	{
-		autoEquip($item[Titanium Assault Umbrella]);
+		if(!autoEquip($item[unbreakable umbrella]))
+		{
+			autoEquip($item[Titanium Assault Umbrella]);
+		}	
 	}
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Basement)]);
 	
