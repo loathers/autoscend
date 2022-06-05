@@ -4070,7 +4070,6 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 }
 
 
-
 // ADVENTURE FORCING FUNCTIONS
 boolean auto_canForceNextNoncombat()
 {
