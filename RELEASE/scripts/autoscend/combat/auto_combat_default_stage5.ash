@@ -128,6 +128,11 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	{
 		return useSkill(auto_spoonCombatSkill());
 	}
+
+	if(auto_haveCosmicBowlingBall() && canUse($item[cosmic bowling ball]) && monster_hp() < 100)
+	{
+		return useItem($item[cosmic bowling ball]);
+	}
     
 	//mortar shell is amazing. it really should not be limited to sauceror only.
 	if(canUse($skill[Stuffed Mortar Shell]) && (my_class() == $class[Sauceror]) && canSurvive(2.0) && (currentFlavour() != monster_element(enemy) || currentFlavour() == $element[none]))

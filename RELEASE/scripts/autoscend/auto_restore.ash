@@ -1724,6 +1724,8 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	//since we need to restore, lets reduce MP cost of future skills
 	buffMaintain($effect[The Odour of Magick]);
 	buffMaintain($effect[Using Protection]);
+	//also use items which give mp regen
+	buffMaintain($effect[Tingly Tongue]);
 
 	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
 	// TODO: move this to general effectiveness method
