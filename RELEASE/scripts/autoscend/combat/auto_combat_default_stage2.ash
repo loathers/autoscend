@@ -242,7 +242,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			(get_property("bondDesert").to_boolean() ? 2 : 0) +
 			(get_property("peteMotorbikeHeadlight") == "Blacklight Bulb" ? 2 : 0) +
 			(my_familiar() == $familiar[Melodramedary] ? 1 : 0) +
-			equipped_amount($item[survival knife]) +
+			2 * min(1,equipped_amount($item[survival knife])) +
 			equipped_amount($item[UV-resistant compass]) +
 			2 * equipped_amount($item[Ornate Dowsing Rod]);
 			int fightsLeftToExplore = ceil((100 - get_property("desertExploration").to_int()) / currentDesertProgressPerTurn);
@@ -263,7 +263,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			{
 				wantInstaKill = true;
 			}
-			else if(auto_have_skill($skill[Bow-Legged Swagger]) && my_basestat(my_primestat()) >= 35 && get_property("_bowleggedSwaggerUsed").to_boolean())
+			else if(auto_have_skill($skill[Bow-Legged Swagger]) && my_basestat(my_primestat()) >= 35 && !get_property("_bowleggedSwaggerUsed").to_boolean())
 			{
 				waitForCyrpt = true;	//near level 7
 			}
