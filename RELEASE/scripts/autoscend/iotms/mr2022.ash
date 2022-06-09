@@ -163,7 +163,7 @@ void juneCleaverChoiceHandler(int choice)
 			}
 			break;
 		case 1470: // Teacher's Pet
-			if (can_equip($item[teacher's pen]) && available_amount($item[teacher's pen]) < 1) {
+			if (can_equip($item[teacher\'s pen]) && available_amount($item[teacher\'s pen]) < 1) {
 				run_choice(2); // accessory, +2 fam exp, +3 stats per fight
 			} else if (my_primestat() == $stat[muscle] && my_level() < 13) {
 				run_choice(3);
@@ -174,7 +174,7 @@ void juneCleaverChoiceHandler(int choice)
 			}
 			break;
 		case 1471: // Lost and Found
-			if ((get_property("sidequestNunsCompleted") == "none") && (get_property("auto_skipNuns") == "false") && (item_amount($item[saving's bond]) == 0)) {
+			if ((get_property("sidequestNunsCompleted") == "none") && (get_property("auto_skipNuns") == "false") && (item_amount($item[saving\'s bond]) == 0)) {
 				run_choice(1); // potion, 30 turns of 50% meat
 			} else if (my_primestat() == $stat[mysticality] && my_level() < 13) {
 				run_choice(3); // 250 myst substat
@@ -206,7 +206,7 @@ void juneCleaverChoiceHandler(int choice)
 			}
 			break;
 		case 1475: // Hypnotic Master
-			if (available_amount($item[mother's necklace]) < 1) {
+			if (available_amount($item[mother\'s necklace]) < 1) {
 				run_choice(1); // 3 RO adventures, 5 free rests (doesn't even need to be equipped), never fumble
 			} else if (my_primestat() == $stat[muscle] && my_level() < 13) {
 				run_choice(2); // 250 muscle substat
