@@ -174,7 +174,7 @@ void juneCleaverChoiceHandler(int choice)
 			}
 			break;
 		case 1471: // Lost and Found
-			if ((get_property("sidequestNunsCompleted") == "none") && (get_property("auto_skipNuns") == "false") && (item_amount($item[saving\'s bond]) == 0)) {
+			if ((get_property("sidequestNunsCompleted") == "none") && (get_property("auto_skipNuns") == "false") && (item_amount($item[savings bond]) == 0)) {
 				run_choice(1); // potion, 30 turns of 50% meat
 			} else if (my_primestat() == $stat[mysticality] && my_level() < 13) {
 				run_choice(3); // 250 myst substat
