@@ -163,7 +163,7 @@ void juneCleaverChoiceHandler(int choice)
 			}
 			break;
 		case 1470: // Teacher's Pet
-			if (can_equip($item[teacher's pen]) && available_amount($item[teacher's pen] < 1)) {
+			if (can_equip($item[teacher's pen]) && available_amount($item[teacher's pen]) < 1) {
 				run_choice(2); // accessory, +2 fam exp, +3 stats per fight
 			} else if (my_primestat() == $stat[muscle] && my_level() < 13) {
 				run_choice(3);
