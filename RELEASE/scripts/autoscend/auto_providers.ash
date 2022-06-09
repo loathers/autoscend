@@ -293,6 +293,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Inky Camouflage,	
 		Celestial Camouflage,
 		Feeling Lonely,
+		Feeling Sneaky
 	])) {
 		return result();
 	}
@@ -482,7 +483,6 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		Alacri Tea,
 		All Fired Up,
 		Clear Ears\, Can't Lose,
-		Feeling Sneaky,
 		Fishy\, Oily,
 		The Glistening,
 		Human-Machine Hybrid,
