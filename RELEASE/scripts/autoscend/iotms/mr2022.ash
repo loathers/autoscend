@@ -152,7 +152,7 @@ void juneCleaverChoiceHandler(int choice)
 			}
 			break;
 		case 1468: // Aunts not Ants
-			if ((my_primestat() == $stat[moxie] && (my_level() < 13 || disregardInstantKarma())) || (my_primestat() == $stat[muscle] && my_level() > 12 disregardInstantKarma() == false)) {
+			if ((my_primestat() == $stat[moxie] && (my_level() < 13 || disregardInstantKarma())) || (my_primestat() == $stat[muscle] && my_level() > 12 && disregardInstantKarma() == false)) {
 				run_choice(1); // 150 moxie substat
 			// } else if(check a property to see if skips are available) {
 			// 	run_choice(4); // skip
