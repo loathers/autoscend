@@ -137,3 +137,91 @@ boolean auto_fightLocketMonster(monster mon)
 	return true;
 
 }
+
+void juneCleaverChoiceHandler(int choice)
+{
+	switch(choice) {
+		case 1467: // Poetic Justice
+			if (have_skill($skill[Tongue of the Walrus]) || item_amount($item[personal massager]) > 0) {
+				run_choice(3); // +5 adventures, get beaten up
+			} else if ((my_primestat() == $stat[mysticality] && (my_level() < 13 || disregardInstantKarma())) || (my_primestat() == $stat[moxie] && my_level() > 12 && disregardInstantKarma() == false)) {
+				run_choice(2); // 137 myst substat
+			}
+			else {
+				run_choice(1); // 250 moxie substat
+			}
+			break;
+		case 1468: // Aunts not Ants
+			if ((my_primestat() == $stat[moxie] && (my_level() < 13 || disregardInstantKarma())) || (my_primestat() == $stat[muscle] && my_level() > 12 && disregardInstantKarma() == false)) {
+				run_choice(1); // 150 moxie substat
+			// } else if(check a property to see if skips are available) {
+			// 	run_choice(4); // skip
+			} else {
+				run_choice(2); // 250 muscle substat
+			}
+			break;
+		case 1469: // Beware of Alligators
+			if (my_meat() < meatReserve()) {
+				run_choice(3); // 1500 meat
+			} else if (can_drink() && my_inebriety() < inebriety_limit()) {
+				run_choice(2); // size 1 awesome booze
+			} else {
+				run_choice(3); // 1500 meat
+			}
+			break;
+		case 1470: // Teacher's Pet
+			if (can_equip($item[teacher\'s pen]) && available_amount($item[teacher\'s pen]) < 1) {
+				run_choice(2); // accessory, +2 fam exp, +3 stats per fight
+			} else if (my_primestat() == $stat[muscle] && (my_level() < 13 || disregardInstantKarma())) {
+				run_choice(3);
+			// } else if(check a property to see if skips are available) {
+			// 	run_choice(4); // skip
+			} else {
+				run_choice(2); // accessory, +2 fam exp, +3 stats per fight
+			}
+			break;
+		case 1471: // Lost and Found
+			if ((get_property("sidequestNunsCompleted") == "none") && (get_property("auto_skipNuns") == "false") && (item_amount($item[savings bond]) == 0)) {
+				run_choice(1); // potion, 30 turns of 50% meat
+			} else if (my_primestat() == $stat[mysticality] && (my_level() < 13 || disregardInstantKarma())) {
+				run_choice(3); // 250 myst substat
+			} else {
+				run_choice(1); // potion, 30 turns of 50% meat
+			}
+			break;
+		case 1472: // Summer Days
+			run_choice(1); // potion, -5 combat rate, 30 turns
+			break;
+		case 1473: // Bath Time
+			if(my_primestat() == $stat[muscle] && (my_level() < 13 || disregardInstantKarma())) {
+				run_choice(2); // 250 muscle substat
+			// } else if(check a property to see if skips are available) {
+			// 	run_choice(4); // skip
+			} else {
+				run_choice(3); // effect, 30 turns of +3 hot res, +50% init
+			}
+			break;			
+		case 1474: // Delicious Sprouts
+			// if (can_eat() && my_fullness() < fullness_limit() && my_level() < 13) // requires more support
+			//	run_choice(2); // guilty sprout is level 8+ good size 1 food but it gives big stats, would want to use a red rocket
+			if (my_primestat() == $stat[mysticality] && (my_level() < 13 || disregardInstantKarma())) {
+				run_choice(1); // 250 myst substat
+			} else if (my_primestat() == $stat[muscle] && (my_level() < 13 || disregardInstantKarma())) {
+				run_choice(3); // 138 muscle substat
+			} else {
+				run_choice(2); // guilty sprout is level 8+ good size 1 food but it gives big stats
+			}
+			break;
+		case 1475: // Hypnotic Master
+			if (available_amount($item[mother\'s necklace]) < 1) {
+				run_choice(1); // 3 RO adventures, 5 free rests (doesn't even need to be equipped), never fumble
+			} else if (my_primestat() == $stat[muscle] && (my_level() < 13 || disregardInstantKarma())) {
+				run_choice(2); // 250 muscle substat
+			} else {
+				run_choice(1); // autosells for 1000 meat
+			}
+			break;
+		default:
+			abort("unhandled choice in juneCleaverChoiceHandler");
+	}
+}
