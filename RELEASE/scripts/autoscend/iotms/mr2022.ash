@@ -194,7 +194,7 @@ void juneCleaverChoiceHandler(int choice)
 			break;
 		case 1473: // Bath Time
 			if(my_primestat() == $stat[muscle] && (my_level() < 13 || disregardInstantKarma())) {
-				run_choice(2); // 250 muscle substat
+				run_choice(1); // 250 muscle substat
 			// } else if(check a property to see if skips are available) {
 			// 	run_choice(4); // skip
 			} else {
