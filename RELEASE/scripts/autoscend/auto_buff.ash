@@ -296,7 +296,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Drunk and Avuncular]:			useItem = $item[Drunk Uncles Holo-Record];		break;
 	case $effect[Eagle Eyes]:					useItem = $item[eagle feather];					break;
 	case $effect[Ear Winds]:					useSkill = $skill[Flappy Ears];					break;
-	case $effect[Earning Interest]:				useItem = $skill[savings bond];					break;
+	case $effect[Earning Interest]:				useItem = $item[savings bond];					break;
 	case $effect[Eau D\'enmity]:				useItem = $item[Perfume of Prejudice];			break;
 	case $effect[Eau de Tortue]:				useItem = $item[Turtle Pheromones];				break;
 	case $effect[Egged On]:						useItem = $item[Robin\'s Egg];					break;
