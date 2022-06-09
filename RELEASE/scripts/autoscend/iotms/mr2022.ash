@@ -144,7 +144,7 @@ void juneCleaverChoiceHandler(int choice)
 		case 1467: // Poetic Justice
 			if (have_skill($skill[Tongue of the Walrus]) || item_amount($item[personal massager]) > 0) {
 				run_choice(3); // +5 adventures, get beaten up
-			} else if ((my_primestat() == $stat[mysticality] && (my_level() < 13 || disregardInstantKarma())) || (my_primestat() == $stat[moxie] && my_level() > 12 && !disregardInstantKarma())) {
+			} else if ((my_primestat() == $stat[mysticality] && (my_level() < 13 || disregardInstantKarma())) || (my_primestat() == $stat[moxie] && my_level() > 12 && disregardInstantKarma() == false)) {
 				run_choice(2); // 137 myst substat
 			}
 			else {
@@ -152,7 +152,7 @@ void juneCleaverChoiceHandler(int choice)
 			}
 			break;
 		case 1468: // Aunts not Ants
-			if ((my_primestat() == $stat[moxie] && (my_level() < 13 || disregardInstantKarma())) || (my_primestat() == $stat[muscle] && my_level() > 12 !disregardInstantKarma())) {
+			if ((my_primestat() == $stat[moxie] && (my_level() < 13 || disregardInstantKarma())) || (my_primestat() == $stat[muscle] && my_level() > 12 disregardInstantKarma() == false)) {
 				run_choice(1); // 150 moxie substat
 			// } else if(check a property to see if skips are available) {
 			// 	run_choice(4); // skip
