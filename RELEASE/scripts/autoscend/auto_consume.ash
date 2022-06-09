@@ -995,26 +995,23 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	if (missingHeroKeys > 0 && !get_property("auto_dontConsumeKeyLimePies").to_boolean())
 	{
 		//will add desirability to consumption and pulling of key lime pies
-		//missing at least 1 key/token, in case it will be only one first consider mainstat pie if possible
-		if(my_primestat() == $stat[muscle] && item_amount($item[Boris\'s key]) == 0)
-			wantBorisPie = true;
-		else if(my_primestat() == $stat[mysticality] && item_amount($item[Jarlsberg\'s key]) == 0)
-			wantJarlsbergPie = true;
-		else if(my_primestat() == $stat[moxie] && item_amount($item[Sneaky Pete\'s key]) == 0)
-			wantPetePie = true;
-
-		if(item_amount($item[fat loot token]) < 2)		//will still be missing another key
-		{	if(!wantBorisPie && item_amount($item[Boris\'s key]) == 0)
+		void considerNextPie()
+		{
+			//missing at least 1 key/token, in case it will be only one first consider mainstat pie if possible
+			if(my_primestat() == $stat[muscle] && item_amount($item[Boris\'s key]) == 0)
 				wantBorisPie = true;
-			else if(!wantJarlsbergPie && item_amount($item[Jarlsberg\'s key]) == 0)
-				wantJarlsbergPie = true;
-		}
-
-		if(item_amount($item[fat loot token]) < 1)		//last key
-		{	if(!wantJarlsbergPie && item_amount($item[Jarlsberg\'s key]) == 0)
+			else if(my_primestat() == $stat[mysticality] && item_amount($item[Jarlsberg\'s key]) == 0)
 				wantJarlsbergPie = true;
 			else if(!wantPetePie && item_amount($item[Sneaky Pete\'s key]) == 0)
 				wantPetePie = true;
+			else if(!wantJarlsbergPie && item_amount($item[Jarlsberg\'s key]) == 0)
+				wantJarlsbergPie = true;
+			else if(!wantBorisPie && item_amount($item[Boris\'s key]) == 0)
+				wantBorisPie = true;
+		}
+		for (int i=0; i<missingHeroKeys; i++)
+		{
+			considerNextPie();
 		}
 		
 		//estimate cost of obtaining keys
