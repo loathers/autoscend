@@ -545,21 +545,18 @@ string defaultMaximizeStatement()
 		
 		if(get_property("auto_MLSafetyLimit") == "")
 		{
-			//"exp" includes bonus from "ml" sources and values mainstat experience with a score equivalent to ML: "10exp" = 1.65 score to mainstat experience from any source
-			//"exp" does not value offstat experience
+			//"exp" includes bonus from "ml" sources and values mainstat experience with a variable? score comparable to 0.25ML?
+			//in general "10exp" gives a score equivalent to "15(primeStat) experience"
+			//"exp" does not value "+(offstat) experience"
 			res += ",10exp";
-			
-			//"(primeStat) experience" score does not include ML sources in the relevant situation (starts to include ML eventually, after breaking the prism?)
-			//increase that score by 10% over the score given to mainstat experience by "exp"
-			//this way ~equivalent non-ML sources of mainstat exp will be preferred over ML sources, they give the same benefit without making fights harder
-			res += ",0.165" + primeStat + "experience";
 		}
 		else	//a value is given for ML safety limit
 		{
-			//so use the equivalent weight for stat experience instead of "exp" which always gives value to ML sources if available
+			//use "(primeStat) experience" instead of "exp" in the hope that it will not include ML however this is not consistently true
+			//the conditions under which it still adds value to ML are unclear (level? not ronin? volleyball familiar??)
 			//the maximizer score for limited ML is added later by pre_adv
 			//pre_adv will tell the maximizer to not value ML over the safety limit (though enforcing that limit is not possible with the maximizer syntax and scoring system)
-			res += ",1.65" + primeStat + " experience";
+			res += ",15" + primeStat + " experience";
 		}
 		//TODO the score to give to experience VS percent depends on how much experience is expected from fights
 		//mafia now also already adds a base experience percent score to "exp": 
@@ -571,11 +568,11 @@ string defaultMaximizeStatement()
 		//>= level 12 or almost there, more offstat experience may be needed for the war outfit (requires 70 mox and 70 mys)
 		if(my_basestat($stat[moxie]) < 70 && get_property("warProgress") != "finished")
 		{
-			res += "moxie experience,3moxie experience percent";
+			res += "10moxie experience,3moxie experience percent";
 		}
 		if(my_basestat($stat[mysticality]) < 70 && get_property("warProgress") != "finished")
 		{
-			res += "mysticality experience,3mysticality experience percent";
+			res += "10mysticality experience,3mysticality experience percent";
 		}
 	}
 
