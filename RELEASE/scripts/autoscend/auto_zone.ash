@@ -148,7 +148,9 @@ generic_t zone_needItem(location loc)
 		break;
 	case $location[The Copperhead Club]:
 	case $location[A Mob of Zeppelin Protesters]:
-		value = 15.0;
+		if(internalQuestStatus("questL11Ron") >= 1) {
+			value = 15.0;
+		}
 		break;
 	case $location[The Red Zeppelin]:
 		value = 30.0;
@@ -530,7 +532,9 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[A Mob Of Zeppelin Protesters]:
-		value = -70;
+		if(internalQuestStatus("questL11Ron") >= 1) {
+			value = -70;
+		}
 		break;
 	case $location[The Black Forest]:
 		if (internalQuestStatus("questL13Final") < 6) {
