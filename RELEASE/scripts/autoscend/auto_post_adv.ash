@@ -7,6 +7,10 @@ void auto_beaten_handler()
 		set_property("auto_beatenUpLastAdv", false);
 		return;		//we are not beaten up. nothing to handle
 	}
+	if(last_choice() == 1467) {
+		auto_log_info("Getting beaten up here gave us 5 adventures, that's a win.");
+		return;
+	}
 	set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
 	string loc = get_property("auto_beatenUpLocations");
 	if(loc != "") loc += ",";
@@ -14,8 +18,11 @@ void auto_beaten_handler()
 	set_property("auto_beatenUpLocations", loc);
 	set_property("auto_beatenUpLastAdv", true);
 
-	//try to avoid getting beaten up again
-	buffMaintain($effect[Everything Is Bananas]);
+	if(my_level() < 11 || get_property("sidequestJunkyardCompleted") != "none")	//don't risk blocking effect persisting in gremlins quest
+	{
+		//try to avoid getting beaten up again
+		buffMaintain($effect[Everything Is Bananas]);
+	}
 	
 	if(my_location() == $location[The X-32-F Combat Training Snowman])
 	{
