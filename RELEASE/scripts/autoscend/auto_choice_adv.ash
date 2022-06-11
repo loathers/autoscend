@@ -621,6 +621,17 @@ boolean auto_run_choice(int choice, string page)
 		case 1436: // Billiards Room Options (Cartography)
 			cartographyChoiceHandler(choice);
 			break;
+		case 1467:
+		case 1468:
+		case 1469:
+		case 1470:
+		case 1471:
+		case 1472:
+		case 1473:
+		case 1474:
+		case 1475:
+			juneCleaverChoiceHandler(choice);
+			break;
 		default:
 			break;
 	}

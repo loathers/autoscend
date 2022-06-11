@@ -1741,6 +1741,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Car-Charged]);
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
+	buffMaintain($effect[Earning Interest]);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{
