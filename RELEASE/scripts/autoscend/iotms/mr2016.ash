@@ -567,17 +567,17 @@ boolean witchessFights()
 		}
 		return auto_advWitchess("booze");
 	case 2:
-		if((get_property("sidequestNunsCompleted") == "none") && (item_amount($item[Jumping Horseradish]) == 0))
+		if((get_property("sidequestNunsCompleted") == "none") && (get_property("auto_skipNuns") == "false") && (item_amount($item[Jumping Horseradish]) == 0))
 		{
 			return auto_advWitchess("meat");
 		}
 	case 3:
-		if((get_property("sidequestNunsCompleted") == "none") && (item_amount($item[Jumping Horseradish]) == 0))
+		if((get_property("sidequestNunsCompleted") == "none") && (get_property("auto_skipNuns") == "false") && (item_amount($item[Jumping Horseradish]) == 0))
 		{
 			return auto_advWitchess("meat");
 		}
 	case 4:
-		if((get_property("sidequestNunsCompleted") == "none") && (item_amount($item[Jumping Horseradish]) == 0))
+		if((get_property("sidequestNunsCompleted") == "none") && (get_property("auto_skipNuns") == "false") && (item_amount($item[Jumping Horseradish]) == 0))
 		{
 			return auto_advWitchess("meat");
 		}
