@@ -488,7 +488,7 @@ boolean auto_buyFireworksHat()
 		return false;
 	}
 
-	if(my_meat() < npc_price($item[porkpie-mounted popper]) + meatReserve())
+	if(my_meat() < npc_price($item[porkpie-mounted popper]) + meatReserve() && auto_is_valid($item[porkpie-mounted popper]))
 	{
 		auto_log_info("Want to buy a hat from the fireworks shop, but don't have enough meat. Will try again later.");
 		return false;
@@ -505,7 +505,7 @@ boolean auto_buyFireworksHat()
 		}
 	}
 
-	// +combat hat is second most usefull
+	// +combat hat is second most useful
 	if(auto_can_equip($item[sombrero-mounted sparkler]))
 	{
 		float simCombat = providePlusCombat(25, $location[noob cave], true, true);
@@ -516,7 +516,7 @@ boolean auto_buyFireworksHat()
 		}
 	}
 
-	// ML hat is least usefull
+	// ML hat is least useful
 	// todo: add functionality to simulate acquiring ML instead of just looking at current ML
 	if(auto_can_equip($item[fedora-mounted fountain]))
 	{
@@ -541,7 +541,7 @@ int auto_fireExtinguisherCharges()
 	return get_property("_fireExtinguisherCharge").to_int();
 }
 
-// returns zone specific skill if in usable zone and hasn't been used yet there this acension. Otherwise returns empty string
+// returns zone specific skill if in usable zone and hasn't been used yet there this ascension. Otherwise returns empty string
 string auto_FireExtinguisherCombatString(location place)
 {
 	if(auto_fireExtinguisherCharges() < 20)
@@ -549,7 +549,7 @@ string auto_FireExtinguisherCombatString(location place)
 		return "";
 	}
 
-	// once per acension uses
+	// once per ascension uses
 	if($locations[Guano Junction, The Batrat and Ratbat Burrow, The Beanbat Chamber] contains place && !get_property("fireExtinguisherBatHoleUsed").to_boolean())
 	{
 		//sonar-in-a-biscuits are used before combat, if available. Knock a wall down if any are still standing
