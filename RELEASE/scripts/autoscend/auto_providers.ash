@@ -1167,3 +1167,165 @@ boolean provideMoxie(int amt, boolean doEquips)
 	return provideMoxie(amt, my_location(), doEquips);
 }
 
+boolean provideMaxMP(int amt, location loc, boolean notForCombat, boolean doEquips, boolean speculative)
+{
+	if(notForCombat && my_maxmp() >= amt)
+	{
+		return true;
+	}
+
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " max MP " + 
+	(notForCombat ? "out of combat" : "for the next adventure") + ", " + (doEquips ? "with" : "without") + " equipment", "blue");
+
+
+	boolean pass()
+	{
+		int achievableMaxMP = simValue("Buffed MP Maximum");
+		int costModifierCurrent =  notForCombat ? mana_cost_modifier() : combat_mana_cost_modifier();
+		//combat_mana_cost_modifier() includes mana_cost_modifier(), but simValue("Combat Mana Cost") does not include simValue("Mana Cost")
+		int costModifierSimulated = simValue("Mana Cost") + simValue("Stackable Mana Cost") + (notForCombat ? 0 : simValue("Combat Mana Cost"));
+		int costModifierDiff = costModifierSimulated - costModifierCurrent;
+		int neededMaxMP = amt + costModifierDiff; //requested amt should be a mp_cost(), so included the current cost modifier. only apply changes to cost modifier
+		auto_log_debug("We can achieve " + achievableMaxMP + " max MP" + (costModifierDiff == 0 ? "" : (" and " + costModifierDiff + " cost modifier")), "blue");
+		return (achievableMaxMP >= neededMaxMP);
+	}
+	
+	string speculateString;
+	string max;
+	location locCache;
+	
+	if(doEquips)
+	{
+		//any maximizer parameters added by a quest script before calling this provider will be there but pre adv may add more for the zone later
+		//so the weight given to MP when trying to enable a skill for next adventure should be high enough to not get beaten by other weights added by pre adv
+		
+		//not capping value for NonCombatUse because restores that go over could be wasted?, cost modifiers are negative so for those maximum cap arguments are effectively not usable
+		//and not valuing mana cost modifiers when maximizing for next combat because values combined together with mp can't be given a common cap
+		
+		max = "999mp" + (notForCombat ? ",-999Mana Cost,-999Stackable Mana Cost" : ( " " + amt + "max"));
+
+		if (notForCombat)
+		{
+			//when maximizing just to raise MP to cast something, don't use any recorded maximize parameters meant for the next adventure
+			maximize(max, true);
+		}
+		else
+		{
+			simMaximizeWith(loc,max);
+		}
+
+		if(pass())
+		{
+			if(!speculative)
+			{
+				if(notForCombat)	//equip now for immediate use
+				{
+					auto_log_info("Using gear to raise maximum MP above " + amt, "blue");
+					equipMaximizedGear();
+				}
+				else	//add to maximize
+				{
+					addToMaximize(max);
+				}
+			}
+			return true;
+		}
+
+		//equipment is not enough, try with buffs
+		//list the equipment picked by maximizer into speculateString, need this to make mafia speculate max MP from all relevant modifiers with equipment + buffs
+		item[slot] MPequip;
+		if (notForCombat)
+		{
+			//don't use recorded maximize parameters meant for the next adventure
+			MPequip = speculatedMaximizerEquipment(max);
+		}
+		else
+		{
+			//set location and parameters like simMaximizeWith() but this is to use speculatedMaximizerEquipment instead of simMaximize
+			if (my_location() != loc)
+			{
+				//set the simulated location before speculating
+				locCache = my_location();
+				set_location(loc);
+			}
+			//use recorded maximize parameters meant for the next adventure
+			MPequip = speculatedMaximizerEquipment(get_property("auto_maximize_current") + (get_property("auto_maximize_current") != "" ? "," : "") + max);
+		}
+		
+		foreach sl in MPequip
+		{
+			speculateString += " equip " + sl.to_string() + " " + MPequip[sl].to_string() + ";";
+		}
+	}
+	else	//if(!doEquips)
+	{	//equipment is not being locked and may be changed in pre adv after the provider returns success
+		//under assumption that the worst case is for all of current gear to be removed, speculate removing it all
+		//but this speculation would give the wrong results if something that reduces MP or limits mysticality is and stays equipped
+		foreach sl in $slots[hat,weapon,off-hand,back,shirt,pants,acc1,acc2,acc3,familiar]
+		{
+			//simulate removing all gear regardless of individual modifiers, to account for everything including any outfit bonus
+			if(equipped_item(sl) != $item[none]) speculateString += "unequip " + sl + "; ";
+		}
+		//it is not necessary to speculate yet: the provider is going to speculate for effects and will include the unequips
+	}
+
+
+	//effects
+	boolean [effect] effectsThatIncreaseMaxMP = $effects[The Magical Mojomuscular Melody,Feeling Excited,Glittering Eyelashes,Big,Triple-Sized];
+	foreach eff in effectsThatIncreaseMaxMP
+	{
+		if (buffMaintain(eff, 0, 1, 1, true))	//speculative
+		{
+			speculateString += " up " + eff + ";";
+		}
+	}
+	if (my_location() != loc)
+	{
+		//set the simulated location before speculating
+		locCache = my_location();
+		set_location(loc);
+	}
+	cli_execute("speculate quiet; " + speculateString);
+	if(pass())
+	{
+		if(!speculative)
+		{
+			if(doEquips)
+			{
+				if(notForCombat)	//equip now for immediate use
+				{
+					auto_log_info("Using gear and buffs to raise maximum MP above " + amt, "blue");
+					equipMaximizedGear();
+				}
+				else	//add to maximize
+				{
+					addToMaximize(max);
+				}
+			}
+			else
+			{
+				auto_log_info("Buffing maximum MP above " + amt, "blue");
+			}
+			foreach eff in effectsThatIncreaseMaxMP
+			{
+				if(my_maxmp() < (amt + (notForCombat ? mana_cost_modifier() : combat_mana_cost_modifier())))
+				{
+					buffMaintain(eff, 0, 1, 1, false);
+				}
+			}
+		}
+		return true;
+	}
+
+	if (locCache != $location[none])
+	{
+		set_location(locCache);
+	}
+	return false;
+}
+
+boolean provideMaxMP(int amt)
+{
+	//immediate equip attempt for casting a non combat spell
+	return provideMaxMP(amt, my_location(), true, true, false);
+}
