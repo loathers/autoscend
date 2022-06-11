@@ -18,8 +18,11 @@ void auto_beaten_handler()
 	set_property("auto_beatenUpLocations", loc);
 	set_property("auto_beatenUpLastAdv", true);
 
-	//try to avoid getting beaten up again
-	buffMaintain($effect[Everything Is Bananas]);
+	if(my_level() < 11 || get_property("sidequestJunkyardCompleted") != "none")	//don't risk blocking effect persisting in gremlins quest
+	{
+		//try to avoid getting beaten up again
+		buffMaintain($effect[Everything Is Bananas]);
+	}
 	
 	if(my_location() == $location[The X-32-F Combat Training Snowman])
 	{
