@@ -561,10 +561,12 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		uneffect($effect[Flared Nostrils]);
 	}
 	
+	int [element] gearLoss;
 	if(!doEquips)
-	{	//if trying to provide without equipment then value provided by current equipment is not being locked
-		//equipment may be changed in pre adv after the provider returns success
-		//so may need to raise goal value to take into account what is provided by current equipment
+	{	//trying to provide without equipment also means trying to reach goal without value provided by current equipment
+		//currently equipment is not being locked and may be changed in pre adv after the provider returns success
+		//so may need to take into account removal of what is provided by current equipment to compensate
+		//must reduce the result (not raise goal value) since other functions look at the result
 		string unequipsString;
 		foreach sl in $slots[hat,weapon,off-hand,back,shirt,pants,acc1,acc2,acc3,familiar]
 		{
@@ -576,8 +578,8 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			cli_execute("speculate quiet; " + unequipsString);
 			foreach ele in amt
 			{
-				//add amount below goal that would be lost without current gear
-				amt[ele] += max(0,(min(amt[ele],numeric_modifier(ele + " resistance")) - simValue(ele + " resistance")));
+				//record the amount that would be lost to modify the result with
+				gearLoss[ele] = min(0,simValue(ele + " resistance") - numeric_modifier(ele + " resistance"));
 			}
 		}
 	}
@@ -586,7 +588,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 
 	int result(element ele)
 	{
-		return numeric_modifier(ele + " Resistance") + delta[ele];
+		return numeric_modifier(ele + " Resistance") + delta[ele] + gearLoss[ele];
 	}
 
 	int [element] result()
