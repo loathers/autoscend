@@ -125,58 +125,11 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 			buffMaintain($effect[Drunk and Avuncular], 0, 1, expectedInebriety);
 		}
 
-		if(auto_have_skill($skill[The Ode to Booze]))
+		if(auto_have_skill($skill[The Ode to Booze]) && have_effect($effect[Ode to Booze]) < expectedInebriety)
 		{
 			if(my_maxmp() < mp_cost($skill[The Ode to Booze]))
 			{
-				//ode is worth efforts to raise maxmp
-				//there could be a maxmp provider function but here we want exclusively maxmp to cast ode out of combat, not to add to other maximizer scores
-				//speculate with equipment and then a few effects available early
-				boolean pass()
-				{
-					int achievableMaxMP = simValue("Buffed MP Maximum");
-					int neededMaxMP = mp_cost($skill[The Ode to Booze]) - (simValue("Mana Cost") + simValue("Stackable Mana Cost") - mana_cost_modifier());
-					return (achievableMaxMP >= neededMaxMP);
-				}
-				simMaximizeWith(my_location(),"200mp, -200Mana Cost, -200Stackable Mana Cost");	//not capping to mp_cost() because restores that go over would be wasted
-				if(pass())
-				{
-					auto_log_info("Using gear to raise maximum MP for Ode to Booze", "blue");
-					equipMaximizedGear();
-				}
-				else
-				{
-					//equipment is not enough, try with buffs too
-					string speculateString;
-					
-					//list the equipment picked by maximizer into speculateString, need this to make mafia speculate max MP from all relevant modifiers with equipment + buffs
-					item[slot] MPequip = speculatedMaximizerEquipment("200mp, -200Mana Cost, -200Stackable Mana Cost");
-					foreach sl in MPequip
-					{
-						speculateString += " equip " + sl.to_string() + " " + MPequip[sl].to_string() + ";";
-					}
-					boolean [effect] effectsThatIncreaseMaxMP = $effects[The Magical Mojomuscular Melody,Feeling Excited,Triple-Sized,Glittering Eyelashes,Big];
-					foreach eff in effectsThatIncreaseMaxMP
-					{
-						if (buffMaintain(eff, 0, 1, 1, true))	//speculative
-						{
-							speculateString += " up " + eff + ";";
-						}
-					}
-					cli_execute("speculate quiet; " + speculateString);
-					if(pass())
-					{
-						auto_log_info("Using gear and buffs to raise maximum MP for Ode to Booze", "blue");
-						equipMaximizedGear();
-						foreach eff in effectsThatIncreaseMaxMP
-						{
-							if(my_maxmp() < mp_cost($skill[The Ode to Booze]))
-							{
-								buffMaintain(eff, 0, 1, 1, false);
-							}
-						}
-					}
-				}
+				provideMaxMP(mp_cost($skill[The Ode to Booze]));
 			}
 			shrugAT($effect[Ode to Booze]);
 			// get enough turns of ode
