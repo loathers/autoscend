@@ -226,18 +226,19 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 			int oldPrice = historical_price(it) * 1.2;
 			int curPrice = auto_mall_price(it);
 			int meat = my_storage_meat();
+			int priceLimit = get_property("autoBuyPriceLimit").to_int();
 			boolean getFromStorage = true;
 			if(can_interact() && (meat < curPrice))
 			{
 				meat = my_meat() - 5000;
 				getFromStorage = false;
 			}
-			if (curPrice >= get_property("autoBuyPriceLimit").to_int())
+			if (curPrice >= priceLimit)
 			{
 				auto_log_warning(it + " is too expensive at " + curPrice + " meat, we're gonna skip buying one in the mall.", "red");
 				break;
 			}
-			if((curPrice <= oldPrice) && (curPrice < get_property("autoBuyPriceLimit").to_int()) && (meat >= curPrice))
+			if((curPrice <= oldPrice) && (curPrice < priceLimit) && (meat >= curPrice))
 			{
 				if(getFromStorage)
 				{
