@@ -232,12 +232,12 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 				meat = my_meat() - 5000;
 				getFromStorage = false;
 			}
-			if (curPrice >= 30000)
+			if (curPrice >= get_property("autoBuyPriceLimit").to_int())
 			{
 				auto_log_warning(it + " is too expensive at " + curPrice + " meat, we're gonna skip buying one in the mall.", "red");
 				break;
 			}
-			if((curPrice <= oldPrice) && (curPrice < 30000) && (meat >= curPrice))
+			if((curPrice <= oldPrice) && (curPrice < get_property("autoBuyPriceLimit").to_int()) && (meat >= curPrice))
 			{
 				if(getFromStorage)
 				{
@@ -257,10 +257,6 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 				if(my_storage_meat() < curPrice)
 				{
 					auto_log_warning("Do not have enough meat in Hagnk's to buy " + it + ". Need " + curPrice + " have " + my_storage_meat() + ".", "blue");
-					if(curPrice > 10000000)
-					{
-						auto_log_warning("You must be a poor meatbag.", "green");
-					}
 				}
 			}
 			if(lastStorage == storage_amount(it))
