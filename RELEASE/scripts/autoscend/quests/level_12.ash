@@ -1168,6 +1168,20 @@ boolean L12_gremlins()
 	{
 		uneffect($effect[Curse of the Black Pearl Onion]);
 	}
+	
+	if(0 < have_effect($effect[Everything Is Bananas]) && !uneffect($effect[Everything Is Bananas]))
+	{
+		//normally effect would not be used close enough to this quest for this to happen
+		if(!isAboutToPowerlevel())
+		{
+			auto_log_info("Delaying gremlins because Everything Is Bananas");
+			return false;
+		}
+		else
+		{
+			abort("Stuck with Everything Is Bananas effect at junkyard sidequest. Probably can't complete quest if gremlins unable to hit.");
+		}
+	}
 
 	if(item_amount($item[molybdenum magnet]) == 0)
 	{
@@ -1727,6 +1741,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Car-Charged]);
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
+	buffMaintain($effect[Earning Interest]);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{

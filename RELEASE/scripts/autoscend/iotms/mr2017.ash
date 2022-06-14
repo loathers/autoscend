@@ -380,6 +380,11 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 		backupSetting("choiceAdventure1225", "2"); // L.O.V. Engine Room - Skip Engineer
 	}
 
+	if(in_glover())
+	{
+		loveEffect = 3; // Item drops seems better than familiar weight
+	}
+
 	backupSetting("choiceAdventure1226", to_string(loveEffect)); // L.O.V. Emergency Room
 	#1	Lovebotamy					+10 stats per fight
 	#2	Open Heart Surgery			+10 familiar weight (50 adventures)
@@ -393,6 +398,11 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	else
 	{
 		backupSetting("choiceAdventure1227", "2"); // L.O.V. Elbow Room - Skip Equivocator
+	}
+
+	if(in_glover())
+	{
+		giftItem = 1; // Only item G-Lover can use
 	}
 
 	backupSetting("choiceAdventure1228", to_string(giftItem));
@@ -1349,7 +1359,6 @@ boolean asdonAutoFeed(int goal)
 		Giant Heirloom Grape Tomato,
 		Gin And Tonic,
 		Haggis-Wrapped Haggis-Stuffed Haggis,
-		hot wing,
 		ice-cold Willer,
 		Insanely Spicy Bean Burrito,
 		Insanely Spicy Enchanted Bean Burrito,

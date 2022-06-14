@@ -293,6 +293,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Inky Camouflage,	
 		Celestial Camouflage,
 		Feeling Lonely,
+		Feeling Sneaky
 	])) {
 		return result();
 	}
@@ -559,12 +560,35 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 	{
 		uneffect($effect[Flared Nostrils]);
 	}
+	
+	int [element] gearLoss;
+	if(!doEquips)
+	{	//trying to provide without equipment also means trying to reach goal without value provided by current equipment
+		//currently equipment is not being locked and may be changed in pre adv after the provider returns success
+		//so may need to take into account removal of what is provided by current equipment to compensate
+		//must reduce the result (not raise goal value) since other functions look at the result
+		string unequipsString;
+		foreach sl in $slots[hat,weapon,off-hand,back,shirt,pants,acc1,acc2,acc3,familiar]
+		{
+			//simulate removing all gear regardless of individual res modifiers, must account for familiar weight or outfit bonus
+			if(equipped_item(sl) != $item[none]) unequipsString += "unequip " + sl + "; ";
+		}
+		if(unequipsString != "")
+		{
+			cli_execute("speculate quiet; " + unequipsString);
+			foreach ele in amt
+			{
+				//record the amount that would be lost to modify the result with
+				gearLoss[ele] = min(0,simValue(ele + " resistance") - numeric_modifier(ele + " resistance"));
+			}
+		}
+	}
 
 	int [element] delta;
 
 	int result(element ele)
 	{
-		return numeric_modifier(ele + " Resistance") + delta[ele];
+		return numeric_modifier(ele + " Resistance") + delta[ele] + gearLoss[ele];
 	}
 
 	int [element] result()
@@ -754,6 +778,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			Sleaze-Resistant Trousers,
 			Hyperoffended,
 			Covered in the Rainbow,
+			Temporarily Filtered,
 		]))
 			return result();
 	}
@@ -1017,6 +1042,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 			Sugar Rush,
 			Superhuman Sarcasm,
 			Unrunnable Face,
+			Gaffe Free,
 
 			// all-stat effects
 			Confidence of the Votive,
