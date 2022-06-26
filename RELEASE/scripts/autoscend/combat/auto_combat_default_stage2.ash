@@ -233,9 +233,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 	if(instakillable(enemy) && !isFreeMonster(enemy) && couldInstaKill)
 	{
-		boolean wantInstaKill;
+		boolean wantFreeKillNowEspecially;
 		
-		boolean waitForDesert;	//free kills can save turns of Ultrahydrated
+		boolean waitForDesert = false;	//free kills can save turns of Ultrahydrated
 		if(get_property("desertExploration").to_int() < 100 && !isActuallyEd())	//need to explore desert
 		{
 			int currentDesertProgressPerTurn = 1 + 
@@ -248,7 +248,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			int fightsLeftToExplore = ceil((100 - get_property("desertExploration").to_int()) / currentDesertProgressPerTurn);
 			if(have_effect($effect[Ultrahydrated]) > 0 && have_effect($effect[Ultrahydrated]) < fightsLeftToExplore)
 			{
-				wantInstaKill = true;
+				wantFreeKillNowEspecially = true;
 			}
 			else	//near level 11
 			{
@@ -261,7 +261,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		{
 			if(my_location() == $location[The Defiled Alcove] && have_effect($effect[Bow-Legged Swagger]) == 1)
 			{
-				wantInstaKill = true;
+				wantFreeKillNowEspecially = true;
 			}
 			else if(auto_have_skill($skill[Bow-Legged Swagger]) && my_basestat(my_primestat()) >= 35 && !get_property("_bowleggedSwaggerUsed").to_boolean())
 			{
@@ -272,12 +272,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		//free kills can get more benefit from 1 turn of a double item bonus effect in zones that need high item
 		if(have_effect($effect[Steely-Eyed Squint]) == 1 && $locations[The Haunted Wine Cellar,The Haunted Laundry Room,The Hatching Chamber,The Feeding Chamber,The Royal Guard Chamber] contains my_location())
 		{
-			wantInstaKill = true;
+			wantFreeKillNowEspecially = true;
 		}
 		
-		boolean reserveFreekills = (my_adventures() >= 9) && !wantInstaKill && (waitForDesert || waitForCyrpt);
+		boolean reserveFreekills = (my_adventures() >= 9) && !wantFreeKillNowEspecially && (waitForDesert || waitForCyrpt);
 
-		if(canUse($skill[lightning strike]) && (wantInstaKill || !reserveFreekills || my_lightning() >= 60))
+		if(canUse($skill[lightning strike]) && (wantFreeKillNowEspecially || !reserveFreekills || my_lightning() >= 60))
 		{
 			handleTracker(enemy, $skill[lightning strike], "auto_instakill");
 			loopHandlerDelayAll();
@@ -286,7 +286,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
 		{
-			if((wantInstaKill || my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			if((wantFreeKillNowEspecially || my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Chest X-Ray], "auto_instakill");
 				loopHandlerDelayAll();
@@ -295,11 +295,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 		if(canUse($skill[shattering punch]) && (get_property("_shatteringPunchUsed").to_int() < 3) && !reserveFreekills)
 		{
-			if(!wantInstaKill && my_daycount() == 1 && my_turncount() < 100 && my_adventures() >= 9 && my_mp() < 80)
+			if(!wantFreeKillNowEspecially && my_daycount() == 1 && my_turncount() < 100 && my_adventures() >= 9 && my_mp() < 80)
 			{
 				//avoid sudden drain of 3x30 MP just 20 turns after the run starts, there is no mp regen or sauceror mp when using this
 			}
-			else if(wantInstaKill || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			else if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[shattering punch], "auto_instakill");
 				loopHandlerDelayAll();
@@ -308,7 +308,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean() && !reserveFreekills)
 		{
-			if(wantInstaKill || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
 				loopHandlerDelayAll();
