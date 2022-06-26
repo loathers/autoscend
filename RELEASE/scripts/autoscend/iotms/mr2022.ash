@@ -154,8 +154,8 @@ void juneCleaverChoiceHandler(int choice)
 		case 1468: // Aunts not Ants
 			if ((my_primestat() == $stat[moxie] && (my_level() < 13 || disregardInstantKarma())) || (my_primestat() == $stat[muscle] && my_level() > 12 && disregardInstantKarma() == false)) {
 				run_choice(1); // 150 moxie substat
-			// } else if(check a property to see if skips are available) {
-			// 	run_choice(4); // skip
+			} else if(get_property("_juneCleaverSkips") < 5) {
+				run_choice(4); // skip
 			} else {
 				run_choice(2); // 250 muscle substat
 			}
@@ -174,8 +174,8 @@ void juneCleaverChoiceHandler(int choice)
 				run_choice(2); // accessory, +2 fam exp, +3 stats per fight
 			} else if (my_primestat() == $stat[muscle] && (my_level() < 13 || disregardInstantKarma())) {
 				run_choice(3);
-			// } else if(check a property to see if skips are available) {
-			// 	run_choice(4); // skip
+			} else if(get_property("_juneCleaverSkips") < 5) {
+				run_choice(4); // skip
 			} else {
 				run_choice(2); // accessory, +2 fam exp, +3 stats per fight
 			}
@@ -195,8 +195,8 @@ void juneCleaverChoiceHandler(int choice)
 		case 1473: // Bath Time
 			if(my_primestat() == $stat[muscle] && (my_level() < 13 || disregardInstantKarma())) {
 				run_choice(1); // 250 muscle substat
-			// } else if(check a property to see if skips are available) {
-			// 	run_choice(4); // skip
+			} else if(get_property("_juneCleaverSkips") < 5) {
+				run_choice(4); // skip
 			} else {
 				run_choice(3); // effect, 30 turns of +3 hot res, +50% init
 			}
