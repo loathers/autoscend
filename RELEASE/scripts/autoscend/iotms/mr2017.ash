@@ -1359,7 +1359,6 @@ boolean asdonAutoFeed(int goal)
 		Giant Heirloom Grape Tomato,
 		Gin And Tonic,
 		Haggis-Wrapped Haggis-Stuffed Haggis,
-		hot wing,
 		ice-cold Willer,
 		Insanely Spicy Bean Burrito,
 		Insanely Spicy Enchanted Bean Burrito,
