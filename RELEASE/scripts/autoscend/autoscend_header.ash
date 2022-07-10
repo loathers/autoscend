@@ -451,6 +451,7 @@ int auto_CombatLoversLocketCharges();
 boolean haveReminiscedMonster(monster mon);
 boolean fightLocketMonster(monster mon);
 void juneCleaverChoiceHandler(int choice);
+void sweatpantsPreAdventure();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

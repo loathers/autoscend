@@ -225,3 +225,21 @@ void juneCleaverChoiceHandler(int choice)
 			abort("unhandled choice in juneCleaverChoiceHandler");
 	}
 }
+
+void sweatpantsPreAdventure() {
+	if (!possessEquipment($item[designer sweatpants]) || !can_equip($item[designer sweatpants])) {
+		return;
+	}
+
+	int sweat = get_property("sweat").to_int();
+	int liverCleaned = get_property("_sweatOutSomeBoozeUsed");
+
+	if (sweat >= 25 && liverCleaned < 3 && my_inebriety > 0) {
+		use_skill($skill[Sweat Out Some Booze]);
+	}
+
+	// This is just opportunistic use of sweat. This skill should be used in auto_restore.ash.
+	if (sweat >= 95 && my_mp() < my_maxmp()) {
+		use_skill($skill[Sip Some Sweat]);
+	}
+}
