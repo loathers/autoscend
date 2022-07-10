@@ -234,7 +234,7 @@ void sweatpantsPreAdventure() {
 	int sweat = get_property("sweat").to_int();
 	int liverCleaned = get_property("_sweatOutSomeBoozeUsed");
 
-	if (sweat >= 25 && liverCleaned < 3 && my_inebriety > 0) {
+	if (sweat >= 25 && liverCleaned < 3 && my_inebriety() > 0) {
 		use_skill($skill[Sweat Out Some Booze]);
 	}
 
