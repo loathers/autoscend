@@ -1,4 +1,4 @@
-since r26487;	// Track skipped June cleaver choice adventures; switch to tracking fights remaining rather than current charge
+since r26540;	// Sweat tracking at the end of combat
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
