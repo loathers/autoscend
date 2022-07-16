@@ -450,7 +450,7 @@ boolean auto_haveCombatLoversLocket();
 int auto_CombatLoversLocketCharges();
 boolean haveReminiscedMonster(monster mon);
 boolean fightLocketMonster(monster mon);
-int canUseCleaver();
+boolean canUseCleaver();
 void juneCleaverChoiceHandler(int choice);
 int canUseSweatpants();
 boolean canUseSweatpants();
