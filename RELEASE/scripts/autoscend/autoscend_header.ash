@@ -452,8 +452,8 @@ boolean haveReminiscedMonster(monster mon);
 boolean fightLocketMonster(monster mon);
 boolean canUseCleaver();
 void juneCleaverChoiceHandler(int choice);
-int canUseSweatpants();
 boolean canUseSweatpants();
+int getSweat();
 void sweatpantsPreAdventure();
 
 ########################################################################################################
