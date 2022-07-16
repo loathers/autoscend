@@ -1774,7 +1774,7 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	if (canUseSweatpants() && getSweat() >= 95) {
 		int MPtoRestore = my_mp() - goal;
 		int casts = MPtoRestore / 50;
-		casts = max(casts, (getSweat() - 90) / 5) 
+		casts = max(casts, (getSweat() - 90) / 5);
 		if (casts > 0) {
 						int excessMP = my_mp() + 15*casts - my_maxmp();	//if some of the restored MP would be wasted over max
 			if(excessMP > 0)	//try to burn the excess on buffs
