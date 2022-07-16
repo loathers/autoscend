@@ -138,6 +138,13 @@ boolean auto_fightLocketMonster(monster mon)
 
 }
 
+int canUseCleaver() {
+	if (possessEquipment($item[June cleaver]) && can_equip($item[June cleaver]) && auto_is_valid($item[June cleaver])) {
+		return true;
+	}
+	return false;
+}
+
 void juneCleaverChoiceHandler(int choice)
 {
 	switch(choice) {
@@ -226,12 +233,23 @@ void juneCleaverChoiceHandler(int choice)
 	}
 }
 
+boolean canUseSweatpants() {
+	if (possessEquipment($item[designer sweatpants]) && can_equip($item[designer sweatpants]) && auto_is_valid($item[designer sweatpants])) {
+		return true;
+	}
+	return false;
+}
+
+int getSweat() {
+	return get_property("sweat").to_int();
+}
+
 void sweatpantsPreAdventure() {
-	if (!possessEquipment($item[designer sweatpants]) || !can_equip($item[designer sweatpants])) {
+	if (!canUseSweatpants()) {
 		return;
 	}
 
-	int sweat = get_property("sweat").to_int();
+	int sweat = getSweat();
 	int liverCleaned = get_property("_sweatOutSomeBoozeUsed").to_int();
 
 	if (sweat >= 25 && liverCleaned < 3 && my_inebriety() > 0) {

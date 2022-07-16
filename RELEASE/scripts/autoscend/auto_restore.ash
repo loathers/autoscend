@@ -1771,6 +1771,31 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 			}
 		}
 	}
+	if (canUseSweatpants() && getSweat() >= 95) {
+		int MPtoRestore = my_mp() - goal;
+		int casts = MPtoRestore / 50;
+		casts = max(casts, (getSweat() - 90) / 5) 
+		if (casts > 0) {
+						int excessMP = my_mp() + 15*casts - my_maxmp();	//if some of the restored MP would be wasted over max
+			if(excessMP > 0)	//try to burn the excess on buffs
+			{
+				if(my_mp() < excessMP && casts > 1)	//can't burn MP we don't have yet
+				{
+					casts -= 1;
+					use_skill(1, $skill[Sip Some Sweat]);
+				}
+				if(my_mp() > 0)
+				{
+					catch cli_execute("burn " + min(excessMP,my_mp()));
+				}
+			}
+			use_skill(casts, $skill[Sip Some Sweat]);
+			if(my_mp() >= goal)
+			{
+				return true;
+			}
+		}
+	}
 	
 	__restore("mp", goal, meat_reserve, useFreeRests);
 	return (my_mp() >= goal);

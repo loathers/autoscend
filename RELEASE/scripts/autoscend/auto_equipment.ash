@@ -700,14 +700,19 @@ void finalizeMaximize(boolean speculative)
 		// blocks first hit, but doesn't stack with blood bubble
 		addBonusToMaximize($item[Eight Days a Week Pill Keeper], 100);
 	}
-	if (possessEquipment($item[June cleaver])) {
-		addBonusToMaximize($item[June cleaver], 100); // We want to ramp this up and the NCs are nice as well
+	
+	if (canUseCleaver()) {
+		if(get_property("_juneCleaverFightsLeft").to_int() < my_adventures()*1.1 && (fullness_limit() > 0 || inebriety_limit() > 0) && consumptionProgress() >= 1) {
+			addBonusToMaximize($item[June cleaver], 100); // We want to ramp this up and the NCs are nice as well
+		}
 	}
-	if (possessEquipment($item[designer sweatpants])) {
-		if (get_property("sweat").to_int() < 90 || get_property("_sweatOutSomeBoozeUsed").to_int() < 3) {
+
+	if (canUseSweatpants()) {
+		if (getSweat() < 90) {
 			addBonusToMaximize($item[designer sweatpants], 200);
 		}
 	}
+
 	if(!in_plumber() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
 		if (my_class() == $class[Seal Clubber] && in_glover())
