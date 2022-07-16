@@ -180,6 +180,7 @@ boolean timeSpinnerAdventure();
 boolean timeSpinnerAdventure(string option);
 boolean timeSpinnerCombat(monster goal);
 boolean timeSpinnerCombat(monster goal, string option);
+void auto_chapeau();
 boolean rethinkingCandyList();
 boolean rethinkingCandy(effect acquire);
 boolean rethinkingCandy(effect acquire, boolean simulate);
