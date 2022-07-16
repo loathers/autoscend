@@ -731,6 +731,8 @@ boolean auto_post_adventure()
 				buffMaintain($effect[The Magical Mojomuscular Melody], 3, 1, 5);
 			}
 		}
+
+		buffMaintain($effect[Polka of Plenty], 110, 1, 5);
 	}
 	else
 	{
@@ -772,6 +774,7 @@ boolean auto_post_adventure()
 		}
 
 		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 250, 1, 10);
+		buffMaintain($effect[Polka of Plenty], 150, 1, 5);
 
 		if(my_level() < 13)
 		{
