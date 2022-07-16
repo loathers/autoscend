@@ -572,11 +572,10 @@ boolean L9_aBooPeak()
 			
 			if(get_property("auto_aboopending").to_int() == 0)
 			{
-				if(item_amount(clue) > 0)
+				if(item_amount(clue) > 0 && use(1, clue))
 				{
-					use(1, clue);
+					set_property("auto_aboopending", my_turncount());
 				}
-				set_property("auto_aboopending", my_turncount());
 			}
 			if(canChangeToFamiliar($familiar[Trick-or-Treating Tot]))
 			{
@@ -606,6 +605,11 @@ boolean L9_aBooPeak()
 				{
 					auto_log_warning("Wandering adventure interrupt of A-Boo Peak, refreshing inventory.", "red");
 					cli_execute("refresh inv");
+					if($strings[Battlie Knight Ghost,Claybender Sorcerer Ghost,Dusken Raider Ghost,Space Tourist Explorer Ghost,Whatsian Commando Ghost] 
+					contains get_property("lastEncounter"))	//clue usage probably failed somehow
+					{
+						catch use(1, clue);		//will not be consumed if a clue is already active
+					}
 				}
 				else
 				{
