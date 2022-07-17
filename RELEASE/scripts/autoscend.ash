@@ -1707,6 +1707,7 @@ boolean doTasks()
 	asdonAutoFeed();
 	LX_craftAcquireItems();
 	auto_spoonTuneMoon();
+	auto_chapeau();
 	auto_buyFireworksHat();
 	auto_CMCconsult();
 

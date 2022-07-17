@@ -1208,6 +1208,51 @@ boolean timeSpinnerCombat(monster goal, string option)
 	return false;
 }
 
+void auto_chapeau()
+{
+	if(!can_equip($item[no hat]))
+	{
+		//requires 150 Moxie to wear, so will stop at this check alone most of the time, except in BIG! or level 13 moxie class
+		return;
+	}
+	if(!auto_have_skill($skill[Ceci N'Est Pas Un Chapeau]))
+	{
+		return;
+	}
+	if(my_mp() < mp_cost($skill[Ceci N'Est Pas Un Chapeau]))
+	{
+		return;
+	}
+	if(possessEquipment($item[no hat]) || !auto_can_equip($item[no hat]))
+	{
+		return;
+	}
+	
+	//300 MP cost is high and non sauceror classes that rely on meat for MP may need to check reserve first
+	boolean doGetNoHat;
+	if(my_mp() >= 100 + mp_cost($skill[Ceci N'Est Pas Un Chapeau]))
+	{
+		doGetNoHat = true;
+	}
+	else if(my_mp() >= 32 + mp_cost($skill[Ceci N'Est Pas Un Chapeau]) && mp_regen() >= 32)
+	{
+		doGetNoHat = true;
+	}
+	else
+	{
+		int minimumMeat = meatReserve() + (my_class() == $class[Sauceror] ? 500 : 2000);
+		if(my_meat() >= minimumMeat)
+		{
+			doGetNoHat = true;
+		}
+	}
+	
+	if(doGetNoHat)
+	{
+		use_skill(1, $skill[Ceci N'Est Pas Un Chapeau]);
+	}
+}
+
 boolean rethinkingCandyList()
 {
 	boolean[effect] synthesis = $effects[Synthesis: Hot, Synthesis: Cold, Synthesis: Pungent, Synthesis: Scary, Synthesis: Greasy, Synthesis: Strong, Synthesis: Smart, Synthesis: Cool, Synthesis: Hardy, Synthesis: Energy, Synthesis: Greed, Synthesis: Collection, Synthesis: Movement, Synthesis: Learning, Synthesis: Style];
