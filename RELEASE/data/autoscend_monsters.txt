@@ -110,10 +110,10 @@ replace	46	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation
 replace	47	trendy bugbear chef	path:Bugbear Invasion;loc:Galley
 
 sniff	0	pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed
-sniff	1	Writing Desk	!prop:writingDesksDefeated=5
+sniff	1	Writing Desk	prop:writingDesksDefeated<4
 sniff	2	cabinet of Dr. Limpieza
 sniff	3	Dairy Goat	loc:The Goatlet
-sniff	4	Morbid Skull
+sniff	4	Morbid Skull	loc:Fear Man's Level
 sniff	5	Pygmy Bowler
 sniff	6	Pygmy Witch Surgeon
 sniff	7	pygmy witch accountant	loc:The Hidden Office Building
