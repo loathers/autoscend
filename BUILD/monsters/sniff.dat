@@ -1,8 +1,8 @@
 pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed
-Writing Desk	!prop:writingDesksDefeated=5
+Writing Desk	prop:writingDesksDefeated<4
 cabinet of Dr. Limpieza
 Dairy Goat	loc:The Goatlet
-Morbid Skull
+Morbid Skull	loc:Fear Man's Level
 Pygmy Bowler
 Pygmy Witch Surgeon
 pygmy witch accountant	loc:The Hidden Office Building
