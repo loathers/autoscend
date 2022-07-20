@@ -1325,7 +1325,7 @@ void beatenUpResolution()
 {
 	if(have_effect($effect[Beaten Up]) > 0)
 	{
-		if(get_property("auto_beatenUpCount").to_int() > 10)
+		if(get_property("auto_beatenUpCount").to_int() > 10 && get_property("lastEncounter") != "Poetic Justice")
 		{
 			abort("We are getting beaten up too much, this is not good. Aborting.");
 		}
