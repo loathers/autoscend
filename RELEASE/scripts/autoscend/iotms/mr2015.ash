@@ -346,7 +346,7 @@ void chateaumantegna_useDesk()
 
 boolean chateaumantegna_havePainting()
 {
-	if(chateaumantegna_available())
+	if(chateaumantegna_available() && !contains_text(visit_url("place.php?whichplace=chateau"), "chateau_paintingnone"))
 	{
 		return !get_property("_chateauMonsterFought").to_boolean();
 	}
@@ -386,7 +386,7 @@ boolean chateaumantegna_usePainting(string option)
 	}
 	if(get_property("chateauMonster") == $monster[Ninja Snowman Assassin])
 	{
-		if((item_amount($item[Ninja Carabiner]) > 0) && (item_amount($item[Ninja Crampons]) > 0) && (item_amount($item[Ninja Rope]) > 0))
+		if(((my_maxhp() <= expected_damage($monster[ninja snowman assassin]) * 1.2) && jump_chance($monster[ninja snowman assassin]) < 100 ) || ((item_amount($item[Ninja Carabiner]) > 0) && (item_amount($item[Ninja Crampons]) > 0) && (item_amount($item[Ninja Rope]) > 0)))
 		{
 			return false;
 		}
@@ -613,7 +613,7 @@ boolean chateauPainting()
 
 boolean deck_available()
 {
-	return ((item_amount($item[Deck of Every Card]) > 0) && is_unrestricted($item[Deck of Every Card]));
+	return ((item_amount($item[Deck of Every Card]) > 0) && is_unrestricted($item[Deck of Every Card]) && auto_is_valid($item[Deck of Every Card]));
 }
 
 int deck_draws_left()

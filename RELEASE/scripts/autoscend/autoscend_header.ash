@@ -49,6 +49,7 @@ boolean handleFaxMonster(monster enemy);
 boolean handleFaxMonster(monster enemy, string option);
 boolean handleFaxMonster(monster enemy, boolean fightIt);
 boolean handleFaxMonster(monster enemy, boolean fightIt, string option);
+boolean checkFax(monster enemy);
 boolean [location] get_floundry_locations();
 int changeClan(string clanName);
 int changeClan(int toClan);
@@ -179,6 +180,7 @@ boolean timeSpinnerAdventure();
 boolean timeSpinnerAdventure(string option);
 boolean timeSpinnerCombat(monster goal);
 boolean timeSpinnerCombat(monster goal, string option);
+void auto_chapeau();
 boolean rethinkingCandyList();
 boolean rethinkingCandy(effect acquire);
 boolean rethinkingCandy(effect acquire, boolean simulate);
@@ -435,6 +437,11 @@ boolean auto_haveFireExtinguisher();
 int auto_fireExtinguisherCharges();
 string auto_FireExtinguisherCombatString(location place);
 boolean auto_canExtinguisherBeRefilled();
+boolean auto_haveColdMedCabinet();
+int auto_CMCconsultsLeft();
+boolean auto_shouldUseCMC();
+boolean auto_CMCconsultAvailable();
+void auto_CMCconsult();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2022.ash
@@ -445,6 +452,11 @@ int auto_CombatLoversLocketCharges();
 boolean auto_haveReminiscedMonster(monster mon);
 boolean auto_monsterInLocket(monster mon);
 boolean auto_fightLocketMonster(monster mon);
+boolean canUseCleaver();
+void juneCleaverChoiceHandler(int choice);
+boolean canUseSweatpants();
+int getSweat();
+void sweatpantsPreAdventure();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1076,6 +1088,7 @@ void oldLandfillChoiceHandler(int choice);
 boolean LX_lockPicking();
 float estimateDailyDungeonAdvNeeded();
 boolean LX_fatLootToken();
+void useTonicDjinn();
 boolean LX_dailyDungeonToken();
 void dailyDungeonChoiceHandler(int choice, string[int] options);
 boolean LX_dolphinKingMap();
@@ -1250,6 +1263,11 @@ boolean autoForceEquip(item it);
 boolean autoOutfit(string toWear);
 boolean autoStripOutfit(string toRemove);
 boolean tryAddItemToMaximize(slot s, item it);
+item[slot] speculatedMaximizerEquipment(string statement);
+void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip);
+void equipStatgainIncreasers(stat increaseThisStat, boolean alwaysEquip);
+void equipStatgainIncreasers();
+void equipStatgainIncreasersFor(item it);
 void resetMaximize();
 void addToMaximize(string add);
 void removeFromMaximize(string rem);
@@ -1628,6 +1646,7 @@ boolean canBurnDelay(location loc);
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);
 boolean auto_is_valid(skill sk);
+boolean auto_is_valid(effect eff);
 void auto_log(string s, string color, int log_level);
 void auto_log_error(string s);
 void auto_log_warning(string s, string color);

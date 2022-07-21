@@ -1721,6 +1721,12 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 		return true;
 	}
 
+	//since we need to restore, lets reduce MP cost of future skills
+	buffMaintain($effect[The Odour of Magick]);
+	buffMaintain($effect[Using Protection]);
+	//also use items which give mp regen
+	buffMaintain($effect[Tingly Tongue]);
+
 	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
 	// TODO: move this to general effectiveness method
 	if(my_maxmp() - my_mp() > 300)
@@ -1735,6 +1741,62 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 			goal = min(goal, my_maxmp());
 		}
 	}
+	
+	// 5 Soulsauce restores 15 MP and only has opportunity cost against its other uses as buff or combat stun
+	// unless objective value of combat stun exists there is no way to compare to other restore methods so it's always the best if available?
+	if(my_class() == $class[Sauceror])
+	{
+		int MPtoRestore = my_mp() - goal;
+		int casts = MPtoRestore / 15;		//soul food restores 15 MP per cast.
+		casts = min(casts, my_soulsauce() / 5);	//soul food costs 5 soulsauce per cast.
+		if(casts > 0)
+		{
+			int excessMP = my_mp() + 15*casts - my_maxmp();	//if some of the restored MP would be wasted over max
+			if(excessMP > 0)	//try to burn the excess on buffs
+			{
+				if(my_mp() < excessMP && casts > 1)	//can't burn MP we don't have yet
+				{
+					casts -= 1;
+					use_skill(1, $skill[Soul Food]);
+				}
+				if(my_mp() > 0)
+				{
+					catch cli_execute("burn " + min(excessMP,my_mp()));
+				}
+			}
+			use_skill(casts, $skill[Soul Food]);
+			if(my_mp() >= goal)
+			{
+				return true;
+			}
+		}
+	}
+	if (canUseSweatpants() && getSweat() >= 95) {
+		int MPtoRestore = my_mp() - goal;
+		int casts = MPtoRestore / 50;
+		casts = min(casts, (getSweat() - 90) / 5);
+		if (casts > 0) {
+			int excessMP = my_mp() + 50*casts - my_maxmp();	//if some of the restored MP would be wasted over max
+			if(excessMP > 0)	//try to burn the excess on buffs
+			{
+				if(my_mp() < excessMP && casts > 1)	//can't burn MP we don't have yet
+				{
+					casts -= 1;
+					use_skill(1, $skill[Sip Some Sweat]);
+				}
+				if(my_mp() > 0)
+				{
+					catch cli_execute("burn " + min(excessMP,my_mp()));
+				}
+			}
+			use_skill(casts, $skill[Sip Some Sweat]);
+			if(my_mp() >= goal)
+			{
+				return true;
+			}
+		}
+	}
+	
 	__restore("mp", goal, meat_reserve, useFreeRests);
 	return (my_mp() >= goal);
 }
@@ -1819,6 +1881,12 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 	//better to make food/drink from them and then rest in your coffin
 	if(in_darkGyffte())
 	{
+		if(my_hp() == 0)
+		{
+			//if currently at 0, can't adventure. Use an adventure to rest in your coffin. Might as well check for skill changes
+			bat_reallyPickSkills(20);
+			return true;
+		}
 		return false;
 	}
 	
@@ -1959,26 +2027,14 @@ int doRest()
 		case $stat[Muscle]:
 			replace = equipped_item($slot[off-hand]);
 			grab = $item[Fake Washboard];
-			if(can_equip($item[LOV Eardigan]) && (item_amount($item[LOV Eardigan]) > 0))
-			{
-				equip($slot[shirt], $item[LOV Eardigan]);
-			}
 			break;
 		case $stat[Mysticality]:
 			replace = equipped_item($slot[off-hand]);
 			grab = $item[Basaltamander Buckler];
-			if(can_equip($item[LOV Epaulettes]) && (item_amount($item[LOV Epaulettes]) > 0))
-			{
-				equip($slot[back], $item[LOV Epaulettes]);
-			}
 			break;
 		case $stat[Moxie]:
 			replace = equipped_item($slot[weapon]);
 			grab = $item[Backwoods Banjo];
-			if(can_equip($item[LOV Earrings]) && (item_amount($item[LOV Earrings]) > 0))
-			{
-				equip($slot[acc1], $item[LOV Earrings]);
-			}
 			break;
 		}
 
@@ -1992,6 +2048,8 @@ int doRest()
 			take_closet(1, grab);
 			equip(grab);
 		}
+
+		equipStatgainIncreasers(bonus, true);
 
 		visit_url("place.php?whichplace=chateau&action=chateau_restbox");
 

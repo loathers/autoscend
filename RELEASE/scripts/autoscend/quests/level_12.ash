@@ -826,48 +826,46 @@ boolean L12_filthworms()
 	{
 		return false;
 	}
-
-	auto_log_info("Doing the orchard.", "blue");
+	if(auto_warEnemiesRemaining() == 0)
+	{
+		return false;
+	}
 	
 	//can fight filthworms early as fratboys so long as you do not wear a frat outfit. 
 	//maximizer can accidentally end up wearing the outfit and cause infinite loop.
 	//might want to fight filthworms early to flyer. determining exactly when is overly complex so we are just assuming always.
 	//the frat outfits are pretty weak and as such its no big loss if we don't wear it when doing it early.
-	if(auto_warSide() == "fratboy" && get_property("hippiesDefeated").to_int() < 64)
+	void preventFratOutfitsIfNeeded()
 	{
-		//helmet is least useful with +40 max MP enchantment.
-		if(possessOutfit("frat warrior fatigues"))
+		if(auto_warSide() == "fratboy" && get_property("hippiesDefeated").to_int() < 64)
 		{
-			addToMaximize("-equip beer helmet");
+			//helmet is least useful with +40 max MP enchantment.
+			if(possessOutfit("frat warrior fatigues"))
+			{
+				addToMaximize("-equip beer helmet");
+			}
+			//pants and hat are identical, randomly selected hat for exclusion
+			if(possessOutfit("frat boy ensemble"))
+			{
+				addToMaximize("-equip orcish baseball cap");
+			}
 		}
-		//pants and hat are identical, randomly selected hat for exclusion
-		if(possessOutfit("frat boy ensemble"))
-		{
-			addToMaximize("-equip orcish baseball cap");
-		}
 	}
-	
-	//use the stench glands to unlock the next step of the quest.
-	if(item_amount($item[Filthworm Hatchling Scent Gland]) > 0)
-	{
-		use(1, $item[Filthworm Hatchling Scent Gland]);
-	}
-	if(item_amount($item[Filthworm Drone Scent Gland]) > 0)
-	{
-		use(1, $item[Filthworm Drone Scent Gland]);
-	}
+
+	//if we can kill the queen we don't care about gland drops anymore. kill her and finish this
 	if(item_amount($item[Filthworm Royal Guard Scent Gland]) > 0)
 	{
 		use(1, $item[Filthworm Royal Guard Scent Gland]);
 	}
-
-	//if we can kill the queen we don't care about gland drops anymore. kill her and finish this
 	if(have_effect($effect[Filthworm Guard Stench]) > 0)
 	{
+		auto_log_info("Finishing the orchard.", "blue");
+		preventFratOutfitsIfNeeded();
 		return autoAdv(1, $location[The Filthworm Queen\'s Chamber]);
 	}
 
 	//if we can guarentee stealing the stench gland then no point in buffing item drop
+	boolean glandGuaranteed = true;
 	if(auto_have_skill($skill[Lash of the Cobra]) && get_property("_edLashCount").to_int() < 30)
 	{
 		auto_log_info("Ed will steal stench glands using [Lash of the Cobra]");
@@ -889,12 +887,55 @@ boolean L12_filthworms()
 	}
 	//TODO add IOTM cat burglar stealing support here with another else if
 	// or if we're about to yellow ray
-	else if(canYellowRay())
+	else if(canYellowRay($monster[filthworm drone]))
 	{
 		auto_log_info("We're going to yellow ray the stench glands.");
 	}
-	else		//could not guarentee stealing. buff item drops instead
+	else		//could not guarentee stealing. check if it should be delayed otherwise buff item drops instead
 	{
+		if(have_effect($effect[Everything Looks Yellow]) > 0 && have_effect($effect[Everything Looks Yellow]) <= 100)
+		{
+			//yellow ray is on cooldown for now, we may be able to delay filthworms task until next yellow ray
+			boolean delayFilthworms;
+			
+			if(get_property("questL11MacGuffin") != "finished")
+			{
+				//level 11 quest not finished, filthworms can wait
+				delayFilthworms = true;
+			}
+			else if(auto_warSide() == "fratboy" && get_property("hippiesDefeated").to_int() < 64)
+			{
+				//frat side has not defeated enough hippies to reach filthworms quest
+				if(get_property("flyeredML").to_int() >= 10000 || !isAboutToPowerlevel())
+				{
+					//if not stalled at flyering wait for battlefield, else can wait for optimal conditions because L12_lastDitchFlyer also waits on isAboutToPowerlevel()
+					delayFilthworms = true;
+				}
+			}
+			else if(auto_warSide() == "hippy")
+			{
+				WarPlan quest_planned = auto_bestWarPlan();
+				if(quest_planned.do_nuns && get_property("sidequestNunsCompleted") == "none")
+				{
+					//can wait until nuns finished
+					delayFilthworms = true;
+				}
+				if(quest_planned.do_farm && get_property("sidequestFarmCompleted") == "none" && !get_property("auto_skipL12Farm").to_boolean())
+				{
+					//can wait until farm finished
+					delayFilthworms = true;
+				}
+			}
+			
+			//todo check if provide item can simulate enough not to bother with delaying?
+			
+			if(delayFilthworms)
+			{
+				auto_log_info("Delaying filthworms because Everything Looks Yellow");
+				return false;
+			}
+		}
+	
 		buffMaintain($effect[Joyful Resolve]);
 		buffMaintain($effect[Kindly Resolve]);
 		buffMaintain($effect[Fortunate Resolve]);
@@ -934,16 +975,67 @@ boolean L12_filthworms()
 				abort("Can not handle item drop amount for the Filthworms, deja vu!! Either get us to +400% and rerun or do it yourself.");
 			}
 		}
+		if(item_drop_modifier() < 800.0)
+		{
+			glandGuaranteed = false;
+			if(possessEquipment($item[Retrospecs]))
+			{
+				//preadv would give a 50%item accessory a value of 2500 but when multiple fights are expected in each zone this accessory should be equivalent to 100%item?
+				addToMaximize("+2500bonus Retrospecs");
+			}
+		}
 	}
+	
+	auto_log_info("Doing the orchard.", "blue");
 
+	//use the stench glands to unlock the next step of the quest.
+	if(item_amount($item[Filthworm Hatchling Scent Gland]) > 0)
+	{
+		use(1, $item[Filthworm Hatchling Scent Gland]);
+	}
+	if(item_amount($item[Filthworm Drone Scent Gland]) > 0)
+	{
+		use(1, $item[Filthworm Drone Scent Gland]);
+	}
+	
 	if(auto_cargoShortsOpenPocket(343)) // skip straight to the Royal Guard Chamber
 	{
 		handleTracker($item[Cargo Cultist Shorts], $effect[Filthworm Drone Stench], "auto_otherstuff");
 	}
 	
+	preventFratOutfitsIfNeeded();
+	
 	boolean retval = false;
 	if(have_effect($effect[Filthworm Drone Stench]) > 0)
 	{
+		//last gland
+		if(have_effect($effect[Filthworm Drone Stench]) == 1 && !glandGuaranteed)
+		{
+			//running out of effect, failing on the last turn would mean having to start over from The Hatching Chamber
+			if(!get_property("auto_limitConsume").to_boolean())
+			{
+				if(canChew($item[spooky jelly]) && spleen_left() >= $item[spooky jelly].spleen && acquireOrPull($item[spooky jelly]) && autoChew(1, $item[spooky jelly]))
+				{
+					auto_log_info("Only one turn left in The Royal Guard Chamber, using spooky jelly emanations to avoid having to start over from the beginning");
+					glandGuaranteed = true;
+				}
+				else if(canEat($item[toast with spooky jelly]) && stomach_left() >= $item[toast with spooky jelly].fullness && acquireOrPull($item[toast with spooky jelly]) && autoEat(1, $item[toast with spooky jelly]))
+				{
+					//with values like 10 to 20 turns saved, not checking get_property("auto_consumeMinAdvPerFill").to_float()
+					auto_log_info("Only one turn left in The Royal Guard Chamber, using spooky jelly toast emanations to avoid having to start over from the beginning");
+					glandGuaranteed = true;
+				}
+			}
+			if(glandGuaranteed)
+			{
+				//gland that was not guaranteed is forced now
+				if(possessEquipment($item[Broken Champagne Bottle]) && januaryToteTurnsLeft($item[Broken Champagne Bottle]) > 0)
+				{
+					addToMaximize("-equip Broken Champagne Bottle");	//using this charge is no longer necessary, restore maximizer block that was removed
+				}
+			}
+			//todo if still not glandGuaranteed try to force the use of free kills in combat?
+		}
 		retval = autoAdv(1, $location[The Royal Guard Chamber]);
 	}
 	else if(have_effect($effect[Filthworm Larva Stench]) > 0)
@@ -1075,6 +1167,20 @@ boolean L12_gremlins()
 	if(0 < have_effect($effect[Curse of the Black Pearl Onion]))
 	{
 		uneffect($effect[Curse of the Black Pearl Onion]);
+	}
+	
+	if(0 < have_effect($effect[Everything Is Bananas]) && !uneffect($effect[Everything Is Bananas]))
+	{
+		//normally effect would not be used close enough to this quest for this to happen
+		if(!isAboutToPowerlevel())
+		{
+			auto_log_info("Delaying gremlins because Everything Is Bananas");
+			return false;
+		}
+		else
+		{
+			abort("Stuck with Everything Is Bananas effect at junkyard sidequest. Probably can't complete quest if gremlins unable to hit.");
+		}
 	}
 
 	if(item_amount($item[molybdenum magnet]) == 0)
@@ -1635,12 +1741,13 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Car-Charged]);
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
+	buffMaintain($effect[Earning Interest]);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{
 		autoChew(1, $item[body spradium]);
 	}
-	if(have_effect($effect[meat.enh]) == 0)
+	if(have_effect($effect[meat.enh]) == 0 && auto_is_valid($effect[meat.enh]))
 	{
 		if(auto_sourceTerminalEnhanceLeft() > 0)
 		{
@@ -1666,8 +1773,8 @@ boolean L12_themtharHills()
 	}
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
-	//count inhaler if we have one or if we have a clover to obtain one
-	if(item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || cloversAvailable() > 0)
+	//count inhaler if we have one or if we have a clover to obtain one and can use one
+	if((item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || cloversAvailable() > 0) && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]))
 	{
 		meat_need = meat_need - 200;
 	}
@@ -1675,7 +1782,7 @@ boolean L12_themtharHills()
 	{
 		meat_need = meat_need - 150;
 	}
-	if(zataraAvailable() && (0 == have_effect($effect[Meet the Meat])))
+	if(zataraAvailable() && (0 == have_effect($effect[Meet the Meat])) & auto_is_valid($effect[Meet the Meat]))
 	{
 		meat_need = meat_need - 100;
 	}
@@ -1730,7 +1837,7 @@ boolean L12_themtharHills()
 		}
 	}
 
-	if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
+	if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]) && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
 		//use clover to get inhaler
 		cloverUsageInit();
@@ -1755,8 +1862,12 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Car-Charged]);
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
+	buffMaintain($effect[Good Things Are Coming, You Can Smell It]);
 	bat_formWolf();
-	zataraSeaside("meat");
+	if(auto_is_valid($effect[Meet the Meat]))
+	{
+		zataraSeaside("meat");
+	}
 
 	{
 		equipWarOutfit();
@@ -2252,7 +2363,7 @@ boolean L12_islandWar()
 	{
 		return true;
 	}
-	if(L12_gremlins() || L12_flyerFinish() || L12_sonofaBeach() || L12_sonofaFinish() || L12_filthworms() || L12_orchardFinalize() || L12_themtharHills() || L12_farm())
+	if(L12_filthworms() || L12_orchardFinalize() || L12_gremlins() || L12_flyerFinish() || L12_sonofaBeach() || L12_sonofaFinish() || L12_themtharHills() || L12_farm())
 	{
 		return true;
 	}

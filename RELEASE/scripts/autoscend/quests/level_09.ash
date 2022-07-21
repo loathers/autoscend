@@ -58,6 +58,7 @@ boolean L9_leafletQuest()
 	auto_log_info("Got a leaflet to do", "blue");
 	if(disregardInstantKarma())		//checks a user setting as well as current level
 	{
+		equipStatgainIncreasers();
 		cli_execute("leaflet");		//also gain +200 substats for each stat
 	}
 	else
@@ -74,12 +75,12 @@ void L9_chasmMaximizeForNoncombat()
 	auto_log_info("Let's assess our scores for blech house", "blue");
 	string best = "mus";
 	location loc = $location[The Smut Orc Logging Camp];
-	string mustry = "100muscle,100weapon damage,1000weapon damage percent";
-	string mystry = "100mysticality,100spell damage,1000 spell damage percent";
-	string moxtry = "100moxie,1000sleaze resistance";
+	string mustry = "1000muscle,1000weapon damage,10000weapon damage percent";
+	string mystry = "1000mysticality,1000spell damage,10000 spell damage percent";
+	string moxtry = "1000moxie,10000sleaze resistance";
 	simMaximizeWith(loc, mustry);
 	float musmus = simValue("Buffed Muscle");
-	float musflat = simValue("Weapon Damage");
+	float musflat = simValue("Weapon Damage");	//incorrectly includes 15% weapon power
 	float musperc = simValue("Weapon Damage Percent");
 	int musscore = floor(square_root((musmus + musflat)/15*(1+musperc/100)));
 	auto_log_info("Muscle score: " + musscore, "blue");
@@ -89,7 +90,7 @@ void L9_chasmMaximizeForNoncombat()
 	float mysperc = simValue("Spell Damage Percent");
 	int mysscore = floor(square_root((mysmys + mysflat)/15*(1+mysperc/100)));
 	auto_log_info("Mysticality score: " + mysscore, "blue");
-	if(mysscore > musscore)
+	if(mysscore >= musscore)	//overwrite equal muscle score if possible because it may be 1 lower than predicted due to the above weapon damage issue
 	{
 		best = "mys";
 	}
@@ -98,7 +99,7 @@ void L9_chasmMaximizeForNoncombat()
 	float moxres = simValue("Sleaze Resistance");
 	int moxscore = floor(square_root(moxmox/30*(1+moxres*0.69)));
 	auto_log_info("Moxie score: " + moxscore, "blue");
-	if(moxscore > mysscore && moxscore > musscore)
+	if(moxscore >= mysscore && moxscore >= musscore)
 	{
 		best = "mox";
 	}
@@ -163,7 +164,7 @@ boolean L9_chasmBuild()
 	// make sure our progress count is correct before we do anything.
 	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
-	if (!in_glover() && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
+	if (auto_is_valid($item[Smut Orc Keepsake Box]) && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
 	{
  		// fight Smut Orc Pervert from Cargo Shorts for a Smut Orc Keepsake Box
  		use(1, $item[Smut Orc Keepsake Box]);
@@ -224,6 +225,9 @@ boolean L9_chasmBuild()
 		}
 	}
 	
+	// This adds a tonne of damage and NC progress
+	buffMaintain($effect[Triple-Sized]);
+	
 	if(get_property("smutOrcNoncombatProgress").to_int() == 15)
 	{
 		// If we think the non-com will hit NOW we clear maximizer to keep previous settings from carrying forward
@@ -270,12 +274,9 @@ boolean L9_chasmBuild()
 
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
 
-		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
+		if(item_amount($item[Smut Orc Keepsake Box]) > 0 && auto_is_valid($item[Smut Orc Keepsake Box]))
 		{
-			if(!in_glover())
-			{
-				use(1, $item[Smut Orc Keepsake Box]);
-			}
+			use(1, $item[Smut Orc Keepsake Box]);
 		}
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 		if(get_property("chasmBridgeProgress").to_int() >= 30)
@@ -308,12 +309,9 @@ boolean L9_chasmBuild()
 		}
 
 		autoAdv(1, $location[The Smut Orc Logging Camp]);
-		if(item_amount($item[Smut Orc Keepsake Box]) > 0)
+		if(item_amount($item[Smut Orc Keepsake Box]) > 0  && auto_is_valid($item[Smut Orc Keepsake Box]))
 		{
-			if(!in_glover())
-			{
-				use(1, $item[Smut Orc Keepsake Box]);
-			}
+			use(1, $item[Smut Orc Keepsake Box]);
 		}
 		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 		return true;
@@ -533,6 +531,11 @@ boolean L9_aBooPeak()
 		{
 			doThisBoo = true;
 		}
+		//do clue if it is one of the last things to do
+		if(isAboutToPowerlevel() && my_level() >= 13)
+		{
+			doThisBoo = true;
+		}
 
 		if(doThisBoo)
 		{
@@ -556,18 +559,23 @@ boolean L9_aBooPeak()
 			buffMaintain($effect[Red Door Syndrome]);
 			buffMaintain($effect[Well-Oiled]);
 
-			auto_beachCombHead("cold");
-			auto_beachCombHead("spooky");
+			if(auto_is_valid($effect[Cold as Nice]))
+			{
+				auto_beachCombHead("cold");
+			}
+			if(auto_is_valid($effect[Does It Have a Skull In There??]))			
+			{
+				auto_beachCombHead("spooky");
+			}
 
 			set_property("choiceAdventure611", "1");
 			
 			if(get_property("auto_aboopending").to_int() == 0)
 			{
-				if(item_amount(clue) > 0)
+				if(item_amount(clue) > 0 && use(1, clue))
 				{
-					use(1, clue);
+					set_property("auto_aboopending", my_turncount());
 				}
-				set_property("auto_aboopending", my_turncount());
 			}
 			if(canChangeToFamiliar($familiar[Trick-or-Treating Tot]))
 			{
@@ -597,6 +605,11 @@ boolean L9_aBooPeak()
 				{
 					auto_log_warning("Wandering adventure interrupt of A-Boo Peak, refreshing inventory.", "red");
 					cli_execute("refresh inv");
+					if($strings[Battlie Knight Ghost,Claybender Sorcerer Ghost,Dusken Raider Ghost,Space Tourist Explorer Ghost,Whatsian Commando Ghost] 
+					contains get_property("lastEncounter"))	//clue usage probably failed somehow
+					{
+						catch use(1, clue);		//will not be consumed if a clue is already active
+					}
 				}
 				else
 				{
@@ -694,23 +707,23 @@ boolean L9_twinPeak()
 
 	if(!attempt && needFood)
 	{
-		float food_drop = item_drop_modifier();
-		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()), equipped_item($slot[familiar]));
+		float food_drop = item_drop_modifier() + numeric_modifier("Food Drop");
+		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight"), equipped_item($slot[familiar]));
 		
 		if(my_servant() == $servant[Cat])
 		{
 			food_drop -= numeric_modifier($familiar[Baby Gravy Fairy], "Item Drop", $servant[Cat].level, $item[none]);
 		}
-		if((food_drop < 50) && (food_drop >= 20))
+		if((food_drop < 50) && (food_drop >= 20) && have_effect($effect[Brother Flying Burrito\'s Blessing]) == 0)
 		{
 			if(friars_available() && (!get_property("friarsBlessingReceived").to_boolean()))
 			{
 				cli_execute("friars food");
 			}
-		}
-		if(have_effect($effect[Brother Flying Burrito\'s Blessing]) > 0)
-		{
-			food_drop = food_drop + 30;
+			if(have_effect($effect[Brother Flying Burrito\'s Blessing]) > 0)
+			{
+				food_drop = food_drop + 30;
+			}
 		}
 		if((food_drop < 50.0) && (item_amount($item[Eagle Feather]) > 0) && (have_effect($effect[Eagle Eyes]) == 0))
 		{
@@ -805,32 +818,32 @@ boolean L9_oilPeak()
 		return false;
 	}
 
-	if (contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
+	if(contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
 		boolean needJar = ((oilProgress & 4) == 0) && item_amount($item[Jar Of Oil]) == 0;
-		if (!needJar || in_bhy())
+		if(!needJar || in_bhy())
 		{
 			return false;
 		}
-		else if (item_amount($item[Bubblin' Crude]) >= 12)
+		else if(item_amount($item[Bubblin' Crude]) >= 12)
 		{
 			if(in_glover())
 			{
-				if (item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
+				if(item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
 				{
 					buy($coinmaster[G-Mart], 1, $item[Crude Oil Congealer]);
 				}
-				if (item_amount($item[Crude Oil Congealer]) > 0)
+				if(item_amount($item[Crude Oil Congealer]) > 0)
 				{
 					use(1, $item[Crude Oil Congealer]);
 				}
 			}
-			else if (auto_is_valid($item[Bubblin' Crude]) && creatable_amount($item[Jar Of Oil]) > 0)
+			else if(auto_is_valid($item[Bubblin' Crude]) && creatable_amount($item[Jar Of Oil]) > 0)
 			{
 				create(1, $item[Jar Of Oil]);
 			}
-			if (item_amount($item[Jar Of Oil]) > 0)
+			if(item_amount($item[Jar Of Oil]) > 0)
 			{
 				return true;
 			}

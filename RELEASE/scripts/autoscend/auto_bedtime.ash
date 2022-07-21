@@ -541,7 +541,7 @@ void bedtime_pulls()
 	if(internalQuestStatus("questL11Desert") < 1)
 	{
 		int gnasirProgress = get_property("gnasirProgress").to_int();
-		if ((gnasirProgress & 16) == 0)
+		if ((gnasirProgress & 16) == 0 && auto_is_valid($item[drum machine]))
 		{
 			pullXWhenHaveY($item[drum machine], 1, 0);
 		}
@@ -679,7 +679,7 @@ boolean doBedtime()
 			{
 				auto_log_info("Pulls remaining: " + pulls_remaining(), "olive");
 			}
-			if(item_amount($item[beer helmet]) == 0)
+			if(!possessOutfit("frat warrior fatigues"))
 			{
 				auto_log_info("Please consider an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 				if(canYellowRay())
@@ -707,27 +707,28 @@ boolean doBedtime()
 	januaryToteAcquire($item[Makeshift Garbage Shirt]);		//doubles stat gains in the LOV tunnel. also keep leftover charges for tomorrow.
 	loveTunnelAcquire(true, $stat[none], true, 3, true, 1);
 
-	if(item_amount($item[Genie Bottle]) > 0)
+	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[genie bottle]))
 	{
+	//we are in bedtime so any wishes we planned to use today were already used. thus even if we can not use pocket wishes in this path we should still make them to avoid waste
 		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
 		{
 			makeGeniePocket();
 		}
 	}
-	if(canGenieCombat() && item_amount($item[beer helmet]) == 0)
+	if(canGenieCombat() && !possessOutfit("frat warrior fatigues"))
 	{
 		auto_log_info("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 	}
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
 	{
-		if(in_pokefam() || in_darkGyffte())
+		if(pathHasFamiliar())
 		{
-			cli_execute("friars food");
+			cli_execute("friars familiar");
 		}
 		else
 		{
-			cli_execute("friars familiar");
+			cli_execute("friars food");
 		}
 	}
 
@@ -777,7 +778,11 @@ boolean doBedtime()
 	{
 		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");
 		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");
-		visit_url("clan_viplounge.php?preaction=poolgame&stance=3");
+		if(auto_is_valid($effect[Hustlin\']))
+		{
+			visit_url("clan_viplounge.php?preaction=poolgame&stance=3");
+		}
+		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");		
 	}
 	if(is_unrestricted($item[Colorful Plastic Ball]) && !get_property("_ballpit").to_boolean() && (get_clan_id() != -1))
 	{
@@ -785,7 +790,7 @@ boolean doBedtime()
 	}
 	if (get_property("telescopeUpgrades").to_int() > 0 && internalQuestStatus("questL13Final") < 0)
 	{
-		if(get_property("telescopeLookedHigh") == "false")
+		if(get_property("telescopeLookedHigh") == "false" && auto_is_valid($effect[Starry-Eyed]))
 		{
 			cli_execute("telescope high");
 		}
@@ -803,7 +808,7 @@ boolean doBedtime()
 		}
 	}
 
-	if((my_daycount() == 1) && (possessEquipment($item[Thor\'s Pliers]) || (freeCrafts() > 0)) && !possessEquipment($item[Chrome Sword]) && !inAftercore() && !in_tcrs())
+	if((my_daycount() == 1) && (possessEquipment($item[Thor\'s Pliers]) || (freeCrafts() > 0)) && !possessEquipment($item[Chrome Sword]) && auto_is_valid($item[chrome sword]) && !inAftercore() && !in_tcrs())
 	{
 		item oreGoal = to_item(get_property("trapperOre"));
 		int need = 1;
@@ -812,7 +817,8 @@ boolean doBedtime()
 		{
 			need = 4;
 		}
-		if (!haveAdvSmithing) {
+		if (!haveAdvSmithing)
+		{
 			auto_log_info('No Super-Advanced Meatsmithing for chrome sword crafting!');
 		}
 		if((item_amount($item[Chrome Ore]) >= need) && !possessEquipment($item[Chrome Sword]) && isArmoryAvailable() && haveAdvSmithing)
@@ -825,7 +831,6 @@ boolean doBedtime()
 		}
 	}
 
-	equipRollover(false);
 	heavyrains_doBedtime();
 
 	while(my_daycount() == 1 && item_amount($item[resolution: be more adventurous]) > 0 && get_property("_resolutionAdv").to_int() < 10 && !can_interact())
@@ -894,6 +899,10 @@ boolean doBedtime()
 				if(inAftercore())
 				{
 					cli_execute("shower ice");
+				}
+				else if(in_glover())
+				{
+					cli_execute("shower mp"); // can't use the effects or the ice
 				}
 				else
 				{
@@ -966,16 +975,34 @@ boolean doBedtime()
 		int enhances = auto_sourceTerminalEnhanceLeft();
 		while(enhances > 0)
 		{
-			auto_sourceTerminalEnhance("items");
-			auto_sourceTerminalEnhance("meat");
-			enhances -= 2;
+			if(in_glover())
+			{
+				auto_sourceTerminalEnhance("damage");
+				enhances -= 1;				
+			}
+			else
+			{
+				auto_sourceTerminalEnhance("items");
+				auto_sourceTerminalEnhance("meat");
+				enhances -= 2;
+			}
 		}
 	}
 
 	// Is +50% to all stats the best choice here? I don't know!
-	spacegateVaccine($effect[Broad-Spectrum Vaccine]);
+	if(auto_is_valid($effect[Broad-Spectrum Vaccine]))
+	{
+		spacegateVaccine($effect[Broad-Spectrum Vaccine]);
+	}
 
-	zataraSeaside("item");
+	if(!auto_is_valid($effect[There\'s No N In Love]))
+	{
+		zataraSeaside("familiar");
+	}
+	else
+	{
+		zataraSeaside("item");
+	}
 
 	if(is_unrestricted($item[Source Terminal]) && (get_campground() contains $item[Source Terminal]))
 	{
@@ -1106,7 +1133,7 @@ boolean doBedtime()
 		use(1, $item[School of Hard Knocks Diploma]);
 	}
 
-	if(!get_property("_lyleFavored").to_boolean())
+	if(!get_property("_lyleFavored").to_boolean() && auto_is_valid($effect[Favored by Lyle]))
 	{
 		string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
 	}
@@ -1136,14 +1163,31 @@ boolean doBedtime()
 
 	auto_beachUseFreeCombs();
 	auto_drinkNightcap();
+	equipRollover(false);
 
 	if(in_plumber() && fullness_left() > 0)
 	{
 		print("Plumber consumption is complicated. Please manually consume stuff then run me again.", "red");
 		return false;
 	}
-	
-	boolean done = (my_inebriety() > inebriety_limit()) || (my_inebriety() == inebriety_limit() && my_familiar() == $familiar[Stooper]);
+
+	//There is a bug where Ed servant's can't be switched due to an issue in KoL itself
+	//Per Discord, work around is to never log out with a level 7 or greater Scribe
+	//Priest is always unlocked prior to Scribe. Just always attempt to switch to Priest at bedtime
+	handleServant($servant[Priest]);
+
+	boolean canChangeToStooper()
+	{
+		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
+		pathAllowsChangingFamiliar() &&		//some paths forbid familiar or dont allow changing it but mafia still indicates you have the familiar
+		my_familiar() != $familiar[Stooper])
+		{
+			return true;
+		}
+		return false;
+	}
+
+	boolean done = (my_inebriety() > inebriety_limit() && !canChangeToStooper()) || (my_inebriety() > (inebriety_limit() + 1));
 	if(in_gnoob() || !can_drink() || out_of_blood)
 	{
 		if((my_adventures() <= 2) || (internalQuestStatus("questL13Final") >= 14))
@@ -1160,10 +1204,8 @@ boolean doBedtime()
 	if(!done)
 	{
 		auto_log_info("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");
-		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
-		pathAllowsChangingFamiliar() &&		//some paths forbid familiar or dont allow changing it but mafia still indicates you have the familiar
-		inebriety_left() == 0 &&	//stooper drinking is only useful when liver is exactly at max without a stooper equipped.
-		my_familiar() != $familiar[Stooper])
+		if(canChangeToStooper() &&
+		inebriety_left() == 0)	//stooper drinking is only useful when liver is exactly at max without a stooper equipped.
 		{
 			auto_log_info("You have a Stooper, you can increase liver by 1!", "blue");
 			use_familiar($familiar[Stooper]);
@@ -1217,17 +1259,20 @@ boolean doBedtime()
 		bedtime_pulls();
 		pullsNeeded("evaluate");
 
-		if(have_skill($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int()))
+		acquireMilkOfMagnesiumIfUnused(true);
+		consumeMilkOfMagnesiumIfUnused();
+
+		if(have_skill($skill[Calculate the Universe]) && auto_is_valid($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int()))
 		{
 			auto_log_info("You can still Calculate the Universe!", "blue");
 		}
 
-		if(is_unrestricted($item[Deck of Every Card]) && (item_amount($item[Deck of Every Card]) > 0) && (get_property("_deckCardsDrawn").to_int() < 15))
+		if(is_unrestricted($item[Deck of Every Card]) && (item_amount($item[Deck of Every Card]) > 0) && (get_property("_deckCardsDrawn").to_int() < 15) && auto_is_valid($item[Deck of Every Card]))
 		{
 			auto_log_info("You have a Deck of Every Card and " + (15 - get_property("_deckCardsDrawn").to_int()) + " draws remaining!", "blue");
 		}
 
-		if(is_unrestricted($item[Time-Spinner]) && (item_amount($item[Time-Spinner]) > 0) && (get_property("_timeSpinnerMinutesUsed").to_int() < 10) && glover_usable($item[Time-Spinner]))
+		if(is_unrestricted($item[Time-Spinner]) && (item_amount($item[Time-Spinner]) > 0) && (get_property("_timeSpinnerMinutesUsed").to_int() < 10) && auto_is_valid($item[Time-Spinner]))
 		{
 			auto_log_info("You have " + (10 - get_property("_timeSpinnerMinutesUsed").to_int()) + " minutes left to Time-Spinner!", "blue");
 		}
@@ -1237,7 +1282,7 @@ boolean doBedtime()
 			auto_log_info("You can still fight a Chateau Mangtegna Painting today.", "blue");
 		}
 
-		if(!get_property("_streamsCrossed").to_boolean() && possessEquipment($item[Protonic Accelerator Pack]))
+		if(!get_property("_streamsCrossed").to_boolean() && possessEquipment($item[Protonic Accelerator Pack]) && auto_is_valid($effect[Total Protonic Reversal]))
 		{
 			cli_execute("crossstreams");
 		}

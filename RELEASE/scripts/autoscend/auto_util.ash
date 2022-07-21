@@ -955,6 +955,10 @@ boolean[string] auto_banishesUsedAt(location loc)
 
 boolean auto_wantToBanish(monster enemy, location loc)
 {
+	if(appearance_rates(loc,true)[enemy] <= 0)
+	{
+		return false;
+	}
 	location locCache = my_location();
 	set_location(loc);
 	boolean [monster] monstersToBanish = auto_getMonsters("banish");
@@ -1357,8 +1361,8 @@ int cloversAvailable()
 		}
 	}
 
-	//count Astral Energy Drinks. Must specify ID since there are now 2 items with this name
-	retval += available_amount($item[[10883]Astral Energy Drink]);
+	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
+	retval += min(available_amount($item[[10883]Astral Energy Drink]), floor(spleen_left() / 5));
 
 	//other known sources which aren't counted here:
 	// Lucky Lindy, Optimal Dog, Pillkeeper
@@ -1669,7 +1673,7 @@ boolean stunnable(monster mon)
 			Tentacle of Sssshhsssblllrrggghsssssggggrrgglsssshhssslblgl,
 		// Vampyre
 			Your Lack of Reflection,
-			// The final boss is handled separately
+			%alucard%,
 		// Heavy Rains
 			storm cow,
 		// Witchess Monsters
@@ -1683,13 +1687,6 @@ boolean stunnable(monster mon)
 	];
 	
 	if($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains mon && !get_property("auto_confidence").to_boolean())
-	{
-		return false;
-	}
-
-	// Vampyre final boss has your name reversed, which is dumb.
-	// I wonder if this will hit any unlucky people...
-	if(reverse(my_name()) == mon.to_string())
 	{
 		return false;
 	}
@@ -1740,6 +1737,7 @@ int freeCrafts()
 		retval += 5 - get_property("_expertCornerCutterUsed").to_int();
 	}
 	retval += have_effect($effect[Inigo\'s Incantation Of Inspiration]) / 5;
+	retval += get_property("homebodylCharges").to_int();
 #	if(have_skill($skill[Inigo\'s Incantation Of Inspiration]))
 #	{
 #		if(my_mp() > mp_cost($skill[Inigo\'s Incantation Of Inspiration]))
@@ -2600,9 +2598,9 @@ boolean careAboutDrops(monster mon)
 		//We could refine this to get rid of all the all stars / lines mobs but meh.
 		if(($monster[Astronomer] != mon) && ((item_amount($item[Star]) < 8) || (item_amount($item[Line]) < 7)))
 		{
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	if($monsters[Blooper, Ghost] contains mon)
@@ -3121,7 +3119,8 @@ boolean auto_is_valid(item it)
 
 boolean auto_is_valid(familiar fam)
 {
-	if(is100FamRun()){
+	if(is100FamRun())
+	{
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
 	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && is_unrestricted(fam);
@@ -3131,6 +3130,11 @@ boolean auto_is_valid(skill sk)
 {
 	//do not check check for B in bees hate you path. it only restricts items and not skills.
 	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
+}
+
+boolean auto_is_valid(effect eff)
+{
+	return glover_usable(eff.to_string());
 }
 
 void auto_log(string s, string color, int log_level)
@@ -4095,7 +4099,17 @@ boolean enforceMLInPreAdv()
 {
 	if((get_property("auto_MLSafetyLimit") != "") && (!contains_text(get_property("auto_maximize_current"), "ml")))
 	{
-		addToMaximize("ml " + get_property("auto_MLSafetyLimit").to_int() + "max");
+		if(get_property("auto_MLSafetyLimit").to_int() == -1)
+		{
+			// prevent all ML being equiped if limit is 0
+			addToMaximize("-1000ml");
+		}
+		else
+		{
+			// note: maximizer will allow to go above the max value, ML just won't contribute to the total score after the max value
+			addToMaximize("ml " + get_property("auto_MLSafetyLimit").to_int() + "max");
+		}
+		
 	}
 
 	return true;

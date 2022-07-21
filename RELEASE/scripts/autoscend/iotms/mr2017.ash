@@ -350,14 +350,19 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 
 	if(!have_skill($skill[Torso Awareness]) && !have_skill($skill[Best Dressed]) && (statValue == 1))
 	{
-		if(possessEquipment($item[Protonic Accelerator Pack]) || possessEquipment($item[Vampyric Cloake]))
-		{
-			statValue = 3;
-		}
-		else
+		if(!(possessEquipment($item[Protonic Accelerator Pack]) || possessEquipment($item[Vampyric Cloake])) && auto_is_valid($item[LOV Epaulettes]))
 		{
 			statValue = 2;
 		}
+		else
+		{
+			statValue = 3;
+		}
+	}
+
+	if(!auto_is_valid($item[LOV Epaulettes]) && (statValue == 2))  // if myst and in G-Lover
+	{
+		statValue = 3; // Resistance and Meat seems better than ML
 	}
 
 	backupSetting("choiceAdventure1224", to_string(statValue)); // L.O.V. Equipment Room
@@ -375,6 +380,11 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 		backupSetting("choiceAdventure1225", "2"); // L.O.V. Engine Room - Skip Engineer
 	}
 
+	if(in_glover())
+	{
+		loveEffect = 3; // Item drops seems better than familiar weight
+	}
+
 	backupSetting("choiceAdventure1226", to_string(loveEffect)); // L.O.V. Emergency Room
 	#1	Lovebotamy					+10 stats per fight
 	#2	Open Heart Surgery			+10 familiar weight (50 adventures)
@@ -388,6 +398,11 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	else
 	{
 		backupSetting("choiceAdventure1227", "2"); // L.O.V. Elbow Room - Skip Equivocator
+	}
+
+	if(in_glover())
+	{
+		giftItem = 1; // Only item G-Lover can use
 	}
 
 	backupSetting("choiceAdventure1228", to_string(giftItem));
@@ -1344,7 +1359,6 @@ boolean asdonAutoFeed(int goal)
 		Giant Heirloom Grape Tomato,
 		Gin And Tonic,
 		Haggis-Wrapped Haggis-Stuffed Haggis,
-		hot wing,
 		ice-cold Willer,
 		Insanely Spicy Bean Burrito,
 		Insanely Spicy Enchanted Bean Burrito,
@@ -1765,21 +1779,22 @@ boolean makeGenieWish(effect eff)
 
 boolean canGenieCombat()
 {
-	if(item_amount($item[Genie Bottle]) == 0 && item_amount($item[pocket wish]) == 0)
-	{
-		return false;
-	}
-	if((get_property("_genieWishesUsed").to_int() >= 3) && (0 == item_amount($item[pocket wish])))
+	boolean haveBottle = item_amount($item[Genie Bottle]) > 0;
+	boolean bottleWishesLeft = get_property("_genieWishesUsed").to_int() < 3;
+	boolean canUseBottle = haveBottle && bottleWishesLeft && auto_is_valid($item[Genie Bottle]);
+	boolean havePocket = item_amount($item[pocket wish]) > 0;
+	boolean canUsePocket = havePocket && auto_is_valid($item[pocket wish]);
+	if(!canUseBottle && !canUsePocket)
 	{
 		return false;
 	}
 	if(get_property("_genieFightsUsed").to_int() >= 3)
 	{
-		return false;
+		return false;  // max 3 fights per day
 	}
 	if(my_adventures() == 0)
 	{
-		return false;
+		return false;  // cannot fight if no adv remaining
 	}
 	return true;
 }

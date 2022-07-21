@@ -402,10 +402,14 @@ boolean hasClubEquipped()
 
 string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string text)
 {
-	if(canUse($skill[Use the Force]) && auto_saberChargesAvailable() > 0 && auto_have_skill($skill[Meteor Lore])){
-		if(canUse($skill[Meteor Shower])){
+	if(canUse($skill[Use the Force]) && auto_saberChargesAvailable() > 0 && auto_have_skill($skill[Meteor Lore]))
+	{
+		if(canUse($skill[Meteor Shower]))
+		{
 			return useSkill($skill[Meteor Shower]);
-		} else {
+		}
+		else
+		{
 			return auto_combatSaberYR();
 		}
 	}
@@ -433,7 +437,7 @@ string findBanisher(int round, monster enemy, string text)
 		}
 		return banishAction;
 	}
-	if (canUse($skill[Storm of the Scarab], false))
+	if(canUse($skill[Storm of the Scarab], false))
 	{
 		return useSkill($skill[Storm of the Scarab], false);
 	}
@@ -490,22 +494,22 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		Breathe Out: per hot jelly usage
 	*/
 
-	if (auto_have_skill($skill[Peel Out]) && pete_peelOutRemaining() > 0 && get_property("peteMotorbikeMuffler") == "Extra-Smelly Muffler" && !(used contains "Peel Out"))
+	if(auto_have_skill($skill[Peel Out]) && pete_peelOutRemaining() > 0 && get_property("peteMotorbikeMuffler") == "Extra-Smelly Muffler" && !(used contains "Peel Out"))
 	{
 		return "skill " + $skill[Peel Out];
 	}
 
-	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
+	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && auto_is_valid($skill[Throw Latte On Opponent]) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
 	{
 		return "skill " + $skill[Throw Latte on Opponent];
 	}
 
-	if((inCombat ? auto_have_skill($skill[Give Your Opponent The Stinkeye]) : possessEquipment($item[stinky cheese eye])) && !get_property("_stinkyCheeseBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Give Your Opponent The Stinkeye])))
+	if((inCombat ? auto_have_skill($skill[Give Your Opponent The Stinkeye]) : possessEquipment($item[stinky cheese eye])) && auto_is_valid($skill[Give Your Opponent The Stinkeye]) && !get_property("_stinkyCheeseBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Give Your Opponent The Stinkeye])))
 	{
 		return "skill " + $skill[Give Your Opponent The Stinkeye];
 	}
 
-	if((inCombat ? auto_have_skill($skill[Creepy Grin]) : possessEquipment($item[V for Vivala mask])) && !get_property("_vmaskBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Creepy Grin])))
+	if((inCombat ? auto_have_skill($skill[Creepy Grin]) : possessEquipment($item[V for Vivala mask])) && auto_is_valid($skill[Creepy Grin]) && !get_property("_vmaskBanisherUsed").to_boolean() && (my_mp() >= mp_cost($skill[Creepy Grin])))
 	{
 		return "skill " + $skill[Creepy Grin];
 	}
@@ -520,7 +524,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Thunder Clap];
 	}
-	if(auto_have_skill($skill[Asdon Martin: Spring-Loaded Front Bumper]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Spring-Loaded Front Bumper])) && (!(used contains "Spring-Loaded Front Bumper")))
+	if(auto_have_skill($skill[Asdon Martin: Spring-Loaded Front Bumper]) && auto_is_valid($skill[Asdon Martin: Spring-Loaded Front Bumper]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Spring-Loaded Front Bumper])) && (!(used contains "Spring-Loaded Front Bumper")))
 	{
 		if(!contains_text(get_property("banishedMonsters"), "Spring-Loaded Front Bumper"))
 		{
@@ -532,15 +536,15 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Curse Of Vacation];
 	}
 
-	if((inCombat ? auto_have_skill($skill[Show Them Your Ring]) : possessEquipment($item[Mafia middle finger ring])) && can_equip($item[Mafia middle finger ring]) && !get_property("_mafiaMiddleFingerRingUsed").to_boolean() && (my_mp() >= mp_cost($skill[Show Them Your Ring])))
+	if((inCombat ? auto_have_skill($skill[Show Them Your Ring]) : possessEquipment($item[Mafia middle finger ring])) && auto_is_valid($skill[Show Them Your Ring]) && can_equip($item[Mafia middle finger ring]) && !get_property("_mafiaMiddleFingerRingUsed").to_boolean() && (my_mp() >= mp_cost($skill[Show Them Your Ring])))
 	{
 		return "skill " + $skill[Show Them Your Ring];
 	}
-	if(auto_have_skill($skill[Breathe Out]) && (my_mp() >= mp_cost($skill[Breathe Out])) && (!(used contains "breathe out")))
+	if(auto_have_skill($skill[Breathe Out]) && auto_is_valid($skill[Breathe Out]) && (!(used contains "breathe out")))
 	{
 		return "skill " + $skill[Breathe Out];
 	}
-	if(auto_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (inCombat ? hasClubEquipped() : true) && (!(used contains "batter up!")))
+	if(auto_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (inCombat ? hasClubEquipped() : true) && auto_is_valid($skill[Batter Up!]) && (!(used contains "batter up!")))
 	{
 		return "skill " + $skill[Batter Up!];
 	}
@@ -554,41 +558,43 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Walk Away From Explosion];
 	}
 
-	if((inCombat ? auto_have_skill($skill[Talk About Politics]) : possessEquipment($item[Pantsgiving])) && (get_property("_pantsgivingBanish").to_int() < 5) && have_equipped($item[Pantsgiving]) && (!(used contains "pantsgiving")))
+	if((inCombat ? auto_have_skill($skill[Talk About Politics]) : possessEquipment($item[Pantsgiving])) && auto_is_valid($skill[Talk About Politics]) && (get_property("_pantsgivingBanish").to_int() < 5) && have_equipped($item[Pantsgiving]) && (!(used contains "pantsgiving")))
 	{
 		return "skill " + $skill[Talk About Politics];
 	}
-	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil\' Doctor&trade; bag])) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer"))
+	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil\' Doctor&trade; bag])) && auto_is_valid($skill[Reflex Hammer]) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer"))
 	{
 		return "skill " + $skill[Reflex Hammer];
 	}
-	if((inCombat ? auto_have_skill($skill[Show Your Boring Familiar Pictures]) : possessEquipment($item[familiar scrapbook])) && (get_property("scrapbookCharges").to_int() >= 200 || (get_property("scrapbookCharges").to_int() >= 100 && my_level() >= 13)) && !(used contains "Show Your Boring Familiar Pictures"))
+	if((inCombat ? auto_have_skill($skill[Show Your Boring Familiar Pictures]) : possessEquipment($item[familiar scrapbook])) && auto_is_valid($skill[Show Your Boring Familiar Pictures]) && (get_property("scrapbookCharges").to_int() >= 200 || (get_property("scrapbookCharges").to_int() >= 100 && my_level() >= 13)) && !(used contains "Show Your Boring Familiar Pictures"))
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
 	}
 
-	// bowling ball is only in inventory if it is availble to use in combat. While on cooldown, it is not in inventory
-	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && !(used contains "Bowl a Curveball"))
+	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
+	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]) && !(used contains "Bowl a Curveball"))
 	{
 		return "skill " + $skill[Bowl a Curveball];
 	}
 
-	if (auto_canFeelHatred() && !(used contains "Feel Hatred"))
+	if(auto_canFeelHatred() && auto_is_valid($skill[Feel Hatred]) && !(used contains "Feel Hatred"))
 	{
 		return "skill " + $skill[Feel Hatred];
 	}
 
-	if ((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force")) {
+	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && auto_is_valid($skill[Use the Force]) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force"))
+	{
 		// can't use the force on uncopyable monsters
-		if (enemy == $monster[none] || enemy.copyable) {
+		if(enemy == $monster[none] || enemy.copyable)
+		{
 			return auto_combatSaberBanish();
 		}
 	}
 
-	if((inCombat ? auto_have_skill($skill[KGB Tranquilizer Dart]) : possessEquipment($item[Kremlin\'s Greatest Briefcase])) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
+	if((inCombat ? auto_have_skill($skill[KGB Tranquilizer Dart]) : possessEquipment($item[Kremlin\'s Greatest Briefcase])) && auto_is_valid($skill[KGB Tranquilizer Dart]) && (get_property("_kgbTranquilizerDartUses").to_int() < 3) && (my_mp() >= mp_cost($skill[KGB Tranquilizer Dart])) && (!(used contains "KGB tranquilizer dart")))
 	{
 		boolean useIt = true;
-		if (get_property("sidequestJunkyardCompleted") != "none" && my_daycount() >= 2 && get_property("_kgbTranquilizerDartUses").to_int() >= 2)
+		if(get_property("sidequestJunkyardCompleted") != "none" && my_daycount() >= 2 && get_property("_kgbTranquilizerDartUses").to_int() >= 2)
 		{
 			useIt = false;
 		}
@@ -598,7 +604,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 			return "skill " + $skill[KGB Tranquilizer Dart];
 		}
 	}
-	if(auto_have_skill($skill[Snokebomb]) && (get_property("_snokebombUsed").to_int() < 3) && ((my_mp() - 20) >= mp_cost($skill[Snokebomb])) && (!(used contains "snokebomb")))
+	if(auto_have_skill($skill[Snokebomb]) && auto_is_valid($skill[Snokebomb]) && (get_property("_snokebombUsed").to_int() < 3) && ((my_mp() - 20) >= mp_cost($skill[Snokebomb])) && (!(used contains "snokebomb")))
 	{
 		return "skill " + $skill[Snokebomb];
 	}
@@ -625,12 +631,8 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 			return "skill " + $skill[Beancannon];
 		}
 	}
-	if(auto_have_skill($skill[Breathe Out]) && (!(used contains "breathe out")))
-	{
-		return "skill " + $skill[Breathe Out];
-	}
 
-	if (item_amount($item[human musk]) > 0 && (!(used contains "human musk")) && auto_is_valid($item[human musk]) && get_property("_humanMuskUses").to_int() < 3)
+	if(item_amount($item[human musk]) > 0 && (!(used contains "human musk")) && auto_is_valid($item[human musk]) && get_property("_humanMuskUses").to_int() < 3)
 	{
 		return "item " + $item[human musk];
 	}
@@ -642,7 +644,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	}
 
 	int keep = 1;
-	if (get_property("sidequestJunkyardCompleted") != "none")
+	if(get_property("sidequestJunkyardCompleted") != "none")
 	{
 		keep = 0;
 	}
@@ -655,7 +657,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "item " + $item[Tennis Ball];
 	}
-	if((item_amount($item[Deathchucks]) > keep) && (!(used contains "deathchucks")))
+	if((item_amount($item[Deathchucks]) > keep) && (!(used contains "deathchucks"))&& auto_is_valid($item[Deathchucks]))
 	{
 		return "item " + $item[Deathchucks];
 	}
@@ -695,11 +697,11 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "item " + $item[yellow rocket]; // 75 turns
 		}
-		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : possessEquipment($item[unwrapped knock-off retro superhero cape]))
+		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : possessEquipment($item[unwrapped knock-off retro superhero cape]) && auto_is_valid($skill[Unleash the Devil's Kiss]))
 		{
 			return "skill " + $skill[Unleash the Devil's Kiss]; // 99 turns
 		}
-		if(auto_have_skill($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
+		if(auto_have_skill($skill[Disintegrate]) && auto_is_valid($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
 		{
 			return "skill " + $skill[Disintegrate]; // 100 trurns
 		}
@@ -711,7 +713,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "skill " + $skill[Wrath of Ra]; // 100 turns
 		}
-		if((item_amount($item[Mayo Lance]) > 0) && (get_property("mayoLevel").to_int() > 0) && auto_is_valid($item[Mayo Lance]))
+		if((item_amount($item[Mayo Lance]) > 0) && auto_is_valid($item[Mayo Lance]) && (get_property("mayoLevel").to_int() > 0) && auto_is_valid($item[Mayo Lance]))
 		{
 			return "item " + $item[Mayo Lance]; // 0 - 145 turns
 		}
@@ -730,7 +732,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "skill " + $skill[Unleash Cowrruption]; // 149 turns
 		}
-		if((inCombat ? my_familiar() == $familiar[Crimbo Shrub] : auto_have_familiar($familiar[Crimbo Shrub])) && (get_property("shrubGifts") == "yellow"))
+		if((inCombat ? my_familiar() == $familiar[Crimbo Shrub] : auto_have_familiar($familiar[Crimbo Shrub])) && auto_is_valid($skill[Open a Big Yellow Present]) && (get_property("shrubGifts") == "yellow"))
 		{
 			return "skill " + $skill[Open a Big Yellow Present]; // 149 turns
 		}
@@ -741,7 +743,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
 	}
 
-	if (auto_canFeelEnvy())
+	if(auto_canFeelEnvy())
 	{
 		return "skill " + $skill[Feel Envy];
 	}
@@ -781,11 +783,11 @@ string yellowRayCombatString()
 
 string replaceMonsterCombatString(monster target, boolean inCombat)
 {
-	if (auto_macrometeoritesAvailable() > 0 && auto_is_valid($skill[Macrometeorite]))
+	if(auto_macrometeoritesAvailable() > 0 && auto_is_valid($skill[Macrometeorite]))
 	{
 		return "skill " + $skill[Macrometeorite];
 	}
-	if (auto_powerfulGloveReplacesAvailable(inCombat) > 0 && auto_is_valid($skill[CHEAT CODE: Replace Enemy]))
+	if(auto_powerfulGloveReplacesAvailable(inCombat) > 0 && auto_is_valid($skill[CHEAT CODE: Replace Enemy]))
 	{
 		return "skill " + $skill[CHEAT CODE: Replace Enemy];
 	}
