@@ -458,7 +458,7 @@ boolean LX_unlockManorSecondFloor() {
 		// nose sniff is weak so probably want fairy familiar first. this condition should change if banshee librarian is added as a YR target for killing jar
 		if((item_amount($item[killing jar]) > 0 || is_banished($monster[banshee librarian])) && 
 		auto_have_familiar($familiar[Nosy Nose]) && auto_is_valid($skill[Get a Good Whiff of This Guy]) && 
-		appearance_rates($location[The Haunted Library],true)[$monster[Writing Desk]] < 100)
+		appearance_rates($location[The Haunted Library])[$monster[Writing Desk]] < 100)
 		{
 			handleFamiliar($familiar[Nosy Nose]);
 		}
@@ -607,8 +607,8 @@ boolean LX_getLadySpookyravensFinestGown() {
 		// easily without changing locations, but Nosy Nose will be turned off once it's no longer the used familiar
 		if(auto_have_familiar($familiar[Nosy Nose]) && auto_is_valid($skill[Get a Good Whiff of This Guy]) && !is100FamRun())
 		{
-			float ornateRate = appearance_rates($location[The Haunted Bedroom],true)[$monster[animated ornate nightstand]];
-			float elegantRate = appearance_rates($location[The Haunted Bedroom],true)[$monster[elegant animated nightstand]];
+			float ornateRate = appearance_rates($location[The Haunted Bedroom])[$monster[animated ornate nightstand]];
+			float elegantRate = appearance_rates($location[The Haunted Bedroom])[$monster[elegant animated nightstand]];
 			if($location[The Haunted Bedroom].turns_spent < 6 && elegantRate != 0)
 			{	//non 0 value for elegant before 7 is spurious
 				ornateRate += elegantRate;	//not a real rate but only correct for the purpose of checking if it is 100
@@ -1757,11 +1757,11 @@ boolean L11_hiddenCity()
 			if(auto_have_familiar($familiar[Nosy Nose]) && auto_is_valid($skill[Get a Good Whiff of This Guy]))
 			{
 				if(have_effect($effect[Thrice-Cursed]) < (turnsUntilElevatorAction + 1)  && 
-				appearance_rates($location[The Hidden Apartment Building],true)[$monster[pygmy shaman]] < 100)
+				appearance_rates($location[The Hidden Apartment Building])[$monster[pygmy shaman]] < 100)
 				{
 					handleFamiliar($familiar[Nosy Nose]);	//whiff increases chance of shamen. the deleveling can also help survive being cursed
 				}
-				else if(appearance_rates($location[The Hidden Office Building],true)[$monster[pygmy witch accountant]] >= 20 &&	item_amount($item[McClusky file (complete)]) == 0)
+				else if(appearance_rates($location[The Hidden Office Building])[$monster[pygmy witch accountant]] >= 20 &&	item_amount($item[McClusky file (complete)]) == 0)
 				{
 					//once done with curses will want witch accountants
 					if(item_amount($item[McClusky file (page 4)]) == 0 || get_property("nosyNoseMonster").to_monster() == $monster[pygmy witch accountant])
@@ -1834,7 +1834,7 @@ boolean L11_hiddenCity()
 		if(!workingHoliday && missingMcCluskyFiles() > 0)	//need more accountants
 		{
 			if(auto_have_familiar($familiar[Nosy Nose]) && auto_is_valid($skill[Get a Good Whiff of This Guy]) && 
-			appearance_rates($location[The Hidden Office Building],true)[$monster[pygmy witch accountant]] < 100)
+			appearance_rates($location[The Hidden Office Building])[$monster[pygmy witch accountant]] < 100)
 			{
 				handleFamiliar($familiar[Nosy Nose]);	//whiff increases chance of witch accountant
 			}
@@ -1843,7 +1843,7 @@ boolean L11_hiddenCity()
 		auto_log_info("Hidden Office Progress: " + get_property("hiddenOfficeProgress"), "blue");
 
 		if(workingHoliday && item_amount($item[boring binder clip]) > 0 && missingMcCluskyFiles() > 0 && 
-		appearance_rates($location[The Hidden Apartment Building],true)[$monster[pygmy witch accountant]] >= (missingMcCluskyFiles() * 25))
+		appearance_rates($location[The Hidden Apartment Building])[$monster[pygmy witch accountant]] >= (missingMcCluskyFiles() * 25))
 		{
 			auto_log_info("About to meet the boss in the Hidden Office. Trying to gather missing files in the Apartment instead to save delay.", "blue");
 			return autoAdv($location[The Hidden Apartment Building]);
@@ -1906,7 +1906,7 @@ boolean L11_hiddenCity()
 		if(surgeonGearWanted > 0)	//need more surgeons?
 		{
 			if(auto_have_familiar($familiar[Nosy Nose]) && auto_is_valid($skill[Get a Good Whiff of This Guy]) && 
-			appearance_rates($location[The Hidden Hospital],true)[$monster[pygmy witch surgeon]] < 100)
+			appearance_rates($location[The Hidden Hospital])[$monster[pygmy witch surgeon]] < 100)
 			{
 				if(surgeonGearWanted >= 2 || get_property("nosyNoseMonster").to_monster() == $monster[pygmy witch surgeon])
 				{
