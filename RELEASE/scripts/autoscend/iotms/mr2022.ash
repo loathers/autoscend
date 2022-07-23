@@ -138,6 +138,13 @@ boolean auto_fightLocketMonster(monster mon)
 
 }
 
+boolean canUseCleaver() {
+	if (possessEquipment($item[June cleaver]) && can_equip($item[June cleaver]) && auto_is_valid($item[June cleaver])) {
+		return true;
+	}
+	return false;
+}
+
 void juneCleaverChoiceHandler(int choice)
 {
 	switch(choice) {
@@ -223,5 +230,34 @@ void juneCleaverChoiceHandler(int choice)
 			break;
 		default:
 			abort("unhandled choice in juneCleaverChoiceHandler");
+	}
+}
+
+boolean canUseSweatpants() {
+	if (possessEquipment($item[designer sweatpants]) && can_equip($item[designer sweatpants]) && auto_is_valid($item[designer sweatpants])) {
+		return true;
+	}
+	return false;
+}
+
+int getSweat() {
+	return get_property("sweat").to_int();
+}
+
+void sweatpantsPreAdventure() {
+	if (!canUseSweatpants()) {
+		return;
+	}
+
+	int sweat = getSweat();
+	int liverCleaned = get_property("_sweatOutSomeBoozeUsed").to_int();
+
+	if (sweat >= 25 && liverCleaned < 3 && my_inebriety() > 0) {
+		use_skill($skill[Sweat Out Some Booze]);
+	}
+
+	// This is just opportunistic use of sweat. This skill should be used in auto_restore.ash.
+	if (sweat >= 95 && my_mp() < my_maxmp()) {
+		use_skill($skill[Sip Some Sweat]);
 	}
 }
