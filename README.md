@@ -25,6 +25,10 @@ Run this command in the graphical CLI:
 ```
 svn checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend/branches/master/RELEASE/
 ```
+or:
+```
+git checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend.git master
+```
 Will require [a recent build of KoLMafia](http://builds.kolmafia.us/job/Kolmafia/lastSuccessfulBuild/).
 
 ## Usage
