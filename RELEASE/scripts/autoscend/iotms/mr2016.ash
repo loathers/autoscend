@@ -1188,6 +1188,7 @@ boolean timeSpinnerCombat(monster goal, string option)
 	{
 		return false;
 	}
+	auto_log_info("Using time spinner to summon " + goal.name, "blue");
 	string[int] pages;
 	pages[0] = "inv_use.php?pwd=&which=3&whichitem=9104";
 	pages[1] = "choice.php?pwd=&whichchoice=1195&option=1";
@@ -1206,6 +1207,51 @@ boolean timeSpinnerCombat(monster goal, string option)
 		abort("Time-Spinner combat failed and we were unable to leave the Time-Spinner");
 	}
 	return false;
+}
+
+void auto_chapeau()
+{
+	if(!can_equip($item[no hat]))
+	{
+		//requires 150 Moxie to wear, so will stop at this check alone most of the time, except in BIG! or level 13 moxie class
+		return;
+	}
+	if(!auto_have_skill($skill[Ceci N'Est Pas Un Chapeau]))
+	{
+		return;
+	}
+	if(my_mp() < mp_cost($skill[Ceci N'Est Pas Un Chapeau]))
+	{
+		return;
+	}
+	if(possessEquipment($item[no hat]) || !auto_can_equip($item[no hat]))
+	{
+		return;
+	}
+	
+	//300 MP cost is high and non sauceror classes that rely on meat for MP may need to check reserve first
+	boolean doGetNoHat;
+	if(my_mp() >= 100 + mp_cost($skill[Ceci N'Est Pas Un Chapeau]))
+	{
+		doGetNoHat = true;
+	}
+	else if(my_mp() >= 32 + mp_cost($skill[Ceci N'Est Pas Un Chapeau]) && mp_regen() >= 32)
+	{
+		doGetNoHat = true;
+	}
+	else
+	{
+		int minimumMeat = meatReserve() + (my_class() == $class[Sauceror] ? 500 : 2000);
+		if(my_meat() >= minimumMeat)
+		{
+			doGetNoHat = true;
+		}
+	}
+	
+	if(doGetNoHat)
+	{
+		use_skill(1, $skill[Ceci N'Est Pas Un Chapeau]);
+	}
 }
 
 boolean rethinkingCandyList()

@@ -497,6 +497,7 @@ boolean auto_cargoShortsOpenPocket(monster m)
 	if (!auto_cargoShortsCanOpenPocket(m))
 		return false;
 	
+	auto_log_info("Using cargo shorts to summon " + m.name, "blue");
 	string[int] pages;
 	pages[0] = "inventory.php?action=pocket";
 	pages[1] = `choice.php?pwd={my_hash()}&whichchoice=1420&option=1&pocket={available_pocket(m)}`;
@@ -846,9 +847,6 @@ boolean auto_handleRetrocape()
 
 boolean auto_buyCrimboCommerceMallItem()
 {
-
-	set_property("commerceGhostItem", "");
-	//cli execute of "buy from mall" is currently broken - TODO remove the above line once this is fixed in mafia
 	if (!auto_is_valid($familiar[Ghost of Crimbo Commerce]))
 	{
 		return false;

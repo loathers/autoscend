@@ -1,11 +1,9 @@
-since r26405;	// mayday package and cosmic bowling ball preff support
+since r26540;	// Sweat tracking at the end of combat
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
 
 	Accessory scripts can import autoscend.ash
-
-	If updating since revision, update .github/workflows/ci.yml and cached kolmafia.jar
 ***/
 
 
@@ -1327,7 +1325,7 @@ void beatenUpResolution()
 {
 	if(have_effect($effect[Beaten Up]) > 0)
 	{
-		if(get_property("auto_beatenUpCount").to_int() > 10)
+		if(get_property("auto_beatenUpCount").to_int() > 10 && get_property("lastEncounter") != "Poetic Justice")
 		{
 			abort("We are getting beaten up too much, this is not good. Aborting.");
 		}
@@ -1709,6 +1707,7 @@ boolean doTasks()
 	asdonAutoFeed();
 	LX_craftAcquireItems();
 	auto_spoonTuneMoon();
+	auto_chapeau();
 	auto_buyFireworksHat();
 	auto_CMCconsult();
 
