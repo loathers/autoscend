@@ -1,3 +1,4 @@
 *.bak
 *.sh
 .github/kolmafia.jar
+.vs*
