@@ -54,17 +54,17 @@ Working on your first open source project or pull request? Her are some helpful 
 ### Forks and Branches
 You can request access to the project which will let you push working branches to the project, but you can also just (or even prefer) to fork the repository and submit pull requests from your fork.
 
-**master** branch:
-The master branch is the current "release" of autoscend. When someone does `svn checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend/trunk/RELEASE/` in KoLMafia, they are getting the master branch scripts.
+**main** branch:
+The main branch is the current "release" of autoscend. When someone does `git checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend.git` in KoLMafia, they are getting the main branch scripts.
 
-`master` is restricted and can only be merged into with a pull request which requires approval from 1 other developer (though admins can by pass this requirements if they need to).
+`main` is restricted and can only be merged into with a pull request which requires approval from 1 other developer (though admins can by pass this requirements if they need to).
 
 For all of our sanity a good git work flow is something like this:
-1. `git checkout master`
+1. `git checkout main`
 2. `git pull`
 3. `git checkout -b my-cool-new-feature`
 4. change code, add and commit files with [good commit messages][5]
-5. when ready, submit a [pull request](https://github.com/Loathing-Associates-Scripting-Society/autoscend/compare/beta...Loathing-Associates-Scripting-Society:master) for your `my-cool-new-feature` branch against the `master` branch
+5. when ready, submit a [pull request](https://github.com/Loathing-Associates-Scripting-Society/autoscend/compare/beta...Loathing-Associates-Scripting-Society:main) for your `my-cool-new-feature` branch against the `main` branch
 
 ### Merging Pull Requests
 When closing pull requests, please use the "Squash and Merge" option when merging the branch. This creates much cleaner git commit histories and make it much easier to cherry-pick features from one branch to another. After the merge its also good practice to delete the branch from the remote, again trying to keep the repository clean.
