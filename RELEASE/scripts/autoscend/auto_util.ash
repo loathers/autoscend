@@ -1989,6 +1989,38 @@ boolean auto_deleteMail(kmailObject msg)
 	return false;
 }
 
+boolean summonMonster(monster mon)
+{
+	// methods which require specific circumstances
+	if(timeSpinnerCombat(mon))
+	{
+		return true;
+	}
+	// methods which can only summon monsters should be attempted first
+	if(auto_fightLocketMonster(mon))
+	{
+		return true;
+	}
+	if(handleFaxMonster(mon))
+	{
+		return true;
+	}
+	// methods which can do more than summon monsters
+	if(auto_cargoShortsOpenPocket(mon))
+	{
+		return true;
+	}
+	if(auto_shouldUseWishes() && makeGenieCombat(mon))
+	{
+		return true;
+	}
+
+	//todo
+	// add support for rainManSummon(). Look to routineRainManHandler()
+
+	return false;
+}
+
 boolean handleCopiedMonster(item itm)
 {
 	return handleCopiedMonster(itm, "");

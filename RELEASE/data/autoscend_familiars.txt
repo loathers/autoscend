@@ -300,7 +300,7 @@ stat	5	Elf Operative
 stat	6	Optimistic Candle
 stat	7	Rockin' Robin
 # Volleychauns
-stat	8	Ghost of Crimbo Commerce - commented out until mafia bug with buy from mall is fixed
+stat	8	Ghost of Crimbo Commerce
 stat	9	Golden Monkey
 stat	10	Bloovian Groose
 stat	11	Unconscious Collective

@@ -575,6 +575,7 @@ boolean doBedtime()
 		{
 			if(!in_gnoob() && my_familiar() != $familiar[Stooper])
 			{
+				auto_log_warning("Still adventurous! Stopping bedtime.", "red");
 				return false;
 			}
 		}
@@ -582,10 +583,12 @@ boolean doBedtime()
 	boolean out_of_blood = (in_darkGyffte() && item_amount($item[blood bag]) == 0);
 	if((fullness_left() > 0) && can_eat() && !out_of_blood)
 	{
+		auto_log_warning("Still hungry! Stopping bedtime.", "red");
 		return false;
 	}
 	if((inebriety_left() > 0) && can_drink() && !out_of_blood)
 	{
+		auto_log_warning("Still sober! Stopping bedtime.", "red");
 		return false;
 	}
 	int spleenlimit = spleen_limit();
@@ -599,6 +602,7 @@ boolean doBedtime()
 	}
 	if((my_spleen_use() < spleenlimit) && !in_hardcore() && (inebriety_left() > 0))
 	{
+		auto_log_warning("Still spleeny! Stopping bedtime.", "red");
 		return false;
 	}
 
@@ -1318,5 +1322,7 @@ boolean doBedtime()
 		auto_log_info("You are probably done for today, beep.", "blue");
 		return true;
 	}
+	
+	auto_log_warning("Unexpected bedtime path! Stopping bedtime.", "red");
 	return false;
 }
