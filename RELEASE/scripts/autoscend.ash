@@ -1,4 +1,4 @@
-since r26623;	// Add checking for availability of more Journeyman zones  (location_accessible added)
+since r26626;	// Add runtimelibrary function to equip an item to a specific familiar (even in terrarium), equip(familiar,item) added
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
