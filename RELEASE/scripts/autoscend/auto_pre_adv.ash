@@ -743,6 +743,7 @@ boolean auto_pre_adventure()
 				wasted_mp = my_mp() + mp_regen() - maxMPNextTurn;
 			}
 		}
+		wasted_mp = min(my_mp() - 100,wasted_mp);	//todo how much MP wanted for combat? in case regen is higher than MP, like with blue rocket, at least keep 100
 		if(wasted_mp > 0 && my_mp() > 400)
 		{
 			auto_log_info("Burning " + wasted_mp + " MP...");
