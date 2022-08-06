@@ -286,8 +286,7 @@ void utilizeStillsuit() {
 	}
 
 	//make sure all this nice familiar sweat doesn't go uncollected when current familiar is wearing something else
-	familiar currentFamiliar = my_familiar();
-	if(familiar_equipped_equipment(currentFamiliar) == $item[tiny stillsuit])
+	if(familiar_equipped_equipment(my_familiar()) == $item[tiny stillsuit])
 	{	//since it's in the inventory, should not need to check this
 		return;
 	}
@@ -319,16 +318,10 @@ void utilizeStillsuit() {
 		}
 		return $familiar[none];
 	}
-	if(is_familiar_equipment_locked())
+	equip(sweetestSweatFamiliar(),$item[tiny stillsuit]);
+
+	if(is100FamRun())
 	{
-		lock_familiar_equipment(false);	//make sure current familiar's equipment is not lost during the temporary swap
-	}
-	familiar familiarWearer = sweetestSweatFamiliar();
-	if(familiarWearer != $familiar[none])
-	{
-		auto_log_info("Putting the tiny stillsuit on a familiar in the terrarium", "blue");
-		use_familiar(familiarWearer);
-		equip($slot[familiar],$item[tiny stillsuit]);
-		use_familiar(currentFamiliar);
+		handleFamiliar(get_property("auto_100familiar").to_familiar());	//just make extra sure this didnt break 100 familiar runs but familiar should not have been swapped
 	}
 }
