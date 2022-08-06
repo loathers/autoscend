@@ -274,52 +274,61 @@ void sweatpantsPreAdventure() {
 
 void utilizeStillsuit() {
 	//called at the end of pre adv to make sure stillsuit is at least kept equipped on a familiar in the terrarium
-	if(item_amount($item[tiny stillsuit]) > 0 && pathAllowsChangingFamiliar())
+	if(item_amount($item[tiny stillsuit]) == 0)
 	{
-		//if there is a tiny stillsuit in inventory then unless there was a tracking error it is not worn by any familiar
-		//make sure all this nice familiar sweat doesn't go uncollected when current familiar is wearing something else
-		familiar currentFamiliar = my_familiar();
-		if(familiar_equipped_equipment(currentFamiliar) != $item[tiny stillsuit])
+		return;
+	}
+
+	//if there is a tiny stillsuit in inventory then unless there was a tracking error it is not worn by any familiar
+	if(!pathAllowsChangingFamiliar())
+	{
+		return;
+	}
+
+	//make sure all this nice familiar sweat doesn't go uncollected when current familiar is wearing something else
+	familiar currentFamiliar = my_familiar();
+	if(familiar_equipped_equipment(currentFamiliar) == $item[tiny stillsuit])
+	{	//since it's in the inventory, should not need to check this
+		return;
+	}
+
+	familiar sweetestSweatFamiliar()
+	{
+		//todo better choice of best familiar effects
+		foreach sweetSweatFamiliar in $familiars[Grinning Turtle,Grouper Groupie,Star Starfish,Cat Burglar,Slimeling,Sleazy Gravy Fairy]	//these give item and sleaze
 		{
-			familiar sweetestSweatFamiliar()
+			if(have_familiar(sweetSweatFamiliar) && auto_is_valid(sweetSweatFamiliar))
 			{
-				//todo better choice of best familiar effects
-				foreach sweetSweatFamiliar in $familiars[Grinning Turtle,Grouper Groupie,Star Starfish,Cat Burglar,Slimeling,Sleazy Gravy Fairy]	//these give item and sleaze
-				{
-					if(have_familiar(sweetSweatFamiliar) && auto_is_valid(sweetSweatFamiliar))
-					{
-						return sweetSweatFamiliar;
-					}
-				}
-				foreach commonFamiliar in $familiars[Baby Gravy Fairy,Smiling Rat,Mosquito,Reassembled Blackbird]		//default fall back, you probably have one of these
-				{
-					if(have_familiar(commonFamiliar) && auto_is_valid(commonFamiliar))
-					{
-						return commonFamiliar;
-					}
-				}
-				foreach anyFamiliar in $familiars[]		//if all else failed just pick any available familiar that can wear equipment
-				{
-					if(have_familiar(anyFamiliar) && auto_is_valid(anyFamiliar) && 
-					!($familiars[Comma Chameleon,Mad Hatrack,Disembodied Hand,Ghost of Crimbo Carols,Ghost of Crimbo Cheer,Ghost of Crimbo Commerce] contains anyFamiliar))
-					{
-						return anyFamiliar;
-					}
-				}
-				return $familiar[none];
-			}
-			if(is_familiar_equipment_locked())
-			{
-				lock_familiar_equipment(false);	//make sure current familiar's equipment is not lost during the temporary swap
-			}
-			familiar familiarWearer = sweetestSweatFamiliar();
-			if(familiarWearer != $familiar[none])
-			{	//since it's in the inventory, should not need to check (familiar_equipped_equipment(familiarWearer) != $item[tiny stillsuit])
-				auto_log_info("Putting the tiny stillsuit on a familiar in the terrarium", "blue");
-				use_familiar(familiarWearer);
-				equip($slot[familiar],$item[tiny stillsuit]);
-				use_familiar(currentFamiliar);
+				return sweetSweatFamiliar;
 			}
 		}
+		foreach commonFamiliar in $familiars[Baby Gravy Fairy,Smiling Rat,Mosquito,Reassembled Blackbird]		//default fall back, you probably have one of these
+		{
+			if(have_familiar(commonFamiliar) && auto_is_valid(commonFamiliar))
+			{
+				return commonFamiliar;
+			}
+		}
+		foreach anyFamiliar in $familiars[]		//if all else failed just pick any available familiar that can wear equipment
+		{
+			if(have_familiar(anyFamiliar) && auto_is_valid(anyFamiliar) && 
+			!($familiars[Comma Chameleon,Mad Hatrack,Disembodied Hand,Ghost of Crimbo Carols,Ghost of Crimbo Cheer,Ghost of Crimbo Commerce] contains anyFamiliar))
+			{
+				return anyFamiliar;
+			}
+		}
+		return $familiar[none];
+	}
+	if(is_familiar_equipment_locked())
+	{
+		lock_familiar_equipment(false);	//make sure current familiar's equipment is not lost during the temporary swap
+	}
+	familiar familiarWearer = sweetestSweatFamiliar();
+	if(familiarWearer != $familiar[none])
+	{
+		auto_log_info("Putting the tiny stillsuit on a familiar in the terrarium", "blue");
+		use_familiar(familiarWearer);
+		equip($slot[familiar],$item[tiny stillsuit]);
+		use_familiar(currentFamiliar);
 	}
 }
