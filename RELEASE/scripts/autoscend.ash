@@ -1,4 +1,4 @@
-since r26487;	// Track skipped June cleaver choice adventures; switch to tracking fights remaining rather than current charge
+since r26623;	// Add checking for availability of more Journeyman zones  (location_accessible added)
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -10,7 +10,6 @@ since r26487;	// Track skipped June cleaver choice adventures; switch to trackin
 import <autoscend/autoscend_header.ash>
 import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
 import <autoscend/autoscend_migration.ash>
-import <canadv.ash>
 
 import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
@@ -1325,7 +1324,7 @@ void beatenUpResolution()
 {
 	if(have_effect($effect[Beaten Up]) > 0)
 	{
-		if(get_property("auto_beatenUpCount").to_int() > 10)
+		if(get_property("auto_beatenUpCount").to_int() > 10 && get_property("lastEncounter") != "Poetic Justice")
 		{
 			abort("We are getting beaten up too much, this is not good. Aborting.");
 		}
