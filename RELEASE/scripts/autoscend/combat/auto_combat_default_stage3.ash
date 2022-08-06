@@ -341,6 +341,9 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 				//equal is 50% chance of cold Saucegeyser. "cold > hot" is used higher in priority. "cold < hot" is 100% hot Saucegeyser and not worth using
 				coldSkillToUse = $skill[Saucegeyser];
 			}
+			else if(in_nuclear() && canUse($skill[Throat Refrigerant], false)){
+				coldSkillToUse = $skill[Throat Refrigerant];
+			}
 			
 			int MPreservedForColdSpells = coldMortarShell ? mp_cost($skill[Stuffed Mortar Shell]) : 0;
 			if(coldSkillToUse != $skill[none])	MPreservedForColdSpells += mp_cost(coldSkillToUse);

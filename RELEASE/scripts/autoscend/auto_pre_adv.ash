@@ -478,6 +478,7 @@ boolean auto_pre_adventure()
 	bat_formPreAdventure();
 	horsePreAdventure();
 	auto_snapperPreAdventure(place);
+	sweatpantsPreAdventure();
 
 	generic_t itemNeed = zone_needItem(place);
 	if(itemNeed._boolean)
