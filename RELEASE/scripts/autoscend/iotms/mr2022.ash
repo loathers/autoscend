@@ -250,15 +250,76 @@ void sweatpantsPreAdventure() {
 		return;
 	}
 
+	if (my_location() == $location[A Mob of Zeppelin Protesters] && equipped_item($slot[pants]) != $item[lynyrdskin breeches]) {
+		return;	//want to keep all the sleaze damage bonus in this location
+	}
+
 	int sweat = getSweat();
 	int liverCleaned = get_property("_sweatOutSomeBoozeUsed").to_int();
 
 	if (sweat >= 25 && liverCleaned < 3 && my_inebriety() > 0) {
-		use_skill($skill[Sweat Out Some Booze]);
+		if (my_location() == $location[The Haunted Billiards Room] && my_inebriety() <= 10) {
+			//want to keep inebriety for pool skill
+		}
+		else {
+			use_skill($skill[Sweat Out Some Booze]);
+		}
 	}
 
 	// This is just opportunistic use of sweat. This skill should be used in auto_restore.ash.
 	if (sweat >= 95 && my_mp() < my_maxmp()) {
 		use_skill($skill[Sip Some Sweat]);
+	}
+}
+
+void utilizeStillsuit() {
+	//called at the end of pre adv to make sure stillsuit is at least kept equipped on a familiar in the terrarium
+	if(item_amount($item[tiny stillsuit]) > 0 && pathAllowsChangingFamiliar())
+	{
+		//if there is a tiny stillsuit in inventory then unless there was a tracking error it is not worn by any familiar
+		//make sure all this nice familiar sweat doesn't go uncollected when current familiar is wearing something else
+		familiar currentFamiliar = my_familiar();
+		if(familiar_equipped_equipment(currentFamiliar) != $item[tiny stillsuit])
+		{
+			familiar sweetestSweatFamiliar()
+			{
+				//todo better choice of best familiar effects
+				foreach sweetSweatFamiliar in $familiars[Grinning Turtle,Grouper Groupie,Star Starfish,Cat Burglar,Slimeling,Sleazy Gravy Fairy]	//these give item and sleaze
+				{
+					if(have_familiar(sweetSweatFamiliar) && auto_is_valid(sweetSweatFamiliar))
+					{
+						return sweetSweatFamiliar;
+					}
+				}
+				foreach commonFamiliar in $familiars[Baby Gravy Fairy,Smiling Rat,Mosquito,Reassembled Blackbird]		//default fall back, you probably have one of these
+				{
+					if(have_familiar(commonFamiliar) && auto_is_valid(commonFamiliar))
+					{
+						return commonFamiliar;
+					}
+				}
+				foreach anyFamiliar in $familiars[]		//if all else failed just pick any available familiar that can wear equipment
+				{
+					if(have_familiar(anyFamiliar) && auto_is_valid(anyFamiliar) && 
+					!($familiars[Comma Chameleon,Mad Hatrack,Disembodied Hand,Ghost of Crimbo Carols,Ghost of Crimbo Cheer,Ghost of Crimbo Commerce] contains anyFamiliar))
+					{
+						return anyFamiliar;
+					}
+				}
+				return $familiar[none];
+			}
+			if(is_familiar_equipment_locked())
+			{
+				lock_familiar_equipment(false);	//make sure current familiar's equipment is not lost during the temporary swap
+			}
+			familiar familiarWearer = sweetestSweatFamiliar();
+			if(familiarWearer != $familiar[none])
+			{	//since it's in the inventory, should not need to check (familiar_equipped_equipment(familiarWearer) != $item[tiny stillsuit])
+				auto_log_info("Putting the tiny stillsuit on a familiar in the terrarium", "blue");
+				use_familiar(familiarWearer);
+				equip($slot[familiar],$item[tiny stillsuit]);
+				use_familiar(currentFamiliar);
+			}
+		}
 	}
 }
