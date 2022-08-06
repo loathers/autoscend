@@ -1284,7 +1284,10 @@ boolean L11_aridDesert()
 					set_property("desertExploration", found);
 					return true;
 				}
-				abort("Tried to adventure in The Oasis but could not. property desertExploration determined to be correct");
+				if(!autoAdv(1, $location[The Oasis]))
+				{
+					abort("Tried to adventure in The Oasis but could not. property desertExploration determined to be correct");
+				}
 			}
 			else
 			{
