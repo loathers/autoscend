@@ -1,4 +1,4 @@
-since r26623;	// Add checking for availability of more Journeyman zones  (location_accessible added)
+since r26540;	// Sweat tracking at the end of combat
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -10,6 +10,7 @@ since r26623;	// Add checking for availability of more Journeyman zones  (locati
 import <autoscend/autoscend_header.ash>
 import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
 import <autoscend/autoscend_migration.ash>
+import <canadv.ash>
 
 import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
