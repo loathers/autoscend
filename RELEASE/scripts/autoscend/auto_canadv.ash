@@ -575,7 +575,7 @@ boolean can_adv(location where, boolean prep, int verb) {
    case $location[The Obligatory Pirate's Cove]: if (prep) cli_execute("unequip pirate fledges"); 
       return !have_equipped($item[pirate fledges]) && !is_wearing_outfit("swashbuckling getup");
    case $location[McMillicancuddy's Farm]:
-   case $location[Post-War Junkyard]: return qprop("questL12War");
+   case $location[The Junkyard]: return qprop("questL12War");
    case $location[The Hippy Camp (Bombed Back to the Stone Age)]: return qprop("questL12War") && get_property("sideDefeated") != "fratboys";
    case $location[The Orcish Frat House (Bombed Back to the Stone Age)]: return qprop("questL12War") && get_property("sideDefeated") != "hippies";
   // islewar
