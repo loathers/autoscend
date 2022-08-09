@@ -1224,13 +1224,21 @@ boolean zone_available(location loc)
 		}
 		break;
 	case $location[Frat House (Frat Disguise)]:
-	case $location[Hippy Camp (Hippy Disguise)]:
-		if(internalQuestStatus("questL12War") == 0 &&		//if the quest is exactly at started step.
-		(have_outfit("Filthy Hippy Disguise") || have_outfit("Frat Boy Ensemble")) &&	//either outfit works for either zone
-		get_property("lastIslandUnlock").to_int() == my_ascensions())
+		if(get_property("lastIslandUnlock").to_int() == my_ascensions() && 
+		have_outfit("Frat Boy Ensemble") &&
+		internalQuestStatus("questL12War") != 0 &&	//mafia always calls location Wartime with L12 quest
+		internalQuestStatus("questL12War") != 1)	//mafia always calls location Wartime with L12 quest
 		{
-			//currently not working quite right due to mafia issue
-			//retval = true;
+			retval = true;
+		}
+		break;
+	case $location[Hippy Camp (Hippy Disguise)]:
+		if(get_property("lastIslandUnlock").to_int() == my_ascensions() && 
+		have_outfit("Filthy Hippy Disguise") &&
+		internalQuestStatus("questL12War") != 0 &&	//mafia always calls location Wartime with L12 quest
+		internalQuestStatus("questL12War") != 1)	//mafia always calls location Wartime with L12 quest
+		{
+			retval = true;
 		}
 		break;
 	case $location[Wartime Hippy Camp (Frat Disguise)]:
