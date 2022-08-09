@@ -1223,8 +1223,8 @@ boolean zone_available(location loc)
 			retval = true;
 		}
 		break;
-	case $location[Frat House In Disguise]:
-	case $location[Hippy Camp In Disguise]:
+	case $location[Frat House (Frat Disguise)]:
+	case $location[Hippy Camp (Hippy Disguise)]:
 		if(internalQuestStatus("questL12War") == 0 &&		//if the quest is exactly at started step.
 		(have_outfit("Filthy Hippy Disguise") || have_outfit("Frat Boy Ensemble")) &&	//either outfit works for either zone
 		get_property("lastIslandUnlock").to_int() == my_ascensions())
@@ -1849,7 +1849,7 @@ boolean zone_hasLuckyAdventure(location loc)
 	if ($locations[8-Bit Realm,A Maze of Sewer Tunnels,A Mob of Zeppelin Protesters,A-Boo Peak,An Octopus's Garden,Art Class,
 	Battlefield (Cloaca Uniform),Battlefield (Dyspepsi Uniform),Battlefield (No Uniform),Burnbarrel Blvd.,Camp Logging Camp,Chemistry Class,
 	Cobb's Knob Barracks,Cobb's Knob Harem,Cobb's Knob Kitchens,Cobb's Knob Laboratory,Cobb's Knob Menagerie\, Level 2,Cobb's Knob Treasury,
-	Elf Alley,Exposure Esplanade,Frat House,Frat House In Disguise,Guano Junction,Hippy Camp,Hippy Camp In Disguise,Itznotyerzitz Mine,
+	Elf Alley,Exposure Esplanade,Frat House,Frat House (Frat Disguise),Guano Junction,Hippy Camp,Hippy Camp (Hippy Disguise),Itznotyerzitz Mine,
 	Lair of the Ninja Snowmen,Lemon Party,Madness Reef,Oil Peak,Outskirts of Camp Logging Camp,Pandamonium Slums,Shop Class,South of the Border,
 	The "Fun" House,The Ancient Hobo Burial Ground,The Batrat and Ratbat Burrow,The Black Forest,The Brinier Deepers,The Briny Deeps,The Bugbear Pen,
 	The Castle in the Clouds in the Sky (Basement),The Castle in the Clouds in the Sky (Ground Floor),The Castle in the Clouds in the Sky (Top Floor),
