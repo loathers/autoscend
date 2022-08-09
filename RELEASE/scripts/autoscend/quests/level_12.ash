@@ -3,9 +3,9 @@
 Below are relevant locations for the war.
 war not started or finished with this side undefeated:
 [Frat House]
-[Frat House (Frat Disguise)]	//r26631 [Frat House (Frat Disguise)] (previously [Frat House In Disguise]) is identified but can not be an adventure target
+[Frat House (Frat Disguise)]	//r26631 changed from [Frat House In Disguise]
 [Hippy Camp]
-[Hippy Camp (Hippy Disguise)]	//r26631 [Hippy Camp (Hippy Disguise)] (previously [Hippy Camp In Disguise]) is identified but can not be an adventure target
+[Hippy Camp (Hippy Disguise)]	//r26631 changed from [Hippy Camp In Disguise]
 
 War started:
 [Wartime Frat House]
@@ -627,8 +627,7 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "fratboy" && possessOutfit("Filthy Hippy Disguise"))
 	{
 		autoOutfit("Filthy Hippy Disguise");
-		//r25671 this should be [Frat House In Disguise] but due to mafia issue it currently needs to be as below
-		//r26631 "In Disguise" location names changed; [Frat House (Frat Disguise)] exists but no [Frat House (Hippy Disguise)] (yet?)
+		//this should go to [Wartime Frat House (Hippy Disguise)] (despite war not started)
 		return autoAdv($location[Frat House]);
 	}
 	
@@ -636,8 +635,7 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "hippy" && possessOutfit("Frat Boy Ensemble"))
 	{
 		autoOutfit("Frat Boy Ensemble");
-		//r25671 this should be [Hippy Camp In Disguise] but due to mafia issue it currently needs to be as below
-		//r26631 "In Disguise" location names changed; [Hippy Camp (Hippy Disguise)] exists but no [Hippy Camp (Frat Disguise)] (yet?)
+		//this should go to [Wartime Hippy Camp (Frat Disguise)] (despite war not started)
 		return autoAdv($location[Hippy Camp]);
 	}
 	
