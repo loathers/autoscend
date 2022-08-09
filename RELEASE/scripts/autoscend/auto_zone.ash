@@ -1548,10 +1548,10 @@ boolean zone_available(location loc)
 	}
 
 	// compare our result with canadv(https://svn.code.sf.net/p/therazekolmafia/canadv/code/), log a warning if theres a difference. Ideally we can see if there are any differences between our code and Bales, and if not remove all of ours in favor of the dependency
-	boolean loc_ass = location_accessible(loc);
-	if(loc_ass != retval){
-		auto_log_debug("Uh oh, autoscend and location_accessible() dont agree on whether we can adventure at " + loc + " (autoscend: "+retval+", location_accessible: "+loc_ass+"). Will assume location available if either is true.");
-		retval = retval || loc_ass;
+	boolean canAdvRetval = can_adv(loc);
+	if(canAdvRetval != retval){
+		auto_log_debug("Uh oh, autoscend and canadv dont agree on whether we can adventure at " + loc + " (autoscend: "+retval+", canadv: "+canAdvRetval+"). Will assume locaiton available if either is true.");
+		retval = retval || canAdvRetval;
 	}
 
 	return retval;
