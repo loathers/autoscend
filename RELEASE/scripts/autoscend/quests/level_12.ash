@@ -3,9 +3,9 @@
 Below are relevant locations for the war.
 war not started or finished with this side undefeated:
 [Frat House]
-[Frat House (Frat Disguise)]	//r25731 incorrectly identified [Frat House In Disguise] as [Frat House] when encountered (r26631: [Frat House In Disguise] name changed to [Frat House (Frat Disguise)])
+[Frat House (Frat Disguise)]	//r26631 [Frat House (Frat Disguise)] (previously [Frat House In Disguise]) is identified but can not be an adventure target
 [Hippy Camp]
-[Hippy Camp (Hippy Disguise)]	//r25731 incorrectly identified [Hippy Camp In Disguise] as [Wartime Hippy Camp (Frat Disguise)] when encountered (r26631: [Hippy Camp In Disguise] name changed to [Hippy Camp (Hippy Disguise)])
+[Hippy Camp (Hippy Disguise)]	//r26631 [Hippy Camp (Hippy Disguise)] (previously [Hippy Camp In Disguise]) is identified but can not be an adventure target
 
 War started:
 [Wartime Frat House]
@@ -627,8 +627,8 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "fratboy" && possessOutfit("Filthy Hippy Disguise"))
 	{
 		autoOutfit("Filthy Hippy Disguise");
-		//r25671 this should be [Frat House (Frat Disguise)] but due to mafia issue it currently needs to be as below
-		//r26631 "In Disguise" location names changed; this issue not checked
+		//r25671 this should be [Frat House In Disguise] but due to mafia issue it currently needs to be as below
+		//r26631 "In Disguise" location names changed; [Frat House (Frat Disguise)] exists but no [Frat House (Hippy Disguise)] (yet?)
 		return autoAdv($location[Frat House]);
 	}
 	
@@ -636,8 +636,8 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "hippy" && possessOutfit("Frat Boy Ensemble"))
 	{
 		autoOutfit("Frat Boy Ensemble");
-		//r25671 this should be [Hippy Camp (Hippy Disguise)] but due to mafia issue it currently needs to be as below
-		//r26631 "In Disguise" location names changed; this issue not checked
+		//r25671 this should be [Hippy Camp In Disguise] but due to mafia issue it currently needs to be as below
+		//r26631 "In Disguise" location names changed; [Hippy Camp (Hippy Disguise)] exists but no [Hippy Camp (Frat Disguise)] (yet?)
 		return autoAdv($location[Hippy Camp]);
 	}
 	
