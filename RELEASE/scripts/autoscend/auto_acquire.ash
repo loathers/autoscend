@@ -373,7 +373,9 @@ boolean buy_item(item it, int quantity, int maxprice)
 
 boolean buyUpTo(int num, item it)
 {
-	return buyUpTo(num, it, 20000);
+	//use autoBuyPriceLimit from mafia to determine price cap
+	int abpl = get_property("autoBuyPriceLimit").to_int();
+	return buyUpTo(num, it, abpl);
 }
 
 boolean buyUpTo(int num, item it, int maxprice)
