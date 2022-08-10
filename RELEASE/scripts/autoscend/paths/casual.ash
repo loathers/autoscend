@@ -150,9 +150,20 @@ void acquireFamiliarsCasual()
 	if(!have_familiar($familiar[Gelatinous Cubeling]) && !have_familiar($familiar[Nosy Nose]))	//if none of the common better delevel familiars
 	{
 		//delevel enemy cheaply
-		if(!have_familiar($familiar[barrrnacle]) && item_amount($item[Barrrnacle]) == 0 && auto_mall_price($item[Barrrnacle]) < 1000 && my_meat() > 10000)
+		//don't already have?
+		if(!have_familiar($familiar[barrrnacle]) && item_amount($item[Barrrnacle]) == 0)
 		{
-			retrieve_item(1, $item[Barrrnacle]);			//will mallbuy it
+			int barnaclePrice = auto_mall_price($item[Barrrnacle]);
+			//cheap enough?
+			if(barnaclePrice < get_property("autoBuyPriceLimit").to_int())
+			{
+				//do we got the meat?
+				if(barnaclePrice < my_meat())
+				{
+					auto_log_info("Retrieving a barrnacle for " + barnaclePrice + "meat as a deleveling option.", "blue");
+					retrieve_item(1, $item[Barrrnacle]); //will mallbuy it
+				}
+			}
 		}
 		hatchFamiliar($familiar[Barrrnacle]);
 	}
@@ -175,9 +186,13 @@ void acquireFamiliarsCasual()
 	if(!have_familiar($familiar[Stooper]) && item_amount($item[Stooper]) == 0)
 	{
 		int price = auto_mall_price($item[Stooper]);
-		if(price < 20000 && price < my_meat())
+		if(price < get_property("autoBuyPriceLimit").to_int()) //cheap enough?
 		{
-			retrieve_item($item[Stooper]);
+			if(price < my_meat()) //do we got the meat?
+			{
+				auto_log_info("Retrieving a Stooper for " + price + " meat for better drinking.", "blue");
+				retrieve_item($item[Stooper]);
+			}
 		}
 		else if(price < my_meat())
 		{
@@ -190,9 +205,13 @@ void acquireFamiliarsCasual()
 	if(!have_familiar($familiar[Cute Meteor]) && item_amount($item[cute meteoroid]) == 0)
 	{
 		int price = auto_mall_price($item[cute meteoroid]);
-		if(price < 20000 && price < my_meat())
+		if(price < get_property("autoBuyPriceLimit").to_int()) //cheap enough?
 		{
-			retrieve_item($item[cute meteoroid]);
+			if(price < my_meat()) //do we got the meat?
+			{
+				auto_log_info("Retrieving a cute meteoroid for " + price + " meat for init and hot damage.", "blue");
+				retrieve_item($item[cute meteoroid]);
+			}
 		}
 	}
 	hatchFamiliar($familiar[Cute Meteor]);
@@ -219,20 +238,23 @@ boolean LX_acquireFamiliarLeprechaun()
 	{
 		return false;	//already have it
 	}
-	if(item_amount($item[leprechaun hatchling]) == 0 && my_meat() > 10000)
+	if(item_amount($item[leprechaun hatchling]) == 0)
 	{
+		int priceCap = min(my_meat(), get_property("autoBuyPriceLimit").to_int()); //Need both the meat to spend and the desire to spend it
 		int price_hatch = auto_mall_price($item[leprechaun hatchling]);
 		int price_bowl = auto_mall_price($item[bowl of lucky charms]);
-		if(price_hatch < 8000)		//at this price we might as well mallbuy the hatchling
+		if(price_hatch < priceCap)		//at this price we might as well mallbuy the hatchling
 		{
+			auto_log_info("Retrieving a leprechaun hatchling for " + price + " meat to increase meat gain.", "blue");
 			retrieve_item(1, $item[leprechaun hatchling]);
 		}
 		else if(auto_is_valid($item[bowl of lucky charms]))		//try to get hatchling via eating bowl of lucky charms.
 		{
 			if(item_amount($item[bowl of lucky charms]) == 0)
 			{
-				if(price_bowl < 3000)
+				if(price_bowl < priceCap)
 				{
+					auto_log_info("Retrieving a bowl of lucky charms for " + price + " meat to get a leprechaun hatchling.", "blue");
 					retrieve_item(1, $item[bowl of lucky charms]);		//just mallbuy it at this price
 				}
 				else if(zone_available($location[The Spooky Forest]))	//spend 1 adv and one clover to get it instead.
