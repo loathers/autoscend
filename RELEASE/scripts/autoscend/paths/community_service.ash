@@ -2379,6 +2379,7 @@ boolean LA_cs_communityService()
 			}
 
 			int questCost = get_cs_questCost(curQuest);
+			int priceLmt = get_property("autoBuyPriceLimit").to_int(); //desired spending cap for certain buffs
 			if(my_adventures() < questCost)
 			{
 				buffMaintain($effect[A Rose by Any Other Material]);
@@ -2388,11 +2389,11 @@ boolean LA_cs_communityService()
 			{
 				buffMaintain($effect[Throwing Some Shade]);
 			}
-			if((auto_mall_price($item[Shady Shades]) < 20000) && (questCost > 12))
+			if((auto_mall_price($item[Shady Shades]) < priceLmt) && (questCost > 12))
 			{
 				buffMaintain($effect[Throwing Some Shade]);
 			}
-			if((auto_mall_price($item[Squeaky Toy Rose]) < 20000) && (questCost > 12))
+			if((auto_mall_price($item[Squeaky Toy Rose]) < priceLmt) && (questCost > 12))
 			{
 				buffMaintain($effect[A Rose by Any Other Material]);
 			}
@@ -2407,13 +2408,16 @@ boolean LA_cs_communityService()
 				autoChew(item_amount($item[Handful of Smithereens]), $item[Handful of Smithereens]);
 			}
 
-			if((my_adventures() < questCost) || (auto_mall_price($item[Pocket Wish]) < 35000))
+			if((my_adventures() < questCost))
 			{
-				foreach eff in $effects[Chocolatesphere, Disquiet Riot, Patent Invisibility]
+				if ((auto_mall_price($item[Pocket Wish]) < priceLmt))
 				{
-					if(have_effect(eff) == 0)
+					foreach eff in $effects[Chocolatesphere, Disquiet Riot, Patent Invisibility]
 					{
-						makeGenieWish(eff);
+						if(have_effect(eff) == 0)
+						{
+							makeGenieWish(eff);
+						}
 					}
 				}
 			}
