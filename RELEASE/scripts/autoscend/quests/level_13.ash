@@ -184,9 +184,10 @@ void LX_buyStarKeyParts()
 	{
 		return;	//no unrestricted mall access
 	}
-	buyUpTo(1, $item[Star Chart], 1000);
-	buyUpTo(8, $item[Star], 1000);
-	buyUpTo(7, $item[line], 1000);
+	int pLimit = get_property("autoBuyPriceLimit").to_int(); //Desired spending cap from mafia
+	buyUpTo(1, $item[Star Chart], pLimit);
+	buyUpTo(8, $item[Star], pLimit);
+	buyUpTo(7, $item[line], pLimit);
 }
 
 boolean LX_getStarKey()
