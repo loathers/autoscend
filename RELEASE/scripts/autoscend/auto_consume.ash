@@ -316,11 +316,17 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	while(howMany > 0)
 	{
 		buffMaintain($effect[Song of the Glorious Lunch], 10, 1, toEat.fullness);
-		if((auto_get_campground() contains $item[Portable Mayo Clinic]) && (my_meat() > 11000) && (get_property("mayoInMouth") == "") && auto_is_valid($item[Portable Mayo Clinic]))
+
+		//If able, use Mayoflex for +1 adv / food
+		if((auto_get_campground() contains $item[Portable Mayo Clinic]) 
+		&& (get_property("autoBuyPriceLimit").to_int() < my_meat()) //Make sure we can afford the mayo
+		&& (get_property("mayoInMouth") == "") 
+		&& auto_is_valid($item[Portable Mayo Clinic]))
 		{
-			buyUpTo(1, $item[Mayoflex], 1000);
+			buyUpTo(1, $item[Mayoflex], get_property("autoBuyPriceLimit").to_int());
 			use(1, $item[Mayoflex]);
 		}
+
 		if(have_effect($effect[Ready to Eat]) > 0)
 		{
 			wasReadyToEat = true;
