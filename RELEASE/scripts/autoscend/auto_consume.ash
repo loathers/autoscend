@@ -319,11 +319,11 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 
 		//If able, use Mayoflex for +1 adv / food
 		if((auto_get_campground() contains $item[Portable Mayo Clinic]) 
-		&& (get_property("autoBuyPriceLimit").to_int() < my_meat()) //Make sure we can afford the mayo
 		&& (get_property("mayoInMouth") == "") 
 		&& auto_is_valid($item[Portable Mayo Clinic]))
 		{
-			buyUpTo(1, $item[Mayoflex], get_property("autoBuyPriceLimit").to_int());
+			int priceCap = min(get_property("autoBuyPriceLimit").to_int(), my_meat());
+			buyUpTo(1, $item[Mayoflex], priceCap);
 			use(1, $item[Mayoflex]);
 		}
 
