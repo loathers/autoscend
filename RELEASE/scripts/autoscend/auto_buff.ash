@@ -99,8 +99,10 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	{
 		int numToBuy = uses - item_amount(source);
 		int meatAvailableToBuy = my_meat() - meatReserve();
+		int meatLimit = min(meatAvailableToBuy, get_property("autoBuyPriceLimit").to_int());		
+
 		// attempt to buy from NPC for meat
-		if(npc_price(source) != 0 && meatAvailableToBuy > npc_price(source))
+		if(npc_price(source) != 0 && meatLimit > npc_price(source))
 		{
 			if(!speculative)
 			{
@@ -113,11 +115,11 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 			}
 		}
 		// attempt to buy in mall
-		else if(can_interact() && historical_price(source) != 0 && meatAvailableToBuy > historical_price(source))
+		else if(can_interact() && historical_price(source) != 0 && meatLimit > historical_price(source))
 		{
 			if(!speculative)
 			{
-				buy(numToBuy, source, meatAvailableToBuy / numToBuy);
+				buy(numToBuy, source, meatLimit / numToBuy);
 			}
 			else
 			{
