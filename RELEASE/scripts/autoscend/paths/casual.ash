@@ -245,7 +245,7 @@ boolean LX_acquireFamiliarLeprechaun()
 		int price_bowl = auto_mall_price($item[bowl of lucky charms]);
 		if(price_hatch < priceCap)		//at this price we might as well mallbuy the hatchling
 		{
-			auto_log_info("Retrieving a leprechaun hatchling for " + price + " meat to increase meat gain.", "blue");
+			auto_log_info("Retrieving a leprechaun hatchling for " + priceCap + " meat to increase meat gain.", "blue");
 			retrieve_item(1, $item[leprechaun hatchling]);
 		}
 		else if(auto_is_valid($item[bowl of lucky charms]))		//try to get hatchling via eating bowl of lucky charms.
@@ -254,7 +254,7 @@ boolean LX_acquireFamiliarLeprechaun()
 			{
 				if(price_bowl < priceCap)
 				{
-					auto_log_info("Retrieving a bowl of lucky charms for " + price + " meat to get a leprechaun hatchling.", "blue");
+					auto_log_info("Retrieving a bowl of lucky charms for " + priceCap + " meat to get a leprechaun hatchling.", "blue");
 					retrieve_item(1, $item[bowl of lucky charms]);		//just mallbuy it at this price
 				}
 				else if(zone_available($location[The Spooky Forest]))	//spend 1 adv and one clover to get it instead.
