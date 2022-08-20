@@ -497,6 +497,20 @@ generic_t zone_combatMod(location loc)
 		value = -80;
 		break;
 	case $location[Sonofa Beach]:
+		//when wanderer replacing strategy is about to be used, combat modifier is useless. these are the replaced wanderers
+		if(auto_voteMonster())
+		{	foreach sl in $slots[acc3,acc2,acc1]
+			{	if(get_property("_auto_maximize_equip_" + sl.to_string()) == to_string($item[&quot;I voted!&quot; sticker]))
+				{	value = 0;
+					break;
+				}
+			}
+		}
+		if(auto_sausageGoblin() && get_property("_auto_maximize_equip_off-hand") == to_string($item[Kramco Sausage-o-Matic&trade;]))
+		{	value = 0;
+			break;
+		}
+		//otherwise if no wanderer replace
 		value = 90;
 		break;
 	case $location[The Upper Chamber]:
