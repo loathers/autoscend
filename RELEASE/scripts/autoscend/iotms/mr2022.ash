@@ -293,25 +293,27 @@ void utilizeStillsuit() {
 
 	familiar sweetestSweatFamiliar()
 	{
+		familiar currentFamiliar = my_familiar();
+		
 		//todo better choice of best familiar effects
 		foreach sweetSweatFamiliar in $familiars[Grinning Turtle,Grouper Groupie,Star Starfish,Cat Burglar,Slimeling,Sleazy Gravy Fairy]	//these give item and sleaze
 		{
-			if(have_familiar(sweetSweatFamiliar) && auto_is_valid(sweetSweatFamiliar))
+			if(have_familiar(sweetSweatFamiliar) && auto_is_valid(sweetSweatFamiliar) && sweetSweatFamiliar != currentFamiliar)
 			{
 				return sweetSweatFamiliar;
 			}
 		}
 		foreach commonFamiliar in $familiars[Baby Gravy Fairy,Smiling Rat,Mosquito,Reassembled Blackbird]		//default fall back, you probably have one of these
 		{
-			if(have_familiar(commonFamiliar) && auto_is_valid(commonFamiliar))
+			if(have_familiar(commonFamiliar) && auto_is_valid(commonFamiliar) && commonFamiliar != currentFamiliar)
 			{
 				return commonFamiliar;
 			}
 		}
 		foreach anyFamiliar in $familiars[]		//if all else failed just pick any available familiar that can wear equipment
 		{
-			if(have_familiar(anyFamiliar) && auto_is_valid(anyFamiliar) && 
-			!($familiars[Comma Chameleon,Mad Hatrack,Disembodied Hand,Ghost of Crimbo Carols,Ghost of Crimbo Cheer,Ghost of Crimbo Commerce] contains anyFamiliar))
+			if(have_familiar(anyFamiliar) && auto_is_valid(anyFamiliar) && anyFamiliar != currentFamiliar && 
+			!($familiars[Comma Chameleon,Mad Hatrack,Fancypants Scarecrow,Disembodied Hand,Ghost of Crimbo Carols,Ghost of Crimbo Cheer,Ghost of Crimbo Commerce] contains anyFamiliar))
 			{
 				return anyFamiliar;
 			}
