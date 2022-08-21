@@ -1198,7 +1198,7 @@ boolean provideMaxMP(int amt, location loc, boolean notForCombat, boolean doEqui
 	{
 		//any maximizer parameters added by a quest script before calling this provider will be there but pre adv may add more for the zone later
 		//so the weight given to MP when trying to enable a skill for next adventure should be high enough to not get beaten by other weights added by pre adv
-		//note "max" argument doesn't make optimal combinations with other maximizer modifiers because most slots are scored without considering if other slots already satisfy the max
+		//note "max" argument doesn't make optimal combinations with other maximizer modifiers because most slots are scored without considering choices maximizer will make in other slots
 		//with high mp weight a single maximize operation can equip several pieces of mp equipment over "max" needed mp. but being able to use desired combat spell is probably more important
 		
 		//not capping value for notForCombat because restores that go over could be wasted?, cost modifiers are negative so for those maximum cap arguments are effectively not usable
