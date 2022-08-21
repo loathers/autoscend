@@ -559,8 +559,6 @@ string defaultMaximizeStatement()
 			res += ",15" + primeStat + " experience";
 		}
 		//TODO the score to give to experience VS percent depends on how much experience is expected from fights
-		//mafia now also already adds a base experience percent score to "exp": 
-		// "Consider experience percentage modifier when maximizing for experience, assuming that the monster's base exp will be the player's level * 2"
 		res += ",5" + primeStat + " experience percent";
 	}
 	if(my_basestat(primeStat) > 122)
