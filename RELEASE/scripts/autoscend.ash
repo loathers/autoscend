@@ -1,4 +1,4 @@
-since r26540;	// Sweat tracking at the end of combat
+since r26626;	// Add runtimelibrary function to equip an item to a specific familiar (even in terrarium), equip(familiar,item) added
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

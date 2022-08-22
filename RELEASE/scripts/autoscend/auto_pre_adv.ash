@@ -763,6 +763,8 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
+	utilizeStillsuit();
+
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
 	
