@@ -1271,8 +1271,28 @@ boolean L11_aridDesert()
 
 		if(!autoAdv(1, $location[The Oasis]))
 		{
-			auto_log_warning("Could not visit the Oasis for some reason, assuming desertExploration is incorrect.", "red");
-			set_property("desertExploration", 0);
+			auto_log_warning("Could not visit the Oasis for some reason, desertExploration may be incorrect.", "red");
+			int initial = get_property("desertExploration").to_int();
+			string page = visit_url("place.php?whichplace=desertbeach");
+			matcher desert_matcher = create_matcher("title=\"[(](\\d+)% explored[)]\"", page);
+			if(desert_matcher.find())
+			{
+				int found = to_int(desert_matcher.group(1));
+				if(found != initial)
+				{
+					auto_log_info("Incorrectly had exploration value of " + initial + " when it should be at " + found + ". This was corrected. Trying to resume.", "blue");
+					set_property("desertExploration", found);
+					return true;
+				}
+				if(!autoAdv(1, $location[The Oasis]))
+				{
+					abort("Tried to adventure in The Oasis but could not. property desertExploration determined to be correct");
+				}
+			}
+			else
+			{
+				abort("Tried to adventure in The Oasis but could not, and could not verify the actual exploration amount of the desert");
+			}
 		}
 	}
 	return true;

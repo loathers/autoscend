@@ -930,7 +930,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			(it.fullness == 0 || it.inebriety == 0) &&
 			auto_is_valid(it))
 		{
-			boolean value_allowed = (historical_price(it) <= get_property("autoBuyPriceLimit").to_int()) ||
+			boolean value_allowed = (historical_price(it) < get_property("autoBuyPriceLimit").to_int()) ||
 									($items[blueberry muffin, bran muffin, chocolate chip muffin] contains it && item_amount(it) > 0 && //muffins are expensive but renewable
 									my_path() != "Grey You"); //Grey You should not even get to here if ever supported but it consumes the tin so blocked just in case
 									
