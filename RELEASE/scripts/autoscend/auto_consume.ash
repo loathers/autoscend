@@ -998,15 +998,15 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		void considerNextPie()
 		{
 			//missing at least 1 key/token, in case it will be only one first consider mainstat pie if possible
-			if(my_primestat() == $stat[muscle] && item_amount($item[Boris\'s key]) == 0)
+			if(!wantBorisPie && my_primestat() == $stat[muscle] && item_amount($item[Boris\'s key]) == 0 && auto_is_valid($item[Boris\'s key lime pie]))
 				wantBorisPie = true;
-			else if(my_primestat() == $stat[mysticality] && item_amount($item[Jarlsberg\'s key]) == 0)
+			else if(!wantJarlsbergPie && my_primestat() == $stat[mysticality] && item_amount($item[Jarlsberg\'s key]) == 0 && auto_is_valid($item[Jarlsberg\'s key lime pie]))
 				wantJarlsbergPie = true;
-			else if(!wantPetePie && item_amount($item[Sneaky Pete\'s key]) == 0)
+			else if(!wantPetePie && item_amount($item[Sneaky Pete\'s key]) == 0 && auto_is_valid($item[Sneaky Pete\'s key lime pie]))
 				wantPetePie = true;
-			else if(!wantJarlsbergPie && item_amount($item[Jarlsberg\'s key]) == 0)
+			else if(!wantJarlsbergPie && item_amount($item[Jarlsberg\'s key]) == 0 && auto_is_valid($item[Jarlsberg\'s key lime pie]))
 				wantJarlsbergPie = true;
-			else if(!wantBorisPie && item_amount($item[Boris\'s key]) == 0)
+			else if(!wantBorisPie && item_amount($item[Boris\'s key]) == 0 && auto_is_valid($item[Boris\'s key lime pie]))
 				wantBorisPie = true;
 		}
 		for (int i=0; i<missingHeroKeys; i++)
