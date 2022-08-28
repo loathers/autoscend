@@ -1,4 +1,4 @@
-since r26626;	// Add runtimelibrary function to equip an item to a specific familiar (even in terrarium), equip(familiar,item) added
+since r26631;	// Refactor KoLAdventure validation. (Frat House In Disguise/Hippy Camp In Disguise locations renamed)
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
