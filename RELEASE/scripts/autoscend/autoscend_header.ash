@@ -767,7 +767,9 @@ boolean plumber_buyStuff();
 int plumber_ppCost(skill sk);
 boolean plumber_canDealScalingDamage();
 boolean plumber_skillValid(skill sk);
+boolean plumber_equipTool(stat st, boolean forceEquipRightNow);
 boolean plumber_equipTool(stat st);
+boolean plumber_forceEquipTool();
 void plumber_eat_xp();
 boolean LM_plumber();
 
