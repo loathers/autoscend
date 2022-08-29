@@ -1035,7 +1035,7 @@ void equipRollover(boolean silent)
 	}
 }
 
-boolean auto_forceEquipSword() {
+boolean auto_forceEquipSword(boolean speculative) {
 	item swordToEquip = $item[none];
 	// use the ebony epee if we have it
 	if (possessEquipment($item[ebony epee]))
@@ -1047,8 +1047,8 @@ boolean auto_forceEquipSword() {
 	{
 		// check for some swords that we might have acquired in run already. Yes machetes are actually swords.
 		foreach it in $items[antique machete, black sword, broken sword, cardboard katana, cardboard wakizashi,
-		drowsy sword, knob goblin deluxe scimitar, knob goblin scimitar, lupine sword, muculent machete,
-		ridiculously huge sword, serpentine sword, vorpal blade, white sword, sweet ninja sword]
+		knob goblin deluxe scimitar, knob goblin scimitar, lupine sword, muculent machete, serpentine sword,
+		vorpal blade, white sword, sweet ninja sword, drowsy sword, ridiculously huge sword]
 		{
 			if (possessEquipment(it) && auto_can_equip(it))
 			{
@@ -1073,7 +1073,28 @@ boolean auto_forceEquipSword() {
 		return false;
 	}
 
+	if (get_property("auto_equipment_override_weapon").to_item() != $item[none] && auto_can_equip(get_property("auto_equipment_override_weapon").to_item(),$slot[weapon]))
+	{
+		if (item_type(get_property("auto_equipment_override_weapon").to_item()) == "sword")
+		{
+			return true;
+		}
+		else
+		{
+			auto_log_debug("Can not successfully force equip a sword because user defined override weapon will replace it before combat", "gold");
+			return false;
+		}
+	}
+	
+	if (speculative)
+	{
+		return auto_can_equip(swordToEquip, $slot[weapon]);
+	}
 	return autoForceEquip($slot[weapon], swordToEquip);
+}
+
+boolean auto_forceEquipSword() {
+	return auto_forceEquipSword(false);
 }
 
 boolean is_watch(item it)
