@@ -1,8 +1,8 @@
 pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed;prop:hiddenApartmentProgress<7
-Writing Desk	!prop:writingDesksDefeated=5
+Writing Desk	prop:writingDesksDefeated<4
 cabinet of Dr. Limpieza
 Dairy Goat	loc:The Goatlet
-Morbid Skull
+Morbid Skull	loc:Fear Man's Level
 Pygmy Bowler
 Pygmy Witch Surgeon
 pygmy witch accountant	loc:The Hidden Office Building
@@ -17,15 +17,20 @@ Government Scientist	class:Ed the Undying
 Green Ops Soldier	!path:Kingdom of Exploathing;prop:hippiesDefeated>399
 War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;!sniffed:War Hippy Homeopath
 War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;!sniffed:War Hippy Naturopathic Homeopath
+Naughty Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Sorority Nurse
+Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Naughty Sorority Nurse
 Possessed Wine Rack
 Blue Oyster cultist
-Dirty Old Lihc	prop:cyrptNicheEvilness>28
-Possibility Giant	!path:G-Lover;!path:Pocket Familiars;!path:Bees Hate You;prop:chaosButterflyThrown=false;item:chaos butterfly<1
-Serialbus	item:bus pass<5
-CH Imp	item:imp air<5
+Dirty Old Lihc	prop:cyrptNicheEvilness>29
+Possibility Giant	loc:The Castle in the Clouds in the Sky \(Ground Floor\);prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover
+bearpig topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:spider (duck?) topiary animal
+elephant (meatcar?) topiary animal	!familiar:Melodramedary;!sniffed:bearpig topiary animal;!sniffed:spider (duck?) topiary animal
+spider (duck?) topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:bearpig topiary animal
+Serialbus	item:bus pass<4
+CH Imp	item:imp air<4
 Camel Toe	!sniffed:Skinflute
 Skinflute	!sniffed:Camel Toe
-Red Butler
+Red Butler	prop:_glarkCableUses<5;item:glark cable<5
 # Bugbear Invasion Wanderers
 scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared
 hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared
