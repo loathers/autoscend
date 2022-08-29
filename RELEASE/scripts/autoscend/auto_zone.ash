@@ -73,13 +73,17 @@ generic_t zone_needItem(location loc)
 			value = 5.0;
 		break;
 	case $location[Wartime Frat House]:
-		if (!possessOutfit("Frat Warrior Fatigues")) {
+		if (!possessOutfit("Frat Warrior Fatigues")
+		&& !is_wearing_outfit("War Hippy Fatigues")) {	//already in the other war outfit means only there to start the war
 			value = 5.0;
 		}
+		break;
 	case $location[Wartime Hippy Camp]:
-		if (!possessOutfit("War Hippy Fatigues")) {
+		if (!possessOutfit("War Hippy Fatigues")
+		&& !is_wearing_outfit("Frat Warrior Fatigues")) {	//already in the other war outfit means only there to start the war
 			value = 5.0;
 		}
+		break;
 	case $location[The Battlefield (Frat Uniform)]:
 	case $location[The Battlefield (Hippy Uniform)]:
 			value = 5.0;
@@ -144,13 +148,15 @@ generic_t zone_needItem(location loc)
 		break;
 	case $location[The Copperhead Club]:
 	case $location[A Mob of Zeppelin Protesters]:
-		value = 15.0;
+		if(internalQuestStatus("questL11Ron") >= 1) {
+			value = 15.0;
+		}
 		break;
 	case $location[The Red Zeppelin]:
 		value = 30.0;
 		break;
 	case $location[The Penultimate Fantasy Airship]:
-		if(!possessEquipment($item[Amulet Of Extreme Plot Significance]) && !possessEquipment($item[Titanium Assault Umbrella]) && !possessEquipment($item[unbreakable umbrella]))
+		if(!possessEquipment($item[Amulet Of Extreme Plot Significance]))
 		{
 			value = 10.0;
 		}
@@ -491,6 +497,20 @@ generic_t zone_combatMod(location loc)
 		value = -80;
 		break;
 	case $location[Sonofa Beach]:
+		//when wanderer replacing strategy is about to be used, combat modifier is useless. these are the replaced wanderers
+		if(auto_voteMonster())
+		{	foreach sl in $slots[acc3,acc2,acc1]
+			{	if(get_property("_auto_maximize_equip_" + sl.to_string()) == to_string($item[&quot;I voted!&quot; sticker]))
+				{	value = 0;
+					break;
+				}
+			}
+		}
+		if(auto_sausageGoblin() && get_property("_auto_maximize_equip_off-hand") == to_string($item[Kramco Sausage-o-Matic&trade;]))
+		{	value = 0;
+			break;
+		}
+		//otherwise if no wanderer replace
 		value = 90;
 		break;
 	case $location[The Upper Chamber]:
@@ -498,9 +518,6 @@ generic_t zone_combatMod(location loc)
 		break;
 	case $location[The Haunted Billiards Room]:
 		value = -85;
-		break;
-	case $location[The Haunted Library]:
-		value = 25;
 		break;
 	case $location[The Haunted Gallery]:
 		if((delay._int == 0) || (!contains_text(get_property("relayCounters"), "Garden Banished")))
@@ -529,7 +546,9 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[A Mob Of Zeppelin Protesters]:
-		value = -70;
+		if(internalQuestStatus("questL11Ron") >= 1) {
+			value = -70;
+		}
 		break;
 	case $location[The Black Forest]:
 		if (internalQuestStatus("questL13Final") < 6) {
@@ -582,7 +601,11 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[Lair of the Ninja Snowmen]:
-		value = 80;
+		if(internalQuestStatus("questL08Trapper") < 3 &&
+		(item_amount($item[Ninja Carabiner]) == 0 || item_amount($item[Ninja Crampons]) == 0 || item_amount($item[Ninja Rope]) == 0))
+		{
+			value = 80;
+		}
 		break;
 	case $location[The Dark Neck of the Woods]:
 	case $location[The Dark Heart of the Woods]:
@@ -599,7 +622,7 @@ generic_t zone_combatMod(location loc)
 	case $location[The Typical Tavern Cellar]:
 		//We could cut it off early if the Rat Faucet is the last one
 		//And marginally if we know the 3rd/6th square are forced events.
-		value = -75;
+		//actual desired value for combat or non combat is decided by level_03.ash based on elemental damage bonus
 		break;
 	case $location[The Spooky Forest]:
 		if(delay._int == 0)
