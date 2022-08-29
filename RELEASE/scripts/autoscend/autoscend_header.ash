@@ -917,7 +917,9 @@ boolean L6_dakotaFanning();
 ########################################################################################################
 //Defined in autoscend/quests/level_07.ash
 void cyrptChoiceHandler(int choice);
+int cyrptEvilBonus();
 boolean L7_crypt();
+boolean L7_override();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_08.ash
@@ -1290,6 +1292,7 @@ boolean possessOutfit(string outfit);
 void equipBaseline();
 void ensureSealClubs();
 void equipRollover(boolean silent);
+boolean auto_forceEquipSword(boolean speculative);
 boolean auto_forceEquipSword();
 boolean is_watch(item it);
 
