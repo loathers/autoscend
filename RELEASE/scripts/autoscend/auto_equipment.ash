@@ -361,7 +361,7 @@ void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip
 		HPlost = my_hp() - simValue("Buffed HP Maximum");
 		MPlost = my_mp() - simValue("Buffed MP Maximum");
 		if(HPlost <= 0 && MPlost <= 0)
-		{	catch equip(statgainIncreasers[sl],sl);	//causes no loss so it can be equipped right now
+		{	equip(statgainIncreasers[sl],sl);	//causes no loss so it can be equipped right now
 			continue;
 		}
 		speculateAllItems += speculateOneItem;	//otherwise speculate with all items that have been left out
