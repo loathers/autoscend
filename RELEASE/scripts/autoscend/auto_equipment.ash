@@ -533,13 +533,45 @@ string defaultMaximizeStatement()
 	{
 		res += ",water,hot res";
 	}
+	
+	stat primeStat = my_primestat();
 	if(in_plumber())
 	{
 		res += ",plumber,-ml";
 	}
 	else if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
 	{
-		res += ",10exp,5" + my_primestat() + " experience percent";
+		//experience scores for the default maximizer statement
+		
+		if(get_property("auto_MLSafetyLimit") == "")
+		{
+			//"exp" includes bonus from "ml" sources and values mainstat experience with a variable? score comparable to 0.25ML?
+			//in general "10exp" gives a score equivalent to "15(primeStat) experience"
+			//"exp" does not value "+(offstat) experience"
+			res += ",10exp";
+		}
+		else	//a value is given for ML safety limit
+		{
+			//use "(primeStat) experience" instead of "exp" in the hope that it will not include ML however this is not consistently true
+			//the conditions under which it still adds value to ML are unclear (level? not ronin? volleyball familiar??)
+			//the maximizer score for limited ML is added later by pre_adv
+			//pre_adv will tell the maximizer to not value ML over the safety limit (though enforcing that limit is not possible with the maximizer syntax and scoring system)
+			res += ",15" + primeStat + " experience";
+		}
+		//TODO the score to give to experience VS percent depends on how much experience is expected from fights
+		res += ",5" + primeStat + " experience percent";
+	}
+	if(my_basestat(primeStat) > 122)
+	{
+		//>= level 12 or almost there, more offstat experience may be needed for the war outfit (requires 70 mox and 70 mys)
+		if(my_basestat($stat[moxie]) < 70 && get_property("warProgress") != "finished")
+		{
+			res += "10moxie experience,3moxie experience percent";
+		}
+		if(my_basestat($stat[mysticality]) < 70 && get_property("warProgress") != "finished")
+		{
+			res += "10mysticality experience,3mysticality experience percent";
+		}
 	}
 
 	return res;
@@ -1003,7 +1035,7 @@ void equipRollover(boolean silent)
 	}
 }
 
-boolean auto_forceEquipSword() {
+boolean auto_forceEquipSword(boolean speculative) {
 	item swordToEquip = $item[none];
 	// use the ebony epee if we have it
 	if (possessEquipment($item[ebony epee]))
@@ -1015,8 +1047,8 @@ boolean auto_forceEquipSword() {
 	{
 		// check for some swords that we might have acquired in run already. Yes machetes are actually swords.
 		foreach it in $items[antique machete, black sword, broken sword, cardboard katana, cardboard wakizashi,
-		drowsy sword, knob goblin deluxe scimitar, knob goblin scimitar, lupine sword, muculent machete,
-		ridiculously huge sword, serpentine sword, vorpal blade, white sword, sweet ninja sword]
+		knob goblin deluxe scimitar, knob goblin scimitar, lupine sword, muculent machete, serpentine sword,
+		vorpal blade, white sword, sweet ninja sword, drowsy sword, ridiculously huge sword]
 		{
 			if (possessEquipment(it) && auto_can_equip(it))
 			{
@@ -1041,7 +1073,28 @@ boolean auto_forceEquipSword() {
 		return false;
 	}
 
+	if (get_property("auto_equipment_override_weapon").to_item() != $item[none] && auto_can_equip(get_property("auto_equipment_override_weapon").to_item(),$slot[weapon]))
+	{
+		if (item_type(get_property("auto_equipment_override_weapon").to_item()) == "sword")
+		{
+			return true;
+		}
+		else
+		{
+			auto_log_debug("Can not successfully force equip a sword because user defined override weapon will replace it before combat", "gold");
+			return false;
+		}
+	}
+	
+	if (speculative)
+	{
+		return auto_can_equip(swordToEquip, $slot[weapon]);
+	}
 	return autoForceEquip($slot[weapon], swordToEquip);
+}
+
+boolean auto_forceEquipSword() {
+	return auto_forceEquipSword(false);
 }
 
 boolean is_watch(item it)
