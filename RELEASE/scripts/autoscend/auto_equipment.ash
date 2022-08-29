@@ -194,7 +194,11 @@ item[slot] speculatedMaximizerEquipment(string statement)
 		}
 		string maximizerText = entry.display;
 		if(contains_text(maximizerText,"unequip "))	continue;
-		if(!contains_text(maximizerText,"equip "))	continue;	//will not know how to handle special actions like "fold ", "umbrella ", ...
+		if(!contains_text(maximizerText,"equip "))
+		{
+			boolean keeping = (entry.command == "" && contains_text(maximizerText,"keep "));	//already equipped item can be recorded
+			if(!keeping) continue; 	//will not know how to handle other special actions like "fold ", "umbrella ", ...
+		}
 		item maximizerItem = entry.item;
 		if(maximizerItem == $item[none]) continue;
 		slot maximizerItemSlot = maximizerItem.to_slot();
@@ -202,36 +206,26 @@ item[slot] speculatedMaximizerEquipment(string statement)
 		slot overrideSlot;
 		if(maximizerItemSlot == $slot[weapon])
 		{
-			if(weaponPicked && offhandPicked)
+			if(weaponPicked)
 			{
-				//this must be familiar weapon
-				if(my_familiar() == $familiar[Disembodied Hand])
+				if(!offhandPicked && auto_have_skill($skill[Double-Fisted Skull Smashing]) && 
+				weapon_type(maximizerItem) == weapon_type(res[$slot[weapon]]) && item_type(maximizerItem) != "chefstaff")
 				{
-					overrideSlot = $slot[familiar];
-				}
-				else
-				{
-					auto_log_debug("There are more weapons than we can wear in speculatedMaximizerEquipment but familiar is not Disembodied Hand, something must be wrong", "gold");
-					continue;
-				}
-			}
-			else if(weaponPicked)
-			{
-				//this must be offhand weapon
-				if(auto_have_skill($skill[Double-Fisted Skull Smashing]))
-				{
+					//this must be offhand weapon
 					overrideSlot = $slot[off-hand];
+					offhandPicked = true;
 				}
-				else if(my_familiar() == $familiar[Disembodied Hand])
+				else if(my_familiar() == $familiar[Disembodied Hand] && weapon_hands(maximizerItem) == 1 &&
+				item_type(maximizerItem) != "chefstaff" && item_type(maximizerItem) != "accordion")
 				{
-					overrideSlot = $slot[familiar];	//should have offhandPicked before getting to familiar slot but this could happen if there are no offhand items
+					//this must be familiar weapon
+					overrideSlot = $slot[familiar];
 				}
 				else
 				{
 					auto_log_debug("There are more weapons than we can wear in speculatedMaximizerEquipment, something must be wrong", "gold");
 					continue;
 				}
-				offhandPicked = true;
 			}
 			else
 			{
@@ -341,6 +335,18 @@ void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip
 				break;
 			}
 		}
+	}
+	//solve incompatible hand slots, since only statgain equipment is taken from simulation which leaves potentially incompatible hand equipment remaining
+	if(statgainIncreasers[$slot[off-hand]] != $item[none] && statgainIncreasers[$slot[weapon]] == $item[none])
+	{
+		boolean currentWeaponIncompatibleWithSimulatedOffHand = (weapon_hands(equipped_item($slot[weapon])) > 1) || 
+		(statgainIncreasers[$slot[off-hand]].to_slot() == $slot[weapon] && weapon_type(statgainIncreasers[$slot[off-hand]]) != weapon_type(equipped_item($slot[weapon])));
+		if(currentWeaponIncompatibleWithSimulatedOffHand)	statgainIncreasers[$slot[weapon]] = simulatedEquipment[$slot[weapon]];	//add maximizer simulated compatible weapon
+	}
+	else if(statgainIncreasers[$slot[weapon]] != $item[none] && statgainIncreasers[$slot[off-hand]] == $item[none] && equipped_item($slot[off-hand]).to_slot() == $slot[weapon])
+	{	
+		boolean currentOffHandIncompatibleWithSimulatedWeapon = weapon_type(statgainIncreasers[$slot[weapon]]) != weapon_type(equipped_item($slot[off-hand]));
+		if(currentOffHandIncompatibleWithSimulatedWeapon)	statgainIncreasers[$slot[off-hand]] = simulatedEquipment[$slot[off-hand]];	//add maximizer simulated compatible off-hand
 	}
 	
 	//equipment would be equipped in the order it was listed. check if HP or MP would be lost by equipping
