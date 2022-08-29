@@ -990,6 +990,150 @@ boolean L11_aridDesert()
 		progress += 2;
 	}
 
+	if(get_property("auto_gnasirUnlocked").to_boolean())
+	{
+		if((get_property("gnasirProgress").to_int() & 2) != 2)
+		{
+			boolean canBuyPaint = true;
+			if(in_wotsf() || in_nuclear())
+			{
+				canBuyPaint = false;
+			}
+
+			if((item_amount($item[Can of Black Paint]) > 0) || ((my_meat() >= npc_price($item[Can of Black Paint])) && canBuyPaint))
+			{
+				buyUpTo(1, $item[Can of Black Paint]);
+				auto_log_info("Returning the Can of Black Paint", "blue");
+				auto_visit_gnasir();
+				visit_url("choice.php?whichchoice=805&option=1&pwd=");
+				visit_url("choice.php?whichchoice=805&option=2&pwd=");
+				visit_url("choice.php?whichchoice=805&option=1&pwd=");
+				if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
+				{
+					cli_execute("refresh inv");
+					if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
+					{
+						if(item_amount($item[Can Of Black Paint]) == 0)
+						{
+							auto_log_warning("Mafia did not track gnasir Can of Black Paint (0x2). Fixing.", "red");
+							set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 2);
+							return true;
+						}
+						else
+						{
+							abort("Returned can of black paint but did not return can of black paint.");
+						}
+					}
+					else
+					{
+						if((get_property("gnasirProgress").to_int() & 2) != 2)
+						{
+							auto_log_warning("Mafia did not track gnasir Can of Black Paint (0x2). Fixing.", "red");
+							set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 2);
+						}
+					}
+				}
+				use(1, $item[desert sightseeing pamphlet]);
+				return true;
+			}
+		}
+
+		if((item_amount($item[Killing Jar]) > 0) && ((get_property("gnasirProgress").to_int() & 4) != 4))
+		{
+			auto_log_info("Returning the killing jar", "blue");
+			auto_visit_gnasir();
+			visit_url("choice.php?whichchoice=805&option=1&pwd=");
+			visit_url("choice.php?whichchoice=805&option=2&pwd=");
+			visit_url("choice.php?whichchoice=805&option=1&pwd=");
+			if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
+			{
+				cli_execute("refresh inv");
+				if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
+				{
+					abort("Returned killing jar but did not return killing jar.");
+				}
+				else
+				{
+					if((get_property("gnasirProgress").to_int() & 4) != 4)
+					{
+						auto_log_warning("Mafia did not track gnasir Killing Jar (0x4). Fixing.", "red");
+						set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 4);
+					}
+				}
+			}
+			use(1, $item[desert sightseeing pamphlet]);
+			return true;
+		}
+
+		if((item_amount($item[Worm-Riding Manual Page]) >= 15) && ((get_property("gnasirProgress").to_int() & 8) != 8))
+		{
+			auto_log_info("Returning the worm-riding manual pages", "blue");
+			auto_visit_gnasir();
+			visit_url("choice.php?whichchoice=805&option=1&pwd=");
+			visit_url("choice.php?whichchoice=805&option=2&pwd=");
+			visit_url("choice.php?whichchoice=805&option=1&pwd=");
+			if(item_amount($item[Worm-Riding Hooks]) == 0)
+			{
+				auto_log_error("We messed up in the Desert, get the Worm-Riding Hooks and use them please.");
+				abort("We messed up in the Desert, get the Worm-Riding Hooks and use them please.");
+			}
+			if(item_amount($item[Worm-Riding Manual Page]) >= 15)
+			{
+				auto_log_warning("Mafia doesn't realize that we've returned the worm-riding manual pages... fixing", "red");
+				cli_execute("refresh all");
+				if((get_property("gnasirProgress").to_int() & 8) != 8)
+				{
+					auto_log_warning("Mafia did not track gnasir Worm-Riding Manual Pages (0x8). Fixing.", "red");
+					set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 8);
+				}
+			}
+			return true;
+		}
+
+		if((item_amount($item[Worm-Riding Hooks]) > 0) && ((get_property("gnasirProgress").to_int() & 16) != 16))
+		{
+			pullXWhenHaveY($item[Drum Machine], 1, 0);
+			if(item_amount($item[Drum Machine]) > 0)
+			{
+				auto_log_info("Drum machine desert time!", "blue");
+				use(1, $item[Drum Machine]);
+				return true;
+			}
+		}
+
+		# If we have done the Worm-Riding Hooks or the Killing jar, don\'t do this.
+		if((100 - get_property("desertExploration").to_int() <= 15) && ((get_property("gnasirProgress").to_int() & 12) == 0))
+		{
+			pullXWhenHaveY($item[Killing Jar], 1, 0);
+			if(item_amount($item[Killing Jar]) > 0)
+			{
+				auto_log_info("Secondary killing jar handler", "blue");
+				auto_visit_gnasir();
+				visit_url("choice.php?whichchoice=805&option=1&pwd=");
+				visit_url("choice.php?whichchoice=805&option=2&pwd=");
+				visit_url("choice.php?whichchoice=805&option=1&pwd=");
+				if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
+				{
+					cli_execute("refresh inv");
+					if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
+					{
+						abort("Returned killing jar (secondary) but did not return killing jar.");
+					}
+					else
+					{
+						if((get_property("gnasirProgress").to_int() & 4) != 4)
+						{
+							auto_log_warning("Mafia did not track gnasir Killing Jar (0x4). Fixing.", "red");
+							set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 4);
+						}
+					}
+				}
+				use(1, $item[desert sightseeing pamphlet]);
+				return true;
+			}
+		}
+	}
+
 	if((have_effect($effect[Ultrahydrated]) > 0) || (get_property("desertExploration").to_int() == 0))
 	{
 		auto_log_info("Searching for the pyramid", "blue");
@@ -1106,149 +1250,6 @@ boolean L11_aridDesert()
 			return true;
 		}
 
-		if(get_property("auto_gnasirUnlocked").to_boolean() && ((get_property("gnasirProgress").to_int() & 2) != 2))
-		{
-			boolean canBuyPaint = true;
-			if(in_wotsf() || in_nuclear())
-			{
-				canBuyPaint = false;
-			}
-
-			if((item_amount($item[Can of Black Paint]) > 0) || ((my_meat() >= npc_price($item[Can of Black Paint])) && canBuyPaint))
-			{
-				buyUpTo(1, $item[Can of Black Paint]);
-				auto_log_info("Returning the Can of Black Paint", "blue");
-				auto_visit_gnasir();
-				visit_url("choice.php?whichchoice=805&option=1&pwd=");
-				visit_url("choice.php?whichchoice=805&option=2&pwd=");
-				visit_url("choice.php?whichchoice=805&option=1&pwd=");
-				if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
-				{
-					cli_execute("refresh inv");
-					if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
-					{
-						if(item_amount($item[Can Of Black Paint]) == 0)
-						{
-							auto_log_warning("Mafia did not track gnasir Can of Black Paint (0x2). Fixing.", "red");
-							set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 2);
-							return true;
-						}
-						else
-						{
-							abort("Returned can of black paint but did not return can of black paint.");
-						}
-					}
-					else
-					{
-						if((get_property("gnasirProgress").to_int() & 2) != 2)
-						{
-							auto_log_warning("Mafia did not track gnasir Can of Black Paint (0x2). Fixing.", "red");
-							set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 2);
-						}
-					}
-				}
-				use(1, $item[desert sightseeing pamphlet]);
-				return true;
-			}
-		}
-
-		if(get_property("auto_gnasirUnlocked").to_boolean() && (item_amount($item[Killing Jar]) > 0) && ((get_property("gnasirProgress").to_int() & 4) != 4))
-		{
-			auto_log_info("Returning the killing jar", "blue");
-			auto_visit_gnasir();
-			visit_url("choice.php?whichchoice=805&option=1&pwd=");
-			visit_url("choice.php?whichchoice=805&option=2&pwd=");
-			visit_url("choice.php?whichchoice=805&option=1&pwd=");
-			if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
-			{
-				cli_execute("refresh inv");
-				if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
-				{
-					abort("Returned killing jar but did not return killing jar.");
-				}
-				else
-				{
-					if((get_property("gnasirProgress").to_int() & 4) != 4)
-					{
-						auto_log_warning("Mafia did not track gnasir Killing Jar (0x4). Fixing.", "red");
-						set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 4);
-					}
-				}
-			}
-			use(1, $item[desert sightseeing pamphlet]);
-			return true;
-		}
-
-		if((item_amount($item[Worm-Riding Manual Page]) >= 15) && ((get_property("gnasirProgress").to_int() & 8) != 8))
-		{
-			auto_log_info("Returning the worm-riding manual pages", "blue");
-			auto_visit_gnasir();
-			visit_url("choice.php?whichchoice=805&option=1&pwd=");
-			visit_url("choice.php?whichchoice=805&option=2&pwd=");
-			visit_url("choice.php?whichchoice=805&option=1&pwd=");
-			if(item_amount($item[Worm-Riding Hooks]) == 0)
-			{
-				auto_log_error("We messed up in the Desert, get the Worm-Riding Hooks and use them please.");
-				abort("We messed up in the Desert, get the Worm-Riding Hooks and use them please.");
-			}
-			if(item_amount($item[Worm-Riding Manual Page]) >= 15)
-			{
-				auto_log_warning("Mafia doesn't realize that we've returned the worm-riding manual pages... fixing", "red");
-				cli_execute("refresh all");
-				if((get_property("gnasirProgress").to_int() & 8) != 8)
-				{
-					auto_log_warning("Mafia did not track gnasir Worm-Riding Manual Pages (0x8). Fixing.", "red");
-					set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 8);
-				}
-			}
-			return true;
-		}
-
-		need = 100 - get_property("desertExploration").to_int();
-		if((item_amount($item[Worm-Riding Hooks]) > 0) && ((get_property("gnasirProgress").to_int() & 16) != 16))
-		{
-			pullXWhenHaveY($item[Drum Machine], 1, 0);
-			if(item_amount($item[Drum Machine]) > 0)
-			{
-				auto_log_info("Drum machine desert time!", "blue");
-				use(1, $item[Drum Machine]);
-				return true;
-			}
-		}
-
-		need = 100 - get_property("desertExploration").to_int();
-		# If we have done the Worm-Riding Hooks or the Killing jar, don\'t do this.
-		if((need <= 15) && ((get_property("gnasirProgress").to_int() & 12) == 0))
-		{
-			pullXWhenHaveY($item[Killing Jar], 1, 0);
-			if(item_amount($item[Killing Jar]) > 0)
-			{
-				auto_log_info("Secondary killing jar handler", "blue");
-				auto_visit_gnasir();
-				visit_url("choice.php?whichchoice=805&option=1&pwd=");
-				visit_url("choice.php?whichchoice=805&option=2&pwd=");
-				visit_url("choice.php?whichchoice=805&option=1&pwd=");
-				if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
-				{
-					cli_execute("refresh inv");
-					if(item_amount($item[Desert Sightseeing Pamphlet]) == 0)
-					{
-						abort("Returned killing jar (secondard) but did not return killing jar.");
-					}
-					else
-					{
-						if((get_property("gnasirProgress").to_int() & 4) != 4)
-						{
-							auto_log_warning("Mafia did not track gnasir Killing Jar (0x4). Fixing.", "red");
-							set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 4);
-						}
-					}
-				}
-				use(1, $item[desert sightseeing pamphlet]);
-				return true;
-			}
-		}
-
 		autoAdv(1, $location[The Arid\, Extra-Dry Desert]);
 
 		if(contains_text(get_property("lastEncounter"), "A Sietch in Time"))
@@ -1271,8 +1272,28 @@ boolean L11_aridDesert()
 
 		if(!autoAdv(1, $location[The Oasis]))
 		{
-			auto_log_warning("Could not visit the Oasis for some reason, assuming desertExploration is incorrect.", "red");
-			set_property("desertExploration", 0);
+			auto_log_warning("Could not visit the Oasis for some reason, desertExploration may be incorrect.", "red");
+			int initial = get_property("desertExploration").to_int();
+			string page = visit_url("place.php?whichplace=desertbeach");
+			matcher desert_matcher = create_matcher("title=\"[(](\\d+)% explored[)]\"", page);
+			if(desert_matcher.find())
+			{
+				int found = to_int(desert_matcher.group(1));
+				if(found != initial)
+				{
+					auto_log_info("Incorrectly had exploration value of " + initial + " when it should be at " + found + ". This was corrected. Trying to resume.", "blue");
+					set_property("desertExploration", found);
+					return true;
+				}
+				if(!autoAdv(1, $location[The Oasis]))
+				{
+					abort("Tried to adventure in The Oasis but could not. property desertExploration determined to be correct");
+				}
+			}
+			else
+			{
+				abort("Tried to adventure in The Oasis but could not, and could not verify the actual exploration amount of the desert");
+			}
 		}
 	}
 	return true;

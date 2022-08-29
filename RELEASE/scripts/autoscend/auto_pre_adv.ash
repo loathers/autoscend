@@ -670,13 +670,21 @@ boolean auto_pre_adventure()
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	cli_execute("checkpoint clear");
 
+	//before guaranteed non combats that give stats, overrule maximized equipment to increase stat gains
 	if(place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5)
 	{
-		equipStatgainIncreasers();	//guaranteed non combat that gives stats
+		equipStatgainIncreasers();
+		plumber_forceEquipTool();
 	}
 	else if(place == $location[The Haunted Ballroom] && internalQuestStatus("questM21Dance") == 3)
 	{
-		equipStatgainIncreasers();	//guaranteed non combat that gives stats
+		equipStatgainIncreasers();
+		plumber_forceEquipTool();
+	}
+	else if(place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0)
+	{
+		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat
+		plumber_forceEquipTool();
 	}
 
 	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
@@ -762,6 +770,8 @@ boolean auto_pre_adventure()
 		// Build the team at the beginning of each adventure.
 		pokefam_makeTeam();
 	}
+
+	utilizeStillsuit();
 
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");

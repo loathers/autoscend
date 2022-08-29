@@ -1,4 +1,4 @@
-since r26540;	// Sweat tracking at the end of combat
+since r26631;	// Refactor KoLAdventure validation. (Frat House In Disguise/Hippy Camp In Disguise locations renamed)
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
