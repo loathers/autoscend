@@ -1,4 +1,4 @@
-since r26623;	// Add checking for availability of more Journeyman zones  (location_accessible added)
+since r26631;	// Refactor KoLAdventure validation. (Frat House In Disguise/Hippy Camp In Disguise locations renamed)
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -10,6 +10,7 @@ since r26623;	// Add checking for availability of more Journeyman zones  (locati
 import <autoscend/autoscend_header.ash>
 import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
 import <autoscend/autoscend_migration.ash>
+import <auto_canadv.ash>
 
 import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
@@ -689,8 +690,9 @@ void initializeDay(int day)
 		boolean temp = cli_execute("make shoe gum");
 	}
 	
-	//a free to cast intrinsic that makes swords count as clubs. if you have it there is no reason to ever have it off regardless of class.
-	if(auto_have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
+	//a free to cast intrinsic that makes swords count as clubs. there is no reason to ever have it on if not a seal clubber?
+	//regardless of class there is a reason not to if auto_configureRetrocape("vampire", "kill") can be used. it needs the sword to count as a sword and not as a club
+	if(my_class() == $class[seal clubber] && auto_have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
 	{
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
