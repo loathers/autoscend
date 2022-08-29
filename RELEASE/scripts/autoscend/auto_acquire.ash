@@ -375,6 +375,9 @@ boolean buyUpTo(int num, item it)
 {
 	//use autoBuyPriceLimit from mafia to determine price cap
 	int abpl = get_property("autoBuyPriceLimit").to_int();
+	
+	//We do not automatically buy at this point -
+	//below call checks if we have item before buying.
 	return buyUpTo(num, it, abpl);
 }
 

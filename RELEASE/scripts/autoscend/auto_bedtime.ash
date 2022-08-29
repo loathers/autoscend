@@ -1323,6 +1323,8 @@ boolean doBedtime()
 		return true;
 	}
 	
+	/*Commenting out to prevent unreachable code warning.
 	auto_log_warning("Unexpected bedtime path! Stopping bedtime.", "red");
 	return false;
+	Comment back in if there is reason to suspect we are skipping bedtime.*/
 }

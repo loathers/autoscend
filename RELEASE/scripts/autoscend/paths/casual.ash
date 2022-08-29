@@ -164,6 +164,8 @@ void acquireFamiliarsCasual()
 					retrieve_item(1, $item[Barrrnacle]); //will mallbuy it
 				}
 			}
+			else auto_log_info("Price of barrrnacle exceeds autoBuyPriceLimit of " + 
+				get_property("autoBuyPriceLimit"), "blue");
 		}
 		hatchFamiliar($familiar[Barrrnacle]);
 	}
@@ -198,6 +200,7 @@ void acquireFamiliarsCasual()
 		{
 			auto_log_info("You should consider buying [Stooper] from the mall. it only costs " +price+ " meat and gives you +1 liver space", "blue");
 		}
+		else auto_log_info("Stooper offers better drinking, but is too expensive.", "blue");
 	}
 	hatchFamiliar($familiar[Stooper]);
 	
@@ -212,7 +215,10 @@ void acquireFamiliarsCasual()
 				auto_log_info("Retrieving a cute meteoroid for " + price + " meat for init and hot damage.", "blue");
 				retrieve_item($item[cute meteoroid]);
 			}
+			else auto_log_info("Don't have the maeat to buy cute meteoroid", "orange");
 		}
+		else auto_log_info("Price of cute meteoroid exceeds autoBuyPriceLimit of " + 
+				get_property("autoBuyPriceLimit"), "blue");
 	}
 	hatchFamiliar($familiar[Cute Meteor]);
 }

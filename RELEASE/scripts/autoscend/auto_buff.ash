@@ -102,31 +102,59 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 		int meatLimit = min(meatAvailableToBuy, get_property("autoBuyPriceLimit").to_int());		
 
 		// attempt to buy from NPC for meat
-		if(npc_price(source) != 0 && meatLimit > npc_price(source))
+		if(npc_price(source) != 0)
 		{
-			if(!speculative)
+			if(npc_price(source) < meatLimit)
 			{
-				buy(numToBuy, source);
+				if(!speculative)
+				{
+					buy(numToBuy, source);
+				}
+				else
+				{
+					//if speculating, assume buy works
+					return true;
+				}
 			}
-			else
+			else //too expensive
 			{
-				//if speculating, assume buy works
-				return true;
+				//Capped by meat or ABPL?
+				string limitReason = "meatAvailableToBuy: ";
+				if (get_property("autoBuyPriceLimit").to_int() < meatAvailableToBuy)
+					limitReason = "autoBuyPriceLimit set at: ";
+
+				auto_log_info("Could not buffMaintain " + numToBuy + " of " + source + " for " 
+					+ historical_price(source) + " meat.", "blue");
+				auto_log_info(limitReason + meatLimit, "blue");
 			}
 		}
 		// attempt to buy in mall
-		else if(can_interact() && historical_price(source) != 0 && meatLimit > historical_price(source))
+		else if(can_interact() && historical_price(source) != 0)
 		{
-			if(!speculative)
+			if (meatLimit > historical_price(source))
 			{
-				buy(numToBuy, source, meatLimit / numToBuy);
+				if(!speculative)
+				{
+					buy(numToBuy, source, meatLimit / numToBuy);
+				}
+				else
+				{
+					//if speculating, assume buy works
+					return true;
+				}		
 			}
-			else
+			else //too expensive
 			{
-				//if speculating, assume buy works
-				return true;
-			}		
-		}		
+				//Capped by meat or ABPL?
+				string limitReason = "meatAvailableToBuy: ";
+				if (get_property("autoBuyPriceLimit").to_int() < meatAvailableToBuy)
+					limitReason = "autoBuyPriceLimit set at: ";
+
+				auto_log_info("Could not buffMaintain " + numToBuy + " of " + source + " for " 
+					+ historical_price(source) + " meat.", "blue");
+				auto_log_info(limitReason + meatLimit, "blue");
+			}
+		}
 	}
 	if(item_amount(source) < uses)
 	{
