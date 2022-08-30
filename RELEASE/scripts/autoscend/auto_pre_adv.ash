@@ -279,8 +279,9 @@ boolean auto_pre_adventure()
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
 	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
 	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
+	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !burningDelay && !gettingLucky && !auto_haveQueuedForcedNonCombat()) {
+	if (combatModifier._boolean && !burningDelay && !gettingLucky && !forcedNonCombat) {
 		acquireCombatMods(combatModifier._int, true);
 	}
 
@@ -480,8 +481,18 @@ boolean auto_pre_adventure()
 	auto_snapperPreAdventure(place);
 	sweatpantsPreAdventure();
 
+	boolean mayNeedItem = true;
+	if (burningDelay || forcedNonCombat) {
+		//when delay burning if the monster wants item drop it would not be the zone based value that follows
+		//none of the uses of auto_forceNextNoncombat() will need item drop
+		mayNeedItem = false;
+	}
+	else if (gettingLucky && !($locations[The Hidden Temple, The Red Zeppelin, A Maze of Sewer Tunnels] contains place)) {
+		//Baa'baa'bu'ran is probably the only Lucky adventure that will need item drop
+		mayNeedItem = false;
+	}
 	generic_t itemNeed = zone_needItem(place);
-	if(itemNeed._boolean)
+	if(mayNeedItem && itemNeed._boolean)
 	{
 		addToMaximize("50item " + (ceil(itemNeed._float) + 100.0) + "max"); // maximizer treats item drop as 100 higher than it actually is for some reason.
 		simMaximize();
@@ -654,9 +665,28 @@ boolean auto_pre_adventure()
 			uneffect($effect[Blessing of Serqet]);
 		}
 	}
-
-	// Here we enforce our ML restrictions if +/-ML is not specifically called in the current maximizer string
-	enforceMLInPreAdv();
+	
+	// Here we give a limited value to ML if +/-ML is not specifically called in the current maximizer string. This does not enforce the limit.
+	// if the limit setting has no value then ML has already been given a value indirectly by "exp" in the default maximizer statement
+	if((get_property("auto_MLSafetyLimit") != "") && (!contains_text(get_property("auto_maximize_current"), "ml")))
+	{
+		if(get_property("auto_MLSafetyLimit").to_int() == -1)
+		{
+			// prevent all ML being equiped if limit is -1 and equip lowest possible ML including going negative
+			addToMaximize("-1000ml");
+		}
+		else if(get_property("auto_MLSafetyLimit").to_int() <= highest_available_mcd())
+		{
+			//mcd can already fill all allowed ML without using equipment slots
+			//if the value is 0 adding ML with 0max is useless, it does not stop the maximizer from picking equipment with ML,
+			//0max would just tell the maximizer to add +0 value to ML over 0 which is the same as not giving any value for ML
+		}
+		else
+		{
+			// note: maximizer will allow to go above the max value, ML just won't contribute to the total score after the max value
+			addToMaximize("ml " + get_property("auto_MLSafetyLimit").to_int() + "max");
+		}
+	}
 	
 	// Last minute switching for garbage tote. But only if nothing called on januaryToteAcquire this turn.
 	if(!get_property("auto_januaryToteAcquireCalledThisTurn").to_boolean() && auto_is_valid($item[Wad of Used Tape]))
