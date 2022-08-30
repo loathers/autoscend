@@ -322,7 +322,10 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		&& (get_property("mayoInMouth") == "") 
 		&& auto_is_valid($item[Portable Mayo Clinic]))
 		{
-			int priceCap = min(get_property("autoBuyPriceLimit").to_int(), my_meat());
+			//Determine spending limit
+			int meatFree = my_meat() - meatReserve();
+			int priceCap = min(get_property("autoBuyPriceLimit").to_int(), meatFree);
+
 			buyUpTo(1, $item[Mayoflex], priceCap);
 			use(1, $item[Mayoflex]);
 		}
