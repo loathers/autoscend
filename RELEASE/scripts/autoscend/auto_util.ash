@@ -899,7 +899,7 @@ boolean canYellowRay(monster target)
 			auto_is_valid($item[Viral Video]) &&	//do not bother buying it if it is not valid
 			!in_koe())	//bacon store is unreachable in kingdom of exploathing
 		{
-			cli_execute("make " + $item[Viral Video]);
+			create(1, $item[Viral Video]);
 		}
 	}
 	# Pulled Yellow Taffy	- How do we handle the underwater check?
