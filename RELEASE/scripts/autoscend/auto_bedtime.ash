@@ -1335,7 +1335,4 @@ boolean doBedtime()
 		auto_log_info("You are probably done for today, beep.", "blue");
 		return true;
 	}
-	
-	auto_log_warning("Unexpected bedtime path! Stopping bedtime.", "red");
-	return false;
 }
