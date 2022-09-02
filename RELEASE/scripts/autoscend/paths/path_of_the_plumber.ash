@@ -394,25 +394,46 @@ boolean plumber_skillValid(skill sk)
 	return true;
 }
 
-boolean plumber_equipTool(stat st)
+boolean plumber_equipTool(stat st, boolean forceEquipRightNow)
 {
 	if (!in_plumber()) return false;
 
 	boolean equipWithFallback(item to_equip, item fallback_to_equip)
 	{
-		if (possessEquipment(to_equip) && autoEquip(to_equip))
+		if (possessEquipment(to_equip))
 		{
-			return true;
+			if(forceEquipRightNow)
+			{
+				return autoForceEquip(to_equip);
+			}
+			else
+			{
+				return autoEquip(to_equip);
+			}
 		}
 		else if (possessEquipment(fallback_to_equip))
 		{
-			return autoEquip(fallback_to_equip);
+			if(forceEquipRightNow)
+			{
+				return autoForceEquip(fallback_to_equip);
+			}
+			else
+			{
+				return autoEquip(fallback_to_equip);
+			}
 		}
 		else if (item_amount($item[coin]) >= 20)
 		{
 			// 20 coins to avoid doing clever re-routing? Yes please!
 			retrieve_item(1, fallback_to_equip);
-			return autoEquip(fallback_to_equip);
+			if(forceEquipRightNow)
+			{
+				return autoForceEquip(fallback_to_equip);
+			}
+			else
+			{
+				return autoEquip(fallback_to_equip);
+			}
 		}
 		return false;
 	}
@@ -424,6 +445,26 @@ boolean plumber_equipTool(stat st)
 		case $stat[moxie]: return equipWithFallback($item[fancy boots], $item[work boots]);
 	}
 	return false;
+}
+
+boolean plumber_equipTool(stat st)
+{
+	return plumber_equipTool(st,false);
+}
+
+boolean plumber_forceEquipTool()
+{
+	//just make sure a tool, any tool, is equipped
+	foreach it in $items[fancy boots,work boots,bonfire flower,[10462]fire flower,heavy hammer,hammer]
+	{
+		if(equipped_amount(it) > 0)
+		{
+			return true;
+		}
+	}
+	
+	//if not equip the moxie accessory as pre_adv does by default, but without waiting for maximizer to equip it
+	return plumber_equipTool($stat[moxie],true);
 }
 
 void plumber_eat_xp()

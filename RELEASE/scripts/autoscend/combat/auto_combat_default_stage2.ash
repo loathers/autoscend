@@ -214,18 +214,70 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 	
 	# Instakill handler
-	boolean doInstaKill = true;
-	if($monsters[Lobsterfrogman, Ninja Snowman Assassin] contains enemy)
+	boolean couldInstaKill = true;
+	if($monsters[Smut Orc Pipelayer,Smut Orc Jacker,Smut Orc Screwer,Smut Orc Nailer] contains enemy && get_property("chasmBridgeProgress").to_int() < 30)
+	{
+		//want to do cold damage in stage3
+		if(my_adventures() > 6)
+		{
+			couldInstaKill = false;
+		}
+	}
+	else if($monsters[Lobsterfrogman, Ninja Snowman Assassin] contains enemy)
 	{
 		if(auto_have_skill($skill[Digitize]) && (get_property("_sourceTerminalDigitizeMonster") != enemy))
 		{
-			doInstaKill = false;
+			couldInstaKill = false;
 		}
 	}
 
-	if(instakillable(enemy) && !isFreeMonster(enemy) && doInstaKill)
+	if(instakillable(enemy) && !isFreeMonster(enemy) && couldInstaKill)
 	{
-		if(canUse($skill[lightning strike]))
+		boolean wantFreeKillNowEspecially;
+		
+		boolean waitForDesert = false;	//free kills can save turns of Ultrahydrated
+		if(get_property("desertExploration").to_int() < 100 && !isActuallyEd())	//need to explore desert
+		{
+			int currentDesertProgressPerTurn = 1 + 
+			(get_property("bondDesert").to_boolean() ? 2 : 0) +
+			(get_property("peteMotorbikeHeadlight") == "Blacklight Bulb" ? 2 : 0) +
+			(my_familiar() == $familiar[Melodramedary] ? 1 : 0) +
+			2 * min(1,equipped_amount($item[survival knife])) +
+			equipped_amount($item[UV-resistant compass]) +
+			2 * equipped_amount($item[Ornate Dowsing Rod]);
+			int fightsLeftToExplore = ceil((100 - get_property("desertExploration").to_int()) / currentDesertProgressPerTurn);
+			if(have_effect($effect[Ultrahydrated]) > 0 && have_effect($effect[Ultrahydrated]) < fightsLeftToExplore)
+			{
+				wantFreeKillNowEspecially = true;
+			}
+			else	//near level 11
+			{
+				waitForDesert = my_basestat(my_primestat()) >= 95;
+			}
+		}
+		
+		boolean waitForCyrpt;	//free kills can get more modern zmobies from 1 turn of a double initiative effect in The Defiled Alcove
+		if(get_property("cyrptAlcoveEvilness").to_int() >= 30)	//need to do Alcove. todo: check cyrptEvilBonus() from PR #1114
+		{
+			if(my_location() == $location[The Defiled Alcove] && have_effect($effect[Bow-Legged Swagger]) == 1)
+			{
+				wantFreeKillNowEspecially = true;
+			}
+			else if(auto_have_skill($skill[Bow-Legged Swagger]) && my_basestat(my_primestat()) >= 35 && !get_property("_bowleggedSwaggerUsed").to_boolean())
+			{
+				waitForCyrpt = true;	//near level 7
+			}
+		}
+		
+		//free kills can get more benefit from 1 turn of a double item bonus effect in zones that need high item
+		if(have_effect($effect[Steely-Eyed Squint]) == 1 && $locations[The Haunted Wine Cellar,The Haunted Laundry Room,The Hatching Chamber,The Feeding Chamber,The Royal Guard Chamber] contains my_location())
+		{
+			wantFreeKillNowEspecially = true;
+		}
+		
+		boolean reserveFreekills = (my_adventures() >= 9) && !wantFreeKillNowEspecially && (waitForDesert || waitForCyrpt);
+
+		if(canUse($skill[lightning strike]) && (wantFreeKillNowEspecially || !reserveFreekills || my_lightning() >= 60))
 		{
 			handleTracker(enemy, $skill[lightning strike], "auto_instakill");
 			loopHandlerDelayAll();
@@ -234,25 +286,29 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
 		{
-			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			if((wantFreeKillNowEspecially || my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Chest X-Ray], "auto_instakill");
 				loopHandlerDelayAll();
 				return useSkill($skill[Chest X-Ray]);
 			}
 		}
-		if(canUse($skill[shattering punch]) && (get_property("_shatteringPunchUsed").to_int() < 3))
+		if(canUse($skill[shattering punch]) && (get_property("_shatteringPunchUsed").to_int() < 3) && !reserveFreekills)
 		{
-			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			if(!wantFreeKillNowEspecially && my_daycount() == 1 && my_turncount() < 100 && my_adventures() >= 9 && my_mp() < 80)
+			{
+				//avoid sudden drain of 3x30 MP just 20 turns after the run starts, there is no mp regen or sauceror mp when using this
+			}
+			else if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[shattering punch], "auto_instakill");
 				loopHandlerDelayAll();
 				return useSkill($skill[shattering punch]);
 			}
 		}
-		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean())
+		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean() && !reserveFreekills)
 		{
-			if((my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
 				loopHandlerDelayAll();
@@ -264,7 +320,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	//		Sure, we can try to use a second item (if we have it or are forced to buy it... ugh).
 	//		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0) && (get_property("_usedReplicaBatoomerang").to_int() < 3))
 	//		THIS IS COPIED TO THE ED SECTION, IF IT IS FIXED, FIX IT THERE TOO!
-		if(canUse($item[Replica Bat-oomerang]))
+		if(canUse($item[Replica Bat-oomerang]) && !reserveFreekills)
 		{
 			if(get_property("auto_batoomerangDay").to_int() != my_daycount())
 			{

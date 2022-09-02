@@ -1489,10 +1489,7 @@ boolean asdonCanMissile()
 }
 
 boolean isHorseryAvailable() {
-	if(!get_property("horseryAvailable").to_boolean()) {
-		return false;
-	}
-	return true;
+	return (get_property("horseryAvailable").to_boolean() && auto_is_valid($item[Horsery contract]));
 }
 
 int horseCost()
@@ -1806,6 +1803,7 @@ boolean makeGenieCombat(monster mon, string option)
 		return false;
 	}
 
+	auto_log_info("Using genie to summon " + mon.name, "blue");
 	string wish = "to fight a " + mon;
 	string[int] pages;
 	int wish_provider = $item[genie bottle].to_int();

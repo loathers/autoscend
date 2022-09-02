@@ -575,6 +575,7 @@ boolean doBedtime()
 		{
 			if(!in_gnoob() && my_familiar() != $familiar[Stooper])
 			{
+				auto_log_warning("Still adventurous! Stopping bedtime.", "red");
 				return false;
 			}
 		}
@@ -582,10 +583,12 @@ boolean doBedtime()
 	boolean out_of_blood = (in_darkGyffte() && item_amount($item[blood bag]) == 0);
 	if((fullness_left() > 0) && can_eat() && !out_of_blood)
 	{
+		auto_log_warning("Still hungry! Stopping bedtime.", "red");
 		return false;
 	}
 	if((inebriety_left() > 0) && can_drink() && !out_of_blood)
 	{
+		auto_log_warning("Still sober! Stopping bedtime.", "red");
 		return false;
 	}
 	int spleenlimit = spleen_limit();
@@ -599,6 +602,7 @@ boolean doBedtime()
 	}
 	if((my_spleen_use() < spleenlimit) && !in_hardcore() && (inebriety_left() > 0))
 	{
+		auto_log_warning("Still spleeny! Stopping bedtime.", "red");
 		return false;
 	}
 
@@ -718,6 +722,19 @@ boolean doBedtime()
 	if(canGenieCombat() && !possessOutfit("frat warrior fatigues"))
 	{
 		auto_log_info("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
+	}
+	
+	if(item_amount($item[Infinite BACON Machine]) > 0 && !get_property("_internetViralVideoBought").to_boolean() && !can_interact())
+	{
+		boolean hasDisintegrate = auto_have_skill($skill[Disintegrate]) && my_maxmp() >= 1.5*mp_cost($skill[Disintegrate]);  //will be limited by current mp, try to gauge if it will be available
+		boolean notNeeded = have_effect($effect[Everything Looks Yellow]) > 0 || hasDisintegrate || canYellowRay(); //have a common unlimited source of YR, no need to make viral video
+		boolean baconUnused = item_amount($item[BACON]) >= (100*my_daycount() - 20*(my_daycount() - 1));  //BACON hasn't been used for something else this ascension
+		if(auto_is_valid($item[Viral Video]) && !notNeeded && baconUnused &&
+		!in_koe())	//bacon store is unreachable in kingdom of exploathing
+		{
+			//can only buy 1 per day and more than one a day might be wanted later so buy today's viral video
+			create(1, $item[Viral Video]);
+		}
 	}
 
 	if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
@@ -1318,5 +1335,7 @@ boolean doBedtime()
 		auto_log_info("You are probably done for today, beep.", "blue");
 		return true;
 	}
+	
+	auto_log_warning("Unexpected bedtime path! Stopping bedtime.", "red");
 	return false;
 }
