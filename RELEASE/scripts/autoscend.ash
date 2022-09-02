@@ -1,4 +1,4 @@
-since r26631;	// Refactor KoLAdventure validation. (Frat House In Disguise/Hippy Camp In Disguise locations renamed)
+since 26713;	// $path added to KoLmafia
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
