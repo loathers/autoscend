@@ -16,7 +16,7 @@ static int[int] auto_cs_fastQuestList;
 
 boolean in_community()
 {
-	return my_path() == "Community Service";
+	return my_path() == $path[Community Service];
 }
 
 boolean LA_cs_communityService()

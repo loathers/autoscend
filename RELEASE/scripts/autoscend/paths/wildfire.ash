@@ -1,6 +1,6 @@
 boolean in_wildfire()
 {
-	return my_path() == "Wildfire";
+	return my_path() == $path[Wildfire];
 }
 
 void wildfire_initializeSettings()

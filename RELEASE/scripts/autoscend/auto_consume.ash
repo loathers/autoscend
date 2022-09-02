@@ -562,13 +562,13 @@ float consumptionProgress()
 	}
 	
 	// don't consider spleen as a significant adventure organ in most paths
-	if (isActuallyEd() || my_path() == "Oxygenarian")
+	if (isActuallyEd() || my_path() == $path[Oxygenarian])
 	{
 		organs_used += my_spleen_use();
 		organs_max += spleen_limit();
 	}
-	// if(my_path() == "Community Service"), autoscend does try to use spleen for adventures but also for buffs
-	// if(my_path() == "Avatar of Sneaky Pete"), autoscend doesn't try to use molotov soda or create Hate to produce them
+	// if(my_path() == $path[Community Service]), autoscend does try to use spleen for adventures but also for buffs
+	// if(my_path() == $path[Avatar of Sneaky Pete]), autoscend doesn't try to use molotov soda or create Hate to produce them
 	
 	if (organs_max == 0)
 	{
@@ -932,7 +932,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		{
 			boolean value_allowed = (historical_price(it) <= get_property("autoBuyPriceLimit").to_int()) ||
 									($items[blueberry muffin, bran muffin, chocolate chip muffin] contains it && item_amount(it) > 0 && //muffins are expensive but renewable
-									my_path() != "Grey You"); //Grey You should not even get to here if ever supported but it consumes the tin so blocked just in case
+									my_path() != $path[Grey You]); //Grey You should not even get to here if ever supported but it consumes the tin so blocked just in case
 									
 			if(!value_allowed)	continue;
 			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;

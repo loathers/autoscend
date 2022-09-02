@@ -248,7 +248,7 @@ void initializeSettings() {
 	wildfire_initializeSettings();
 	zombieSlayer_initializeSettings();
 
-	set_property("auto_doneInitializePath", my_path());		//which path we initialized as
+	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
 	remove_property("_auto_reinitialize");
 }
@@ -1580,7 +1580,7 @@ boolean process_tasks()
 		abort("Could not load /data/autoscend_task_order.txt");
 	}
 
-	string task_path = my_path();
+	string task_path = my_path().name;
 	if (!(task_order contains task_path))
 	{
 		task_path = "default";
@@ -1842,7 +1842,7 @@ void auto_begin()
 	auto_log_info("This is version: " + svn_info("autoscend").last_changed_rev + " Mafia: " + get_revision());
 	auto_log_info("This is day " + my_daycount() + ".");
 	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
-	auto_log_info("Current Ascension: " + auto_my_path());
+	auto_log_info("Current Ascension: " + my_path().name);
 
 	auto_settings();
 

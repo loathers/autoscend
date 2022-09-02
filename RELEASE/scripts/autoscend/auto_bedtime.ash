@@ -230,7 +230,7 @@ float rollover_value(item it)
 		return 0.0;
 	}
 	float retval = numeric_modifier(it, "adventures");
-	if(hippy_stone_broken() && my_path() != "Oxygenarian")
+	if(hippy_stone_broken() && my_path() != $path[Oxygenarian])
 	{
 		retval += get_property("auto_bedtime_pulls_pvp_multi").to_float() * numeric_modifier(it, "PvP Fights");
 	}
@@ -1022,7 +1022,7 @@ boolean doBedtime()
 			}
 			int amt = count(extrudeChoice);
 			string acquire = "booze";
-			if(auto_my_path() == "Teetotaler")
+			if(my_path() == $path[Teetotaler])
 			{
 				acquire = "food";
 			}

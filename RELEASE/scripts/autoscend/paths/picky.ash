@@ -2,7 +2,7 @@
 
 boolean in_picky()
 {
-	return my_path() == "Picky";
+	return my_path() == $path[Picky];
 }
 
 void picky_pulls()
