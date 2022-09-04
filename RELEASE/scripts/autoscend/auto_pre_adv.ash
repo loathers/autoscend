@@ -769,7 +769,7 @@ boolean auto_pre_adventure()
 	//my_mp is broken in Dark Gyffte
 	if (!in_darkGyffte())
 	{
-		//TODO don't do this when next turn is free since that gives no effect from mp_regen()
+		//TODO don't do this when next turn is free since that gives no effect from mp_regen(). PR #1199 adds "auto_nextEncounter"
 		int wasted_mp = my_mp() + mp_regen() - my_maxmp();
 		if(my_maxmp() > 400)	//todo how much MP wanted for combat? but for now there is no MP burning after this without 400 MP anyway so check 400
 		{
