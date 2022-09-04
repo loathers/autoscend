@@ -144,6 +144,10 @@ boolean L7_crypt()
 		}
 
 		auto_log_info("The Alcove! (" + initiative_modifier() + ")", "blue");
+		if(get_property("cyrptAlcoveEvilness").to_int() <= 25)
+		{
+			set_property("auto_nextEncounter","conjoined zmombie");
+		}
 		return autoAdv($location[The Defiled Alcove]);
 	}
 	// current mafia bug causes us to lose track of the amount of Evil Eyes in inventory so adding a refresh here
@@ -172,6 +176,10 @@ boolean L7_crypt()
 			januaryToteAcquire($item[broken champagne bottle]);
 		}
 
+		if(get_property("cyrptNookEvilness").to_int() <= 25)
+		{
+			set_property("auto_nextEncounter","giant skeelton");
+		}
 		return autoAdv($location[The Defiled Nook]);
 	}
 	else if(skip_in_koe)
@@ -208,6 +216,10 @@ boolean L7_crypt()
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Dirty Old Lihc.");
 		}
+		if(get_property("cyrptNicheEvilness").to_int() <= 25)
+		{
+			set_property("auto_nextEncounter","gargantulihc");
+		}
 		return autoAdv($location[The Defiled Niche]);
 	}
 
@@ -241,6 +253,11 @@ boolean L7_crypt()
 		auto_MaxMLToCap(auto_convertDesiredML(149), true);
 
 		addToMaximize("200ml " + auto_convertDesiredML(149) + "max");
+
+		if(get_property("cyrptCrannyEvilness").to_int() <= 25)
+		{
+			set_property("auto_nextEncounter","huge ghuol");
+		}
 		return autoAdv($location[The Defiled Cranny]);
 	}
 
@@ -260,6 +277,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Machine Elf]);
 		}
 		auto_change_mcd(10); // get vertebra to make the necklace.
+		set_property("auto_nextEncounter","Bonerdagon");
 		boolean tryBoner = autoAdv(1, $location[Haert of the Cyrpt]);
 		council();
 		cli_execute("refresh quests");
