@@ -689,7 +689,7 @@ boolean L12_preOutfit()
 		}
 	}
 
-	if(have_skill($skill[Calculate the Universe]) && my_daycount() == 1 && get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int())
+	if(have_skill($skill[Calculate the Universe]) && my_daycount() == 1 && get_property("_universeCalculated").to_int() < min(3, get_property("skillLevel144").to_int()))
 	{
 		return false;
 	}
