@@ -899,7 +899,7 @@ boolean canYellowRay(monster target)
 			auto_is_valid($item[Viral Video]) &&	//do not bother buying it if it is not valid
 			!in_koe())	//bacon store is unreachable in kingdom of exploathing
 		{
-			cli_execute("make " + $item[Viral Video]);
+			create(1, $item[Viral Video]);
 		}
 	}
 	# Pulled Yellow Taffy	- How do we handle the underwater check?
@@ -2098,6 +2098,34 @@ boolean basicAdjustML()
 	return false;
 }
 
+int highest_available_mcd()
+{
+	if(in_koe()) return 0;
+	
+	if(knoll_available() && item_amount($item[Detuned Radio]) > 0)
+	{
+		if(in_glover())
+		{
+			return 0;
+		}
+		else
+		{
+			return 10;
+		}
+	}
+	else if(inGnomeSign() && gnomads_available())
+	{
+		return 10;
+	}
+	else if(canadia_available())
+	{
+		return 11;
+	}
+	//in_bad_moon() availability is special since it costs a turn and highest is 8 to 11 by RNG
+	
+	return current_mcd();
+}
+
 boolean auto_change_mcd(int mcd)
 {
 	return auto_change_mcd(mcd, false);
@@ -2105,28 +2133,7 @@ boolean auto_change_mcd(int mcd)
 
 boolean auto_change_mcd(int mcd, boolean immediately)
 {
-	if(in_koe()) return false;
-
-	int best = 10;
-	if(knoll_available())
-	{
-		if(item_amount($item[Detuned Radio]) == 0)
-		{
-			return false;
-		}
-		if(in_glover())
-		{
-			return false;
-		}
-	}
-	if(inGnomeSign() && !gnomads_available())
-	{
-		return false;
-	}
-	if(canadia_available())
-	{
-		best = 11;
-	}
+	int best = highest_available_mcd();
 	if(in_bad_moon())
 	{
 		best = 11;
@@ -2488,7 +2495,7 @@ int doNumberology(string goal, boolean doIt, string option)
 	{
 		return -1;
 	}
-	if(get_property("_universeCalculated").to_int() >= get_property("skillLevel144").to_int())
+	if(get_property("_universeCalculated").to_int() >= min(3, get_property("skillLevel144").to_int()))
 	{
 		return -1;
 	}
@@ -3203,6 +3210,9 @@ boolean auto_can_equip(item it, slot s)
 		return false;
 
 	if(s == $slot[off-hand] && it.to_slot() == $slot[weapon] && !auto_have_skill($skill[Double-Fisted Skull Smashing]))
+		return false;
+	
+	if((s == $slot[weapon] || s == $slot[off-hand]) && (in_wotsf() || (is_boris() && it != $item[Trusty])))
 		return false;
 
 	if(it.item_type() == "chefstaff" && (!(auto_have_skill($skill[Spirit of Rigatoni]) || (my_class() == $class[Sauceror] && equipped_amount($item[special sauce glove]) > 0) || my_class() == $class[Avatar of Jarlsberg]) || s != $slot[weapon]))
@@ -4093,28 +4103,6 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 	return true;
 }
-
-// Called in PreAdv right before equipping to make sure that any ML Limit we have specified is in the maximize string IF +/-ML is not in string already
-boolean enforceMLInPreAdv()
-{
-	if((get_property("auto_MLSafetyLimit") != "") && (!contains_text(get_property("auto_maximize_current"), "ml")))
-	{
-		if(get_property("auto_MLSafetyLimit").to_int() == -1)
-		{
-			// prevent all ML being equiped if limit is 0
-			addToMaximize("-1000ml");
-		}
-		else
-		{
-			// note: maximizer will allow to go above the max value, ML just won't contribute to the total score after the max value
-			addToMaximize("ml " + get_property("auto_MLSafetyLimit").to_int() + "max");
-		}
-		
-	}
-
-	return true;
-}
-
 
 
 // ADVENTURE FORCING FUNCTIONS

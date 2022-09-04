@@ -2,7 +2,8 @@
 
 boolean auto_haveCosmicBowlingBall()
 {
-	return get_property("hasCosmicBowlingBall").to_boolean();
+	// ensure we not only own one but it's in allowed in path and also in inventory for us to do stuff with.
+	return (get_property("hasCosmicBowlingBall").to_boolean() && auto_is_valid($item[Cosmic Bowling Ball]) && available_amount($item[Cosmic Bowling Ball]) > 0);
 }
 
 string auto_bowlingBallCombatString(location place, boolean speculation)
@@ -12,12 +13,12 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 		return "";
 	}
 
-	if(auto_is_valid($item[Cosmic Bowling Ball]) && place == $location[The Hidden Bowling Alley] && get_property("auto_bowledAtAlley").to_int() != my_ascensions())
+	if(place == $location[The Hidden Bowling Alley] && get_property("auto_bowledAtAlley").to_int() != my_ascensions())
 	{
 		if(!speculation)
 		{
 			set_property("auto_bowledAtAlley", my_ascensions());
-			auto_log_info("Cosmic Bowling Ball used at Hidden Bowling Alley to adavnce quest.");
+			auto_log_info("Cosmic Bowling Ball used at Hidden Bowling Alley to advance quest.");
 		}	
 		return useItem($item[Cosmic Bowling Ball],!speculation);
 	}

@@ -3,9 +3,9 @@
 Below are relevant locations for the war.
 war not started or finished with this side undefeated:
 [Frat House]
-[Frat House In Disguise]	//r25731 incorrectly identifies this as [Frat House] when encountered
+[Frat House (Frat Disguise)]	//r26631 changed from [Frat House In Disguise]
 [Hippy Camp]
-[Hippy Camp In Disguise]	//r25731 incorrectly identifies this as [Wartime Hippy Camp (Frat Disguise)] when encountered
+[Hippy Camp (Hippy Disguise)]	//r26631 changed from [Hippy Camp In Disguise]
 
 War started:
 [Wartime Frat House]
@@ -627,7 +627,7 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "fratboy" && possessOutfit("Filthy Hippy Disguise"))
 	{
 		autoOutfit("Filthy Hippy Disguise");
-		//r25671 this should be [Frat House In Disguise] but due to mafia issue it currently needs to be as below
+		//this should go to [Wartime Frat House (Hippy Disguise)] (despite war not started)
 		return autoAdv($location[Frat House]);
 	}
 	
@@ -635,7 +635,7 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "hippy" && possessOutfit("Frat Boy Ensemble"))
 	{
 		autoOutfit("Frat Boy Ensemble");
-		//r25671 this should be [Hippy Camp In Disguise] but due to mafia issue it currently needs to be as below
+		//this should go to [Wartime Hippy Camp (Frat Disguise)] (despite war not started)
 		return autoAdv($location[Hippy Camp]);
 	}
 	
@@ -689,7 +689,7 @@ boolean L12_preOutfit()
 		}
 	}
 
-	if(have_skill($skill[Calculate the Universe]) && my_daycount() == 1 && get_property("_universeCalculated").to_int() < get_property("skillLevel144").to_int())
+	if(have_skill($skill[Calculate the Universe]) && my_daycount() == 1 && get_property("_universeCalculated").to_int() < min(3, get_property("skillLevel144").to_int()))
 	{
 		return false;
 	}
