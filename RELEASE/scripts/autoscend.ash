@@ -353,17 +353,27 @@ boolean LX_burnDelay()
 		if(wannaVote)
 		{
 			auto_log_info("Burn some delay somewhere (voting), if we found a place!", "green");
+			set_property("auto_nextEncounter",get_property("_voteMonster"));
 			if(auto_voteMonster(true, burnZone, ""))
 			{
 				return true;
+			}
+			else
+			{
+				set_property("auto_nextEncounter","");
 			}
 		}
 		if(wannaDigitize)
 		{
 			auto_log_info("Burn some delay somewhere (digitize), if we found a place!", "green");
+			set_property("auto_nextEncounter",get_property("_sourceTerminalDigitizeMonster"));
 			if(autoAdv(burnZone))
 			{
 				return true;
+			}
+			else
+			{
+				set_property("auto_nextEncounter","");
 			}
 		}
 		if(wannaSausage)
@@ -377,17 +387,27 @@ boolean LX_burnDelay()
 		if(wannaBackup)
 		{
 			auto_log_info("Burn some delay somewhere (backup camera), if we found a place!", "green");
+			set_property("auto_nextEncounter",get_property("lastCopyableMonster"));
 			if(autoAdv(burnZone))
 			{
 				return true;
+			}
+			else
+			{
+				set_property("auto_nextEncounter","");
 			}
 		}
 		if(voidMonsterNext)
 		{
 			auto_log_info("Burn some delay somewhere (cursed magnifying glass), if we found a place!", "green");
+			set_property("auto_nextEncounter","void guy");	//which of the 3 is random, but they're all same phylum and free under same conditions
 			if(autoAdv(burnZone))
 			{
 				return true;
+			}
+			else
+			{
+				set_property("auto_nextEncounter","");
 			}
 		}
 	}
@@ -401,10 +421,15 @@ boolean LX_burnDelay()
 	else if(wannaBackup)
 	{
 		auto_log_info("Couldn't find zone to burn delay. Using back-up camera at Noob Cave", "green");
+		set_property("auto_nextEncounter",get_property("lastCopyableMonster"));
 		if(autoAdv($location[noob cave]))
 		{
 			return true;
-		}	
+		}
+		else
+		{
+			set_property("auto_nextEncounter","");
+		}
 	}
 	return false;
 }
