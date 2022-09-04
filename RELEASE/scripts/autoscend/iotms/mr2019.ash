@@ -317,8 +317,13 @@ boolean auto_sausageGoblin(location loc, string option)
 		return true;
 	}
 
-	autoEquip($item[Kramco Sausage-o-Matic&trade;]);
-	return autoAdv(1, loc, option);
+	if(autoEquip($item[Kramco Sausage-o-Matic&trade;]))
+	{
+		set_property("auto_nextEncounter","sausage goblin");
+		return autoAdv(1, loc, option);
+	}
+	set_property("auto_nextEncounter","");
+	return false;
 }
 
 boolean pirateRealmAvailable()
