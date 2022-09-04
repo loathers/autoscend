@@ -1852,6 +1852,11 @@ boolean isFreeMonster(monster mon)
 		}
 	}
 
+	if($monsters[void guy, void slab, void spider] contains mon && get_property("_voidFreeFights").to_int() < 5 && equipped_amount($item[cursed magnifying glass]) > 0)
+	{
+		return true;
+	}
+
 	if(($monster[Eldritch Tentacle] == mon) && (have_effect($effect[Eldritch Attunement]) > 0))
 	{
 		return true;
@@ -2215,6 +2220,7 @@ boolean fightScienceTentacle(string option)
 	}
 
 	temp = visit_url("choice.php?whichchoice=1201&pwd=&option=" + abortChoice);
+	set_property("auto_nextEncounter","Eldritch Tentacle");
 	string[int] pages;
 	pages[0] = "place.php?whichplace=forestvillage&action=fv_scientist";
 	pages[1] = "choice.php?whichchoice=1201&pwd=&option=1";
