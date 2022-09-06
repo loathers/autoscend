@@ -1160,7 +1160,7 @@ boolean getSpaceJelly()
 	{
 		return false;
 	}
-	if(my_path() != "Standard")
+	if(my_path() != $path[Standard])
 	{
 		if(!inAftercore())
 		{

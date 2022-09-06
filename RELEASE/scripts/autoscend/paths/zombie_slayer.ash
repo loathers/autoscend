@@ -18,7 +18,7 @@
 
 boolean in_zombieSlayer()
 {
-	return my_path() == "Zombie Slayer";
+	return my_path() == $path[Zombie Slayer];
 }
 
 void zombieSlayer_initializeSettings()

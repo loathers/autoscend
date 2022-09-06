@@ -1,6 +1,6 @@
 boolean is_jarlsberg()
 {
-	return my_path() == "Avatar of Jarlsberg";
+	return my_path() == $path[Avatar of Jarlsberg];
 }
 
 void jarlsberg_initializeSettings()

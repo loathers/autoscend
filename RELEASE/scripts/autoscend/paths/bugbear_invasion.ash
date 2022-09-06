@@ -1,6 +1,6 @@
 boolean in_bugbear()
 {
-	return my_path() == "Bugbear Invasion";
+	return my_path() == $path[Bugbear Invasion];
 }
 
 void bugbear_InitializeSettings()
