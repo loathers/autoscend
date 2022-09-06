@@ -1,6 +1,6 @@
 boolean in_theSource()
 {
-	return my_path() == "The Source";
+	return my_path() == $path[The Source];
 }
 
 boolean theSource_initializeSettings()
