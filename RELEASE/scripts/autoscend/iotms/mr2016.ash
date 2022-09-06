@@ -506,7 +506,7 @@ int auto_advWitchessTargets(string target)
 		return 1938;
 	}
 
-	if((target == 1942) && (auto_my_path() == "Teetotaler"))
+	if((target == 1942) && (my_path() == $path[Teetotaler]))
 	{
 		return 1936;
 	}

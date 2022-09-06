@@ -1,6 +1,6 @@
 boolean in_heavyrains()
 {
-	return my_path() == "Heavy Rains";
+	return my_path() == $path[Heavy Rains];
 }
 
 void heavyrains_initializeSettings()

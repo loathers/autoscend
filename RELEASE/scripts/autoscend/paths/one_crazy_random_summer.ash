@@ -1,6 +1,6 @@
 boolean in_ocrs()
 {
-	return my_path() == "One Crazy Random Summer";
+	return my_path() == $path[One Crazy Random Summer];
 }
 
 boolean ocrs_postHelper()
