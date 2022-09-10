@@ -669,7 +669,17 @@ void auto_CMCconsult()
 		}
 		return true;
 	}
-	if(item_amount($item[Breathitin&trade;]) > 0 && notAboutToDoNuns() && !can_interact())
+	boolean shouldChewBreathitin()
+	{
+		if(my_location() == $location[The Hidden Park])
+		{
+			//already free [dense liana] should come right after and would waste charges
+			//can't know how many combats will remain in the park which is ideally noncombats
+			return false;
+		}
+		return notAboutToDoNuns();
+	}
+	if(item_amount($item[Breathitin&trade;]) > 0 && shouldChewBreathitin() && !can_interact())
 	{
 		autoChew(1,$item[Breathitin&trade;]);
 	}
@@ -751,7 +761,7 @@ void auto_CMCconsult()
 		run_choice(bestOption);
 	}
 
-	if(consumableBought == $item[Homebodyl&trade;] || (consumableBought == $item[Breathitin&trade;] && notAboutToDoNuns()))
+	if(consumableBought == $item[Homebodyl&trade;] || (consumableBought == $item[Breathitin&trade;] && shouldChewBreathitin()))
 	{
 		autoChew(1,consumableBought);
 	}
