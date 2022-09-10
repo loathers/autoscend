@@ -68,6 +68,15 @@ void cyrptChoiceHandler(int choice)
 	}
 }
 
+int cyrptEvilBonus()
+{
+	//returns value of regularly available bonus to evil reduction
+	int cyrptBonus = (auto_hasRetrocape() && auto_forceEquipSword(true)) ? 1 : 0;
+	cyrptBonus += (possessEquipment($item[gravy boat]) && auto_is_valid($item[gravy boat])) ? 1 : 0;
+	cyrptBonus += (is_pete() && get_property("peteMotorbikeCowling") == "Ghost Vacuum") ? 1 : 0;
+	return cyrptBonus;
+}
+
 boolean L7_crypt()
 {
 	if(internalQuestStatus("questL07Cyrptic") != 0)
@@ -116,6 +125,11 @@ boolean L7_crypt()
 	{
 		if(auto_configureRetrocape("vampire", "kill"))
 		{
+			if(have_effect($effect[Iron Palms]) > 0 && auto_have_skill($skill[Iron Palm Technique]))
+			{
+				//slay the dead needs the sword to count as a sword and not as a club
+				use_skill(1, $skill[Iron Palm Technique]);
+			}
 			auto_forceEquipSword();
 		}
 	}
@@ -123,6 +137,8 @@ boolean L7_crypt()
 	// make sure quest status is correct before we attempt to adventure.
 	visit_url("crypt.php");
 	use(1, $item[Evilometer]);
+
+	int evilBonus = cyrptEvilBonus();
 
 	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && lar_repeat($location[The Defiled Alcove]))
 	{
@@ -132,13 +148,16 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Reanimated Reanimator]);
 		}
 
-		provideInitiative(850, $location[The Defiled Alcove], true);
+		if(get_property("cyrptAlcoveEvilness").to_int() > (26 + evilBonus))
+		{
+			provideInitiative(850, $location[The Defiled Alcove], true);
+			addToMaximize("100initiative 850max");
+		}
 
 		autoEquip($item[Gravy Boat]);
 		knockOffCapePrep();
-		addToMaximize("100initiative 850max");
 
-		if(get_property("cyrptAlcoveEvilness").to_int() >= 28)
+		if(get_property("cyrptAlcoveEvilness").to_int() >= (28 + evilBonus))
 		{
 			useNightmareFuelIfPossible();
 		}
@@ -165,14 +184,13 @@ boolean L7_crypt()
 	if((get_property("cyrptNookEvilness").to_int() > 0) && lar_repeat($location[The Defiled Nook]) && !skip_in_koe)
 	{
 		auto_log_info("The Nook!", "blue");
-		buffMaintain($effect[Joyful Resolve]);
 		autoEquip($item[Gravy Boat]);
 		knockOffCapePrep();
 
-		bat_formBats();
-
-		if(get_property("cyrptNookEvilness").to_int() > 26)
+		if(get_property("cyrptNookEvilness").to_int() > (26 + evilBonus) && auto_is_valid($item[Evil Eye]))
 		{
+			buffMaintain($effect[Joyful Resolve]);
+			bat_formBats();
 			januaryToteAcquire($item[broken champagne bottle]);
 		}
 
@@ -206,13 +224,13 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 
-		if(get_property("cyrptNicheEvilness").to_int() >= 28)
+		if(get_property("cyrptNicheEvilness").to_int() >= (28 + evilBonus))
 		{
 			useNightmareFuelIfPossible();
 		}
 
 		auto_log_info("The Niche!", "blue");
-		if(canSniff($monster[Dirty Old Lihc], $location[The Defiled Niche]) && auto_mapTheMonsters())
+		if(canSniff($monster[Dirty Old Lihc], $location[The Defiled Niche]) && get_property("cyrptNicheEvilness").to_int() >= (26 + evilBonus) && auto_mapTheMonsters())
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Dirty Old Lihc.");
 		}
@@ -245,7 +263,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 
-		if(get_property("cyrptCrannyEvilness").to_int() >= 28)
+		if(get_property("cyrptCrannyEvilness").to_int() >= (28 + evilBonus))
 		{
 			useNightmareFuelIfPossible();
 		}
@@ -263,6 +281,12 @@ boolean L7_crypt()
 
 	if(get_property("cyrptTotalEvilness").to_int() <= 0)
 	{
+		if(my_class() == $class[seal clubber] && auto_have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
+		{
+			//if this was toggled off for retrocape slay the dead it can be toggled back on now
+			use_skill(1, $skill[Iron Palm Technique]);
+		}
+		
 		if(my_primestat() == $stat[Muscle])
 		{
 			buyUpTo(1, $item[Ben-Gal&trade; Balm]);
@@ -300,6 +324,37 @@ boolean L7_crypt()
 			abort("Failed to kill bonerdagon");
 		}
 		return true;
+	}
+	return false;
+}
+
+boolean L7_override()
+{
+	//check if olfaction or banishes are being used for ongoing L7 tasks and give those priority
+ 	if(internalQuestStatus("questL07Cyrptic") != 0)
+	{
+		return false;
+	}
+	
+	if(get_property("cyrptNookEvilness").to_int() <= 26 && get_property("cyrptNicheEvilness").to_int() <= 26)
+	{
+		return false;
+	}
+	
+	int evilBonus = cyrptEvilBonus();
+	if(get_property("cyrptNookEvilness").to_int() > (26 + evilBonus) && is_banished($monster[party skelteon]))
+	{
+		auto_log_info("Trying to check on the ongoing Nook before moving on to a different task");
+		if(L7_crypt()) { return true; }
+	}
+	if(get_property("cyrptNicheEvilness").to_int() > (26 + evilBonus))
+	{
+		boolean lihcbanihced = is_banished($monster[basic lihc]) || is_banished($monster[Senile Lihc]) || is_banished($monster[Slick Lihc]);
+		if(lihcbanihced || isSniffed($monster[Dirty Old Lihc]))
+		{
+			auto_log_info("Trying to check on the ongoing Niche before moving on to a different task");
+			if(L7_crypt()) { return true; }
+		}
 	}
 	return false;
 }

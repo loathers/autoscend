@@ -1,6 +1,6 @@
 boolean in_darkGyffte()
 {
-	return my_path() == "Dark Gyffte";
+	return my_path() == $path[Dark Gyffte];
 }
 
 void bat_startAscension()

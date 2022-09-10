@@ -1,6 +1,6 @@
 boolean in_nuclear()
 {
-	return my_path() == "Nuclear Autumn";
+	return my_path() == $path[Nuclear Autumn];
 }
 
 void nuclear_initializeSettings()
