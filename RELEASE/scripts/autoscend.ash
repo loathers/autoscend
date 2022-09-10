@@ -1548,6 +1548,7 @@ void resetState() {
 	set_property("auto_familiarChoice", ""); // which familiar do we want to switch to during pre_adventure
 	set_property("choiceAdventure1387", -1); // using the force non-combat
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
+	set_property("auto_nextEncounter", ""); // monster that was expected last turn
 
 	if(doNotBuffFamiliar100Run())		//some familiars are always bad
 	{
