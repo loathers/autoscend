@@ -103,7 +103,7 @@ generic_t zone_needItem(location loc)
 		value = 20.0;
 		break;
 	case $location[The Haunted Library]:
-		if (item_amount($item[killing jar]) < 1 && (get_property("gnasirProgress").to_int() & 4) == 0 && get_property("desertExploration") < 100) {
+		if (item_amount($item[killing jar]) < 1 && (get_property("gnasirProgress").to_int() & 4) == 0 && get_property("desertExploration").to_int() < 100) {
 			value = 10.0;
 		}
 		break;
@@ -119,7 +119,7 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[The Hidden Bowling Alley]:
-		if (item_amount($item[Bowling Ball]) == 0 && get_property("hiddenBowlingAlleyProgress") < 5) {
+		if (item_amount($item[Bowling Ball]) == 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5) {
 			value = 40.0;
 		}
 		break;
@@ -2007,7 +2007,7 @@ boolean is_ghost_in_zone(location loc)
 		
 	case $location[The Hidden Hospital]:
 		//if liana cleared then we can encounter ghost
-		return get_property("hiddenHospitalProgress") > 0 && get_property("hiddenHospitalProgress") < 7;
+		return get_property("hiddenHospitalProgress").to_int() > 0 && get_property("hiddenHospitalProgress").to_int() < 7;
 		
 	case $location[The Hidden Office Building]:
 		boolean hasMcCluskyFile = $item[McClusky file (complete)].available_amount() > 0;
