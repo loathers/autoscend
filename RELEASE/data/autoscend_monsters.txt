@@ -118,7 +118,7 @@ sniff	5	Pygmy Bowler
 sniff	6	Pygmy Witch Surgeon
 sniff	7	pygmy witch accountant	loc:The Hidden Office Building
 sniff	8	pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
-sniff	9	Pygmy Janitor	loc:The Hidden Park;!tavern:true
+sniff	9	Pygmy Janitor	loc:The Hidden Park;!tavern:true;!itemdropcapped:20=book of matches
 sniff	10	Quiet Healer	!prop:questL10Garbage=finished
 sniff	11	Tomb Rat
 sniff	12	Blooper	loc:8-Bit Realm
@@ -133,7 +133,7 @@ sniff	20	Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Naughty Sorori
 sniff	21	Possessed Wine Rack
 sniff	22	Blue Oyster cultist
 sniff	23	Dirty Old Lihc	prop:cyrptNicheEvilness>29
-sniff	24	Possibility Giant	loc:The Castle in the Clouds in the Sky \(Ground Floor\);prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover
+sniff	24	Possibility Giant	loc:The Castle in the Clouds in the Sky \(Ground Floor\);prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover;!itemdropcapped:20=chaos butterfly
 sniff	25	bearpig topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:spider (duck?) topiary animal
 sniff	26	elephant (meatcar?) topiary animal	!familiar:Melodramedary;!sniffed:bearpig topiary animal;!sniffed:spider (duck?) topiary animal
 sniff	27	spider (duck?) topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:bearpig topiary animal
@@ -142,29 +142,33 @@ sniff	29	CH Imp	item:imp air<4
 sniff	30	Camel Toe	!sniffed:Skinflute
 sniff	31	Skinflute	!sniffed:Camel Toe
 sniff	32	Red Butler	prop:_glarkCableUses<5;item:glark cable<5
+# Pirate quest F'c'le's last missing item
+sniff	33	cleanly pirate	loc:The F'c'le;item:rigging shampoo==0;item:ball polish>0;item:mizzenmast mop>0;!itemdropcapped:30=rigging shampoo
+sniff	34	creamy pirate	loc:The F'c'le;item:rigging shampoo>0;item:ball polish==0;item:mizzenmast mop>0;!itemdropcapped:30=ball polish
+sniff	35	curmudgeonly pirate	loc:The F'c'le;item:rigging shampoo>0;item:ball polish>0;item:mizzenmast mop==0;!itemdropcapped:30=mizzenmast mop
 # Bugbear Invasion Wanderers
-sniff	33	scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared
-sniff	34	hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared
-sniff	35	batbugbear	path:Bugbear Invasion;!loc:Sonar;!prop:statusSonar=unlocked;!prop:statusSonar=open;!prop:statusSonar=cleared;prop:questL04Bat=finished
-sniff	36	bugbear scientist	path:Bugbear Invasion;!loc:Science Lab;!prop:statusScienceLab=unlocked;!prop:statusScienceLab=open;!prop:statusScienceLab=cleared
-sniff	37	bugaboo	path:Bugbear Invasion;!loc:Morgue;!prop:statusMorgue=unlocked;!prop:statusMorgue=open;!prop:statusMorgue=cleared;prop:questL07Cyrptic=finished
-sniff	38	Black Ops Bugbear	path:Bugbear Invasion;!loc:Special Ops;!prop:statusSpecialOps=unlocked;!prop:statusSpecialOps=open;!prop:statusSpecialOps=cleared;prop:questL08Trapper=finished
-sniff	39	Battlesuit Bugbear Type	path:Bugbear Invasion;!loc:Engineering;!prop:statusEngineering=unlocked;!prop:statusEngineering=open;!prop:statusEngineering=cleared;prop:questL10Garbage=finished
-sniff	40	ancient unspeakable bugbear	path:Bugbear Invasion;!loc:Navigation;!prop:statusNavigation=unlocked;!prop:statusNavigation=open;!prop:statusNavigation=cleared;prop:questL11Manor=finished
-sniff	41	trendy bugbear chef	path:Bugbear Invasion;!loc:Galley;!prop:statusGalley=unlocked;!prop:statusGalley=open;!prop:statusGalley=cleared;prop:questL12War=finished
+sniff	36	scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared
+sniff	37	hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared
+sniff	38	batbugbear	path:Bugbear Invasion;!loc:Sonar;!prop:statusSonar=unlocked;!prop:statusSonar=open;!prop:statusSonar=cleared;prop:questL04Bat=finished
+sniff	39	bugbear scientist	path:Bugbear Invasion;!loc:Science Lab;!prop:statusScienceLab=unlocked;!prop:statusScienceLab=open;!prop:statusScienceLab=cleared
+sniff	40	bugaboo	path:Bugbear Invasion;!loc:Morgue;!prop:statusMorgue=unlocked;!prop:statusMorgue=open;!prop:statusMorgue=cleared;prop:questL07Cyrptic=finished
+sniff	41	Black Ops Bugbear	path:Bugbear Invasion;!loc:Special Ops;!prop:statusSpecialOps=unlocked;!prop:statusSpecialOps=open;!prop:statusSpecialOps=cleared;prop:questL08Trapper=finished
+sniff	42	Battlesuit Bugbear Type	path:Bugbear Invasion;!loc:Engineering;!prop:statusEngineering=unlocked;!prop:statusEngineering=open;!prop:statusEngineering=cleared;prop:questL10Garbage=finished
+sniff	43	ancient unspeakable bugbear	path:Bugbear Invasion;!loc:Navigation;!prop:statusNavigation=unlocked;!prop:statusNavigation=open;!prop:statusNavigation=cleared;prop:questL11Manor=finished
+sniff	44	trendy bugbear chef	path:Bugbear Invasion;!loc:Galley;!prop:statusGalley=unlocked;!prop:statusGalley=open;!prop:statusGalley=cleared;prop:questL12War=finished
 # Bugbear Invasion Mothership
-sniff	42	creepy eye-stalk tentacle monster	path:Bugbear Invasion
-sniff	43	anesthesiologist bugbear	path:Bugbear Invasion
-sniff	44	bugbear mortician	path:Bugbear Invasion
-sniff	45	N-space Virtual Assistant	path:Bugbear Invasion
-sniff	46	angry cavebugbear	path:Bugbear Invasion
+sniff	45	creepy eye-stalk tentacle monster	path:Bugbear Invasion
+sniff	46	anesthesiologist bugbear	path:Bugbear Invasion
+sniff	47	bugbear mortician	path:Bugbear Invasion
+sniff	48	N-space Virtual Assistant	path:Bugbear Invasion
+sniff	49	angry cavebugbear	path:Bugbear Invasion
 
 # Gotta get that wig
-yellowray	0	Burly Sidekick	item:Mohawk Wig<1;!skill:Comprehensive Cartography
+yellowray	0	Burly Sidekick	item:Mohawk Wig<1;!skill:Comprehensive Cartography;!itemdropcapped:10=Mohawk wig
 # We also want an amulet, but not badly enough to yellow ray it unless we're backtracking to get it
-yellowray	1	Quiet Healer	item:amulet of extreme plot significance<1;quest:questL10Garbage>6
+yellowray	1	Quiet Healer	item:amulet of extreme plot significance<1;quest:questL10Garbage>6;!itemdropcapped:10=amulet of extreme plot significance
 # Dressing up as a harem girl because we have no shame
-yellowray	2	Knob Goblin Harem Girl	!outfit:Knob Goblin Harem Girl Disguise
+yellowray	2	Knob Goblin Harem Girl	!outfit:Knob Goblin Harem Girl Disguise;!itemdropcapped:20=Knob Goblin harem pants
 # We don't want to yellow ray a mountain man if we already turned in ore
 # although I'm not sure why we'd be fighting one in that case...
 yellowray	3	Mountain Man	quest:questL08Trapper<2
