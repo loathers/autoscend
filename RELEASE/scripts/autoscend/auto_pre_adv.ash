@@ -626,13 +626,13 @@ boolean auto_pre_adventure()
 	if(doML)
 	{
 		// Catch when we leave lowMLZone, allow for being "side tracked" by delay burning
-		if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay") >= 2))
+		if((have_effect($effect[Driving Intimidatingly]) > 0) && (get_property("auto_debuffAsdonDelay").to_int() >= 2))
 		{
 			auto_log_debug("No Reason to delay Asdon Usage");
 			uneffect($effect[Driving Intimidatingly]);
 			set_property("auto_debuffAsdonDelay", 0);
 		}
-		else if((have_effect($effect[Driving Intimidatingly]).to_int() == 0)  && (get_property("auto_debuffAsdonDelay") >= 0))
+		else if((have_effect($effect[Driving Intimidatingly]).to_int() == 0)  && (get_property("auto_debuffAsdonDelay").to_int() >= 0))
 		{
 			set_property("auto_debuffAsdonDelay", 0);
 		}

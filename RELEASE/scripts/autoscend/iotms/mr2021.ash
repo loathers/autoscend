@@ -12,7 +12,7 @@ boolean auto_canFeelEnvy()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelEnvyUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelEnvyUsed").to_int() < 3;
 }
 
 boolean auto_canFeelHatred()
@@ -22,7 +22,7 @@ boolean auto_canFeelHatred()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelHatredUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelHatredUsed").to_int() < 3;
 }
 
 boolean auto_canFeelNostalgic()
@@ -32,7 +32,7 @@ boolean auto_canFeelNostalgic()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelNostalgicUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelNostalgicUsed").to_int() < 3;
 }
 
 boolean auto_canFeelPride()
@@ -42,7 +42,7 @@ boolean auto_canFeelPride()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelPrideUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelPrideUsed").to_int() < 3;
 }
 
 boolean auto_canFeelSuperior()
@@ -52,7 +52,7 @@ boolean auto_canFeelSuperior()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelSuperiorUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelSuperiorUsed").to_int() < 3;
 }
 
 boolean auto_canFeelLonely()
@@ -62,7 +62,7 @@ boolean auto_canFeelLonely()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelLonelyUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelLonelyUsed").to_int() < 3;
 }
 
 boolean auto_canFeelExcitement()
@@ -72,7 +72,7 @@ boolean auto_canFeelExcitement()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelExcitementUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelExcitementUsed").to_int() < 3;
 }
 
 boolean auto_canFeelNervous()
@@ -82,7 +82,7 @@ boolean auto_canFeelNervous()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelNervousUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelNervousUsed").to_int() < 3;
 }
 
 boolean auto_canFeelPeaceful()
@@ -92,7 +92,7 @@ boolean auto_canFeelPeaceful()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelPeacefulUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelPeacefulUsed").to_int() < 3;
 }
 
 boolean auto_haveBackupCamera()
