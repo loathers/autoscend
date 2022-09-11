@@ -685,10 +685,19 @@ boolean LX_pirateOutfit() {
 	if (get_property("lastIslandUnlock").to_int() < my_ascensions()) {
 		return LX_islandAccess();
 	}
-	if (possessEquipment($item[peg key]) && !in_hardcore()) {
-		// if we have the key, just pull any outfit parts we are still missing
-		foreach _, it in outfit_pieces("Swashbuckling Getup") {
-			pullXWhenHaveY(it, 1, 0);
+	if (in_lowkeysummer() && !in_hardcore()) {
+		// TODO replace in_lowkeysummer check with a check that we are doing pirates quest? we are only doing pirates in that path now
+		// pull book to learn insults ahead of starting beerpong quest. saves at least however many fights on the way to gathering the outfit
+		// plus lets you keep trying to gather the outfit while learning insults, can save the pulls for missing pieces that come next
+		pullXWhenHaveY($item[The Big Book Of Pirate Insults], 1, 0);
+		//want 6 insults to try but learning another finding Cap'm Caronch can still improve chances more
+		boolean preGatheringInsults = item_amount($item[The Big Book Of Pirate Insults]) > 0 && (numPirateInsults() < 6);
+		
+		if (possessEquipment($item[peg key]) && !preGatheringInsults) {
+			// if we have the key and insults, just pull any outfit parts we are still missing
+			foreach _, it in outfit_pieces("Swashbuckling Getup") {
+				pullXWhenHaveY(it, 1, 0);
+			}
 		}
 	}
 	if (possessOutfit("Swashbuckling Getup")) {
