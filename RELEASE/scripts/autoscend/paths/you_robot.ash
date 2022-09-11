@@ -1,6 +1,6 @@
 boolean in_robot()
 {
-	return my_path() == "You, Robot";
+	return my_path() == $path[You, Robot];
 }
 
 void robot_initializeSettings()

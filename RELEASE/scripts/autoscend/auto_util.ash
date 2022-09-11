@@ -38,7 +38,7 @@ void debugMaximize(string req, int meat)	//This function will be removed.
 		auto_log_debug("Added -tie to maximize", "red");
 	}
 	auto_log_info("Desired maximize: " + req, "blue");
-	string situation = " " + my_class() + " " + my_path() + " " + my_sign();
+	string situation = " " + my_class() + " " + my_path().name + " " + my_sign();
 	if(in_hardcore())
 	{
 		situation = "Hardcore" + situation;
@@ -2954,16 +2954,6 @@ void shrugAT(effect anticipated)
 	auto_log_info("I think we're good to go to apply " + anticipated, "blue");
 }
 
-
-string auto_my_path()
-{
-	// This is for handling the situation briefly after a new path is created so that we can
-	// attempt to use proper names.
-	// Most of the time, it is just a pointless wrapper.
-	// This is only needed in mainline files, path specific files have already been supported.
-	return my_path();
-}
-
 boolean acquireTransfunctioner()
 {
 	if(available_amount($item[Continuum Transfunctioner]) > 0)
@@ -3338,19 +3328,19 @@ boolean auto_check_conditions(string conds)
 				if(req_mainstat == $stat[none])
 					abort('"' + condition_data + '" does not properly convert to a stat!');
 				return req_mainstat == my_primestat();
-			// data: The text name of the path, as returned by my_path()
+			// data: The text name of the path, as returned by my_path().name
 			// You must be currently on that path
 			// No safety checking possible here, so hopefully you don't misspell anything
 			case "path":
-				return condition_data == auto_my_path();
-			// data: The int id name of the path, as returned by my_path_id()
+				return condition_data == my_path().name;
+			// data: The int id name of the path, as returned by my_path().id
 			// You must be currently on that path
 			// As a precaution, autoscend aborts if to_int returns 0
 			case "pathid":
 				int req_pathid = to_int(condition_data);
 				if(req_pathid == 0)
 					abort('"' + condition_data + '" does not properly convert to a path id!');
-				return req_pathid == my_path_id();
+				return req_pathid == my_path().id;
 			// data: Text name of the skill, as used by to_skill()
 			// You must have the given skill
 			// As a precaution, autoscend aborts if to_skill returns $skill[none]

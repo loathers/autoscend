@@ -1,6 +1,6 @@
 boolean in_glover()
 {
-	return my_path() == "G-Lover";
+	return my_path() == $path[G-Lover];
 }
 
 void glover_initializeDay(int day)

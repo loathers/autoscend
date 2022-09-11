@@ -1,6 +1,6 @@
 boolean in_lta()
 {
-	return my_path() == "License to Adventure";
+	return my_path() == $path[License to Adventure];
 }
 
 

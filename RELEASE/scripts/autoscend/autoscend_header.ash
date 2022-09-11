@@ -1644,7 +1644,6 @@ float effectiveDropChance(item it, float baseDropRate);
 boolean[effect] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
-string auto_my_path();
 boolean acquireTransfunctioner();
 int [item] auto_get_campground();
 location solveDelayZone();
