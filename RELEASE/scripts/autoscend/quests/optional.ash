@@ -865,34 +865,66 @@ boolean LX_joinPirateCrew() {
 			auto_log_info("We have the Frat Boy Ensemble, begin infiltration!", "blue");
 			outfit("Frat Boy Ensemble");
 			infiltrationReady = true;
-		} else if (possessEquipment($item[mullet wig]) && item_amount($item[briefcase]) > 0) {
+		} else if (possessEquipment($item[mullet wig]) && auto_can_equip($item[mullet wig]) && item_amount($item[briefcase]) > 0) {
 			auto_log_info("We have a mullet wig and a briefcase, begin infiltration!", "blue");
 			autoForceEquip($item[mullet wig]);
 			infiltrationReady = true;
-		} else if (possessEquipment($item[frilly skirt]) && item_amount($item[hot wing]) > 2) {
+		} else if (possessEquipment($item[frilly skirt]) && auto_can_equip($item[frilly skirt]) && item_amount($item[hot wing]) > 2) {
 			auto_log_info("We have hot wings and a frilly skirt, begin infiltration!", "blue");
 			autoForceEquip($item[frilly skirt]);
 			infiltrationReady = true;
 		}
-
-		if (!infiltrationReady) {
-			if (item_amount($item[hot wing]) > 2) {
-				if (knoll_available() && my_meat() > npc_price($item[frilly skirt])) {
-					auto_log_info("We have hot wings but no frilly skirt. Lets go shopping!", "blue");
-					buyUpTo(1, $item[frilly skirt]);
-					autoForceEquip($item[frilly skirt]);
-					infiltrationReady = true;
-				} else {
-					auto_log_info("We have hot wings but no frilly skirt. Lets go to the gym!", "blue");
-					if (internalQuestStatus("questM01Untinker") == -1) {
-						visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
-					}
-					if (autoAdv($location[The Degrassi Knoll Gym])) {
-						return true;
+		
+		if (!infiltrationReady)	{
+			boolean mightGetHotwings() {
+				return (internalQuestStatus("questL06Friar") < 2 || (in_lowkeysummer() && !possessEquipment($item[Demonic key])));
+			}
+			boolean mightCatburgle = (item_amount($item[hot wing]) > 2 || mightGetHotwings()) && (knoll_available() || possessEquipment($item[frilly skirt]));
+			
+			if (!infiltrationReady && !mightCatburgle) {
+				if (item_amount($item[briefcase]) > 0) {
+					// missing only mullet wig and not expecting Catburgle
+					if (pullXWhenHaveY($item[mullet wig], 1, 0) && autoForceEquip($item[mullet wig])) {
+						infiltrationReady = true;
 					}
 				}
 			}
-			// TODO: add handling for the other methods here? Do we care about anything other than Catburgling?
+
+			if (!infiltrationReady) {
+				if (item_amount($item[hot wing]) > 2 && auto_can_equip($item[frilly skirt])) {
+					if (knoll_available() && my_meat() > npc_price($item[frilly skirt])) {
+						auto_log_info("We have hot wings but no frilly skirt. Lets go shopping!", "blue");
+						buyUpTo(1, $item[frilly skirt]);
+						autoForceEquip($item[frilly skirt]);
+						infiltrationReady = true;
+					} else {
+						//frilly skirt is 25% drop from 1 of 3 gym monsters, try pulling it before spending adventures
+						if (pullXWhenHaveY($item[frilly skirt], 1, 0) && autoForceEquip($item[frilly skirt])) {
+							infiltrationReady = true;
+						}
+						else {
+							auto_log_info("We have hot wings but no frilly skirt. Lets go to the gym!", "blue");
+							if (internalQuestStatus("questM01Untinker") == -1) {
+								visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
+							}
+							if (autoAdv($location[The Degrassi Knoll Gym])) {
+								return true;
+							}
+						}
+					}
+				}
+				else if (possessEquipment($item[mullet wig]) && auto_can_equip($item[mullet wig])) {
+					// easiest to get or wait to get a briefcase
+					// todo modify banish list to not banish pygmy headhunters if wanting a briefcase in hardcore?
+					if (!mightCatburgle && internalQuestStatus("questL04Bat") >= 1 && internalQuestStatus("hiddenOfficeProgress") >= 6) {	
+						// briefcase zones already finished and not expecting Catburgle then try to pull it
+						if (pullXWhenHaveY($item[briefcase], 1, 0) && autoForceEquip($item[mullet wig])) {
+							infiltrationReady = true;
+						}
+					}
+				}
+				// else: todo get frat boy ensemble if possible. may not be possible if frat house is (Bombed Back to the Stone Age)
+			}
 		}
 
 		if (infiltrationReady) {
