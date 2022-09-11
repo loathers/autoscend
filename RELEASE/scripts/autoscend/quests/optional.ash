@@ -681,12 +681,17 @@ boolean LX_galaktikSubQuest()
 	return autoAdv($location[The Overgrown Lot]);
 }
 
+
+boolean LX_doingPirates() {
+	return in_lowkeysummer(); //we are only doing pirates in that path now
+}
+
 boolean LX_pirateOutfit() {
 	if (get_property("lastIslandUnlock").to_int() < my_ascensions()) {
 		return LX_islandAccess();
 	}
 	if (in_lowkeysummer() && !in_hardcore()) {
-		// TODO replace in_lowkeysummer check with a check that we are doing pirates quest? we are only doing pirates in that path now
+		// in_lowkeysummer() means that turns are being spent in the Cove first which makes this worth doing
 		// pull book to learn insults ahead of starting beerpong quest. saves at least however many fights on the way to gathering the outfit
 		// plus lets you keep trying to gather the outfit while learning insults, can save the pulls for missing pieces that come next
 		pullXWhenHaveY($item[The Big Book Of Pirate Insults], 1, 0);
