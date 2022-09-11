@@ -1,6 +1,6 @@
 boolean in_awol()
 {
-	return my_path() == "Avatar of West of Loathing";
+	return my_path() == $path[Avatar of West of Loathing];
 }
 
 boolean awol_initializeSettings()
