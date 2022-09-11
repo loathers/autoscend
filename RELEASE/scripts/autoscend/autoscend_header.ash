@@ -1117,6 +1117,7 @@ boolean LX_galaktikSubQuest();
 boolean startMeatsmithSubQuest();
 boolean finishMeatsmithSubQuest();
 boolean LX_meatsmithSubQuest();
+boolean LX_doingPirates();
 boolean LX_pirateOutfit();
 void piratesCoveChoiceHandler(int choice);
 string beerPong(string page);
