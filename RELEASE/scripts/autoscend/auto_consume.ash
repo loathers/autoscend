@@ -893,9 +893,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		//don't consume gravy boat
 		craftable_blacklist[$item[warm gravy]] = true;
 	}
-	if(in_lowkeysummer() && internalQuestStatus("questM12Pirate") <= 2 && item_amount($item[hot wing]) < 4)
+	if(LX_doingPirates() && internalQuestStatus("questM12Pirate") <= 2 && item_amount($item[hot wing]) < 4)
 	{
-		// TODO replace in_lowkeysummer check with a check that we are doing pirates? we are only doing pirates quest in that path now
 		blacklist[$item[hot wing]] = true;
 		if(item_amount($item[Devil's Elbow Hot Sauce]) == 0)
 		{	//don't use hot wings if pirates quest still needs them
