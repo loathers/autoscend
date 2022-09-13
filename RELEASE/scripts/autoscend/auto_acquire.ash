@@ -110,7 +110,7 @@ boolean pulledToday(item it)
 	string [int] allPulls = split_string(get_property("_roninStoragePulls"),",");
 	foreach i in allPulls
 	{
-		if(allPulls[i] == it.to_int())
+		if(allPulls[i].to_int() == it.to_int())
 		{
 			return true;
 		}
