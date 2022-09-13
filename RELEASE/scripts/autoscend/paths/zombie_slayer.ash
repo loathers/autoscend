@@ -211,3 +211,12 @@ boolean zombieSlayer_acquireHP(int goal)
 	return my_hp() >= goal;
 }
 
+
+boolean zombieSlayer_usable(familiar fam)
+{
+	if (!in_zombieSlayer())
+	{
+		return true;
+	}
+	return contains_text(fam.attributes, "undead");
+}
