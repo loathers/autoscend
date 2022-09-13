@@ -683,7 +683,7 @@ boolean doBedtime()
 			{
 				auto_log_info("Pulls remaining: " + pulls_remaining(), "olive");
 			}
-			if(!possessOutfit("frat warrior fatigues") && !get_property("auto_hippyInstead"))
+			if(!possessOutfit("frat warrior fatigues") && !get_property("auto_hippyInstead").to_boolean)
 			{
 				auto_log_info("Please consider an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 				if(canYellowRay())
@@ -691,7 +691,7 @@ boolean doBedtime()
 					auto_log_info("Make sure to Ball Lightning the spy!!", "red");
 				}
 			}
-			else if(!possessOutfit("War Hippy Fatigues") && get_property("auto_hippyInstead"))
+			else if(!possessOutfit("War Hippy Fatigues") && get_property("auto_hippyInstead").to_boolean)
 			{
 				auto_log_info("Please consider a Bailey's Beetle (You want War Hippy Fatigues).", "blue");
 				if(canYellowRay())
