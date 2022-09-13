@@ -218,5 +218,5 @@ boolean zombieSlayer_usable(familiar fam)
 	{
 		return true;
 	}
-	return contains_text(fam.attributes, "undead"));
+	return contains_text(fam.attributes, "undead");
 }
