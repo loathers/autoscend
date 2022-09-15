@@ -1,4 +1,4 @@
-since r26713;	// $path added to KoLmafia
+since r26749;	// Smash & Graaagh pref added to KoLmafia
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
