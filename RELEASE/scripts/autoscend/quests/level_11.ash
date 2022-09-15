@@ -2018,28 +2018,28 @@ boolean L11_hiddenCityZones()
 		return autoAdv($location[The Hidden Park]);
 	}
 
-	if (get_property("hiddenApartmentProgress") == 0) {
+	if (get_property("hiddenApartmentProgress").to_int() == 0) {
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Northwest)]);
 	}
 
-	if (get_property("hiddenOfficeProgress") == 0) {
+	if (get_property("hiddenOfficeProgress").to_int() == 0) {
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Northeast)]);
 	}
 
-	if (get_property("hiddenHospitalProgress") == 0) {
+	if (get_property("hiddenHospitalProgress").to_int() == 0) {
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Southwest)]);
 	}
 
-	if (get_property("hiddenBowlingAlleyProgress") == 0) {
+	if (get_property("hiddenBowlingAlleyProgress").to_int() == 0) {
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
