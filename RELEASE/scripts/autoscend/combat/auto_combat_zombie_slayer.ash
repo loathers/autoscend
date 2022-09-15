@@ -2,7 +2,11 @@
 
 boolean wantBearHug(monster enemy)
 {
-	return canUse($skill[Bear Hug]) && get_property("_bearHugs").to_int() < 10 && !enemy.boss;
+	return canUse($skill[Bear Hug]) && 
+		get_property("_bearHugs").to_int() < 10 && 
+		!enemy.boss && 
+		!contains_text(enemy.attributes, "FREE") && 
+		enemy.group > 1;
 }
 
 boolean wantKodiakMoment(monster enemy)
@@ -12,6 +16,7 @@ boolean wantKodiakMoment(monster enemy)
 
 string auto_combatZombieSlayerStage1(int round, monster enemy, string text)
 {
+	// stage 1 = 1st round actions: puzzle boss, pickpocket, duplicate, things that are only allowed if they are the first action you take.
 	if (!in_zombieSlayer())
 	{
 		return "";
@@ -22,6 +27,7 @@ string auto_combatZombieSlayerStage1(int round, monster enemy, string text)
 
 string auto_combatZombieSlayerStage2(int round, monster enemy, string text)
 {
+	// stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
 	if (!in_zombieSlayer())
 	{
 		return "";
@@ -32,6 +38,7 @@ string auto_combatZombieSlayerStage2(int round, monster enemy, string text)
 
 string auto_combatZombieSlayerStage3(int round, monster enemy, string text)
 {
+	// stage 3 = debuff: delevel, stun, curse, damage over time
 	if (!in_zombieSlayer())
 	{
 		return "";
@@ -53,10 +60,17 @@ string auto_combatZombieSlayerStage3(int round, monster enemy, string text)
 
 string auto_combatZombieSlayerStage4(int round, monster enemy, string text)
 {
+	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	if (!in_zombieSlayer())
 	{
 		return "";
 	}
+
+	if(canUse($skill[Smash & Graaagh])) // TODO && get_preference("_zombieSmashPocketsUsed").toInt() < 30 once mafia has the pref
+	{
+		return useSkill($skill[Smash & Graaagh]);
+	}
+
 
 	return "";
 }
@@ -70,8 +84,6 @@ string auto_combatZombieSlayerStage5(int round, monster enemy, string text)
 
 	if (wantBearHug(enemy))
 	{
-		// TODO: Prefer group monsters
-		// TODO: Ignore free monsters
 		return useSkill($skill[Bear Hug]);
 	}
 
