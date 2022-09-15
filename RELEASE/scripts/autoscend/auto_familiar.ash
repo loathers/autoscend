@@ -874,14 +874,14 @@ void acquireFamiliars()
 	}
 
 	//Very cheap and very useful IOTM derivative. MP/HP regen. drops lots of useful food and drink early on
-	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]) && canPull($item[tiny barrel]) && auto_is_valid($item[tiny barrel]))
+	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && auto_is_valid($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]) && canPull($item[tiny barrel]) && auto_is_valid($item[tiny barrel]))
 	{
 		acquireOrPull($item[tiny barrel]);		//mallbuy and pull it if we can
 	}
 	hatchFamiliar($familiar[Lil\' Barrel Mimic]);
 	
 	//stat gains. nonscaling. better at low levels. cheap and easy to acquire in run.
-	if(!have_familiar($familiar[Blood-Faced Volleyball]) && item_amount($item[blood-faced volleyball]) == 0 && auto_is_valid($item[seal tooth]) && auto_is_valid($item[volleyball]) && my_meat() > meatReserve() + 1500)
+	if(!have_familiar($familiar[Blood-Faced Volleyball]) && auto_is_valid($familiar[Blood-faced Volleyball]) && item_amount($item[blood-faced volleyball]) == 0 && auto_is_valid($item[seal tooth]) && auto_is_valid($item[volleyball]) && my_meat() > meatReserve() + 1500)
 	{
 		foreach it in $items[volleyball, seal tooth]
 		{
