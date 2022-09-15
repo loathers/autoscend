@@ -739,7 +739,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Vitali Tea]:					useItem = $item[cuppa Vitali tea];				break;
 	case $effect[Walberg\'s Dim Bulb]:			useSkill = $skill[Walberg\'s Dim Bulb];			break;
 	case $effect[Waking the Dead]:				
-		if(auto_have_skill($skill[Summon Horde])
+		if(auto_have_skill($skill[Summon Horde]))
 		{
 			useSkill = $skill[Summon Minion];
 		}																						break;

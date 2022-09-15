@@ -233,7 +233,7 @@ boolean LM_zombieSlayer()
 		return false;
 	}
 	
-	while(have_item($item[hunter brain] && my_fullness() < fullness_limit())
+	while(item_amount($item[hunter brain]) > 0 && my_fullness() < fullness_limit())
 	{
 		autoEat(min(item_amount($item[hunter brain]), fullness_limit() - my_fullness()), $item[hunter brain]);
 	}
