@@ -222,3 +222,23 @@ boolean zombieSlayer_usable(familiar fam)
 	}
 	return contains_text(fam.attributes, "undead");
 }
+
+boolean LM_zombieSlayer()
+{
+	//this function is called early once every loop of doTasks() in autoscend.ash
+	//if something in this function returns true then it will restart the loop and get called again.
+	
+	if(!in_zombieSlayer())
+	{
+		return false;
+	}
+	
+	while(have_item($item[hunter brain] && my_fullness() < fullness_limit())
+	{
+		autoEat(min(item_amount($item[hunter brain]), fullness_limit() - my_fullness()), $item[hunter brain]);
+	}
+
+	zombieSlayer_buySkills();
+
+	return false;
+}
