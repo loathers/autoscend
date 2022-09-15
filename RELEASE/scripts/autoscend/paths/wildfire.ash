@@ -1,6 +1,6 @@
 boolean in_wildfire()
 {
-	return my_path() == "Wildfire";
+	return my_path() == $path[Wildfire];
 }
 
 void wildfire_initializeSettings()
@@ -461,11 +461,11 @@ boolean LX_wildfire_water()
 //  https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues/892#issuecomment-934059485
 //		if(auto_warSide() == "fratboy")
 //		{
-//			LX_wildfire_hose($location[Frat House In Disguise]);
+//			LX_wildfire_hose($location[Wartime Frat House (Hippy Disguise)]);
 //		}
 //		else
 //		{
-//			LX_wildfire_hose($location[Hippy Camp In Disguise]);
+//			LX_wildfire_hose($location[Wartime Hippy Camp (Frat Disguise)]);
 //		}
 	}
 	

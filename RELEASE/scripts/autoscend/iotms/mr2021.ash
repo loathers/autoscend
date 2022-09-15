@@ -12,7 +12,7 @@ boolean auto_canFeelEnvy()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelEnvyUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelEnvyUsed").to_int() < 3;
 }
 
 boolean auto_canFeelHatred()
@@ -22,7 +22,7 @@ boolean auto_canFeelHatred()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelHatredUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelHatredUsed").to_int() < 3;
 }
 
 boolean auto_canFeelNostalgic()
@@ -32,7 +32,7 @@ boolean auto_canFeelNostalgic()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelNostalgicUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelNostalgicUsed").to_int() < 3;
 }
 
 boolean auto_canFeelPride()
@@ -42,7 +42,7 @@ boolean auto_canFeelPride()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelPrideUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelPrideUsed").to_int() < 3;
 }
 
 boolean auto_canFeelSuperior()
@@ -52,7 +52,7 @@ boolean auto_canFeelSuperior()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelSuperiorUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelSuperiorUsed").to_int() < 3;
 }
 
 boolean auto_canFeelLonely()
@@ -62,7 +62,7 @@ boolean auto_canFeelLonely()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelLonelyUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelLonelyUsed").to_int() < 3;
 }
 
 boolean auto_canFeelExcitement()
@@ -72,7 +72,7 @@ boolean auto_canFeelExcitement()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelExcitementUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelExcitementUsed").to_int() < 3;
 }
 
 boolean auto_canFeelNervous()
@@ -82,7 +82,7 @@ boolean auto_canFeelNervous()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelNervousUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelNervousUsed").to_int() < 3;
 }
 
 boolean auto_canFeelPeaceful()
@@ -92,7 +92,7 @@ boolean auto_canFeelPeaceful()
 	{
 		return false;
 	}
-	return auto_haveEmotionChipSkills() && get_property("_feelPeacefulUsed") < 3;
+	return auto_haveEmotionChipSkills() && get_property("_feelPeacefulUsed").to_int() < 3;
 }
 
 boolean auto_haveBackupCamera()
@@ -638,7 +638,48 @@ void auto_CMCconsult()
 {
 	//consume previously bought items if conditions are right
 	//perhaps pill was bought yesterday with full spleen
-	if(item_amount($item[Breathitin&trade;]) > 0)
+	boolean notAboutToDoNuns()
+	{
+		//should avoid getting more free kill charges when about to do nuns because the fights would be capped to 1000 meat
+		if(my_level() >= 12)
+		{
+			if(my_location() == $location[The Themthar Hills])
+			{
+				return false;
+			}
+			if(my_location() == $location[the battlefield (frat uniform)] && get_property("sidequestNunsCompleted") == "none")
+			{
+				int hippiesDefeated = get_property("hippiesDefeated").to_int();
+				if(hippiesDefeated <= 208 && auto_bestWarPlan().do_nuns)
+				{	
+					int turnsUntilNuns = min(16,ceil(max(0,191.0 - hippiesDefeated)/auto_warKillsPerBattle()));
+					if(get_property("breathitinCharges").to_int() + 5 >= turnsUntilNuns)
+					{
+						return false;	//may do nuns before breathitin charges get used up
+					}
+				}
+			}
+			if(get_property("auto_hippyInstead").to_boolean() && internalQuestStatus("questL12War") == 1 && get_property("sidequestNunsCompleted") == "none")
+			{
+				if(auto_bestWarPlan().do_nuns && (get_property("sidequestOrchardCompleted") != "none" || !auto_bestWarPlan().do_orchard))
+				{
+					return false;	//war started and about to start nuns as hippy anytime?
+				}
+			}
+		}
+		return true;
+	}
+	boolean shouldChewBreathitin()
+	{
+		if(my_location() == $location[The Hidden Park])
+		{
+			//already free [dense liana] should come right after and would waste charges
+			//can't know how many combats will remain in the park which is ideally noncombats
+			return false;
+		}
+		return notAboutToDoNuns();
+	}
+	if(item_amount($item[Breathitin&trade;]) > 0 && shouldChewBreathitin() && !can_interact())
 	{
 		autoChew(1,$item[Breathitin&trade;]);
 	}
@@ -720,7 +761,7 @@ void auto_CMCconsult()
 		run_choice(bestOption);
 	}
 
-	if(consumableBought == $item[Breathitin&trade;] || consumableBought == $item[Homebodyl&trade;])
+	if(consumableBought == $item[Homebodyl&trade;] || (consumableBought == $item[Breathitin&trade;] && shouldChewBreathitin()))
 	{
 		autoChew(1,consumableBought);
 	}

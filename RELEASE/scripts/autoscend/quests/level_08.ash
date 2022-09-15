@@ -712,7 +712,7 @@ boolean L8_trapperGroar()
 	// error catching for if we are actually on step5 and mafia did not notice.
 	if(item_amount($item[Groar\'s Fur]) > 0 || item_amount($item[Winged Yeti Fur]) > 0)
 	{
-		auto_log_info("Quest tracking error detected. Mafia thinks we are in step4 of questL08Trapper but we are in fact in step5. Correcting. Current Path = " +my_path(), "red");
+		auto_log_info("Quest tracking error detected. Mafia thinks we are in step4 of questL08Trapper but we are in fact in step5. Correcting. Current Path = " +my_path().name, "red");
 		set_property("questL08Trapper", "step5");
 		return true;
 	}
@@ -890,7 +890,23 @@ boolean L8_trapperQuest()
 		return false;
 	}
 
-	if(L8_trapperTalk() || L8_getGoatCheese() || L8_getMineOres() || L8_trapperSlope() || L8_trapperGroar())
+	if(L8_trapperTalk())
+	{
+		return true;
+	}
+
+	//at end of day last chance to get milk could be more valuable for characters with a stomach than not cancelling banishes used in L7
+	if(my_adventures() < 7 && !get_property("_milkOfMagnesiumUsed").to_boolean() && fullness_limit() != 0 && have_skill($skill[Advanced Saucecrafting]) && 
+	L8_getGoatCheese())
+	{
+		return true;
+	}
+	else if(L7_override())	//if any olfaction or banishes used in an earlier area finish there first
+	{
+		return true;
+	}
+
+	if(L8_getGoatCheese() || L8_getMineOres() || L8_trapperSlope() || L8_trapperGroar())
 	{
 		return true;
 	}

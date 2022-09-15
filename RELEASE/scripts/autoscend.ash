@@ -1,4 +1,4 @@
-since r26623;	// Add checking for availability of more Journeyman zones  (location_accessible added)
+since r26713;	// $path added to KoLmafia
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -10,6 +10,7 @@ since r26623;	// Add checking for availability of more Journeyman zones  (locati
 import <autoscend/autoscend_header.ash>
 import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
 import <autoscend/autoscend_migration.ash>
+import <auto_canadv.ash>
 
 import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
@@ -247,7 +248,7 @@ void initializeSettings() {
 	wildfire_initializeSettings();
 	zombieSlayer_initializeSettings();
 
-	set_property("auto_doneInitializePath", my_path());		//which path we initialized as
+	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
 	remove_property("_auto_reinitialize");
 }
@@ -689,8 +690,9 @@ void initializeDay(int day)
 		boolean temp = cli_execute("make shoe gum");
 	}
 	
-	//a free to cast intrinsic that makes swords count as clubs. if you have it there is no reason to ever have it off regardless of class.
-	if(auto_have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
+	//a free to cast intrinsic that makes swords count as clubs. there is no reason to ever have it on if not a seal clubber?
+	//regardless of class there is a reason not to if auto_configureRetrocape("vampire", "kill") can be used. it needs the sword to count as a sword and not as a club
+	if(my_class() == $class[seal clubber] && auto_have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
 	{
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
@@ -1579,7 +1581,7 @@ boolean process_tasks()
 		abort("Could not load /data/autoscend_task_order.txt");
 	}
 
-	string task_path = my_path();
+	string task_path = my_path().name;
 	if (!(task_order contains task_path))
 	{
 		task_path = "default";
@@ -1841,7 +1843,7 @@ void auto_begin()
 	auto_log_info("This is version: " + svn_info("autoscend").last_changed_rev + " Mafia: " + get_revision());
 	auto_log_info("This is day " + my_daycount() + ".");
 	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
-	auto_log_info("Current Ascension: " + auto_my_path());
+	auto_log_info("Current Ascension: " + my_path().name);
 
 	auto_settings();
 

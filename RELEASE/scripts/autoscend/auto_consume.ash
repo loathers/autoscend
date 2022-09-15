@@ -579,13 +579,13 @@ float consumptionProgress()
 	}
 	
 	// don't consider spleen as a significant adventure organ in most paths
-	if (isActuallyEd() || my_path() == "Oxygenarian")
+	if (isActuallyEd() || my_path() == $path[Oxygenarian])
 	{
 		organs_used += my_spleen_use();
 		organs_max += spleen_limit();
 	}
-	// if(my_path() == "Community Service"), autoscend does try to use spleen for adventures but also for buffs
-	// if(my_path() == "Avatar of Sneaky Pete"), autoscend doesn't try to use molotov soda or create Hate to produce them
+	// if(my_path() == $path[Community Service]), autoscend does try to use spleen for adventures but also for buffs
+	// if(my_path() == $path[Avatar of Sneaky Pete]), autoscend doesn't try to use molotov soda or create Hate to produce them
 	
 	if (organs_max == 0)
 	{
@@ -947,9 +947,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			(it.fullness == 0 || it.inebriety == 0) &&
 			auto_is_valid(it))
 		{
-			boolean value_allowed = (historical_price(it) <= get_property("autoBuyPriceLimit").to_int()) ||
+			boolean value_allowed = (historical_price(it) < get_property("autoBuyPriceLimit").to_int()) ||
 									($items[blueberry muffin, bran muffin, chocolate chip muffin] contains it && item_amount(it) > 0 && //muffins are expensive but renewable
-									my_path() != "Grey You"); //Grey You should not even get to here if ever supported but it consumes the tin so blocked just in case
+									my_path() != $path[Grey You]); //Grey You should not even get to here if ever supported but it consumes the tin so blocked just in case
 									
 			if(!value_allowed)	continue;
 			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;
@@ -1015,15 +1015,15 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		void considerNextPie()
 		{
 			//missing at least 1 key/token, in case it will be only one first consider mainstat pie if possible
-			if(my_primestat() == $stat[muscle] && item_amount($item[Boris\'s key]) == 0)
+			if(!wantBorisPie && my_primestat() == $stat[muscle] && item_amount($item[Boris\'s key]) == 0 && auto_is_valid($item[Boris\'s key lime pie]))
 				wantBorisPie = true;
-			else if(my_primestat() == $stat[mysticality] && item_amount($item[Jarlsberg\'s key]) == 0)
+			else if(!wantJarlsbergPie && my_primestat() == $stat[mysticality] && item_amount($item[Jarlsberg\'s key]) == 0 && auto_is_valid($item[Jarlsberg\'s key lime pie]))
 				wantJarlsbergPie = true;
-			else if(!wantPetePie && item_amount($item[Sneaky Pete\'s key]) == 0)
+			else if(!wantPetePie && item_amount($item[Sneaky Pete\'s key]) == 0 && auto_is_valid($item[Sneaky Pete\'s key lime pie]))
 				wantPetePie = true;
-			else if(!wantJarlsbergPie && item_amount($item[Jarlsberg\'s key]) == 0)
+			else if(!wantJarlsbergPie && item_amount($item[Jarlsberg\'s key]) == 0 && auto_is_valid($item[Jarlsberg\'s key lime pie]))
 				wantJarlsbergPie = true;
-			else if(!wantBorisPie && item_amount($item[Boris\'s key]) == 0)
+			else if(!wantBorisPie && item_amount($item[Boris\'s key]) == 0 && auto_is_valid($item[Boris\'s key lime pie]))
 				wantBorisPie = true;
 		}
 		for (int i=0; i<missingHeroKeys; i++)

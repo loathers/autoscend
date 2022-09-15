@@ -1,6 +1,6 @@
 boolean in_disguises()
 {
-	return my_path() == "Disguises Delimit";
+	return my_path() == $path[Disguises Delimit];
 }
 
 void disguises_initializeSettings()

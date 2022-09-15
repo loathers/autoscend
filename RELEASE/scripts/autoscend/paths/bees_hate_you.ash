@@ -1,6 +1,6 @@
 boolean in_bhy()
 {
-	return my_path() == "Bees Hate You";
+	return my_path() == $path[Bees Hate You];
 }
 
 void bhy_initializeSettings()

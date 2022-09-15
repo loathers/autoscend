@@ -1,6 +1,6 @@
 boolean is_pete()
 {
-	return my_path() == "Avatar of Sneaky Pete";
+	return my_path() == $path[Avatar of Sneaky Pete];
 }
 
 void pete_initializeSettings()

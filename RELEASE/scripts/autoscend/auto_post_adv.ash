@@ -989,7 +989,7 @@ boolean auto_post_adventure()
 		{
 			bjornify_familiar($familiar[grim brother]);
 		}
-		if((my_bjorned_familiar() == $familiar[grimstone golem]) && (get_property("_grimstoneMaskDropsCrown") == 1) && have_familiar($familiar[El Vibrato Megadrone]))
+		if((my_bjorned_familiar() == $familiar[grimstone golem]) && (get_property("_grimstoneMaskDropsCrown").to_int() == 1) && have_familiar($familiar[El Vibrato Megadrone]))
 		{
 			bjornify_familiar($familiar[el vibrato megadrone]);
 		}

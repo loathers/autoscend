@@ -457,6 +457,7 @@ void juneCleaverChoiceHandler(int choice);
 boolean canUseSweatpants();
 int getSweat();
 void sweatpantsPreAdventure();
+void utilizeStillsuit();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -766,7 +767,9 @@ boolean plumber_buyStuff();
 int plumber_ppCost(skill sk);
 boolean plumber_canDealScalingDamage();
 boolean plumber_skillValid(skill sk);
+boolean plumber_equipTool(stat st, boolean forceEquipRightNow);
 boolean plumber_equipTool(stat st);
+boolean plumber_forceEquipTool();
 void plumber_eat_xp();
 boolean LM_plumber();
 
@@ -877,6 +880,7 @@ void zombieSlayer_initializeSettings();
 boolean zombieSlayer_buySkills();
 boolean zombieSlayer_acquireMP(int goal, int meat_reserve);
 boolean zombieSlayer_acquireHP(int goal);
+boolean zombieSlayer_usable(familiar fam);
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
@@ -914,7 +918,9 @@ boolean L6_dakotaFanning();
 ########################################################################################################
 //Defined in autoscend/quests/level_07.ash
 void cyrptChoiceHandler(int choice);
+int cyrptEvilBonus();
 boolean L7_crypt();
+boolean L7_override();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_08.ash
@@ -1287,6 +1293,7 @@ boolean possessOutfit(string outfit);
 void equipBaseline();
 void ensureSealClubs();
 void equipRollover(boolean silent);
+boolean auto_forceEquipSword(boolean speculative);
 boolean auto_forceEquipSword();
 boolean is_watch(item it);
 
@@ -1603,6 +1610,7 @@ int maxSealSummons();
 boolean acquireCombatMods(int amt);
 boolean acquireCombatMods(int amt, boolean doEquips);
 boolean basicAdjustML();
+int highest_available_mcd();
 boolean auto_change_mcd(int mcd);
 boolean auto_change_mcd(int mcd, boolean immediately);
 boolean evokeEldritchHorror(string option);
@@ -1637,7 +1645,6 @@ float effectiveDropChance(item it, float baseDropRate);
 boolean[effect] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
-string auto_my_path();
 boolean acquireTransfunctioner();
 int [item] auto_get_campground();
 location solveDelayZone();
@@ -1680,7 +1687,6 @@ int auto_convertDesiredML(int DML);
 boolean auto_setMCDToCap();
 boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit);
 boolean auto_MaxMLToCap(int ToML, boolean doAltML);
-boolean enforceMLInPreAdv();
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();
 boolean auto_haveQueuedForcedNonCombat();

@@ -251,7 +251,7 @@ void pathDroppedCheck()
 {
 	//detect path drops and reinitialize with settings appropriate for the new path
 	//this will also trigger when some paths break ronin
-	if(my_path() == get_property("auto_doneInitializePath"))
+	if(my_path().name == get_property("auto_doneInitializePath"))
 	{
 		return;		//our current path is the same one we last initialized as
 	}
@@ -261,7 +261,7 @@ void pathDroppedCheck()
 		//a path of none would have returned "None" not "". This is only backwards support and can be deleted in the future.
 		return;
 	}
-	print("Path change detected. You were previously " +get_property("auto_doneInitializePath")+ " and are now a " +my_path(), "red");
+	print("Path change detected. You were previously " +get_property("auto_doneInitializePath")+ " and are now a " +my_path().name, "red");
 	set_property("_auto_reinitialize", true);
 	initializeSettings();
 }

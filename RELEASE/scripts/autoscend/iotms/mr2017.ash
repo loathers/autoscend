@@ -1160,7 +1160,7 @@ boolean getSpaceJelly()
 	{
 		return false;
 	}
-	if(my_path() != "Standard")
+	if(my_path() != $path[Standard])
 	{
 		if(!inAftercore())
 		{
@@ -1489,10 +1489,7 @@ boolean asdonCanMissile()
 }
 
 boolean isHorseryAvailable() {
-	if(!get_property("horseryAvailable").to_boolean()) {
-		return false;
-	}
-	return true;
+	return (get_property("horseryAvailable").to_boolean() && auto_is_valid($item[Horsery contract]));
 }
 
 int horseCost()

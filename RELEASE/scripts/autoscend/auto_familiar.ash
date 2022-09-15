@@ -392,9 +392,14 @@ boolean autoChooseFamiliar(location place)
 		famChoice = lookupFamiliarDatafile("gremlins");
 	}
 
+	// places that benefit from + combat rate
+	if ($locations[Sonofa Beach, Lair of the Ninja Snowmen] contains place && zone_combatMod(place)._int > 0 && canChangeToFamiliar($familiar[Jumpsuited Hound Dog])) {
+		famChoice = $familiar[Jumpsuited Hound Dog];
+	}
+	
 	// places where item drop is required to help save adventures.
-	if ($locations[The Typical Tavern Cellar, Guano Junction, The Beanbat Chamber, Cobb's Knob Harem, The Goatlet, Itznotyerzitz Mine,
-	Twin Peak, The Penultimate Fantasy Airship, The Hidden Temple, The Hidden Hospital, The Hidden Bowling Alley, The Haunted Wine Cellar,
+	if ($locations[Guano Junction, The Beanbat Chamber, Cobb's Knob Harem, The Goatlet, Itznotyerzitz Mine,
+	Twin Peak, The Penultimate Fantasy Airship, The Hidden Temple, The Hidden Bowling Alley, The Haunted Wine Cellar,
 	The Haunted Laundry Room, The Copperhead Club, A Mob of Zeppelin Protesters, Whitey's Grove, The Oasis, The Middle Chamber,
 	Frat House, Hippy Camp, The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hatching Chamber,
 	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, 8-Bit Realm, The Degrassi Knoll Garage, The Old Landfill,
@@ -449,7 +454,7 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// Killing jar saves adventures unlocking the Pyramid.
-	if ($location[The Haunted Library] == place && item_amount($item[killing jar]) < 1 && (get_property("gnasirProgress").to_int() & 4) == 0 && get_property("desertExploration") < 100) {
+	if ($location[The Haunted Library] == place && item_amount($item[killing jar]) < 1 && (get_property("gnasirProgress").to_int() & 4) == 0 && get_property("desertExploration").to_int() < 100) {
 		famChoice = lookupFamiliarDatafile("item");
 	}
 
@@ -869,14 +874,14 @@ void acquireFamiliars()
 	}
 
 	//Very cheap and very useful IOTM derivative. MP/HP regen. drops lots of useful food and drink early on
-	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]) && canPull($item[tiny barrel]) && auto_is_valid($item[tiny barrel]))
+	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && auto_is_valid($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]) && canPull($item[tiny barrel]) && auto_is_valid($item[tiny barrel]))
 	{
 		acquireOrPull($item[tiny barrel]);		//mallbuy and pull it if we can
 	}
 	hatchFamiliar($familiar[Lil\' Barrel Mimic]);
 	
 	//stat gains. nonscaling. better at low levels. cheap and easy to acquire in run.
-	if(!have_familiar($familiar[Blood-Faced Volleyball]) && item_amount($item[blood-faced volleyball]) == 0 && auto_is_valid($item[seal tooth]) && auto_is_valid($item[volleyball]) && my_meat() > meatReserve() + 1500)
+	if(!have_familiar($familiar[Blood-Faced Volleyball]) && auto_is_valid($familiar[Blood-faced Volleyball]) && item_amount($item[blood-faced volleyball]) == 0 && auto_is_valid($item[seal tooth]) && auto_is_valid($item[volleyball]) && my_meat() > meatReserve() + 1500)
 	{
 		foreach it in $items[volleyball, seal tooth]
 		{
