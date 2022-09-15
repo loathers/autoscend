@@ -1731,6 +1731,7 @@ boolean doTasks()
 	if(LM_jarlsberg())					return true;
 	if(LM_robot())						return true;
 	if(LM_plumber())					return true;
+	if(LM_zombieSlayer())				return true;
 
 	if(!in_community())
 	{
