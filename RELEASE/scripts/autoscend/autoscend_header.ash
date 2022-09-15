@@ -880,6 +880,7 @@ void zombieSlayer_initializeSettings();
 boolean zombieSlayer_buySkills();
 boolean zombieSlayer_acquireMP(int goal, int meat_reserve);
 boolean zombieSlayer_acquireHP(int goal);
+boolean zombieSlayer_usable(familiar fam);
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
