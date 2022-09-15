@@ -717,17 +717,17 @@ boolean can_adv(location where, boolean prep, int verb) {
    case $location[The Spooky Gravy Burrow]: return (famcheck($familiar[spooky gravy fairy]) || famcheck($familiar[sleazy gravy fairy]) ||
            famcheck($familiar[frozen gravy fairy]) || famcheck($familiar[flaming gravy fairy]) || famcheck($familiar[stinky gravy fairy]));
   // sorceress
-   case $location[Fastest Adventurer Contest]: return get_property("questL13Final") == "step1" && get_property("nsContestants1") > 0;
+   case $location[Fastest Adventurer Contest]: return get_property("questL13Final") == "step1" && get_property("nsContestants1").to_int() > 0;
    case $location[Strongest Adventurer Contest]:
    case $location[Smartest Adventurer Contest]:
    case $location[Smoothest Adventurer Contest]:
-   case $location[A Crowd of (Stat) Adventurers]: return get_property("questL13Final") == "step1" && get_property("nsContestants2") > 0;
+   case $location[A Crowd of (Stat) Adventurers]: return get_property("questL13Final") == "step1" && get_property("nsContestants2").to_int() > 0;
    case $location[Hottest Adventurer Contest]:
    case $location[Coldest Adventurer Contest]:
    case $location[Spookiest Adventurer Contest]:
    case $location[Stinkiest Adventurer Contest]:
    case $location[Sleaziest Adventurer Contest]:
-   case $location[A Crowd of (Element) Adventurers]: return get_property("questL13Final") == "step1" && get_property("nsContestants3") > 0;
+   case $location[A Crowd of (Element) Adventurers]: return get_property("questL13Final") == "step1" && get_property("nsContestants3").to_int() > 0;
    case $location[The Hedge Maze]: return get_property("questL13Final") == "step4";
    case $location[Tower Level 1]: return get_property("questL13Final") == "step6";
    case $location[Tower Level 2]: return get_property("questL13Final") == "step7";
@@ -736,7 +736,7 @@ boolean can_adv(location where, boolean prep, int verb) {
    case $location[Tower Level 5]: return get_property("questL13Final") == "step10";
    case $location[The Naughty Sorceress' Chamber]: return get_property("questL13Final") == "step11";
   // spacegate
-   case $location[Through the Spacegate]: return get_property("_spacegateCoordinates") != "" && get_property("_spacegateTurnsLeft") > 0;
+   case $location[Through the Spacegate]: return get_property("_spacegateCoordinates") != "" && get_property("_spacegateTurnsLeft").to_int() > 0;
   // spring break
    case $location[The Sunken Party Yacht]: return not_blind();
   // that 70s volcano

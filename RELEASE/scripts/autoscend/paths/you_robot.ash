@@ -1357,10 +1357,10 @@ void robot_directive()
 	boolean city_ready = internalQuestStatus("questL11Worship") == 3;		//we unlocked the hidden city
 	boolean city_ziggurat_ready = internalQuestStatus("questL11Worship") == 4;		//we are about to do ziggurat next
 	boolean city_finished = get_property("questL11Worship") == "finished";
-	boolean liana_cleared = get_property("hiddenApartmentProgress") > 0 &&
-	get_property("hiddenOfficeProgress") > 0 &&
-	get_property("hiddenHospitalProgress") > 0 &&
-	get_property("hiddenBowlingAlleyProgress") > 0 &&
+	boolean liana_cleared = get_property("hiddenApartmentProgress").to_int() > 0 &&
+	get_property("hiddenOfficeProgress").to_int() > 0 &&
+	get_property("hiddenHospitalProgress").to_int() > 0 &&
+	get_property("hiddenBowlingAlleyProgress").to_int() > 0 &&
 	get_property("auto_openedziggurat").to_boolean();
 	if(directive == "machete" && liana_cleared)
 	{
