@@ -44,7 +44,7 @@ string auto_combatZombieSlayerStage3(int round, monster enemy, string text)
 		return "";
 	}
 
-	if(canUse($skill[Infectious Bite]))
+	if(canUse($skill[Infectious Bite]) && zombieSlayer_canInfect(enemy) && canSurvive(4.0))
 	{
 		return useSkill($skill[Infectious Bite]);
 	}
@@ -67,7 +67,7 @@ string auto_combatZombieSlayerStage4(int round, monster enemy, string text)
 	}
 	
 	// Basically stolen from Ed's Lash targets
-	if(canUse($skill[Smash & Graaagh]) && get_property("_zombieSmashPocketsUsed").to_int() < 30) 
+	if(canUse($skill[Smash & Graaagh]) && get_property("_zombieSmashPocketsUsed").to_int() < 30 && canSurvive(2.0)) 
 	{
 		boolean doSmash = false;
 

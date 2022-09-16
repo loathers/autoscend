@@ -213,6 +213,18 @@ boolean zombieSlayer_acquireHP(int goal)
 	return my_hp() >= goal;
 }
 
+boolean zombieSlayer_canInfect(monster enemy){
+	foreach phy in $phylums[plant, bug, constellation, construct, elemental, slime]
+	{
+		if(monster_phylum(enemy) == phy)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 
 boolean zombieSlayer_usable(familiar fam)
 {
