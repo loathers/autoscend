@@ -247,6 +247,7 @@ void initializeSettings() {
 	robot_initializeSettings();
 	wildfire_initializeSettings();
 	zombieSlayer_initializeSettings();
+	fotd_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());

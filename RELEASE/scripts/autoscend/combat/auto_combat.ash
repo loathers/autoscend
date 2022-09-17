@@ -109,6 +109,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 	}
 
 	disguises_combat_helper(round, enemy, text);		//disguise delimit mask identification
+	fotd_combat_helper();				//fall of the dinosaurs dino identification
 
 	if(get_property("auto_combatDirective") != "")
 	{
