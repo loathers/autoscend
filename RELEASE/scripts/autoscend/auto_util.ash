@@ -881,7 +881,7 @@ boolean canYellowRay(monster target)
 
 		if((auto_hasParka() && hasTorso()) || auto_hasRetrocape())
 		{
-			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != ""
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 		}
 
 		if(canChangeToFamiliar($familiar[Crimbo Shrub]))
