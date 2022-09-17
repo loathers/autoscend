@@ -861,6 +861,11 @@ boolean canYellowRay(monster target)
 
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
+		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
+		if(auto_hasParka() && hasTorso())
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
+		}
 		// first, do any necessary prep to use a yellow ray
 		if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
 			get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
@@ -879,7 +884,7 @@ boolean canYellowRay(monster target)
 			return true;
 		}
 
-		if((auto_hasParka() && hasTorso()) || auto_hasRetrocape())
+		if(auto_hasRetrocape())
 		{
 			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 		}

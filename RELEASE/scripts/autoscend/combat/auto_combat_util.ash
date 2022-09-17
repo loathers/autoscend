@@ -691,15 +691,15 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	{
 		if((item_amount($item[Yellowcake Bomb]) > 0) && auto_is_valid($item[Yellowcake Bomb]))
 		{
-			return "item " + $item[Yellowcake Bomb]; // 75 turns
-		}
-		if((item_amount($item[yellow rocket]) > 0) && auto_is_valid($item[yellow rocket]))
-		{
-			return "item " + $item[yellow rocket]; // 75 turns
+			return "item " + $item[Yellowcake Bomb]; // 75 turns + quest item
 		}
 		if(inCombat ? have_skill($skill[Spit jurassic acid]) : auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]))
 		{
 			return "skill " + $skill[Spit jurassic acid]; //100 Turns and free kill
+		}
+		if((item_amount($item[yellow rocket]) > 0) && auto_is_valid($item[yellow rocket]))
+		{
+			return "item " + $item[yellow rocket]; // 75 turns & 250 meat
 		}
 		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : auto_hasRetrocape() && auto_is_valid($skill[Unleash the Devil's Kiss]))
 		{
@@ -711,7 +711,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		}
 		if(auto_have_skill($skill[Ball Lightning]) && (my_lightning() >= lightning_cost($skill[Ball Lightning])))
 		{
-			return "skill " + $skill[Ball Lightning]; // 99 turns
+			return "skill " + $skill[Ball Lightning]; // 99 turns + 5 lightning
 		}
 		if(auto_have_skill($skill[Wrath of Ra]) && (my_mp() >= mp_cost($skill[Wrath of Ra])))
 		{
