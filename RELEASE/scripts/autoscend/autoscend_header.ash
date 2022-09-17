@@ -881,7 +881,7 @@ boolean zombieSlayer_buySkills();
 boolean zombieSlayer_acquireMP(int goal, int meat_reserve);
 boolean zombieSlayer_acquireHP(int goal);
 boolean zombieSlayer_usable(familiar fam);
-boolean zombieSLayer_canInfect(monster enemy);
+boolean zombieSlayer_canInfect(monster enemy);
 boolean LM_zombieSlayer();
 
 ########################################################################################################
