@@ -879,6 +879,11 @@ boolean canYellowRay(monster target)
 			return true;
 		}
 
+		if((auto_hasParka() && hasTorso()) || auto_hasRetrocape())
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != ""
+		}
+
 		if(canChangeToFamiliar($familiar[Crimbo Shrub]))
 		{
 			if(item_amount($item[box of old Crimbo decorations]) == 0)
@@ -1052,6 +1057,10 @@ boolean adjustForYellowRay(string combat_string)
 	{
 		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
 	}
+	if(combat_string == ("skill " + $skill[Spit jurassic acid]))
+	{
+		auto_configureParka("acid");
+	}
 	if(combat_string == ("skill " + $skill[Unleash the Devil's Kiss]))
 	{
 		auto_configureRetrocape("heck", "kiss");
@@ -1168,7 +1177,7 @@ string statCard()
 
 boolean hasTorso()
 {
-	return have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed]);
+	return have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed]) || robot_cpu(9,false);
 }
 
 boolean isGuildClass()

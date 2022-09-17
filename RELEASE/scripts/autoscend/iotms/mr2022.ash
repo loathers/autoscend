@@ -328,3 +328,78 @@ void utilizeStillsuit() {
 		handleFamiliar(get_property("auto_100familiar").to_familiar());	//just make extra sure this didnt break 100 familiar runs but familiar should not have been swapped
 	}
 }
+
+boolean auto_hasParka()
+{
+	return possessEquipment($item[Jurassic Parka]) && auto_is_valid($item[Jurassic Parka]);
+}
+
+boolean auto_configureParka(string tag)
+{
+	if (!auto_hasParka())
+	{
+		return false;
+	}
+
+	// store the requested setting in a property so we can handle them later
+	set_property("auto_parkaSetting", tag);
+
+	// cut down potential server hits by telling the maximizer to not consider it.
+	addToMaximize("-equip jurassic parka");
+	return true;
+}
+
+boolean auto_handleParka()
+{
+	if (!auto_hasParka())
+	{
+		return false;
+	}
+	string dino =  get_property("auto_parkaSetting");
+	string tempDino = dino;
+	if (dino == "")
+	{
+		if (get_property("parkaMode") == "")
+		{
+			// if currently configured for stats and have been getting beaten up, change to stun
+			tempDino = "kachungasaur";
+		}
+		else
+		{
+			return false;
+		}	
+	}
+	if (!contains_text("kachungasaur | cold | hp | meat | dilophosaur | stench | acid | ghostasaurus | spooky | mp | dr | spikolodon | sleaze | ml | spikes | pterodactyl | hot | init | nc", dino))
+	{
+		return false;
+	}
+	if (dino == "cold" || dino == "meat" || dino == "hp")
+	{
+		tempDino = "kachungasaur";
+	}
+	else if(dino == "stench" || dino == "acid")
+	{
+		tempDino = "dilophosaur";
+	}
+	else if(dino == "spooky" || dino == "mp" || dino == "dr")
+	{
+		tempDino = "ghostsaurus";
+	}
+	else if(dino == "sleaze" || dino == "ml" || dino == "spikes")
+	{
+		tempDino = "spikolodon";
+	}
+	else if(dino == "hot" || dino == "init" || dino == "nc")
+	{
+		tempDino = "pterodactyl";
+	}
+
+	// avoid uselessly reconfiguring the cape
+	if (get_property("parkaMode") != tempDino)
+	{
+		cli_execute(`parka {tempDino}`);
+	}
+	equip($item[jurassic parka]); // already configured, just equip
+
+	return get_property("parkaMode") == tempDino && have_equipped($item[jurassic parka]);
+}
