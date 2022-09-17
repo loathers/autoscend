@@ -877,8 +877,30 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
-	boolean[item] blacklist = $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead];
+	boolean[item] blacklist;
 	boolean[item] craftable_blacklist;
+
+	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead]
+	{
+		blacklist[it] = true;
+	}
+	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !possessEquipment($item[Mega Gem]) && !isActuallyEd())
+	{
+		blacklist[$item[wet stew]] = true;
+	}
+	if(internalQuestStatus("questL07Cyrptic") < 1)
+	{
+		//don't consume gravy boat
+		craftable_blacklist[$item[warm gravy]] = true;
+	}
+	if(LX_doingPirates() && internalQuestStatus("questM12Pirate") <= 2 && item_amount($item[hot wing]) < 4)
+	{
+		blacklist[$item[hot wing]] = true;
+		if(item_amount($item[Devil's Elbow Hot Sauce]) == 0)
+		{	//don't use hot wings if pirates quest still needs them
+			craftable_blacklist[$item[devil hair pasta]] = true;
+		}
+	}
 
 	// If we have 2 sticks of firewood, the current knapsack-solver
 	// tries to get one of everything. So we blacklist everything other

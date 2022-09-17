@@ -232,6 +232,15 @@ generic_t zone_needItem(location loc)
 			value = 20.0;
 		}
 		break;
+	case $location[The Dark Neck of the Woods]:
+	case $location[The Dark Heart of the Woods]:
+	case $location[The Dark Elbow of the Woods]:
+	case $location[Pandamonium Slums]:
+		if(LX_doingPirates() && item_amount($item[hot wing]) < 3 && internalQuestStatus("questM12Pirate") <= 2)
+		{
+			value = 30;
+		}
+		break;
 	case $location[Cobb\'s Knob Barracks]:
 		if(!have_outfit("Knob Goblin Elite Guard Uniform"))
 		{
@@ -295,6 +304,10 @@ generic_t zone_needItem(location loc)
 			}
 		}
 		break;
+	case $location[The Obligatory Pirate\'s Cove]:
+		if(!possessOutfit("Swashbuckling Getup") && !possessEquipment($item[pirate fledges])) {
+			value = 10.0;
+		}
 	case $location[The Old Landfill]:
 		value = 5.0 * (1.0 + get_property("auto_junkspritesencountered").to_float());
 		break;
@@ -438,6 +451,15 @@ generic_t zone_needItemFood(location loc)
 		else
 		{
 			value = 40.0;
+		}
+		break;
+	case $location[The Dark Neck of the Woods]:
+	case $location[The Dark Heart of the Woods]:
+	case $location[The Dark Elbow of the Woods]:
+	case $location[Pandamonium Slums]:
+		if(LX_doingPirates() && item_amount($item[hot wing]) < 3 && internalQuestStatus("questM12Pirate") <= 2)
+		{
+			value = 30;
 		}
 		break;
 	case $location[The Haunted Pantry]:
@@ -658,7 +680,11 @@ generic_t zone_combatMod(location loc)
 		break;
 	case $location[The Obligatory Pirate\'s Cove]:
 		if(!possessOutfit("Swashbuckling Getup")) {
-			value = -60;
+			if(item_amount($item[The Big Book Of Pirate Insults]) > 0 && numPirateInsults() < 3) {
+				value = 0; // fights can give both outfit pieces and insults. better not start avoiding fights until first insults learned
+			} else {
+				value = -60;
+			}
 		} else if (numPirateInsults() < 8) {
 			value = 40;
 		}
