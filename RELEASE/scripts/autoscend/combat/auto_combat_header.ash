@@ -112,6 +112,8 @@ string auto_combatDisguisesStage5(int round, monster enemy, string text);
 #####################################################
 //defined in /autoscend/combat/auto_combat_fall_of_the-dinosaurs.ash
 void fotd_combat_helper();
+string auto_combatFallOfTheDinosaursStage1(int round, monster enemy, string text);
+string auto_combatFallOfTheDinoaursStage5(int round, monster enemy, string text);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_kingdom_of_exploathing.ash
