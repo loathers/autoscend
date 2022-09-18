@@ -31,6 +31,8 @@ CH Imp	item:imp air<4
 Camel Toe	!sniffed:Skinflute
 Skinflute	!sniffed:Camel Toe
 Red Butler	prop:_glarkCableUses<5;item:glark cable<5
+# Unlocking Knob Menagerie
+Knob Goblin Very Mad Scientist	loc:Cobb's Knob Laboratory;item:Cobb's Knob Menagerie key<1;turnsspent:Cobb's Knob Laboratory>7
 # Pirate quest F'c'le's last missing item
 cleanly pirate	loc:The F'c'le;item:rigging shampoo==0;item:ball polish>0;item:mizzenmast mop>0;!itemdropcapped:30=rigging shampoo
 creamy pirate	loc:The F'c'le;item:rigging shampoo>0;item:ball polish==0;item:mizzenmast mop>0;!itemdropcapped:30=ball polish
