@@ -50,7 +50,7 @@ string auto_combatFallOfTheDinosaursStage1(int round, monster enemy, string text
 	return "";
 }
 
-string auto_combatFallOfTheDinoaursStage5(int round, monster enemy, string text)
+string auto_combatFallOfTheDinosaursStage5(int round, monster enemy, string text)
 {
 	// stage 5 = kill
 	if(!in_fotd())
