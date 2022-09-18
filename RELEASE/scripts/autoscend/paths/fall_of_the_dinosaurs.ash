@@ -1,3 +1,10 @@
+/* TODO - banishing chickens prior to Nuns
+		- wearing chicken hat (and ensuring chickens arent banished) for tower
+		- obtaining chicken hat and dino banishing items
+		- pheromoning kachungasaurs for nuns
+*/
+
+
 boolean in_fotd()
 {
 	return my_path() == $path[Fall of the Dinosaurs];
