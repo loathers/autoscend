@@ -1047,6 +1047,52 @@ boolean LX_pirateQuest() {
 	return false;
 }
 
+boolean LX_unlockKnobMenagerie()
+{
+	if(item_amount($item[Cobb\'s Knob Menagerie key]) > 0)
+	{
+		if(item_amount($item[Cobb\'s Knob Lab Key]) > 0)
+		{
+			return false;	//already unlocked
+		}
+		else
+		{
+			//if Menagerie key was somehow obtained outside of the lab, lab key is also needed to access Menagerie
+			//lab key should be obtained during the level 5 quest or ultimately from the king
+			if(L5_slayTheGoblinKing())
+			{
+				return true;
+			}
+			auto_log_warning("Unable to finish the King of Cobb's Knob Quest yet to obtain the Cobb's Knob lab key, so can't unlock the Menagerie.");
+			return false;
+		}
+	}
+	if(item_amount($item[Cobb\'s Knob Lab Key]) == 0)
+	{
+		return false;	//can't adventure in the lab for the Menagerie key
+	}
+	if(in_lowkeysummer() && $location[Cobb\'s Knob Laboratory].turns_spent == 13)
+	{
+		//should probably have already gotten the key on the way to getting the path key
+		//if backtracking to unlock the menagerie refresh once to double check
+		cli_execute("refresh inv");
+		if(item_amount($item[Cobb\'s Knob Menagerie key]) > 0)
+		{
+			return false;	//already unlocked
+		}
+	}
+	if($location[Cobb\'s Knob Laboratory].turns_spent > 20)
+	{
+		cli_execute("refresh inv");
+		if (item_amount($item[Cobb\'s Knob Menagerie key]) == 0)
+		{
+			abort("Have been spending too many adventures in Cobb's Knob Laboratory trying to get Menagerie key. Either very bad luck or something wrong is going on.");
+		}
+	}
+	auto_log_info("Looking for the Cobb's Knob Menagerie key.", "blue");
+	return autoAdv(1, $location[Cobb\'s Knob Laboratory]);
+}
+
 item[class] epicWeapons;
 epicWeapons[$class[Seal Clubber]] = $item[Hammer of Smiting];
 epicWeapons[$class[Turtle Tamer]] = $item[Chelonian Morningstar];
