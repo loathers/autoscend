@@ -809,6 +809,13 @@ boolean hatchFamiliar(familiar adult)
 			return false;
 		}
 	}
+	if(in_zombieSlayer())
+	{
+		if(!zombieSlayer_usable(adult))
+		{
+			return false;
+		}
+	}
 	if(!checkTerrarium())
 	{
 		return false;
