@@ -4070,7 +4070,7 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 // 30
 	// Start with the biggest and drill down for max ML
-	tryEffects($effects[Ceaseless Snarling, Punchable Face]);
+	tryEffects($effects[Ceaseless Snarling, Punchable Face, Zomg WTF]);
 
 // 29 >= U >= 25
 	UrKelCheck(ToML, 29, 25);

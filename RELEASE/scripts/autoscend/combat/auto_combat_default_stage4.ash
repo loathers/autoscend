@@ -10,6 +10,10 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	// Path = license to adventure
 	retval = auto_combatLicenseToAdventureStage4(round, enemy, text);
 	if(retval != "") return retval;
+
+	// Path = The Source
+	retval = auto_combatZombieSlayerStage4(round, enemy, text);
+	if(retval != "") return retval;
 	
 	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
 	skill sniffer = getSniffer(enemy);
