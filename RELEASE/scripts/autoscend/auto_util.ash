@@ -3077,7 +3077,11 @@ boolean canBurnDelay(location loc)
 	{
 		return false;
 	}
-	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
+	if (auto_haveBackupCamera() && auto_backupUsesLeft() > 0)
+	{
+		return true;
+	}
+	else if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
 	{
 		return true;
 	}
