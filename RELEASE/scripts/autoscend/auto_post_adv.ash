@@ -265,6 +265,12 @@ boolean auto_post_adventure()
 		}
 	}
 
+	if(in_zombieSlayer())
+	{
+		buffMaintain($effect[Chow Downed], 15, 1, 1);
+		buffMaintain($effect[Scavengers Scavenging], 20, 1, 1);
+	}
+
 	if (isActuallyEd())
 	{
 		if ($location[The Shore\, Inc. Travel Agency] != my_location())

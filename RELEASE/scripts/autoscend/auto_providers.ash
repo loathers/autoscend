@@ -124,6 +124,11 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		}
 		handleEffect($effect[Driving Obnoxiously]);
 	}
+
+	if(my_meat() > 100 + meatReserve()) {
+		tryEffects($effects[Waking the Dead]);
+	}
+
 	if(pass()) {
 		return result();
 	}
@@ -264,7 +269,8 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Extended Toes,
 		Ink Cloud,
 		Cloak of Shadows,
-		Chocolatesphere
+		Chocolatesphere,
+		Disquiet Riot
 	])) {
 		return result();
 	}

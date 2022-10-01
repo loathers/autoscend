@@ -1,15 +1,17 @@
-// TODO: Visit hermit.php for free clover _zombieClover
+// TODO: Visit hermit.php for free (10-leaf) clover _zombieClover
 
-// TODO: buffs
-// * Summon Minion (with Summon Horde): Waking the Dead +20% combat
-// * Scavenge: Scavengers Scavenging +20% item
-// * Ag-grave-ation: Zomg WTF +30 ml
-// * Disquiet Riot: Disquiet Riot  -20% combat
+// DONE: buffs
+// * Summon Minion (with Summon Horde): Waking the Dead +20% combat - Added to auto_providers.ash & auto_buff.ash
+// * Scavenge: Scavengers Scavenging +20% item - added to auto_buff.ash and auto_post_adv.ash
+// * Ag-grave-ation: Zomg WTF +30 ml - added to auto_buff.ash & auto_util.ash
+// * Disquiet Riot: Disquiet Riot  -20% combat - Added to auto_providers.ash & auto_buff.ash
+// * Zombie Chow: Chow Downed +5 Familiar Weight - added to auto_buff.ash and auto_post_adv.ash
 
-// TODO: Banish
-// * Howl of the Alpha: 3 banishes at a time
+// DONE: Banish -  added to auto_combat_util.ash
+// TODO - track that it can banish 3 at once
+// * Howl of the Alpha: 3 banishes at a time 
 
-// TODO: Pickpocket
+// TODO: Pickpocket - added to round 4 as a standard thing
 // * Smash & Graaagh: 30x day, no mafia pref.
 // * ?? Handle like a single use XO Skeleton Hugs and Kisses
 
@@ -211,6 +213,18 @@ boolean zombieSlayer_acquireHP(int goal)
 	return my_hp() >= goal;
 }
 
+boolean zombieSlayer_canInfect(monster enemy){
+	foreach phy in $phylums[plant, bug, constellation, construct, elemental, slime]
+	{
+		if(monster_phylum(enemy) == phy)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 
 boolean zombieSlayer_usable(familiar fam)
 {
@@ -219,4 +233,24 @@ boolean zombieSlayer_usable(familiar fam)
 		return true;
 	}
 	return contains_text(fam.attributes, "undead");
+}
+
+boolean LM_zombieSlayer()
+{
+	//this function is called early once every loop of doTasks() in autoscend.ash
+	//if something in this function returns true then it will restart the loop and get called again.
+	
+	if(!in_zombieSlayer())
+	{
+		return false;
+	}
+	
+	while(item_amount($item[hunter brain]) > 0 && my_fullness() < fullness_limit())
+	{
+		autoEat(min(item_amount($item[hunter brain]), fullness_limit() - my_fullness()), $item[hunter brain]);
+	}
+
+	zombieSlayer_buySkills();
+
+	return false;
 }

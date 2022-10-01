@@ -142,26 +142,28 @@ sniff	29	CH Imp	item:imp air<4
 sniff	30	Camel Toe	!sniffed:Skinflute
 sniff	31	Skinflute	!sniffed:Camel Toe
 sniff	32	Red Butler	prop:_glarkCableUses<5;item:glark cable<5
+# Unlocking Knob Menagerie
+sniff	33	Knob Goblin Very Mad Scientist	loc:Cobb's Knob Laboratory;item:Cobb's Knob Menagerie key<1;turnsspent:Cobb's Knob Laboratory>7
 # Pirate quest F'c'le's last missing item
-sniff	33	cleanly pirate	loc:The F'c'le;item:rigging shampoo==0;item:ball polish>0;item:mizzenmast mop>0;!itemdropcapped:30=rigging shampoo
-sniff	34	creamy pirate	loc:The F'c'le;item:rigging shampoo>0;item:ball polish==0;item:mizzenmast mop>0;!itemdropcapped:30=ball polish
-sniff	35	curmudgeonly pirate	loc:The F'c'le;item:rigging shampoo>0;item:ball polish>0;item:mizzenmast mop==0;!itemdropcapped:30=mizzenmast mop
+sniff	34	cleanly pirate	loc:The F'c'le;item:rigging shampoo==0;item:ball polish>0;item:mizzenmast mop>0;!itemdropcapped:30=rigging shampoo
+sniff	35	creamy pirate	loc:The F'c'le;item:rigging shampoo>0;item:ball polish==0;item:mizzenmast mop>0;!itemdropcapped:30=ball polish
+sniff	36	curmudgeonly pirate	loc:The F'c'le;item:rigging shampoo>0;item:ball polish>0;item:mizzenmast mop==0;!itemdropcapped:30=mizzenmast mop
 # Bugbear Invasion Wanderers
-sniff	36	scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared
-sniff	37	hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared
-sniff	38	batbugbear	path:Bugbear Invasion;!loc:Sonar;!prop:statusSonar=unlocked;!prop:statusSonar=open;!prop:statusSonar=cleared;prop:questL04Bat=finished
-sniff	39	bugbear scientist	path:Bugbear Invasion;!loc:Science Lab;!prop:statusScienceLab=unlocked;!prop:statusScienceLab=open;!prop:statusScienceLab=cleared
-sniff	40	bugaboo	path:Bugbear Invasion;!loc:Morgue;!prop:statusMorgue=unlocked;!prop:statusMorgue=open;!prop:statusMorgue=cleared;prop:questL07Cyrptic=finished
-sniff	41	Black Ops Bugbear	path:Bugbear Invasion;!loc:Special Ops;!prop:statusSpecialOps=unlocked;!prop:statusSpecialOps=open;!prop:statusSpecialOps=cleared;prop:questL08Trapper=finished
-sniff	42	Battlesuit Bugbear Type	path:Bugbear Invasion;!loc:Engineering;!prop:statusEngineering=unlocked;!prop:statusEngineering=open;!prop:statusEngineering=cleared;prop:questL10Garbage=finished
-sniff	43	ancient unspeakable bugbear	path:Bugbear Invasion;!loc:Navigation;!prop:statusNavigation=unlocked;!prop:statusNavigation=open;!prop:statusNavigation=cleared;prop:questL11Manor=finished
-sniff	44	trendy bugbear chef	path:Bugbear Invasion;!loc:Galley;!prop:statusGalley=unlocked;!prop:statusGalley=open;!prop:statusGalley=cleared;prop:questL12War=finished
+sniff	37	scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared
+sniff	38	hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared
+sniff	39	batbugbear	path:Bugbear Invasion;!loc:Sonar;!prop:statusSonar=unlocked;!prop:statusSonar=open;!prop:statusSonar=cleared;prop:questL04Bat=finished
+sniff	40	bugbear scientist	path:Bugbear Invasion;!loc:Science Lab;!prop:statusScienceLab=unlocked;!prop:statusScienceLab=open;!prop:statusScienceLab=cleared
+sniff	41	bugaboo	path:Bugbear Invasion;!loc:Morgue;!prop:statusMorgue=unlocked;!prop:statusMorgue=open;!prop:statusMorgue=cleared;prop:questL07Cyrptic=finished
+sniff	42	Black Ops Bugbear	path:Bugbear Invasion;!loc:Special Ops;!prop:statusSpecialOps=unlocked;!prop:statusSpecialOps=open;!prop:statusSpecialOps=cleared;prop:questL08Trapper=finished
+sniff	43	Battlesuit Bugbear Type	path:Bugbear Invasion;!loc:Engineering;!prop:statusEngineering=unlocked;!prop:statusEngineering=open;!prop:statusEngineering=cleared;prop:questL10Garbage=finished
+sniff	44	ancient unspeakable bugbear	path:Bugbear Invasion;!loc:Navigation;!prop:statusNavigation=unlocked;!prop:statusNavigation=open;!prop:statusNavigation=cleared;prop:questL11Manor=finished
+sniff	45	trendy bugbear chef	path:Bugbear Invasion;!loc:Galley;!prop:statusGalley=unlocked;!prop:statusGalley=open;!prop:statusGalley=cleared;prop:questL12War=finished
 # Bugbear Invasion Mothership
-sniff	45	creepy eye-stalk tentacle monster	path:Bugbear Invasion
-sniff	46	anesthesiologist bugbear	path:Bugbear Invasion
-sniff	47	bugbear mortician	path:Bugbear Invasion
-sniff	48	N-space Virtual Assistant	path:Bugbear Invasion
-sniff	49	angry cavebugbear	path:Bugbear Invasion
+sniff	46	creepy eye-stalk tentacle monster	path:Bugbear Invasion
+sniff	47	anesthesiologist bugbear	path:Bugbear Invasion
+sniff	48	bugbear mortician	path:Bugbear Invasion
+sniff	49	N-space Virtual Assistant	path:Bugbear Invasion
+sniff	50	angry cavebugbear	path:Bugbear Invasion
 
 # Gotta get that wig
 yellowray	0	Burly Sidekick	item:Mohawk Wig<1;!skill:Comprehensive Cartography;!itemdropcapped:10=Mohawk wig
@@ -203,13 +205,13 @@ yellowray	29	filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed the
 yellowray	30	filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
 yellowray	31	zombie hippy	!outfit:Filthy Hippy Disguise
 # Want hippy war outfit if fighting for hippies. TODO: add monsters for Frat Boy Ensemble and War Hippy Fatigues outfits. Issue #900
-yellowray	32	War Hippy Spy	!outfit:War Hippy Fatigues
+yellowray	32	War Hippy Spy	!outfit:War Hippy Fatigues;!itemdropcapped:30=round purple sunglasses
 # And we want filthworm glands, but not if we're gonna hugpocket them
-yellowray	33	larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying
-yellowray	34	filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying
-yellowray	35	filthworm royal guard	!familiar:XO Skeleton;!class:Ed the Undying
+yellowray	33	larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
+yellowray	34	filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
+yellowray	35	filthworm royal guard	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm royal guard scent gland
 yellowray	36	Knight (Snake)	class:Ed the Undying
-yellowray	37	bearpig topiary animal	familiar:Melodramedary
-yellowray	38	elephant (meatcar?) topiary animal	familiar:Melodramedary
-yellowray	39	spider (duck?) topiary animal	familiar:Melodramedary
+yellowray	37	bearpig topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
+yellowray	38	elephant (meatcar?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
+yellowray	39	spider (duck?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
 
