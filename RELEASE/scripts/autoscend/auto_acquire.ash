@@ -717,7 +717,11 @@ int handlePulls(int day)
 		}
 		if((my_primestat() == $stat[Muscle]) && !in_heavyrains() && !in_wotsf()) // no need for shields in way of the surprising fist
 		{
-			if((closet_amount($item[Fake Washboard]) == 0) && auto_is_valid($item[Fake Washboard]))
+			if(possessEquipment($item[familiar scrapbook]) && auto_is_valid($item[familiar scrapbook]) && my_class() != $class[Turtle Tamer])
+			{
+				//familiar scrapbook will probably be equipped in preference to Fake Washboard
+			}
+			else if((closet_amount($item[Fake Washboard]) == 0) && auto_is_valid($item[Fake Washboard]))
 			{
 				pullXWhenHaveY($item[Fake Washboard], 1, 0);
 			}
