@@ -1435,7 +1435,8 @@ void auto_overdrinkGreenBeers()
 				ConsumeAction greenBeerAction = MakeConsumeAction(daily_special());
 				greenBeerAction.cafeId = daily_special().to_int();
 				greenBeerAction.it = $item[none];
-				int daily_special_limit = min(my_meat()/get_property("_dailySpecialPrice").to_int(), (inebriety_left()+11)/(daily_special().inebriety));
+				int beerMeat = my_meat() - (in_wotsf() ? meatReserve() : 0); //extra advs are almost always worth more, but meat is hard to get in wotsf
+				int daily_special_limit = min(beerMeat/get_property("_dailySpecialPrice").to_int(), (inebriety_left()+11)/(daily_special().inebriety));
 				for (int i=0; i < daily_special_limit; i++)
 				{
 					autoConsume(greenBeerAction);
