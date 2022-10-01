@@ -3089,7 +3089,7 @@ boolean canBurnDelay(location loc)
 	{
 		return true;
 	}
-	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic()))
+	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera()))
 	{
 		return true;
 	}
