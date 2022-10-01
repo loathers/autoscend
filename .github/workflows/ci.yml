@@ -57,7 +57,11 @@ jobs:
 
           output_file="scripts/_ci_dependencies.ash"
           while read -r line || [ -n "$line" ]; do
-            echo "cli_execute('svn checkout ${line}');" >> "$output_file"
+            if [[ "$line" == *".git"* ]]; then
+              echo "cli_execute('git checkout ${line}');" >> "$output_file"
+            else
+              echo "cli_execute('svn checkout ${line}');" >> "$output_file"
+            fi
           done < "dependencies.txt"
           echo "cli_execute('exit');" >> "$output_file"
           java -DuseCWDasROOT=true -jar ../.github/kolmafia.jar --CLI _ci_dependencies
