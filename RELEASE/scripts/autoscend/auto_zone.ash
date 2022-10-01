@@ -197,6 +197,11 @@ generic_t zone_needItem(location loc)
 			}
 		}
 		break;
+	case $location[The Valley of Rof L'm Fao]:
+		if(item_amount($item[lowercase N]) == 0 && item_amount($item[ND]) == 0 && item_amount($item[Wand of Nagamar]) == 0 && get_property("auto_wandOfNagamar").to_boolean())
+		{
+			value = 30.0;
+		}
 	case $location[Itznotyerzitz Mine]:
 		if (!possessOutfit("Mining Gear") && cloversAvailable() == 0)
 		{
@@ -230,6 +235,15 @@ generic_t zone_needItem(location loc)
 		if(get_property("cyrptNookEvilness").to_int() > 26)
 		{
 			value = 20.0;
+		}
+		break;
+	case $location[The Dark Neck of the Woods]:
+	case $location[The Dark Heart of the Woods]:
+	case $location[The Dark Elbow of the Woods]:
+	case $location[Pandamonium Slums]:
+		if(LX_doingPirates() && item_amount($item[hot wing]) < 3 && internalQuestStatus("questM12Pirate") <= 2)
+		{
+			value = 30;
 		}
 		break;
 	case $location[Cobb\'s Knob Barracks]:
@@ -295,6 +309,10 @@ generic_t zone_needItem(location loc)
 			}
 		}
 		break;
+	case $location[The Obligatory Pirate\'s Cove]:
+		if(!possessOutfit("Swashbuckling Getup") && !possessEquipment($item[pirate fledges])) {
+			value = 10.0;
+		}
 	case $location[The Old Landfill]:
 		value = 5.0 * (1.0 + get_property("auto_junkspritesencountered").to_float());
 		break;
@@ -438,6 +456,15 @@ generic_t zone_needItemFood(location loc)
 		else
 		{
 			value = 40.0;
+		}
+		break;
+	case $location[The Dark Neck of the Woods]:
+	case $location[The Dark Heart of the Woods]:
+	case $location[The Dark Elbow of the Woods]:
+	case $location[Pandamonium Slums]:
+		if(LX_doingPirates() && item_amount($item[hot wing]) < 3 && internalQuestStatus("questM12Pirate") <= 2)
+		{
+			value = 30;
 		}
 		break;
 	case $location[The Haunted Pantry]:
@@ -658,7 +685,11 @@ generic_t zone_combatMod(location loc)
 		break;
 	case $location[The Obligatory Pirate\'s Cove]:
 		if(!possessOutfit("Swashbuckling Getup")) {
-			value = -60;
+			if(item_amount($item[The Big Book Of Pirate Insults]) > 0 && numPirateInsults() < 3) {
+				value = 0; // fights can give both outfit pieces and insults. better not start avoiding fights until first insults learned
+			} else {
+				value = -60;
+			}
 		} else if (numPirateInsults() < 8) {
 			value = 40;
 		}
@@ -1436,6 +1467,43 @@ boolean zone_available(location loc)
 			retval = true;
 		}
 		break;
+
+	case $location[Tower Level 1]:
+		if(get_property("questL13Final") == "step6")
+		{
+			retval = true;
+		}
+		break;
+	case $location[Tower Level 2]:
+		if(get_property("questL13Final") == "step7")
+		{
+			retval = true;
+		}
+		break;
+	case $location[Tower Level 3]:
+		if(get_property("questL13Final") == "step8")
+		{
+			retval = true;
+		}
+		break;
+	case $location[Tower Level 4]:
+		if(get_property("questL13Final") == "step9")
+		{
+			retval = true;
+		}
+		break;
+	case $location[Tower Level 5]:
+		if(get_property("questL13Final") == "step10")
+		{
+			retval = true;
+		}
+		break;
+	case $location[The Naughty Sorceress' Chamber]:
+		if(get_property("questL13Final") == "step11")
+		{
+			retval = true;
+		}
+		break;
 	case $location[Barf Mountain]:
 	case $location[Pirates of the Garbage Barges]:
 	case $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice]:
@@ -1472,6 +1540,22 @@ boolean zone_available(location loc)
 
 	case $location[The Old Landfill]:
 		if(internalQuestStatus("questM19Hippy") >= 0)
+		{
+			retval = true;
+		}
+		break;
+
+	case $location[Cobb's Knob Laboratory]:
+	case $location[The Knob Shaft]:
+		if (item_amount($item[Cobb\'s Knob Lab Key]) > 0)
+		{
+			retval = true;
+		}
+		break;
+	case $location[Cobb's Knob Menagerie, Level 1]:
+	case $location[Cobb's Knob Menagerie, Level 2]:
+	case $location[Cobb's Knob Menagerie, Level 3]:
+		if (item_amount($item[Cobb\'s Knob Menagerie key]) > 0)
 		{
 			retval = true;
 		}

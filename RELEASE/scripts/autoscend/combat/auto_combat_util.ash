@@ -483,12 +483,15 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	/*	If we have banished anything else in this zone, make sure we do not undo the banishing.
 		mad wino:batter up!:378:skeletal sommelier:KGB tranquilizer dart:381
 		We are not going to worry about turn costs, it probably only matters for older paths anyway.
+		//TODO - find a way to track banishes that have queues and can banish multiple things at once (Banishing Shout and Howl of the Alpha for example)
 
 		Thunder Clap: no limit, no turn limit
 		Batter Up!: no limit, no turn limit
 		Asdon Martin: Spring-Loaded Front Bumper: no limit
 		Curse of Vacation: no limit? No turn limit?
 		Walk Away Explosion: no limit, turn limited irrelavant.
+
+		Howl of the Alpha: no limit, no turn limit, can banish up to 3 monsters simultaneously
 
 		Banishing Shout: no turn limit
 		Talk About Politics: no turn limit
@@ -505,6 +508,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if(auto_have_skill($skill[Peel Out]) && pete_peelOutRemaining() > 0 && get_property("peteMotorbikeMuffler") == "Extra-Smelly Muffler" && !(used contains "Peel Out"))
 	{
 		return "skill " + $skill[Peel Out];
+	}
+
+	if(auto_have_skill($skill[Howl of the Alpha]) && (my_mp() > mp_cost($skill[Howl of the Alpha])) &&!(used contains "Howl of the Alpha"))
+	{
+		return "skill " + $skill[Howl of the Alpha];
 	}
 
 	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && auto_is_valid($skill[Throw Latte On Opponent]) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))

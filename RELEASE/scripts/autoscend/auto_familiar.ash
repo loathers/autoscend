@@ -429,6 +429,20 @@ boolean autoChooseFamiliar(location place)
 		famChoice = lookupFamiliarDatafile("item");
 	}
 
+	// if we somehow end up in The Valley of Rof L'm Fao might as well try to get N 
+	if ($location[The Valley of Rof L'm Fao] == place && item_amount($item[lowercase N]) == 0 && item_amount($item[ND]) == 0 && item_amount($item[Wand of Nagamar]) == 0 && get_property("auto_wandOfNagamar").to_boolean()) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+	// the D is only individually useful in paths that also visit The Valley of Rof L'm Fao for N
+	// this is only in Low Key Summer for now, but can be in other paths if they get support: Journeyman, Grey You
+	if ($location[The Castle in the Clouds in the Sky (Basement)] == place && item_amount($item[heavy D]) == 0 && item_amount($item[ND]) == 0 && item_amount($item[Wand of Nagamar]) == 0 && get_property("auto_wandOfNagamar").to_boolean()) {
+		boolean wantTheD = in_lowkeysummer() && (item_amount($item[lowercase N]) > 0 || $location[The Valley of Rof L'm Fao].turns_spent < 11);	//!possessEquipment($item[Kekekey])
+		if(wantTheD)
+		{
+			famChoice = lookupFamiliarDatafile("item");
+		}
+	}
+
 	// The World's Biggest Jerk can send us here so only use +item if we're farming sonars.
 	if ($location[The Batrat and Ratbat Burrow] == place && internalQuestStatus("questL04Bat") < 3) {
 		famChoice = lookupFamiliarDatafile("item");
@@ -794,6 +808,13 @@ boolean hatchFamiliar(familiar adult)
 		//have_familiar is inconsistent. it usually returns true if you have a familiar in the terrairum regardless on its usability.
 		//in glover it returns false for unusuable familiars. as such we should test both hatchling and familiar in glover path
 		if(!glover_usable(adult.to_string()) || !glover_usable(hatchling.to_string()))
+		{
+			return false;
+		}
+	}
+	if(in_zombieSlayer())
+	{
+		if(!zombieSlayer_usable(adult))
 		{
 			return false;
 		}
