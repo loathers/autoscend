@@ -15,51 +15,53 @@ boolean awol_initializeSettings()
 
 void awol_useStuff()
 {
-	if(in_awol())
+	if(!in_awol())
 	{
-		if(have_skill($skill[Patent Medicine]))
+		return;
+	}
+
+	if(have_skill($skill[Patent Medicine]))
+	{
+		if(item_amount($item[Patent Invisibility Tonic]) < 3)
 		{
-			if(item_amount($item[Patent Invisibility Tonic]) < 3)
+			if((item_amount($item[Eldritch Oil]) > 0) && (item_amount($item[Snake Oil]) > 0))
 			{
-				if((item_amount($item[Eldritch Oil]) > 0) && (item_amount($item[Snake Oil]) > 0))
-				{
-					autoCraft("cook", 1, $item[Eldritch Oil], $item[Snake Oil]);
-				}
-			}
-			if(item_amount($item[Patent Avarice Tonic]) == 0)
-			{
-				if((item_amount($item[Unusual Oil]) > 0) && (item_amount($item[Skin Oil]) > 0))
-				{
-					autoCraft("cook", 1, $item[Unusual Oil], $item[Skin Oil]);
-				}
-			}
-			if(item_amount($item[Patent Aggression Tonic]) == 0)
-			{
-				if((item_amount($item[Unusual Oil]) > 0) && (item_amount($item[Snake Oil]) > 0))
-				{
-					autoCraft("cook", 1, $item[Unusual Oil], $item[Snake Oil]);
-				}
-			}
-			if(item_amount($item[Patent Preventative Tonic]) == 0)
-			{
-				if((item_amount($item[Skin Oil]) > 0) && (item_amount($item[Snake Oil]) > 0))
-				{
-					autoCraft("cook", 1, $item[Skin Oil], $item[Snake Oil]);
-				}
+				autoCraft("cook", 1, $item[Eldritch Oil], $item[Snake Oil]);
 			}
 		}
-
-		if((item_amount($item[Snake Oil]) > 0) && (get_property("awolMedicine").to_int() < 30) && (get_property("awolVenom").to_int() < 30))
+		if(item_amount($item[Patent Avarice Tonic]) == 0)
 		{
-			use(1, $item[Snake Oil]);
-		}
-
-		if((my_class() == $class[Cow Puncher]) && (have_effect($effect[Cowrruption]) < 150))
-		{
-			if(item_amount($item[Corrupted Marrow]) > 0)
+			if((item_amount($item[Unusual Oil]) > 0) && (item_amount($item[Skin Oil]) > 0))
 			{
-				use(1, $item[Corrupted Marrow]);
+				autoCraft("cook", 1, $item[Unusual Oil], $item[Skin Oil]);
 			}
+		}
+		if(item_amount($item[Patent Aggression Tonic]) == 0)
+		{
+			if((item_amount($item[Unusual Oil]) > 0) && (item_amount($item[Snake Oil]) > 0))
+			{
+				autoCraft("cook", 1, $item[Unusual Oil], $item[Snake Oil]);
+			}
+		}
+		if(item_amount($item[Patent Preventative Tonic]) == 0)
+		{
+			if((item_amount($item[Skin Oil]) > 0) && (item_amount($item[Snake Oil]) > 0))
+			{
+				autoCraft("cook", 1, $item[Skin Oil], $item[Snake Oil]);
+			}
+		}
+	}
+
+	if((item_amount($item[Snake Oil]) > 0) && (get_property("awolMedicine").to_int() < 30) && (get_property("awolVenom").to_int() < 30))
+	{
+		use(1, $item[Snake Oil]);
+	}
+
+	if((my_class() == $class[Cow Puncher]) && (have_effect($effect[Cowrruption]) < 20))
+	{
+		if(item_amount($item[Corrupted Marrow]) > 0)
+		{
+			use(1, $item[Corrupted Marrow]);
 		}
 	}
 }
@@ -132,6 +134,11 @@ effect awol_walkBuff()
 
 boolean awol_buySkills()
 {
+	if(!in_awol())
+	{
+		return false;
+	}
+	
 	if(get_property("auto_awolLastSkill").to_int() == 0)
 	{
 		//Catch that Mafia does not see our second/third skillbook at ascension start
