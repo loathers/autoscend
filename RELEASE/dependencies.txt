@@ -1,7 +1,7 @@
-https://github.com/Ezandora/Detective-Solver.git Release
-https://github.com/Ezandora/Helix-Fossil.git Release
-https://github.com/Ezandora/Far-Future.git Release
+github Ezandora/Detective-Solver Release
+github Ezandora/Helix-Fossil Release
+github Ezandora/Far-Future Release
+github gausie/excavator
 https://github.com/Ezandora/Voting-Booth/trunk/Release/
 https://github.com/Ezandora/Comb-Beach/trunk/Release/
-https://github.com/gausie/excavator.git
 https://svn.code.sf.net/p/zlib/code

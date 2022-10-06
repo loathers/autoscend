@@ -59,6 +59,8 @@ jobs:
           while read -r line || [ -n "$line" ]; do
             if [[ "$line" == *".git"* ]]; then
               echo "cli_execute('git checkout ${line}');" >> "$output_file"
+            elif [[ "$line" == "github "* ]]; then
+              echo "cli_execute('git checkout ${line:7}');" >> "$output_file"
             else
               echo "cli_execute('svn checkout ${line}');" >> "$output_file"
             fi
