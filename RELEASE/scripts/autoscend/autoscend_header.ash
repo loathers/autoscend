@@ -881,6 +881,8 @@ boolean zombieSlayer_buySkills();
 boolean zombieSlayer_acquireMP(int goal, int meat_reserve);
 boolean zombieSlayer_acquireHP(int goal);
 boolean zombieSlayer_usable(familiar fam);
+boolean zombieSlayer_canInfect(monster enemy);
+boolean LM_zombieSlayer();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
@@ -1130,6 +1132,7 @@ boolean LX_fledglingPirateIsYou();
 void fcleChoiceHandler(int choice);
 boolean LX_unlockBelowdecks();
 boolean LX_pirateQuest();
+boolean LX_unlockKnobMenagerie();
 boolean tomb_already_found();
 boolean LX_acquireEpicWeapon();
 boolean LX_NemesisQuest();
