@@ -3077,7 +3077,11 @@ boolean canBurnDelay(location loc)
 	{
 		return false;
 	}
-	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
+	if (auto_haveBackupCamera() && auto_backupUsesLeft() > 0)
+	{
+		return true;
+	}
+	else if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
 	{
 		return true;
 	}
@@ -3085,7 +3089,7 @@ boolean canBurnDelay(location loc)
 	{
 		return true;
 	}
-	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic()))
+	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera()))
 	{
 		return true;
 	}

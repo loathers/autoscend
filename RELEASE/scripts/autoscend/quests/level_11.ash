@@ -2224,6 +2224,10 @@ boolean L11_mauriceSpookyraven()
 		{
 			bat_formBats();
 		}
+		if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
+		{
+			cli_execute("friars booze");
+		}
 		if (canSniff($monster[Possessed Wine Rack], $location[The Haunted Wine Cellar]) && auto_mapTheMonsters())
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Possessed Wine Rack.");
