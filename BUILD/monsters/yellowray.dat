@@ -1,9 +1,9 @@
 # Gotta get that wig
-Burly Sidekick	item:Mohawk Wig<1;!skill:Comprehensive Cartography
+Burly Sidekick	item:Mohawk Wig<1;!skill:Comprehensive Cartography;!itemdropcapped:10=Mohawk wig
 # We also want an amulet, but not badly enough to yellow ray it unless we're backtracking to get it
-Quiet Healer	item:amulet of extreme plot significance<1;quest:questL10Garbage>6
+Quiet Healer	item:amulet of extreme plot significance<1;quest:questL10Garbage>6;!itemdropcapped:10=amulet of extreme plot significance
 # Dressing up as a harem girl because we have no shame
-Knob Goblin Harem Girl	!outfit:Knob Goblin Harem Girl Disguise
+Knob Goblin Harem Girl	!outfit:Knob Goblin Harem Girl Disguise;!itemdropcapped:20=Knob Goblin harem pants
 # We don't want to yellow ray a mountain man if we already turned in ore
 # although I'm not sure why we'd be fighting one in that case...
 Mountain Man	quest:questL08Trapper<2
@@ -38,12 +38,12 @@ filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
 filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
 zombie hippy	!outfit:Filthy Hippy Disguise
 # Want hippy war outfit if fighting for hippies. TODO: add monsters for Frat Boy Ensemble and War Hippy Fatigues outfits. Issue #900
-War Hippy Spy	!outfit:War Hippy Fatigues
+War Hippy Spy	!outfit:War Hippy Fatigues;!itemdropcapped:30=round purple sunglasses
 # And we want filthworm glands, but not if we're gonna hugpocket them
-larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying
-filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying
-filthworm royal guard	!familiar:XO Skeleton;!class:Ed the Undying
+larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
+filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
+filthworm royal guard	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm royal guard scent gland
 Knight (Snake)	class:Ed the Undying
-bearpig topiary animal	familiar:Melodramedary
-elephant (meatcar?) topiary animal	familiar:Melodramedary
-spider (duck?) topiary animal	familiar:Melodramedary
+bearpig topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
+elephant (meatcar?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
+spider (duck?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers

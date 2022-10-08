@@ -877,8 +877,43 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	int[item] large_owned;
 	int[item] craftables;
 
-	boolean[item] blacklist = $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead];
+	boolean[item] blacklist;
 	boolean[item] craftable_blacklist;
+
+	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead]
+	{
+		blacklist[it] = true;
+	}
+	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !possessEquipment($item[Mega Gem]) && !isActuallyEd())
+	{
+		blacklist[$item[wet stew]] = true;
+	}
+	if(internalQuestStatus("questL07Cyrptic") < 1)
+	{
+		//don't consume gravy boat
+		craftable_blacklist[$item[warm gravy]] = true;
+	}
+	if(LX_doingPirates() && internalQuestStatus("questM12Pirate") <= 2 && item_amount($item[hot wing]) < 4)
+	{
+		blacklist[$item[hot wing]] = true;
+		if(item_amount($item[Devil's Elbow Hot Sauce]) == 0)
+		{	//don't use hot wings if pirates quest still needs them
+			craftable_blacklist[$item[devil hair pasta]] = true;
+		}
+	}
+
+	if(my_class() != $class[Cow Puncher]) 
+	{
+		//these consumables give $effect[Cowrruption] which limits base moxie and muscle to 30
+		//low moxie can get beaten up, low muscle makes muscle class unable to hit
+		if(my_basestat($stat[moxie]) > 30 || (my_primestat() == $stat[muscle] && my_basestat($stat[muscle]) > 30))
+		{
+			foreach it in $items[tainted milk,rotting beefsteak,firemilk]
+			{
+				blacklist[it] = true;
+			}
+		}
+	}
 
 	// If we have 2 sticks of firewood, the current knapsack-solver
 	// tries to get one of everything. So we blacklist everything other
@@ -1413,7 +1448,8 @@ void auto_overdrinkGreenBeers()
 				ConsumeAction greenBeerAction = MakeConsumeAction(daily_special());
 				greenBeerAction.cafeId = daily_special().to_int();
 				greenBeerAction.it = $item[none];
-				int daily_special_limit = min(my_meat()/get_property("_dailySpecialPrice").to_int(), (inebriety_left()+11)/(daily_special().inebriety));
+				int beerMeat = my_meat() - (in_wotsf() ? meatReserve() : 0); //extra advs are almost always worth more, but meat is hard to get in wotsf
+				int daily_special_limit = min(beerMeat/get_property("_dailySpecialPrice").to_int(), (inebriety_left()+11)/(daily_special().inebriety));
 				for (int i=0; i < daily_special_limit; i++)
 				{
 					autoConsume(greenBeerAction);
@@ -1821,11 +1857,15 @@ boolean auto_breakfastCounterVisit() {
 		auto_log_info("Going to the breakfast counter to grab/order a breakfast muffin.");
 		visit_url("place.php?whichplace=monorail&action=monorail_downtown");
 		run_choice(7); // Visit the Breakfast Counter
-		if (get_property("muffinOnOrder") != "" && item_amount(get_property("muffinOnOrder").to_item()) > 0)
+		if (get_property("muffinOnOrder") != "")
 		{
-			// workaround mafia not clearing the property occasionally
-			// see https://kolmafia.us/threads/ordering-a-muffin-at-the-breakfast-counter-doesnt-always-set-the-muffinonorder-property.26072/
-			set_property("muffinOnOrder", "");
+			cli_execute("refresh inv");
+			if (item_amount(get_property("muffinOnOrder").to_item()) > 0)
+			{
+				// workaround mafia not clearing the property occasionally
+				// see https://kolmafia.us/threads/ordering-a-muffin-at-the-breakfast-counter-doesnt-always-set-the-muffinonorder-property.26072/
+				set_property("muffinOnOrder", "");
+			}
 		}
 		if (!get_property("_muffinOrderedToday").to_boolean() && item_amount($item[earthenware muffin tin]) > 0) {
 			auto_log_info("Ordering a bran muffin for tomorrow to keep you regular.");

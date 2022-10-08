@@ -3135,7 +3135,11 @@ boolean canBurnDelay(location loc)
 	{
 		return false;
 	}
-	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
+	if (auto_haveBackupCamera() && auto_backupUsesLeft() > 0)
+	{
+		return true;
+	}
+	else if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
 	{
 		return true;
 	}
@@ -3143,7 +3147,7 @@ boolean canBurnDelay(location loc)
 	{
 		return true;
 	}
-	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic()))
+	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera()))
 	{
 		return true;
 	}
@@ -3368,6 +3372,18 @@ boolean auto_check_conditions(string conds)
 				if(req_item == $item[none])
 					abort('"' + m5.group(1) + '" does not properly convert to an item!');
 				return compare_numbers(item_amount(req_item) + equipped_amount(req_item), m5.group(3).to_int(), m5.group(2));
+			// data: <value><equal sign separator><item name>
+			// The chance of getting the item at the end of the fight from that base drop rate value must be 100
+			// As a precaution, autoscend aborts if to_item returns $item[none]
+			case "itemdropcapped":
+				matcher m7 = create_matcher("([^=<>]+)=(.+)", condition_data);
+				if(!m7.find())
+					abort('"' + condition_data + '" is not a proper item condition format!');
+				item todrop_item = to_item(m7.group(2));
+				float base_drop_chance = to_float(m7.group(1));
+				if(todrop_item == $item[none])
+					abort('"' + m7.group(1) + '" does not properly convert to an item!');
+				return (effectiveDropChance(todrop_item,base_drop_chance) >= 100);
 			// data: The outfit name as used by have_outfit
 			// You must have the given outfit
 			// No safety checking here possible, at least not conveniently
@@ -4102,7 +4118,7 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 // 30
 	// Start with the biggest and drill down for max ML
-	tryEffects($effects[Ceaseless Snarling, Punchable Face]);
+	tryEffects($effects[Ceaseless Snarling, Punchable Face, Zomg WTF]);
 
 // 29 >= U >= 25
 	UrKelCheck(ToML, 29, 25);
