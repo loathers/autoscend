@@ -7,7 +7,7 @@ Pygmy Bowler
 Pygmy Witch Surgeon
 pygmy witch accountant	loc:The Hidden Office Building
 pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
-Pygmy Janitor	loc:The Hidden Park;!tavern:true
+Pygmy Janitor	loc:The Hidden Park;!tavern:true;!itemdropcapped:20=book of matches
 Quiet Healer	!prop:questL10Garbage=finished
 Tomb Rat
 Blooper	loc:8-Bit Realm
@@ -22,7 +22,7 @@ Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Naughty Sorority Nurse
 Possessed Wine Rack
 Blue Oyster cultist
 Dirty Old Lihc	prop:cyrptNicheEvilness>29
-Possibility Giant	loc:The Castle in the Clouds in the Sky \(Ground Floor\);prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover
+Possibility Giant	loc:The Castle in the Clouds in the Sky \(Ground Floor\);prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover;!itemdropcapped:20=chaos butterfly
 bearpig topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:spider (duck?) topiary animal
 elephant (meatcar?) topiary animal	!familiar:Melodramedary;!sniffed:bearpig topiary animal;!sniffed:spider (duck?) topiary animal
 spider (duck?) topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:bearpig topiary animal
@@ -31,6 +31,12 @@ CH Imp	item:imp air<4
 Camel Toe	!sniffed:Skinflute
 Skinflute	!sniffed:Camel Toe
 Red Butler	prop:_glarkCableUses<5;item:glark cable<5
+# Unlocking Knob Menagerie
+Knob Goblin Very Mad Scientist	loc:Cobb's Knob Laboratory;item:Cobb's Knob Menagerie key<1;turnsspent:Cobb's Knob Laboratory>7
+# Pirate quest F'c'le's last missing item
+cleanly pirate	loc:The F'c'le;item:rigging shampoo==0;item:ball polish>0;item:mizzenmast mop>0;!itemdropcapped:30=rigging shampoo
+creamy pirate	loc:The F'c'le;item:rigging shampoo>0;item:ball polish==0;item:mizzenmast mop>0;!itemdropcapped:30=ball polish
+curmudgeonly pirate	loc:The F'c'le;item:rigging shampoo>0;item:ball polish>0;item:mizzenmast mop==0;!itemdropcapped:30=mizzenmast mop
 # Bugbear Invasion Wanderers
 scavenger bugbear	path:Bugbear Invasion;!loc:Waste Processing;!prop:statusWasteProcessing=unlocked;!prop:statusWasteProcessing=open;!prop:statusWasteProcessing=cleared
 hypodermic bugbear	path:Bugbear Invasion;!loc:Medbay;!prop:statusMedbay=unlocked;!prop:statusMedbay=open;!prop:statusMedbay=cleared
