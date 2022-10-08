@@ -694,12 +694,19 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		}
 		else return "";
 	}
+
+	boolean free_monster = (isFreeMonster(target) || (get_property("breathitinCharges").to_int() > 0 && my_location().environment == "outdoor"));
 	
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
+
 		if((item_amount($item[Yellowcake Bomb]) > 0) && auto_is_valid($item[Yellowcake Bomb]))
 		{
 			return "item " + $item[Yellowcake Bomb]; // 75 turns + quest item
+		}
+		if(inCombat ? free_monster && (item_amount($item[yellow rocket]) > 0) && auto_is_valid($item[yellow rocket]))
+		{
+			return "item " + $item[yellow rocket]; // 75 turns & 250 meat - better than wasting a freekill on an already free monster
 		}
 		if(inCombat ? have_skill($skill[Spit jurassic acid]) : auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]))
 		{

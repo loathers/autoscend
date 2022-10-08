@@ -394,7 +394,7 @@ boolean auto_handleParka()
 		tempDino = "pterodactyl";
 	}
 
-	// avoid uselessly reconfiguring the cape
+	// avoid uselessly reconfiguring the parka
 	if (get_property("parkaMode") != tempDino)
 	{
 		cli_execute(`parka {tempDino}`);
