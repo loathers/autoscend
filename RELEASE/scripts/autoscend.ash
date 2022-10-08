@@ -1,4 +1,4 @@
-since r26713;	// $path added to KoLmafia
+since r26812;	// allow specifying "github" dependencies
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1757,6 +1757,7 @@ boolean doTasks()
 	if(LM_jarlsberg())					return true;
 	if(LM_robot())						return true;
 	if(LM_plumber())					return true;
+	if(LM_zombieSlayer())				return true;
 
 	if(!in_community())
 	{

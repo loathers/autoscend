@@ -262,6 +262,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Clyde\'s Blessing]:			useItem = $item[The Legendary Beat];			break;
 	case $effect[Chalky Hand]:					useItem = $item[Handful of Hand Chalk];			break;
 	case $effect[Chocolatesphere]:				useSkill = $skill[Chocolatesphere];				break;
+	case $effect[Chow Downed]:					useSkill = $skill[Zombie Chow]; 					break;
 	case $effect[Cranberry Cordiality]:			useItem = $item[Cranberry Cordial];				break;
 	case $effect[Coffeesphere]:					useSkill = $skill[Coffeesphere];				break;
 	case $effect[Cold Hard Skin]:				useItem = $item[Frost-Rimed Seal Hide];			break;
@@ -291,6 +292,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Disdain of She-Who-Was]:		useSkill = $skill[Blessing of She-Who-Was];		break;
 	case $effect[Disdain of the Storm Tortoise]:useSkill = $skill[Blessing of the Storm Tortoise];break;
 	case $effect[Disdain of the War Snapper]:	useSkill = $skill[Blessing of the War Snapper];	break;
+	case $effect[Disquiet Riot]:				useSkill = $skill[Disquiet Riot]; 				break;
 	case $effect[Drenched With Filth]:			useItem = $item[Concentrated Garbage Juice];	break;
 	case $effect[Drescher\'s Annoying Noise]:	useSkill = $skill[Drescher\'s Annoying Noise];	break;
 	case $effect[Drunk and Avuncular]:			useItem = $item[Drunk Uncles Holo-Record];		break;
@@ -606,9 +608,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		useSkill = $skill[Scarysauce];
 		break;
 	case $effect[Scarysauce]:					useSkill = $skill[Scarysauce];					break;
+	case $effect[Scavengers Scavenging]:		useSkill = $skill[Scavenge];					break;
 	case $effect[Scowl of the Auk]:				useSkill = $skill[Scowl of the Auk];			break;
 	case $effect[Scorched Earth]:				useItem = $item[Napalm In The Morning&trade; candle];break;
-	case $effect[Screaming! \ SCREAMING! \ AAAAAAAH!]:useSkill = $skill[Powerful Vocal Chords];			break;
+	case $effect[Screaming! \ SCREAMING! \ AAAAAAAH!]:useSkill = $skill[Powerful Vocal Chords];	break;
 	case $effect[Seal Clubbing Frenzy]:			useSkill = $skill[Seal Clubbing Frenzy];		break;
 	case $effect[Sealed Brain]:					useItem = $item[Seal-Brain Elixir];				break;
 	case $effect[Seeing Colors]:				useItem = $item[Funky Dried Mushroom];			break;
@@ -735,6 +738,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Vital]:						useItem = $item[Doc Galaktik\'s Vitality Serum];break;
 	case $effect[Vitali Tea]:					useItem = $item[cuppa Vitali tea];				break;
 	case $effect[Walberg\'s Dim Bulb]:			useSkill = $skill[Walberg\'s Dim Bulb];			break;
+	case $effect[Waking the Dead]:				
+		if(auto_have_skill($skill[Summon Horde]))
+		{
+			useSkill = $skill[Summon Minion];
+		}																						break;
 	case $effect[WAKKA WAKKA WAKKA]:			useItem = $item[Yellow Pixel Potion];			break;
 	case $effect[Wasabi With You]:				useItem = $item[Wasabi Marble Soda];			break;
 	case $effect[Well-Oiled]:					useItem = $item[Oil of Parrrlay];				break;
@@ -748,6 +756,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Yoloswagyoloswag]:				useItem = $item[Yolo&trade; Chocolates];		break;
 	case $effect[You Read the Manual]:			useItem = $item[O\'Rly Manual];					break;
 	case $effect[Your Fifteen Minutes]:			useSkill = $skill[Fifteen Minutes of Flame];	break;
+	case $effect[Zomg WTF]:						useSkill = $skill[Ag-grave-ation];				break;
 	default: abort("Effect (" + buff + ") is not known to us. Beep.");							break;
 	}
 
