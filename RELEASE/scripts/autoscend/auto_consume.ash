@@ -902,6 +902,19 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		}
 	}
 
+	if(my_class() != $class[Cow Puncher]) 
+	{
+		//these consumables give $effect[Cowrruption] which limits base moxie and muscle to 30
+		//low moxie can get beaten up, low muscle makes muscle class unable to hit
+		if(my_basestat($stat[moxie]) > 30 || (my_primestat() == $stat[muscle] && my_basestat($stat[muscle]) > 30))
+		{
+			foreach it in $items[tainted milk,rotting beefsteak,firemilk]
+			{
+				blacklist[it] = true;
+			}
+		}
+	}
+
 	// If we have 2 sticks of firewood, the current knapsack-solver
 	// tries to get one of everything. So we blacklist everything other
 	// than the 'campfire hot dog'

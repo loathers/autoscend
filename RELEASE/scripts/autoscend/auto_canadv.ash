@@ -402,7 +402,6 @@ boolean can_adv(location where, boolean prep, int verb) {
    case $location[Cobb's Knob Menagerie\, Level 1]:     // menagerie
    case $location[Cobb's Knob Menagerie\, Level 2]:
    case $location[Cobb's Knob Menagerie\, Level 3]:
-   case $location[The Barrel Full of Barrels]:          // mountain
    case $location[The Dire Warren]:
    case $location[Noob Cave]:
    case $location[Thugnderdome]:                        // moxsign
