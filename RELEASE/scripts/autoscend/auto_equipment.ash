@@ -666,8 +666,8 @@ void finalizeMaximize(boolean speculative)
 
 	if (auto_haveKramcoSausageOMatic())
 	{
-		// Save the first 8 sausage goblins for delay burning
-		boolean saveGoblinForDelay = (auto_sausageFightsToday() < 8 && solveDelayZone() != $location[none]);
+		// Save the first 8 sausage goblins for delay burning, if current location isn't itself a delay zone after SoftblockDelay released
+		boolean saveGoblinForDelay = (auto_sausageFightsToday() < 8 && !zone_delay(my_location())._boolean && solveDelayZone() != $location[none]);
 		// don't interfere with backups unless they're equivalent or worse
 		boolean dontSausageBackups = auto_backupTarget() && !($monsters[sausage goblin,eldritch tentacle] contains get_property("lastCopyableMonster").to_monster());
 		// also don't equip Kramco when using Map the Monsters as sausage goblins override the NC
