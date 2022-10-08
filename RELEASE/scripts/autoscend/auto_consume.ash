@@ -1448,7 +1448,8 @@ void auto_overdrinkGreenBeers()
 				ConsumeAction greenBeerAction = MakeConsumeAction(daily_special());
 				greenBeerAction.cafeId = daily_special().to_int();
 				greenBeerAction.it = $item[none];
-				int daily_special_limit = min(my_meat()/get_property("_dailySpecialPrice").to_int(), (inebriety_left()+11)/(daily_special().inebriety));
+				int beerMeat = my_meat() - (in_wotsf() ? meatReserve() : 0); //extra advs are almost always worth more, but meat is hard to get in wotsf
+				int daily_special_limit = min(beerMeat/get_property("_dailySpecialPrice").to_int(), (inebriety_left()+11)/(daily_special().inebriety));
 				for (int i=0; i < daily_special_limit; i++)
 				{
 					autoConsume(greenBeerAction);
@@ -1856,11 +1857,15 @@ boolean auto_breakfastCounterVisit() {
 		auto_log_info("Going to the breakfast counter to grab/order a breakfast muffin.");
 		visit_url("place.php?whichplace=monorail&action=monorail_downtown");
 		run_choice(7); // Visit the Breakfast Counter
-		if (get_property("muffinOnOrder") != "" && item_amount(get_property("muffinOnOrder").to_item()) > 0)
+		if (get_property("muffinOnOrder") != "")
 		{
-			// workaround mafia not clearing the property occasionally
-			// see https://kolmafia.us/threads/ordering-a-muffin-at-the-breakfast-counter-doesnt-always-set-the-muffinonorder-property.26072/
-			set_property("muffinOnOrder", "");
+			cli_execute("refresh inv");
+			if (item_amount(get_property("muffinOnOrder").to_item()) > 0)
+			{
+				// workaround mafia not clearing the property occasionally
+				// see https://kolmafia.us/threads/ordering-a-muffin-at-the-breakfast-counter-doesnt-always-set-the-muffinonorder-property.26072/
+				set_property("muffinOnOrder", "");
+			}
 		}
 		if (!get_property("_muffinOrderedToday").to_boolean() && item_amount($item[earthenware muffin tin]) > 0) {
 			auto_log_info("Ordering a bran muffin for tomorrow to keep you regular.");

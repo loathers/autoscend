@@ -891,7 +891,7 @@ boolean L12_filthworms()
 	{
 		auto_log_info("We're going to yellow ray the stench glands.");
 	}
-	else		//could not guarentee stealing. check if it should be delayed otherwise buff item drops instead
+	else if(item_drop_modifier() < 900.0)	//could not guarentee stealing. check if it should be delayed otherwise buff item drops instead
 	{
 		if(have_effect($effect[Everything Looks Yellow]) > 0 && have_effect($effect[Everything Looks Yellow]) <= 100)
 		{
