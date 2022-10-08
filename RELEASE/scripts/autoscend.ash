@@ -1,4 +1,4 @@
-since r26749;	// Smash & Graaagh pref added to KoLmafia
+since r26812;	// allow specifying "github" dependencies
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

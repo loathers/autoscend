@@ -473,22 +473,24 @@ boolean auto_post_adventure()
 		use_skill(1, $skill[Thunderheart]);
 	}
 
-
-	effect awolDesired = awol_walkBuff();
-	if(awolDesired != $effect[none])
+	if(in_awol())
 	{
-		if(!inAftercore())
+		effect awolDesired = awol_walkBuff();
+		if(awolDesired != $effect[none])
 		{
-			int awolMP = 85;
-			if(my_class() == $class[Beanslinger])
+			if(!inAftercore())
 			{
-				awolMP = 95;
+				int awolMP = 85;
+				if(my_class() == $class[Beanslinger])
+				{
+					awolMP = 95;
+				}
+				buffMaintain(awolDesired, awolMP, 1, 20);
 			}
-			buffMaintain(awolDesired, awolMP, 1, 20);
-		}
-		else
-		{
-			buffMaintain(awolDesired, 120, 1, 1);
+			else
+			{
+				buffMaintain(awolDesired, 120, 1, 1);
+			}
 		}
 	}
 
