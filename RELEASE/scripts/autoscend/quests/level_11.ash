@@ -2649,8 +2649,12 @@ boolean L11_palindome()
 		}
 		if (equipped_amount($item[Talisman o\' Namsilat]) == 0)
 			equip($slot[acc3], $item[Talisman o\' Namsilat]);
-		visit_url("place.php?whichplace=palindome&action=pal_drlabel");
-		visit_url("choice.php?pwd&whichchoice=872&option=1&photo1=2259&photo2=7264&photo3=7263&photo4=7265");
+
+		if (internalQuestStatus("questL11Palindome") < 4)
+		{
+			visit_url("place.php?whichplace=palindome&action=pal_drlabel");
+			visit_url("choice.php?pwd&whichchoice=872&option=1&photo1=2259&photo2=7264&photo3=7263&photo4=7265");
+		}
 
 		if (isActuallyEd())
 		{
