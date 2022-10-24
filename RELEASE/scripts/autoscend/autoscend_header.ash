@@ -458,6 +458,9 @@ boolean canUseSweatpants();
 int getSweat();
 void sweatpantsPreAdventure();
 void utilizeStillsuit();
+boolean auto_hasParka();
+boolean auto_configureParka(string tag);
+boolean auto_handleParka();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
