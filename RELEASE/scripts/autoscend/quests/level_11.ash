@@ -2122,6 +2122,10 @@ boolean L11_mauriceSpookyraven()
 		{
 			bat_formBats();
 		}
+		if((friars_available()) && (!get_property("friarsBlessingReceived").to_boolean()))
+		{
+			cli_execute("friars booze");
+		}
 		if (canSniff($monster[Possessed Wine Rack], $location[The Haunted Wine Cellar]) && auto_mapTheMonsters())
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Possessed Wine Rack.");
@@ -2645,8 +2649,12 @@ boolean L11_palindome()
 		}
 		if (equipped_amount($item[Talisman o\' Namsilat]) == 0)
 			equip($slot[acc3], $item[Talisman o\' Namsilat]);
-		visit_url("place.php?whichplace=palindome&action=pal_drlabel");
-		visit_url("choice.php?pwd&whichchoice=872&option=1&photo1=2259&photo2=7264&photo3=7263&photo4=7265");
+
+		if (internalQuestStatus("questL11Palindome") < 1)
+		{
+			visit_url("place.php?whichplace=palindome&action=pal_drlabel");
+			visit_url("choice.php?pwd&whichchoice=872&option=1&photo1=2259&photo2=7264&photo3=7263&photo4=7265");
+		}
 
 		if (isActuallyEd())
 		{
