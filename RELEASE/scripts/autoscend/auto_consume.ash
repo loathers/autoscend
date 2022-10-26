@@ -630,6 +630,15 @@ void consumeStuff()
 		borisDemandSandwich(true);
 	}
 
+	// use food to level, if ready for it and have appropriate big stat food
+	if(prepare_food_xp_multi())
+	{
+		// guilty sprouts provide big stats
+		if(item_amount($item[guilty sprout]) > 0 && auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]))
+		{
+			autoEat(1, $item[guilty sprout]);
+		}
+	}
 	if (my_adventures() < 10 && !edSpleenCheck)
 	{
 		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
