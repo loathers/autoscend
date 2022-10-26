@@ -1771,7 +1771,7 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 			}
 		}
 	}
-	if (canUseSweatpants() && getSweat() >= 95) {
+	if (canUseSweatpants() && (getSweat() >= 95 || my_meat() < 500)) {
 		int MPtoRestore = my_mp() - goal;
 		int casts = MPtoRestore / 50;
 		casts = min(casts, (getSweat() - 90) / 5);
