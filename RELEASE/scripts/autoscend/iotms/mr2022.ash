@@ -405,3 +405,18 @@ boolean auto_handleParka()
 
 	return get_property("parkaMode") == tempDino && have_equipped($item[jurassic parka]);
 }
+
+boolean auto_hasStillSuit()
+{
+	return possessEquipment($item[tiny stillsuit]) && auto_is_valid($item[tiny stillsuit]);
+}
+
+int auto_expectedStillsuitAdvs()
+{
+	if(!auto_hasStillSuit()) return 0;
+	int sweat = get_property("familiarSweat").to_int();
+	// can't consume until at least 10 sweat has been accumulated
+	if(sweat < 10) return 0;
+
+	return(round(sweat**0.4));
+}

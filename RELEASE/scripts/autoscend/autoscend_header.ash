@@ -461,6 +461,8 @@ void utilizeStillsuit();
 boolean auto_hasParka();
 boolean auto_configureParka(string tag);
 boolean auto_handleParka();
+boolean auto_hasStillSuit();
+int auto_expectedStillsuitAdvs();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
