@@ -1274,6 +1274,14 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		add(it, AUTO_OBTAIN_CRAFT, howmany);
 	}
 
+	// Add still suit
+	if(auto_hasStillSuit())
+	{
+		int size = 1;
+		float adv = auto_expectedStillsuitAdvs().to_float();
+		actions[count(actions)] = new ConsumeAction($item[tiny stillsuit], 0, size, adv, adv, AUTO_ORGAN_LIVER, AUTO_OBTAIN_NULL);
+	}
+
 	// Now, to load cafe consumables. This has some TCRS-specific code.
 
 	if(type == AUTO_ORGAN_LIVER && !gnomads_available()) return false;
@@ -1373,13 +1381,6 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		}
 	}
 
-	// Add still suit
-	if(auto_hasStillSuit())
-	{
-		int size = 1;
-		float adv = auto_expectedStillsuitAdvs().to_float();
-		actions[count(actions)] = new ConsumeAction($item[tiny stillsuit], 0, size, adv, adv, AUTO_ORGAN_LIVER, AUTO_OBTAIN_NULL);
-	}
 	return true;
 }
 
