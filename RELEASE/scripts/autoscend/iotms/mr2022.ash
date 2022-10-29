@@ -275,9 +275,24 @@ void sweatpantsPreAdventure() {
 	}
 }
 
+boolean auto_hasStillSuit()
+{
+	return possessEquipment($item[tiny stillsuit]) && auto_is_valid($item[tiny stillsuit]);
+}
+
+int auto_expectedStillsuitAdvs()
+{
+	if(!auto_hasStillSuit()) return 0;
+	int sweat = get_property("familiarSweat").to_int();
+	// can't consume until at least 10 sweat has been accumulated
+	if(sweat < 10) return 0;
+
+	return(round(sweat**0.4));
+}
+
 void utilizeStillsuit() {
 	//called at the end of pre adv to make sure stillsuit is at least kept equipped on a familiar in the terrarium
-	if(item_amount($item[tiny stillsuit]) == 0)
+	if(!auto_hasStillSuit())
 	{
 		return;
 	}
@@ -406,17 +421,136 @@ boolean auto_handleParka()
 	return get_property("parkaMode") == tempDino && have_equipped($item[jurassic parka]);
 }
 
-boolean auto_hasStillSuit()
+boolean auto_hasAutumnaton()
 {
-	return possessEquipment($item[tiny stillsuit]) && auto_is_valid($item[tiny stillsuit]);
+	return get_property("hasAutumnaton").to_boolean();
 }
 
-int auto_expectedStillsuitAdvs()
+boolean auto_autumnatonCanAdv(location canAdventureInloc)
 {
-	if(!auto_hasStillSuit()) return 0;
-	int sweat = get_property("familiarSweat").to_int();
-	// can't consume until at least 10 sweat has been accumulated
-	if(sweat < 10) return 0;
+	if(!auto_hasAutumnaton())
+	{
+		return false;
+	}
 
-	return(round(sweat**0.4));
+	if(canAdventureInloc == $location[8-bit realm] && possessEquipment($item[continuum transfunctioner]) && auto_is_valid($item[continuum transfunctioner]))
+	{
+		equip($item[continuum transfunctioner]);
+	}
+
+	foreach index,loc in get_autumnaton_locations()
+	{
+		if(loc == canAdventureInloc)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean auto_autumnatonReadyToQuest()
+{
+	if(!auto_hasAutumnaton())
+	{
+		return false;
+	}
+
+	return total_turns_played() > get_property("autumnatonQuestTurn").to_int();
+}
+
+boolean auto_autumnatonCheckForUpgrade(string upgrade)
+{
+	string currentUpgrades = get_property("autumnatonUpgrades");
+	if(contains_text(currentUpgrades,upgrade))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_sendAutumnaton(location loc)
+{
+	if(auto_autumnatonCanAdv(loc))
+	{
+		cli_execute("autumnaton send " + loc);
+		handleTracker("Autumnaton sent to " + loc, "auto_otherstuff");
+		return true;
+	}
+	return false;
+}
+
+void auto_autumnatonQuest()
+{
+	if(!auto_autumnatonReadyToQuest()) return;
+
+	// complete any pending upgrades if it just returned
+	if (total_turns_played() == get_property("autumnatonQuestTurn").to_int() + 1)
+	{
+		catch cli_execute("autumnaton upgrade");
+	}
+
+	// prioritize getting important upgrades
+	if(!auto_autumnatonCheckForUpgrade("leftarm1"))
+	{
+		if(auto_sendAutumnaton($location[The Haunted Pantry]))
+		{
+			return;
+		}
+		else
+		{
+			abort("Haunted pantry should always be available for autumnaton, but autoscend determined it is not. Report issue.");
+		}
+	}
+
+	if(!auto_autumnatonCheckForUpgrade("leftleg1"))
+	{
+		// some bat zones may not be adventured in, so try them all
+		if(auto_sendAutumnaton($location[Guano Junction])) return;
+		if(auto_sendAutumnaton($location[The Batrat And Ratbat Burrow])) return;
+		if(auto_sendAutumnaton($location[The Beanbat Chamber])) return;
+	}
+
+	if(!auto_autumnatonCheckForUpgrade("rightleg1"))
+	{
+		if(auto_sendAutumnaton($location[The Haunted Library])) return;
+	}
+
+	// acquire items to help quests
+	if(fastenerCount() < 30 && lumberCount() < 30)
+	{
+		if(auto_sendAutumnaton($location[The Smut Orc Logging Camp])) return;
+	}
+
+	// should we go regardless of if we have arm upgrades?
+	if(auto_autumnatonCheckForUpgrade("leftarm1") &&
+	 auto_autumnatonCheckForUpgrade("rightarm1") &&
+	 item_amount($item[barrel of gunpowder]) < 5 && 
+	 get_property("sidequestLighthouseCompleted") == "none")
+	{
+		if(auto_sendAutumnaton($location[Sonofa Beach])) return;
+	}
+
+	if(hedgeTrimmersNeeded() > 0)
+	{
+		if(auto_sendAutumnaton($location[Twin Peak])) return;
+	}
+
+	if((item_amount($item[Killing Jar]) == 0) && ((get_property("gnasirProgress").to_int() & 4) != 4))
+	{
+		if(auto_sendAutumnaton($location[The Haunted Library])) return;
+	}
+
+	if(!contains_text(get_property("nsTowerDoorKeysUsed"), "digital key") &&
+	item_amount($item[Digital Key]) == 0 &&
+	creatable_amount($item[Digital Key]) == 0)
+	{
+		if(!possessEquipment($item[continuum transfunctioner]) && my_level() >= 2)
+		{
+			// unlock 8-bit zone
+			woods_questStart();
+		}
+		if(auto_sendAutumnaton($location[8-bit realm])) return;
+	}
+
+	return;
 }
