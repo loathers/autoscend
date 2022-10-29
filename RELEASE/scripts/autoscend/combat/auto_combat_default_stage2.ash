@@ -10,7 +10,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		auto_log_debug("Skipping stage 2 of combat for now as we intend to olfact [" +enemy+ "]");
 		return "";
 	}
-	if(my_location() == $location[The Daily Dungeon] && (item_amount($item[Daily Dungeon Malware]) > 0) && 
+	if(my_location() == $location[The Daily Dungeon] && (item_amount($item[Daily Dungeon Malware]) > 0) && auto_is_valid($item[Daily Dungeon Malware]) && 
 	(towerKeyCount(false) < 2) && !get_property("_dailyDungeonMalwareUsed").to_boolean())
 	{
 		auto_log_debug("Skipping stage 2 of combat for now as we intend to use Daily Dungeon Malware");
