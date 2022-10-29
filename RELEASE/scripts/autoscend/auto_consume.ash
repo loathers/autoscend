@@ -646,8 +646,11 @@ void consumeStuff()
 	}
 
 	// guilty sprouts provide big stats
-	if(item_amount($item[guilty sprout]) > 0 && auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13)
+	if(auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13)
 	{
+		// important for leveling. Attempt to pull if we don't have one
+		pullXWhenHaveY($item[guilty sprout], 1, 0);
+
 		// use food to level if ready for it
 		if(prepare_food_xp_multi())
 		{
