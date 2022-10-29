@@ -1586,6 +1586,7 @@ boolean isGhost(monster mon);
 boolean isProtonGhost(monster mon);
 int cloversAvailable();
 boolean cloverUsageInit();
+boolean cloverUsageRestart();
 boolean cloverUsageFinish();
 boolean isHermitAvailable();
 boolean isGalaktikAvailable();
