@@ -59,7 +59,7 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 
 	if(inCombat)
 	{
-		if(my_mp() < mp_cost(sk) + combat_mana_cost_modifier() ||	//modifier returns a negative value so we add
+		if(my_mp() < mp_cost(sk) ||	// + combat_mana_cost_modifier() (negative value that we would add) is already included by mp_cost()
 		my_hp() <= hp_cost(sk) ||
 		get_fuel() < fuel_cost(sk) ||
 		my_lightning() < lightning_cost(sk) ||
@@ -73,7 +73,7 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 	}
 	else
 	{
-		if(my_maxmp() < mp_cost(sk) + combat_mana_cost_modifier() ||	//modifier returns a negative value so we add
+		if(my_maxmp() < mp_cost(sk) || 
 		my_maxhp() <= hp_cost(sk) ||
 		get_fuel() < fuel_cost(sk) ||
 		my_lightning() < lightning_cost(sk) ||
@@ -702,18 +702,29 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		}
 		else return "";
 	}
+
+	boolean free_monster = (isFreeMonster(target) || (get_property("breathitinCharges").to_int() > 0 && my_location().environment == "outdoor"));
 	
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
+
 		if((item_amount($item[Yellowcake Bomb]) > 0) && auto_is_valid($item[Yellowcake Bomb]))
 		{
-			return "item " + $item[Yellowcake Bomb]; // 75 turns
+			return "item " + $item[Yellowcake Bomb]; // 75 turns + quest item
+		}
+		if(free_monster && (item_amount($item[yellow rocket]) > 0) && auto_is_valid($item[yellow rocket]))
+		{
+			return "item " + $item[yellow rocket]; // 75 turns & 250 meat - better than wasting a freekill on an already free monster
+		}
+		if(inCombat ? have_skill($skill[Spit jurassic acid]) : auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]))
+		{
+			return "skill " + $skill[Spit jurassic acid]; //100 Turns and free kill
 		}
 		if((item_amount($item[yellow rocket]) > 0) && auto_is_valid($item[yellow rocket]))
 		{
-			return "item " + $item[yellow rocket]; // 75 turns
+			return "item " + $item[yellow rocket]; // 75 turns & 250 meat
 		}
-		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : possessEquipment($item[unwrapped knock-off retro superhero cape]) && auto_is_valid($skill[Unleash the Devil's Kiss]))
+		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : auto_hasRetrocape() && auto_is_valid($skill[Unleash the Devil's Kiss]))
 		{
 			return "skill " + $skill[Unleash the Devil's Kiss]; // 99 turns
 		}
@@ -723,7 +734,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		}
 		if(auto_have_skill($skill[Ball Lightning]) && (my_lightning() >= lightning_cost($skill[Ball Lightning])))
 		{
-			return "skill " + $skill[Ball Lightning]; // 99 turns
+			return "skill " + $skill[Ball Lightning]; // 99 turns + 5 lightning
 		}
 		if(auto_have_skill($skill[Wrath of Ra]) && (my_mp() >= mp_cost($skill[Wrath of Ra])))
 		{
