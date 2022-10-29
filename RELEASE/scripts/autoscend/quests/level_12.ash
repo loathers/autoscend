@@ -1285,6 +1285,13 @@ boolean L12_sonofaBeach()
 		return false;
 	}
 
+	if(auto_autumnatonCanAdv($location[Sonofa Beach]) && !isAboutToPowerlevel())
+	{
+		// delay zone to allow autumnaton to grab barrels
+		// unless we have ran out of other stuff to do
+		return false;
+	}
+
 	if(in_pokefam())
 	{
 		if(contains_text($location[Sonofa Beach].combat_queue, to_string($monster[Lobsterfrogman])))
@@ -1863,6 +1870,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	buffMaintain($effect[Good Things Are Coming, You Can Smell It]);
+	buffMaintain($effect[Bet Your Autumn Dollar]);
 	bat_formWolf();
 	if(auto_is_valid($effect[Meet the Meat]))
 	{

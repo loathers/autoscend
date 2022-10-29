@@ -110,6 +110,13 @@ boolean LX_getDigitalKey()
 			abort("Mysteriously failed to craft [Digital Key] even though I should be able to make one. Make it manually then run me again");
 		}
 	}
+
+	if(auto_autumnatonCanAdv($location[8-bit Realm]) && !isAboutToPowerlevel())
+	{
+		// delay zone to allow autumnaton to grab pixels
+		// unless we have ran out of other stuff to do
+		return false;
+	}
 	
 	//if you are at the tower door and still don't have it, pull some pixels to save adv. keeping 5 pulls for later.
 	boolean needLowKeyPixels = (in_lowkeysummer() ? (lowkey_needKey($item[Digital Key]) && lowkey_keysRemaining() == 1) : true);

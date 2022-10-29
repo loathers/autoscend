@@ -156,6 +156,12 @@ boolean L9_chasmBuild()
 	{
 		return false;	//delay for You, Robot path
 	}
+	if(auto_autumnatonCanAdv($location[The Smut Orc Logging Camp]) && !isAboutToPowerlevel())
+	{
+		// delay zone to allow autumnaton to grab bridge parts
+		// unless we have ran out of other stuff to do
+		return false;
+	}
 
 	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
 
