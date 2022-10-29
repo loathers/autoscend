@@ -542,7 +542,8 @@ void auto_autumnatonQuest()
 
 	if(!contains_text(get_property("nsTowerDoorKeysUsed"), "digital key") &&
 	item_amount($item[Digital Key]) == 0 &&
-	creatable_amount($item[Digital Key]) == 0)
+	creatable_amount($item[Digital Key]) == 0 &&
+	!auto_hasPowerfulGlove())
 	{
 		if(!possessEquipment($item[continuum transfunctioner]) && my_level() >= 2)
 		{
