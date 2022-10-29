@@ -646,6 +646,22 @@ boolean L9_aBooPeak()
 	return false;
 }
 
+int hedgeTrimmersNeeded()
+{
+	int twinPeakProgress = get_property("twinPeakProgress").to_int();
+	boolean needStench = ((twinPeakProgress & 1) == 0);
+	boolean needFood = ((twinPeakProgress & 2) == 0);
+	boolean needJar = ((twinPeakProgress & 4) == 0);
+	boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
+	int neededTrimmers = -(item_amount($item[rusty hedge trimmers]));
+	if(needStench) neededTrimmers++;
+	if(needFood) neededTrimmers++;
+	if(needJar) neededTrimmers++;
+	if(needInit) neededTrimmers++;
+
+	return neededTrimmers;
+}
+
 boolean L9_twinPeak()
 {
 	if (internalQuestStatus("questL09Topping") < 2 || internalQuestStatus("questL09Topping") > 3)

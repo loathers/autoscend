@@ -105,23 +105,10 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 			if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
 			{
-					//copied following code from catBurglarHeistDesires
-					//TODO - create a common function for this instead
-					int twinPeakProgress = get_property("twinPeakProgress").to_int();
-					boolean needStench = ((twinPeakProgress & 1) == 0);
-					boolean needFood = ((twinPeakProgress & 2) == 0);
-					boolean needJar = ((twinPeakProgress & 4) == 0);
-					boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
-					int neededTrimmers = -(item_amount($item[rusty hedge trimmers]) + dropsFromYR);
-					if(needStench) neededTrimmers++;
-					if(needFood) neededTrimmers++;
-					if(needJar) neededTrimmers++;
-					if(needInit) neededTrimmers++;
-
-					if(neededTrimmers > 0)
-					{
-						forceDrop = true;
-					}
+				if(hedgeTrimmersNeeded() + dropsFromYR > 0)
+				{
+					forceDrop = true;
+				}
 			}
 
 			// Number of times bowled is 1 less than hiddenBowlingAlleyProgress. Need 5 bowling balls total, 5+1 = 6 needed in this conditional
