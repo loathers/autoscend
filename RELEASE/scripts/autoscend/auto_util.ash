@@ -919,6 +919,7 @@ boolean canYellowRay(monster target)
 
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
+		
 		// first, do any necessary prep to use a yellow ray
 		if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
 			get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
@@ -929,12 +930,23 @@ boolean canYellowRay(monster target)
 			cli_execute("acquire " + $item[yellow rocket]);
 		}
 
+		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
+		if(auto_hasParka() && hasTorso())
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
+		}
+
 		// Yellow rocket has the lowest cooldown, and is unlimited, so prioritize over other sources
 		if (item_amount($item[yellow rocket]) > 0 &&
 			auto_is_valid($item[yellow rocket]) &&
 			yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "")
 		{
 			return true;
+		}
+
+		if(auto_hasRetrocape())
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 		}
 
 		if(canChangeToFamiliar($familiar[Crimbo Shrub]))
@@ -1110,6 +1122,10 @@ boolean adjustForYellowRay(string combat_string)
 	{
 		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
 	}
+	if(combat_string == ("skill " + $skill[Spit jurassic acid]))
+	{
+		auto_configureParka("acid");
+	}
 	if(combat_string == ("skill " + $skill[Unleash the Devil's Kiss]))
 	{
 		auto_configureRetrocape("heck", "kiss");
@@ -1226,7 +1242,7 @@ string statCard()
 
 boolean hasTorso()
 {
-	return have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed]);
+	return have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed]) || robot_cpu(9,false);
 }
 
 boolean isGuildClass()
