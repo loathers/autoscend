@@ -813,7 +813,7 @@ generic_t zone_delay(location loc)
 			if (loc.turns_spent < 6) {
 				value = 5 - loc.turns_spent;
 			} else {
-				value = 4 - (loc.turns_spent - 1) % 5;
+				value = 4 - (loc.turns_spent - 6) % 5;
 			}
 		}
 		break;
