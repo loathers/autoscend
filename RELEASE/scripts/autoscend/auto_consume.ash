@@ -100,6 +100,8 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 	}
 	if(toDrink == $item[tiny stillsuit])
 	{
+		// record adv gain for more detailed reporting to user
+		int stillsuitAdvs = auto_expectedStillsuitAdvs();
 		if(familiar_equipped_equipment(my_familiar()) != $item[tiny stillsuit])
 		{
 			// allow pre adv to reequip appropriate fam equip
@@ -108,7 +110,7 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		
 		visit_url("inventory.php?action=distill&pwd");
 		visit_url("choice.php?pwd&whichchoice=1476&option=1");
-		handleTracker(toDrink, "auto_drunken");
+		handleTracker(toDrink, stillsuitAdvs + "Advs", "auto_drunken");
 		return true;
 	}
 	if(item_amount(toDrink) < howMany && !isSpeakeasy)
@@ -644,7 +646,7 @@ void consumeStuff()
 	}
 
 	// guilty sprouts provide big stats
-	if(item_amount($item[guilty sprout]) > 0 && auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]))
+	if(item_amount($item[guilty sprout]) > 0 && auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13)
 	{
 		// use food to level if ready for it
 		if(prepare_food_xp_multi())
@@ -975,7 +977,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 		}
 	}
-
+ 
 	add_mutex_craftables($items[perfect cosmopolitan, perfect old-fashioned, perfect mimosa, perfect dark and stormy, perfect paloma, perfect negroni]);
 
 	foreach it in $items[]
@@ -1274,8 +1276,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		add(it, AUTO_OBTAIN_CRAFT, howmany);
 	}
 
-	// Add still suit
-	if(auto_hasStillSuit())
+	// Add still suit if we are looking to drink
+	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit())
 	{
 		int size = 1;
 		float adv = auto_expectedStillsuitAdvs().to_float();
