@@ -156,7 +156,7 @@ boolean L9_chasmBuild()
 	{
 		return false;	//delay for You, Robot path
 	}
-	if(auto_hasAutumnaton() && !isAboutToPowerlevel())
+	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[The Smut Orc Logging Camp].turns_spent > 0)
 	{
 		// delay zone to allow autumnaton to grab bridge parts
 		// unless we have ran out of other stuff to do
