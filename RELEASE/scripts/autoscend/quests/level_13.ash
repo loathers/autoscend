@@ -534,6 +534,11 @@ boolean L13_towerNSContests()
 				if(crowd3Insufficient()) buffMaintain($effect[Stinky Hands]);
 				if(crowd3Insufficient()) buffMaintain($effect[Stinky Weapon]);
 				if(crowd3Insufficient()) buffMaintain($effect[Rotten Memories], 15, 1, 1);
+				if((storage_amount($item[Halibut]) > 0) && auto_is_valid($item[Halibut]))
+				{
+					pullXWhenHaveY($item[Halibut], 1, 0);
+					autoMaximize(challenge + " dmg, " + challenge + " spell dmg -equip snow suit", 1500, 0, false);
+				}
 				break;
 			case $element[spooky]:
 				if(crowd3Insufficient()) auto_beachCombHead("spooky");
