@@ -1285,7 +1285,7 @@ boolean L12_sonofaBeach()
 		return false;
 	}
 
-	if(auto_autumnatonCanAdv($location[Sonofa Beach]) && !isAboutToPowerlevel())
+	if(auto_hasAutumnaton() && !isAboutToPowerlevel())
 	{
 		// delay zone to allow autumnaton to grab barrels
 		// unless we have ran out of other stuff to do

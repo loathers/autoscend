@@ -466,6 +466,7 @@ boolean auto_handleParka();
 boolean auto_hasAutumnaton();
 boolean auto_autumnatonCanAdv(location canAdventureInloc);
 boolean auto_autumnatonReadyToQuest();
+location auto_autumnatonQuestingIn();
 boolean auto_autumnatonCheckForUpgrade(string upgrade);
 boolean auto_sendAutumnaton(location loc);
 void auto_autumnatonQuest();

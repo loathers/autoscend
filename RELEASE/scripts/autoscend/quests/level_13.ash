@@ -111,7 +111,7 @@ boolean LX_getDigitalKey()
 		}
 	}
 
-	if(auto_autumnatonCanAdv($location[8-bit Realm]) && !isAboutToPowerlevel())
+	if(auto_hasAutumnaton() && !isAboutToPowerlevel())
 	{
 		// delay zone to allow autumnaton to grab pixels
 		// unless we have ran out of other stuff to do

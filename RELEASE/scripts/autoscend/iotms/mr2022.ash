@@ -426,6 +426,7 @@ boolean auto_hasAutumnaton()
 	return get_property("hasAutumnaton").to_boolean();
 }
 
+// only valid when autumnaton is not current out on a quest
 boolean auto_autumnatonCanAdv(location canAdventureInloc)
 {
 	if(!auto_hasAutumnaton())
@@ -456,6 +457,11 @@ boolean auto_autumnatonReadyToQuest()
 	}
 
 	return total_turns_played() > get_property("autumnatonQuestTurn").to_int();
+}
+
+location auto_autumnatonQuestingIn()
+{
+	return to_location(get_property("autumnatonQuestLocation"));
 }
 
 boolean auto_autumnatonCheckForUpgrade(string upgrade)
@@ -533,11 +539,6 @@ void auto_autumnatonQuest()
 	if(hedgeTrimmersNeeded() > 0)
 	{
 		if(auto_sendAutumnaton($location[Twin Peak])) return;
-	}
-
-	if((item_amount($item[Killing Jar]) == 0) && ((get_property("gnasirProgress").to_int() & 4) != 4))
-	{
-		if(auto_sendAutumnaton($location[The Haunted Library])) return;
 	}
 
 	if(!contains_text(get_property("nsTowerDoorKeysUsed"), "digital key") &&
