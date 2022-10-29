@@ -1560,6 +1560,7 @@ void resetState() {
 		set_property("_auto_bad100Familiar", false); 		//reset to not bad. target location might set them as bad again
 	}
 
+	set_property("auto_parkaSetting", ""); // jurassic parka setting
 	set_property("auto_retrocapeSettings", ""); // retrocape config
 	set_property("auto_januaryToteAcquireCalledThisTurn", false); // january tote item switching
 
