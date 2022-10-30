@@ -1749,7 +1749,6 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	buffMaintain($effect[Earning Interest]);
-	buffMaintain($effect[Bet Your Autumn Dollar]);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{
@@ -1871,6 +1870,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	buffMaintain($effect[Good Things Are Coming, You Can Smell It]);
+	buffMaintain($effect[Bet Your Autumn Dollar]);
 	bat_formWolf();
 	if(auto_is_valid($effect[Meet the Meat]))
 	{
