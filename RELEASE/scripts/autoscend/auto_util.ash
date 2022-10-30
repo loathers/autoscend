@@ -1451,7 +1451,7 @@ boolean cloverUsageRestart()
 	{
 		return false;
 	}
-	if(equipped_amount($item[June cleaver]) > 0 && $strings[Poetic Justice, Aunts not Ants, Beware of Aligator, Beware of Alligator, Teacher's Pet, Lost and Found, Summer Days, Bath Time, Delicious Sprouts, Hypnotic Master] contains get_property("lastEncounter"))
+	if(equipped_amount($item[June cleaver]) > 0 && $strings[Poetic Justice, Aunts not Ants, Beware of Aligator, Beware of Alligator, Teacher\'s Pet, Lost and Found, Summer Days, Bath Time, Delicious Sprouts, Hypnotic Master] contains get_property("lastEncounter"))
 	{
 		//got interrupted and should adventure again in same location
 		return true;
