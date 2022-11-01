@@ -456,7 +456,7 @@ boolean auto_autumnatonReadyToQuest()
 		return false;
 	}
 
-	return total_turns_played() > get_property("autumnatonQuestTurn").to_int();
+	return item_amount($item[autumn-aton]) != 0;
 }
 
 location auto_autumnatonQuestingIn()
