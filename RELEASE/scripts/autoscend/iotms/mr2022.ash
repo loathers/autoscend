@@ -514,11 +514,19 @@ void auto_autumnatonQuest()
 		if(auto_sendAutumnaton($location[Guano Junction])) return;
 		if(auto_sendAutumnaton($location[The Batrat And Ratbat Burrow])) return;
 		if(auto_sendAutumnaton($location[The Beanbat Chamber])) return;
+		if(auto_sendAutumnaton($location[Noob Cave])) return;
 	}
 
 	if(!auto_autumnatonCheckForUpgrade("rightleg1"))
 	{
 		if(auto_sendAutumnaton($location[The Haunted Library])) return;
+		if(auto_sendAutumnaton($location[The Neverending Party])) return;
+		if(auto_sendAutumnaton($location[The Haunted Kitchen])) return;
+	}
+
+	if(!auto_autumnatonCheckForUpgrade("rightarm1"))
+	{
+		if(auto_sendAutumnaton($location[The Overgrown Lot])) return;
 	}
 
 	// acquire items to help quests
@@ -536,7 +544,8 @@ void auto_autumnatonQuest()
 		if(auto_sendAutumnaton($location[Sonofa Beach])) return;
 	}
 
-	if(hedgeTrimmersNeeded() > 0)
+	// camel spit is a good option for getting hedge trimmers
+	if(hedgeTrimmersNeeded() > 0 && !have_familiar($familiar[Melodramedary]))
 	{
 		if(auto_sendAutumnaton($location[Twin Peak])) return;
 	}
