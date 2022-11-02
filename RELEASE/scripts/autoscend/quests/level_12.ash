@@ -1842,6 +1842,7 @@ boolean L12_themtharHills()
 		//use clover to get inhaler
 		cloverUsageInit();
 		boolean retval = autoAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
+		if(cloverUsageRestart()) retval = autoAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
 		cloverUsageFinish();
 		return retval;
 	}
