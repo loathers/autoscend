@@ -78,6 +78,10 @@ boolean canOde(item toDrink)
 	{
 		return false;
 	}
+	if(toDrink == $item[tiny stillsuit])
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -646,8 +650,14 @@ void consumeStuff()
 	}
 
 	// guilty sprouts provide big stats
-	if(auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13)
+	if(auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13 && !in_tcrs())
 	{
+		// attempt to eat spaghetti breakfast as can only be eaten as the first food of the day
+		if(my_level() >= 11 && my_fullness() == 0 && !get_property("_spaghettiBreakfastEaten").to_boolean())
+		{
+			autoEat(1, $item[Spaghetti Breakfast]);
+		}
+		
 		// important for leveling. Attempt to pull if we don't have one
 		pullXWhenHaveY($item[guilty sprout], 1, 0);
 
@@ -1988,7 +1998,6 @@ boolean prepare_food_xp_multi()
 	
 	//[Ready to Eat] is gotten by using a red rocket from fireworks shop in VIP clan. it gives +400% XP on next food item
 	if(have_fireworks_shop() &&
-	have_effect($effect[Everything Looks Red]) <= 0 &&
 	have_effect($effect[Ready to Eat]) <= 0 &&
 	auto_is_valid($item[red rocket]))
 	{
@@ -2007,6 +2016,10 @@ boolean prepare_food_xp_multi()
 	
 	equipStatgainIncreasers($stats[muscle,mysticality,moxie],true);
 	
-	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
+	if(have_effect($effect[Ready to Eat]) > 0)
+	{
+		pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
+	}
+	
 	return true;
 }

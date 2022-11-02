@@ -305,7 +305,7 @@ void utilizeStillsuit() {
 
 	//make sure all this nice familiar sweat doesn't go uncollected when current familiar is wearing something else
 	if(familiar_equipped_equipment(my_familiar()) == $item[tiny stillsuit])
-	{	//since it's in the inventory, should not need to check this
+	{
 		return;
 	}
 
