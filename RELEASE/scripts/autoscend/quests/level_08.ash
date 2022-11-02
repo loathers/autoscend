@@ -352,6 +352,7 @@ boolean L8_getMineOres()
 	{
 		cloverUsageInit();
 		autoAdvBypass(270, $location[Itznotyerzitz Mine]);
+		if(cloverUsageRestart()) autoAdvBypass(270, $location[Itznotyerzitz Mine]);
 		cloverUsageFinish();
 		return true;
 	}

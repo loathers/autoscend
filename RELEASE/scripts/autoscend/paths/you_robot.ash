@@ -953,6 +953,7 @@ boolean LX_robot_powerlevel()
 
 			cloverUsageInit();
 			boolean adv_spent = autoAdv(whereTo);
+			if(cloverUsageRestart()) adv_spent = autoAdv(whereTo);
 			cloverUsageFinish();
 			if(adv_spent) return true;
 		}

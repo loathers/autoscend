@@ -396,6 +396,10 @@ boolean L9_aBooPeak()
 	{
 		cloverUsageInit();
 		autoAdvBypass(296, $location[A-Boo Peak]);
+		if(cloverUsageRestart())
+		{
+			autoAdvBypass(296, $location[A-Boo Peak]);
+		}
 		if(cloverUsageFinish())
 		{
 			set_property("auto_abooclover", false);
