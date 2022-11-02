@@ -111,7 +111,7 @@ boolean LX_getDigitalKey()
 		}
 	}
 
-	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[8-Bit Realm].turns_spent > 0)
+	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[8-Bit Realm].turns_spent > 0 && internalQuestStatus("questL13Final") != 5)
 	{
 		// delay zone to allow autumnaton to grab pixels
 		// unless we have ran out of other stuff to do
