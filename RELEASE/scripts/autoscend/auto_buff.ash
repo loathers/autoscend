@@ -167,6 +167,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Aloysius\' Antiphon of Aptitude]:useSkill = $skill[Aloysius\' Antiphon of Aptitude];break;
 	case $effect[Amazing]:						useItem = $item[Pocket Maze];					break;
 	case $effect[Angry]:						useSkill = $skill[Anger Glands];					break;
+	case $effect[Angry like the Wolf]:
+		if(auto_have_familiar($familiar[Grim Brother]))
+		{
+			visit_url("choice.php?pwd&whichchoice=835&option=2", true);
+		}																						break;
 	case $effect[Antibiotic Saucesphere]:		useSkill = $skill[Antibiotic Saucesphere];		break;
 	case $effect[Arched Eyebrow of the Archmage]:useSkill = $skill[Arched Eyebrow of the Archmage];break;
 	case $effect[Armor-Plated]:					useItem = $item[Bent Scrap Metal];				break;
@@ -393,6 +398,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Greasy Peasy]:					useItem = $item[Robot Grease];					break;
 	case $effect[Greedy Resolve]:				useItem = $item[Resolution: Be Wealthier];		break;
 	case $effect[Gristlesphere]:				useSkill = $skill[Gristlesphere];				break;
+	case $effect[Grumpy and Ornery]:
+		if(auto_have_familiar($familiar[Grim Brother]))
+		{
+			visit_url("choice.php?pwd&whichchoice=835&option=3", true);
+		}																							break;
 	case $effect[Gummed Shoes]:					useItem = $item[Shoe Gum];						break;
 	case $effect[Gummi-Grin]:					useItem = $item[Gummi Turtle];					break;
 	case $effect[Hairy Palms]:					useItem = $item[Orcish Hand Lotion];			break;
@@ -648,6 +658,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		useSkill = $skill[Snarl of the Timberwolf];
 		break;
 	case $effect[Snow Shoes]:					useItem = $item[Snow Cleats];					break;
+	case $effect[Soles of Glass]:
+		if(auto_have_familiar($familiar[Grim Brother]))
+		{
+			visit_url("choice.php?pwd&whichchoice=835&option=1", true);
+		}																						break;
 	case $effect[Somewhat Poisoned]:			useSkill = $skill[Disco Nap];					break;
 	case $effect[Song of Accompaniment]:		useSkill = $skill[Song of Accompaniment];		break;
 	case $effect[Song of Battle]:				useSkill = $skill[Song of Battle];				break;
