@@ -2016,7 +2016,7 @@ boolean prepare_food_xp_multi()
 	
 	equipStatgainIncreasers($stats[muscle,mysticality,moxie],true);
 	
-	if(have_effect($effect[Ready to Eat]) > 0)
+	if(have_effect($effect[Ready to Eat]) > 0 || in_plumber())
 	{
 		pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
 	}
