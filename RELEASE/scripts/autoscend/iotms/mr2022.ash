@@ -336,7 +336,7 @@ boolean auto_hasParka()
 
 boolean auto_configureParka(string tag)
 {
-	if (!auto_hasParka())
+	if (!auto_hasParka() || !hasTorso())
 	{
 		return false;
 	}
@@ -351,7 +351,7 @@ boolean auto_configureParka(string tag)
 
 boolean auto_handleParka()
 {
-	if (!auto_hasParka())
+	if (!auto_hasParka() || !hasTorso())
 	{
 		return false;
 	}
