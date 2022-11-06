@@ -338,11 +338,31 @@ void utilizeStillsuit() {
 		}
 		return $familiar[none];
 	}
-	equip(sweetestSweatFamiliar(),$item[tiny stillsuit]);
-
-	if(is100FamRun())
+	familiar chosenStillsuitFamiliar = sweetestSweatFamiliar();
+	if(familiar_equipped_equipment(chosenStillsuitFamiliar) != $item[tiny stillsuit])
 	{
-		handleFamiliar(get_property("auto_100familiar").to_familiar());	//just make extra sure this didnt break 100 familiar runs but familiar should not have been swapped
+		if(item_amount($item[tiny stillsuit]) == 0)
+		{
+			foreach f in $familiars[]
+			{
+				if (have_familiar(f) && familiar_equipped_equipment(f) == $item[tiny stillsuit])
+				{	//recover the stillsuit
+					visit_url("familiar.php?action=unequip&pwd&famid=" + f.to_int(), true);
+				}
+			}
+		}
+		if(item_amount($item[tiny stillsuit]) > 0)
+		{
+			equip(chosenStillsuitFamiliar,$item[tiny stillsuit]);
+		}
+		else
+		{
+			auto_log_warning("Failed to recover tiny stillsuit from the familiar mafia thinks is wearing it");
+		}
+		if(is100FamRun())
+		{
+			handleFamiliar(get_property("auto_100familiar").to_familiar());	//just make extra sure this didnt break 100 familiar runs but familiar should not have been swapped
+		}
 	}
 }
 
