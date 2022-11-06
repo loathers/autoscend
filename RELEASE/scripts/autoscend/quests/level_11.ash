@@ -1867,6 +1867,10 @@ boolean L11_hiddenCity()
 		appearance_rates($location[The Hidden Apartment Building])[$monster[pygmy witch accountant]] >= (missingMcCluskyFiles() * 25))
 		{
 			auto_log_info("About to meet the boss in the Hidden Office. Trying to gather missing files in the Apartment instead to save delay.", "blue");
+			if(auto_have_familiar($familiar[Nosy Nose]) && auto_is_valid($skill[Get a Good Whiff of This Guy]))
+			{
+				handleFamiliar($familiar[Nosy Nose]);	//whiff increases chance of witch accountant
+			}
 			return autoAdv($location[The Hidden Apartment Building]);
 		}
 		return autoAdv($location[The Hidden Office Building]);
