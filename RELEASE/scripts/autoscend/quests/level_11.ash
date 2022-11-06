@@ -1782,7 +1782,7 @@ boolean L11_hiddenCity()
 				{
 					handleFamiliar($familiar[Nosy Nose]);	//whiff increases chance of shamen. the deleveling can also help survive being cursed
 				}
-				else if(appearance_rates($location[The Hidden Office Building])[$monster[pygmy witch accountant]] >= 20 &&	item_amount($item[McClusky file (complete)]) == 0)
+				else if(appearance_rates($location[The Hidden Office Building])[$monster[pygmy witch accountant]] >= 20 && item_amount($item[McClusky file (complete)]) == 0)
 				{
 					//once done with curses will want witch accountants
 					if(item_amount($item[McClusky file (page 4)]) == 0 || get_property("nosyNoseMonster").to_monster() == $monster[pygmy witch accountant])
@@ -1849,7 +1849,7 @@ boolean L11_hiddenCity()
 			else if(item_amount($item[McClusky file (page 3)]) > 0)	return 2;
 			else if(item_amount($item[McClusky file (page 2)]) > 0)	return 3;
 			else if(item_amount($item[McClusky file (page 1)]) > 0)	return 4;
-			else													return 5;
+			else							return 5;
 		}
 
 		if(!workingHoliday && missingMcCluskyFiles() > 0)	//need more accountants
