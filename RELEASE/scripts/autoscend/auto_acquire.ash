@@ -876,7 +876,6 @@ boolean LX_craftAcquireItems()
 	{
 		buyUpTo(1, $item[Detuned Radio]);
 		auto_setMCDToCap();
-		visit_url("choice.php?pwd&whichchoice=835&option=2", true);
 	}
 
 	if((my_adventures() <= 3) && (my_daycount() == 1) && in_hardcore())

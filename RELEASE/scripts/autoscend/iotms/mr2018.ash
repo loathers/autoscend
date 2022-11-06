@@ -529,17 +529,7 @@ item[monster] catBurglarHeistDesires()
 			wannaHeists[$monster[white lion]] = $item[lion oil];
 	}
 
-	int twinPeakProgress = get_property("twinPeakProgress").to_int();
-	boolean needStench = ((twinPeakProgress & 1) == 0);
-	boolean needFood = ((twinPeakProgress & 2) == 0);
-	boolean needJar = ((twinPeakProgress & 4) == 0);
-	boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
-	int neededTrimmers = -item_amount($item[rusty hedge trimmers]);
-	if(needStench) neededTrimmers++;
-	if(needFood) neededTrimmers++;
-	if(needJar) neededTrimmers++;
-	if(needInit) neededTrimmers++;
-	if ((my_level() >= 8) && (catBurglarHeistsLeft() >= 2) && (neededTrimmers > 0))
+	if ((my_level() >= 8) && (catBurglarHeistsLeft() >= 2) && (hedgeTrimmersNeeded() > 0))
 	{
 		wannaHeists[$monster[bearpig topiary animal]] = $item[rusty hedge trimmers];
 		wannaHeists[$monster[elephant (meatcar?) topiary animal]] = $item[rusty hedge trimmers];

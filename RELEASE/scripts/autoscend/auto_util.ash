@@ -931,7 +931,7 @@ boolean canYellowRay(monster target)
 		}
 
 		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
-		if(auto_hasParka() && hasTorso())
+		if(auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]) && hasTorso())
 		{
 			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 		}
@@ -1500,6 +1500,20 @@ boolean cloverUsageInit()
 	}
 
 	abort("We tried to initialize clover usage but was unable to get Lucky!");
+	return false;
+}
+
+boolean cloverUsageRestart()
+{
+	if(have_effect($effect[Lucky!]) == 0)
+	{
+		return false;
+	}
+	if(equipped_amount($item[June cleaver]) > 0 && $strings[Poetic Justice, Aunts not Ants, Beware of Aligator, Beware of Alligator, Teacher\'s Pet, Lost and Found, Summer Days, Bath Time, Delicious Sprouts, Hypnotic Master] contains get_property("lastEncounter"))
+	{
+		//got interrupted and should adventure again in same location
+		return true;
+	}
 	return false;
 }
 
