@@ -16,7 +16,7 @@ boolean lar_safeguard()
 			}
 			if(get_property("_auto_groundhogSkipCounter").to_int() > 6)
 			{
-				abort("You have a non-combat that can infinitely loop and we are going to infintely loop on it like a groundhog. Maybe you should spend this adventure somewhere to ease the pain for all of us.");
+				abort("You are in a non-combat adventure that will infinitely loop. Please spend a turn somewhere else and re-run autoscend.");
 			}
 			set_property("_auto_groundhogSkip", my_turncount());
 		}
@@ -44,8 +44,6 @@ boolean lar_repeat(location loc)
 	return true;
 }
 
-
-
 boolean lar_abort(location loc)
 {
 	if(in_lar())
@@ -67,7 +65,6 @@ boolean lar_abort(location loc)
 	}
 	return true;
 }
-
 
 boolean LM_lar()
 {

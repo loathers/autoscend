@@ -78,6 +78,10 @@ boolean canOde(item toDrink)
 	{
 		return false;
 	}
+	if(toDrink == $item[tiny stillsuit])
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -97,6 +101,21 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 	if(isSpeakeasy && !canDrinkSpeakeasyDrink(toDrink))
 	{
 		return false;
+	}
+	if(toDrink == $item[tiny stillsuit])
+	{
+		// record adv gain for more detailed reporting to user
+		int stillsuitAdvs = auto_expectedStillsuitAdvs();
+		if(familiar_equipped_equipment(my_familiar()) != $item[tiny stillsuit])
+		{
+			// allow pre adv to reequip appropriate fam equip
+			equip(my_familiar(), $item[tiny stillsuit]);
+		}
+		
+		visit_url("inventory.php?action=distill&pwd");
+		visit_url("choice.php?pwd&whichchoice=1476&option=1");
+		handleTracker(toDrink, stillsuitAdvs + "Advs", "auto_drunken");
+		return true;
 	}
 	if(item_amount(toDrink) < howMany && !isSpeakeasy)
 	{
@@ -630,6 +649,24 @@ void consumeStuff()
 		borisDemandSandwich(true);
 	}
 
+	// guilty sprouts provide big stats
+	if(auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13 && !in_tcrs())
+	{
+		// attempt to eat spaghetti breakfast as can only be eaten as the first food of the day
+		if(my_level() >= 11 && my_fullness() == 0 && !get_property("_spaghettiBreakfastEaten").to_boolean())
+		{
+			autoEat(1, $item[Spaghetti Breakfast]);
+		}
+		
+		// important for leveling. Attempt to pull if we don't have one
+		pullXWhenHaveY($item[guilty sprout], 1, 0);
+
+		// use food to level if ready for it
+		if(prepare_food_xp_multi())
+		{
+			autoEat(1, $item[guilty sprout]);
+		}
+	}
 	if (my_adventures() < 10 && !edSpleenCheck)
 	{
 		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
@@ -783,7 +820,7 @@ boolean autoConsume(ConsumeAction action)
 		abort("ConsumeAction not prepped: " + to_debug_string(action));
 	}
 
-	if (action.organ == AUTO_ORGAN_LIVER)
+	if (action.organ == AUTO_ORGAN_LIVER && action.it != $item[tiny stillsuit])
 	{
 		buffMaintain($effect[Ode to Booze], 20, 1, action.size);
 	}
@@ -953,7 +990,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 		}
 	}
-
+ 
 	add_mutex_craftables($items[perfect cosmopolitan, perfect old-fashioned, perfect mimosa, perfect dark and stormy, perfect paloma, perfect negroni]);
 
 	foreach it in $items[]
@@ -1252,6 +1289,14 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		add(it, AUTO_OBTAIN_CRAFT, howmany);
 	}
 
+	// Add still suit if we are looking to drink
+	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit())
+	{
+		int size = 1;
+		float adv = auto_expectedStillsuitAdvs().to_float();
+		actions[count(actions)] = new ConsumeAction($item[tiny stillsuit], 0, size, adv, adv, AUTO_ORGAN_LIVER, AUTO_OBTAIN_NULL);
+	}
+
 	// Now, to load cafe consumables. This has some TCRS-specific code.
 
 	if(type == AUTO_ORGAN_LIVER && !gnomads_available()) return false;
@@ -1350,6 +1395,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 		}
 	}
+
 	return true;
 }
 
@@ -1952,7 +1998,6 @@ boolean prepare_food_xp_multi()
 	
 	//[Ready to Eat] is gotten by using a red rocket from fireworks shop in VIP clan. it gives +400% XP on next food item
 	if(have_fireworks_shop() &&
-	have_effect($effect[Everything Looks Red]) <= 0 &&
 	have_effect($effect[Ready to Eat]) <= 0 &&
 	auto_is_valid($item[red rocket]))
 	{
@@ -1971,6 +2016,10 @@ boolean prepare_food_xp_multi()
 	
 	equipStatgainIncreasers($stats[muscle,mysticality,moxie],true);
 	
-	pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
+	if(have_effect($effect[Ready to Eat]) > 0 || in_plumber())
+	{
+		pullXWhenHaveY($item[Special Seasoning], 1, 0);		//automatically consumed with food and gives extra XP
+	}
+	
 	return true;
 }

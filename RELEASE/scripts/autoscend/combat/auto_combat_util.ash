@@ -716,7 +716,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "item " + $item[yellow rocket]; // 75 turns & 250 meat - better than wasting a freekill on an already free monster
 		}
-		if(inCombat ? have_skill($skill[Spit jurassic acid]) : auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]))
+		if(inCombat ? have_skill($skill[Spit jurassic acid]) : auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]) && hasTorso())
 		{
 			return "skill " + $skill[Spit jurassic acid]; //100 Turns and free kill
 		}

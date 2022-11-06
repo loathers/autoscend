@@ -457,10 +457,19 @@ void juneCleaverChoiceHandler(int choice);
 boolean canUseSweatpants();
 int getSweat();
 void sweatpantsPreAdventure();
+boolean auto_hasStillSuit();
+int auto_expectedStillsuitAdvs();
 void utilizeStillsuit();
 boolean auto_hasParka();
 boolean auto_configureParka(string tag);
 boolean auto_handleParka();
+boolean auto_hasAutumnaton();
+boolean auto_autumnatonCanAdv(location canAdventureInloc);
+boolean auto_autumnatonReadyToQuest();
+location auto_autumnatonQuestingIn();
+boolean auto_autumnatonCheckForUpgrade(string upgrade);
+boolean auto_sendAutumnaton(location loc);
+void auto_autumnatonQuest();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -953,6 +962,7 @@ int fastenerCount();
 int lumberCount();
 boolean L9_chasmBuild();
 boolean L9_aBooPeak();
+int hedgeTrimmersNeeded();
 boolean L9_twinPeak();
 boolean L9_oilPeak();
 boolean L9_highLandlord();
@@ -1586,6 +1596,7 @@ boolean isGhost(monster mon);
 boolean isProtonGhost(monster mon);
 int cloversAvailable();
 boolean cloverUsageInit();
+boolean cloverUsageRestart();
 boolean cloverUsageFinish();
 boolean isHermitAvailable();
 boolean isGalaktikAvailable();

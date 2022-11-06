@@ -494,8 +494,8 @@ boolean auto_buyFireworksHat()
 		return false;
 	}
 
-	// noncombat is most valuable hat
-	if(auto_can_equip($item[porkpie-mounted popper]))
+	// noncombat is most valuable hat but has no effect in LAR
+	if(auto_can_equip($item[porkpie-mounted popper]) && !in_lar())
 	{
 		float simNonCombat = providePlusNonCombat(25, $location[noob cave], true, true);
 		if(simNonCombat < 25.0)
@@ -505,8 +505,8 @@ boolean auto_buyFireworksHat()
 		}
 	}
 
-	// +combat hat is second most useful
-	if(auto_can_equip($item[sombrero-mounted sparkler]))
+	// +combat hat is second most useful but has no effect in LAR
+	if(auto_can_equip($item[sombrero-mounted sparkler]) && !in_lar())
 	{
 		float simCombat = providePlusCombat(25, $location[noob cave], true, true);
 		if(simCombat < 25.0)
