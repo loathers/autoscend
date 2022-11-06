@@ -110,6 +110,13 @@ boolean LX_getDigitalKey()
 			abort("Mysteriously failed to craft [Digital Key] even though I should be able to make one. Make it manually then run me again");
 		}
 	}
+
+	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[8-Bit Realm].turns_spent > 0 && internalQuestStatus("questL13Final") != 5)
+	{
+		// delay zone to allow autumnaton to grab pixels
+		// unless we have ran out of other stuff to do
+		return false;
+	}
 	
 	//if you are at the tower door and still don't have it, pull some pixels to save adv. keeping 5 pulls for later.
 	boolean needLowKeyPixels = (in_lowkeysummer() ? (lowkey_needKey($item[Digital Key]) && lowkey_keysRemaining() == 1) : true);
@@ -527,6 +534,11 @@ boolean L13_towerNSContests()
 				if(crowd3Insufficient()) buffMaintain($effect[Stinky Hands]);
 				if(crowd3Insufficient()) buffMaintain($effect[Stinky Weapon]);
 				if(crowd3Insufficient()) buffMaintain($effect[Rotten Memories], 15, 1, 1);
+				if((storage_amount($item[Halibut]) > 0) && auto_is_valid($item[Halibut]))
+				{
+					pullXWhenHaveY($item[Halibut], 1, 0);
+					autoMaximize(challenge + " dmg, " + challenge + " spell dmg -equip snow suit", 1500, 0, false);
+				}
 				break;
 			case $element[spooky]:
 				if(crowd3Insufficient()) auto_beachCombHead("spooky");
@@ -1765,6 +1777,7 @@ boolean L13_towerNSNagamar()
 	{
 		cloverUsageInit();
 		autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
+		if(cloverUsageRestart()) autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
 		cloverUsageFinish();
 		if(creatable_amount($item[Wand Of Nagamar]) > 0)
 		{

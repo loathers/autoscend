@@ -113,7 +113,8 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		Hippy Stench,
 		High Colognic,
 		Celestial Saltiness,
-		Simply Irresistible
+		Simply Irresistible,
+		Crunching Leaves
 	])) {
 		return result();
 	}
