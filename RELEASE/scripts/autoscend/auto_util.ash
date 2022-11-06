@@ -873,7 +873,7 @@ boolean canYellowRay(monster target)
 		}
 
 		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
-		if(auto_hasParka() && hasTorso())
+		if(auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]) && hasTorso())
 		{
 			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 		}
