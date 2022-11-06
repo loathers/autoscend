@@ -1285,6 +1285,13 @@ boolean L12_sonofaBeach()
 		return false;
 	}
 
+	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[Sonofa Beach].turns_spent > 0)
+	{
+		// delay zone to allow autumnaton to grab barrels
+		// unless we have ran out of other stuff to do
+		return false;
+	}
+
 	if(in_pokefam())
 	{
 		if(contains_text($location[Sonofa Beach].combat_queue, to_string($monster[Lobsterfrogman])))
@@ -1742,6 +1749,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	buffMaintain($effect[Earning Interest]);
+	buffMaintain($effect[Bet Your Autumn Dollar]);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{

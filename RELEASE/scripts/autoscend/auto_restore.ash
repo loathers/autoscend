@@ -1726,6 +1726,7 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	buffMaintain($effect[Using Protection]);
 	//also use items which give mp regen
 	buffMaintain($effect[Tingly Tongue]);
+	buffMaintain($effect[Wisdom of the Autumn Years]);
 
 	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
 	// TODO: move this to general effectiveness method
@@ -1746,8 +1747,8 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	// unless objective value of combat stun exists there is no way to compare to other restore methods so it's always the best if available?
 	if(my_class() == $class[Sauceror])
 	{
-		int MPtoRestore = my_mp() - goal;
-		int casts = MPtoRestore / 15;		//soul food restores 15 MP per cast.
+		int MPtoRestore = goal - my_mp();
+		int casts = ceil(MPtoRestore.to_float() / 15.0);	//soul food restores 15 MP per cast.
 		casts = min(casts, my_soulsauce() / 5);	//soul food costs 5 soulsauce per cast.
 		if(casts > 0)
 		{
@@ -1771,9 +1772,9 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 			}
 		}
 	}
-	if (canUseSweatpants() && getSweat() >= 95) {
-		int MPtoRestore = my_mp() - goal;
-		int casts = MPtoRestore / 50;
+	if (canUseSweatpants() && (getSweat() >= 95 || my_meat() < (meatReserve() + 500))) {
+		int MPtoRestore = goal - my_mp();
+		int casts = ceil(MPtoRestore.to_float() / 50.0);
 		casts = min(casts, (getSweat() - 90) / 5);
 		if (casts > 0) {
 			int excessMP = my_mp() + 50*casts - my_maxmp();	//if some of the restored MP would be wasted over max

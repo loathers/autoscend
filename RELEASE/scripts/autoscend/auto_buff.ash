@@ -207,6 +207,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Benetton\'s Medley of Diversity]:	useSkill = $skill[Benetton\'s Medley of Diversity];		break;
 	case $effect[Berry Elemental]:				useItem = $item[Tapioc Berry];					break;
 	case $effect[Berry Statistical]:			useItem = $item[Snarf Berry];					break;
+	case $effect[Bet Your Autumn Dollar]:		useItem = $item[Autumn Dollar];					break;
 	case $effect[Big]:							useSkill = $skill[Get Big];						break;
 	case $effect[Big Meat Big Prizes]:			useItem = $item[Meat-Inflating Powder];			break;
 	case $effect[Biologically Shocked]:			useItem = $item[glowing syringe];				break;
@@ -280,6 +281,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		{
 			useSkill = $skill[Curiosity of Br\'er Tarrypin];
 		}																						break;
+	case $effect[Crunching Leaves]:				useItem = $item[Autumn Leaf];					break;	
 	case $effect[Dance of the Sugar Fairy]:		useItem = $item[Sugar Fairy];					break;
 	case $effect[Destructive Resolve]:			useItem = $item[Resolution: Be Feistier];		break;
 	case $effect[Dexteri Tea]:					useItem = $item[cuppa Dexteri tea];				break;
@@ -764,6 +766,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Well-Swabbed Ear]:				useItem = $item[Swabbie&trade; Swab];			break;
 	case $effect[Wet and Greedy]:				useItem = $item[Goblin Water];					break;
 	case $effect[Whispering Strands]:			useSkill = $skill[none];						break;
+	case $effect[Wisdom of the Autumn Years]:	useItem = $item[Autumn years wisdom];			break;
 	case $effect[Wisdom of Thoth]:				useSkill = $skill[Wisdom of Thoth];				break;
 	case $effect[Wit Tea]:						useItem = $item[cuppa Wit tea];					break;
 	case $effect[Woad Warrior]:					useItem = $item[Pygmy Pygment];					break;

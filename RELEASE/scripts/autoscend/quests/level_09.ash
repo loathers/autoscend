@@ -156,6 +156,12 @@ boolean L9_chasmBuild()
 	{
 		return false;	//delay for You, Robot path
 	}
+	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[The Smut Orc Logging Camp].turns_spent > 0)
+	{
+		// delay zone to allow autumnaton to grab bridge parts
+		// unless we have ran out of other stuff to do
+		return false;
+	}
 
 	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
 
@@ -648,6 +654,22 @@ boolean L9_aBooPeak()
 		return true;
 	}
 	return false;
+}
+
+int hedgeTrimmersNeeded()
+{
+	int twinPeakProgress = get_property("twinPeakProgress").to_int();
+	boolean needStench = ((twinPeakProgress & 1) == 0);
+	boolean needFood = ((twinPeakProgress & 2) == 0);
+	boolean needJar = ((twinPeakProgress & 4) == 0);
+	boolean needInit = (needStench || needFood || needJar || (twinPeakProgress == 7));
+	int neededTrimmers = -(item_amount($item[rusty hedge trimmers]));
+	if(needStench) neededTrimmers++;
+	if(needFood) neededTrimmers++;
+	if(needJar) neededTrimmers++;
+	if(needInit) neededTrimmers++;
+
+	return neededTrimmers;
 }
 
 boolean L9_twinPeak()

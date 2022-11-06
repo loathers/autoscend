@@ -211,8 +211,10 @@ void juneCleaverChoiceHandler(int choice)
 			}
 			break;			
 		case 1474: // Delicious Sprouts
-			// if (can_eat() && my_fullness() < fullness_limit() && my_level() < 13) // requires more support
-			//	run_choice(2); // guilty sprout is level 8+ good size 1 food but it gives big stats, would want to use a red rocket
+			if (can_eat() && my_level() < 13 && 
+			have_fireworks_shop() && auto_is_valid($item[red rocket]) &&
+			auto_is_valid($item[guilty sprout]) && item_amount($item[guilty sprout]) == 0)
+				run_choice(2); // guilty sprout is level 8+ good size 1 food but it gives big stats, would want to use a red rocket
 			if (my_primestat() == $stat[mysticality] && (my_level() < 13 || disregardInstantKarma())) {
 				run_choice(1); // 250 myst substat
 			} else if (my_primestat() == $stat[muscle] && (my_level() < 13 || disregardInstantKarma())) {
@@ -273,9 +275,24 @@ void sweatpantsPreAdventure() {
 	}
 }
 
+boolean auto_hasStillSuit()
+{
+	return possessEquipment($item[tiny stillsuit]) && auto_is_valid($item[tiny stillsuit]);
+}
+
+int auto_expectedStillsuitAdvs()
+{
+	if(!auto_hasStillSuit()) return 0;
+	int sweat = get_property("familiarSweat").to_int();
+	// can't consume until at least 10 sweat has been accumulated
+	if(sweat < 10) return 0;
+
+	return(round(sweat**0.4));
+}
+
 void utilizeStillsuit() {
 	//called at the end of pre adv to make sure stillsuit is at least kept equipped on a familiar in the terrarium
-	if(item_amount($item[tiny stillsuit]) == 0)
+	if(!auto_hasStillSuit())
 	{
 		return;
 	}
@@ -288,7 +305,7 @@ void utilizeStillsuit() {
 
 	//make sure all this nice familiar sweat doesn't go uncollected when current familiar is wearing something else
 	if(familiar_equipped_equipment(my_familiar()) == $item[tiny stillsuit])
-	{	//since it's in the inventory, should not need to check this
+	{
 		return;
 	}
 
@@ -402,4 +419,149 @@ boolean auto_handleParka()
 	equip($item[jurassic parka]); // already configured, just equip
 
 	return get_property("parkaMode") == tempDino && have_equipped($item[jurassic parka]);
+}
+
+boolean auto_hasAutumnaton()
+{
+	return get_property("hasAutumnaton").to_boolean();
+}
+
+// only valid when autumnaton is not current out on a quest
+boolean auto_autumnatonCanAdv(location canAdventureInloc)
+{
+	if(!auto_hasAutumnaton())
+	{
+		return false;
+	}
+
+	if(canAdventureInloc == $location[8-bit realm] && possessEquipment($item[continuum transfunctioner]) && auto_is_valid($item[continuum transfunctioner]))
+	{
+		equip($item[continuum transfunctioner]);
+	}
+
+	foreach index,loc in get_autumnaton_locations()
+	{
+		if(loc == canAdventureInloc)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean auto_autumnatonReadyToQuest()
+{
+	if(!auto_hasAutumnaton())
+	{
+		return false;
+	}
+
+	return item_amount($item[autumn-aton]) != 0;
+}
+
+location auto_autumnatonQuestingIn()
+{
+	return to_location(get_property("autumnatonQuestLocation"));
+}
+
+boolean auto_autumnatonCheckForUpgrade(string upgrade)
+{
+	string currentUpgrades = get_property("autumnatonUpgrades");
+	if(contains_text(currentUpgrades,upgrade))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_sendAutumnaton(location loc)
+{
+	if(auto_autumnatonCanAdv(loc))
+	{
+		cli_execute("autumnaton send " + loc);
+		handleTracker("Autumnaton sent to " + loc, "auto_otherstuff");
+		return true;
+	}
+	return false;
+}
+
+void auto_autumnatonQuest()
+{
+	if(!auto_autumnatonReadyToQuest()) return;
+
+	// complete any pending upgrades if it just returned
+	if (total_turns_played() == get_property("autumnatonQuestTurn").to_int() + 1)
+	{
+		catch cli_execute("autumnaton upgrade");
+	}
+
+	// prioritize getting important upgrades
+	if(!auto_autumnatonCheckForUpgrade("leftarm1"))
+	{
+		if(auto_sendAutumnaton($location[The Haunted Pantry]))
+		{
+			return;
+		}
+		else
+		{
+			abort("Haunted pantry should always be available for autumnaton, but autoscend determined it is not. Report issue.");
+		}
+	}
+
+	if(!auto_autumnatonCheckForUpgrade("leftleg1"))
+	{
+		// some bat zones may not be adventured in, so try them all
+		if(auto_sendAutumnaton($location[Guano Junction])) return;
+		if(auto_sendAutumnaton($location[The Batrat And Ratbat Burrow])) return;
+		if(auto_sendAutumnaton($location[The Beanbat Chamber])) return;
+		if(auto_sendAutumnaton($location[Noob Cave])) return;
+	}
+
+	if(!auto_autumnatonCheckForUpgrade("rightleg1"))
+	{
+		if(auto_sendAutumnaton($location[The Haunted Library])) return;
+		if(auto_sendAutumnaton($location[The Neverending Party])) return;
+		if(auto_sendAutumnaton($location[The Haunted Kitchen])) return;
+	}
+
+	if(!auto_autumnatonCheckForUpgrade("rightarm1"))
+	{
+		if(auto_sendAutumnaton($location[The Overgrown Lot])) return;
+	}
+
+	// acquire items to help quests
+	if(fastenerCount() < 30 && lumberCount() < 30)
+	{
+		if(auto_sendAutumnaton($location[The Smut Orc Logging Camp])) return;
+	}
+
+	// should we go regardless of if we have arm upgrades?
+	if(auto_autumnatonCheckForUpgrade("leftarm1") &&
+	 auto_autumnatonCheckForUpgrade("rightarm1") &&
+	 item_amount($item[barrel of gunpowder]) < 5 && 
+	 get_property("sidequestLighthouseCompleted") == "none")
+	{
+		if(auto_sendAutumnaton($location[Sonofa Beach])) return;
+	}
+
+	// camel spit is a good option for getting hedge trimmers
+	if(hedgeTrimmersNeeded() > 0 && !have_familiar($familiar[Melodramedary]))
+	{
+		if(auto_sendAutumnaton($location[Twin Peak])) return;
+	}
+
+	if(!contains_text(get_property("nsTowerDoorKeysUsed"), "digital key") &&
+	item_amount($item[Digital Key]) == 0 &&
+	creatable_amount($item[Digital Key]) == 0 &&
+	!auto_hasPowerfulGlove())
+	{
+		if(!possessEquipment($item[continuum transfunctioner]) && my_level() >= 2)
+		{
+			// unlock 8-bit zone
+			woods_questStart();
+		}
+		if(auto_sendAutumnaton($location[8-bit realm])) return;
+	}
+
+	return;
 }
