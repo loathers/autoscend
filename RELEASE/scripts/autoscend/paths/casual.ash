@@ -243,6 +243,7 @@ boolean LX_acquireFamiliarLeprechaun()
 					{
 						cloverUsageInit();
 						boolean adventure = autoAdv($location[The Spooky Forest]);
+						if(cloverUsageRestart()) adventure = autoAdv($location[The Spooky Forest]);
 						cloverUsageFinish();
 						if(adventure) return true;
 					}

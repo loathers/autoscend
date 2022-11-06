@@ -710,7 +710,7 @@ void initializeDay(int day)
 	}
 
 	auto_doPrecinct();
-	if(!in_koe() && (item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
+	if(!(in_koe() || in_lar()) && (item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
 	{
 		boolean temp = cli_execute("make shoe gum");
 	}
@@ -1738,6 +1738,7 @@ boolean doTasks()
 	auto_chapeau();
 	auto_buyFireworksHat();
 	auto_CMCconsult();
+	auto_autumnatonQuest();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();

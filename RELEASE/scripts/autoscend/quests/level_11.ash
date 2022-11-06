@@ -1349,6 +1349,7 @@ boolean L11_unlockHiddenCity()
 			//use clover to get 2x Stone Wool
 			cloverUsageInit();
 			boolean retval = autoAdv($location[The Hidden Temple]);
+			if(cloverUsageRestart()) retval = autoAdv($location[The Hidden Temple]);
 			cloverUsageFinish();
 			return retval;
 		}
@@ -2298,6 +2299,7 @@ boolean L11_redZeppelin()
 			}
 			cloverUsageInit();
 			boolean retval = autoAdv(1, $location[A Mob of Zeppelin Protesters]);
+			if(cloverUsageRestart()) retval = autoAdv(1, $location[A Mob of Zeppelin Protesters]);
 			cloverUsageFinish();
 			return retval;
 		}
