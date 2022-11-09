@@ -443,7 +443,7 @@ boolean auto_handleParka()
 
 boolean auto_hasAutumnaton()
 {
-	return get_property("hasAutumnaton").to_boolean();
+	return get_property("hasAutumnaton").to_boolean() && auto_is_valid($item[autumn-aton]) && !in_pokefam();
 }
 
 // only valid when autumnaton is not current out on a quest
