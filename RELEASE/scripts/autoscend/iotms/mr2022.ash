@@ -443,7 +443,7 @@ boolean auto_handleParka()
 
 boolean auto_hasAutumnaton()
 {
-	return get_property("hasAutumnaton").to_boolean();
+	return get_property("hasAutumnaton").to_boolean() && auto_is_valid($item[autumn-aton]) && !in_pokefam();
 }
 
 // only valid when autumnaton is not current out on a quest
@@ -564,8 +564,7 @@ void auto_autumnatonQuest()
 		if(auto_sendAutumnaton($location[Sonofa Beach])) return;
 	}
 
-	// camel spit is a good option for getting hedge trimmers
-	if(hedgeTrimmersNeeded() > 0 && !have_familiar($familiar[Melodramedary]))
+	if(hedgeTrimmersNeeded() > 0)
 	{
 		if(auto_sendAutumnaton($location[Twin Peak])) return;
 	}
