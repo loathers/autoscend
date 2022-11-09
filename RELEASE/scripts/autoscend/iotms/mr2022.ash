@@ -564,8 +564,7 @@ void auto_autumnatonQuest()
 		if(auto_sendAutumnaton($location[Sonofa Beach])) return;
 	}
 
-	// camel spit is a good option for getting hedge trimmers
-	if(hedgeTrimmersNeeded() > 0 && !have_familiar($familiar[Melodramedary]))
+	if(hedgeTrimmersNeeded() > 0)
 	{
 		if(auto_sendAutumnaton($location[Twin Peak])) return;
 	}
