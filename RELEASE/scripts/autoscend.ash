@@ -435,19 +435,6 @@ boolean LX_calculateTheUniverse()
 	return false;	//we do not want to restart the loop as all we're doing is generating 3 adventures
 }
 
-boolean LX_faxing()
-{
-	if (my_level() >= 9 && !get_property("_photocopyUsed").to_boolean() && isActuallyEd() && my_daycount() < 3 && !is_unrestricted($item[Deluxe Fax Machine]))
-	{
-		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-		if(handleFaxMonster($monster[Lobsterfrogman]))
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 boolean tophatMaker()
 {
 	if(!knoll_available() || (item_amount($item[Brass Gear]) == 0) || possessEquipment($item[Mark V Steam-Hat]))

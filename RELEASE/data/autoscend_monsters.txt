@@ -133,7 +133,7 @@ sniff	20	Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Naughty Sorori
 sniff	21	Possessed Wine Rack
 sniff	22	Blue Oyster cultist
 sniff	23	Dirty Old Lihc	prop:cyrptNicheEvilness>29
-sniff	24	Possibility Giant	loc:The Castle in the Clouds in the Sky \(Ground Floor\);prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover;!itemdropcapped:20=chaos butterfly
+sniff	24	Possibility Giant	loc:The Castle in the Clouds in the Sky (Ground Floor);prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover;!itemdropcapped:20=chaos butterfly
 sniff	25	bearpig topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:spider (duck?) topiary animal
 sniff	26	elephant (meatcar?) topiary animal	!familiar:Melodramedary;!sniffed:bearpig topiary animal;!sniffed:spider (duck?) topiary animal
 sniff	27	spider (duck?) topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:bearpig topiary animal
@@ -206,12 +206,13 @@ yellowray	30	filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed 
 yellowray	31	zombie hippy	!outfit:Filthy Hippy Disguise
 # Want hippy war outfit if fighting for hippies. TODO: add monsters for Frat Boy Ensemble and War Hippy Fatigues outfits. Issue #900
 yellowray	32	War Hippy Spy	!outfit:War Hippy Fatigues;!itemdropcapped:30=round purple sunglasses
+yellowray	33	War Hippy Airborne Commander	!outfit:War Hippy Fatigues
 # And we want filthworm glands, but not if we're gonna hugpocket them
-yellowray	33	larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
-yellowray	34	filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
-yellowray	35	filthworm royal guard	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm royal guard scent gland
-yellowray	36	Knight (Snake)	class:Ed the Undying
-yellowray	37	bearpig topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
-yellowray	38	elephant (meatcar?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
-yellowray	39	spider (duck?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
+yellowray	34	larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
+yellowray	35	filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
+yellowray	36	filthworm royal guard	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm royal guard scent gland
+yellowray	37	Knight (Snake)	class:Ed the Undying
+yellowray	38	bearpig topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
+yellowray	39	elephant (meatcar?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
+yellowray	40	spider (duck?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
 

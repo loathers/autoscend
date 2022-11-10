@@ -8,65 +8,66 @@ Avatar of Jarlsberg	0	LM_jarlsberg
 Avatar of Jarlsberg	1	LX_freeCombatsTask
 Avatar of Jarlsberg	2	auto_breakfastCounterVisit
 Avatar of Jarlsberg	3	chateauPainting
-Avatar of Jarlsberg	4	LX_artistQuest
-Avatar of Jarlsberg	5	LX_galaktikSubQuest
-Avatar of Jarlsberg	6	LX_armorySideQuest
-Avatar of Jarlsberg	7	LX_meatsmithSubQuest
-Avatar of Jarlsberg	8	L9_leafletQuest
-Avatar of Jarlsberg	9	L5_findKnob
-Avatar of Jarlsberg	10	L12_sonofaPrefix
-Avatar of Jarlsberg	11	LX_burnDelay
-Avatar of Jarlsberg	12	LX_dinseylandfillFunbucks
-Avatar of Jarlsberg	13	LX_unlockPirateRealm
-Avatar of Jarlsberg	14	handleRainDoh
-Avatar of Jarlsberg	15	L11_shenStartQuest
-Avatar of Jarlsberg	16	LX_guildUnlock
-Avatar of Jarlsberg	17	LX_unlockDesert
-Avatar of Jarlsberg	18	LX_lockPicking
-Avatar of Jarlsberg	19	LX_fatLootToken
-Avatar of Jarlsberg	20	L5_getEncryptionKey
-Avatar of Jarlsberg	21	L5_findKnob
-Avatar of Jarlsberg	22	L2_mosquito
-Avatar of Jarlsberg	23	LX_unlockHiddenTemple
-Avatar of Jarlsberg	24	L6_dakotaFanning
-Avatar of Jarlsberg	25	LX_steelOrgan
-Avatar of Jarlsberg	26	L12_islandWar
-Avatar of Jarlsberg	27	LX_spookyravenManorFirstFloor
-Avatar of Jarlsberg	28	L11_blackMarket
-Avatar of Jarlsberg	29	L11_forgedDocuments
-Avatar of Jarlsberg	30	L11_mcmuffinDiary
-Avatar of Jarlsberg	31	L11_getBeehive
-Avatar of Jarlsberg	32	L11_unlockHiddenCity
-Avatar of Jarlsberg	33	L11_hiddenCityZones
-Avatar of Jarlsberg	34	L11_hiddenCity
-Avatar of Jarlsberg	35	LX_spookyravenManorSecondFloor
-Avatar of Jarlsberg	36	L11_mauriceSpookyraven
-Avatar of Jarlsberg	37	L11_talismanOfNam
-Avatar of Jarlsberg	38	L10_plantThatBean
-Avatar of Jarlsberg	39	L10_rainOnThePlains
-Avatar of Jarlsberg	40	L9_chasmBuild
-Avatar of Jarlsberg	41	L9_highLandlord
-Avatar of Jarlsberg	42	L8_trapperQuest
-Avatar of Jarlsberg	43	L6_friarsGetParts
-Avatar of Jarlsberg	44	L7_crypt
-Avatar of Jarlsberg	45	L11_palindome
-Avatar of Jarlsberg	46	L11_aridDesert
-Avatar of Jarlsberg	47	L11_unlockPyramid
-Avatar of Jarlsberg	48	L11_unlockEd
-Avatar of Jarlsberg	49	L11_defeatEd
-Avatar of Jarlsberg	50	L5_slayTheGoblinKing
-Avatar of Jarlsberg	51	L4_batCave
-Avatar of Jarlsberg	52	L3_tavern
-Avatar of Jarlsberg	53	setSoftblockDelay	allowSoftblockDelay
-Avatar of Jarlsberg	54	setSoftblockShen	allowSoftblockShen
-Avatar of Jarlsberg	55	L13_towerAscent
-Avatar of Jarlsberg	56	LX_attemptPowerLevel
+Avatar of Jarlsberg	4	LX_summonMonster
+Avatar of Jarlsberg	5	LX_artistQuest
+Avatar of Jarlsberg	6	LX_galaktikSubQuest
+Avatar of Jarlsberg	7	LX_armorySideQuest
+Avatar of Jarlsberg	8	LX_meatsmithSubQuest
+Avatar of Jarlsberg	9	L9_leafletQuest
+Avatar of Jarlsberg	10	L5_findKnob
+Avatar of Jarlsberg	11	L12_sonofaPrefix
+Avatar of Jarlsberg	12	LX_burnDelay
+Avatar of Jarlsberg	13	LX_dinseylandfillFunbucks
+Avatar of Jarlsberg	14	LX_unlockPirateRealm
+Avatar of Jarlsberg	15	handleRainDoh
+Avatar of Jarlsberg	16	L11_shenStartQuest
+Avatar of Jarlsberg	17	LX_guildUnlock
+Avatar of Jarlsberg	18	LX_unlockDesert
+Avatar of Jarlsberg	19	LX_lockPicking
+Avatar of Jarlsberg	20	LX_fatLootToken
+Avatar of Jarlsberg	21	L5_getEncryptionKey
+Avatar of Jarlsberg	22	L5_findKnob
+Avatar of Jarlsberg	23	L2_mosquito
+Avatar of Jarlsberg	24	LX_unlockHiddenTemple
+Avatar of Jarlsberg	25	L6_dakotaFanning
+Avatar of Jarlsberg	26	LX_steelOrgan
+Avatar of Jarlsberg	27	L12_islandWar
+Avatar of Jarlsberg	28	LX_spookyravenManorFirstFloor
+Avatar of Jarlsberg	29	L11_blackMarket
+Avatar of Jarlsberg	30	L11_forgedDocuments
+Avatar of Jarlsberg	31	L11_mcmuffinDiary
+Avatar of Jarlsberg	32	L11_getBeehive
+Avatar of Jarlsberg	33	L11_unlockHiddenCity
+Avatar of Jarlsberg	34	L11_hiddenCityZones
+Avatar of Jarlsberg	35	L11_hiddenCity
+Avatar of Jarlsberg	36	LX_spookyravenManorSecondFloor
+Avatar of Jarlsberg	37	L11_mauriceSpookyraven
+Avatar of Jarlsberg	38	L11_talismanOfNam
+Avatar of Jarlsberg	39	L10_plantThatBean
+Avatar of Jarlsberg	40	L10_rainOnThePlains
+Avatar of Jarlsberg	41	L9_chasmBuild
+Avatar of Jarlsberg	42	L9_highLandlord
+Avatar of Jarlsberg	43	L8_trapperQuest
+Avatar of Jarlsberg	44	L6_friarsGetParts
+Avatar of Jarlsberg	45	L7_crypt
+Avatar of Jarlsberg	46	L11_palindome
+Avatar of Jarlsberg	47	L11_aridDesert
+Avatar of Jarlsberg	48	L11_unlockPyramid
+Avatar of Jarlsberg	49	L11_unlockEd
+Avatar of Jarlsberg	50	L11_defeatEd
+Avatar of Jarlsberg	51	L5_slayTheGoblinKing
+Avatar of Jarlsberg	52	L4_batCave
+Avatar of Jarlsberg	53	L3_tavern
+Avatar of Jarlsberg	54	setSoftblockDelay	allowSoftblockDelay
+Avatar of Jarlsberg	55	setSoftblockShen	allowSoftblockShen
+Avatar of Jarlsberg	56	L13_towerAscent
+Avatar of Jarlsberg	57	LX_attemptPowerLevel
 
 Quantum Terrarium	0	LX_freeCombatsTask
 Quantum Terrarium	1	catBurglarHeist
 Quantum Terrarium	2	auto_breakfastCounterVisit
 Quantum Terrarium	3	chateauPainting
-Quantum Terrarium	4	LX_faxing
+Quantum Terrarium	4	LX_summonMonster
 Quantum Terrarium	5	LX_artistQuest
 Quantum Terrarium	6	LX_galaktikSubQuest
 Quantum Terrarium	7	LX_armorySideQuest
@@ -129,65 +130,66 @@ Zombie Slayer	0	LM_zombieSlayer
 Zombie Slayer	1	LX_freeCombatsTask
 Zombie Slayer	2	auto_breakfastCounterVisit
 Zombie Slayer	3	chateauPainting
-Zombie Slayer	4	LX_artistQuest
-Zombie Slayer	5	LX_galaktikSubQuest
-Zombie Slayer	6	LX_armorySideQuest
-Zombie Slayer	7	LX_meatsmithSubQuest
-Zombie Slayer	8	L9_leafletQuest
-Zombie Slayer	9	L5_findKnob
-Zombie Slayer	10	L12_sonofaPrefix
-Zombie Slayer	11	LX_burnDelay
-Zombie Slayer	12	LX_dinseylandfillFunbucks
-Zombie Slayer	13	LX_unlockPirateRealm
-Zombie Slayer	14	handleRainDoh
-Zombie Slayer	15	L11_shenStartQuest
-Zombie Slayer	16	LX_guildUnlock
-Zombie Slayer	17	LX_unlockDesert
-Zombie Slayer	18	LX_lockPicking
-Zombie Slayer	19	LX_fatLootToken
-Zombie Slayer	20	L5_getEncryptionKey
-Zombie Slayer	21	L5_findKnob
-Zombie Slayer	22	L2_mosquito
-Zombie Slayer	23	LX_unlockHiddenTemple
-Zombie Slayer	24	L6_dakotaFanning
-Zombie Slayer	25	LX_steelOrgan
-Zombie Slayer	26	L12_islandWar
-Zombie Slayer	27	LX_spookyravenManorFirstFloor
-Zombie Slayer	28	L11_blackMarket
-Zombie Slayer	29	L11_forgedDocuments
-Zombie Slayer	30	L11_mcmuffinDiary
-Zombie Slayer	31	L11_getBeehive
-Zombie Slayer	32	L11_unlockHiddenCity
-Zombie Slayer	33	L11_hiddenCityZones
-Zombie Slayer	34	L11_hiddenCity
-Zombie Slayer	35	LX_spookyravenManorSecondFloor
-Zombie Slayer	36	L11_mauriceSpookyraven
-Zombie Slayer	37	L11_talismanOfNam
-Zombie Slayer	38	L10_plantThatBean
-Zombie Slayer	39	L10_rainOnThePlains
-Zombie Slayer	40	L9_chasmBuild
-Zombie Slayer	41	L9_highLandlord
-Zombie Slayer	42	L8_trapperQuest
-Zombie Slayer	43	L6_friarsGetParts
-Zombie Slayer	44	L7_crypt
-Zombie Slayer	45	L11_palindome
-Zombie Slayer	46	L11_aridDesert
-Zombie Slayer	47	L11_unlockPyramid
-Zombie Slayer	48	L11_unlockEd
-Zombie Slayer	49	L11_defeatEd
-Zombie Slayer	50	L5_slayTheGoblinKing
-Zombie Slayer	51	L4_batCave
-Zombie Slayer	52	L3_tavern
-Zombie Slayer	53	setSoftblockDelay	allowSoftblockDelay
-Zombie Slayer	54	setSoftblockShen	allowSoftblockShen
-Zombie Slayer	55	L13_towerAscent
-Zombie Slayer	56	LX_attemptPowerLevel
+Zombie Slayer	4	LX_summonMonster
+Zombie Slayer	5	LX_artistQuest
+Zombie Slayer	6	LX_galaktikSubQuest
+Zombie Slayer	7	LX_armorySideQuest
+Zombie Slayer	8	LX_meatsmithSubQuest
+Zombie Slayer	9	L9_leafletQuest
+Zombie Slayer	10	L5_findKnob
+Zombie Slayer	11	L12_sonofaPrefix
+Zombie Slayer	12	LX_burnDelay
+Zombie Slayer	13	LX_dinseylandfillFunbucks
+Zombie Slayer	14	LX_unlockPirateRealm
+Zombie Slayer	15	handleRainDoh
+Zombie Slayer	16	L11_shenStartQuest
+Zombie Slayer	17	LX_guildUnlock
+Zombie Slayer	18	LX_unlockDesert
+Zombie Slayer	19	LX_lockPicking
+Zombie Slayer	20	LX_fatLootToken
+Zombie Slayer	21	L5_getEncryptionKey
+Zombie Slayer	22	L5_findKnob
+Zombie Slayer	23	L2_mosquito
+Zombie Slayer	24	LX_unlockHiddenTemple
+Zombie Slayer	25	L6_dakotaFanning
+Zombie Slayer	26	LX_steelOrgan
+Zombie Slayer	27	L12_islandWar
+Zombie Slayer	28	LX_spookyravenManorFirstFloor
+Zombie Slayer	29	L11_blackMarket
+Zombie Slayer	30	L11_forgedDocuments
+Zombie Slayer	31	L11_mcmuffinDiary
+Zombie Slayer	32	L11_getBeehive
+Zombie Slayer	33	L11_unlockHiddenCity
+Zombie Slayer	34	L11_hiddenCityZones
+Zombie Slayer	35	L11_hiddenCity
+Zombie Slayer	36	LX_spookyravenManorSecondFloor
+Zombie Slayer	37	L11_mauriceSpookyraven
+Zombie Slayer	38	L11_talismanOfNam
+Zombie Slayer	39	L10_plantThatBean
+Zombie Slayer	40	L10_rainOnThePlains
+Zombie Slayer	41	L9_chasmBuild
+Zombie Slayer	42	L9_highLandlord
+Zombie Slayer	43	L8_trapperQuest
+Zombie Slayer	44	L6_friarsGetParts
+Zombie Slayer	45	L7_crypt
+Zombie Slayer	46	L11_palindome
+Zombie Slayer	47	L11_aridDesert
+Zombie Slayer	48	L11_unlockPyramid
+Zombie Slayer	49	L11_unlockEd
+Zombie Slayer	50	L11_defeatEd
+Zombie Slayer	51	L5_slayTheGoblinKing
+Zombie Slayer	52	L4_batCave
+Zombie Slayer	53	L3_tavern
+Zombie Slayer	54	setSoftblockDelay	allowSoftblockDelay
+Zombie Slayer	55	setSoftblockShen	allowSoftblockShen
+Zombie Slayer	56	L13_towerAscent
+Zombie Slayer	57	LX_attemptPowerLevel
 
 default	0	LX_freeCombatsTask
 default	1	catBurglarHeist
 default	2	auto_breakfastCounterVisit
 default	3	chateauPainting
-default	4	LX_faxing
+default	4	LX_summonMonster
 default	5	LX_artistQuest
 default	6	LX_galaktikSubQuest
 default	7	LX_armorySideQuest

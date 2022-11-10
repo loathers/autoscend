@@ -321,13 +321,6 @@ boolean L9_chasmBuild()
 		return true;
 	}
 
-	if (auto_is_valid($item[Smut Orc Keepsake Box]) && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
-	{
- 		// fight Smut Orc Pervert from Cargo Shorts for a Smut Orc Keepsake Box
- 		use(1, $item[Smut Orc Keepsake Box]);
-		return true;
-	}
-
 	// prepareForSmutOrcs() called in pre-adv
 	autoAdv(1, $location[The Smut Orc Logging Camp]);
 
