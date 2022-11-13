@@ -167,6 +167,17 @@ boolean LX_getDigitalKey()
 	else if(get_property("auto_crackpotjar") == "fail")
 	{
 		woods_questStart();
+
+		// attempt to summon ghost instead of going into 8-bit realm
+		// don't summon if we have autumnaton and haven't spent a turn in 8-bit realm. Allows for a consistent quest location
+		if(!auto_hasAutumnaton() || $location[8-Bit Realm].turns_spent > 0)
+		{
+			if(summonMonster($monster[Ghost]))
+			{
+				return true;
+			}
+		}
+
 		autoEquip($slot[acc3], $item[Continuum Transfunctioner]);
 		if(auto_saberChargesAvailable() > 0)
 		{
