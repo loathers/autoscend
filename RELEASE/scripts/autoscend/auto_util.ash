@@ -1836,6 +1836,7 @@ boolean LX_summonMonster()
 	// summon ghost for white pixels if at tower door and still need digital key
 	if(needDigitalKey() && !auto_hasPowerfulGlove() && internalQuestStatus("questL13Final") == 5)
 	{
+		handleFamiliar("item");
 		if(summonMonster($monster[Ghost])) return true;
 	}
 
@@ -1851,6 +1852,14 @@ boolean LX_summonMonster()
 		// summon pervert here but handling of L9 quest will open box
 		if(summonMonster($monster[smut orc pervert])) return true;
 	}
+
+	// summon screambat if we are at last wall to knock down
+	if(internalQuestStatus("questL04Bat") == 2)
+	{
+		if(summonMonster($monster[screambat])) return true;
+	}
+
+	// summon 
 
 	return false;
 }
