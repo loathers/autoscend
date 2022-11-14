@@ -207,6 +207,11 @@ boolean auto_pre_adventure()
 		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
 
+	if(place == $location[The Smut Orc Logging Camp])
+	{
+		prepareForSmutOrcs();
+	}
+
 	boolean junkyardML;
 	if($locations[Next to that Barrel with something Burning In It, Near an Abandoned Refrigerator, Over where the Old Tires Are, Out by that Rusted-Out Car] contains place)
 	{
@@ -698,6 +703,7 @@ boolean auto_pre_adventure()
 	auto_ghost_prep(place);
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
+	auto_handleParka(); //same as retrocape above
 	cli_execute("checkpoint clear");
 
 	//before guaranteed non combats that give stats, overrule maximized equipment to increase stat gains

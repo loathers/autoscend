@@ -686,7 +686,7 @@ void initializeDay(int day)
 	}
 
 	auto_doPrecinct();
-	if(!in_koe() && (item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
+	if(!(in_koe() || in_lar()) && (item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
 	{
 		boolean temp = cli_execute("make shoe gum");
 	}
@@ -1535,6 +1535,7 @@ void resetState() {
 		set_property("_auto_bad100Familiar", false); 		//reset to not bad. target location might set them as bad again
 	}
 
+	set_property("auto_parkaSetting", ""); // jurassic parka setting
 	set_property("auto_retrocapeSettings", ""); // retrocape config
 	set_property("auto_januaryToteAcquireCalledThisTurn", false); // january tote item switching
 
@@ -1712,6 +1713,7 @@ boolean doTasks()
 	auto_chapeau();
 	auto_buyFireworksHat();
 	auto_CMCconsult();
+	auto_autumnatonQuest();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();

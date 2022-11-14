@@ -861,6 +861,7 @@ boolean canYellowRay(monster target)
 
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
+		
 		// first, do any necessary prep to use a yellow ray
 		if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
 			get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
@@ -871,12 +872,23 @@ boolean canYellowRay(monster target)
 			cli_execute("acquire " + $item[yellow rocket]);
 		}
 
+		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
+		if(auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]) && hasTorso())
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
+		}
+
 		// Yellow rocket has the lowest cooldown, and is unlimited, so prioritize over other sources
 		if (item_amount($item[yellow rocket]) > 0 &&
 			auto_is_valid($item[yellow rocket]) &&
 			yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "")
 		{
 			return true;
+		}
+
+		if(auto_hasRetrocape())
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 		}
 
 		if(canChangeToFamiliar($familiar[Crimbo Shrub]))
@@ -1052,6 +1064,10 @@ boolean adjustForYellowRay(string combat_string)
 	{
 		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
 	}
+	if(combat_string == ("skill " + $skill[Spit jurassic acid]))
+	{
+		auto_configureParka("acid");
+	}
 	if(combat_string == ("skill " + $skill[Unleash the Devil's Kiss]))
 	{
 		auto_configureRetrocape("heck", "kiss");
@@ -1168,7 +1184,7 @@ string statCard()
 
 boolean hasTorso()
 {
-	return have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed]);
+	return have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed]) || robot_cpu(9,false);
 }
 
 boolean isGuildClass()
@@ -1426,6 +1442,20 @@ boolean cloverUsageInit()
 	}
 
 	abort("We tried to initialize clover usage but was unable to get Lucky!");
+	return false;
+}
+
+boolean cloverUsageRestart()
+{
+	if(have_effect($effect[Lucky!]) == 0)
+	{
+		return false;
+	}
+	if(equipped_amount($item[June cleaver]) > 0 && $strings[Poetic Justice, Aunts not Ants, Beware of Aligator, Beware of Alligator, Teacher\'s Pet, Lost and Found, Summer Days, Bath Time, Delicious Sprouts, Hypnotic Master] contains get_property("lastEncounter"))
+	{
+		//got interrupted and should adventure again in same location
+		return true;
+	}
 	return false;
 }
 
@@ -3077,7 +3107,11 @@ boolean canBurnDelay(location loc)
 	{
 		return false;
 	}
-	if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
+	if (auto_haveBackupCamera() && auto_backupUsesLeft() > 0)
+	{
+		return true;
+	}
+	else if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
 	{
 		return true;
 	}
@@ -3085,7 +3119,7 @@ boolean canBurnDelay(location loc)
 	{
 		return true;
 	}
-	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic()))
+	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera()))
 	{
 		return true;
 	}
@@ -3687,14 +3721,14 @@ boolean autoFlavour(location place)
 			setFlavour($element[none]);
 			return true;
 		case $location[The Ice Hotel]:
-			if(get_property("walfordBucketItem") == "rain" && equipped_item($slot[off-hand]) == $item[Walford's bucket])
+			if(get_property("walfordBucketItem") == "rain" && equipped_item($slot[off-hand]) == $item[Walford\'s bucket])
 			{
 				setFlavour($element[hot]); // doing 100 hot damage in a fight will fill bucket faster
 				return true;
 			}
 			// INTENTIONAL LACK OF BREAK
 		case $location[VYKEA]:
-			if(get_property("walfordBucketItem") == "ice" && equipped_item($slot[off-hand]) == $item[Walford's bucket])
+			if(get_property("walfordBucketItem") == "ice" && equipped_item($slot[off-hand]) == $item[Walford\'s bucket])
 			{
 				setFlavour($element[cold]);
 				return true;
