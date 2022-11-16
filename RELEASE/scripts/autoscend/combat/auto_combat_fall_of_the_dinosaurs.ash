@@ -66,7 +66,7 @@ string auto_combatFallOfTheDinosaursStage5(int round, monster enemy, string text
 		{
 			abort("Not sure how to handle a physically resistent enemy eaten by a glass-shelled archelon."); // TODO - work something out here?
 		}
-		if(canSurvive(1.5) && round < 10)
+		if(canSurvive(1.5) && round < 25)
 		{
 			return "attack with weapon";
 		}
