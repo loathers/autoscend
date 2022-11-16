@@ -27,7 +27,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combatZombieSlayerStage5(round, enemy, text);
 	if(retval != "") return retval;
 
-		// Path = fall of the dinosaurs
+	// Path = fall of the dinosaurs
 	retval = auto_combatFallOfTheDinosaursStage5(round, enemy, text);
 	if(retval != "") return retval;
 
