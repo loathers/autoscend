@@ -8,6 +8,7 @@ import <autoscend/combat/auto_combat_default_stage5.ash>			//default stage 5 = k
 import <autoscend/combat/auto_combat_awol.ash>						//path = avatar of west of loathing
 import <autoscend/combat/auto_combat_bees_hate_you.ash>				//path = bees hate you
 import <autoscend/combat/auto_combat_community_service.ash>			//path = community service
+import <autoscend/combat/auto_combat_fall_of_the_dinosaurs.ash>		//path = fall of the dinosaurs
 import <autoscend/combat/auto_combat_heavy_rains.ash>				//path = heavy rains
 import <autoscend/combat/auto_combat_dark_gyffte.ash>				//path = dark gyffte
 import <autoscend/combat/auto_combat_disguises_delimit.ash>			//path = disguises delimit

@@ -36,5 +36,6 @@ boolean fotd_gameWarden()
 	}
 
 	run_choice(2);
+	return true;
 }
 
