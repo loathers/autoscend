@@ -58,6 +58,7 @@ import <autoscend/paths/casual.ash>
 import <autoscend/paths/community_service.ash>
 import <autoscend/paths/dark_gyffte.ash>
 import <autoscend/paths/disguises_delimit.ash>
+import <autoscend/paths/fall_of_the_dinosaurs.ash>
 import <autoscend/paths/g_lover.ash>
 import <autoscend/paths/gelatinous_noob.ash>
 import <autoscend/paths/grey_goo.ash>
@@ -247,6 +248,7 @@ void initializeSettings() {
 	robot_initializeSettings();
 	wildfire_initializeSettings();
 	zombieSlayer_initializeSettings();
+	fotd_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());

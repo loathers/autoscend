@@ -3727,14 +3727,14 @@ boolean autoFlavour(location place)
 			setFlavour($element[none]);
 			return true;
 		case $location[The Ice Hotel]:
-			if(get_property("walfordBucketItem") == "rain" && equipped_item($slot[off-hand]) == $item[Walford's bucket])
+			if(get_property("walfordBucketItem") == "rain" && equipped_item($slot[off-hand]) == $item[Walford\'s bucket])
 			{
 				setFlavour($element[hot]); // doing 100 hot damage in a fight will fill bucket faster
 				return true;
 			}
 			// INTENTIONAL LACK OF BREAK
 		case $location[VYKEA]:
-			if(get_property("walfordBucketItem") == "ice" && equipped_item($slot[off-hand]) == $item[Walford's bucket])
+			if(get_property("walfordBucketItem") == "ice" && equipped_item($slot[off-hand]) == $item[Walford\'s bucket])
 			{
 				setFlavour($element[cold]);
 				return true;
