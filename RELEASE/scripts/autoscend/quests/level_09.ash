@@ -140,41 +140,16 @@ int lumberCount()
 	return base;
 }
 
-boolean L9_chasmBuild()
+void prepareForSmutOrcs()
 {
-	if (internalQuestStatus("questL09Topping") != 0 || get_property("chasmBridgeProgress").to_int() >= 30)
-	{
-		return false;
-	}
 
-	if (shenShouldDelayZone($location[The Smut Orc Logging Camp]))
+	if(lumberCount() >= 30 && fastenerCount() >= 30)
 	{
-		auto_log_debug("Delaying Logging Camp in case of Shen.");
-		return false;
-	}
-	if(robot_delay("chasm"))
-	{
-		return false;	//delay for You, Robot path
-	}
-	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[The Smut Orc Logging Camp].turns_spent > 0)
-	{
-		// delay zone to allow autumnaton to grab bridge parts
-		// unless we have ran out of other stuff to do
-		return false;
-	}
-
-	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
-
-	auto_log_info("Chasm time", "blue");
-	
-	// make sure our progress count is correct before we do anything.
-	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
-
-	if (auto_is_valid($item[Smut Orc Keepsake Box]) && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
-	{
- 		// fight Smut Orc Pervert from Cargo Shorts for a Smut Orc Keepsake Box
- 		use(1, $item[Smut Orc Keepsake Box]);
-		return true;
+		// must be here for shen snake and quest objective is already done
+		// set blech NC and don't bother prepping for the zone
+		auto_log_info("Adventuring at Smut Orc Logging Camp when quest is done. Skipping preparing to maximize zone progress.", "blue");
+		set_property("choiceAdventure1345", 1);
+		return;
 	}
 
 	// -Combat is useless here since NC is triggered by killing Orcs...So we kill orcs better!
@@ -246,13 +221,7 @@ boolean L9_chasmBuild()
 		// TODO: once explicit formulas are spaded, use simulated maximizer
 		// to determine best approach.
 		L9_chasmMaximizeForNoncombat();
-		autoAdv(1, $location[The Smut Orc Logging Camp]);
-		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
-		if(get_property("chasmBridgeProgress").to_int() >= 30)
-		{
-			visit_url("place.php?whichplace=highlands&action=highlands_dude");
-		}
-		return true;
+		return;
 	}
 
 	if(in_plumber() && possessEquipment($item[frosty button]))
@@ -280,18 +249,7 @@ boolean L9_chasmBuild()
 			autoEquip($item[Logging Hatchet]);
 		}
 
-		autoAdv(1, $location[The Smut Orc Logging Camp]);
-
-		if(item_amount($item[Smut Orc Keepsake Box]) > 0 && auto_is_valid($item[Smut Orc Keepsake Box]))
-		{
-			use(1, $item[Smut Orc Keepsake Box]);
-		}
-		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
-		if(get_property("chasmBridgeProgress").to_int() >= 30)
-		{
-			visit_url("place.php?whichplace=highlands&action=highlands_dude");
-		}
-		return true;
+		return;
 	}
 
 	int need = (30 - get_property("chasmBridgeProgress").to_int()) / 5;
@@ -316,15 +274,63 @@ boolean L9_chasmBuild()
 			autoEquip($item[Logging Hatchet]);
 		}
 
-		autoAdv(1, $location[The Smut Orc Logging Camp]);
-		if(item_amount($item[Smut Orc Keepsake Box]) > 0  && auto_is_valid($item[Smut Orc Keepsake Box]))
-		{
-			use(1, $item[Smut Orc Keepsake Box]);
-		}
-		visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
+		return;
+	}
+}
+
+boolean L9_chasmBuild()
+{
+	if (internalQuestStatus("questL09Topping") != 0 || get_property("chasmBridgeProgress").to_int() >= 30)
+	{
+		return false;
+	}
+
+	if (shenShouldDelayZone($location[The Smut Orc Logging Camp]))
+	{
+		auto_log_debug("Delaying Logging Camp in case of Shen.");
+		return false;
+	}
+	if(robot_delay("chasm"))
+	{
+		return false;	//delay for You, Robot path
+	}
+	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[The Smut Orc Logging Camp].turns_spent > 0)
+	{
+		// delay zone to allow autumnaton to grab bridge parts
+		// unless we have ran out of other stuff to do
+		return false;
+	}
+
+	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
+
+	auto_log_info("Chasm time", "blue");
+	
+	// make sure our progress count is correct before we do anything.
+	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
+
+	// use any keepsake boxes we have
+	if(item_amount($item[Smut Orc Keepsake Box]) > 0 && auto_is_valid($item[Smut Orc Keepsake Box]))
+	{
+		use(1, $item[Smut Orc Keepsake Box]);
+	}
+
+	// finish chasm if we can
+	if(get_property("chasmBridgeProgress").to_int() >= 30)
+	{
+		visit_url("place.php?whichplace=highlands&action=highlands_dude");
 		return true;
 	}
-	visit_url("place.php?whichplace=highlands&action=highlands_dude");
+
+	if (auto_is_valid($item[Smut Orc Keepsake Box]) && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
+	{
+ 		// fight Smut Orc Pervert from Cargo Shorts for a Smut Orc Keepsake Box
+ 		use(1, $item[Smut Orc Keepsake Box]);
+		return true;
+	}
+
+	// prepareForSmutOrcs() called in pre-adv
+	autoAdv(1, $location[The Smut Orc Logging Camp]);
+
 	return true;
 }
 
@@ -681,6 +687,13 @@ boolean L9_twinPeak()
 
 	if (get_property("twinPeakProgress").to_int() >= 15)
 	{
+		return false;
+	}
+
+	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[Twin Peak].turns_spent > 0)
+	{
+		// delay zone to allow autumnaton to grab rusty hedge trimmers
+		// unless we have ran out of other stuff to do
 		return false;
 	}
 		

@@ -643,6 +643,12 @@ boolean LM_batpath();
 
 ########################################################################################################
 //Defined in autoscend/paths/disguises_delimit.ash
+boolean in_fotd();
+void fotd_initializeSettings();
+boolean fotd_gameWarden();
+
+########################################################################################################
+//Defined in autoscend/paths/fall_of_the_dinosaurs.ash
 boolean in_disguises();
 void disguises_initializeSettings();
 
@@ -960,6 +966,7 @@ boolean L9_leafletQuest();
 void L9_chasmMaximizeForNoncombat();
 int fastenerCount();
 int lumberCount();
+void prepareForSmutOrcs();
 boolean L9_chasmBuild();
 boolean L9_aBooPeak();
 int hedgeTrimmersNeeded();
