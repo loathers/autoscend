@@ -1867,6 +1867,8 @@ boolean L11_hiddenCity()
 		if(workingHoliday && item_amount($item[boring binder clip]) > 0 && missingMcCluskyFiles() > 0 && 
 		appearance_rates($location[The Hidden Apartment Building])[$monster[pygmy witch accountant]] >= (missingMcCluskyFiles() * 25))
 		{
+			//Hidden Apartment unmodified 25% chance of accountant is better if only 1 missingMcCluskyFiles
+			//office noncombat is already one guaranteed accountant so with more missingMcCluskyFiles only go Apartment if better rate
 			auto_log_info("About to meet the boss in the Hidden Office. Trying to gather missing files in the Apartment instead to save delay.", "blue");
 			if(auto_have_familiar($familiar[Nosy Nose]) && auto_is_valid($skill[Get a Good Whiff of This Guy]))
 			{
