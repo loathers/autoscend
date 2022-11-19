@@ -29,6 +29,16 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 		combat_status_add("gremlinNeedBanish");
 	}
 
+	if (in_fotd())
+	{
+		// In Fall of the Dinosaurs just use the magnet without waiting for a message
+		if (canUse($item[Molybdenum Magnet]) && $monsters[batwinged gremlin (tool), erudite gremlin (tool), spider gremlin (tool), vegetable gremlin (tool)] contains enemy)
+		{
+			return useItem($item[Molybdenum Magnet]);
+		}
+		return auto_combatHandler(round, enemy, text);
+	}
+
 	if(round >= 28)
 	{
 		if (canUse($skill[Storm of the Scarab], false))
