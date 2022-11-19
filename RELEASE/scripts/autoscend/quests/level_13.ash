@@ -1755,10 +1755,22 @@ boolean L13_towerNSNagamar()
 		}
 	}
 	
-	if(creatable_amount($item[Wand Of Nagamar]) == 0 && (creatable_amount($item[WA]) > 0 || item_amount($item[WA]) > 0))
-	{	
-		pullXWhenHaveY($item[ND], 1, 0);
+	if(creatable_amount($item[Wand Of Nagamar]) == 0 && pulls_remaining() > 0)
+	{
+		boolean haveW = item_amount($item[ruby W]) != 0;
+		boolean haveA = item_amount($item[metallic A]) != 0;
+		boolean haveN = item_amount($item[lowercase N]) != 0;
+		boolean haveD = item_amount($item[heavy D]) != 0;
+		if(!haveW || !haveA)
+		{
+			pullXWhenHaveY($item[WA], 1, 0);
+		}
+		if(!haveN || !haveD)
+		{
+			pullXWhenHaveY($item[ND], 1, 0);
+		}
 	}
+	
 	if(creatable_amount($item[Wand Of Nagamar]) > 0)
 	{
 		return create(1, $item[Wand Of Nagamar]);
