@@ -1822,7 +1822,7 @@ boolean LX_summonMonster()
 	}
 
 	// only summon NSA if in hardcore as we will pull items in normal runs
-	if(internalQuestStatus("questL08Trapper") < 3 && in_hardcore() && !get_property("auto_L8_extremeInstead").to_boolean())
+	if(internalQuestStatus("questL08Trapper") < 3 && in_hardcore() && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean())
 	{
 		boolean wantSummonNSA = item_amount($item[ninja rope]) < 1 || 
 			item_amount($item[ninja carabiner]) < 1 || 
@@ -1837,6 +1837,8 @@ boolean LX_summonMonster()
 	if(needDigitalKey() && !auto_hasPowerfulGlove() && internalQuestStatus("questL13Final") == 5)
 	{
 		handleFamiliar("item");
+		addToMaximize("20 item");
+		equipMaximizedGear();
 		if(summonMonster($monster[Ghost])) return true;
 	}
 
@@ -1847,14 +1849,14 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[lobsterfrogman])) return true;
 	}
 
-	if(auto_is_valid($item[Smut Orc Keepsake Box]) && (lumberCount() < 30 || fastenerCount() < 30))
+	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && (lumberCount() < 30 || fastenerCount() < 30))
 	{
 		// summon pervert here but handling of L9 quest will open box
 		if(summonMonster($monster[smut orc pervert])) return true;
 	}
 
-	// summon screambat if we are at last wall to knock down
-	if(internalQuestStatus("questL04Bat") == 2)
+	// summon screambat if we are at last wall to knock down and don't have a sonar-in-a-biscuit
+	if(internalQuestStatus("questL04Bat") == 2 && (!auto_is_valid($item[Sonar-In-A-Biscuit]) || item_amount($item[Sonar-In-A-Biscuit]) == 0))
 	{
 		if(summonMonster($monster[screambat])) return true;
 	}
