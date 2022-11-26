@@ -801,19 +801,19 @@ generic_t zone_delay(location loc)
 		break;
 	case $location[The Hidden Apartment Building]:
 		if (internalQuestStatus("questL11Curses") < 2) {
-			if (loc.turns_spent == 0) {
-				value = 8;
+			if (loc.turns_spent < 9) {
+				value = 8 - loc.turns_spent;
 			} else {
-				value = loc.turns_spent % 8;
+				value = 7 - (loc.turns_spent - 9) % 8;
 			}
 		}
 		break;
 	case $location[The Hidden Office Building]:
 		if (internalQuestStatus("questL11Business") < 2) {
-			if (loc.turns_spent == 0) {
-				value = 5;
+			if (loc.turns_spent < 6) {
+				value = 5 - loc.turns_spent;
 			} else {
-				value = loc.turns_spent % 5;
+				value = 4 - (loc.turns_spent - 6) % 5;
 			}
 		}
 		break;
