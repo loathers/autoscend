@@ -216,6 +216,9 @@ boolean isSniffed(monster enemy, skill sk)
 		case $skill[Gallapagosian Mating Call]:
 			retval = contains_text(get_property("_gallapagosMonster"), enemy);
 			break;
+		case $skill[Get a Good Whiff of This Guy]:
+			retval = contains_text(get_property("nosyNoseMonster"), enemy) && my_familiar() == $familiar[Nosy Nose];
+			break;
 		case $skill[Offer Latte to Opponent]:
 			retval = contains_text(get_property("_latteMonster"), enemy);
 			break;
@@ -232,6 +235,7 @@ boolean isSniffed(monster enemy)
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
+	//nosyNoseMonster is conditional on familiar [Nosy Nose], should it ever return true for this general check?
 	return false;
 }
 
@@ -258,6 +262,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	if(canUse($skill[Gallapagosian Mating Call], true , inCombat) && !isSniffed(enemy, $skill[Gallapagosian Mating Call]))
 	{
 		return $skill[Gallapagosian Mating Call];
+	}
+	if(my_familiar() == $familiar[Nosy Nose] && canUse($skill[Get a Good Whiff of This Guy]) && !isSniffed(enemy,$skill[Get a Good Whiff of This Guy]))
+	{
+		return $skill[Get a Good Whiff of This Guy];
 	}
 	if(canUse($skill[Offer Latte to Opponent], true , inCombat) && !get_property("_latteCopyUsed").to_boolean() && !isSniffed(enemy, $skill[Offer Latte to Opponent]))
 	{

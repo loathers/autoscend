@@ -106,12 +106,6 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 	{
 		// record adv gain for more detailed reporting to user
 		int stillsuitAdvs = auto_expectedStillsuitAdvs();
-		if(familiar_equipped_equipment(my_familiar()) != $item[tiny stillsuit])
-		{
-			// allow pre adv to reequip appropriate fam equip
-			equip(my_familiar(), $item[tiny stillsuit]);
-		}
-		
 		visit_url("inventory.php?action=distill&pwd");
 		visit_url("choice.php?pwd&whichchoice=1476&option=1");
 		handleTracker(toDrink, stillsuitAdvs + "Advs", "auto_drunken");
