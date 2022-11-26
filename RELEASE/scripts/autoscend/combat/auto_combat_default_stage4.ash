@@ -16,16 +16,28 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	if(retval != "") return retval;
 	
 	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
-	skill sniffer = getSniffer(enemy);
-	if(!combat_status_check("sniffed") && !isSniffed(enemy) && auto_wantToSniff(enemy, my_location()) && sniffer != $skill[none])
+	if(auto_wantToSniff(enemy, my_location()))
 	{
-		if(sniffer == $skill[Perceive Soul])		//mafia does not track the target of this skill so we must do so.
+		skill sniffer = getSniffer(enemy);
+		if(sniffer != $skill[none])
 		{
-			set_property("auto_bat_soulmonster", enemy);
+			if(sniffer == $skill[Perceive Soul])		//mafia does not track the target of this skill so we must do so.
+			{
+				set_property("auto_bat_soulmonster", enemy);
+			}
+			handleTracker(enemy, sniffer, "auto_sniffs");
+			combat_status_add("sniffed");
+			return useSkill(sniffer);
 		}
-		handleTracker(enemy, sniffer, "auto_sniffs");
-		combat_status_add("sniffed");
-		return useSkill(sniffer);
+	}
+	
+	if(enemy == $monster[animated ornate nightstand] && my_familiar() == $familiar[Nosy Nose] && !is100FamRun() && 
+	canUse($skill[Get a Good Whiff of This Guy]) && !isSniffed(enemy,$skill[Get a Good Whiff of This Guy]))
+	{
+		//this is a special case, if Nosy Nose is used in the bedroom in a non 100 fam run it is to whiff this monster
+		//and use only this sniffer because the elegant monster must be found next and this one gets turned off easily by using a different familiar
+		handleTracker(enemy, $skill[Get a Good Whiff of This Guy], "auto_sniffs");
+		return useSkill($skill[Get a Good Whiff of This Guy]);
 	}
 	
 	//TODO auto_doCombatCopy property is silly. get rid of it
