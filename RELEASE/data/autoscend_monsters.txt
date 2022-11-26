@@ -109,7 +109,7 @@ replace	45	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering
 replace	46	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation
 replace	47	trendy bugbear chef	path:Bugbear Invasion;loc:Galley
 
-sniff	0	pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed
+sniff	0	pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed;prop:hiddenApartmentProgress<7
 sniff	1	Writing Desk	prop:writingDesksDefeated<4
 sniff	2	cabinet of Dr. Limpieza
 sniff	3	Dairy Goat	loc:The Goatlet
