@@ -1881,7 +1881,7 @@ boolean L11_hiddenCity()
 			return autoAdv($location[The Hidden Apartment Building]);
 		}
 
-    if(workingHoliday && item_amount($item[McClusky file (complete)]) > 0)
+		if(workingHoliday && item_amount($item[McClusky file (complete)]) > 0)
 		{
 			set_property("auto_nextEncounter","ancient protector spirit (The Hidden Office Building)");
 		}
