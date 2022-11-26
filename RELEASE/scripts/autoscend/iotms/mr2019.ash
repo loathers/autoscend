@@ -604,10 +604,19 @@ boolean auto_spoonReadyToTuneMoon()
 			// we want to get the meatcar via the knoll store
 			return false;
 		}
-		if((auto_get_campground() contains $item[Asdon Martin Keyfob]) && is_unrestricted($item[Asdon Martin Keyfob]))
+		if((auto_get_campground() contains $item[Asdon Martin Keyfob]) && is_unrestricted($item[Asdon Martin Keyfob]) ||
+		   (auto_is_valid($familiar[cookbookbat]) && have_familiar($familiar[cookbookbat])))
 		{
 			// we want to get the bugbear outfit before switching away for easy bread access
 			if(!buyUpTo(1, $item[bugbear beanie]) || !buyUpTo(1, $item[bugbear bungguard]))
+			{
+				return false;
+			}
+		}
+		// We want the frilly skirt in LKS
+		if(in_lowkeysummer())
+		{
+			if(!buyUpTo(1, $item[frilly skirt]))
 			{
 				return false;
 			}
