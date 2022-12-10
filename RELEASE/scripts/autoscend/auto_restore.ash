@@ -1619,7 +1619,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 			{
 				foreach discountpants in $items[designer sweatpants,Travoltan trousers]
 				{
-					if(available_amount(discountpants) > 0)
+					if(item_amount(discountpants) > 0)
 					{
 						boolean mustnotpants = false;
 						cli_execute("whatif equip " + discountpants + "; quiet");
