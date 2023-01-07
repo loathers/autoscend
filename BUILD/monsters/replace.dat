@@ -10,15 +10,15 @@ Mad Wino
 Plaid Ghost
 Possessed Laundry Press
 Sabre-Toothed Goat
-Senile Lihc
+Senile Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 Skeletal Sommelier
-Slick Lihc
+Slick Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 White Chocolate Golem
 Stone Temple Pirate	item:Eyepatch>0
 Crusty Pirate
 Chatty Pirate
-party skelteon
-basic lihc
+party skelteon	loc:The Defiled Nook;prop:cyrptNookEvilness>14
+basic lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 # lobsterfrogman (todo: add more wanderers)
 Government Agent	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 Terrible Mutant	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
