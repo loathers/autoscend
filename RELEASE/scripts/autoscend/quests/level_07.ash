@@ -70,8 +70,9 @@ void cyrptChoiceHandler(int choice)
 
 int cyrptEvilBonus(boolean inCombat)
 {
-	//returns value of regularly (inCombat: currently) available bonus to evil reduction
+	//returns value of next fight (inCombat: currently) available bonus to evil reduction
 	int cyrptBonus = (is_pete() && get_property("peteMotorbikeCowling") == "Ghost Vacuum") ? 1 : 0;
+	cyrptBonus += (get_property("_nightmareFuelCharges").to_int() > 0) ? 2 : 0;
 	if(inCombat)
 	{
 		cyrptBonus += (equipped_item($slot[back]) == $item[unwrapped knock-off retro superhero cape] && 
