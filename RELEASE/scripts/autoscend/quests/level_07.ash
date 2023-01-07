@@ -68,13 +68,29 @@ void cyrptChoiceHandler(int choice)
 	}
 }
 
+int cyrptEvilBonus(boolean inCombat)
+{
+	//returns value of regularly (inCombat: currently) available bonus to evil reduction
+	int cyrptBonus = (is_pete() && get_property("peteMotorbikeCowling") == "Ghost Vacuum") ? 1 : 0;
+	if(inCombat)
+	{
+		cyrptBonus += (equipped_item($slot[back]) == $item[unwrapped knock-off retro superhero cape] && 
+		get_property("retroCapeSuperhero") == "vampire" && 
+		get_property("retroCapeWashingInstructions") == "kill" && 
+		item_type(equipped_item($slot[weapon])) == "sword") ? 1 : 0;
+		cyrptBonus += (equipped_item($slot[hat]) == $item[gravy boat] && auto_is_valid($item[gravy boat])) ? 1 : 0;
+	}
+	else
+	{
+		cyrptBonus += (auto_hasRetrocape() && auto_forceEquipSword(true)) ? 1 : 0;
+		cyrptBonus += (possessEquipment($item[gravy boat]) && auto_is_valid($item[gravy boat])) ? 1 : 0;
+	}
+	return cyrptBonus;
+}
+
 int cyrptEvilBonus()
 {
-	//returns value of regularly available bonus to evil reduction
-	int cyrptBonus = (auto_hasRetrocape() && auto_forceEquipSword(true)) ? 1 : 0;
-	cyrptBonus += (possessEquipment($item[gravy boat]) && auto_is_valid($item[gravy boat])) ? 1 : 0;
-	cyrptBonus += (is_pete() && get_property("peteMotorbikeCowling") == "Ghost Vacuum") ? 1 : 0;
-	return cyrptBonus;
+	return cyrptEvilBonus(false);
 }
 
 boolean L7_crypt()
