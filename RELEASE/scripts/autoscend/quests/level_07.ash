@@ -140,7 +140,7 @@ boolean L7_crypt()
 
 	int evilBonus = cyrptEvilBonus();
 
-	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 25)) && edAlcove && lar_repeat($location[The Defiled Alcove]))
+	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 13)) && edAlcove && lar_repeat($location[The Defiled Alcove]))
 	{
 
 		if((get_property("_badlyRomanticArrows").to_int() == 0) && auto_have_familiar($familiar[Reanimated Reanimator]) && (my_daycount() == 1))
@@ -148,7 +148,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Reanimated Reanimator]);
 		}
 
-		if(get_property("cyrptAlcoveEvilness").to_int() > (26 + evilBonus))
+		if(get_property("cyrptAlcoveEvilness").to_int() > (14 + evilBonus))
 		{
 			provideInitiative(850, $location[The Defiled Alcove], true);
 			addToMaximize("100initiative 850max");
@@ -157,7 +157,7 @@ boolean L7_crypt()
 		autoEquip($item[Gravy Boat]);
 		knockOffCapePrep();
 
-		if(get_property("cyrptAlcoveEvilness").to_int() >= (28 + evilBonus))
+		if(get_property("cyrptAlcoveEvilness").to_int() >= (17 + evilBonus))
 		{
 			useNightmareFuelIfPossible();
 		}
@@ -170,12 +170,12 @@ boolean L7_crypt()
 	// in KoE, skeleton astronauts are random encounters that drop Evil Eyes.
 	// we might be able to reach the Nook boss without adventuring.
 
-	while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 25))
+	while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 13))
 	{
 		use(1, $item[Evil Eye]);
 	}
 
-	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 25) && get_property("questL12HippyFrat") != "finished";
+	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 13) && get_property("questL12HippyFrat") != "finished";
 
 	if((get_property("cyrptNookEvilness").to_int() > 0) && lar_repeat($location[The Defiled Nook]) && !skip_in_koe)
 	{
@@ -183,7 +183,7 @@ boolean L7_crypt()
 		autoEquip($item[Gravy Boat]);
 		knockOffCapePrep();
 
-		if(get_property("cyrptNookEvilness").to_int() > (26 + evilBonus) && auto_is_valid($item[Evil Eye]))
+		if(get_property("cyrptNookEvilness").to_int() > (14 + evilBonus) && auto_is_valid($item[Evil Eye]))
 		{
 			buffMaintain($effect[Joyful Resolve]);
 			bat_formBats();
@@ -219,11 +219,11 @@ boolean L7_crypt()
 		appearance_rates($location[The Defiled Niche])[$monster[dirty old lihc]] < 100)
 		{
 			boolean nosyOldLihcs;
-			if(get_property("cyrptNicheEvilness").to_int() > (29 + 2*evilBonus))
+			if(get_property("cyrptNicheEvilness").to_int() > (17 + 2*evilBonus))
 			{
 				nosyOldLihcs = true;	//several dirty old lihc worth of evilness left so want to whiff dirty old lihc if we meet one
 			}
-			else if(get_property("nosyNoseMonster").to_monster() == $monster[dirty old lihc] && get_property("cyrptNicheEvilness").to_int() > (26 + evilBonus))
+			else if(get_property("nosyNoseMonster").to_monster() == $monster[dirty old lihc] && get_property("cyrptNicheEvilness").to_int() > (14 + evilBonus))
 			{
 				nosyOldLihcs = true;	//familiar whiff skill is increasing chances of dirty old lihc
 			}
@@ -233,13 +233,13 @@ boolean L7_crypt()
 			}
 		}
 
-		if(get_property("cyrptNicheEvilness").to_int() >= (28 + evilBonus))
+		if(get_property("cyrptNicheEvilness").to_int() >= (16 + evilBonus))
 		{
 			useNightmareFuelIfPossible();
 		}
 
 		auto_log_info("The Niche!", "blue");
-		if(canSniff($monster[Dirty Old Lihc], $location[The Defiled Niche]) && get_property("cyrptNicheEvilness").to_int() >= (26 + evilBonus) && auto_mapTheMonsters())
+		if(canSniff($monster[Dirty Old Lihc], $location[The Defiled Niche]) && get_property("cyrptNicheEvilness").to_int() >= (14 + evilBonus) && auto_mapTheMonsters())
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Dirty Old Lihc.");
 		}
@@ -268,7 +268,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 
-		if(get_property("cyrptCrannyEvilness").to_int() >= (28 + evilBonus))
+		if(get_property("cyrptCrannyEvilness").to_int() >= (17 + evilBonus))
 		{
 			useNightmareFuelIfPossible();
 		}
@@ -335,18 +335,18 @@ boolean L7_override()
 		return false;
 	}
 	
-	if(get_property("cyrptNookEvilness").to_int() <= 26 && get_property("cyrptNicheEvilness").to_int() <= 26)
+	if(get_property("cyrptNookEvilness").to_int() <= 14 && get_property("cyrptNicheEvilness").to_int() <= 14)
 	{
 		return false;
 	}
 	
 	int evilBonus = cyrptEvilBonus();
-	if(get_property("cyrptNookEvilness").to_int() > (26 + evilBonus) && is_banished($monster[party skelteon]))
+	if(get_property("cyrptNookEvilness").to_int() > (14 + evilBonus) && is_banished($monster[party skelteon]))
 	{
 		auto_log_info("Trying to check on the ongoing Nook before moving on to a different task");
 		if(L7_crypt()) { return true; }
 	}
-	if(get_property("cyrptNicheEvilness").to_int() > (26 + evilBonus))
+	if(get_property("cyrptNicheEvilness").to_int() > (14 + evilBonus))
 	{
 		boolean lihcbanihced = is_banished($monster[basic lihc]) || is_banished($monster[Senile Lihc]) || is_banished($monster[Slick Lihc]);
 		if(lihcbanihced || isSniffed($monster[Dirty Old Lihc]))
