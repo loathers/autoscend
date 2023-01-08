@@ -584,7 +584,7 @@ boolean auto_spoonReadyToTuneMoon()
 		abort("Something weird is going on with auto_spoonsign. It's not an invalid/blank value, but also not a knoll, canadia, or gnomad sign? This is impossible.");
 	}
 
-	if(my_sign() == "Vole" && (get_property("cyrptAlcoveEvilness").to_int() > 14 || get_property("questL07Cyrptic") == "unstarted"))
+	if(my_sign() == "Vole" && (get_property("cyrptAlcoveEvilness").to_int() > 14 + cyrptEvilBonus(true) || get_property("questL07Cyrptic") == "unstarted"))
 	{
 		// we want to stay vole long enough to do the alcove, since the initiative helps
 		return false;
