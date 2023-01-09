@@ -76,14 +76,14 @@ int cyrptEvilBonus(boolean inCombat)
 	if(inCombat)
 	{
 		cyrptBonus += (equipped_item($slot[back]) == $item[unwrapped knock-off retro superhero cape] && 
-		get_property("retroCapeSuperhero") == "vampire" && 
+		auto_is_valid($skill[Slay the Dead]) && get_property("retroCapeSuperhero") == "vampire" && 
 		get_property("retroCapeWashingInstructions") == "kill" && 
 		item_type(equipped_item($slot[weapon])) == "sword") ? 1 : 0;
 		cyrptBonus += (equipped_item($slot[hat]) == $item[gravy boat] && auto_is_valid($item[gravy boat])) ? 1 : 0;
 	}
 	else
 	{
-		cyrptBonus += (auto_hasRetrocape() && auto_forceEquipSword(true)) ? 1 : 0;
+		cyrptBonus += (auto_hasRetrocape() && auto_is_valid($skill[Slay the Dead]) && auto_forceEquipSword(true)) ? 1 : 0;
 		cyrptBonus += (possessEquipment($item[gravy boat]) && auto_is_valid($item[gravy boat])) ? 1 : 0;
 	}
 	return cyrptBonus;
