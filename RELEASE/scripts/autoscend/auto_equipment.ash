@@ -572,11 +572,11 @@ string defaultMaximizeStatement()
 		//>= level 12 or almost there, more offstat experience may be needed for the war outfit (requires 70 mox and 70 mys)
 		if(my_basestat($stat[moxie]) < 70 && get_property("warProgress") != "finished")
 		{
-			res += "10moxie experience,3moxie experience percent";
+			res += ",10moxie experience,3moxie experience percent";
 		}
 		if(my_basestat($stat[mysticality]) < 70 && get_property("warProgress") != "finished")
 		{
-			res += "10mysticality experience,3mysticality experience percent";
+			res += ",10mysticality experience,3mysticality experience percent";
 		}
 	}
 
