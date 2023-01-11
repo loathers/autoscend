@@ -479,7 +479,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		{
 			doLash = true;
 		}
-		if(((enemy == $monster[Toothy Sklelton]) || (enemy == $monster[Spiny Skelelton])) && (get_property("cyrptNookEvilness").to_int() > 26))
+		if(((enemy == $monster[Toothy Sklelton]) || (enemy == $monster[Spiny Skelelton])) && (get_property("cyrptNookEvilness").to_int() > 14 + cyrptEvilBonus(true)))
 		{
 			doLash = true;
 		}

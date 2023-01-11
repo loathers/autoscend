@@ -263,7 +263,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 		
 		boolean waitForCyrpt;	//free kills can get more modern zmobies from 1 turn of a double initiative effect in The Defiled Alcove
-		if(get_property("cyrptAlcoveEvilness").to_int() >= 30)	//need to do Alcove. todo: check cyrptEvilBonus() from PR #1114
+		if(get_property("cyrptAlcoveEvilness").to_int() >= 18 + cyrptEvilBonus(true))	//need to do Alcove
 		{
 			if(my_location() == $location[The Defiled Alcove] && have_effect($effect[Bow-Legged Swagger]) == 1)
 			{
