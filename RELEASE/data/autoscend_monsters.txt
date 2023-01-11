@@ -35,8 +35,8 @@ banish	29	Pygmy Witch Nurse
 banish	30	Red Herring
 banish	31	Red Snapper
 banish	32	Sabre-Toothed Goat
-banish	33	Senile Lihc	loc:The Defiled Niche
-banish	34	Slick Lihc	loc:The Defiled Niche
+banish	33	Senile Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
+banish	34	Slick Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 banish	35	Skeletal Sommelier
 banish	36	Spooky mummy	class:Ed the Undying
 banish	37	Spooky vampire	class:Ed the Undying
@@ -48,8 +48,8 @@ banish	42	Tomb Servant
 banish	43	Triffid	class:Ed the Undying
 banish	44	Wardr&ouml;b Nightstand
 banish	45	Warehouse Janitor
-banish	46	party skelteon
-banish	47	basic lihc
+banish	46	party skelteon	loc:The Defiled Nook;prop:cyrptNookEvilness>14
+banish	47	basic lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 # Bugbear Invasion Mothership
 banish	48	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing;!sniffed:scavenger bugbear
 banish	49	bugaboo	path:Bugbear Invasion;loc:Morgue;!sniffed:bugaboo
@@ -69,15 +69,15 @@ replace	8	Mad Wino
 replace	9	Plaid Ghost
 replace	10	Possessed Laundry Press
 replace	11	Sabre-Toothed Goat
-replace	12	Senile Lihc
+replace	12	Senile Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 replace	13	Skeletal Sommelier
-replace	14	Slick Lihc
+replace	14	Slick Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 replace	15	White Chocolate Golem
 replace	16	Stone Temple Pirate	item:Eyepatch>0
 replace	17	Crusty Pirate
 replace	18	Chatty Pirate
-replace	19	party skelteon
-replace	20	basic lihc
+replace	19	party skelteon	loc:The Defiled Nook;prop:cyrptNookEvilness>14
+replace	20	basic lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 # lobsterfrogman (todo: add more wanderers)
 replace	21	Government Agent	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 replace	22	Terrible Mutant	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
@@ -132,7 +132,7 @@ sniff	19	Naughty Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Sorori
 sniff	20	Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Naughty Sorority Nurse
 sniff	21	Possessed Wine Rack
 sniff	22	Blue Oyster cultist
-sniff	23	Dirty Old Lihc	prop:cyrptNicheEvilness>29
+sniff	23	Dirty Old Lihc	prop:cyrptNicheEvilness>17
 sniff	24	Possibility Giant	loc:The Castle in the Clouds in the Sky \(Ground Floor\);prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover;!itemdropcapped:20=chaos butterfly
 sniff	25	bearpig topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:spider (duck?) topiary animal
 sniff	26	elephant (meatcar?) topiary animal	!familiar:Melodramedary;!sniffed:bearpig topiary animal;!sniffed:spider (duck?) topiary animal

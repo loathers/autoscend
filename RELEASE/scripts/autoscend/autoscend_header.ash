@@ -938,6 +938,7 @@ boolean L6_dakotaFanning();
 ########################################################################################################
 //Defined in autoscend/quests/level_07.ash
 void cyrptChoiceHandler(int choice);
+int cyrptEvilBonus(boolean inCombat);
 int cyrptEvilBonus();
 boolean L7_crypt();
 boolean L7_override();
