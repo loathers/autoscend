@@ -232,7 +232,7 @@ generic_t zone_needItem(location loc)
 		}
 	case $location[The Defiled Nook]:
 		// Handle for a gravy boat?
-		if(get_property("cyrptNookEvilness").to_int() > 26)
+		if(get_property("cyrptNookEvilness").to_int() > 14)
 		{
 			value = 20.0;
 		}
