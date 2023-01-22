@@ -101,7 +101,6 @@ boolean handleRainDoh();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2013.ash
-void handleJar();
 void makeStartingSmiths();
 boolean didWePlantHere(location loc);
 void trickMafiaAboutFlorist();

@@ -1,6 +1,5 @@
 auto_chasmBusted	boolean	Has the orc chasm bridge been 'trolled yet? Ed only.
 auto_cookie	integer	HCCS Only: Tracks fortune cookie.
-auto_crackpotjar	string	Status of Crackpot Mystic Jar of Psychoses
 auto_day1_dna	string	'finished' if we have hybridized ourselves at the start of Ascension.
 auto_day_init	string	Current daycount if we finished initializing today.
 auto_getBoningKnife	boolean	Do we want Boning Knife this ascension?

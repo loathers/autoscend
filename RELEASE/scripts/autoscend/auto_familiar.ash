@@ -551,15 +551,6 @@ boolean autoChooseFamiliar(location place)
 		famChoice = $familiar[Grimstone Golem];
 	}
 	
-	//[Angry Jung Man] drops [psychoanalytic jar]. we want 1 to save adventures on getting [digital key]
-	if(famChoice == $familiar[none] &&
-	canChangeToFamiliar($familiar[Angry Jung Man]) &&
-	!possessEquipment($item[Powerful Glove]) &&		//powerful glove is a better way to get digital key
-	$familiar[Angry Jung Man].drops_today < 1)
-	{
-		famChoice = $familiar[Angry Jung Man];
-	}
-	
 	// places where meat drop is desirable due to high meat drop monsters.
 	if ($locations[The Boss Bat's Lair, The Icy Peak, The Filthworm Queen's Chamber] contains place) {
 		famChoice = lookupFamiliarDatafile("meat");
