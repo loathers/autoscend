@@ -796,11 +796,6 @@ boolean summonMonster(string option)
 			targets[count(targets)].amt = max(stars, lines);
 		}
 	}
-	if(needDigitalKey())
-	{
-		targets[count(targets)].target = $monster[Ghost];
-		targets[count(targets)].amt = (34 - whitePixelCount()) / 5;
-	}
 	if(item_amount($item[Barrel Of Gunpowder]) < 5)
 	{
 		int need = 5 - item_amount($item[Barrel Of Gunpowder]);
@@ -2638,15 +2633,6 @@ boolean careAboutDrops(monster mon)
 			return true;
 		}
 		return false;
-	}
-
-	if($monsters[Blooper, Ghost] contains mon)
-	{
-		if(!needDigitalKey())
-		{
-			return false;
-		}
-		return true;
 	}
 
 /*

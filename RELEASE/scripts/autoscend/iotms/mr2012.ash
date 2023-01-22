@@ -74,23 +74,6 @@ boolean handleRainDoh()
 		}
 		return true;
 	}
-	if(enemy == $monster[Ghost])
-	{
-		int count = whitePixelCount();
-		count += 30 * item_amount($item[digital key]);
-
-		if((count <= 20) && (get_property("_raindohCopiesMade").to_int() < 5))
-		{
-			set_property("auto_doCombatCopy", "yes");
-		}
-		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		validate_rainDohBox();
-		set_property("auto_doCombatCopy", "no");
-		if(count > 20)
-		{
-		}
-		return true;
-	}
 	if(enemy == $monster[Lobsterfrogman])
 	{
 		if(have_skill($skill[Rain Man]) && (item_amount($item[barrel of gunpowder]) < 4))

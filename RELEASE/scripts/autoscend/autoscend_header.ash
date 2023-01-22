@@ -1083,7 +1083,6 @@ boolean needStarKey();
 boolean needDigitalKey();
 int towerKeyCount();
 int towerKeyCount(boolean effective);
-int whitePixelCount();
 boolean LX_getDigitalKey();
 void LX_buyStarKeyParts();
 boolean LX_getStarKey();

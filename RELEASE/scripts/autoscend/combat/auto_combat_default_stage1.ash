@@ -171,7 +171,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	if(retval != "") return retval;
 	
 	//pickpocket. do this after puzzle bosses but before escapes/instakills
-	boolean ableToPickpocket = ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class() || have_effect($effect[Riboflavin']) > 0);
+	boolean ableToPickpocket = ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class() || have_effect($effect[Riboflavin\']) > 0);
 	if(!combat_status_check("pickpocket") && ableToPickpocket && contains_text(text, "value=\"Pick") && canSurvive(4.0))
 	{
 		boolean tryIt = false;
@@ -214,17 +214,6 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		handleTracker(enemy, $skill[Back-Up to your Last Enemy], "auto_replaces");
 		handleTracker(get_property("lastCopyableMonster").to_monster(), $skill[Back-Up to your Last Enemy], "auto_copies");
 		return useSkill($skill[Back-Up to your Last Enemy]);	
-	}
-	
-	//saber copy (iotm) is different from other copies in that it comes with a free escape
-	//technically it is an ender. but one that should be run before duplications.
-	if(canUse($skill[Use the Force]) && (auto_saberChargesAvailable() > 0) && (enemy != auto_saberCurrentMonster()))
-	{
-		if(enemy == $monster[Blooper] && needDigitalKey())
-		{
-			handleTracker(enemy, $skill[Use the Force], "auto_copies");
-			return auto_combatSaberCopy();
-		}
 	}
 	
 	//[Melodramedary] familiar skill which turns monster into a group of 2. Should be done before deleveling.
