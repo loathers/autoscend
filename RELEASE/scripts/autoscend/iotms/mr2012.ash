@@ -2,15 +2,15 @@
 
 void auto_reagnimatedGetPart(int choice)
 {
-	if (available_amount($item[gnomish housemaid's kgnee]) == 0) // The housemaid's kgnee is the equipment that justified using the gnome.
+	if (available_amount($item[gnomish housemaid\'s kgnee]) == 0) // The housemaid's kgnee is the equipment that justified using the gnome.
 	{
 		run_choice(4);
 	}
-	else if (available_amount($item[gnomish coal miner's lung]) == 0) // May as well get the rest of these on subsequent days.
+	else if (available_amount($item[gnomish coal miner\'s lung]) == 0) // May as well get the rest of these on subsequent days.
 	{
 		run_choice(2);
 	}
-	else if (available_amount($item[gnomish athlete's foot]) == 0)
+	else if (available_amount($item[gnomish athlete\'s foot]) == 0)
 	{
 		run_choice(5);
 	}
@@ -18,7 +18,7 @@ void auto_reagnimatedGetPart(int choice)
 	{
 		run_choice(3);
 	}
-	else if (available_amount($item[gnomish swimmer's ears]) == 0)
+	else if (available_amount($item[gnomish swimmer\'s ears]) == 0)
 	{
 		run_choice(1);
 	}
