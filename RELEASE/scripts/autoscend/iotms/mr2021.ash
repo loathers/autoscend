@@ -153,7 +153,7 @@ boolean auto_backupTarget()
 				return true;
 			break;
 		case $monster[sausage goblin]:
-			if(!wantBackupLFM && !wantBackupNSA && !wantBackupZmobie)
+			if(!wantBackupLFM && !wantBackupNSA && !wantBackupZmobie && auto_backupUsesLeft() > 5)
 				return true;
 			break;
 		case $monster[eldritch tentacle]:
