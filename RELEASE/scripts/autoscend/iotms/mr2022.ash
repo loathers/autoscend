@@ -454,6 +454,12 @@ boolean auto_autumnatonCanAdv(location canAdventureInloc)
 		return false;
 	}
 
+	if(canAdventureInloc.turns_spent == 0 && !($locations[Noob Cave, The Haunted Pantry, The Sleazy Back Alley] contains canAdventureInloc))
+	{
+		//zones have turn spent requirement except initial three
+		return false;
+	}
+
 	if(canAdventureInloc == $location[8-bit realm] && possessEquipment($item[continuum transfunctioner]) && auto_is_valid($item[continuum transfunctioner]))
 	{
 		equip($item[continuum transfunctioner]);

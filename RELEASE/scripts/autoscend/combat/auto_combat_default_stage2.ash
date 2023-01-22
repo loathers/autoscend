@@ -5,9 +5,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	
 	//if we want to olfact in stage 4 then we should delay stage 2 until we olfact.
 	//we do not want to olfact now because we should do stage 3 first to stun and/or debuff the enemy first before olfacting.
-	if(!combat_status_check("sniffed") && !isSniffed(enemy) && auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
+	if(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
 	{
 		auto_log_debug("Skipping stage 2 of combat for now as we intend to olfact [" +enemy+ "]");
+		return "";
+	}
+	if(my_location() == $location[The Daily Dungeon] && (item_amount($item[Daily Dungeon Malware]) > 0) && auto_is_valid($item[Daily Dungeon Malware]) && 
+	(towerKeyCount(false) < 2) && !get_property("_dailyDungeonMalwareUsed").to_boolean())
+	{
+		auto_log_debug("Skipping stage 2 of combat for now as we intend to use Daily Dungeon Malware");
 		return "";
 	}
 	
@@ -257,7 +263,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 		
 		boolean waitForCyrpt;	//free kills can get more modern zmobies from 1 turn of a double initiative effect in The Defiled Alcove
-		if(get_property("cyrptAlcoveEvilness").to_int() >= 30)	//need to do Alcove. todo: check cyrptEvilBonus() from PR #1114
+		if(get_property("cyrptAlcoveEvilness").to_int() >= 18 + cyrptEvilBonus(true))	//need to do Alcove
 		{
 			if(my_location() == $location[The Defiled Alcove] && have_effect($effect[Bow-Legged Swagger]) == 1)
 			{

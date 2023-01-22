@@ -1,4 +1,4 @@
-pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed
+pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed;prop:hiddenApartmentProgress<7
 Writing Desk	prop:writingDesksDefeated<4
 cabinet of Dr. Limpieza
 Dairy Goat	loc:The Goatlet
@@ -21,7 +21,7 @@ Naughty Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Sorority Nurse
 Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Naughty Sorority Nurse
 Possessed Wine Rack
 Blue Oyster cultist
-Dirty Old Lihc	prop:cyrptNicheEvilness>29
+Dirty Old Lihc	prop:cyrptNicheEvilness>17
 Possibility Giant	loc:The Castle in the Clouds in the Sky \(Ground Floor\);prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover;!itemdropcapped:20=chaos butterfly
 bearpig topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:spider (duck?) topiary animal
 elephant (meatcar?) topiary animal	!familiar:Melodramedary;!sniffed:bearpig topiary animal;!sniffed:spider (duck?) topiary animal

@@ -106,12 +106,6 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 	{
 		// record adv gain for more detailed reporting to user
 		int stillsuitAdvs = auto_expectedStillsuitAdvs();
-		if(familiar_equipped_equipment(my_familiar()) != $item[tiny stillsuit])
-		{
-			// allow pre adv to reequip appropriate fam equip
-			equip(my_familiar(), $item[tiny stillsuit]);
-		}
-		
 		visit_url("inventory.php?action=distill&pwd");
 		visit_url("choice.php?pwd&whichchoice=1476&option=1");
 		handleTracker(toDrink, stillsuitAdvs + "Advs", "auto_drunken");
@@ -917,7 +911,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean[item] blacklist;
 	boolean[item] craftable_blacklist;
 
-	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead]
+	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead, Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
 	{
 		blacklist[it] = true;
 	}
