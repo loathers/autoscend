@@ -100,7 +100,11 @@ boolean LX_getDigitalKey()
 	{
 		equip($slot[Acc3], $item[continuum transfunctioner]);
 		visit_url("place.php?whichplace=8bit&action=8treasure");
-        run_choice(1);
+		run_choice(1);
+		if(!needDigitalKey())
+		{
+			return true;
+		}
 	}
 	
 	//Spend adventures to get the digital key
