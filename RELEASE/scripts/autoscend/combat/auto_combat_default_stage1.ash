@@ -215,6 +215,18 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		handleTracker(get_property("lastCopyableMonster").to_monster(), $skill[Back-Up to your Last Enemy], "auto_copies");
 		return useSkill($skill[Back-Up to your Last Enemy]);	
 	}
+
+	//saber copy (iotm) is different from other copies in that it comes with a free escape
+	//technically it is an ender. but one that should be run before duplications.
+	//2023 update: no longer saber copy blooper due to 8-bit realm changes. Leaving commented so there is an example of how to saber copy
+	//if(canUse($skill[Use the Force]) && (auto_saberChargesAvailable() > 0) && (enemy != auto_saberCurrentMonster()))
+	//{
+	//	if(enemy == $monster[Blooper] && needDigitalKey())
+	//	{
+	//		handleTracker(enemy, $skill[Use the Force], "auto_copies");
+	//		return auto_combatSaberCopy();
+	//	}
+	//}
 	
 	//[Melodramedary] familiar skill which turns monster into a group of 2. Should be done before deleveling.
 	if ($monsters[pygmy bowler, bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, red butler] contains enemy && canUse($skill[%fn\, spit on them!]))
