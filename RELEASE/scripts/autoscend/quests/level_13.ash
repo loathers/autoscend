@@ -110,7 +110,7 @@ boolean LX_getDigitalKey()
 	//Spend adventures to get the digital key
 	boolean adv_spent = false;
 	woods_questStart();
-	autoEquip($slot[acc3], $item[Continuum Transfunctioner]);
+	autoForceEquip($slot[acc3], $item[Continuum Transfunctioner]);
 
 	string color = get_property("8BitColor");
 	switch(color)
