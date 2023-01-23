@@ -117,25 +117,30 @@ boolean LX_getDigitalKey()
 	{
 		case "black":	
 			provideInitiative(600, $location[Vanya\'s Castle], true);	
-			addToMaximize("200initiative");
+			addToMaximize("200initiative 800max");
 			adv_spent = autoAdv($location[Vanya\'s Castle]);
 			break;
 		case "red":
-			addToMaximize("200meat drop");
+			buffMaintain($effect[Polka of Plenty], 30, 1, 1);
+			addToMaximize("200meat drop 550max");
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
-			addToMaximize("200DA");
+			buffMaintain($effect[Ghostly Shell], 30, 1, 1);			//+80 DA. 6 MP
+			buffMaintain($effect[Astral Shell], 30, 1, 1);			//+80 DA, 10 MP
+			buffMaintain($effect[Feeling Peaceful], 0, 1, 1);
+			addToMaximize("200DA 600max");
 			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":
-			addToMaximize("200item");
+			addToMaximize("200item 500max");
 			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;
 		default:
 			abort("Property 8BitColor not set to a valid value");
 			break;
 	}
+	auto_log_info("Current 8bit score: " + EightBitScore() + "/10000");
 
 	return adv_spent;
 }
