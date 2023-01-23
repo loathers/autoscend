@@ -10,7 +10,6 @@ pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
 Pygmy Janitor	loc:The Hidden Park;!tavern:true;!itemdropcapped:20=book of matches
 Quiet Healer	!prop:questL10Garbage=finished
 Tomb Rat
-Blooper	loc:8-Bit Realm
 Bob Racecar	!sniffed:Racecar Bob
 Racecar Bob	!sniffed:Bob Racecar
 Government Scientist	class:Ed the Undying

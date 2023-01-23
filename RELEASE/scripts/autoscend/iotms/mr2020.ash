@@ -169,13 +169,7 @@ boolean auto_wantToEquipPowerfulGlove()
 
 	if(in_plumber() && !plumber_nothingToBuy()) return true;
 
-	int pixels = whitePixelCount();
-	if (contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
-	{
-		pixels += 30;
-	}
-
-	return pixels < 30;
+	return false;
 }
 
 boolean auto_willEquipPowerfulGlove()
@@ -574,9 +568,6 @@ monster auto_monsterToMap(location loc)
 	monster enemy = $monster[none];
 	switch (loc)
 	{
-		case $location[8-Bit Realm]:
-			enemy = $monster[Blooper];
-			break;
 		case $location[The Haunted Library]:
 			enemy = $monster[writing desk];
 			break;
