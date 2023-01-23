@@ -65,29 +65,6 @@ int 8BitScore()
 	return get_property("8BitScore").to_int();
 }
 
-location doubled8BitLocation()
-{
-	string color = get_property("8BitColor");
-	switch(color)
-	{
-		case "black":		
-			return $location[Vanya\'s Castle];
-			break;
-		case "red":		
-			return $location[The Fungus Plains];
-			break;
-		case "blue":		
-			return $location[Megalo-City];
-			break;
-		case "green":		
-			return $location[Hero\'s Field];
-			break;
-		default:
-			abort("Property 8BitColor not set to a valid value");
-			break;
-	}
-}
-
 boolean LX_getDigitalKey()
 {
 	//Acquire the [Digital Key]
@@ -126,6 +103,31 @@ boolean LX_getDigitalKey()
 	}
 	
 	//Spend adventures to get the digital key
+	string color = get_property("8BitColor");
+	switch(color)
+	{
+		case "black":	
+			provideInitiative(600, $location[Vanya\'s Castle], true);	
+			addToMaximize("200initiative");
+			return $location[Vanya\'s Castle];
+			break;
+		case "red":
+			addToMaximize("200meat drop");
+			return $location[The Fungus Plains];
+			break;
+		case "blue":
+			addToMaximize("200DA");
+			return $location[Megalo-City];
+			break;
+		case "green":
+			addToMaximize("200item");
+			return $location[Hero\'s Field];
+			break;
+		default:
+			abort("Property 8BitColor not set to a valid value");
+			break;
+	}
+	
 	boolean adv_spent = false;
 
 	woods_questStart();

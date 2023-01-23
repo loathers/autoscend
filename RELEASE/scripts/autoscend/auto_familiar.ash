@@ -402,7 +402,7 @@ boolean autoChooseFamiliar(location place)
 	Twin Peak, The Penultimate Fantasy Airship, The Hidden Temple, The Hidden Bowling Alley, The Haunted Wine Cellar,
 	The Haunted Laundry Room, The Copperhead Club, A Mob of Zeppelin Protesters, Whitey's Grove, The Oasis, The Middle Chamber,
 	Frat House, Hippy Camp, The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hatching Chamber,
-	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, 8-Bit Realm, The Degrassi Knoll Garage, The Old Landfill,
+	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, Hero's Field, The Degrassi Knoll Garage, The Old Landfill,
 	The Laugh Floor, Infernal Rackets Backstage] contains place) {
 		famChoice = lookupFamiliarDatafile("item");
 	}
@@ -491,9 +491,16 @@ boolean autoChooseFamiliar(location place)
 	if ($location[The Themthar Hills] == place) {
 		famChoice = lookupFamiliarDatafile("meat");
 	}
+	if ($location[The Fungus Plains] == place) {
+		famChoice = lookupFamiliarDatafile("meat");
+	}
 	
 	// places where initiative is required to help save adventures.
 	if ($location[The Defiled Alcove] == place && get_property("cyrptAlcoveEvilness").to_int() > 14)
+	{
+		famChoice = lookupFamiliarDatafile("init");
+	}
+	if($location[Vanya\'s Castle])
 	{
 		famChoice = lookupFamiliarDatafile("init");
 	}
