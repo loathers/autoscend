@@ -133,6 +133,8 @@ boolean LX_getDigitalKey()
 			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":
+			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
+			buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
 			addToMaximize("200item 500max");
 			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;
