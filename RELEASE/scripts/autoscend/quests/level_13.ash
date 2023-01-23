@@ -60,9 +60,10 @@ int towerKeyCount(boolean effective)
 	return tokens;
 }
 
-int 8BitScore()
+int EightBitScore()
 {
-	return get_property("8BitScore").to_int();
+	int score = get_property("8BitScore").to_int();
+	return score;
 }
 
 boolean LX_getDigitalKey()
@@ -95,7 +96,7 @@ boolean LX_getDigitalKey()
 	}
 	
 	// buy key if you can
-	if(8BitScore() >= 10000)
+	if(EightBitScore() >= 10000)
 	{
 		equip($slot[Acc3], $item[continuum transfunctioner]);
 		visit_url("place.php?whichplace=8bit&action=8treasure");
@@ -103,37 +104,36 @@ boolean LX_getDigitalKey()
 	}
 	
 	//Spend adventures to get the digital key
+	boolean adv_spent = false;
+	woods_questStart();
+	autoEquip($slot[acc3], $item[Continuum Transfunctioner]);
+
 	string color = get_property("8BitColor");
 	switch(color)
 	{
 		case "black":	
 			provideInitiative(600, $location[Vanya\'s Castle], true);	
 			addToMaximize("200initiative");
-			return $location[Vanya\'s Castle];
+			adv_spent = autoAdv($location[Vanya\'s Castle]);
 			break;
 		case "red":
 			addToMaximize("200meat drop");
-			return $location[The Fungus Plains];
+			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
 			addToMaximize("200DA");
-			return $location[Megalo-City];
+			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":
 			addToMaximize("200item");
-			return $location[Hero\'s Field];
+			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;
 		default:
 			abort("Property 8BitColor not set to a valid value");
 			break;
 	}
-	
-	boolean adv_spent = false;
 
-	woods_questStart();
-	autoEquip($slot[acc3], $item[Continuum Transfunctioner]);
-
-	return autoAdv(doubled8BitLocation());
+	return adv_spent;
 }
 
 void LX_buyStarKeyParts()

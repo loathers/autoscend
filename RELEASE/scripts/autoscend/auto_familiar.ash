@@ -500,7 +500,7 @@ boolean autoChooseFamiliar(location place)
 	{
 		famChoice = lookupFamiliarDatafile("init");
 	}
-	if($location[Vanya\'s Castle])
+	if($location[Vanya\'s Castle] == place)
 	{
 		famChoice = lookupFamiliarDatafile("init");
 	}
