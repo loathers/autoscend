@@ -500,7 +500,11 @@ boolean auto_buyFireworksHat()
 		float simNonCombat = providePlusNonCombat(25, $location[noob cave], true, true);
 		if(simNonCombat < 25.0)
 		{
-			retrieve_item(1, $item[porkpie-mounted popper]);
+			if (!retrieve_item(1, $item[porkpie-mounted popper]))
+			{
+				visit_url("clan_viplounge.php?action=fwshop&whichfloor=2", false, true);
+				visit_url("shop.php?whichshop=fwshop&action=buyitem&quantity=1&whichrow=1249&pwd", true, true);
+			}
 			return true;
 		}
 	}
@@ -511,7 +515,11 @@ boolean auto_buyFireworksHat()
 		float simCombat = providePlusCombat(25, $location[noob cave], true, true);
 		if(simCombat < 25.0)
 		{
-			retrieve_item(1, $item[sombrero-mounted sparkler]);
+			if (!retrieve_item(1, $item[sombrero-mounted sparkler]))
+			{
+				visit_url("clan_viplounge.php?action=fwshop&whichfloor=2", false, true);
+				visit_url("shop.php?whichshop=fwshop&action=buyitem&quantity=1&whichrow=1248&pwd", true, true);
+			}
 			return true;
 		}
 	}
@@ -522,7 +530,11 @@ boolean auto_buyFireworksHat()
 	{
 		if(monster_level_adjustment() < get_property("auto_MLSafetyLimit").to_int())
 		{
-			retrieve_item(1, $item[fedora-mounted fountain]);
+			if (!retrieve_item(1, $item[fedora-mounted fountain]))
+			{
+				visit_url("clan_viplounge.php?action=fwshop&whichfloor=2", false, true);
+				visit_url("shop.php?whichshop=fwshop&action=buyitem&quantity=1&whichrow=1247&pwd", true, true);
+			}
 			return true;
 		}
 	}
