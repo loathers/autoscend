@@ -95,6 +95,10 @@ boolean LX_getDigitalKey()
 		}
 	}
 	
+	// start quest and equip to refresh mafia's prefs
+	woods_questStart();
+	autoForceEquip($slot[acc3], $item[Continuum Transfunctioner]);
+
 	// buy key if you can
 	if(EightBitScore() >= 10000)
 	{
@@ -109,8 +113,6 @@ boolean LX_getDigitalKey()
 	
 	//Spend adventures to get the digital key
 	boolean adv_spent = false;
-	woods_questStart();
-	autoForceEquip($slot[acc3], $item[Continuum Transfunctioner]);
 
 	string color = get_property("8BitColor");
 	switch(color)
