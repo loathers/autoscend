@@ -1207,8 +1207,8 @@ void houseUpgrade()
 
 string auto_getDesiredWorkshed()
 {
-	//Compare workshed vs auto_workshed expectation
 	string currentWorkshed = get_property("auto_workshed").to_lower_case();
+	//return the actual item name in case a shorthand is used
 	switch(currentWorkshed)
 	{
 		case "train":
@@ -1247,6 +1247,7 @@ void auto_setWorkshed()
 {
 	string desiredShed = auto_getDesiredWorkshed();
 	string existingShed = auto_get_campground();
+	//Check to make sure we can use the workshed item and that it isn't already in the campground
 	if (auto_is_valid(to_item(desiredShed))) && (contains_text(existingShed, desiredShed) == false)
 	{
 		use(1, to_item(desiredShed));
