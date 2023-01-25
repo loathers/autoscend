@@ -1158,6 +1158,8 @@ boolean tomb_already_found();
 boolean LX_acquireEpicWeapon();
 boolean LX_NemesisQuest();
 void houseUpgrade();
+string auto_getDesiredWorkshed();
+void auto_setWorkshed();
 
 ########################################################################################################
 //Defined in autoscend/auto_acquire.ash
@@ -1721,5 +1723,3 @@ void effectAblativeArmor(boolean passive_dmg_allowed);
 int currentPoolSkill();
 int poolSkillPracticeGains();
 int meatReserve();
-string auto_getDesiredWorkshed();
-void auto_setWorkshed();
