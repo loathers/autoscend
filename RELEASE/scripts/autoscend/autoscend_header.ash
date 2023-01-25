@@ -1121,8 +1121,8 @@ boolean LX_dailyDungeonToken();
 void dailyDungeonChoiceHandler(int choice, string[int] options);
 boolean LX_dolphinKingMap();
 boolean LX_meatMaid();
-string auto_getDesiredWorkshed();
-void auto_setWorkshed();
+string LX_getDesiredWorkshed();
+void LX_setWorkshed();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash
