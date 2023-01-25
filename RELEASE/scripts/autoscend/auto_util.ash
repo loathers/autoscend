@@ -1833,15 +1833,6 @@ boolean LX_summonMonster()
 		}
 	}
 
-	// summon ghost for white pixels if at tower door and still need digital key
-	if(needDigitalKey() && !auto_hasPowerfulGlove() && internalQuestStatus("questL13Final") == 5)
-	{
-		handleFamiliar("item");
-		addToMaximize("20 item");
-		equipMaximizedGear();
-		if(summonMonster($monster[Ghost])) return true;
-	}
-
 	// summon LFM if don't have autumnaton since that guarantees 1 turn to get 5 barrels
 	if(item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && 
 	my_level() >= 12 && !auto_hasAutumnaton())
