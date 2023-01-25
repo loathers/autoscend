@@ -555,37 +555,6 @@ boolean LM_bond()
 				}
 			}
 		}
-		if(get_property("questM20Necklace") == "finished")
-		{
-			if(get_property("_sourceTerminalDigitizeMonster") == $monster[Writing Desk])
-			{
-				if((get_property("_sourceTerminalDigitizeUses").to_int() == 1) && whitePixelCount() < 30 && (item_amount($item[Richard\'s Star Key]) == 0) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Richard\'s Star Key]))
-				{
-					woods_questStart();
-					equip($slot[acc2], $item[Continuum Transfunctioner]);
-					auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-					set_property("auto_digitizeDirective", $monster[Blooper]);
-					autoAdv(1, $location[8-bit Realm]);
-					remove_property("auto_digitizeDirective");
-					return true;
-				}
-			}
-		}
-
-		if(get_property("sidequestLighthouseCompleted") != "none")
-		{
-			if(get_property("_sourceTerminalDigitizeMonster") == $monster[Lobsterfrogman])
-			{
-				if((get_property("_sourceTerminalDigitizeUses").to_int() == 1) && (get_property("_timeSpinnerMinutesUsed").to_int() < 7) && whitePixelCount() < 30 && (item_amount($item[Richard\'s Star Key]) == 0) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Richard\'s Star Key]))
-				{
-					auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-					set_property("auto_combatDirective", "start;skill digitize");
-					timeSpinnerCombat($monster[Blooper]);
-					set_property("auto_combatDirective", "");
-					return true;
-				}
-			}
-		}
 
 		if((internalQuestStatus("questL12War") >= 1) && (get_property("sidequestOrchardCompleted") == "none"))
 		{

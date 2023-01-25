@@ -855,6 +855,9 @@ boolean LX_joinPirateCrew() {
 	if (internalQuestStatus("questM12Pirate") > 4) {
 		return false;
 	}
+	if (internalQuestStatus("questL12War") == 1) {
+		return false;
+	}
 	if (!possessOutfit("Swashbuckling Getup", true)) {
 		auto_log_info("Can not equip, or do not have the Swashbuckling Getup. Delaying.", "red");
 		return false;

@@ -575,18 +575,5 @@ void auto_autumnatonQuest()
 		if(auto_sendAutumnaton($location[Twin Peak])) return;
 	}
 
-	if(!contains_text(get_property("nsTowerDoorKeysUsed"), "digital key") &&
-	item_amount($item[Digital Key]) == 0 &&
-	creatable_amount($item[Digital Key]) == 0 &&
-	!auto_hasPowerfulGlove())
-	{
-		if(!possessEquipment($item[continuum transfunctioner]) && my_level() >= 2)
-		{
-			// unlock 8-bit zone
-			woods_questStart();
-		}
-		if(auto_sendAutumnaton($location[8-bit realm])) return;
-	}
-
 	return;
 }
