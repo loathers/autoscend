@@ -2550,15 +2550,6 @@ boolean careAboutDrops(monster mon)
 		return false;
 	}
 
-	if($monsters[Blooper, Ghost] contains mon)
-	{
-		if(!needDigitalKey())
-		{
-			return false;
-		}
-		return true;
-	}
-
 /*
 pygmy bowler
 pygmy witch accountant

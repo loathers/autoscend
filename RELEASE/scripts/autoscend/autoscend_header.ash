@@ -100,7 +100,6 @@ boolean handleRainDoh();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2013.ash
-void handleJar();
 void makeStartingSmiths();
 boolean didWePlantHere(location loc);
 void trickMafiaAboutFlorist();
@@ -1082,7 +1081,7 @@ boolean needStarKey();
 boolean needDigitalKey();
 int towerKeyCount();
 int towerKeyCount(boolean effective);
-int whitePixelCount();
+int EightBitScore();
 boolean LX_getDigitalKey();
 void LX_buyStarKeyParts();
 boolean LX_getStarKey();
