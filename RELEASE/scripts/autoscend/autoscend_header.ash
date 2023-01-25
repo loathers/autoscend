@@ -1121,6 +1121,8 @@ boolean LX_dailyDungeonToken();
 void dailyDungeonChoiceHandler(int choice, string[int] options);
 boolean LX_dolphinKingMap();
 boolean LX_meatMaid();
+string auto_getDesiredWorkshed();
+void auto_setWorkshed();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash
@@ -1157,8 +1159,6 @@ boolean tomb_already_found();
 boolean LX_acquireEpicWeapon();
 boolean LX_NemesisQuest();
 void houseUpgrade();
-string auto_getDesiredWorkshed();
-void auto_setWorkshed();
 
 ########################################################################################################
 //Defined in autoscend/auto_acquire.ash

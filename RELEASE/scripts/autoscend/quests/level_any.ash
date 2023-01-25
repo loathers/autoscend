@@ -697,3 +697,52 @@ boolean LX_meatMaid()
 
 	return false;
 }
+
+string auto_getDesiredWorkshed()
+{
+	string currentWorkshed = get_property("auto_workshed").to_lower_case();
+	//return the actual item name in case a shorthand is used
+	switch(currentWorkshed)
+	{
+		case "train":
+			return "model train set";
+		case "model train set":
+		case "cmc":
+			return "cold medicine cabinet";
+		case "cold medicine cabinet":
+		case "pizza":
+			return "diabolic pizza cube";
+		case "diabolic pizza cube":
+		case "asdon":
+			return "asdon martin key fob";
+		case "asdon martin key fob":
+		case "mayo":
+			return "portable mayo clinic";
+		case "portable mayo clinic":
+		case "dnalab":
+			return "little geneticist dna-splicing lab";
+		case "little geneticist dna-splicing lab":
+		case "snow machine":
+		case "spinning wheel":
+		case "warbear auto-anvil":
+		case "warbear chemistry lab":
+		case "warbear high-efficiency still":
+		case "warbear induction oven":
+		case "warbear jackhammer drill press":
+		case "warbear lp-rom burner":
+		default:
+			// auto_workshed is invalid or none/false/whatever to say don't do this
+			return "";
+	}
+}
+
+void auto_setWorkshed()
+{
+	string desiredShed = auto_getDesiredWorkshed();
+	string existingShed = auto_get_campground();
+	//Check to make sure we can use the workshed item and that it isn't already in the campground
+	if (auto_is_valid(to_item(desiredShed)) && (contains_text(existingShed, desiredShed) == false))
+	{
+		use(1, to_item(desiredShed));
+	}
+}
