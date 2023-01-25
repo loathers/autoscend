@@ -1244,7 +1244,7 @@ void auto_setWorkshed()
 {
 	string desiredShed = auto_getDesiredWorkshed();
 	string existingShed = auto_get_campground();
-	if (auto_is_valid(to_item(desiredShed))) && (! contains_text(existingShed, desiredShed))
+	if (auto_is_valid(to_item(desiredShed))) && (contains_text(existingShed, desiredShed) == false)
 	{
 		use(1, to_item(desiredShed));
 	}
