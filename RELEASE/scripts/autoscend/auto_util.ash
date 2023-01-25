@@ -1818,7 +1818,11 @@ boolean LX_summonMonster()
 	item oreGoal = to_item(get_property("trapperOre"));
 	if(internalQuestStatus("questL08Trapper") < 2 && oreGoal != $item[none] && item_amount(oreGoal) < 2 && adjustForYellowRayIfPossible())
 	{
-		if(summonMonster($monster[mountain man])) return true;
+		// don't summon if we have model train set as it is an easy source of ore
+		if(get_workshed() != $item[model train set])
+		{
+			if(summonMonster($monster[mountain man])) return true;
+		}
 	}
 
 	// only summon NSA if in hardcore as we will pull items in normal runs
@@ -1857,13 +1861,23 @@ boolean LX_summonMonster()
 	return false;
 }
 
+boolean canSummonMonster(monster mon)
+{
+	return summonMonster(mon, true);
+}
+
 boolean summonMonster(monster mon)
+{
+	return summonMonster(mon, false);
+}
+
+boolean summonMonster(monster mon, boolean speculative)
 {
 	// methods which require specific circumstances
 	if(mon == $monster[War Frat 151st Infantryman])
 	{	
 		// calculate the universe's only summon we want, so prioritize using it
-		if(LX_calculateTheUniverse()) return true;
+		if(LX_calculateTheUniverse(speculative)) return true;
 	}
 	if(timeSpinnerCombat(mon))
 	{

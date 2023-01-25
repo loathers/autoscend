@@ -1344,10 +1344,11 @@ boolean L11_unlockHiddenCity()
 	auto_log_info("Searching for the Hidden City", "blue");
 	if(!in_glover() && !in_tcrs()) 
 	{
-		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
+		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]))
 		{
 			//attempt to summon before using a clover
 			handleFamiliar("item");
+			addToMaximize("20 item 400max");
 			if(summonMonster($monster[Baa\'baa\'bu\'ran]))
 			{
 				return true;

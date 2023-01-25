@@ -411,7 +411,7 @@ boolean LX_burnDelay()
 }
 
 
-boolean LX_calculateTheUniverse()
+boolean LX_calculateTheUniverse(boolean speculative)
 {
 	if(in_wildfire())
 	{
@@ -427,7 +427,14 @@ boolean LX_calculateTheUniverse()
 	{
 		if(doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
 		{
-			return (doNumberology("battlefield") != -1);
+			if(speculative)
+			{
+				return true;
+			}
+			else
+			{
+				return (doNumberology("battlefield") != -1);
+			}
 		}
 		return false;	//we want 151 and can get it in general. but not right now. so save it for later
 	}
