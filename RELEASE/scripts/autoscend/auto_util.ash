@@ -1815,19 +1815,18 @@ boolean LX_summonMonster()
 	}
 
 	// summon mountain man if we know the ore we need and still need 2 or more
+	// don't summon if we have model train set as it is an easy source of ore
 	item oreGoal = to_item(get_property("trapperOre"));
-	if(internalQuestStatus("questL08Trapper") < 2 && oreGoal != $item[none] && item_amount(oreGoal) < 2 && adjustForYellowRayIfPossible())
+	if(internalQuestStatus("questL08Trapper") < 2 && get_workshed() != $item[model train set] && oreGoal != $item[none] && 
+		item_amount(oreGoal) < 2 && adjustForYellowRayIfPossible())
 	{
-		// don't summon if we have model train set as it is an easy source of ore
-		if(get_workshed() != $item[model train set])
-		{
-			if(summonMonster($monster[mountain man])) return true;
-		}
+		if(summonMonster($monster[mountain man])) return true;
 	}
 
 	// only summon NSA if in hardcore as we will pull items in normal runs
 	if(internalQuestStatus("questL08Trapper") < 3 && in_hardcore() && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean())
 	{
+		auto_log_debug("Thinking about summoning ninja snowman assassin");
 		boolean wantSummonNSA = item_amount($item[ninja rope]) < 1 || 
 			item_amount($item[ninja carabiner]) < 1 || 
 			item_amount($item[ninja crampons]) < 1;
@@ -1844,7 +1843,7 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[lobsterfrogman])) return true;
 	}
 
-	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && (lumberCount() < 30 || fastenerCount() < 30))
+	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && my_level() >= 9 && (lumberCount() < 30 || fastenerCount() < 30))
 	{
 		// summon pervert here but handling of L9 quest will open box
 		if(summonMonster($monster[smut orc pervert])) return true;
