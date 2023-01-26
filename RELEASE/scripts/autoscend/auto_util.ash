@@ -1873,33 +1873,50 @@ boolean summonMonster(monster mon)
 
 boolean summonMonster(monster mon, boolean speculative)
 {
+	auto_log_debug((speculative ? "Checking if we can" : "Trying to") + " summon " + mon, "blue");
 	// methods which require specific circumstances
 	if(mon == $monster[War Frat 151st Infantryman])
 	{	
 		// calculate the universe's only summon we want, so prioritize using it
-		if(LX_calculateTheUniverse(speculative)) return true;
+		if(LX_calculateTheUniverse(speculative))
+		{
+			auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+			return true;
+		}
 	}
-	if(timeSpinnerCombat(mon))
+	if(timeSpinnerCombat(mon, speculative))
 	{
 		return true;
 	}
 	// methods which can only summon monsters should be attempted first
-	if(auto_fightLocketMonster(mon))
+	if(auto_fightLocketMonster(mon, speculative))
 	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
 		return true;
 	}
-	if(handleFaxMonster(mon))
+	if(handleFaxMonster(mon, !speculative))
 	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
 		return true;
 	}
 	// methods which can do more than summon monsters
-	if(auto_cargoShortsOpenPocket(mon))
+	if(auto_cargoShortsOpenPocket(mon, speculative))
 	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
 		return true;
 	}
-	if(auto_shouldUseWishes() && makeGenieCombat(mon))
+	if(auto_shouldUseWishes())
 	{
-		return true;
+		if(speculative && canGenieCombat())
+		{
+			auto_log_debug("Can summon " + mon, "blue");
+			return true;
+		}
+		else if(!speculative && makeGenieCombat(mon))
+		{
+			auto_log_debug("Did summon " + mon, "blue");
+			return true;
+		}
 	}
 
 	//todo

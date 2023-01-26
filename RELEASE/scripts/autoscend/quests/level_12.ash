@@ -1296,7 +1296,7 @@ boolean L12_sonofaBeach()
 	{
 		if(contains_text($location[Sonofa Beach].combat_queue, to_string($monster[Lobsterfrogman])))
 		{
-			if(timeSpinnerCombat($monster[Lobsterfrogman], ""))
+			if(timeSpinnerCombat($monster[Lobsterfrogman]))
 			{
 				return true;
 			}

@@ -1178,15 +1178,25 @@ boolean timeSpinnerAdventure(string option)
 
 boolean timeSpinnerCombat(monster goal)
 {
-	return timeSpinnerCombat(goal, "");
+	return timeSpinnerCombat(goal, "", false);
 }
 
-boolean timeSpinnerCombat(monster goal, string option)
+boolean timeSpinnerCombat(monster goal, boolean speculative)
+{
+	return timeSpinnerCombat(goal, "", speculative);
+}
+
+boolean timeSpinnerCombat(monster goal, string option, boolean speculative)
 {
 	//spend 3 minutes to Travel to a Recent Fight
 	if(timeSpinnerRemaining(true) < 3)
 	{
 		return false;
+	}
+	if(speculative)
+	{
+		// error checking passed, assume rest will work
+		return true;
 	}
 	auto_log_info("Using time spinner to summon " + goal.name, "blue");
 	string[int] pages;
