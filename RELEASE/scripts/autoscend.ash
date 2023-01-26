@@ -1781,7 +1781,7 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if(LM_bond())						return true;
-	if(LX_calculateTheUniverse())				return true;
+	if(LX_calculateTheUniverse(false))	return true;
 	adventureFailureHandler();
 	dna_sorceressTest();
 	dna_generic();
