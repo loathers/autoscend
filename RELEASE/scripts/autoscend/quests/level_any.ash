@@ -744,5 +744,7 @@ boolean LX_setWorkshed()
 	if (auto_is_valid(to_item(desiredShed)) && (contains_text(existingShed, desiredShed) == false))
 	{
 		use(1, to_item(desiredShed));
+		return true;
 	}
+	return false;
 }
