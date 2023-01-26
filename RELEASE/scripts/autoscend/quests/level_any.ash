@@ -740,8 +740,8 @@ boolean LX_setWorkshed()
 {
 	string desiredShed = LX_getDesiredWorkshed();
 	string existingShed = auto_get_campground();
-	//Check to make sure we can use the workshed item and that it isn't already in the campground
-	if (auto_is_valid(to_item(desiredShed)) && (contains_text(existingShed, desiredShed) == false))
+	//Check to make sure we can use the workshed item and that it isn't already in the campground. If already in campground, return true also
+	if ((auto_is_valid(to_item(desiredShed)) && (contains_text(existingShed, desiredShed) == false)) || (existingShed contains desiredShed))
 	{
 		use(1, to_item(desiredShed));
 		return true;
