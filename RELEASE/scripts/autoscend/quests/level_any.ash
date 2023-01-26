@@ -748,7 +748,7 @@ boolean LX_setWorkshed()
 	}
 	if (contains_text(existingShed, desiredShed))
 	{
-		return true;
+		return false;
 	}
 	return false;
 }
