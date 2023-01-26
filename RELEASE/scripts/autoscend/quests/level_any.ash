@@ -736,7 +736,7 @@ string LX_getDesiredWorkshed()
 	}
 }
 
-void LX_setWorkshed()
+boolean LX_setWorkshed()
 {
 	string desiredShed = LX_getDesiredWorkshed();
 	string existingShed = auto_get_campground();
