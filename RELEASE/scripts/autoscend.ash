@@ -1,4 +1,4 @@
-since r26812;	// allow specifying "github" dependencies
+since r27108;	// new 8-bit realm
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -154,7 +154,6 @@ void initializeSettings() {
 	set_property("auto_clanstuff", "0");
 	set_property("auto_cookie", -1);
 	set_property("auto_copies", "");
-	set_property("auto_crackpotjar", "");
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);
 	set_property("auto_day1_dna", "");

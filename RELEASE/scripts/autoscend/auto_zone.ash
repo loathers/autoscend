@@ -60,8 +60,9 @@ generic_t zone_needItem(location loc)
 	float value = 0.0;
 	switch(loc)
 	{
-	case $location[8-Bit Realm]:
-		value = 50.0;
+	case $location[Hero\'s Field]:
+		// bonus points cap at +400% item. Equivalent to a 20% item drop
+		value = 20.0;
 		break;
 	case $location[The Hole in the Sky]:
 		if (item_amount($item[Star]) < 8 || item_amount($item[Line]) < 7) {
@@ -197,7 +198,7 @@ generic_t zone_needItem(location loc)
 			}
 		}
 		break;
-	case $location[The Valley of Rof L'm Fao]:
+	case $location[The Valley of Rof L\'m Fao]:
 		if(item_amount($item[lowercase N]) == 0 && item_amount($item[ND]) == 0 && item_amount($item[Wand of Nagamar]) == 0 && get_property("auto_wandOfNagamar").to_boolean())
 		{
 			value = 30.0;
@@ -643,7 +644,7 @@ generic_t zone_combatMod(location loc)
 	case $location[The Defiled Alcove]:
 		value = -85;
 		break;
-	case $location[The Outskirts of Cobb's Knob]:
+	case $location[The Outskirts of Cobb\'s Knob]:
 		value = 20;
 		break;
 	case $location[The Typical Tavern Cellar]:
@@ -709,7 +710,7 @@ generic_t zone_combatMod(location loc)
 	case $location[The Haunted Pantry]:
 		value = 20;
 		break;
-	case $location[Cobb's Knob Treasury]:
+	case $location[Cobb\'s Knob Treasury]:
 		value = 15;
 		break;
 	case $location[The VERY Unquiet Garves]:
@@ -1112,7 +1113,10 @@ boolean zone_available(location loc)
 			retval = true;
 		}
 		break;
-	case $location[8-Bit Realm]:
+	case $location[Vanya\'s Castle]:
+	case $location[The Fungus Plains]:
+	case $location[Megalo-City]:
+	case $location[Hero\'s Field]:
 		if(possessEquipment($item[Continuum Transfunctioner]) && ((internalQuestStatus("questL02Larva") >= 0) || (internalQuestStatus("questG02Whitecastle") >= 0)))
 		{
 			retval = true;
@@ -1498,7 +1502,7 @@ boolean zone_available(location loc)
 			retval = true;
 		}
 		break;
-	case $location[The Naughty Sorceress' Chamber]:
+	case $location[The Naughty Sorceress\' Chamber]:
 		if(get_property("questL13Final") == "step11")
 		{
 			retval = true;
@@ -1545,16 +1549,16 @@ boolean zone_available(location loc)
 		}
 		break;
 
-	case $location[Cobb's Knob Laboratory]:
+	case $location[Cobb\'s Knob Laboratory]:
 	case $location[The Knob Shaft]:
 		if (item_amount($item[Cobb\'s Knob Lab Key]) > 0)
 		{
 			retval = true;
 		}
 		break;
-	case $location[Cobb's Knob Menagerie, Level 1]:
-	case $location[Cobb's Knob Menagerie, Level 2]:
-	case $location[Cobb's Knob Menagerie, Level 3]:
+	case $location[Cobb\'s Knob Menagerie, Level 1]:
+	case $location[Cobb\'s Knob Menagerie, Level 2]:
+	case $location[Cobb\'s Knob Menagerie, Level 3]:
 		if (item_amount($item[Cobb\'s Knob Menagerie key]) > 0)
 		{
 			retval = true;
@@ -1774,8 +1778,6 @@ generic_t zone_difficulty(location loc)
 		break;
 	case $location[The Hidden Temple]:
 		break;
-	case $location[8-Bit Realm]:
-		break;
 	case $location[The Black Forest]:
 		break;
 	case $location[The Bat Hole Entrance]:
@@ -1961,7 +1963,7 @@ generic_t zone_difficulty(location loc)
 
 boolean zone_hasLuckyAdventure(location loc)
 {
-	if ($locations[8-Bit Realm,A Maze of Sewer Tunnels,A Mob of Zeppelin Protesters,A-Boo Peak,An Octopus's Garden,Art Class,
+	if ($locations[Vanya's Castle, The Fungus Plains, Megalo-City, Hero's Field, A Maze of Sewer Tunnels,A Mob of Zeppelin Protesters,A-Boo Peak,An Octopus's Garden,Art Class,
 	Battlefield (Cloaca Uniform),Battlefield (Dyspepsi Uniform),Battlefield (No Uniform),Burnbarrel Blvd.,Camp Logging Camp,Chemistry Class,
 	Cobb's Knob Barracks,Cobb's Knob Harem,Cobb's Knob Kitchens,Cobb's Knob Laboratory,Cobb's Knob Menagerie\, Level 2,Cobb's Knob Treasury,
 	Elf Alley,Exposure Esplanade,Frat House,Frat House (Frat Disguise),Guano Junction,Hippy Camp,Hippy Camp (Hippy Disguise),Itznotyerzitz Mine,
