@@ -1171,7 +1171,7 @@ boolean auto_voteSetup(int candidate, int first, int second)
 		return false;
 	}
 
-	if(svn_info("Ezandora-Voting-Booth-trunk-Release").last_changed_rev > 0)
+	if(svn_exists("Ezandora-Voting-Booth-trunk-Release"))
 	{
 		cli_execute("VotingBooth.ash");
 		return true;
