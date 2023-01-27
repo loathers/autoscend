@@ -1855,7 +1855,11 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[screambat])) return true;
 	}
 
-	// summon 
+	// summon astronomer if only missing star chart for star key
+	if(needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
+	{
+		if(summonMonster($monster[Astronomer])) return true;
+	}
 
 	return false;
 }
