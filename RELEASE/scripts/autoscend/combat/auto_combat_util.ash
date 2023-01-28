@@ -677,6 +677,10 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "item " + $item[Deathchucks];
 	}
+	if((item_amount($item[divine champagne popper]) > keep) && (!(used contains "divine champagne popper"))&& auto_is_valid($item[divine champagne popper]))
+	{
+		return "item " + $item[divine champagne popper];
+	}
 
 	return "";
 }

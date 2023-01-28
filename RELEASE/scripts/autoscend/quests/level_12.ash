@@ -901,7 +901,14 @@ boolean L12_filthworms()
 			if(get_property("questL11MacGuffin") != "finished")
 			{
 				//level 11 quest not finished, filthworms can wait
-				delayFilthworms = true;
+				if(isAboutToPowerlevel())
+				{
+					auto_log_info("Proceeding with filthworms because something seems to be holding up the level 11 quest.");
+				}
+				else
+				{
+					delayFilthworms = true;
+				}
 			}
 			else if(auto_warSide() == "fratboy" && get_property("hippiesDefeated").to_int() < 64)
 			{
