@@ -1171,7 +1171,7 @@ boolean auto_voteSetup(int candidate, int first, int second)
 		return false;
 	}
 
-	if(svn_exists("Ezandora-Voting-Booth-trunk-Release"))
+	if(git_exists("midgleyc-Voting-Booth"))
 	{
 		cli_execute("VotingBooth.ash");
 		return true;
