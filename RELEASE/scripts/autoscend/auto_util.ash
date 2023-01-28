@@ -1800,7 +1800,7 @@ boolean auto_deleteMail(kmailObject msg)
 boolean LX_summonMonster()
 {
 	// get war outfit if have yr available
-	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && adjustForYellowRayIfPossible())
+	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && canYellowRay())
 	{
 		// attempt to use calculate the universe
 		if(summonMonster($monster[War Frat 151st Infantryman])) return true;
@@ -1808,7 +1808,7 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[War Frat Mobile Grill Unit])) return true;
 		if(summonMonster($monster[orcish frat boy spy])) return true;
 	}
-	if(!possessOutfit("War Hippy Fatigues") && auto_warSide() == "hippy" && adjustForYellowRayIfPossible())
+	if(!possessOutfit("War Hippy Fatigues") && auto_warSide() == "hippy" && canYellowRay())
 	{
 		if(summonMonster($monster[War Hippy Airborne Commander])) return true;
 		if(summonMonster($monster[war hippy spy])) return true;
@@ -1818,7 +1818,7 @@ boolean LX_summonMonster()
 	// don't summon if we have model train set as it is an easy source of ore
 	item oreGoal = to_item(get_property("trapperOre"));
 	if(internalQuestStatus("questL08Trapper") < 2 && get_workshed() != $item[model train set] && oreGoal != $item[none] && 
-		item_amount(oreGoal) < 2 && adjustForYellowRayIfPossible())
+		item_amount(oreGoal) < 2 && canYellowRay())
 	{
 		if(summonMonster($monster[mountain man])) return true;
 	}
@@ -1843,10 +1843,13 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[lobsterfrogman])) return true;
 	}
 
-	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && my_level() >= 9 && (lumberCount() < 30 || fastenerCount() < 30))
+	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && my_level() >= 9 && 
+		(lumberCount() < 30 || fastenerCount() < 30) && !get_property("_auto_failedPervertSummon").to_boolean)
 	{
 		// summon pervert here but handling of L9 quest will open box
 		if(summonMonster($monster[smut orc pervert])) return true;
+		// record that we couldn't summon pervert to prevent attempting every adv
+		set_property("_auto_failedPervertSummon", true);
 	}
 
 	// summon screambat if we are at last wall to knock down and don't have a sonar-in-a-biscuit
