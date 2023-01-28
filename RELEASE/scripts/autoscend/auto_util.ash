@@ -1811,6 +1811,7 @@ boolean LX_summonMonster()
 	if(internalQuestStatus("questL08Trapper") < 2 && get_workshed() != $item[model train set] && oreGoal != $item[none] && 
 		item_amount(oreGoal) < 2 && canYellowRay())
 	{
+		adjustForYellowRayIfPossible();
 		if(summonMonster($monster[mountain man])) return true;
 	}
 
@@ -1846,6 +1847,7 @@ boolean LX_summonMonster()
 	// get war outfit if have yr available
 	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && canYellowRay() && my_level() >= 12)
 	{
+		adjustForYellowRayIfPossible();
 		// attempt to use calculate the universe
 		if(summonMonster($monster[War Frat 151st Infantryman])) return true;
 		// attempt to summon other sources of outfit
@@ -1854,6 +1856,7 @@ boolean LX_summonMonster()
 	}
 	if(!possessOutfit("War Hippy Fatigues") && auto_warSide() == "hippy" && canYellowRay() && my_level() >= 12)
 	{
+		adjustForYellowRayIfPossible();
 		if(summonMonster($monster[War Hippy Airborne Commander])) return true;
 		if(summonMonster($monster[war hippy spy])) return true;
 	}
