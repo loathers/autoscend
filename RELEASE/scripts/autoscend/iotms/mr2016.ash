@@ -1177,6 +1177,11 @@ boolean timeSpinnerAdventure(string option)
 
 boolean canTimeSpinnerMonster(monster mon)
 {
+	// Can only time spinner summon copyable monsters
+	if(!mon.copyable)
+	{
+		return false;
+	}
 	// If adding spinner support for a new monster, ensure the monster's native zone is listed below
 	boolean[location] possibleSpinnerMonsterZones = $locations[Guano Junction, The Batrat and Ratbat Burrow, The Beanbat Chamber, The Haunted Pantry,
 		The Skeleton Store, The Secret Government Laboratory, The Goatlet, The Haunted Bedroom, Sonofa Beach, The Outskirts of Cobb's Knob];
