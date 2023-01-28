@@ -1175,6 +1175,18 @@ boolean timeSpinnerAdventure(string option)
 	return autoAdvBypass(0, pages, $location[Noob Cave], option);
 }
 
+boolean canTimeSpinnerMonster(monster mon)
+{
+	// If adding spinner support for a new monster, ensure the monster's native zone is listed below
+	boolean[location] possibleSpinnerMonsterZones = $locations[Guano Junction, The Batrat and Ratbat Burrow, The Beanbat Chamber, The Haunted Pantry,
+		The Skeleton Store, The Secret Government Laboratory, The Goatlet, The Haunted Bedroom, Sonofa Beach, The Outskirts of Cobb's Knob];
+	
+	foreach loc in possibleSpinnerMonsterZones
+	{
+		if(contains_text(loc.combat_queue, to_string(mon))) return true;
+	}
+	return false;
+}
 
 boolean timeSpinnerCombat(monster goal)
 {
@@ -1190,6 +1202,10 @@ boolean timeSpinnerCombat(monster goal, string option, boolean speculative)
 {
 	//spend 3 minutes to Travel to a Recent Fight
 	if(timeSpinnerRemaining(true) < 3)
+	{
+		return false;
+	}
+	if(!canTimeSpinnerMonster(goal))
 	{
 		return false;
 	}
@@ -1226,11 +1242,11 @@ void auto_chapeau()
 		//requires 150 Moxie to wear, so will stop at this check alone most of the time, except in BIG! or level 13 moxie class
 		return;
 	}
-	if(!auto_have_skill($skill[Ceci N'Est Pas Un Chapeau]))
+	if(!auto_have_skill($skill[Ceci N\'Est Pas Un Chapeau]))
 	{
 		return;
 	}
-	if(my_mp() < mp_cost($skill[Ceci N'Est Pas Un Chapeau]))
+	if(my_mp() < mp_cost($skill[Ceci N\'Est Pas Un Chapeau]))
 	{
 		return;
 	}
@@ -1241,11 +1257,11 @@ void auto_chapeau()
 	
 	//300 MP cost is high and non sauceror classes that rely on meat for MP may need to check reserve first
 	boolean doGetNoHat;
-	if(my_mp() >= 100 + mp_cost($skill[Ceci N'Est Pas Un Chapeau]))
+	if(my_mp() >= 100 + mp_cost($skill[Ceci N\'Est Pas Un Chapeau]))
 	{
 		doGetNoHat = true;
 	}
-	else if(my_mp() >= 32 + mp_cost($skill[Ceci N'Est Pas Un Chapeau]) && mp_regen() >= 32)
+	else if(my_mp() >= 32 + mp_cost($skill[Ceci N\'Est Pas Un Chapeau]) && mp_regen() >= 32)
 	{
 		doGetNoHat = true;
 	}
@@ -1260,7 +1276,7 @@ void auto_chapeau()
 	
 	if(doGetNoHat)
 	{
-		use_skill(1, $skill[Ceci N'Est Pas Un Chapeau]);
+		use_skill(1, $skill[Ceci N\'Est Pas Un Chapeau]);
 	}
 }
 

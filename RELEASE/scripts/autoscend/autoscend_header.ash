@@ -176,6 +176,7 @@ boolean timeSpinnerGet(string goal);
 boolean timeSpinnerConsume(item goal);
 boolean timeSpinnerAdventure();
 boolean timeSpinnerAdventure(string option);
+boolean canTimeSpinnerMonster(monster mon);
 boolean timeSpinnerCombat(monster goal);
 boolean timeSpinnerCombat(monster goal, boolean speculative);
 boolean timeSpinnerCombat(monster goal, string option, boolean speculative);

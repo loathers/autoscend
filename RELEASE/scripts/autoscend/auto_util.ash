@@ -1828,7 +1828,7 @@ boolean LX_summonMonster()
 	}
 
 	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && my_level() >= 9 && 
-		(lumberCount() < 30 || fastenerCount() < 30) && !get_property("_auto_failedPervertSummon").to_boolean)
+		(lumberCount() < 30 || fastenerCount() < 30) && !get_property("_auto_failedPervertSummon").to_boolean())
 	{
 		// summon pervert here but handling of L9 quest will open box
 		if(summonMonster($monster[smut orc pervert])) return true;
