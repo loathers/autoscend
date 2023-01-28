@@ -1799,19 +1799,10 @@ boolean auto_deleteMail(kmailObject msg)
 
 boolean LX_summonMonster()
 {
-	// get war outfit if have yr available
-	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && canYellowRay())
+	// summon screambat if we are at last wall to knock down and don't have a sonar-in-a-biscuit
+	if(internalQuestStatus("questL04Bat") == 2 && (!auto_is_valid($item[Sonar-In-A-Biscuit]) || item_amount($item[Sonar-In-A-Biscuit]) == 0))
 	{
-		// attempt to use calculate the universe
-		if(summonMonster($monster[War Frat 151st Infantryman])) return true;
-		// attempt to summon other sources of outfit
-		if(summonMonster($monster[War Frat Mobile Grill Unit])) return true;
-		if(summonMonster($monster[orcish frat boy spy])) return true;
-	}
-	if(!possessOutfit("War Hippy Fatigues") && auto_warSide() == "hippy" && canYellowRay())
-	{
-		if(summonMonster($monster[War Hippy Airborne Commander])) return true;
-		if(summonMonster($monster[war hippy spy])) return true;
+		if(summonMonster($monster[screambat])) return true;
 	}
 
 	// summon mountain man if we know the ore we need and still need 2 or more
@@ -1836,13 +1827,6 @@ boolean LX_summonMonster()
 		}
 	}
 
-	// summon LFM if don't have autumnaton since that guarantees 1 turn to get 5 barrels
-	if(item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && 
-	my_level() >= 12 && !auto_hasAutumnaton())
-	{
-		if(summonMonster($monster[lobsterfrogman])) return true;
-	}
-
 	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && my_level() >= 9 && 
 		(lumberCount() < 30 || fastenerCount() < 30) && !get_property("_auto_failedPervertSummon").to_boolean)
 	{
@@ -1852,10 +1836,26 @@ boolean LX_summonMonster()
 		set_property("_auto_failedPervertSummon", true);
 	}
 
-	// summon screambat if we are at last wall to knock down and don't have a sonar-in-a-biscuit
-	if(internalQuestStatus("questL04Bat") == 2 && (!auto_is_valid($item[Sonar-In-A-Biscuit]) || item_amount($item[Sonar-In-A-Biscuit]) == 0))
+	// summon LFM if don't have autumnaton since that guarantees 1 turn to get 5 barrels
+	if(item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && 
+	my_level() >= 12 && !auto_hasAutumnaton())
 	{
-		if(summonMonster($monster[screambat])) return true;
+		if(summonMonster($monster[lobsterfrogman])) return true;
+	}
+
+	// get war outfit if have yr available
+	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && canYellowRay() && my_level() >= 12)
+	{
+		// attempt to use calculate the universe
+		if(summonMonster($monster[War Frat 151st Infantryman])) return true;
+		// attempt to summon other sources of outfit
+		if(summonMonster($monster[War Frat Mobile Grill Unit])) return true;
+		if(summonMonster($monster[orcish frat boy spy])) return true;
+	}
+	if(!possessOutfit("War Hippy Fatigues") && auto_warSide() == "hippy" && canYellowRay() && my_level() >= 12)
+	{
+		if(summonMonster($monster[War Hippy Airborne Commander])) return true;
+		if(summonMonster($monster[war hippy spy])) return true;
 	}
 
 	// summon astronomer if only missing star chart for star key
