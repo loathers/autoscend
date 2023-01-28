@@ -1800,7 +1800,8 @@ boolean auto_deleteMail(kmailObject msg)
 boolean LX_summonMonster()
 {
 	// summon screambat if we are at last wall to knock down and don't have a sonar-in-a-biscuit
-	if(internalQuestStatus("questL04Bat") == 2 && (!auto_is_valid($item[Sonar-In-A-Biscuit]) || item_amount($item[Sonar-In-A-Biscuit]) == 0))
+	if(internalQuestStatus("questL04Bat") == 2 && (!auto_is_valid($item[Sonar-In-A-Biscuit]) || item_amount($item[Sonar-In-A-Biscuit]) == 0) &&
+		canSummonMonster($monster[screambat]))
 	{
 		if(summonMonster($monster[screambat])) return true;
 	}
@@ -1809,7 +1810,7 @@ boolean LX_summonMonster()
 	// don't summon if we have model train set as it is an easy source of ore
 	item oreGoal = to_item(get_property("trapperOre"));
 	if(internalQuestStatus("questL08Trapper") < 2 && get_workshed() != $item[model train set] && oreGoal != $item[none] && 
-		item_amount(oreGoal) < 2 && canYellowRay())
+		item_amount(oreGoal) < 2 && canYellowRay() && canSummonMonster($monster[mountain man]))
 	{
 		adjustForYellowRayIfPossible();
 		if(summonMonster($monster[mountain man])) return true;
@@ -1822,30 +1823,31 @@ boolean LX_summonMonster()
 		boolean wantSummonNSA = item_amount($item[ninja rope]) < 1 || 
 			item_amount($item[ninja carabiner]) < 1 || 
 			item_amount($item[ninja crampons]) < 1;
-		if(wantSummonNSA)
+		if(wantSummonNSA && canSummonMonster($monster[Ninja Snowman Assassin]))
 		{
 			if(summonMonster($monster[Ninja Snowman Assassin])) return true;
 		}
 	}
 
 	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && my_level() >= 9 && 
-		(lumberCount() < 30 || fastenerCount() < 30) && !get_property("_auto_failedPervertSummon").to_boolean())
+		(lumberCount() < 30 || fastenerCount() < 30) && canSummonMonster($monster[smut orc pervert]))
 	{
 		// summon pervert here but handling of L9 quest will open box
 		if(summonMonster($monster[smut orc pervert])) return true;
-		// record that we couldn't summon pervert to prevent attempting every adv
-		set_property("_auto_failedPervertSummon", true);
 	}
 
 	// summon LFM if don't have autumnaton since that guarantees 1 turn to get 5 barrels
 	if(item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && 
-	my_level() >= 12 && !auto_hasAutumnaton())
+	my_level() >= 12 && !auto_hasAutumnaton() && canSummonMonster($monster[lobsterfrogman]))
 	{
 		if(summonMonster($monster[lobsterfrogman])) return true;
 	}
 
 	// get war outfit if have yr available
-	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && canYellowRay() && my_level() >= 12)
+	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && canYellowRay() && my_level() >= 12 &&
+		(canSummonMonster($monster[War Frat 151st Infantryman]) || 
+		canSummonMonster($monster[War Frat Mobile Grill Unit]) ||
+		canSummonMonster($monster[orcish frat boy spy])))
 	{
 		adjustForYellowRayIfPossible();
 		// attempt to use calculate the universe
@@ -1854,7 +1856,9 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[War Frat Mobile Grill Unit])) return true;
 		if(summonMonster($monster[orcish frat boy spy])) return true;
 	}
-	if(!possessOutfit("War Hippy Fatigues") && auto_warSide() == "hippy" && canYellowRay() && my_level() >= 12)
+	if(!possessOutfit("War Hippy Fatigues") && auto_warSide() == "hippy" && canYellowRay() && my_level() >= 12 &&
+		(canSummonMonster($monster[War Hippy Airborne Commander]) || 
+		canSummonMonster($monster[war hippy spy])))
 	{
 		adjustForYellowRayIfPossible();
 		if(summonMonster($monster[War Hippy Airborne Commander])) return true;
@@ -1862,7 +1866,7 @@ boolean LX_summonMonster()
 	}
 
 	// summon astronomer if only missing star chart for star key
-	if(needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
+	if(needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]))
 	{
 		if(summonMonster($monster[Astronomer])) return true;
 	}
