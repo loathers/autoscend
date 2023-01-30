@@ -53,4 +53,4 @@ auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dun
 auto_pvpEnable	boolean	Break the hippy stone to unlock PvP?
 auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns). Blank by default.
 auto_ignoreRestoreFailure	boolean	if true we will always ignore failure to restore MP or HP and just continue playing
-auto_workshed	string	What workshed item should we initialize with? If blank or invalid, we won't switch automatically. There are some shorthands or you can use the full name of the workshed item.
+auto_workshed	string	What workshed item should we initialize with? If blank or invalid, we will change workshed based on priorities. There are some shorthands or you can use the full name of the workshed item.
