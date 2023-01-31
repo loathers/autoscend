@@ -577,3 +577,124 @@ void auto_autumnatonQuest()
 
 	return;
 }
+
+boolean auto_haveTrainSet()
+{
+	return auto_get_campground() contains $item[model train set] && auto_is_valid($item[model train set]); //check if the model train set is in the campground
+}
+
+void modifyTrainSet(int one, int two, int three, int four, int five, int six, int seven, int eight)
+{
+	visit_url(`choice.php?pwd&whichchoice=1485&option=1&slot[0]={one}&slot[1]={two}&slot[2]={three}&slot[3]={four}&slot[4]={five}&slot[5]={six}&slot[6]={seven}&slot[7]={eight}`,true,true);
+	visit_url("main.php");
+	return;
+}
+
+void checkTrainSet()
+{
+	if(!auto_haveTrainSet()) return;
+	/* A list of what the station numbers are (thanks Zdrvst for compiling this list for your CS script)
+	1: meat
+	2: mp regen
+	3: all stats
+	4: hot res, cold dmg
+	5: stench res, spooky dmg
+	6: wood, joiners, or stats (orc chasm bridge stuff)
+	7: candy
+	8: double next stop
+	9: cold res, stench dmg
+	11: spooky res, sleaze dmg
+	12: sleaze res, hot dmg
+	13: monster level
+	14: mox stats
+	15: basic booze
+	16: mys stats
+	17: mus stats
+	18: food drop buff
+	19: copy last food drop
+	20: ore
+	*/
+	int one = 8; //doubler
+	int two;
+	int three;
+	if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) //check if we need more stats
+	{
+		if(my_primestat() == $stat[Muscle])
+		{
+			two = 17;
+		}
+		else if(my_primestat() == $stat[Mysticality])
+		{
+			two = 16;
+		}
+		else
+		{
+			two = 14;
+		}
+		three = 3; //all stats
+	}
+	else{
+		two = 4; //hot res, cold dmg
+		three = 11; //spooky res, sleaze dmg
+	}
+	int four = 6; //lumber mill
+	if(fastenerCount() >= 30 && lumberCount() >= 30){
+		if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) //check if we need more stats
+		{
+			if(my_primestat() == $stat[Muscle])
+			{
+				four = 14; //Moxie for Muscle peeps
+			}
+			else if(my_primestat() == $stat[Mysticality])
+			{
+				four = 14; //Moxie for Mysticality peeps
+			}
+			else
+			{
+				four = 17; //Muscle for Moxie peeps
+			}
+		}
+		else
+		{
+			four = 5; //stench res, spooky dmg
+		}
+	}
+	int five = 1; //meat
+	int six = 2; //mp regen
+	int seven;
+	if (needOre()){
+		seven = 20; //ore
+	} 
+	else
+	{
+		if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) //check if we need more stats
+		{
+			if(my_primestat() == $stat[Muscle])
+			{
+				seven = 16; //Mysticality for Muscle peeps
+			}
+			else if(my_primestat() == $stat[Mysticality])
+			{
+				seven = 17; //Muscle for Mysticality peeps
+			}
+			else
+			{
+				seven = 16; //Mysticality for Moxie peeps
+			}
+		}
+		else
+		{
+			seven = 12; //sleaze res, hot dmg
+		}
+	}
+	int eight = 13; //monster level
+	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int()){
+		eight = 9; //cold res, stench dmg
+	}
+	if (visit_url("campground.php?action=workshed",false,true).contains_text('value="Save Train Set Configuration"')){
+		modifyTrainSet(one, two, three, four, five, six, seven, eight);
+		return;
+	}
+	visit_url("main.php");
+	return;
+}
