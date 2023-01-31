@@ -775,7 +775,7 @@ boolean LX_setWorkshed(){
 	{
 		return false;
 	}
-	if ((contains_text(desiredShed,"auto")) && (fastenerCount() < 30 && lumberCount() < 30) && (length(existingShed) == 0))
+	if ((contains_text(desiredShed,"auto")) && (fastenerCount() < 30 && lumberCount() < 30) && (existingShed == "none"))
 	{
 		if ((auto_is_valid($item[model train set])) && (item_amount($item[model train set]) > 0))
 		{
