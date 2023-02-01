@@ -585,8 +585,8 @@ boolean auto_haveTrainSet()
 
 void modifyTrainSet(int one, int two, int three, int four, int five, int six, int seven, int eight)
 {
-	string path = "choice.php?pwd&whichchoice=1485&option=1&slot[0]={one}&slot[1]={two}&slot[2]={three}&slot[3]={four}&slot[4]={five}&slot[5]={six}&slot[6]={seven}&slot[7]={eight}";
-	visit_url(path,true,true);
+	string page = "choice.php?pwd&whichchoice=1485&option=1&slot[0]={one}&slot[1]={two}&slot[2]={three}&slot[3]={four}&slot[4]={five}&slot[5]={six}&slot[6]={seven}&slot[7]={eight}";
+	visit_url(page,true,true);
 	visit_url("main.php");
 	return;
 }
