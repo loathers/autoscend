@@ -692,7 +692,7 @@ void auto_checkTrainSet()
 		}
 	}
 	int eight = 13; //monster level
-	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int()){
+	if(monster_level_adjustment() < get_property("auto_MLSafetyLimit").to_int()){
 		eight = 9; //cold res, stench dmg
 	}
 	string page = visit_url("campground.php?action=workshed");
