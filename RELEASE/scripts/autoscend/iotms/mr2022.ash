@@ -694,7 +694,8 @@ void checkTrainSet()
 	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int()){
 		eight = 9; //cold res, stench dmg
 	}
-	if (contains_text(visit_url("campground.php?action=workshed",false,true),'value="Save Train Set Configuration"')){
+	string page = visit_url("campground.php?action=workshed");
+	if (contains_text(page,'value="Save Train Set Configuration"')){
 		modifyTrainSet(one, two, three, four, five, six, seven, eight);
 	}
 	visit_url("main.php");
