@@ -583,7 +583,7 @@ boolean auto_haveTrainSet()
 	return auto_get_campground() contains $item[model train set] && auto_is_valid($item[model train set]); //check if the model train set is in the campground
 }
 
-void modifyTrainSet(int one, int two, int three, int four, int five, int six, int seven, int eight)
+void auto_modifyTrainSet(int one, int two, int three, int four, int five, int six, int seven, int eight)
 {
 	string page = "choice.php?pwd&whichchoice=1485&option=1&slot[0]={one}&slot[1]={two}&slot[2]={three}&slot[3]={four}&slot[4]={five}&slot[5]={six}&slot[6]={seven}&slot[7]={eight}";
 	visit_url(page,true,true);
@@ -591,7 +591,7 @@ void modifyTrainSet(int one, int two, int three, int four, int five, int six, in
 	return;
 }
 
-void checkTrainSet()
+void auto_checkTrainSet()
 {
 	if(!auto_haveTrainSet()) return;
 	/* A list of what the station numbers are (thanks Zdrvst for compiling this list for your CS script)
@@ -697,7 +697,7 @@ void checkTrainSet()
 	}
 	string page = visit_url("campground.php?action=workshed");
 	if (contains_text(page,'value="Save Train Set Configuration"')){
-		modifyTrainSet(one, two, three, four, five, six, seven, eight);
+		auto_modifyTrainSet(one, two, three, four, five, six, seven, eight);
 	}
 	visit_url("main.php");
 	return;
