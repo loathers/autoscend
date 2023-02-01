@@ -695,8 +695,7 @@ void checkTrainSet()
 		eight = 9; //cold res, stench dmg
 	}
 	if (contains_text(visit_url("campground.php?action=workshed",false,true),'value="Save Train Set Configuration"')){
-		//modifyTrainSet(one, two, three, four, five, six, seven, eight);
-		visit_url(`choice.php?pwd&whichchoice=1485&option=1&slot[0]={one}&slot[1]={two}&slot[2]={three}&slot[3]={four}&slot[4]={five}&slot[5]={six}&slot[6]={seven}&slot[7]={eight}`,true,true);
+		modifyTrainSet(one, two, three, four, five, six, seven, eight);
 	}
 	visit_url("main.php");
 	return;
