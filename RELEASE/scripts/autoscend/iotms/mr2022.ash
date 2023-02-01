@@ -637,8 +637,11 @@ void checkTrainSet()
 		two = 4; //hot res, cold dmg
 		three = 11; //spooky res, sleaze dmg
 	}
-	int four = 6; //lumber mill
-	if(fastenerCount() >= 30 && lumberCount() >= 30){
+	int four;
+	if(fastenerCount() < 30 && lumberCount() < 30){
+		four = 6; //lumber mill
+	}
+	else{
 		if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) //check if we need more stats
 		{
 			if(my_primestat() == $stat[Muscle])
@@ -692,8 +695,8 @@ void checkTrainSet()
 		eight = 9; //cold res, stench dmg
 	}
 	if (visit_url("campground.php?action=workshed",false,true).contains_text('value="Save Train Set Configuration"')){
-		modifyTrainSet(one, two, three, four, five, six, seven, eight);
-		return;
+		//modifyTrainSet(one, two, three, four, five, six, seven, eight);
+		visit_url(`choice.php?pwd&whichchoice=1485&option=1&slot[0]={one}&slot[1]={two}&slot[2]={three}&slot[3]={four}&slot[4]={five}&slot[5]={six}&slot[6]={seven}&slot[7]={eight}`,true,true);
 	}
 	visit_url("main.php");
 	return;
