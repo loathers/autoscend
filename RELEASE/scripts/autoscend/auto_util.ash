@@ -1843,8 +1843,9 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[lobsterfrogman])) return true;
 	}
 
-	// get war outfit if have yr available
-	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && canYellowRay() && my_level() >= 12 &&
+	// get war outfit if have yr available. 
+	// check for lvl 9 as that is when "L12_preOutfit" will try to get the prewar outfit. Better to summon and skip to war outfit
+	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && canYellowRay() && my_level() >= 9 &&
 		(canSummonMonster($monster[War Frat 151st Infantryman]) || 
 		canSummonMonster($monster[War Frat Mobile Grill Unit]) ||
 		canSummonMonster($monster[orcish frat boy spy])))
