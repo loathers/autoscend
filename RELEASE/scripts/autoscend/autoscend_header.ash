@@ -471,6 +471,11 @@ boolean auto_sendAutumnaton(location loc);
 void auto_autumnatonQuest();
 
 ########################################################################################################
+//Defined in autoscend/iotms/mr2023.ash
+boolean isRockGardenAvailable();
+void pickRocks();
+
+########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
 boolean isActuallyEd();
 int ed_spleen_limit();
