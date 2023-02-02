@@ -666,6 +666,11 @@ void auto_checkTrainSet()
 	int five = 1; //meat
 	int six = 2; //mp regen
 	int seven;
+	//Initialize trapper to know whether we have enough ore or not
+	int L8Step = internalQuestStatus("questL08Trapper");
+	if (my_level>=8 && L8Step==0){
+		L8_trapperTalk();
+	}
 	if (needOre()){
 		seven = 20; //ore
 	} 
