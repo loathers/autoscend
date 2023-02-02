@@ -1,4 +1,5 @@
 LX_freeCombatsTask
+LX_unlockPirateRealm
 catBurglarHeist
 auto_breakfastCounterVisit
 chateauPainting
@@ -23,7 +24,6 @@ LX_loggingHatchet
 LX_guildUnlock
 LX_bitchinMeatcar	LX_bitchinMeatcar_condition
 LX_unlockDesert
-LX_unlockPirateRealm
 handleRainDoh
 routineRainManHandler
 LX_spookyravenManorFirstFloor
