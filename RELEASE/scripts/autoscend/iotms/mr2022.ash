@@ -668,7 +668,7 @@ void auto_checkTrainSet()
 	int seven;
 	//Initialize trapper to know whether we have enough ore or not
 	int L8Step = internalQuestStatus("questL08Trapper");
-	if (my_level>=8 && L8Step==0){
+	if (my_level()>=8 && L8Step==0){
 		L8_trapperTalk();
 	}
 	if (needOre()){
@@ -697,7 +697,7 @@ void auto_checkTrainSet()
 		}
 	}
 	int eight = 13; //monster level
-	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int()){
+	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && ash get_property("auto_MLSafetyLimit") != ""){
 		eight = 9; //cold res, stench dmg
 	}
 	string page = visit_url("campground.php?action=workshed");
