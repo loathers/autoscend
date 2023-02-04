@@ -1330,37 +1330,6 @@ boolean L11_aridDesert()
 	return true;
 }
 
-boolean L11_wishForBaaBaaBuran()
-{
-	if (!canGenieCombat() )
-	{
-		return false;
-	}
-	if(!auto_shouldUseWishes())
-	{
-		auto_log_warning("Skipping wishing for Baa'baa'bu'ran because auto_useWishes=false", "red");
-	}
-	else
-	{
-		auto_log_info("I'm sorry we don't already have stone wool. You might even say I'm sheepish. Sheep wish.", "blue");
-		handleFamiliar("item");
-		if((numeric_modifier("item drop") >= 100))
-		{
-			if (!makeGenieCombat($monster[Baa\'baa\'bu\'ran]) || item_amount($item[Stone Wool]) == 0)
-			{
-				auto_log_warning("Wishing for stone wool failed.", "red");
-				return false;
-			}
-			return true;
-		}
-		else
-		{
-			auto_log_warning("Never mind, we couldn't get a mere +100% item for the Baa'baa'bu'ran wish.", "red");
-		}
-	}
-	return false;
-}
-
 boolean L11_unlockHiddenCity() 
 {
 	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2) 
@@ -1375,6 +1344,16 @@ boolean L11_unlockHiddenCity()
 	auto_log_info("Searching for the Hidden City", "blue");
 	if(!in_glover() && !in_tcrs()) 
 	{
+		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]))
+		{
+			//attempt to summon before using a clover
+			handleFamiliar("item");
+			addToMaximize("20 item 400max");
+			if(summonMonster($monster[Baa\'baa\'bu\'ran]))
+			{
+				return true;
+			}
+		}
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && cloversAvailable() > 0) 
 		{
 			//use clover to get 2x Stone Wool
@@ -1386,12 +1365,7 @@ boolean L11_unlockHiddenCity()
 		}
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
-			//couldn't clover for stone wool. Try to get with a wish
-			L11_wishForBaaBaaBuran();
-		}
-		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
-		{
-			//couldn't wish for stone wool. Try to pull one
+			//try to pull stone wool
 			pullXWhenHaveY($item[Stone Wool], 1, 0);
 		}
 

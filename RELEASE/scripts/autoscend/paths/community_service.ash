@@ -464,7 +464,7 @@ boolean LA_cs_communityService()
 			{
 				if(contains_text($location[The Haunted Pantry].combat_queue, to_string($monster[Possessed Can of Tomatoes])))
 				{
-					if(timeSpinnerCombat($monster[Possessed Can of Tomatoes], "cs_combatNormal"))
+					if(timeSpinnerCombat($monster[Possessed Can of Tomatoes], "cs_combatNormal", false))
 					{
 						return true;
 					}
@@ -485,7 +485,7 @@ boolean LA_cs_communityService()
 			{
 				if(contains_text($location[The Skeleton Store].combat_queue, $monster[Novelty Tropical Skeleton]))
 				{
-					if(timeSpinnerCombat($monster[Novelty Tropical Skeleton], "cs_combatNormal"))
+					if(timeSpinnerCombat($monster[Novelty Tropical Skeleton], "cs_combatNormal", false))
 					{
 						return true;
 					}
@@ -599,7 +599,7 @@ boolean LA_cs_communityService()
 
 					if(contains_text($location[The Secret Government Laboratory].combat_queue, $monster[Government Scientist]))
 					{
-						if(timeSpinnerCombat($monster[Government Scientist], "cs_combatNormal"))
+						if(timeSpinnerCombat($monster[Government Scientist], "cs_combatNormal", false))
 						{
 							return true;
 						}

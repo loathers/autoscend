@@ -1,8 +1,8 @@
 LX_freeCombatsTask
+LX_unlockPirateRealm
 catBurglarHeist
 auto_breakfastCounterVisit
 chateauPainting
-LX_faxing
 LX_artistQuest
 LX_galaktikSubQuest
 LX_armorySideQuest
@@ -11,6 +11,7 @@ L9_leafletQuest
 L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
+LX_summonMonster
 LM_edTheUndying
 LX_bugbearInvasion
 LX_lowkeySummer
@@ -23,7 +24,6 @@ LX_loggingHatchet
 LX_guildUnlock
 LX_bitchinMeatcar	LX_bitchinMeatcar_condition
 LX_unlockDesert
-LX_unlockPirateRealm
 handleRainDoh
 routineRainManHandler
 LX_spookyravenManorFirstFloor
