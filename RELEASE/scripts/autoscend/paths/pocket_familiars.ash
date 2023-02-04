@@ -36,7 +36,7 @@ boolean pokefam_makeTeam()
 	if(in_pokefam())
 	{
 		// Choose "strongest 2" in order to allow a middle spot for a pocket familiar to level up and earn pokebucks.
-		if(svn_info("Ezandora-Helix-Fossil-branches-Release").revision > 0)
+		if(svn_exists("Ezandora-Helix-Fossil-branches-Release") || git_exists("Ezandora-Helix-Fossil-Release"))
 		{
 		auto_log_info("Setting our team via Ezandora:", "green");
 		boolean ignore = cli_execute("PocketFamiliarsAutoSelect Strongest 2;");
