@@ -4,4 +4,3 @@ github Ezandora/Far-Future Release
 github gausie/excavator
 github midgleyc/Voting-Booth
 https://github.com/Ezandora/Comb-Beach/trunk/Release/
-https://svn.code.sf.net/p/zlib/code

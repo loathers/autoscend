@@ -10,7 +10,6 @@ since r27108;	// new 8-bit realm
 import <autoscend/autoscend_header.ash>
 import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
 import <autoscend/autoscend_migration.ash>
-import <auto_canadv.ash>
 
 import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
