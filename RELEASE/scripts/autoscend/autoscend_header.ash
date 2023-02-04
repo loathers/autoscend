@@ -468,7 +468,7 @@ boolean auto_autumnatonReadyToQuest();
 location auto_autumnatonQuestingIn();
 boolean auto_autumnatonCheckForUpgrade(string upgrade);
 boolean auto_sendAutumnaton(location loc);
-void auto_autumnatonQuest();
+boolean auto_autumnatonQuest();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

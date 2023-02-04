@@ -511,9 +511,9 @@ boolean auto_sendAutumnaton(location loc)
 	return false;
 }
 
-void auto_autumnatonQuest()
+boolean auto_autumnatonQuest()
 {
-	if(!auto_autumnatonReadyToQuest()) return;
+	if(!auto_autumnatonReadyToQuest()) return false;
 
 	// complete any pending upgrades if it just returned
 	if (total_turns_played() == get_property("autumnatonQuestTurn").to_int() + 1)
@@ -526,7 +526,7 @@ void auto_autumnatonQuest()
 	{
 		if(auto_sendAutumnaton($location[The Haunted Pantry]))
 		{
-			return;
+			return false;
 		}
 		else
 		{
@@ -537,28 +537,22 @@ void auto_autumnatonQuest()
 	if(!auto_autumnatonCheckForUpgrade("leftleg1"))
 	{
 		// some bat zones may not be adventured in, so try them all
-		if(auto_sendAutumnaton($location[Guano Junction])) return;
-		if(auto_sendAutumnaton($location[The Batrat And Ratbat Burrow])) return;
-		if(auto_sendAutumnaton($location[The Beanbat Chamber])) return;
-		if(auto_sendAutumnaton($location[Noob Cave])) return;
+		if(auto_sendAutumnaton($location[Guano Junction])) return false;
+		if(auto_sendAutumnaton($location[The Batrat And Ratbat Burrow])) return false;
+		if(auto_sendAutumnaton($location[The Beanbat Chamber])) return false;
+		if(auto_sendAutumnaton($location[Noob Cave])) return false;
 	}
 
 	if(!auto_autumnatonCheckForUpgrade("rightleg1"))
 	{
-		if(auto_sendAutumnaton($location[The Haunted Library])) return;
-		if(auto_sendAutumnaton($location[The Neverending Party])) return;
-		if(auto_sendAutumnaton($location[The Haunted Kitchen])) return;
+		if(auto_sendAutumnaton($location[The Haunted Library])) return false;
+		if(auto_sendAutumnaton($location[The Neverending Party])) return false;
+		if(auto_sendAutumnaton($location[The Haunted Kitchen])) return false;
 	}
 
 	if(!auto_autumnatonCheckForUpgrade("rightarm1"))
 	{
-		if(auto_sendAutumnaton($location[The Overgrown Lot])) return;
-	}
-
-	// acquire items to help quests
-	if(fastenerCount() < 30 && lumberCount() < 30)
-	{
-		if(auto_sendAutumnaton($location[The Smut Orc Logging Camp])) return;
+		if(auto_sendAutumnaton($location[The Overgrown Lot])) return false;
 	}
 
 	// should we go regardless of if we have arm upgrades?
@@ -567,13 +561,37 @@ void auto_autumnatonQuest()
 	 item_amount($item[barrel of gunpowder]) < 5 && 
 	 get_property("sidequestLighthouseCompleted") == "none")
 	{
-		if(auto_sendAutumnaton($location[Sonofa Beach])) return;
+		location targetLocation = $location[Sonofa Beach];
+		if(!auto_autumnatonCanAdv(targetLocation) && zone_available(targetLocation))
+		{
+			// force one turn in zone to unlock it for bot
+			return autoAdv(1, targetLocation);
+		}
+		if(auto_sendAutumnaton(targetLocation)) return false;
+	}
+
+	// acquire items to help quests
+	if(fastenerCount() < 30 && lumberCount() < 30)
+	{
+		location targetLocation = $location[The Smut Orc Logging Camp];
+		if(!auto_autumnatonCanAdv(targetLocation) && zone_available(targetLocation))
+		{
+			// force one turn in zone to unlock it for bot
+			return autoAdv(1, targetLocation);
+		}
+		if(auto_sendAutumnaton(targetLocation)) return false;
 	}
 
 	if(hedgeTrimmersNeeded() > 0)
 	{
-		if(auto_sendAutumnaton($location[Twin Peak])) return;
+		location targetLocation = $location[Twin Peak];
+		if(!auto_autumnatonCanAdv(targetLocation) && zone_available(targetLocation))
+		{
+			// force one turn in zone to unlock it for bot
+			return autoAdv(1, targetLocation);
+		}
+		if(auto_sendAutumnaton(targetLocation)) return false;
 	}
 
-	return;
+	return false;
 }

@@ -1756,10 +1756,10 @@ boolean doTasks()
 		}
 	}
 
-		if(theSource_oracle())				return true;
+	if(theSource_oracle())				return true;
 	if(LX_theSource())					return true;
 	if(LX_ghostBusting())				return true;
-	if(witchessFights())					return true;
+	if(witchessFights())				return true;
 
 	//
 	//Adventuring actually starts here.
@@ -1786,12 +1786,13 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if(LM_bond())						return true;
-	if(LX_calculateTheUniverse())				return true;
+	if(LX_calculateTheUniverse())		return true;
 	adventureFailureHandler();
 	dna_sorceressTest();
 	dna_generic();
 	if(LA_wildfire())					return true;
 	if(LA_robot())						return true;
+	if(auto_autumnatonQuest())			return true;
 	
 	if (process_tasks()) return true;
 
