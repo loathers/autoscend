@@ -101,7 +101,6 @@ boolean handleRainDoh();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2013.ash
-void handleJar();
 void makeStartingSmiths();
 boolean didWePlantHere(location loc);
 void trickMafiaAboutFlorist();
@@ -938,6 +937,7 @@ boolean L6_dakotaFanning();
 ########################################################################################################
 //Defined in autoscend/quests/level_07.ash
 void cyrptChoiceHandler(int choice);
+int cyrptEvilBonus(boolean inCombat);
 int cyrptEvilBonus();
 boolean L7_crypt();
 boolean L7_override();
@@ -1083,7 +1083,7 @@ boolean needStarKey();
 boolean needDigitalKey();
 int towerKeyCount();
 int towerKeyCount(boolean effective);
-int whitePixelCount();
+int EightBitScore();
 boolean LX_getDigitalKey();
 void LX_buyStarKeyParts();
 boolean LX_getStarKey();

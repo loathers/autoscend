@@ -454,6 +454,12 @@ boolean auto_autumnatonCanAdv(location canAdventureInloc)
 		return false;
 	}
 
+	if(canAdventureInloc.turns_spent == 0 && !($locations[Noob Cave, The Haunted Pantry, The Sleazy Back Alley] contains canAdventureInloc))
+	{
+		//zones have turn spent requirement except initial three
+		return false;
+	}
+
 	if(canAdventureInloc == $location[8-bit realm] && possessEquipment($item[continuum transfunctioner]) && auto_is_valid($item[continuum transfunctioner]))
 	{
 		equip($item[continuum transfunctioner]);
@@ -567,19 +573,6 @@ void auto_autumnatonQuest()
 	if(hedgeTrimmersNeeded() > 0)
 	{
 		if(auto_sendAutumnaton($location[Twin Peak])) return;
-	}
-
-	if(!contains_text(get_property("nsTowerDoorKeysUsed"), "digital key") &&
-	item_amount($item[Digital Key]) == 0 &&
-	creatable_amount($item[Digital Key]) == 0 &&
-	!auto_hasPowerfulGlove())
-	{
-		if(!possessEquipment($item[continuum transfunctioner]) && my_level() >= 2)
-		{
-			// unlock 8-bit zone
-			woods_questStart();
-		}
-		if(auto_sendAutumnaton($location[8-bit realm])) return;
 	}
 
 	return;

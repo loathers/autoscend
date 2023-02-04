@@ -21,10 +21,6 @@ boolean needDigitalKey()
 	{
 		return false;
 	}
-	if(whitePixelCount() >= 30)
-	{
-		return false;
-	}
 
 	return true;
 }
@@ -64,16 +60,17 @@ int towerKeyCount(boolean effective)
 	return tokens;
 }
 
-int whitePixelCount()
+int EightBitScore()
 {
-	return item_amount($item[White Pixel]) + creatable_amount($item[White Pixel]);
+	int score = get_property("8BitScore").to_int();
+	return score;
 }
 
 boolean LX_getDigitalKey()
 {
 	//Acquire the [Digital Key]
 	
-	if(contains_text(get_property("nsTowerDoorKeysUsed"), "digital key"))
+	if(!needDigitalKey())
 	{
 		return false;
 	}
@@ -98,86 +95,57 @@ boolean LX_getDigitalKey()
 		}
 	}
 	
-	//craft the key if you can
-	if(creatable_amount($item[Digital Key]) > 0 && item_amount($item[Digital Key]) == 0)
+	// start quest and equip to refresh mafia's prefs
+	woods_questStart();
+	autoForceEquip($slot[acc3], $item[Continuum Transfunctioner]);
+
+	// buy key if you can
+	if(EightBitScore() >= 10000)
 	{
-		if(create(1, $item[Digital Key]))
+		equip($slot[Acc3], $item[continuum transfunctioner]);
+		visit_url("place.php?whichplace=8bit&action=8treasure");
+		run_choice(1);
+		if(!needDigitalKey())
 		{
 			return true;
 		}
-		else
-		{
-			abort("Mysteriously failed to craft [Digital Key] even though I should be able to make one. Make it manually then run me again");
-		}
-	}
-
-	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[8-Bit Realm].turns_spent > 0 && internalQuestStatus("questL13Final") != 5)
-	{
-		// delay zone to allow autumnaton to grab pixels
-		// unless we have ran out of other stuff to do
-		return false;
-	}
-	
-	//if you are at the tower door and still don't have it, pull some pixels to save adv. keeping 5 pulls for later.
-	boolean needLowKeyPixels = (in_lowkeysummer() ? (lowkey_needKey($item[Digital Key]) && lowkey_keysRemaining() == 1) : true);
-	// in low-key summer, only pull pixels if we have no other keys left to get. Otherwise this wastes pulls as it starts at the door.
-	if(whitePixelCount() < 30 && (internalQuestStatus("questL13Final") == 5 && needLowKeyPixels) && canPull($item[white pixel]))
-	{
-		int pulls_needed = min((pulls_remaining()-5), 30 - whitePixelCount());
-		pullXWhenHaveY($item[white pixel], pulls_needed, item_amount($item[white pixel]));	//do not use whitePixelCount() in this line.
-	}
-	
-	//Powerful Glove drops lots of white pixels, don't spend adv on it if you have the glove
-	//But if you reach tower door without the key then continue on to spend adv to get its components.
-	if(auto_hasPowerfulGlove() && internalQuestStatus("questL13Final") < 5)
-	{
-		return false;
 	}
 	
 	//Spend adventures to get the digital key
 	boolean adv_spent = false;
-	if(get_property("auto_crackpotjar") == "")
+
+	string color = get_property("8BitColor");
+	switch(color)
 	{
-		if(item_amount($item[Jar Of Psychoses (The Crackpot Mystic)]) == 0)
-		{
-			pullXWhenHaveY($item[Jar Of Psychoses (The Crackpot Mystic)], 1, 0);
-		}
-		if(item_amount($item[Jar Of Psychoses (The Crackpot Mystic)]) == 0)
-		{
-			set_property("auto_crackpotjar", "fail");
-		}
-		else
-		{
-			woods_questStart();
-			use(1, $item[Jar Of Psychoses (The Crackpot Mystic)]);
-			set_property("auto_crackpotjar", "done");
-		}
+		case "black":	
+			provideInitiative(600, $location[Vanya\'s Castle], true);	
+			addToMaximize("200initiative 800max");
+			adv_spent = autoAdv($location[Vanya\'s Castle]);
+			break;
+		case "red":
+			buffMaintain($effect[Polka of Plenty], 30, 1, 1);
+			addToMaximize("200meat drop 550max");
+			adv_spent = autoAdv($location[The Fungus Plains]);
+			break;
+		case "blue":
+			buffMaintain($effect[Ghostly Shell], 30, 1, 1);			//+80 DA. 6 MP
+			buffMaintain($effect[Astral Shell], 30, 1, 1);			//+80 DA, 10 MP
+			buffMaintain($effect[Feeling Peaceful], 0, 1, 1);
+			addToMaximize("200DA 600max");
+			adv_spent = autoAdv($location[Megalo-City]);
+			break;
+		case "green":
+			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
+			buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
+			addToMaximize("200item 500max");
+			adv_spent = autoAdv($location[Hero\'s Field]);
+			break;
+		default:
+			abort("Property 8BitColor not set to a valid value");
+			break;
 	}
-	auto_log_info("Getting white pixels: Have " + whitePixelCount(), "blue");
-	if(get_property("auto_crackpotjar") == "done")
-	{
-		set_property("choiceAdventure644", 3);
-		adv_spent = autoAdv(1, $location[Fear Man\'s Level]);
-		if(have_effect($effect[Consumed By Fear]) == 0)
-		{
-			auto_log_warning("Well, we don't seem to have further access to the Fear Man area so... abort that plan", "red");
-			set_property("auto_crackpotjar", "fail");
-		}
-	}
-	else if(get_property("auto_crackpotjar") == "fail")
-	{
-		woods_questStart();
-		autoEquip($slot[acc3], $item[Continuum Transfunctioner]);
-		if(auto_saberChargesAvailable() > 0)
-		{
-			autoEquip($item[Fourth of May cosplay saber]);
-		}
-		if (canSniff($monster[Blooper], $location[8-bit Realm]) && auto_mapTheMonsters())
-		{
-			auto_log_info("Attemping to use Map the Monsters to olfact a Blooper.");
-		}
-		adv_spent = autoAdv($location[8-bit Realm]);
-	}
+	auto_log_info("Current 8bit score: " + EightBitScore() + "/10000");
+
 	return adv_spent;
 }
 

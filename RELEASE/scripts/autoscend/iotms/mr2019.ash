@@ -589,7 +589,7 @@ boolean auto_spoonReadyToTuneMoon()
 		abort("Something weird is going on with auto_spoonsign. It's not an invalid/blank value, but also not a knoll, canadia, or gnomad sign? This is impossible.");
 	}
 
-	if(my_sign() == "Vole" && (get_property("cyrptAlcoveEvilness").to_int() > 26 || get_property("questL07Cyrptic") == "unstarted"))
+	if(my_sign() == "Vole" && (get_property("cyrptAlcoveEvilness").to_int() > 14 + cyrptEvilBonus() || get_property("questL07Cyrptic") == "unstarted"))
 	{
 		// we want to stay vole long enough to do the alcove, since the initiative helps
 		return false;
@@ -609,10 +609,19 @@ boolean auto_spoonReadyToTuneMoon()
 			// we want to get the meatcar via the knoll store
 			return false;
 		}
-		if((auto_get_campground() contains $item[Asdon Martin Keyfob]) && is_unrestricted($item[Asdon Martin Keyfob]))
+		if((auto_get_campground() contains $item[Asdon Martin Keyfob]) && is_unrestricted($item[Asdon Martin Keyfob]) ||
+		   (auto_is_valid($familiar[cookbookbat]) && have_familiar($familiar[cookbookbat])))
 		{
 			// we want to get the bugbear outfit before switching away for easy bread access
 			if(!buyUpTo(1, $item[bugbear beanie]) || !buyUpTo(1, $item[bugbear bungguard]))
+			{
+				return false;
+			}
+		}
+		// We want the frilly skirt in LKS
+		if(in_lowkeysummer())
+		{
+			if(!buyUpTo(1, $item[frilly skirt]))
 			{
 				return false;
 			}
