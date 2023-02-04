@@ -469,6 +469,8 @@ location auto_autumnatonQuestingIn();
 boolean auto_autumnatonCheckForUpgrade(string upgrade);
 boolean auto_sendAutumnaton(location loc);
 boolean auto_autumnatonQuest();
+boolean auto_hasSpeakEasy();
+int auto_remainingSpeakeasyFreeFights();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

@@ -242,6 +242,13 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 		logRemainingFights("Tend to Mushroom Garden = 1"); //Not actually a free fight, but included to ensure carried out at bedtime.
 	}
 
+	if(auto_hasSpeakEasy() && auto_remainingSpeakeasyFreeFights() < 3)
+	{
+		int temp = auto_remainingSpeakeasyFreeFights();
+		count += temp;
+		logRemainingFights("Oliver's Place = " + temp);
+	}
+
 	return count;
 }
 
@@ -355,6 +362,14 @@ boolean LX_freeCombats(boolean powerlevel)
 	{
 		auto_log_debug("LX_freeCombats is calling evokeEldritchHorror()");
 		if(evokeEldritchHorror()) return true;
+	}
+
+	if(auto_hasSpeakEasy() && auto_remainingSpeakeasyFreeFights() < 3)
+	{
+		auto_log_debug("LX_freeCombats is adventuring in [An Unusually Quiet Barroom Brawl]");
+		adv_done = autoAdv(1, $location[An Unusually Quiet Barroom Brawl]);
+		loopHandlerDelayAll();
+		if(adv_done) return true;
 	}
 	
 	if(auto_freeCombatsRemaining() == 0)

@@ -595,3 +595,14 @@ boolean auto_autumnatonQuest()
 
 	return false;
 }
+
+boolean auto_hasSpeakEasy()
+{
+	return auto_is_valid($item[deed to Oliver\'s Place]) && get_property("ownsSpeakeasy").to_boolean();
+}
+
+int auto_remainingSpeakeasyFreeFights()
+{
+	if(!auto_hasSpeakEasy()) return 0;
+	return max(3 - get_property("_speakeasyFreeFights").to_int(), 0);
+}
