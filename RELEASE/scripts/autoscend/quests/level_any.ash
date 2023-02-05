@@ -775,14 +775,14 @@ boolean LX_setWorkshed(){
 				use(1, $item[cold medicine cabinet]);
 				return true;
 			}
-			if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
-			{
-				use(1, $item[portable mayo clinic]);
-				return true;
-			}
 			if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0))
 			{
 				use(1, $item[little geneticist dna-splicing lab]);
+				return true;
+			}
+			if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
+			{
+				use(1, $item[portable mayo clinic]);
 				return true;
 			}
 			return false;
