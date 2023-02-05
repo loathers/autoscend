@@ -740,7 +740,7 @@ boolean LX_setWorkshed(){
 	string existingShed = get_workshed();
 	string workshedChanged = get_property("_workshedItemUsed");
 
-	if (workshedChanged) return false; //Don't even try if the workshed has already been changed once
+	if (workshedChanged == "true") return false; //Don't even try if the workshed has already been changed once
 
 	//Check to make sure we can use the workshed item and that it isn't already in the campground. If already in campground, return false also
 	//These first 2 ifs are only used if something other than auto is specified
@@ -754,7 +754,7 @@ boolean LX_setWorkshed(){
 		return false;
 	}
 	//Auto workshed changing
-	if((contains_text(desiredShed,"auto"))
+	if(contains_text(desiredShed,"auto"))
 	{
 		//Check if there is enough lumber for orcs. The existing shed check is because we only want to go into this
 		//if statement once to use the best available workshed
@@ -787,7 +787,7 @@ boolean LX_setWorkshed(){
 			}
 			return false;
 		}
-		else //once we have enough fasteners
+		if((fastenerCount() >= 30 && lumberCount() >= 30)) //once we have enough fasteners
 		{
 			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
 			{
@@ -812,4 +812,5 @@ boolean LX_setWorkshed(){
 			return false; //return false if no other workshed is available
 		}		
 	}
+	return false;
 }
