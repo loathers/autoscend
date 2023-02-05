@@ -1,5 +1,6 @@
 LM_jarlsberg
 LX_freeCombatsTask
+LX_unlockPirateRealm
 auto_breakfastCounterVisit
 chateauPainting
 LX_setWorkshed
@@ -11,8 +12,8 @@ L9_leafletQuest
 L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
+LX_summonMonster
 LX_dinseylandfillFunbucks
-LX_unlockPirateRealm
 handleRainDoh
 L11_shenStartQuest
 LX_guildUnlock
