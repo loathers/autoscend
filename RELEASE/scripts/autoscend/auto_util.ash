@@ -686,165 +686,6 @@ int estimatedTurnsLeft()
 	return turns;
 }
 
-boolean summonMonster()
-{
-	return summonMonster("");
-}
-
-boolean summonMonster(string option)
-{
-	int turns_left = estimatedTurnsLeft();
-
-	int bootyCalls = 0;
-	int rainCalls = 0;
-	if(item_amount($item[Genie Bottle]) > 0)
-	{
-		int wishesLeft = 3 - get_property("_genieWishesUsed").to_int();
-		wishesLeft = max(wishesLeft, 3 - get_property("_genieFightsUsed").to_int());
-		bootyCalls += wishesLeft;
-	}
-	if(item_amount($item[Clan VIP Lounge Key]) > 0)
-	{
-		if(!get_property("_photocopyUsed").to_boolean())
-		{
-			bootyCalls++;
-		}
-	}
-	if(in_heavyrains())
-	{
-		int rain = my_rain() + (turns_left * 0.85);
-		rainCalls = rain / 50;
-		bootyCalls += rainCalls;
-	}
-
-	boolean canWink = false;
-	int winkPower = 0;
-	monster winkMonster = $monster[none];
-	if(have_familiar($familiar[Reanimated Reanimator]))
-	{
-		if(get_property("_badlyRomanticArrows").to_int() == 0)
-		{
-			canWink = true;
-		}
-		winkPower = 3 - get_property("_romanticFightsLeft").to_int();
-		winkMonster = get_property("romanticTarget").to_monster();
-	}
-
-	int[8] digitizeArray = {0, 7, 27, 57, 97, 147, 207, 277};
-	boolean canDigitize = false;
-	int digitizeLeft = 0;
-	int digitizePower = 0;
-	boolean digitizeRedigitize = false;
-	monster digitizeMonster = $monster[none];
-	if(auto_get_campground() contains $item[Source Terminal])
-	{
-		digitizeLeft = 3 - get_property("_sourceTerminalDigitizeUses").to_int();
-
-		if(get_property("_sourceTerminalDigitizeMonsterCount").to_int() >= 3)
-		{
-			//We possibly want to see if we can redigitize the monster on arrival of the last digitize.
-			digitizeRedigitize = true;
-			//Only the Ghost in HR is probably something we care about here.
-		}
-		if(digitizeLeft < 3)
-		{
-			digitizeMonster = get_property("_sourceTerminalDigitizeMonster").to_monster();
-		}
-
-		if(digitizeMonster == $monster[none])
-		{
-			digitizePower = 0;
-			digitizeRedigitize = false;
-		}
-		if(digitizeLeft > 0)
-		{
-			canDigitize = true;
-		}
-	}
-
-	//Copiers
-
-	//print("Got bootycalls: " + bootyCalls);
-
-	//	Booty calls are direct summons, of which we can wink/digitize/enamorang
-
-	//	We need to take survival ability into account as well.
-
-	//	Raincalls must be used by end of run, anything else can be saved.
-	//		Note that rain man is handled already but may skip things.
-
-	record target
-	{
-		monster target;
-		int amt;
-	};
-
-	target[int] targets;
-
-	if(needStarKey())
-	{
-		if((item_amount($item[star chart]) == 0) && (item_amount($item[richard\'s star key]) == 0))
-		{
-			targets[count(targets)].target = $monster[Astronomer];
-			targets[count(targets)].amt = 1;
-		}
-		else
-		{
-			int stars = (9 - item_amount($item[Star])) / 2;
-			int lines = (8 - item_amount($item[Line])) / 2;
-			targets[count(targets)].target = $monster[Skinflute];
-			targets[count(targets)].amt = max(stars, lines);
-		}
-	}
-	if(item_amount($item[Barrel Of Gunpowder]) < 5)
-	{
-		int need = 5 - item_amount($item[Barrel Of Gunpowder]);
-		if(get_property("sidequestLighthouseCompleted") != "none")
-		{
-			need = 0;
-		}
-		if(need > 0)
-		{
-			targets[count(targets)].target = $monster[Lobsterfrogman];
-			targets[count(targets)].amt = need;
-		}
-	}
-	if(internalQuestStatus("questL08Trapper") < 3)
-	{
-		int have = min(item_amount($item[Ninja Rope]), 1);
-		have += min(item_amount($item[Ninja Crampons]), 1);
-		have += min(item_amount($item[Ninja Carabiner]), 1);
-		int need = 3 - have;
-		if(need > 0)
-		{
-			targets[count(targets)].target = $monster[Ninja Snowman Assassin];
-			targets[count(targets)].amt = need;
-		}
-	}
-
-#	if(get_property("lastSecondFloorUnlock").to_int() < my_ascensions())
-#	{
-#		int need = 5 - get_property("writingDesksDefeated").to_int();
-#		targets[count(targets)].target = $monster[Writing Desk];
-#		targets[count(targets)].amt = need;
-#	}
-
-	//	Racecar Bob 5
-	//	Pygmy Bowler 5+, Mountain Man 2+ (Special Case, when we have extra)
-	//	Frat Warrior for Outfit 1+ (Numberology)
-
-
-	//Should we do a zero check on amt just in case, probably.
-
-	//	Targets (all)
-	//	Lobsterfrogman 5, Ninja Snowman Assassin 3, Racecar Bob 5
-	//	Ghost 6+, Pygmy Bowler 5+, Mountain Man 2+, Skin Flute 4+, Astronomer 1+
-	//	Frat Warrior for Outfit 1+
-
-
-	return false;
-}
-
 boolean canYellowRay(monster target)
 {
 	# Use this to determine if it is safe to enter a yellow ray combat.
@@ -1956,30 +1797,140 @@ boolean auto_deleteMail(kmailObject msg)
 	return false;
 }
 
+boolean LX_summonMonster()
+{
+	// summon screambat if we are at last wall to knock down and don't have a sonar-in-a-biscuit
+	if(internalQuestStatus("questL04Bat") == 2 && (!auto_is_valid($item[Sonar-In-A-Biscuit]) || item_amount($item[Sonar-In-A-Biscuit]) == 0) &&
+		canSummonMonster($monster[screambat]))
+	{
+		if(summonMonster($monster[screambat])) return true;
+	}
+
+	// summon mountain man if we know the ore we need and still need 2 or more
+	// don't summon if we have model train set as it is an easy source of ore
+	item oreGoal = to_item(get_property("trapperOre"));
+	if(internalQuestStatus("questL08Trapper") < 2 && get_workshed() != $item[model train set] && oreGoal != $item[none] && 
+		item_amount(oreGoal) < 2 && canYellowRay() && canSummonMonster($monster[mountain man]))
+	{
+		adjustForYellowRayIfPossible();
+		if(summonMonster($monster[mountain man])) return true;
+	}
+
+	// only summon NSA if in hardcore as we will pull items in normal runs
+	if(internalQuestStatus("questL08Trapper") < 3 && in_hardcore() && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean())
+	{
+		auto_log_debug("Thinking about summoning ninja snowman assassin");
+		boolean wantSummonNSA = item_amount($item[ninja rope]) < 1 || 
+			item_amount($item[ninja carabiner]) < 1 || 
+			item_amount($item[ninja crampons]) < 1;
+		if(wantSummonNSA && canSummonMonster($monster[Ninja Snowman Assassin]))
+		{
+			if(summonMonster($monster[Ninja Snowman Assassin])) return true;
+		}
+	}
+
+	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && my_level() >= 9 && 
+		(lumberCount() < 30 || fastenerCount() < 30) && canSummonMonster($monster[smut orc pervert]))
+	{
+		// summon pervert here but handling of L9 quest will open box
+		if(summonMonster($monster[smut orc pervert])) return true;
+	}
+
+	// summon LFM if don't have autumnaton since that guarantees 1 turn to get 5 barrels
+	if(item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && 
+	my_level() >= 12 && !auto_hasAutumnaton() && canSummonMonster($monster[lobsterfrogman]))
+	{
+		if(summonMonster($monster[lobsterfrogman])) return true;
+	}
+
+	// get war outfit if have yr available. 
+	// check for lvl 9 as that is when "L12_preOutfit" will try to get the prewar outfit. Better to summon and skip to war outfit
+	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && canYellowRay() && my_level() >= 9 &&
+		(canSummonMonster($monster[War Frat 151st Infantryman]) || 
+		canSummonMonster($monster[War Frat Mobile Grill Unit]) ||
+		canSummonMonster($monster[orcish frat boy spy])))
+	{
+		adjustForYellowRayIfPossible();
+		// attempt to use calculate the universe
+		if(summonMonster($monster[War Frat 151st Infantryman])) return true;
+		// attempt to summon other sources of outfit
+		if(summonMonster($monster[War Frat Mobile Grill Unit])) return true;
+		if(summonMonster($monster[orcish frat boy spy])) return true;
+	}
+	if(!possessOutfit("War Hippy Fatigues") && auto_warSide() == "hippy" && canYellowRay() && my_level() >= 12 &&
+		(canSummonMonster($monster[War Hippy Airborne Commander]) || 
+		canSummonMonster($monster[war hippy spy])))
+	{
+		adjustForYellowRayIfPossible();
+		if(summonMonster($monster[War Hippy Airborne Commander])) return true;
+		if(summonMonster($monster[war hippy spy])) return true;
+	}
+
+	// summon astronomer if only missing star chart for star key
+	if(needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]))
+	{
+		if(summonMonster($monster[Astronomer])) return true;
+	}
+
+	return false;
+}
+
+boolean canSummonMonster(monster mon)
+{
+	return summonMonster(mon, true);
+}
+
 boolean summonMonster(monster mon)
 {
+	return summonMonster(mon, false);
+}
+
+boolean summonMonster(monster mon, boolean speculative)
+{
+	auto_log_debug((speculative ? "Checking if we can" : "Trying to") + " summon " + mon, "blue");
 	// methods which require specific circumstances
-	if(timeSpinnerCombat(mon))
+	if(mon == $monster[War Frat 151st Infantryman])
+	{	
+		// calculate the universe's only summon we want, so prioritize using it
+		if(LX_calculateTheUniverse(speculative))
+		{
+			auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+			return true;
+		}
+	}
+	if(timeSpinnerCombat(mon, speculative))
 	{
 		return true;
 	}
 	// methods which can only summon monsters should be attempted first
-	if(auto_fightLocketMonster(mon))
+	if(auto_fightLocketMonster(mon, speculative))
 	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
 		return true;
 	}
-	if(handleFaxMonster(mon))
+	if(handleFaxMonster(mon, !speculative))
 	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
 		return true;
 	}
 	// methods which can do more than summon monsters
-	if(auto_cargoShortsOpenPocket(mon))
+	if(auto_cargoShortsOpenPocket(mon, speculative))
 	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
 		return true;
 	}
-	if(auto_shouldUseWishes() && makeGenieCombat(mon))
+	if(auto_shouldUseWishes())
 	{
-		return true;
+		if(speculative && canGenieCombat())
+		{
+			auto_log_debug("Can summon " + mon, "blue");
+			return true;
+		}
+		else if(!speculative && makeGenieCombat(mon))
+		{
+			auto_log_debug("Did summon " + mon, "blue");
+			return true;
+		}
 	}
 
 	//todo

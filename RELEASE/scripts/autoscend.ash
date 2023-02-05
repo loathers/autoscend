@@ -411,7 +411,7 @@ boolean LX_burnDelay()
 }
 
 
-boolean LX_calculateTheUniverse()
+boolean LX_calculateTheUniverse(boolean speculative)
 {
 	if(in_wildfire())
 	{
@@ -427,26 +427,20 @@ boolean LX_calculateTheUniverse()
 	{
 		if(doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
 		{
-			return (doNumberology("battlefield") != -1);
+			if(speculative)
+			{
+				return true;
+			}
+			else
+			{
+				return (doNumberology("battlefield") != -1);
+			}
 		}
 		return false;	//we want 151 and can get it in general. but not right now. so save it for later
 	}
 	
 	doNumberology("adventures3");
 	return false;	//we do not want to restart the loop as all we're doing is generating 3 adventures
-}
-
-boolean LX_faxing()
-{
-	if (my_level() >= 9 && !get_property("_photocopyUsed").to_boolean() && isActuallyEd() && my_daycount() < 3 && !is_unrestricted($item[Deluxe Fax Machine]))
-	{
-		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-		if(handleFaxMonster($monster[Lobsterfrogman]))
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 boolean tophatMaker()
@@ -1788,7 +1782,7 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if(LM_bond())						return true;
-	if(LX_calculateTheUniverse())				return true;
+	if(LX_calculateTheUniverse(false))	return true;
 	adventureFailureHandler();
 	dna_sorceressTest();
 	dna_generic();

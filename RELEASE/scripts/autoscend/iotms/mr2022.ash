@@ -104,7 +104,7 @@ boolean auto_monsterInLocket(monster mon)
 	return captured contains mon;
 }
 
-boolean auto_fightLocketMonster(monster mon)
+boolean auto_fightLocketMonster(monster mon, boolean speculative)
 {
 	if(auto_CombatLoversLocketCharges() < 1)
 	{
@@ -119,6 +119,11 @@ boolean auto_fightLocketMonster(monster mon)
 	if(auto_haveReminiscedMonster(mon))
 	{
 		return false;
+	}
+
+	if(speculative)
+	{
+		return true;
 	}
 
 	auto_log_info("Using locket to summon " + mon.name, "blue");
