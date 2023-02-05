@@ -703,24 +703,24 @@ string LX_getDesiredWorkshed(){
 	//return the actual item name in case a shorthand is used
 	switch(currentWorkshed)
 	{
+		case "model train set":
 		case "train":
 			return "model train set";
-		case "model train set":
+		case "cold medicine cabinet":
 		case "cmc":
 			return "cold medicine cabinet";
-		case "cold medicine cabinet":
+		case "diabolic pizza cube": //unsupported
 		case "pizza": //unsupported
 			return "diabolic pizza cube";
-		case "diabolic pizza cube": //unsupported
+		case "Asdon Martin keyfob":
 		case "asdon":
 			return "Asdon Martin keyfob";
-		case "Asdon Martin keyfob":
+		case "portable mayo clinic":
 		case "mayo":
 			return "portable mayo clinic";
-		case "portable mayo clinic":
+		case "little geneticist dna-splicing lab":
 		case "dnalab":
 			return "little geneticist dna-splicing lab";
-		case "little geneticist dna-splicing lab":
 		case "snow machine": //unsupported
 		case "spinning wheel": //unsupported
 		case "warbear auto-anvil": //unsupported
@@ -738,34 +738,12 @@ string LX_getDesiredWorkshed(){
 boolean LX_setWorkshed(){
 	string desiredShed = LX_getDesiredWorkshed();
 	string existingShed = get_workshed();
+	string workshedChanged = get_property("_workshedItemUsed");
 
-	//set up an integer to make workshed check simpler especially if new worksheds are added
-	//later we check once train set's usefulness is done whether we can use Asdon or not
-	//if we can't we move to the next item. If we can, as long as existingShedInt does not equal 2,
-	//we would want to have the CMC installed. If, the user doesn't have, either of the top 3, we use
-	//the lab or mayo if the user doesn't have lab.
-	int existingShedInt = 0;
-	if (existingShed == "model train set")
-	{
-		existingShedInt = 1;
-	}
-	else if (existingShed == "Asdon Martin keyfob")
-	{
-		existingShedInt = 2;
-	}
-	else if (existingShed == "cold medicine cabinet")
-	{
-		existingShedInt = 3;
-	}
-	else if (existingShed == "little geneticist dna-splicing lab")
-	{
-		existingShedInt = 4;
-	}
-	else if (existingShed == "portable mayo clinic")
-	{
-		existingShedInt = 5;
-	}
-	//Check to make sure we can use the workshed item and that it isn't already in the campground. If already in campground, return true also
+	if (workshedChanged) return false; //Don't even try if the workshed has already been changed once
+
+	//Check to make sure we can use the workshed item and that it isn't already in the campground. If already in campground, return false also
+	//These first 2 ifs are only used if something other than auto is specified
 	if (auto_is_valid(to_item(desiredShed)) && (contains_text(existingShed, desiredShed) == false) && (item_amount(to_item(desiredShed)) > 0))
 	{
 		use(1, to_item(desiredShed));
@@ -775,64 +753,63 @@ boolean LX_setWorkshed(){
 	{
 		return false;
 	}
-	if ((contains_text(desiredShed,"auto")) && (fastenerCount() < 30 && lumberCount() < 30) && (existingShed == "none"))
+	//Auto workshed changing
+	if((contains_text(desiredShed,"auto"))
 	{
-		if ((auto_is_valid($item[model train set])) && (item_amount($item[model train set]) > 0))
+		//Check if there is enough lumber for orcs. The existing shed check is because we only want to go into this
+		//if statement once to use the best available workshed
+		if((fastenerCount() < 30 && lumberCount() < 30) && (existingShed == "none"))
 		{
-			use(1, $item[model train set]);
-			return true;
-		}
-		else{
+			if ((auto_is_valid($item[model train set])) && (item_amount($item[model train set]) > 0))
+			{
+				use(1, $item[model train set]);
+				return true;
+			}
 			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
 			{
 				use(1, $item[Asdon Martin keyfob]);
 				return true;
 			}
-			else if ((auto_is_valid($item[cold medicine cabinet])) && (item_amount($item[cold medicine cabinet]) > 0))
+			if ((auto_is_valid($item[cold medicine cabinet])) && (item_amount($item[cold medicine cabinet]) > 0))
 			{
 				use(1, $item[cold medicine cabinet]);
 				return true;
 			}
-			else if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
+			if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
 			{
 				use(1, $item[portable mayo clinic]);
 				return true;
 			}
-			else if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0))
+			if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0))
 			{
 				use(1, $item[little geneticist dna-splicing lab]);
 				return true;
 			}
-			else {
-				return false;
-			}
-		}
-	}
-	if((contains_text(desiredShed,"auto")) && ((fastenerCount() >= 30 && lumberCount() >= 30)) && (length(existingShed) > 0))
-	{
-		if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
-		{
-			use(1, $item[Asdon Martin keyfob]);
-			return true;
-		}
-		else if ((auto_is_valid($item[cold medicine cabinet])) && (item_amount($item[cold medicine cabinet]) > 0) && existingShedInt != 2)
-		{
-				use(1, $item[cold medicine cabinet]);
-				return true;
-		}
-		else if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0) && (existingShedInt < 2 || existingShedInt > 4))
-		{
-			use(1, $item[little geneticist dna-splicing lab]);
-			return true;
-		}
-		else if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0) && existingShedInt < 2)
-		{
-			use(1, $item[portable mayo clinic]);
-			return true;
-		}
-		else {
 			return false;
 		}
+		else //once we have enough fasteners
+		{
+			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
+			{
+				use(1, $item[Asdon Martin keyfob]);
+				return true;
+			}
+			if ((auto_is_valid($item[cold medicine cabinet])) && (item_amount($item[cold medicine cabinet]) > 0))
+			{
+					use(1, $item[cold medicine cabinet]);
+					return true;
+			}
+			if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0))
+			{
+				use(1, $item[little geneticist dna-splicing lab]);
+				return true;
+			}
+			if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
+			{
+				use(1, $item[portable mayo clinic]);
+				return true;
+			}
+			return false; //return false if no other workshed is available
+		}		
 	}
-	return false;
 }
