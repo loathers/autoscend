@@ -134,7 +134,7 @@ boolean auto_backupTarget()
 	}
 
 	// determine if we want to backup
-	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && my_level() >= 12;
+	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && my_level() >= 12 && !auto_hasAutumnaton();
 	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean();
 	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > (14 + cyrptEvilBonus()) && my_level() >= 6;
 
@@ -152,7 +152,7 @@ boolean auto_backupTarget()
 				return true;
 			break;
 		case $monster[sausage goblin]:
-			if(!wantBackupLFM && !wantBackupNSA && !wantBackupZmobie)
+			if(!wantBackupLFM && !wantBackupNSA && !wantBackupZmobie && auto_backupUsesLeft() > 5)
 				return true;
 			break;
 		case $monster[eldritch tentacle]:
