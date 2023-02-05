@@ -294,7 +294,8 @@ boolean L9_chasmBuild()
 	{
 		return false;	//delay for You, Robot path
 	}
-	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[The Smut Orc Logging Camp].turns_spent > 0)
+	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[The Smut Orc Logging Camp].turns_spent > 0 
+		&& (fastenerCount() < 30 || lumberCount() < 30))
 	{
 		// delay zone to allow autumnaton to grab bridge parts
 		// unless we have ran out of other stuff to do
@@ -318,13 +319,6 @@ boolean L9_chasmBuild()
 	if(get_property("chasmBridgeProgress").to_int() >= 30)
 	{
 		visit_url("place.php?whichplace=highlands&action=highlands_dude");
-		return true;
-	}
-
-	if (auto_is_valid($item[Smut Orc Keepsake Box]) && get_property("chasmBridgeProgress").to_int() < 30 && auto_cargoShortsOpenPocket(666))
-	{
- 		// fight Smut Orc Pervert from Cargo Shorts for a Smut Orc Keepsake Box
- 		use(1, $item[Smut Orc Keepsake Box]);
 		return true;
 	}
 

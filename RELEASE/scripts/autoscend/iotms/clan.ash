@@ -44,6 +44,11 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 	{
 		return false;
 	}
+	// don't try to fax unfaxable monsters
+	if($monsters[smut orc pervert, screambat] contains enemy)
+	{
+		return false;
+	}
 
 	auto_log_info("Using fax machine to summon " + enemy.name, "blue");
 
