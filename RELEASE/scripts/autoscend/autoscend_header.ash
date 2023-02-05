@@ -1086,6 +1086,8 @@ boolean needDigitalKey();
 int towerKeyCount();
 int towerKeyCount(boolean effective);
 int EightBitScore();
+boolean EightBitRealmHandler();
+boolean get8BitFatLootToken();
 boolean LX_getDigitalKey();
 void LX_buyStarKeyParts();
 boolean LX_getStarKey();

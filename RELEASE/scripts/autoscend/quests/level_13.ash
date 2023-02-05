@@ -66,6 +66,75 @@ int EightBitScore()
 	return score;
 }
 
+boolean EightBitRealmHandler()
+{
+	//Spend adventures to get the digital key
+	boolean adv_spent = false;
+
+	string color = get_property("8BitColor");
+	switch(color)
+	{
+		case "black":	
+			provideInitiative(600, $location[Vanya\'s Castle], true);	
+			addToMaximize("200initiative 800max");
+			adv_spent = autoAdv($location[Vanya\'s Castle]);
+			break;
+		case "red":
+			buffMaintain($effect[Polka of Plenty], 30, 1, 1);
+			addToMaximize("200meat drop 550max");
+			adv_spent = autoAdv($location[The Fungus Plains]);
+			break;
+		case "blue":
+			buffMaintain($effect[Ghostly Shell], 30, 1, 1);			//+80 DA. 6 MP
+			buffMaintain($effect[Astral Shell], 30, 1, 1);			//+80 DA, 10 MP
+			buffMaintain($effect[Feeling Peaceful], 0, 1, 1);
+			addToMaximize("200DA 600max");
+			adv_spent = autoAdv($location[Megalo-City]);
+			break;
+		case "green":
+			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
+			buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
+			addToMaximize("200item 500max");
+			adv_spent = autoAdv($location[Hero\'s Field]);
+			break;
+		default:
+			abort("Property 8BitColor not set to a valid value");
+			break;
+	}
+	auto_log_info("Current 8bit score: " + EightBitScore() + "/10000");
+
+	return adv_spent;
+}
+
+boolean get8BitFatLootToken()
+{
+	//Acquire the [Fat Loot Token] from 8 bit realm
+	
+	// start quest and equip to refresh mafia's prefs
+	woods_questStart();
+	autoForceEquip($slot[acc3], $item[Continuum Transfunctioner]);
+
+	// buy fat loot token if you can
+	if(EightBitScore() >= 20000)
+	{
+		equip($slot[Acc3], $item[continuum transfunctioner]);
+		visit_url("place.php?whichplace=8bit&action=8treasure");
+		if(available_choice_options() contains 2)
+		{
+			run_choice(2);
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Thought we could buy fat loot token in 8-Bit Realm but was unable.");
+			auto_log_warning("Current score = " + EightBitScore());
+			return false;
+		}
+	}
+	
+	return EightBitRealmHandler();
+}
+
 boolean LX_getDigitalKey()
 {
 	//Acquire the [Digital Key]
@@ -111,42 +180,7 @@ boolean LX_getDigitalKey()
 		}
 	}
 	
-	//Spend adventures to get the digital key
-	boolean adv_spent = false;
-
-	string color = get_property("8BitColor");
-	switch(color)
-	{
-		case "black":	
-			provideInitiative(600, $location[Vanya\'s Castle], true);	
-			addToMaximize("200initiative 800max");
-			adv_spent = autoAdv($location[Vanya\'s Castle]);
-			break;
-		case "red":
-			buffMaintain($effect[Polka of Plenty], 30, 1, 1);
-			addToMaximize("200meat drop 550max");
-			adv_spent = autoAdv($location[The Fungus Plains]);
-			break;
-		case "blue":
-			buffMaintain($effect[Ghostly Shell], 30, 1, 1);			//+80 DA. 6 MP
-			buffMaintain($effect[Astral Shell], 30, 1, 1);			//+80 DA, 10 MP
-			buffMaintain($effect[Feeling Peaceful], 0, 1, 1);
-			addToMaximize("200DA 600max");
-			adv_spent = autoAdv($location[Megalo-City]);
-			break;
-		case "green":
-			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
-			buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
-			addToMaximize("200item 500max");
-			adv_spent = autoAdv($location[Hero\'s Field]);
-			break;
-		default:
-			abort("Property 8BitColor not set to a valid value");
-			break;
-	}
-	auto_log_info("Current 8bit score: " + EightBitScore() + "/10000");
-
-	return adv_spent;
+	return EightBitRealmHandler();
 }
 
 void LX_buyStarKeyParts()
@@ -783,6 +817,12 @@ boolean L13_sorceressDoor()
 
 	if(towerKeyCount() < 3)
 	{
+		if(towerKeyCount() == 2)
+		{
+			// get last fat loot token from 8-bit realm
+			// save until actually needed as takes many turns
+			return get8BitFatLootToken();
+		}
 		abort("Do not have enough hero keys");
 	}
 
