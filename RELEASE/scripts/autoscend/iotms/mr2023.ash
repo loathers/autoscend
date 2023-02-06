@@ -8,7 +8,7 @@ boolean auto_haveRockGarden()
 
 void rockGardenEnd() //broke these out so they aren't handled at the start of everyday but ASAP after numberology
 {
-	//while we will probably never get these, should handle them anyway
+	//while we will probably never get these automatically, should handle them anyway
 	if (item_amount($item[Molehill Mountain]) > 0 && !get_property("_molehillMountainUsed").to_boolean()){
 		use(1,$item[Molehill Mountain]);
 	}
