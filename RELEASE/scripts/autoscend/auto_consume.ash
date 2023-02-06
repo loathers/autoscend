@@ -120,7 +120,7 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		return false;
 	}
 
-	if(canOde(toDrink) && item_amount($item[hard rock] > 0)) //only want to hard rock if the booze is also Ode-able
+	if(canOde(toDrink) && item_amount($item[hard rock]) > 0) //only want to hard rock if the booze is also Ode-able
 	{
 		use(1, $item[hard rock]);
 	}
@@ -339,7 +339,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 			buyUpTo(1, $item[Mayoflex], 1000);
 			use(1, $item[Mayoflex]);
 		}
-		if(item_amount($item[whet stone] > 0)) //use whet stone if we got one from the rock garden
+		if(item_amount($item[whet stone]) > 0) //use whet stone if we got one from the rock garden
 		{
 			use(1, $item[whet stone]);
 		}

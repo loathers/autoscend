@@ -357,7 +357,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Flame-Retardant Trousers]:		useItem = $item[Hot Powder];					break;
 	case $effect[Flaming Weapon]:				useItem = $item[Hot Nuggets];					break;
 	case $effect[Flamibili Tea]:				useItem = $item[cuppa Flamibili Tea];			break;
-	case $effect[Flapper Dancin\']:				useItem = $item[flapperfly];					break;
+	case $effect[Flapper Dancin\']:				useItem = $item[flapper fly];					break;
 	case $effect[Flexibili Tea]:				useItem = $item[cuppa Flexibili Tea];			break;
 	case $effect[Flimsy Shield of the Pastalord]:
 		useSkill = $skill[Shield of the Pastalord];
