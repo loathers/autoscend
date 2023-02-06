@@ -53,7 +53,7 @@ void auto_SITCourse()
 		use(1,$item[filled mosquito]); //6 substats per turn
 	}
 	//Don't want the effect if we are level 13 and want instant karma
-	if(have_effect($effect[Wisdom of Others]) && (my_level() == 13 && !get_property("auto_disregardInstantKarma").to_boolean())){
+	if(have_effect($effect[Wisdom of Others]) > 0 && (my_level() == 13 && !get_property("auto_disregardInstantKarma").to_boolean())){
 		uneffect($effect[Wisdom of Others]);
 	}
 	return;
