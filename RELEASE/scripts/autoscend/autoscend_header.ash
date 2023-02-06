@@ -474,6 +474,7 @@ void auto_autumnatonQuest();
 ########################################################################################################
 //Defined in autoscend/iotms/mr2023.ash
 boolean auto_haveRockGarden();
+void rockGardenEnd();
 void pickRocks();
 boolean auto_haveSITCourse();
 void auto_SITCourse();

@@ -6,6 +6,20 @@ boolean auto_haveRockGarden()
 	return auto_is_valid(rockGarden) && auto_get_campground() contains rockGarden;
 }
 
+void rockGardenEnd() //broke these out so they aren't handled at the start of everyday but ASAP after numberology
+{
+	//while we will probably never get these, should handle them anyway
+	if (item_amount($item[Molehill Mountain]) > 0 && !get_property("_molehillMountainUsed").to_boolean()){
+		use(1,$item[Molehill Mountain]);
+	}
+
+	if((item_amount($item[strange stalagmite]) > 0) && !get_property("_strangeStalagmiteUsed").to_boolean())
+	{
+		use(1,$item[strange stalagmite]);
+	}
+	return;
+}
+
 void pickRocks()
 {
 	//Pick rocks everyday
@@ -18,16 +32,6 @@ void pickRocks()
 		visit_url("campground.php?action=rgarden2");
 	}
 	visit_url("campground.php?action=rgarden3");
-
-	//while we will probably never get these, should handle them anyway
-	if (item_amount($item[Molehill Mountain]) > 0 && !get_property("_molehillMountainUsed").to_boolean()){
-		use(1,$item[Molehill Mountain]);
-	}
-
-	if((item_amount($item[strange stalagmite]) > 0) && !get_property("_strangeStalagmiteUsed").to_boolean())
-	{
-		use(1,$item[strange stalagmite]);
-	}
 	return;
 }
 

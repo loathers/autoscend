@@ -1785,6 +1785,7 @@ boolean doTasks()
 	auto_setSongboom();
 	if(LM_bond())						return true;
 	if(LX_calculateTheUniverse(false))	return true;
+	rockGardenEnd();
 	adventureFailureHandler();
 	dna_sorceressTest();
 	dna_generic();
