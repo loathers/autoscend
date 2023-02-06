@@ -44,6 +44,7 @@ void auto_SITCourse()
 	if (!has_skill($skill[insectologist])){
 		use(1,$item[S.I.T. Course Completion Certificate]);
 		auto_run_choice(1484);
+		return;
 	}
 	//Use items as we get them
 	if(item_amount($item[filled mosquito] > 0 && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())))
