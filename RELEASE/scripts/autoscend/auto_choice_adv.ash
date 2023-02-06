@@ -632,6 +632,23 @@ boolean auto_run_choice(int choice, string page)
 		case 1475:
 			juneCleaverChoiceHandler(choice);
 			break;
+		case 1491:
+			if(my_primestat() == $stat[Muscle])
+			{
+				run_choice(1); // muscle stats
+			}
+			else if(my_primestat() == $stat[Mysticality])
+			{
+				run_choice(2); // myst stats
+			}
+			else // if no prime stat we still want moxie
+			{
+				run_choice(3); // moxie stats
+			}
+			break;
+		case 1494:
+			run_choice(2); //Insectologist (S.I.T. Course)
+			break;
 		default:
 			break;
 	}

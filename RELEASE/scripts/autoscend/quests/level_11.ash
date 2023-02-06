@@ -1009,6 +1009,10 @@ boolean L11_aridDesert()
 	{
 		return false;	//delay for You, Robot path
 	}
+	if(item_amount($item[milestone]) > 0) //use milestone if we got one from the rock garden
+	{
+		use(1, $item[milestone]);
+	}
 	
 	desert_buff_record dbr = desertBuffs();
 	int progress = dbr.progress;

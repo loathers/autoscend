@@ -473,8 +473,11 @@ void auto_autumnatonQuest();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2023.ash
-boolean isRockGardenAvailable();
+boolean auto_haveRockGarden();
+boolean canUseMolehill();
 void pickRocks();
+boolean auto_haveSITCourse();
+void auto_SITCourse();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
