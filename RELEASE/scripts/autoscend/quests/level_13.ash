@@ -124,6 +124,7 @@ boolean LX_getDigitalKey()
 			break;
 		case "red":
 			buffMaintain($effect[Polka of Plenty], 30, 1, 1);
+			buffMaintain($effect[Flapper Dancin\']);
 			addToMaximize("200meat drop 550max");
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
@@ -137,6 +138,7 @@ boolean LX_getDigitalKey()
 		case "green":
 			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
 			buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
+			buffMaintain($effect[Five Sticky Fingers]);
 			addToMaximize("200item 500max");
 			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;
@@ -1368,6 +1370,7 @@ boolean L13_towerNSTower()
 		buffMaintain($effect[Cranberry Cordiality]);
 		buffMaintain($effect[Big Meat Big Prizes]);
 		buffMaintain($effect[Patent Avarice]);
+		buffMaintain($effect[Flapper Dancin\']);
 		bat_formWolf();
 		if(auto_birdModifier("Meat Drop") > 0)
 		{
