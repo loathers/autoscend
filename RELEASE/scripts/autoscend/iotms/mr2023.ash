@@ -44,7 +44,6 @@ boolean auto_haveSITCourse()
 void auto_SITCourse()
 {
 	if (!auto_haveSITCourse()) return;
-	if (get_property("_sitCourseCompleted").to_boolean()) return; //return if already have used it for the day
 	//Best choice seems to be insectologist
 	if (!have_skill($skill[insectologist])){
 		use(1,$item[S.I.T. Course Completion Certificate]);
@@ -52,12 +51,12 @@ void auto_SITCourse()
 		return;
 	}
 	//Use items as we get them
-	if((item_amount($item[filled mosquito]) > 0 && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())))
+	if(((item_amount($item[filled mosquito]) > 0) && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())))
 	{
 		use(1,$item[filled mosquito]); //6 substats per turn
 	}
-	//Don't want the effect if we are level 13 and want instant karma
-	if(have_effect($effect[Wisdom of Others]) > 0 && (my_level() == 13 && !get_property("auto_disregardInstantKarma").to_boolean())){
+	//Don't want the effect once we are level 13 and want instant karma
+	if((have_effect($effect[Wisdom of Others]) > 0) && (my_level() == 13 && !get_property("auto_disregardInstantKarma").to_boolean())){
 		uneffect($effect[Wisdom of Others]);
 	}
 	return;
