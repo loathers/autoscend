@@ -623,7 +623,10 @@ void auto_checkTrainSet()
 	int one = 8; //doubler
 	int two;
 	int three;
+	int four;
 	if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) //check if we need more stats
+	//Or do we want the next line's if statement instead because this still generates so many stats
+	//if(my_level() < 12) //Double mainstat until we reach L12
 	{
 		if(my_primestat() == $stat[Muscle])
 		{
@@ -638,34 +641,40 @@ void auto_checkTrainSet()
 			two = 14;
 		}
 		three = 3; //all stats
-	}
-	else{
-		two = 4; //hot res, cold dmg
-		three = 11; //spooky res, sleaze dmg
-	}
-	int four;
-	if(fastenerCount() < 30 && lumberCount() < 30){
 		four = 6; //lumber mill
 	}
-	else{
-		if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) //check if we need more stats
+	else if(fastenerCount() < 30 || lumberCount() < 30)//Double lumber mill to clear orc bridge faster
+	{
+		two = 6; //lumber mill
+		if(my_primestat() == $stat[Muscle])
 		{
-			if(my_primestat() == $stat[Muscle])
-			{
-				four = 14; //Moxie for Muscle peeps
-			}
-			else if(my_primestat() == $stat[Mysticality])
-			{
-				four = 14; //Moxie for Mysticality peeps
-			}
-			else
-			{
-				four = 17; //Muscle for Moxie peeps
-			}
+			three = 17;
+		}
+		else if(my_primestat() == $stat[Mysticality])
+		{
+			three = 16;
 		}
 		else
 		{
-			four = 5; //stench res, spooky dmg
+			three = 14;
+		}
+		four = 3; //all stats
+	}
+	else //no need for main stats or bridge parts so lets do resistances and offstats
+	{
+		two = 11; //spooky res, sleaze dmg
+		three = 4; //hot res, cold dmg
+		if(my_primestat() == $stat[Muscle])
+		{
+			four = 14; //Moxie for Muscle peeps
+		}
+		else if(my_primestat() == $stat[Mysticality])
+		{
+			four = 14; //Moxie for Mysticality peeps
+		}
+		else
+		{
+			four = 17; //Muscle for Moxie peeps
 		}
 	}
 	int five = 1; //meat
@@ -681,24 +690,17 @@ void auto_checkTrainSet()
 	} 
 	else
 	{
-		if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) //check if we need more stats
+		if(my_primestat() == $stat[Muscle])
 		{
-			if(my_primestat() == $stat[Muscle])
-			{
-				seven = 16; //Mysticality for Muscle peeps
-			}
-			else if(my_primestat() == $stat[Mysticality])
-			{
-				seven = 17; //Muscle for Mysticality peeps
-			}
-			else
-			{
-				seven = 16; //Mysticality for Moxie peeps
-			}
+			seven = 16; //Mysticality for Muscle peeps
+		}
+		else if(my_primestat() == $stat[Mysticality])
+		{
+			seven = 17; //Muscle for Mysticality peeps
 		}
 		else
 		{
-			seven = 12; //sleaze res, hot dmg
+			seven = 16; //Mysticality for Moxie peeps
 		}
 	}
 	int eight = 13; //monster level
