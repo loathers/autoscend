@@ -4,7 +4,7 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 {
 	// See if we have any shirts worth wearing
 	boolean have_useful_shirt = false;
-	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac]
+	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac, jurassic parka]
 	{
 		have_useful_shirt = have_useful_shirt || (item_amount(it) != 0 && is_unrestricted(it));
 	}
