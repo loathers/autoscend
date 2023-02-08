@@ -746,7 +746,10 @@ void auto_checkTrainSet()
 	//only check for the page if it has been 0 turns or 40 turns since last configured and the configuration has changed
 	if ((turnsSinceTSConfigured == 0) || ((turnsSinceTSConfigured == 40) && changedTSConfig))
 	{
-		auto_modifyTrainSet(one, two, three, four, five, six, seven, eight);
+		string page = visit_url("campground.php?action=workshed"); //once it is available, still double check that we can actually change the config
+		if (contains_text(page,'value="Save Train Set Configuration"')){
+			auto_modifyTrainSet(one, two, three, four, five, six, seven, eight);
+		}
 		return;
 	}
 }
