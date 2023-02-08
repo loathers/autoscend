@@ -623,6 +623,26 @@ void auto_checkTrainSet()
 	19: copy last food drop
 	20: ore
 	*/
+	string [int] stationInts;
+	stationInts[1] = ["meat_mine"];
+	stationInts[2] = ["tower_fizzy"];
+	stationInts[3] = ["viewing_platform"];
+	stationInts[4] = ["tower_frozen"];
+	stationInts[5] = ["spooky_graveyard"];
+	stationInts[6] = ["logging_mill"];
+	stationInts[7] = ["candy_factory"];
+	stationInts[8] = ["coal_hopper"];
+	stationInts[9] = ["tower_sewage"];
+	stationInts[11] = ["oil_refinery"];
+	stationInts[12] = ["oil_bridge"];
+	stationInts[13] = ["water_bridge"];
+	stationInts[14] = ["groin_silo"];
+	stationInts[15] = ["grain_silo"];
+	stationInts[16] = ["brain_silo"];
+	stationInts[17] = ["brawn_silo"];
+	stationInts[18] = ["prawn_silo"];
+	stationInts[19] = ["trackside_diner"];
+	stationInts[20] = ["ore_hopper"];
 	int one = 8; //doubler
 	int two;
 	int three;
@@ -711,27 +731,8 @@ void auto_checkTrainSet()
 		eight = 9; //cold res, stench dmg
 	}
 	int turnsSinceTSConfigured = trainsetPosition - lastTrainsetConfiguration;
-	string expecetedConfig = one + "," + two + "," + three + "," + four + "," + five + "," + six + "," + seven + "," + eight;
-	//Replace expectedConfig numbers with their text equivalent
-	expectedConfig = replace_string(expectedString, ",1,", "meat_mine");
-	expectedConfig = replace_string(expectedString, ",2,", "tower_fizzy");
-	expectedConfig = replace_string(expectedString, ",3,", "viewing_platform");
-	expectedConfig = replace_string(expectedString, ",4,", "tower_frozen");
-	expectedConfig = replace_string(expectedString, ",5,", "spooky_graveyard");
-	expectedConfig = replace_string(expectedString, ",6,", "logging_mill");
-	expectedConfig = replace_string(expectedString, ",7,", "candy_factory");
-	expectedConfig = replace_string(expectedString, ",8,", "coal_hopper");
-	expectedConfig = replace_string(expectedString, ",9,", "tower_sewage");
-	expectedConfig = replace_string(expectedString, ",11,", "oil_refinery");
-	expectedConfig = replace_string(expectedString, ",12,", "oil_bridge");
-	expectedConfig = replace_string(expectedString, ",13,", "water_bridge");
-	expectedConfig = replace_string(expectedString, ",14,", "groin_silo");
-	expectedConfig = replace_string(expectedString, ",15,", "grain_silo");
-	expectedConfig = replace_string(expectedString, ",16,", "brain_silo");
-	expectedConfig = replace_string(expectedString, ",17,", "brawn_silo");
-	expectedConfig = replace_string(expectedString, ",18,", "prawn_silo");
-	expectedConfig = replace_string(expectedString, ",19,", "trackside_diner");
-	expectedConfig = replace_string(expectedString, ",20,", "ore_hopper");
+	string expectedConfig = stationInts[one] + "," + stationInts[two] + "," + stationInts[three] + "," + stationInts[four] + "," + stationInts[five] + "," + stationInts[six] + "," + stationInts[seven] + "," + stationInts[eight];
+
 	boolean changedTSConfig;
 	if(expectedConfig != trainsetConfiguration)
 	{
