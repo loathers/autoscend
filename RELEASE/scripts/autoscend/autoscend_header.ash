@@ -1121,7 +1121,7 @@ boolean LX_dailyDungeonToken();
 void dailyDungeonChoiceHandler(int choice, string[int] options);
 boolean LX_dolphinKingMap();
 boolean LX_meatMaid();
-string LX_getDesiredWorkshed();
+item LX_getDesiredWorkshed();
 boolean LX_setWorkshed();
 
 ########################################################################################################

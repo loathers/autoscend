@@ -698,117 +698,138 @@ boolean LX_meatMaid()
 	return false;
 }
 
-string LX_getDesiredWorkshed(){
+item LX_getDesiredWorkshed(){
 	string currentWorkshed = get_property("auto_workshed").to_lower_case();
 	//return the actual item name in case a shorthand is used
 	switch(currentWorkshed)
 	{
 		case "model train set":
 		case "train":
-			return "model train set";
+			return $item[model train set];
 		case "cold medicine cabinet":
 		case "cmc":
-			return "cold medicine cabinet";
-		case "diabolic pizza cube": //unsupported
-		case "pizza": //unsupported
-			return "diabolic pizza cube";
-		case "Asdon Martin keyfob":
+			return $item[cold medicine cabinet];
+		case "asdon martin keyfob":
 		case "asdon":
-			return "Asdon Martin keyfob";
+			return $item[Asdon Martin keyfob];
+		case "diabolic pizza cube":
+		case "pizza":
+			return $item[diabolic pizza cube]; //unless support is added, don't want to use this
 		case "portable mayo clinic":
 		case "mayo":
-			return "portable mayo clinic";
+			return $item[portable mayo clinic];
 		case "little geneticist dna-splicing lab":
 		case "dnalab":
-			return "little geneticist dna-splicing lab";
-		case "snow machine": //unsupported
-		case "spinning wheel": //unsupported
-		case "warbear auto-anvil": //unsupported
-		case "warbear chemistry lab": //unsupported
-		case "warbear high-efficiency still": //unsupported
-		case "warbear induction oven": //unsupported
-		case "warbear jackhammer drill press": //unsupported
-		case "warbear lp-rom burner": //unsupported
+			return $item[little geneticist dna-splicing lab];
+		//passive worksheds
+		case "snow machine":
+			return $item[snow machine]; //but you need a garden
+		case "warbear auto-anvil":
+			return $item[warbear auto-anvil];
+		case "warbear chemistry lab":
+			return $item[warbear chemistry lab];
+		case "warbear high-efficiency still":
+			return $item[warbear high-efficiency still];
+		case "warbear induction oven":
+			return $item[warbear induction oven];
+		case "warbear jackhammer drill press":
+			return $item[warbear jackhammer drill press]; //We very rarely pulverize things but if someone really wants to use it, sure they can select it
+		case "warbear lp-rom burner":
+			return $item[warbear lp-rom burner]; //If someone really wants to record some AT buffs on their own, allow them to select it
+		case "spinning wheel":
+			return $item[spinning wheel]; //If someone really wants additional meat. They will need to use it on their own
+		case "auto":
 		default:
 			// auto_workshed is invalid or none/false/whatever to say don't do this
-			return "auto";
+			return $item[none];
 	}
 }
 
 boolean LX_setWorkshed(){
-	string desiredShed = LX_getDesiredWorkshed();
-	string existingShed = get_workshed();
-	string workshedChanged = get_property("_workshedItemUsed");
+	item desiredShed = LX_getDesiredWorkshed();
+	item existingShed = get_workshed();
+	boolean workshedChanged = get_property("_workshedItemUsed");
 
-	if (workshedChanged == "true") return false; //Don't even try if the workshed has already been changed once
+	if (workshedChanged) return false; //Don't even try if the workshed has already been changed once
 
 	//Check to make sure we can use the workshed item and that it isn't already in the campground. If already in campground, return false also
-	//These first 2 ifs are only used if something other than auto is specified
-	if (auto_is_valid(to_item(desiredShed)) && (contains_text(existingShed, desiredShed) == false) && (item_amount(to_item(desiredShed)) > 0))
+	//These first 2 ifs are only used if something valid other than auto is specified. Otherwise we go to the auto 
+	if (desiredShed != $item[none] && auto_is_valid(desiredShed) && (existingShed != desiredShed) && (item_amount(desiredShed) > 0))
 	{
-		use(1, to_item(desiredShed));
+		use(1, desiredShed);
 		return true;
 	}
-	if (contains_text(existingShed, desiredShed))
+	if (existingShed == desiredShed)
 	{
 		return false;
 	}
 	//Auto workshed changing
-	if(contains_text(desiredShed,"auto"))
+	if(desiredShed == $item[none])
 	{
-		//Check if there is enough lumber for orcs. The existing shed check is because we only want to go into this
-		//if statement once to use the best available workshed
-		if((fastenerCount() < 30 && lumberCount() < 30) && (existingShed == "none"))
+		//Check if there is an existing shed. We only want to go into this if statement once to use the best available workshed
+		if(existingShed == $item[none])
 		{
 			if ((auto_is_valid($item[model train set])) && (item_amount($item[model train set]) > 0))
 			{
 				use(1, $item[model train set]);
+				auto_log_info("Installed your model train set");
 				return true;
 			}
 			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
 			{
 				use(1, $item[Asdon Martin keyfob]);
+				auto_log_info("Installed your Asdon Martin keyfob");
 				return true;
 			}
 			if ((auto_is_valid($item[cold medicine cabinet])) && (item_amount($item[cold medicine cabinet]) > 0))
 			{
 				use(1, $item[cold medicine cabinet]);
+				auto_log_info("Installed your cold medicine cabinet");
 				return true;
 			}
 			if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0))
 			{
 				use(1, $item[little geneticist dna-splicing lab]);
+				auto_log_info("Installed your little geneticist dna-splicing lab");
 				return true;
 			}
 			if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
 			{
 				use(1, $item[portable mayo clinic]);
+				auto_log_info("Installed your portable mayo clinic");
 				return true;
 			}
+			auto_log_warning("Unable to find workshed to install");
 			return false;
 		}
-		if((fastenerCount() >= 30 && lumberCount() >= 30)) //once we have enough fasteners
+		//once we have enough fasteners and only if we are currently using the model train set
+		if((fastenerCount() >= 30 && lumberCount() >= 30) && existingShed == $item[model train set])
 		{
 			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
 			{
 				use(1, $item[Asdon Martin keyfob]);
+				auto_log_info("Changed your workshed to Asdon Martin keyfob");
 				return true;
 			}
 			if ((auto_is_valid($item[cold medicine cabinet])) && (item_amount($item[cold medicine cabinet]) > 0))
 			{
-					use(1, $item[cold medicine cabinet]);
-					return true;
+				use(1, $item[cold medicine cabinet]);
+				auto_log_info("Changed your workshed to cold medicine cabinet");
+				return true;
 			}
 			if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0))
 			{
 				use(1, $item[little geneticist dna-splicing lab]);
+				auto_log_info("Changed your workshed to little geneticist dna-splicing lab");
 				return true;
 			}
 			if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
 			{
 				use(1, $item[portable mayo clinic]);
+				auto_log_info("Changed your workshed to portable mayo clinic");
 				return true;
 			}
+			auto_log_warning("You have no workshed to change to so leaving it as " + get_workshed().to_string());
 			return false; //return false if no other workshed is available
 		}		
 	}
