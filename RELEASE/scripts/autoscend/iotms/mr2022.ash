@@ -742,7 +742,6 @@ void auto_checkTrainSet()
 	{
 		changedTSConfig = false;
 	}
-	auto_log_info(expectedConfig);
 
 	//only check for the page if it has been 0 turns or 40 turns since last configured and the configuration has changed
 	if ((turnsSinceTSConfigured == 0) || ((turnsSinceTSConfigured == 40) && changedTSConfig))
