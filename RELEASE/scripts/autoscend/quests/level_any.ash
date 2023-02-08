@@ -470,6 +470,24 @@ boolean LX_fatLootToken()
 		//wait until daily dungeon is done before considering doing fantasy realm
 		if(fantasyRealmToken()) return true;
 	}
+	if(internalQuestStatus("questL13Final") == 5)
+	{
+		// at NS tower door and still need hero keys
+
+		// summon and copy fantasy realm bandit. Allows for getting fantasy realm token without having FR available
+		if(!acquiredFantasyRealmToken() && auto_haveBackupCamera() && auto_backupUsesLeft() >= (4 - fantasyBanditsFought()) && canSummonMonster($monster[fantasy bandit]))
+		{
+			summonMonster($monster[fantasy bandit]);
+		}
+		// todo, add pref for 8bit token already being bought once mafia supports it
+		if(towerKeyCount() == 2)
+		{
+			// get last fat loot token from 8-bit realm
+			// save until actually needed as takes many turns
+			return get8BitFatLootToken();
+		}
+
+	}
 	
 	return false;
 }

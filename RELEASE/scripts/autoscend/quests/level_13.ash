@@ -817,12 +817,6 @@ boolean L13_sorceressDoor()
 
 	if(towerKeyCount() < 3)
 	{
-		if(towerKeyCount() == 2)
-		{
-			// get last fat loot token from 8-bit realm
-			// save until actually needed as takes many turns
-			return get8BitFatLootToken();
-		}
 		abort("Do not have enough hero keys");
 	}
 

@@ -259,6 +259,8 @@ boolean godLobsterCombat(item it);
 boolean godLobsterCombat(item it, int goal);
 boolean godLobsterCombat(item it, int goal, string option);
 boolean fantasyRealmAvailable();
+int fantasyBanditsFought();
+boolean acquiredFantasyRealmToken();
 boolean fantasyRealmToken();
 boolean songboomSetting(string goal);
 boolean songboomSetting(int option);

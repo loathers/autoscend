@@ -162,6 +162,10 @@ boolean auto_backupTarget()
 			if (my_adventures() <= (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
 				return true;
 			break;
+		case $monster[fantasy bandit]:
+			if(!acquiredFantasyRealmToken() && auto_backupUsesLeft() >= (5 - fantasyBanditsFought()))
+				return true;
+			break;
 		default: break;
     }
 
