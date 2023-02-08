@@ -598,6 +598,9 @@ void auto_modifyTrainSet(int one, int two, int three, int four, int five, int si
 
 void auto_checkTrainSet()
 {
+	int lastTrainsetConfiguration = get_property("lastTrainsetConfiguration").to_int();
+	int trainsetPosition = get_property("trainsetPosition").to_int();
+	string trainsetConfiguration = get_property("trainsetConfiguration");
 	if(!auto_haveTrainSet()) return;
 	/* A list of what the station numbers are (thanks Zdrvst for compiling this list for your CS script)
 	1: meat
@@ -707,10 +710,43 @@ void auto_checkTrainSet()
 	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != ""){
 		eight = 9; //cold res, stench dmg
 	}
-	string page = visit_url("campground.php?action=workshed");
-	if (contains_text(page,'value="Save Train Set Configuration"')){
-		auto_modifyTrainSet(one, two, three, four, five, six, seven, eight);
+	int turnsSinceTSConfigured = trainsetPosition - lastTrainsetConfiguration;
+	string expecetedConfig = one + "," + two + "," + three + "," + four + "," + five + "," + six + "," + seven + "," + eight;
+	//Replace expectedConfig numbers with their text equivalent
+	expectedConfig = replace_string(expectedString, ",1,", "meat_mine");
+	expectedConfig = replace_string(expectedString, ",2,", "tower_fizzy");
+	expectedConfig = replace_string(expectedString, ",3,", "viewing_platform");
+	expectedConfig = replace_string(expectedString, ",4,", "tower_frozen");
+	expectedConfig = replace_string(expectedString, ",5,", "spooky_graveyard");
+	expectedConfig = replace_string(expectedString, ",6,", "logging_mill");
+	expectedConfig = replace_string(expectedString, ",7,", "candy_factory");
+	expectedConfig = replace_string(expectedString, ",8,", "coal_hopper");
+	expectedConfig = replace_string(expectedString, ",9,", "tower_sewage");
+	expectedConfig = replace_string(expectedString, ",11,", "oil_refinery");
+	expectedConfig = replace_string(expectedString, ",12,", "oil_bridge");
+	expectedConfig = replace_string(expectedString, ",13,", "water_bridge");
+	expectedConfig = replace_string(expectedString, ",14,", "groin_silo");
+	expectedConfig = replace_string(expectedString, ",15,", "grain_silo");
+	expectedConfig = replace_string(expectedString, ",16,", "brain_silo");
+	expectedConfig = replace_string(expectedString, ",17,", "brawn_silo");
+	expectedConfig = replace_string(expectedString, ",18,", "prawn_silo");
+	expectedConfig = replace_string(expectedString, ",19,", "trackside_diner");
+	expectedConfig = replace_string(expectedString, ",20,", "ore_hopper");
+	boolean changedTSConfig;
+	if(expectedConfig != trainsetConfiguration)
+	{
+		changedTSConfig = true;
 	}
-	visit_url("main.php");
-	return;
+	else
+	{
+		changedTSConfig = false;
+	}
+	auto_log_info(expectedConfig);
+
+	//only check for the page if it has been 0 turns or 40 turns since last configured and the configuration has changed
+	if ((turnsSinceTSConfigured == 0) || ((turnsSinceTSConfigured == 40) && changedTSConfig))
+	{
+		auto_modifyTrainSet(one, two, three, four, five, six, seven, eight);
+		return;
+	}
 }
