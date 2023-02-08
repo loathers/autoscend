@@ -623,7 +623,7 @@ void auto_checkTrainSet()
 	19: copy last food drop
 	20: ore
 	*/
-	string [int] stationInts;
+	string[int] stationInts;
 	stationInts[1] = ["meat_mine"];
 	stationInts[2] = ["tower_fizzy"];
 	stationInts[3] = ["viewing_platform"];
