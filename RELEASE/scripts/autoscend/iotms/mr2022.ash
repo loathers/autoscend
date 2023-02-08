@@ -624,25 +624,25 @@ void auto_checkTrainSet()
 	20: ore
 	*/
 	string[int] stationInts;
-	stationInts[1] = ["meat_mine"];
-	stationInts[2] = ["tower_fizzy"];
-	stationInts[3] = ["viewing_platform"];
-	stationInts[4] = ["tower_frozen"];
-	stationInts[5] = ["spooky_graveyard"];
-	stationInts[6] = ["logging_mill"];
-	stationInts[7] = ["candy_factory"];
-	stationInts[8] = ["coal_hopper"];
-	stationInts[9] = ["tower_sewage"];
-	stationInts[11] = ["oil_refinery"];
-	stationInts[12] = ["oil_bridge"];
-	stationInts[13] = ["water_bridge"];
-	stationInts[14] = ["groin_silo"];
-	stationInts[15] = ["grain_silo"];
-	stationInts[16] = ["brain_silo"];
-	stationInts[17] = ["brawn_silo"];
-	stationInts[18] = ["prawn_silo"];
-	stationInts[19] = ["trackside_diner"];
-	stationInts[20] = ["ore_hopper"];
+	stationInts[1] = "meat_mine";
+	stationInts[2] = "tower_fizzy";
+	stationInts[3] = "viewing_platform";
+	stationInts[4] = "tower_frozen";
+	stationInts[5] = "spooky_graveyard";
+	stationInts[6] = "logging_mill";
+	stationInts[7] = "candy_factory";
+	stationInts[8] = "coal_hopper";
+	stationInts[9] = "tower_sewage";
+	stationInts[11] = "oil_refinery";
+	stationInts[12] = "oil_bridge";
+	stationInts[13] = "water_bridge";
+	stationInts[14] = "groin_silo";
+	stationInts[15] = "grain_silo";
+	stationInts[16] = "brain_silo";
+	stationInts[17] = "brawn_silo";
+	stationInts[18] = "prawn_silo";
+	stationInts[19] = "trackside_diner";
+	stationInts[20] = "ore_hopper";
 	int one = 8; //doubler
 	int two;
 	int three;
