@@ -470,6 +470,9 @@ location auto_autumnatonQuestingIn();
 boolean auto_autumnatonCheckForUpgrade(string upgrade);
 boolean auto_sendAutumnaton(location loc);
 void auto_autumnatonQuest();
+boolean auto_haveTrainSet();
+void auto_modifyTrainSet(int one, int two, int three, int four, int five, int six, int seven, int eight);
+void auto_checkTrainSet();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
