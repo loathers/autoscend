@@ -730,7 +730,7 @@ void auto_checkTrainSet()
 	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != ""){
 		eight = 9; //cold res, stench dmg
 	}
-	int turnsSinceTSConfigured = ceil(trainsetPosition - lastTrainsetConfiguration, 40);
+	int turnsSinceTSConfigured = min(trainsetPosition - lastTrainsetConfiguration, 40);
 	string expectedConfig = stationInts[one] + "," + stationInts[two] + "," + stationInts[three] + "," + stationInts[four] + "," + stationInts[five] + "," + stationInts[six] + "," + stationInts[seven] + "," + stationInts[eight];
 
 	boolean changedTSConfig;
