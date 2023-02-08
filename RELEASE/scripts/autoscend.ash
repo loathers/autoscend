@@ -1707,6 +1707,7 @@ boolean doTasks()
 	auto_chapeau();
 	auto_buyFireworksHat();
 	auto_CMCconsult();
+	auto_checkTrainSet();
 	auto_autumnatonQuest();
 
 	ocrs_postCombatResolve();
