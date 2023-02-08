@@ -477,7 +477,7 @@ boolean LX_fatLootToken()
 		// summon and copy fantasy realm bandit. Allows for getting fantasy realm token without having FR available
 		if(!acquiredFantasyRealmToken() && auto_haveBackupCamera() && auto_backupUsesLeft() >= (4 - fantasyBanditsFought()) && canSummonMonster($monster[fantasy bandit]))
 		{
-			summonMonster($monster[fantasy bandit]);
+			return summonMonster($monster[fantasy bandit]);
 		}
 		// todo, add pref for 8bit token already being bought once mafia supports it
 		if(towerKeyCount() == 2)
