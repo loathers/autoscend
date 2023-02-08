@@ -748,7 +748,7 @@ item LX_getDesiredWorkshed(){
 boolean LX_setWorkshed(){
 	item desiredShed = LX_getDesiredWorkshed();
 	item existingShed = get_workshed();
-	boolean workshedChanged = get_property("_workshedItemUsed");
+	boolean workshedChanged = get_property("_workshedItemUsed").to_boolean();
 
 	if (workshedChanged) return false; //Don't even try if the workshed has already been changed once
 
