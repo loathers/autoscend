@@ -109,7 +109,7 @@ boolean L7_crypt()
 	// delay crypt for cold medicine cabinet usage unless we have run out of other stuff to do
 	// crypt is underground so med cab will generate breathitins, 5 turns free outside
 	// todo: currently assumes CMC will get used. Wait needlessly if we don't end up using CMC
-	if(auto_is_valid($item[cold medicine cabinet]) && auto_haveColdMedCabinet() && 
+	if(auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 && 
 		get_workshed() != $item[cold medicine cabinet] && !isAboutToPowerlevel())
 	{
 		return false;
