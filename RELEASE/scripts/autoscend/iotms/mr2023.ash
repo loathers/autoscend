@@ -27,7 +27,7 @@ void pickRocks()
 	//
     if (!auto_haveRockGarden()) return;
 	visit_url("campground.php?action=rgarden1");
-	if(get_property("desertExploration").to_int() != 100)
+	if(get_property("desertExploration").to_int() < 100)
 	{
 		visit_url("campground.php?action=rgarden2");
 	}
