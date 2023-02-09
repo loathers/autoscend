@@ -123,6 +123,19 @@ void initializeSettings() {
 				set_property("auto_100familiar", my_familiar());
 			}
 		}
+		//check for a workshed
+		if(get_workshed() != $item[none])
+		{
+			boolean userAnswer = user_confirm("Workshed already set, do you want Autoscend to handle your workshed? Will default to 'Yes' in 15 seconds.", 15000, true);
+			if(userAnswer)
+			{
+				set_property("auto_workshed", "auto");
+			}
+			else
+			{
+				set_property("auto_workshed", get_workshed().to_string());
+			}
+		}
 	}
 
 	auto_spoonTuneConfirm();
@@ -1706,6 +1719,7 @@ boolean doTasks()
 	auto_chapeau();
 	auto_buyFireworksHat();
 	auto_CMCconsult();
+	auto_checkTrainSet();
 	auto_autumnatonQuest();
 
 	ocrs_postCombatResolve();

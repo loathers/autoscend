@@ -471,9 +471,16 @@ boolean auto_autumnatonReadyToQuest();
 location auto_autumnatonQuestingIn();
 boolean auto_autumnatonCheckForUpgrade(string upgrade);
 boolean auto_sendAutumnaton(location loc);
+
 boolean auto_autumnatonQuest();
 boolean auto_hasSpeakEasy();
 int auto_remainingSpeakeasyFreeFights();
+
+
+boolean auto_haveTrainSet();
+void auto_modifyTrainSet(int one, int two, int three, int four, int five, int six, int seven, int eight);
+void auto_checkTrainSet();
+
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1127,6 +1134,8 @@ boolean LX_dailyDungeonToken();
 void dailyDungeonChoiceHandler(int choice, string[int] options);
 boolean LX_dolphinKingMap();
 boolean LX_meatMaid();
+item LX_getDesiredWorkshed();
+boolean LX_setWorkshed();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash
