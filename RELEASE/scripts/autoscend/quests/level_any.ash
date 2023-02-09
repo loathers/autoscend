@@ -759,7 +759,7 @@ boolean LX_setWorkshed(){
 		use(1, desiredShed);
 		return true;
 	}
-	if (existingShed == desiredShed and existingShed != $item[none])
+	if (existingShed == desiredShed && existingShed != $item[none])
 	{
 		return false;
 	}
