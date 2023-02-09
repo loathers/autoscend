@@ -173,23 +173,23 @@ yellowray	2	Knob Goblin Harem Girl	!outfit:Knob Goblin Harem Girl Disguise;!item
 # although I'm not sure why we'd be fighting one in that case...
 yellowray	3	Mountain Man	quest:questL08Trapper<2
 # We want frat warrior fatigues!
-yellowray	4	Beer Bongadier	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	5	Danglin' Chad	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	6	Elite Beer Bongadier	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	7	Frat Warrior drill sergeant	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	8	Orcish Frat Boy Spy	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	9	Sorority Operator	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	10	War Frat 110th Infantryman	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	11	War Frat 151st Captain	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	12	War Frat 151st Infantryman	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	13	War Frat 500th Infantrygentleman	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	14	War Frat Elite 110th Captain	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	15	War Frat Elite 500th Captain	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	16	War Frat Elite Wartender	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	17	War Frat Kegrider	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	18	War Frat Mobile Grill Unit	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	19	War Frat Wartender	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
-yellowray	20	War Pledge	!outfit:Frat Warrior Fatigues; prop:auto_hippyInstead=false
+yellowray	4	Beer Bongadier	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	5	Danglin' Chad	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	6	Elite Beer Bongadier	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	7	Frat Warrior drill sergeant	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	8	Orcish Frat Boy Spy	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	9	Sorority Operator	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	10	War Frat 110th Infantryman	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	11	War Frat 151st Captain	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	12	War Frat 151st Infantryman	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	13	War Frat 500th Infantrygentleman	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	14	War Frat Elite 110th Captain	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	15	War Frat Elite 500th Captain	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	16	War Frat Elite Wartender	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	17	War Frat Kegrider	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	18	War Frat Mobile Grill Unit	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	19	War Frat Wartender	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+yellowray	20	War Pledge	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
 # We also want to dress up like a filthy hippy to get frat warrior fatigues
 yellowray	21	business hippy	!outfit:Filthy Hippy Disguise
 yellowray	22	crusty hippy	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
@@ -203,8 +203,8 @@ yellowray	29	filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed the
 yellowray	30	filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
 yellowray	31	zombie hippy	!outfit:Filthy Hippy Disguise
 # Want hippy war outfit if fighting for hippies. TODO: add monsters for Frat Boy Ensemble and War Hippy Fatigues outfits. Issue #900
-yellowray	32	War Hippy Spy	!outfit:War Hippy Fatigues;!itemdropcapped:30=round purple sunglasses; prop:auto_hippyInstead=true
-yellowray	33	War Hippy Airborne Commander	!outfit:War Hippy Fatigues; prop:auto_hippyInstead=true
+yellowray	32	War Hippy Spy	!outfit:War Hippy Fatigues;!itemdropcapped:30=round purple sunglasses;prop:auto_hippyInstead=true
+yellowray	33	War Hippy Airborne Commander	!outfit:War Hippy Fatigues;prop:auto_hippyInstead=true
 # And we want filthworm glands, but not if we're gonna hugpocket them
 yellowray	34	larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
 yellowray	35	filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
