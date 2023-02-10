@@ -1724,7 +1724,7 @@ int auto_reserveCraftAmount(item orig_it);
 int auto_convertDesiredML(int DML);
 boolean auto_setMCDToCap();
 boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit);
-boolean angryAgateCheck(int angryAgateToML, int angryAgateUpperLimit, int angryAgateLowerLimit)
+boolean angryAgateCheck(int angryAgateToML, int angryAgateUpperLimit, int angryAgateLowerLimit);
 boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();
