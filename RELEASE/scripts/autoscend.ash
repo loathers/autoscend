@@ -293,7 +293,7 @@ int auto_advToReserve()
 	
 	int reserveadv = 1;
 	
-	if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && auto_freeCombatsRemaining() > 0)
+	if(auto_freeCombatsRemaining() > 0)
 	{
 		reserveadv = max(2, reserveadv);
 	}
