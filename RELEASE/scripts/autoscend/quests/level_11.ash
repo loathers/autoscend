@@ -1306,7 +1306,7 @@ boolean L11_aridDesert()
 		auto_log_info("Getting some ultrahydrated, I suppose. Desert left: " + need, "blue");
 		if(!get_property("oasisAvailable").to_boolean() && have_effect($effect[Ultrahydrated]) == 0)
 		{
-			autoadv(1, $location[The Arid\, Extra-Dry Desert]);
+			return autoadv(1, $location[The Arid\, Extra-Dry Desert]);
 		}
 
 		if(!autoAdv(1, $location[The Oasis]))

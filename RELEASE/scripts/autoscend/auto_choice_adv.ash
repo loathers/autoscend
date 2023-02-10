@@ -632,7 +632,7 @@ boolean auto_run_choice(int choice, string page)
 		case 1475:
 			juneCleaverChoiceHandler(choice);
 			break;
-		case 1491:
+		case 1491:  //Strange Stalagmite(s) (Strange stalagmite from Rock Garden)
 			if(my_primestat() == $stat[Muscle])
 			{
 				run_choice(1); // muscle stats

@@ -1086,6 +1086,7 @@ boolean dailyEvents()
 	auto_latheAppropriateWeapon();
 	auto_harvestBatteries();
 	pickRocks();
+	auto_SITCourse();
 	
 	return true;
 }
@@ -1724,7 +1725,6 @@ boolean doTasks()
 	auto_CMCconsult();
 	auto_checkTrainSet();
 	auto_autumnatonQuest();
-	auto_SITCourse();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();

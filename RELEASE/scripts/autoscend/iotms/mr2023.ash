@@ -24,7 +24,6 @@ void pickRocks()
 {
 	//Pick rocks everyday
 	//If we manage to get a lodestone, will not use it, because it is a one-a-day and user may want to use it in specific places
-	//
     if (!auto_haveRockGarden()) return;
 	visit_url("campground.php?action=rgarden1");
 	if(get_property("desertExploration").to_int() < 100)
@@ -50,14 +49,4 @@ void auto_SITCourse()
 		//auto_run_choice(1484);
 		return;
 	}
-	//Use items as we get them
-	if(((item_amount($item[filled mosquito]) > 0) && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())))
-	{
-		use(1,$item[filled mosquito]); //6 substats per turn
-	}
-	//Don't want the effect once we are level 13 and want instant karma
-	if((have_effect($effect[Wisdom of Others]) > 0) && (my_level() == 13 && !get_property("auto_disregardInstantKarma").to_boolean())){
-		uneffect($effect[Wisdom of Others]);
-	}
-	return;
 }
