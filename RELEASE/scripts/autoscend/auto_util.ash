@@ -4013,7 +4013,7 @@ boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 // We use this function to determine the suitability of using angry agates
 boolean angryAgateCheck(int angryAgateToML, int angryAgateUpperLimit, int angryAgateLowerLimit)
 {
-	if(item_amount($item[angry agate]) == 0 && auto_is_valid($item[angry agate]))
+	if(item_amount($item[angry agate]) == 0 || !auto_is_valid($item[angry agate]))
 	{
 		return false;
 	}
