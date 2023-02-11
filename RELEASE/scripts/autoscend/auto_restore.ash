@@ -1763,6 +1763,7 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	buffMaintain($effect[Using Protection]);
 	//also use items which give mp regen
 	buffMaintain($effect[Tingly Tongue]);
+	buffMaintain($effect[Tingling Insides]);
 	buffMaintain($effect[Wisdom of the Autumn Years]);
 
 	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain

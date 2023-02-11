@@ -18,6 +18,7 @@ void auto_beaten_handler()
 	set_property("auto_beatenUpLocations", loc);
 	set_property("auto_beatenUpLastAdv", true);
 
+	buffMaintain($effect[They\'ve Got Fleas]);
 	if(my_level() < 11 || get_property("sidequestJunkyardCompleted") != "none")	//don't risk blocking effect persisting in gremlins quest
 	{
 		//try to avoid getting beaten up again
@@ -945,6 +946,7 @@ boolean auto_post_adventure()
 
 		// items which give stats
 		buffMaintain($effect[Scorched Earth]);
+		buffMaintain($effect[Wisdom of Others]);
 	}
 
 

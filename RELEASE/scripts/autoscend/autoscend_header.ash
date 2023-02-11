@@ -475,6 +475,14 @@ void auto_modifyTrainSet(int one, int two, int three, int four, int five, int si
 void auto_checkTrainSet();
 
 ########################################################################################################
+//Defined in autoscend/iotms/mr2023.ash
+boolean auto_haveRockGarden();
+void rockGardenEnd();
+void pickRocks();
+boolean auto_haveSITCourse();
+void auto_SITCourse();
+
+########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
 boolean isActuallyEd();
 int ed_spleen_limit();
@@ -1716,6 +1724,7 @@ int auto_reserveCraftAmount(item orig_it);
 int auto_convertDesiredML(int DML);
 boolean auto_setMCDToCap();
 boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit);
+boolean angryAgateCheck(int angryAgateToML, int angryAgateUpperLimit, int angryAgateLowerLimit);
 boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();
