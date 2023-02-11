@@ -45,7 +45,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 		return false;
 	}
 	// don't try to fax unfaxable monsters
-	if($monsters[smut orc pervert, screambat] contains enemy)
+	if($monsters[smut orc pervert, screambat, War Frat 151st Infantryman] contains enemy)
 	{
 		return false;
 	}
