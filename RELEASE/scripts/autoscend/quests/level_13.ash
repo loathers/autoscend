@@ -1402,6 +1402,7 @@ boolean L13_towerNSTower()
 		buffMaintain($effect[Cranberry Cordiality]);
 		buffMaintain($effect[Big Meat Big Prizes]);
 		buffMaintain($effect[Patent Avarice]);
+		buffMaintain($effect[Flapper Dancin\']);
 		bat_formWolf();
 		if(auto_birdModifier("Meat Drop") > 0)
 		{

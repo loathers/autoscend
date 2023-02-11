@@ -1009,6 +1009,10 @@ boolean L11_aridDesert()
 	{
 		return false;	//delay for You, Robot path
 	}
+	if(item_amount($item[milestone]) > 0) //use milestone if we got one from the rock garden
+	{
+		use(1, $item[milestone]);
+	}
 	
 	desert_buff_record dbr = desertBuffs();
 	int progress = dbr.progress;
@@ -1300,6 +1304,10 @@ boolean L11_aridDesert()
 	{
 		int need = 100 - get_property("desertExploration").to_int();
 		auto_log_info("Getting some ultrahydrated, I suppose. Desert left: " + need, "blue");
+		if(!get_property("oasisAvailable").to_boolean() && have_effect($effect[Ultrahydrated]) == 0)
+		{
+			return autoadv(1, $location[The Arid\, Extra-Dry Desert]);
+		}
 
 		if(!autoAdv(1, $location[The Oasis]))
 		{

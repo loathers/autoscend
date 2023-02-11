@@ -44,6 +44,7 @@ import <autoscend/iotms/mr2019.ash>
 import <autoscend/iotms/mr2020.ash>
 import <autoscend/iotms/mr2021.ash>
 import <autoscend/iotms/mr2022.ash>
+import <autoscend/iotms/mr2023.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
@@ -1083,6 +1084,8 @@ boolean dailyEvents()
 	auto_getGuzzlrCocktailSet();
 	auto_latheAppropriateWeapon();
 	auto_harvestBatteries();
+	pickRocks();
+	auto_SITCourse();
 	
 	return true;
 }
@@ -1795,6 +1798,7 @@ boolean doTasks()
 	auto_setSongboom();
 	if(LM_bond())						return true;
 	if(LX_calculateTheUniverse(false))	return true;
+	rockGardenEnd();
 	adventureFailureHandler();
 	dna_sorceressTest();
 	dna_generic();

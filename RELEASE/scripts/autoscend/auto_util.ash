@@ -4010,6 +4010,25 @@ boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit)
 	return true;
 }
 
+// We use this function to determine the suitability of using angry agates
+boolean angryAgateCheck(int angryAgateToML, int angryAgateUpperLimit, int angryAgateLowerLimit)
+{
+	if(item_amount($item[angry agate]) == 0 || !auto_is_valid($item[angry agate]))
+	{
+		return false;
+	}
+
+	if((have_effect($effect[misplaced rage]) == 0) && ((monster_level_adjustment() + (3 * my_level())) <= auto_convertDesiredML(angryAgateToML)))
+	{
+		if((get_property("auto_MLSafetyLimit") == "") || (((3 * my_level()) <= angryAgateUpperLimit) && ((3 * my_level()) >= angryAgateLowerLimit)))
+		{
+			uneffect($effect[misplaced rage]);
+			buffMaintain($effect[misplaced rage]);
+		}
+	}
+
+	return true;
+}
 
 // Handle intelligently increasing ML for both pre-adv and in Quests
 //	doAltML is a variable that will be referenced when increasing ML via alternative methods such as Asdon Martin, they should be entered in their respective order
@@ -4029,6 +4048,7 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 // ToML >= U >= 30
 	UrKelCheck(ToML, auto_convertDesiredML(ToML), 30);
+	angryAgateCheck(ToML, auto_convertDesiredML(ToML), 30);
 
 // 30
 	// Start with the biggest and drill down for max ML
@@ -4036,6 +4056,8 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 // 29 >= U >= 25
 	UrKelCheck(ToML, 29, 25);
+	angryAgateCheck(ToML, 29, 25);
+
 
 
 // 25
@@ -4051,6 +4073,7 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 // 24 >= U >= 10
 	UrKelCheck(ToML, 24, 10);
+	angryAgateCheck(ToML, 24, 10);
 
 // 20
 	if (isActuallyEd() && !get_property("auto_needLegs").to_boolean())
@@ -4071,6 +4094,7 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 	{
 		UrKelCheck(ToML, 9, 2);
 	}
+	angryAgateCheck(ToML, 9, 3);
 
 // Customizable - For variable effects that we can use to fill in the corners
 	// Fill in the remainder with MCD
