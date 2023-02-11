@@ -156,8 +156,8 @@ boolean auto_backupTarget()
 				return true;
 			break;
 		case $monster[eldritch tentacle]:
-			//backup tentacles if power leveling or use all remaining charges if at end of day
-			if(isAboutToPowerlevel() && auto_backupUsesLeft() > 5)
+			//backup tentacles if lots of backups remaining or use all remaining charges if at end of day
+			if(auto_backupUsesLeft() > 6)
 				return true;
 			if (my_adventures() <= (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
 				return true;
