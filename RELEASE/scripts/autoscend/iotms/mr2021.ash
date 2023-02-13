@@ -498,22 +498,13 @@ boolean auto_buyFireworksHat()
 		return false;
 	}
 
-	// there is a long-standing issue where mafia may fail to purchase a fireworks hat for unknown reasons, and it is not
-	// currently known whether it is a kol issue or a mafia issue.  Testing suggests that using visit_url instead of
-	// retrieve_item resolves at least one reason this failure occurs.  See thread on mafia forums for more details:
-	// https://kolmafia.us/threads/sometimes-unable-to-buy-limited-items-from-underground-fireworks-shop.27277/
-
 	// noncombat is most valuable hat but has no effect in LAR
 	if(auto_can_equip($item[porkpie-mounted popper]) && !in_lar())
 	{
 		float simNonCombat = providePlusNonCombat(25, $location[noob cave], true, true);
 		if(simNonCombat < 25.0)
 		{
-			if (!retrieve_item(1, $item[porkpie-mounted popper]))
-			{
-				visit_url("clan_viplounge.php?action=fwshop&whichfloor=2", false, true);
-				visit_url("shop.php?whichshop=fwshop&action=buyitem&quantity=1&whichrow=1249&pwd", true, true);
-			}
+			retrieve_item(1, $item[porkpie-mounted popper]);
 			return true;
 		}
 	}
@@ -524,11 +515,7 @@ boolean auto_buyFireworksHat()
 		float simCombat = providePlusCombat(25, $location[noob cave], true, true);
 		if(simCombat < 25.0)
 		{
-			if (!retrieve_item(1, $item[sombrero-mounted sparkler]))
-			{
-				visit_url("clan_viplounge.php?action=fwshop&whichfloor=2", false, true);
-				visit_url("shop.php?whichshop=fwshop&action=buyitem&quantity=1&whichrow=1248&pwd", true, true);
-			}
+			retrieve_item(1, $item[sombrero-mounted sparkler]);
 			return true;
 		}
 	}
@@ -539,11 +526,7 @@ boolean auto_buyFireworksHat()
 	{
 		if(monster_level_adjustment() < get_property("auto_MLSafetyLimit").to_int())
 		{
-			if (!retrieve_item(1, $item[fedora-mounted fountain]))
-			{
-				visit_url("clan_viplounge.php?action=fwshop&whichfloor=2", false, true);
-				visit_url("shop.php?whichshop=fwshop&action=buyitem&quantity=1&whichrow=1247&pwd", true, true);
-			}
+			retrieve_item(1, $item[fedora-mounted fountain]);
 			return true;
 		}
 	}
