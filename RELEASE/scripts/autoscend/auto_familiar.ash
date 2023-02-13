@@ -402,7 +402,7 @@ boolean autoChooseFamiliar(location place)
 	Twin Peak, The Penultimate Fantasy Airship, The Hidden Temple, The Hidden Bowling Alley, The Haunted Wine Cellar,
 	The Haunted Laundry Room, The Copperhead Club, A Mob of Zeppelin Protesters, Whitey's Grove, The Oasis, The Middle Chamber,
 	Frat House, Hippy Camp, The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hatching Chamber,
-	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, 8-Bit Realm, The Degrassi Knoll Garage, The Old Landfill,
+	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, Hero's Field, The Degrassi Knoll Garage, The Old Landfill,
 	The Laugh Floor, Infernal Rackets Backstage] contains place) {
 		famChoice = lookupFamiliarDatafile("item");
 	}
@@ -414,7 +414,7 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// If we're down to 1 evilness left before the boss in the Nook, it doesn't matter if we get an Evil Eye or not.
-	if ($location[The Defiled Nook] == place && get_property("cyrptNookEvilness").to_int() > 26)
+	if ($location[The Defiled Nook] == place && get_property("cyrptNookEvilness").to_int() > 14)
 	{
 		famChoice = lookupFamiliarDatafile("item");
 	}
@@ -491,9 +491,16 @@ boolean autoChooseFamiliar(location place)
 	if ($location[The Themthar Hills] == place) {
 		famChoice = lookupFamiliarDatafile("meat");
 	}
+	if ($location[The Fungus Plains] == place) {
+		famChoice = lookupFamiliarDatafile("meat");
+	}
 	
 	// places where initiative is required to help save adventures.
-	if ($location[The Defiled Alcove] == place && get_property("cyrptAlcoveEvilness").to_int() > 26)
+	if ($location[The Defiled Alcove] == place && get_property("cyrptAlcoveEvilness").to_int() > 14)
+	{
+		famChoice = lookupFamiliarDatafile("init");
+	}
+	if($location[Vanya\'s Castle] == place)
 	{
 		famChoice = lookupFamiliarDatafile("init");
 	}
@@ -549,15 +556,6 @@ boolean autoChooseFamiliar(location place)
 	considerGrimstoneGolem(false))
 	{
 		famChoice = $familiar[Grimstone Golem];
-	}
-	
-	//[Angry Jung Man] drops [psychoanalytic jar]. we want 1 to save adventures on getting [digital key]
-	if(famChoice == $familiar[none] &&
-	canChangeToFamiliar($familiar[Angry Jung Man]) &&
-	!possessEquipment($item[Powerful Glove]) &&		//powerful glove is a better way to get digital key
-	$familiar[Angry Jung Man].drops_today < 1)
-	{
-		famChoice = $familiar[Angry Jung Man];
 	}
 	
 	// places where meat drop is desirable due to high meat drop monsters.

@@ -1588,6 +1588,17 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 		return negative;
 	}
 
+	void recover_discount_pants()
+	{
+		foreach discountpants in $items[designer sweatpants,Travoltan trousers]
+		{
+			if(closet_amount(discountpants) > 0)
+			{
+				take_closet(1,discountpants);
+			}
+		}
+	}
+
 	auto_log_info("Target "+resource_type+" => "+goal+" - Considering restore options at " + my_hp() + "/" + my_maxhp() + " HP with " + my_mp() + "/" + my_maxmp() + " MP", "blue");
 	auto_log_info("Active Negative Effects => " + list_to_string(negative_effects()));
 
@@ -1614,6 +1625,30 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 		boolean success = false;
 		foreach i, o in options
 		{
+			if(o.metadata.type == "item" && item_amount(to_item(o.metadata.name)) == 0)	//prevent infinite loop by discount pants when buying from NPC store
+			{
+				foreach discountpants in $items[designer sweatpants,Travoltan trousers]
+				{
+					if(item_amount(discountpants) > 0)
+					{
+						boolean mustnotpants = false;
+						cli_execute("whatif equip " + discountpants + "; quiet");
+						if(resource_type == "hp" && goal > numeric_modifier("_spec", "Buffed HP Maximum"))
+						{
+							mustnotpants = true;
+						}
+						if(resource_type == "mp" && goal > numeric_modifier("_spec", "Buffed MP Maximum"))
+						{
+							mustnotpants = true;
+						}
+						if(mustnotpants)
+						{
+							auto_log_info("Avoiding any discount pants restore loops");
+							put_closet(1,discountpants);	//yes this was the recommended and only? way to make mafia not auto equip the discount pants
+						}
+					}
+				}
+			}
 			use_opportunity_blood_skills(o.vars["hp_restored_per_use"], my_hp()+o.vars["hp_total_restored"]);
 			success = use_restore(o.metadata, meat_reserve, useFreeRests);
 			if(success)
@@ -1629,9 +1664,11 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 		if(!success)
 		{
 			auto_log_warning("Target "+resource_type+" => " + goal + " - Uh oh. All restore options tried ("+count(options)+") failed. Sorry.", "red");
+			recover_discount_pants();
 			return false;
 		}
 	}
+	recover_discount_pants();
 	return true;
 }
 
@@ -1736,6 +1773,7 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	buffMaintain($effect[Using Protection]);
 	//also use items which give mp regen
 	buffMaintain($effect[Tingly Tongue]);
+	buffMaintain($effect[Tingling Insides]);
 	buffMaintain($effect[Wisdom of the Autumn Years]);
 
 	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain

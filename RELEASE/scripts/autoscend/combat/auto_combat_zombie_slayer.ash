@@ -115,7 +115,7 @@ string auto_combatZombieSlayerStage4(int round, monster enemy, string text)
 		{
 			doSmash = true;
 		}
-		if(((enemy == $monster[Toothy Sklelton]) || (enemy == $monster[Spiny Skelelton])) && (get_property("cyrptNookEvilness").to_int() > 26))
+		if(((enemy == $monster[Toothy Sklelton]) || (enemy == $monster[Spiny Skelelton])) && (get_property("cyrptNookEvilness").to_int() > 14 + cyrptEvilBonus(true)))
 		{
 			doSmash = true;
 		}

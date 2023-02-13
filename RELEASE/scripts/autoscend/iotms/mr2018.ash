@@ -220,9 +220,35 @@ boolean fantasyRealmAvailable()
 	return false;
 }
 
+int fantasyBanditsFought()
+{
+	if(contains_text(get_property("_frMonstersKilled"), "fantasy bandit"))
+	{
+		foreach idx, it in split_string(get_property("_frMonstersKilled"), ",")
+		{
+			if(contains_text(it, "fantasy bandit"))
+			{
+				int count = to_int(split_string(it, ":")[1]);
+				return count;
+			}
+		}
+	}
+	return 0;
+}
+
+boolean acquiredFantasyRealmToken()
+{
+	return fantasyBanditsFought() >= 5;
+}
+
 boolean fantasyRealmToken()
 {
 	if(!is_unrestricted($item[FantasyRealm membership packet]))
+	{
+		return false;
+	}
+
+	if(acquiredFantasyRealmToken())
 	{
 		return false;
 	}
@@ -255,21 +281,6 @@ boolean fantasyRealmToken()
 	if(!possessEquipment($item[FantasyRealm G. E. M.]))
 	{
 		return false;
-	}
-
-	if(contains_text(get_property("_frMonstersKilled"), "fantasy bandit"))
-	{
-		foreach idx, it in split_string(get_property("_frMonstersKilled"), ",")
-		{
-			if(contains_text(it, "fantasy bandit"))
-			{
-				int count = to_int(split_string(it, ":")[1]);
-				if(count >= 5)
-				{
-					return false;
-				}
-			}
-		}
 	}
 
 	// If we're not allowed to adventure without a familiar due to being in a 100% familiar run.
@@ -1171,7 +1182,7 @@ boolean auto_voteSetup(int candidate, int first, int second)
 		return false;
 	}
 
-	if(svn_info("Ezandora-Voting-Booth-trunk-Release").last_changed_rev > 0)
+	if(git_exists("midgleyc-Voting-Booth"))
 	{
 		cli_execute("VotingBooth.ash");
 		return true;

@@ -76,16 +76,6 @@ boolean routineRainManHandler()
 			return rainManSummon($monster[astronomer], false, false);
 		}
 	}
-	if(needDigitalKey())
-	{
-		if (get_property("sidequestNunsCompleted") != "none" && my_rain() > 92)
-		{
-			if(whitePixelCount() < 30 && item_amount($item[digital key]) == 0)
-			{
-				return rainManSummon($monster[ghost], false, false);
-			}
-		}
-	}
 
 	return false;
 }
@@ -306,11 +296,6 @@ boolean rainManSummon(monster target, boolean copy, boolean wink)
 	if((item_amount($item[digital key]) == 1) && target == $monster[ghost])
 	{
 		#already have the goal, don't summon
-		return false;
-	}
-	if(whitePixelCount() > 29 && target == $monster[ghost])
-	{
-		#already have the subgoal, don't summon
 		return false;
 	}
 	if ((get_property("sidequestLighthouseCompleted") != "none" || item_amount($item[barrel of gunpowder]) >= 5) && target == $monster[lobsterfrogman])
