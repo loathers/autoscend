@@ -259,6 +259,8 @@ boolean godLobsterCombat(item it);
 boolean godLobsterCombat(item it, int goal);
 boolean godLobsterCombat(item it, int goal, string option);
 boolean fantasyRealmAvailable();
+int fantasyBanditsFought();
+boolean acquiredFantasyRealmToken();
 boolean fantasyRealmToken();
 boolean songboomSetting(string goal);
 boolean songboomSetting(int option);
@@ -469,10 +471,16 @@ boolean auto_autumnatonReadyToQuest();
 location auto_autumnatonQuestingIn();
 boolean auto_autumnatonCheckForUpgrade(string upgrade);
 boolean auto_sendAutumnaton(location loc);
-void auto_autumnatonQuest();
+
+boolean auto_autumnatonQuest();
+boolean auto_hasSpeakEasy();
+int auto_remainingSpeakeasyFreeFights();
+
+
 boolean auto_haveTrainSet();
 void auto_modifyTrainSet(int one, int two, int three, int four, int five, int six, int seven, int eight);
 void auto_checkTrainSet();
+
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2023.ash
@@ -1095,6 +1103,8 @@ boolean needDigitalKey();
 int towerKeyCount();
 int towerKeyCount(boolean effective);
 int EightBitScore();
+boolean EightBitRealmHandler();
+boolean get8BitFatLootToken();
 boolean LX_getDigitalKey();
 void LX_buyStarKeyParts();
 boolean LX_getStarKey();

@@ -8,23 +8,23 @@ Knob Goblin Harem Girl	!outfit:Knob Goblin Harem Girl Disguise;!itemdropcapped:2
 # although I'm not sure why we'd be fighting one in that case...
 Mountain Man	quest:questL08Trapper<2
 # We want frat warrior fatigues!
-Beer Bongadier	!outfit:Frat Warrior Fatigues
-Danglin' Chad	!outfit:Frat Warrior Fatigues
-Elite Beer Bongadier	!outfit:Frat Warrior Fatigues
-Frat Warrior drill sergeant	!outfit:Frat Warrior Fatigues
-Orcish Frat Boy Spy	!outfit:Frat Warrior Fatigues
-Sorority Operator	!outfit:Frat Warrior Fatigues
-War Frat 110th Infantryman	!outfit:Frat Warrior Fatigues
-War Frat 151st Captain	!outfit:Frat Warrior Fatigues
-War Frat 151st Infantryman	!outfit:Frat Warrior Fatigues
-War Frat 500th Infantrygentleman	!outfit:Frat Warrior Fatigues
-War Frat Elite 110th Captain	!outfit:Frat Warrior Fatigues
-War Frat Elite 500th Captain	!outfit:Frat Warrior Fatigues
-War Frat Elite Wartender	!outfit:Frat Warrior Fatigues
-War Frat Kegrider	!outfit:Frat Warrior Fatigues
-War Frat Mobile Grill Unit	!outfit:Frat Warrior Fatigues
-War Frat Wartender	!outfit:Frat Warrior Fatigues
-War Pledge	!outfit:Frat Warrior Fatigues
+Beer Bongadier	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+Danglin' Chad	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+Elite Beer Bongadier	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+Frat Warrior drill sergeant	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+Orcish Frat Boy Spy	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+Sorority Operator	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Frat 110th Infantryman	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Frat 151st Captain	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Frat 151st Infantryman	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Frat 500th Infantrygentleman	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Frat Elite 110th Captain	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Frat Elite 500th Captain	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Frat Elite Wartender	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Frat Kegrider	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Frat Mobile Grill Unit	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Frat Wartender	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
+War Pledge	!outfit:Frat Warrior Fatigues;prop:auto_hippyInstead=false
 # We also want to dress up like a filthy hippy to get frat warrior fatigues
 business hippy	!outfit:Filthy Hippy Disguise
 crusty hippy	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
@@ -38,8 +38,8 @@ filthy hippy Vegan chef	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
 filthy hippy jewelry maker	!outfit:Filthy Hippy Disguise;!class:Ed the Undying
 zombie hippy	!outfit:Filthy Hippy Disguise
 # Want hippy war outfit if fighting for hippies. TODO: add monsters for Frat Boy Ensemble and War Hippy Fatigues outfits. Issue #900
-War Hippy Spy	!outfit:War Hippy Fatigues;!itemdropcapped:30=round purple sunglasses
-War Hippy Airborne Commander	!outfit:War Hippy Fatigues
+War Hippy Spy	!outfit:War Hippy Fatigues;!itemdropcapped:30=round purple sunglasses;prop:auto_hippyInstead=true
+War Hippy Airborne Commander	!outfit:War Hippy Fatigues;prop:auto_hippyInstead=true
 # And we want filthworm glands, but not if we're gonna hugpocket them
 larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
 filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland

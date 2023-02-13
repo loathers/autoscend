@@ -10,7 +10,6 @@ since r27108;	// new 8-bit realm
 import <autoscend/autoscend_header.ash>
 import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
 import <autoscend/autoscend_migration.ash>
-import <auto_canadv.ash>
 
 import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
@@ -295,7 +294,7 @@ int auto_advToReserve()
 	
 	int reserveadv = 1;
 	
-	if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && auto_freeCombatsRemaining() > 0)
+	if(auto_freeCombatsRemaining() > 0)
 	{
 		reserveadv = max(2, reserveadv);
 	}
@@ -1768,10 +1767,10 @@ boolean doTasks()
 		}
 	}
 
-		if(theSource_oracle())				return true;
+	if(theSource_oracle())				return true;
 	if(LX_theSource())					return true;
 	if(LX_ghostBusting())				return true;
-	if(witchessFights())					return true;
+	if(witchessFights())				return true;
 
 	//
 	//Adventuring actually starts here.
@@ -1805,6 +1804,7 @@ boolean doTasks()
 	dna_generic();
 	if(LA_wildfire())					return true;
 	if(LA_robot())						return true;
+	if(auto_autumnatonQuest())			return true;
 	
 	if (process_tasks()) return true;
 
