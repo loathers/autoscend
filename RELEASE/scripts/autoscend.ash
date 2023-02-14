@@ -1,4 +1,4 @@
-since r27108;	// new 8-bit realm
+since r27182;	// Buying hat from firework shop only requires autoSatisfyWithNPCs
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
