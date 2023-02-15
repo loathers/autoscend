@@ -561,6 +561,12 @@ effect awol_walkBuff();
 boolean awol_buySkills();
 
 ########################################################################################################
+//Defined in autoscend/paths/avatar_of_west_of_loathing.ash
+boolean in_aosol();
+boolean aosol_initializeSettings();
+void aosol_unCurse();
+
+########################################################################################################
 //Defined in autoscend/paths/bees_hate_you.ash
 boolean in_bhy();
 void bhy_initializeSettings();
