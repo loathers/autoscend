@@ -4110,44 +4110,54 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 // ADVENTURE FORCING FUNCTIONS
 boolean auto_canForceNextNoncombat()
 {
-	if (isActuallyEd())
-	{
-		return auto_pillKeeperFreeUseAvailable()
-		|| (!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0) && auto_is_valid($item[Clara\'s Bell]));
-	}
-	return auto_pillKeeperAvailable()
-	|| (!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0) && auto_is_valid($item[Clara\'s Bell]))
-	|| (item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && spleen_left() < $item[stench jelly].spleen);
+	return _auto_forceNextNoncombat(true);
 }
 
 boolean _auto_forceNextNoncombat()
+{
+	return _auto_forceNextNoncombat(false);
+}
+
+boolean _auto_forceNextNoncombat(boolean speculative)
 {
 	// Use stench jelly or other item to set the combat rate to zero until the next noncombat.
 
 	boolean ret = false;
 	if(auto_pillKeeperFreeUseAvailable())
 	{
+		if(speculative) return true;
 		ret = auto_pillKeeper("noncombat");
 		if(ret) {
 			set_property("auto_forceNonCombatSource", "pillkeeper");
 		}
 	}
-	else if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0))
+	else if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0) && auto_is_valid($item[Clara\'s Bell]))
 	{
+		if(speculative) return true;
 		ret = use(1, $item[Clara\'s Bell]);
 		if(ret) {
 			set_property("auto_forceNonCombatSource", "clara's bell");
 		}
 	}
-	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]))
+	else if(auto_hasParka() && get_property(_spikolodonSpikeUses) < 5 && hasTorso())
 	{
+		if(speculative) return true;
+		// parka spikes require a combat to active
+		// this property will cause the parka to be eqipped and spikes deployed next combat
+		set_property("auto_forceNonCombatSource", "jurassic parka");
+	}
+	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && !isActuallyEd()
+		&& spleen_left() >= $item[stench jelly].spleen)
+	{
+		if(speculative) return true;
 		ret = autoChew(1, $item[stench jelly]);
 		if(ret) {
 			set_property("auto_forceNonCombatSource", "stench jelly");
 		}
 	}
-	else if(auto_pillKeeperAvailable() && !isActuallyEd()) // don't use Spleen as Ed, it's his main source of adventures.
+	else if(auto_pillKeeperAvailable() && !isActuallyEd() && spleen_left() >= 3) // don't use Spleen as Ed, it's his main source of adventures.
 	{
+		if(speculative) return true;
 		ret = auto_pillKeeper("noncombat");
 		if(ret) {
 			set_property("auto_forceNonCombatSource", "pillkeeper");
