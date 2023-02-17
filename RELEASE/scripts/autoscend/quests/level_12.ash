@@ -1230,6 +1230,7 @@ boolean L12_gremlins()
 	auto_log_info("Doing them gremlins", "blue");
 	addToMaximize("20dr,1da 1000max,3hp,-3ml");
 	acquireHP();
+	buffMaintain($effect[Taped Up]); //aoSOL Pig Skinner
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{
 		bat_formMist();

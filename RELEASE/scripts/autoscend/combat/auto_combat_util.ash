@@ -515,6 +515,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Howl of the Alpha];
 	}
 
+	if(auto_have_skill($skill[Punt]) && (my_mp() > mp_cost($skill[Punt])) &&!(used contains "Punt"))
+	{
+		return "skill " + $skill[Punt];
+	}
+
 	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && auto_is_valid($skill[Throw Latte On Opponent]) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent"))
 	{
 		return "skill " + $skill[Throw Latte on Opponent];

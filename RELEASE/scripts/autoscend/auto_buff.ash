@@ -262,6 +262,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Celestial Saltiness]:			useItem = $item[Celestial Au Jus];				break;
 	case $effect[Celestial Sheen]:				useItem = $item[Celestial Olive Oil];			break;
 	case $effect[Celestial Vision]:				useItem = $item[Celestial Carrot Juice];		break;
+	case $effect[Chearled]:						useSkill = $skill[Chearlead];					break;
 	case $effect[Cinnamon Challenger]:			useItem = $item[Pulled Red Taffy];				break;
 	case $effect[Clear Ears, Can\'t Lose]:		useItem = $item[Ear Candle];					break;
 	case $effect[Cletus\'s Canticle of Celerity]:	useSkill = $skill[Cletus\'s Canticle of Celerity];break;
@@ -713,6 +714,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Stinky Hands]:					useItem = $item[Lotion of Stench];				break;
 	case $effect[Stinky Weapon]:				useItem = $item[Stench Nuggets];				break;
 	case $effect[Stone-Faced]:					useItem = $item[Stone Wool];					break;
+	case $effect[Stretched]:					useSkill = $item[Stretch];						break;
 	case $effect[Strong Grip]:					useItem = $item[Finger Exerciser];				break;
 	case $effect[Strong Resolve]:				useItem = $item[Resolution: Be Stronger];		break;
 	case $effect[Sugar Rush]:
@@ -731,6 +733,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Sweet\, Nuts]:					useItem = $item[Crimbo Candied Pecan];			break;
 	case $effect[Sweetbreads Flamb&eacute;]:	useItem = $item[Greek Fire];					break;
 	case $effect[Takin\' It Greasy]:			useSkill = $skill[Grease Up];					break;
+	case $effect[Taped Up]:						useSkill = $skill[Tape Up];						break;
 	case $effect[Taunt of Horus]:				useItem = $item[Talisman of Horus];				break;
 	case $effect[Temporarily Filtered]:			useItem = $item[Single-use dust mask];			break;
 	case $effect[Temporary Lycanthropy]:		useItem = $item[Blood of the Wereseal];			break;

@@ -565,6 +565,7 @@ boolean awol_buySkills();
 boolean in_aosol();
 boolean aosol_initializeSettings();
 void aosol_unCurse();
+boolean aosol_buySkills();
 
 ########################################################################################################
 //Defined in autoscend/paths/bees_hate_you.ash
