@@ -404,7 +404,16 @@ boolean autoChooseFamiliar(location place)
 	Frat House, Hippy Camp, The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hatching Chamber,
 	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, Hero's Field, The Degrassi Knoll Garage, The Old Landfill,
 	The Laugh Floor, Infernal Rackets Backstage] contains place) {
-		famChoice = lookupFamiliarDatafile("item");
+		// if we don't care about having some + combat rate and don't have a better fairy, JHD is a 1.25x fairy
+		if(zone_combatMod(place)._int > -1 && canChangeToFamiliar($familiar[Jumpsuited Hound Dog])
+		&& (!canChangeToFamiliar($familiar[Steam-Powered Cheerleader]) || get_property("_cheerleaderSteam").to_int() <= 100))
+		{
+			famChoice = $familiar[Jumpsuited Hound Dog];
+		}
+		else
+		{
+			famChoice = lookupFamiliarDatafile("item");
+		}
 	}
 	if (place == $location[Inside the Palindome] && item_amount($item[Stunt Nuts]) == 0 && item_amount($item[Wet Stunt Nut Stew]) == 0) {
 		famChoice = lookupFamiliarDatafile("item");
