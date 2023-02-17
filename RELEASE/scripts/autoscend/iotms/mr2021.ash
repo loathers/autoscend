@@ -720,7 +720,13 @@ void auto_CMCconsult()
 	int bestOption = -1;
 	item consumableBought = $item[none];
 	string page = visit_url("campground.php?action=workshed");
-	if(contains_text(page, "Breathitin"))
+	if(in_gnoob())
+	{
+		//Gnoobs can't make effective use of the other options, so get the potion for marginal benefit
+		auto_log_info("Buying potion from CMC", "blue");
+		bestOption = 4;
+	}
+	else if(contains_text(page, "Breathitin"))
 	{
 		auto_log_info("Buying Breathitin pill from CMC", "blue");
 		bestOption = 5;
