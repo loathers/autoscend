@@ -263,6 +263,16 @@ void __init_restoration_metadata()
 				__known_restoration_sources[parsed.name] = parsed;
 			}
 		}
+
+		if(my_path() == $path[Disguises Delimit])
+		{	
+			//shadow has double HP in this path so larger reserve needed
+			foreach specialname in $strings[gauze garter,filthy poultice]
+			{	__RestorationMetadata parsedSpecial = __known_restoration_sources[specialname];
+				if(parsedSpecial.hard_reserve_limit < 4) continue;
+				parsedSpecial.hard_reserve_limit += 4;	//shallow copy passes edit
+			}
+		}
 	}
 
 	auto_log_info("Loading restoration data.");
