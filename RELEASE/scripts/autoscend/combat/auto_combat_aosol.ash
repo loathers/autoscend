@@ -14,18 +14,16 @@ string auto_combatAoSOLStage5(int round, monster enemy, string text)
 	//scrap using attacks. reserved for beefier monsters with at least 40 HP
 	if(canUse($skill[Ball Throw], false) && !enemy_physical_immune)
 	{
+		dmg = my_buffedstat($stat[muscle]) * enemy_physical_res;
 		if(canSurvive(turns_to_kill(dmg)))
 		{
 			return useSkill($skill[Ball Throw], false);
 		}
 	}
-	if(canUse($skill[Tackle], false) && !enemy_physical_immune)
-	{
-		if(canSurvive(turns_to_kill(dmg)))
-		{
-			return useSkill($skill[Tackle], false);
-		}
-	}
+	// if(canUse($skill[Tackle], false) && !enemy_physical_immune)
+	// {
+	// 	return useSkill($skill[Tackle], false);
+	// }
 	
 	return "";
 }

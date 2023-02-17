@@ -1694,6 +1694,8 @@ boolean doTasks()
 	auto_buySkills();		// formerly picky_buyskills() now moved here
 	awol_buySkills();
 	awol_useStuff();
+	aosol_unCurse();
+	aosol_buySkills();
 	theSource_buySkills();
 	jarlsberg_buySkills();
 	boris_buySkills();

@@ -563,7 +563,6 @@ boolean awol_buySkills();
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_west_of_loathing.ash
 boolean in_aosol();
-boolean aosol_initializeSettings();
 void aosol_unCurse();
 boolean aosol_buySkills();
 
