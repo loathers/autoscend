@@ -180,7 +180,7 @@ boolean L7_crypt()
 		}
 
 		auto_log_info("The Alcove! (" + initiative_modifier() + ")", "blue");
-		if(get_property("cyrptAlcoveEvilness").to_int() <= 25)
+		if(get_property("cyrptAlcoveEvilness").to_int() <= 13)
 		{
 			set_property("auto_nextEncounter","conjoined zmombie");
 		}
@@ -211,7 +211,7 @@ boolean L7_crypt()
 			januaryToteAcquire($item[broken champagne bottle]);
 		}
 
-		if(get_property("cyrptNookEvilness").to_int() <= 25)
+		if(get_property("cyrptNookEvilness").to_int() <= 13)
 		{
 			set_property("auto_nextEncounter","giant skeelton");
 		}
@@ -268,7 +268,7 @@ boolean L7_crypt()
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Dirty Old Lihc.");
 		}
-		if(get_property("cyrptNicheEvilness").to_int() <= 25)
+		if(get_property("cyrptNicheEvilness").to_int() <= 13)
 		{
 			set_property("auto_nextEncounter","gargantulihc");
 		}
@@ -306,7 +306,7 @@ boolean L7_crypt()
 
 		addToMaximize("200ml " + auto_convertDesiredML(149) + "max");
 
-		if(get_property("cyrptCrannyEvilness").to_int() <= 25)
+		if(get_property("cyrptCrannyEvilness").to_int() <= 13)
 		{
 			set_property("auto_nextEncounter","huge ghuol");
 		}
