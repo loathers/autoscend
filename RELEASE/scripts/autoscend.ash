@@ -1,4 +1,4 @@
-since r26812;	// allow specifying "github" dependencies
+since r27182;	// Buying hat from firework shop only requires autoSatisfyWithNPCs
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -10,7 +10,6 @@ since r26812;	// allow specifying "github" dependencies
 import <autoscend/autoscend_header.ash>
 import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
 import <autoscend/autoscend_migration.ash>
-import <auto_canadv.ash>
 
 import <autoscend/auto_acquire.ash>
 import <autoscend/auto_adventure.ash>
@@ -45,6 +44,7 @@ import <autoscend/iotms/mr2019.ash>
 import <autoscend/iotms/mr2020.ash>
 import <autoscend/iotms/mr2021.ash>
 import <autoscend/iotms/mr2022.ash>
+import <autoscend/iotms/mr2023.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
@@ -124,6 +124,19 @@ void initializeSettings() {
 				set_property("auto_100familiar", my_familiar());
 			}
 		}
+		//check for a workshed
+		if(get_workshed() != $item[none])
+		{
+			boolean userAnswer = user_confirm("Workshed already set, do you want Autoscend to handle your workshed? Will default to 'Yes' in 15 seconds.", 15000, true);
+			if(userAnswer)
+			{
+				set_property("auto_workshed", "auto");
+			}
+			else
+			{
+				set_property("auto_workshed", get_workshed().to_string());
+			}
+		}
 	}
 
 	auto_spoonTuneConfirm();
@@ -154,7 +167,6 @@ void initializeSettings() {
 	set_property("auto_clanstuff", "0");
 	set_property("auto_cookie", -1);
 	set_property("auto_copies", "");
-	set_property("auto_crackpotjar", "");
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);
 	set_property("auto_day1_dna", "");
@@ -282,7 +294,7 @@ int auto_advToReserve()
 	
 	int reserveadv = 1;
 	
-	if((my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && auto_freeCombatsRemaining() > 0)
+	if(auto_freeCombatsRemaining() > 0)
 	{
 		reserveadv = max(2, reserveadv);
 	}
@@ -412,7 +424,7 @@ boolean LX_burnDelay()
 }
 
 
-boolean LX_calculateTheUniverse()
+boolean LX_calculateTheUniverse(boolean speculative)
 {
 	if(in_wildfire())
 	{
@@ -428,26 +440,20 @@ boolean LX_calculateTheUniverse()
 	{
 		if(doNumberology("battlefield", false) != -1 && adjustForYellowRayIfPossible($monster[War Frat 151st Infantryman]))
 		{
-			return (doNumberology("battlefield") != -1);
+			if(speculative)
+			{
+				return true;
+			}
+			else
+			{
+				return (doNumberology("battlefield") != -1);
+			}
 		}
 		return false;	//we want 151 and can get it in general. but not right now. so save it for later
 	}
 	
 	doNumberology("adventures3");
 	return false;	//we do not want to restart the loop as all we're doing is generating 3 adventures
-}
-
-boolean LX_faxing()
-{
-	if (my_level() >= 9 && !get_property("_photocopyUsed").to_boolean() && isActuallyEd() && my_daycount() < 3 && !is_unrestricted($item[Deluxe Fax Machine]))
-	{
-		auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
-		if(handleFaxMonster($monster[Lobsterfrogman]))
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 boolean tophatMaker()
@@ -1078,6 +1084,8 @@ boolean dailyEvents()
 	auto_getGuzzlrCocktailSet();
 	auto_latheAppropriateWeapon();
 	auto_harvestBatteries();
+	pickRocks();
+	auto_SITCourse();
 	
 	return true;
 }
@@ -1714,6 +1722,7 @@ boolean doTasks()
 	auto_chapeau();
 	auto_buyFireworksHat();
 	auto_CMCconsult();
+	auto_checkTrainSet();
 	auto_autumnatonQuest();
 
 	ocrs_postCombatResolve();
@@ -1758,10 +1767,10 @@ boolean doTasks()
 		}
 	}
 
-		if(theSource_oracle())				return true;
+	if(theSource_oracle())				return true;
 	if(LX_theSource())					return true;
 	if(LX_ghostBusting())				return true;
-	if(witchessFights())					return true;
+	if(witchessFights())				return true;
 
 	//
 	//Adventuring actually starts here.
@@ -1788,12 +1797,14 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if(LM_bond())						return true;
-	if(LX_calculateTheUniverse())				return true;
+	if(LX_calculateTheUniverse(false))	return true;
+	rockGardenEnd();
 	adventureFailureHandler();
 	dna_sorceressTest();
 	dna_generic();
 	if(LA_wildfire())					return true;
 	if(LA_robot())						return true;
+	if(auto_autumnatonQuest())			return true;
 	
 	if (process_tasks()) return true;
 

@@ -3,7 +3,6 @@ Animated Mahogany Nightstand
 Animated Possessions
 Animated Rustic Nightstand	!path:Bees Hate You
 Bubblemint Twins	!class:Ed the Undying
-Bullet Bill
 Burly Sidekick	item:Mohawk Wig>0;!familiar:Red-Nosed Snapper
 Coaltergeist
 Drunk Goat
@@ -31,8 +30,8 @@ Pygmy Witch Nurse
 Red Herring
 Red Snapper
 Sabre-Toothed Goat
-Senile Lihc	loc:The Defiled Niche
-Slick Lihc	loc:The Defiled Niche
+Senile Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
+Slick Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 Skeletal Sommelier
 Spooky mummy	class:Ed the Undying
 Spooky vampire	class:Ed the Undying
@@ -44,8 +43,8 @@ Tomb Servant
 Triffid	class:Ed the Undying
 Wardr&ouml;b Nightstand
 Warehouse Janitor
-party skelteon
-basic lihc
+party skelteon	loc:The Defiled Nook;prop:cyrptNookEvilness>14
+basic lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 # Bugbear Invasion Mothership
 scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing;!sniffed:scavenger bugbear
 bugaboo	path:Bugbear Invasion;loc:Morgue;!sniffed:bugaboo

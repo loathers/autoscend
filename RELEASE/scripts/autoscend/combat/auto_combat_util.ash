@@ -677,6 +677,10 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "item " + $item[Deathchucks];
 	}
+	if((item_amount($item[divine champagne popper]) > keep) && (!(used contains "divine champagne popper"))&& auto_is_valid($item[divine champagne popper]))
+	{
+		return "item " + $item[divine champagne popper];
+	}
 
 	return "";
 }
@@ -724,9 +728,9 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "item " + $item[yellow rocket]; // 75 turns & 250 meat
 		}
-		if(inCombat ? have_skill($skill[Unleash the Devil's Kiss]) : auto_hasRetrocape() && auto_is_valid($skill[Unleash the Devil's Kiss]))
+		if(inCombat ? have_skill($skill[Unleash the Devil\'s Kiss]) : auto_hasRetrocape() && auto_is_valid($skill[Unleash the Devil\'s Kiss]))
 		{
-			return "skill " + $skill[Unleash the Devil's Kiss]; // 99 turns
+			return "skill " + $skill[Unleash the Devil\'s Kiss]; // 99 turns
 		}
 		if(auto_have_skill($skill[Disintegrate]) && auto_is_valid($skill[Disintegrate]) && (my_mp() >= mp_cost($skill[Disintegrate])))
 		{

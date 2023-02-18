@@ -431,7 +431,7 @@ boolean auto_pre_adventure()
 		auto_log_debug("Re-equipped your " + get_property("auto_100familiar") + " as something had unequipped it. This is bad and should be investigated.");
 	}
 
-	if((place == $location[8-Bit Realm]) && (my_turncount() != 0))
+	if($locations[Vanya's Castle, The Fungus Plains, Megalo-City, Hero's Field] contains place && (my_turncount() != 0))
 	{
 		if(!possessEquipment($item[Continuum Transfunctioner]))
 		{
