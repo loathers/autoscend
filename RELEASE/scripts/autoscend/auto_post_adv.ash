@@ -85,6 +85,8 @@ boolean auto_post_adventure()
 	{
 		auto_log_info("Encountered (assumed) forced noncombat: " + get_property("lastEncounter"), "blue");
 		set_property("auto_forceNonCombatSource", "");
+		set_property("auto_forceNonCombatLocation", "");
+		set_property("auto_prepParkaNCForce", "false");
 		set_property("auto_forceNonCombatTurn", -1);
 	}
 
@@ -93,6 +95,8 @@ boolean auto_post_adventure()
 		auto_log_warning("It's been 10 adventures since we forced a noncombat (" + get_property("auto_forceNonCombatSource") +
 			"), am going to assume it happened but we missed it.", "blue");
 		set_property("auto_forceNonCombatSource", "");
+		set_property("auto_forceNonCombatLocation", "");
+		set_property("auto_prepParkaNCForce", "false");
 		set_property("auto_forceNonCombatTurn", 0);
 	}
 

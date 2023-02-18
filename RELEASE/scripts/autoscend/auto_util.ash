@@ -4108,17 +4108,7 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 
 
 // ADVENTURE FORCING FUNCTIONS
-boolean auto_canForceNextNoncombat()
-{
-	return _auto_forceNextNoncombat(true);
-}
-
-boolean _auto_forceNextNoncombat()
-{
-	return _auto_forceNextNoncombat(false);
-}
-
-boolean _auto_forceNextNoncombat(boolean speculative)
+boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 {
 	// Use stench jelly or other item to set the combat rate to zero until the next noncombat.
 
@@ -4139,12 +4129,14 @@ boolean _auto_forceNextNoncombat(boolean speculative)
 			set_property("auto_forceNonCombatSource", "clara's bell");
 		}
 	}
-	else if(auto_hasParka() && get_property(_spikolodonSpikeUses) < 5 && hasTorso())
+	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso())
 	{
 		if(speculative) return true;
 		// parka spikes require a combat to active
 		// this property will cause the parka to be eqipped and spikes deployed next combat
 		set_property("auto_forceNonCombatSource", "jurassic parka");
+		// track desired NC location so we know where to go when parka spikes are preped
+		set_property("auto_forceNonCombatLocation", loc);
 	}
 	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && !isActuallyEd()
 		&& spleen_left() >= $item[stench jelly].spleen)
@@ -4171,16 +4163,34 @@ boolean _auto_forceNextNoncombat(boolean speculative)
 	return ret;
 }
 
-boolean auto_forceNextNoncombat()
+boolean auto_canForceNextNoncombat()
+{
+	return _auto_forceNextNoncombat($location[none], true);
+}
+
+boolean _auto_forceNextNoncombat(location loc)
+{
+	return _auto_forceNextNoncombat(loc, false);
+}
+
+boolean auto_forceNextNoncombat(location loc)
 {
 	if(auto_haveQueuedForcedNonCombat())
 	{
 		auto_log_warning("Trying to force a noncombat adventure, but I think we've already forced one...", "red");
 		return true;
 	}
-	if (_auto_forceNextNoncombat())
-	{
-		auto_log_info("Next noncombat adventure has been forced...", "blue");
+	if (_auto_forceNextNoncombat(loc))
+	{	
+		string forceNCMethod = get_property("auto_forceNonCombatSource");
+		if(forceNCMethod == "jurassic parka")
+		{
+			auto_log_info("Next noncombat adventure will be forced with " + forceNCMethod, "blue");
+		}
+		else
+		{
+			auto_log_info("Next noncombat adventure has been forced with " + forceNCMethod, "blue");
+		}
 		return true;
 	}
 	return false;

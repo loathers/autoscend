@@ -854,3 +854,40 @@ boolean LX_setWorkshed(){
 	}
 	return false;
 }
+
+boolean LX_ForceNC()
+{
+	if(get_property("auto_forceNonCombatSource") != "jurassic parka" || !get_property("auto_prepParkaNCForce").to_boolean())
+	{
+		return false;
+	}
+	location desiredNCLocation = get_property("auto_forceNonCombatLocation").to_location();
+	if(desiredNCLocation == $location[none]) return false;
+
+	//return the actual item name in case a shorthand is used
+	switch(desiredNCLocation)
+	{
+		case $location[The Dark Neck of the Woods]:
+		case $location[The Dark Elbow of the Woods]:
+		case $location[The Dark Heart of the Woods]:
+			return L6_friarsGetParts();
+		case $location[The Castle in the Clouds in the Sky (Basement)]:
+			return L10_basement();
+		case $location[The Castle in the Clouds in the Sky (Top Floor)]:
+			return L10_topFloor();
+		case $location[The Hole in the Sky]:
+			return L10_holeInTheSkyUnlock();
+		case $location[The Haunted Billiards Room]:
+			return LX_unlockHauntedLibrary();
+		case $location[The Haunted Bathroom]:
+			return LX_getLadySpookyravensPowderPuff();
+		case $location[The Black Forest]:
+			return L11_getBeehive();
+		case $location[The Hidden Apartment Building]:
+		case $location[The Hidden Office Building]:
+			return L11_hiddenCity();
+		default:
+			auto_log_warning("Attempted to force NC in unexpected location: " + desiredNCLocation);
+			return false;
+	}
+}

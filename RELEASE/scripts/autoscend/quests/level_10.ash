@@ -167,7 +167,12 @@ boolean L10_basement()
 		}
 	}
 
-	auto_forceNextNoncombat();
+	auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Basement)]);
+	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+	{
+		// do something else to prep parka spikes, then come back
+		return false;
+	}
 	if(!autoEquip($item[Amulet of Extreme Plot Significance]))
 	{
 		if(!autoEquip($item[unbreakable umbrella]))
@@ -237,7 +242,12 @@ boolean L10_topFloor()
 		pullXWhenHaveY($item[Mohawk wig], 1, 0);
 	}
 
-	auto_forceNextNoncombat();
+	auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Top Floor)]);
+	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+	{
+		// do something else to prep parka spikes, then come back
+		return false;
+	}
 	autoEquip($item[Mohawk wig]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 
@@ -365,7 +375,12 @@ boolean L10_holeInTheSkyUnlock()
 
 	auto_log_info("Castle (Top Floor) - Opening the Hole in the Sky.", "blue");
 	
-	auto_forceNextNoncombat();
+	auto_forceNextNoncombat($location[The Hole in the Sky]);
+	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+	{
+		// do something else to prep parka spikes, then come back
+		return false;
+	}
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 
 	return true;

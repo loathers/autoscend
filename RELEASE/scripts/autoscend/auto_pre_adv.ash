@@ -347,6 +347,11 @@ boolean auto_pre_adventure()
 	{
 		autoEquip($slot[acc3], $item[backup camera]);
 	}
+
+	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+	(
+		autoEquip($item[jurassic parka]);
+	)
 	
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
