@@ -953,6 +953,7 @@ boolean L12_filthworms()
 		buffMaintain($effect[Unusual Perspective]);
 		buffMaintain($effect[Eagle Eyes]);
 		buffMaintain($effect[Heart of Lavender]);
+		buffMaintain($effect[Five Sticky Fingers]);
 		asdonBuff($effect[Driving Observantly]);
 		bat_formBats();
 
@@ -1303,7 +1304,7 @@ boolean L12_sonofaBeach()
 	{
 		if(contains_text($location[Sonofa Beach].combat_queue, to_string($monster[Lobsterfrogman])))
 		{
-			if(timeSpinnerCombat($monster[Lobsterfrogman], ""))
+			if(timeSpinnerCombat($monster[Lobsterfrogman]))
 			{
 				return true;
 			}
@@ -1757,6 +1758,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	buffMaintain($effect[Earning Interest]);
 	buffMaintain($effect[Bet Your Autumn Dollar]);
+	buffMaintain($effect[Flapper Dancin\']);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{

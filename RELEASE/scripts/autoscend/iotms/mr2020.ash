@@ -486,10 +486,13 @@ boolean auto_cargoShortsOpenPocket(item i)
 	return pick_pocket(available_pocket(i));
 }
 
-boolean auto_cargoShortsOpenPocket(monster m)
+boolean auto_cargoShortsOpenPocket(monster m, boolean speculative)
 {
 	if (!auto_cargoShortsCanOpenPocket(m))
 		return false;
+
+	if (speculative)
+		return true;
 	
 	auto_log_info("Using cargo shorts to summon " + m.name, "blue");
 	string[int] pages;
@@ -531,7 +534,7 @@ boolean auto_cargoShortsOpenPocket(string s)
 	else if (s.to_item() != $item[none])
 		return auto_cargoShortsOpenPocket(s.to_item());
 	else if (s.to_monster() != $monster[none])
-		return auto_cargoShortsOpenPocket(s.to_monster());
+		return auto_cargoShortsOpenPocket(s.to_monster(), false);
 	else if (s.to_effect() != $effect[none])
 		return auto_cargoShortsOpenPocket(s.to_effect());
 	else if (s.to_stat() != $stat[none])

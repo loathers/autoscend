@@ -1,8 +1,9 @@
 LX_freeCombatsTask
+LX_unlockPirateRealm
 catBurglarHeist
 auto_breakfastCounterVisit
 chateauPainting
-LX_faxing
+LX_setWorkshed
 LX_artistQuest
 LX_galaktikSubQuest
 LX_armorySideQuest
@@ -11,9 +12,9 @@ L9_leafletQuest
 L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
+LX_summonMonster
 resolveSixthDMT
 LX_dinseylandfillFunbucks
-LX_unlockPirateRealm
 handleRainDoh
 LX_quantumTerrarium
 fancyOilPainting

@@ -17,7 +17,7 @@ boolean L5_getEncryptionKey()
 	}
 
 
-	if(canBurnDelay($location[The Outskirts of Cobb's Knob]))
+	if(canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
 	{
 		return false;
 	}

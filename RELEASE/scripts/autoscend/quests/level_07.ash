@@ -106,6 +106,7 @@ boolean L7_crypt()
 		use(1, $item[chest of the bonerdagon]);
 		return false;
 	}
+
 	oldPeoplePlantStuff();
 
 	if(my_mp() > 60)
@@ -186,6 +187,18 @@ boolean L7_crypt()
 		}
 		return autoAdv($location[The Defiled Alcove]);
 	}
+
+	// delay remaining crypt zones for cold medicine cabinet usage unless we have run out of other stuff to do
+	// crypt is underground so it will generate breathitins, 5 turns free outside
+	// allow adventuring in Alcove (above) since many backup charges get used for modern zmobies
+	// not delaying better distributes these charges across days
+	if(auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 && 
+		get_workshed() != $item[cold medicine cabinet] && !isAboutToPowerlevel() && 
+		(LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
+	{
+		return false;
+	}
+
 	// current mafia bug causes us to lose track of the amount of Evil Eyes in inventory so adding a refresh here
 	cli_execute("refresh inv");
 	// in KoE, skeleton astronauts are random encounters that drop Evil Eyes.

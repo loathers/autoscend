@@ -242,6 +242,13 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 		logRemainingFights("Tend to Mushroom Garden = 1"); //Not actually a free fight, but included to ensure carried out at bedtime.
 	}
 
+	if(auto_hasSpeakEasy() && auto_remainingSpeakeasyFreeFights() > 0)
+	{
+		int temp = auto_remainingSpeakeasyFreeFights();
+		count += temp;
+		logRemainingFights("Oliver's Place = " + temp);
+	}
+
 	return count;
 }
 
@@ -345,19 +352,28 @@ boolean LX_freeCombats(boolean powerlevel)
 		if(godLobsterCombat()) return true;
 	}
 	
+	if(auto_have_skill($skill[Evoke Eldritch Horror]) && get_property("_eldritchHorrorEvoked").to_boolean() == false)
+	{
+		auto_log_debug("LX_freeCombats is calling evokeEldritchHorror()");
+		if(evokeEldritchHorror()) return true;
+	}
+
+	if(auto_hasSpeakEasy() && auto_remainingSpeakeasyFreeFights() > 0)
+	{
+		auto_log_debug("LX_freeCombats is adventuring in [An Unusually Quiet Barroom Brawl]");
+		adv_done = autoAdv(1, $location[An Unusually Quiet Barroom Brawl]);
+		if(adv_done) return true;
+	}
+
+	// tentacle should be last so it can be backed up, if script wants to
+	// see auto_backupTarget()
 	if(get_property("_eldritchTentacleFought").to_boolean() == false)
 	{
 		auto_log_debug("LX_freeCombats is calling fightScienceTentacle()");
 		if(fightScienceTentacle()) return true;
 	}
 	
-	if(auto_have_skill($skill[Evoke Eldritch Horror]) && get_property("_eldritchHorrorEvoked").to_boolean() == false)
-	{
-		auto_log_debug("LX_freeCombats is calling evokeEldritchHorror()");
-		if(evokeEldritchHorror()) return true;
-	}
-	
-	if(auto_freeCombatsRemaining() == 0)
+	if(auto_freeCombatsRemaining() > 0)
 	{
 		auto_log_debug("I reached the end of LX_freeCombats() but I think the following free combats were not used for some reason:");
 		auto_freeCombatsRemaining(true);		//print remaining free combats.
