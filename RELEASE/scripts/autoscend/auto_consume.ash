@@ -120,6 +120,11 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		return false;
 	}
 
+	if(canOde(toDrink) && item_amount($item[hard rock]) > 0) //only want to hard rock if the booze is also Ode-able
+	{
+		use(1, $item[hard rock]);
+	}
+
 	int expectedInebriety = toDrink.inebriety * howMany;
 
 	if(expectedInebriety == 1 && howMany == 1 && item_amount($item[mime army shotglass]) > 0 && !get_property("_mimeArmyShotglassUsed").to_boolean() && !get_property("_auto_mimeArmyShotglassUsed").to_boolean() && my_mp() < 200)
@@ -350,6 +355,10 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		{
 			buyUpTo(1, $item[Mayoflex], 1000);
 			use(1, $item[Mayoflex]);
+		}
+		if(item_amount($item[whet stone]) > 0) //use whet stone if we got one from the rock garden
+		{
+			use(1, $item[whet stone]);
 		}
 		if(have_effect($effect[Ready to Eat]) > 0)
 		{

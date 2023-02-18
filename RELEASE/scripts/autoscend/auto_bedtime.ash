@@ -179,12 +179,6 @@ int pullsNeeded(string data)
 			}
 		}
 
-		if(item_amount($item[Digital Key]) == 0 && whitePixelCount() < 30)
-		{
-			auto_log_warning("Need " + (30-whitePixelCount()) + " white pixels.", "red");
-			count = count + (30 - whitePixelCount());
-		}
-
 		if(item_amount($item[skeleton key]) == 0)
 		{
 			if((item_amount($item[skeleton bone]) > 0) && (item_amount($item[loose teeth]) > 0))

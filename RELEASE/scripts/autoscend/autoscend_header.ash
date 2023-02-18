@@ -22,8 +22,7 @@ void initializeSession();
 int auto_advToReserve();
 boolean auto_unreservedAdvRemaining();
 boolean LX_burnDelay();
-boolean LX_universeFrat();
-boolean LX_faxing();
+boolean LX_calculateTheUniverse(boolean speculative);
 boolean tophatMaker();
 boolean LX_doVacation();
 void initializeDay(int day);
@@ -101,7 +100,6 @@ boolean handleRainDoh();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2013.ash
-void handleJar();
 void makeStartingSmiths();
 boolean didWePlantHere(location loc);
 void trickMafiaAboutFlorist();
@@ -178,8 +176,10 @@ boolean timeSpinnerGet(string goal);
 boolean timeSpinnerConsume(item goal);
 boolean timeSpinnerAdventure();
 boolean timeSpinnerAdventure(string option);
+boolean canTimeSpinnerMonster(monster mon);
 boolean timeSpinnerCombat(monster goal);
-boolean timeSpinnerCombat(monster goal, string option);
+boolean timeSpinnerCombat(monster goal, boolean speculative);
+boolean timeSpinnerCombat(monster goal, string option, boolean speculative);
 void auto_chapeau();
 boolean rethinkingCandyList();
 boolean rethinkingCandy(effect acquire);
@@ -259,6 +259,8 @@ boolean godLobsterCombat(item it);
 boolean godLobsterCombat(item it, int goal);
 boolean godLobsterCombat(item it, int goal, string option);
 boolean fantasyRealmAvailable();
+int fantasyBanditsFought();
+boolean acquiredFantasyRealmToken();
 boolean fantasyRealmToken();
 boolean songboomSetting(string goal);
 boolean songboomSetting(int option);
@@ -396,7 +398,7 @@ boolean auto_cargoShortsCanOpenPocket(stat s);
 boolean auto_cargoShortsCanOpenPocket(string s);
 boolean auto_cargoShortsOpenPocket(int pocket);
 boolean auto_cargoShortsOpenPocket(item i);
-boolean auto_cargoShortsOpenPocket(monster m);
+boolean auto_cargoShortsOpenPocket(monster m, boolean speculative);
 boolean auto_cargoShortsOpenPocket(effect e);
 boolean auto_cargoShortsOpenPocket(stat e);
 boolean auto_cargoShortsOpenPocket(string s);
@@ -451,7 +453,7 @@ boolean auto_haveCombatLoversLocket();
 int auto_CombatLoversLocketCharges();
 boolean auto_haveReminiscedMonster(monster mon);
 boolean auto_monsterInLocket(monster mon);
-boolean auto_fightLocketMonster(monster mon);
+boolean auto_fightLocketMonster(monster mon, boolean speculative);
 boolean canUseCleaver();
 void juneCleaverChoiceHandler(int choice);
 boolean canUseSweatpants();
@@ -469,7 +471,24 @@ boolean auto_autumnatonReadyToQuest();
 location auto_autumnatonQuestingIn();
 boolean auto_autumnatonCheckForUpgrade(string upgrade);
 boolean auto_sendAutumnaton(location loc);
-void auto_autumnatonQuest();
+
+boolean auto_autumnatonQuest();
+boolean auto_hasSpeakEasy();
+int auto_remainingSpeakeasyFreeFights();
+
+
+boolean auto_haveTrainSet();
+void auto_modifyTrainSet(int one, int two, int three, int four, int five, int six, int seven, int eight);
+void auto_checkTrainSet();
+
+
+########################################################################################################
+//Defined in autoscend/iotms/mr2023.ash
+boolean auto_haveRockGarden();
+void rockGardenEnd();
+void pickRocks();
+boolean auto_haveSITCourse();
+void auto_SITCourse();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1017,7 +1036,6 @@ boolean L11_mcmuffinDiary();
 void auto_visit_gnasir();
 boolean L11_getUVCompass();
 boolean L11_aridDesert();
-boolean L11_wishForBaaBaaBuran();
 boolean L11_unlockHiddenCity();
 void hiddenTempleChoiceHandler(int choice, string page);
 boolean liana_cleared(location loc);
@@ -1084,7 +1102,9 @@ boolean needStarKey();
 boolean needDigitalKey();
 int towerKeyCount();
 int towerKeyCount(boolean effective);
-int whitePixelCount();
+int EightBitScore();
+boolean EightBitRealmHandler();
+boolean get8BitFatLootToken();
 boolean LX_getDigitalKey();
 void LX_buyStarKeyParts();
 boolean LX_getStarKey();
@@ -1122,6 +1142,8 @@ boolean LX_dailyDungeonToken();
 void dailyDungeonChoiceHandler(int choice, string[int] options);
 boolean LX_dolphinKingMap();
 boolean LX_meatMaid();
+item LX_getDesiredWorkshed();
+boolean LX_setWorkshed();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash
@@ -1572,8 +1594,6 @@ boolean is_avatar_potion(item it);
 int autoCraft(string mode, int count, item item1, item item2);
 int internalQuestStatus(string prop);
 int estimatedTurnsLeft();
-boolean summonMonster();
-boolean summonMonster(string option);
 boolean canYellowRay(monster target);
 boolean canYellowRay();
 boolean[string] auto_banishesUsedAt(location loc);
@@ -1630,6 +1650,10 @@ int freeCrafts();
 boolean isFreeMonster(monster mon);
 boolean declineTrades();
 boolean auto_deleteMail(kmailObject msg);
+boolean LX_summonMonster();
+boolean canSummonMonster(monster mon);
+boolean summonMonster(monster mon);
+boolean summonMonster(monster mon, boolean speculative);
 boolean handleCopiedMonster(item itm);
 boolean handleCopiedMonster(item itm, string option);
 int maxSealSummons();
@@ -1712,6 +1736,7 @@ int auto_reserveCraftAmount(item orig_it);
 int auto_convertDesiredML(int DML);
 boolean auto_setMCDToCap();
 boolean UrKelCheck(int UrKelToML, int UrKelUpperLimit, int UrKelLowerLimit);
+boolean angryAgateCheck(int angryAgateToML, int angryAgateUpperLimit, int angryAgateLowerLimit);
 boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();

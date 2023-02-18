@@ -134,7 +134,7 @@ boolean auto_backupTarget()
 	}
 
 	// determine if we want to backup
-	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && my_level() >= 12;
+	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && my_level() >= 12 && !auto_hasAutumnaton();
 	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean();
 	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > (14 + cyrptEvilBonus()) && my_level() >= 6;
 
@@ -152,14 +152,18 @@ boolean auto_backupTarget()
 				return true;
 			break;
 		case $monster[sausage goblin]:
-			if(!wantBackupLFM && !wantBackupNSA && !wantBackupZmobie)
+			if(!wantBackupLFM && !wantBackupNSA && !wantBackupZmobie && auto_backupUsesLeft() > 5)
 				return true;
 			break;
 		case $monster[eldritch tentacle]:
-			//backup tentacles if power leveling or use all remaining charges if at end of day
-			if(isAboutToPowerlevel() && auto_backupUsesLeft() > 5)
+			//backup tentacles if lots of backups remaining or use all remaining charges if at end of day
+			if(auto_backupUsesLeft() > 6)
 				return true;
 			if (my_adventures() <= (1 + auto_advToReserve()) && inebriety_left() == 0 && stomach_left() < 1)
+				return true;
+			break;
+		case $monster[fantasy bandit]:
+			if(!acquiredFantasyRealmToken() && auto_backupUsesLeft() >= (5 - fantasyBanditsFought()))
 				return true;
 			break;
 		default: break;

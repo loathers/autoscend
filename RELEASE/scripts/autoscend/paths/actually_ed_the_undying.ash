@@ -20,7 +20,6 @@ void ed_initializeSettings()
 {
 	if (isActuallyEd())
 	{
-		set_property("auto_crackpotjar", "done");
 		set_property("auto_day1_dna", "finished");
 		set_property("auto_getBeehive", false);
 		set_property("auto_getStarKey", false);
@@ -778,7 +777,7 @@ boolean ed_needShop()
 			auto_log_info("Ed needs Linen Bandages! UNDYING for a free trip to the Underworld!");
 			return true;
 		}
-		else if (item_amount($item[Holy Spring Water]) < 1 && coins >= 1 && (my_maxmp() - my_mp() < 50))
+		else if (item_amount($item[Holy Spring Water]) < 1 && coins >= 1 && (my_maxmp() - my_mp() > 50))
 		{
 			auto_log_info("Ed needs Holy Spring Water! UNDYING for a free trip to the Underworld!");
 			return true;

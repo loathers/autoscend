@@ -786,6 +786,8 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			Hyperoffended,
 			Covered in the Rainbow,
 			Temporarily Filtered,
+			Gritty,
+			Too Shamed,
 		]))
 			return result();
 	}
@@ -1053,6 +1055,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 
 			// all-stat effects
 			Confidence of the Votive,
+			Pyrite Pride,
 			Human-Human Hybrid,
 			Industrial Strength Starch,
 			Mutated,
