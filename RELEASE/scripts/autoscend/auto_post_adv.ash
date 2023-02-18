@@ -84,6 +84,7 @@ boolean auto_post_adventure()
 	if(get_property("auto_forceNonCombatSource") != "" && (__MONSTERS_FOLLOWING_NONCOMBATS contains get_property("lastEncounter").to_monster() && !is_superlikely(get_property("lastEncounter"))))
 	{
 		auto_log_info("Encountered (assumed) forced noncombat: " + get_property("lastEncounter"), "blue");
+		handleTracker(get_property("auto_forceNonCombatSource"), get_property("lastEncounter"), "auto_forcedNC")
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatLocation", "");
 		set_property("auto_prepParkaNCForce", "false");
