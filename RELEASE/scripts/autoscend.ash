@@ -359,10 +359,7 @@ boolean LX_burnDelay()
 			{
 				return true;
 			}
-			else
-			{
-				set_property("auto_nextEncounter","");
-			}
+			set_property("auto_nextEncounter","");
 		}
 		if(wannaDigitize)
 		{
@@ -372,14 +369,12 @@ boolean LX_burnDelay()
 			{
 				return true;
 			}
-			else
-			{
-				set_property("auto_nextEncounter","");
-			}
+			set_property("auto_nextEncounter","");
 		}
 		if(wannaSausage)
 		{
 			auto_log_info("Burn some delay somewhere (sausage goblin), if we found a place!", "green");
+			//"auto_nextEncounter" property is set by auto_sausageGoblin when it adventures with the equipment
 			if(auto_sausageGoblin(burnZone, ""))
 			{
 				return true;
@@ -393,10 +388,7 @@ boolean LX_burnDelay()
 			{
 				return true;
 			}
-			else
-			{
-				set_property("auto_nextEncounter","");
-			}
+			set_property("auto_nextEncounter","");
 		}
 		if(voidMonsterNext)
 		{
@@ -406,10 +398,7 @@ boolean LX_burnDelay()
 			{
 				return true;
 			}
-			else
-			{
-				set_property("auto_nextEncounter","");
-			}
+			set_property("auto_nextEncounter","");
 		}
 	}
 	else if(wannaVote || wannaDigitize || wannaSausage || voidMonsterNext)
@@ -427,10 +416,7 @@ boolean LX_burnDelay()
 		{
 			return true;
 		}
-		else
-		{
-			set_property("auto_nextEncounter","");
-		}
+		set_property("auto_nextEncounter","");
 	}
 	return false;
 }
