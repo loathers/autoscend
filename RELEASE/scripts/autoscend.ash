@@ -1600,6 +1600,7 @@ boolean process_tasks()
 
 	foreach i,task_function,condition_function in task_order[task_path]
 	{
+		auto_log_debug("Attempting to execute task " + i + " " + task_function);
 		if (condition_function == "" || (call boolean condition_function()))
 		{
 			boolean result = call boolean task_function();
