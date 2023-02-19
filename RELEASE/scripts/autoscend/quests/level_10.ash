@@ -376,11 +376,10 @@ boolean L10_holeInTheSkyUnlock()
 	auto_log_info("Castle (Top Floor) - Opening the Hole in the Sky.", "blue");
 	
 	auto_forceNextNoncombat($location[The Hole in the Sky]);
-	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
-	{
-		// do something else to prep parka spikes, then come back
-		return false;
-	}
+	// possible to have unlocking hole in the sky be the last task we can do
+	// allow advs in top floor if HITS is not unlocked yet. Don't delay for forcing a NC
+	// so don't do the usual parak check here
+
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 
 	return true;

@@ -4137,6 +4137,7 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "jurassic parka");
 		// track desired NC location so we know where to go when parka spikes are preped
 		set_property("auto_forceNonCombatLocation", loc);
+		ret = true;
 	}
 	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && !isActuallyEd()
 		&& spleen_left() >= $item[stench jelly].spleen)
@@ -4202,6 +4203,62 @@ boolean auto_haveQueuedForcedNonCombat()
 	return get_property("auto_forceNonCombatSource") != "";
 }
 
+boolean is_expectedForcedNonCombat(string encounterName)
+{
+	static boolean[string] expectedNCs = $strings[
+		// dark neck of the woods
+		How Do We Do It? Quaint and Curious Volume!,
+		Strike One!,
+		Olive My Love To You, Oh.,
+		The Oracle Will See You Now,
+		Dodecahedrariffic!,
+
+		// dark elbow of the woods
+		Deep Imp Act,
+		Imp Art\, Some Wisdom,
+		A Secret\, But Not the Secret You're Looking For,
+		Butter Knife? I'll Take the Knife,
+
+		// dark heart of the woods
+		Moon Over the Dark Heart,
+		Running the Lode,
+		I\, Martin,
+		Imp Be Nimble\, Imp Be Quick,
+
+		// The Castle in the Clouds in the Sky (Basement)
+		You Don't Mess Around with Gym,
+		Out in the Open Source,
+		The Fast and the Furry-ous,
+
+		// The Castle in the Clouds in the Sky (Top Floor)
+		Copper Feel,
+		Melon Collie and the Infinite Lameness,
+		Yeah\, You're for Me, Punk Rock Giant,
+		Flavor of a Raver,
+
+		// The Haunted Billiards Room
+		Welcome To Our ool Table,
+
+		// The Haunted Bathroom
+		Never Gonna Make You Up,
+		Having a Medicine Ball,
+		Bad Medicine is What You Need,
+
+		// The Black Forest
+		All Over the Map,
+		You Found Your Thrill,
+		The Blackest Smith,
+		Be Mine,
+		Sunday Black Sunday,
+
+		// The Hidden Apartment Building
+		Action Elevator,
+
+		// The Hidden Office Building
+		Working Holiday,
+	];
+	return expectedNCs contains encounterName;
+}
 boolean is_superlikely(string encounterName)
 {
 	static boolean[string] __SUPERLIKELIES = $strings[

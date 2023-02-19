@@ -7,7 +7,7 @@ boolean zone_unlock(location loc){
 	if(loc == $location[The Thinknerd Warehouse]){
 		unlocked = LX_unlockThinknerdWarehouse(false);
 	} else{
-		auto_log_debug("Dont know how to unlock " + loc);
+		auto_log_debug("Don't know how to unlock " + loc);
 		return false;
 	}
 

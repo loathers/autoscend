@@ -1739,6 +1739,7 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();
 boolean auto_haveQueuedForcedNonCombat();
+boolean is_expectedForcedNonCombat(string encounterName);
 boolean is_superlikely(string encounterName);
 int auto_predictAccordionTurns();
 boolean hasTTBlessing();
