@@ -857,7 +857,7 @@ boolean LX_setWorkshed(){
 
 boolean LX_ForceNC()
 {
-	if(get_property("auto_forceNonCombatSource") != "jurassic parka" || !get_property("auto_prepParkaNCForce").to_boolean())
+	if(get_property("auto_forceNonCombatSource") != "jurassic parka" || !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		return false;
 	}

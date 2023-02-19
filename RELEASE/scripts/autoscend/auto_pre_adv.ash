@@ -348,7 +348,7 @@ boolean auto_pre_adventure()
 		autoEquip($slot[acc3], $item[backup camera]);
 	}
 
-	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		autoEquip($item[jurassic parka]);
 		auto_configureParka("spikes");

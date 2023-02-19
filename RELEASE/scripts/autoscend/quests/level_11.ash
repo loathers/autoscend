@@ -423,7 +423,7 @@ boolean LX_unlockHauntedLibrary()
 	{
 		// only force after we get the pool cue NC.
 		auto_forceNextNoncombat($location[The Haunted Billiards Room]);
-		if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+		if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 		{
 			// do something else to prep parka spikes, then come back
 			return false;
@@ -687,7 +687,7 @@ boolean LX_getLadySpookyravensPowderPuff() {
 
 	if (!zone_delay($location[The Haunted Bathroom])._boolean) {
 		auto_forceNextNoncombat($location[The Haunted Bathroom]);
-		if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+		if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 		{
 			// do something else to prep parka spikes, then come back
 			return false;
@@ -853,7 +853,7 @@ boolean L11_getBeehive()
 	auto_log_info("Must find a beehive!", "blue");
 
 	auto_forceNextNoncombat($location[The Black Forest]);
-	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		// do something else to prep parka spikes, then come back
 		return false;
@@ -1764,7 +1764,7 @@ boolean L11_hiddenCity()
 			if(shouldForceElevatorAction)
 			{
 				elevatorAction = auto_forceNextNoncombat($location[The Hidden Apartment Building]);
-				if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+				if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 				{
 					// do something else to prep parka spikes, then come back
 					return false;
@@ -1839,7 +1839,7 @@ boolean L11_hiddenCity()
 		if(turnsUntilWorkingHoliday > 1 && item_amount($item[McClusky file (complete)]) > 0 && auto_canForceNextNoncombat()) {
 			if(auto_forceNextNoncombat($location[The Hidden Office Building]))	//how many delay turns should this save to be considered?
 			{
-				if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+				if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 				{
 					// do something else to prep parka spikes, then come back
 					return false;

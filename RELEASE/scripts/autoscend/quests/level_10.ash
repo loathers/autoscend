@@ -168,7 +168,7 @@ boolean L10_basement()
 	}
 
 	auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Basement)]);
-	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		// do something else to prep parka spikes, then come back
 		return false;
@@ -243,7 +243,7 @@ boolean L10_topFloor()
 	}
 
 	auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Top Floor)]);
-	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_prepParkaNCForce").to_boolean())
+	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		// do something else to prep parka spikes, then come back
 		return false;
