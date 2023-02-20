@@ -177,6 +177,9 @@ void initializeSettings() {
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
 	remove_property("auto_forcedNC");
+	set_property("auto_forceNonCombatLocation", "");
+	set_property("auto_forceNonCombatSource", "");
+	set_property("auto_forceNonCombatTurn", "");
 	set_property("auto_forceTavern", false);
 	set_property("auto_freeruns", "");
 	set_property("auto_funTracker", "");
@@ -204,6 +207,7 @@ void initializeSettings() {
 	set_property("auto_otherstuff", "");
 	set_property("auto_paranoia", -1);
 	set_property("auto_paranoia_counter", 0);
+	set_property("auto_parkaSpikesDeployed", false);
 	set_property("auto_priorCharpaneMode", "0");
 	set_property("auto_powerLevelLastLevel", "0");
 	set_property("auto_powerLevelAdvCount", "0");
