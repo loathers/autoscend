@@ -353,7 +353,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	if(canUse($skill[Launch spikolodon spikes]) && get_property("auto_forceNonCombatSource") == "jurassic parka"
 		&& !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
-		set_property("auto_parkaSpikesDeployed", "true");
+		set_property("auto_parkaSpikesDeployed", true);
 		return useSkill($skill[Launch spikolodon spikes]);
 	}
 	

@@ -179,7 +179,7 @@ void initializeSettings() {
 	remove_property("auto_forcedNC");
 	set_property("auto_forceNonCombatLocation", "");
 	set_property("auto_forceNonCombatSource", "");
-	set_property("auto_forceNonCombatTurn", "");
+	set_property("auto_forceNonCombatTurn", -1);
 	set_property("auto_forceTavern", false);
 	set_property("auto_freeruns", "");
 	set_property("auto_funTracker", "");
