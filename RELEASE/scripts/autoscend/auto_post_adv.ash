@@ -84,7 +84,7 @@ boolean auto_post_adventure()
 		handleTracker(get_property("auto_forceNonCombatSource"), get_property("lastEncounter"), "auto_forcedNC");
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatLocation", "");
-		set_property("auto_parkaSpikesDeployed", "false");
+		set_property("auto_parkaSpikesDeployed", false);
 		set_property("auto_forceNonCombatTurn", -1);
 	}
 
@@ -94,7 +94,7 @@ boolean auto_post_adventure()
 			"), am going to assume it happened but we missed it.", "blue");
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatLocation", "");
-		set_property("auto_parkaSpikesDeployed", "false");
+		set_property("auto_parkaSpikesDeployed", false);
 		set_property("auto_forceNonCombatTurn", 0);
 	}
 
