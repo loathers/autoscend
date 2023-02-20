@@ -239,6 +239,7 @@ void initializeSettings() {
 	eudora_initializeSettings();
 	heavyrains_initializeSettings();
 	awol_initializeSettings();
+	aosol_initializeSettings();
 	theSource_initializeSettings();
 	ed_initializeSettings();
 	boris_initializeSettings();

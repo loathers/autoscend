@@ -354,6 +354,15 @@ skill getStunner(monster enemy)
 			return $skill[Blood Chains];
 		}
 		break;
+	case $class[Pig Skinner]:
+		if(canUse($skill[Noogie]) && expected_damage() > 0 && !enemyCanBlocksSkills())
+		{
+			return $skill[Noogie];
+		}
+		if(canUse($skill[Stop Hitting Yourself]) && expected_damage() > 0 && !enemyCanBlocksSkills())
+		{
+			return $skill[Stop Hitting Yourself];
+		}
 	}
 	
 	// Decreases in stun duration the more it's used

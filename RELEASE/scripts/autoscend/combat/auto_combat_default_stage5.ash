@@ -32,8 +32,8 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	if(retval != "") return retval;
 
 	// Path = AoSOL, class = Pig Skinner
-	retval = auto_combatAoSOLStage5(round, enemy, text);
-	if(retval != "") return retval;
+	/*retval = auto_combatAoSOLStage5(round, enemy, text);
+	if(retval != "") return retval;*/
 
 	phylum type = monster_phylum(enemy);
 	string attackMinor = "attack with weapon";
@@ -653,6 +653,15 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			attackMinor = useItem($item[beehive], false);
 		}
 		break;
+
+	case $class[Pig Skinner]:
+		if(canUse($skill[Ball Throw]) && (enemy.physical_resistance < 80))
+		{
+			attackMajor = useSkill($skill[Ball Throw], false);
+			attackMinor = "attack with weapon";
+			costMajor = mp_cost($skill[Ball Throw]);
+			costMinor = 0;
+		}
 	}
 
 	if(((my_hp() * 10)/3) < my_maxhp())
