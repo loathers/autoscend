@@ -593,7 +593,8 @@ boolean auto_autumnatonQuest()
 		if(!auto_autumnatonCanAdv(targetLocation) && zone_available(targetLocation))
 		{
 			// force one turn in zone to unlock it for bot
-			return autoAdv(1, targetLocation);
+			// twin peak requires NC setup, call function instead of directly adventuring there
+			return L9_twinPeak();
 		}
 		if(auto_sendAutumnaton(targetLocation)) return false;
 	}
