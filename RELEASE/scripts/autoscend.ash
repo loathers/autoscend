@@ -176,6 +176,7 @@ void initializeSettings() {
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
+	remove_property("auto_forcedNC");
 	set_property("auto_forceTavern", false);
 	set_property("auto_freeruns", "");
 	set_property("auto_funTracker", "");
