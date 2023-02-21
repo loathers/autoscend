@@ -36,7 +36,8 @@ void pickRocks()
 
 boolean wantToThrowGravel(location loc, monster enemy)
 {
-	// returns true if we want to use Groveling Gravel
+	// returns true if we want to use Groveling Gravel. Not intended to exhaustivly list all valid targets.
+	// simply enough to use the few gravels we get in run.
 
 	if(item_amount($item[groveling gravel]) == 0) return false;
 	if(!auto_is_valid($item[groveling gravel])) return false;
