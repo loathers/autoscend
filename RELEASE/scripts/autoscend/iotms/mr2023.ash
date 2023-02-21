@@ -34,6 +34,42 @@ void pickRocks()
 	return;
 }
 
+boolean wantToThrowGravel(location loc, monster enemy)
+{
+	// returns true if we want to use Groveling Gravel
+
+	if(item_amount($item[groveling gravel]) == 0) return false;
+	if(!auto_is_valid($item[groveling gravel])) return false;
+
+	// use gravel in battlefield if no breathitin charges
+	if(get_property("breathitinCharges").to_int() == 0 && 
+		(loc == $location[The Battlefield (Frat Uniform)] || loc == $location[The Battlefield (Hippy Uniform)]))
+	{
+		return true;
+	}
+
+	// spookyraven zones 
+	if(loc == $location[The Haunted Bathroom]) return true;
+	if(loc == $location[The Haunted Gallery]) return true;
+	if(loc == $location[The Haunted Bedroom]) return true;
+
+	// look for specific monsters in zones where some monsters we do care about
+	static boolean[string] gravelTargets = $strings[
+		// The Haunted Wine Cellar
+		mad wino,
+		skeletal sommelier,
+
+		// The Haunted Laundry Room
+		plaid ghost,
+		possessed laundry press,
+
+		// The Haunted Boiler Room
+		coaltergeist,
+		steam elemental,
+	];
+	return gravelTargets contains enemy;
+}
+
 boolean auto_haveSITCourse()
 {
 	static item sitCourse = $item[S.I.T. Course Completion Certificate];

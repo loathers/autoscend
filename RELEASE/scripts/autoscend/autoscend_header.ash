@@ -487,6 +487,7 @@ void auto_checkTrainSet();
 boolean auto_haveRockGarden();
 void rockGardenEnd();
 void pickRocks();
+boolean wantToThrowGravel(location loc, monster enemy);
 boolean auto_haveSITCourse();
 void auto_SITCourse();
 

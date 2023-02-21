@@ -105,6 +105,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[CLEESH]);
 		}
 	}
+
+	//throw gravel to free kill the enemy but don't get any items
+	if(wantToThrowGravel(my_location(), enemy))
+	{
+		return useItem($item[groveling gravel]);
+	}
 	
 	//chance for a free runaway
 	if((enemy == $monster[Plaid Ghost]) && (item_amount($item[T.U.R.D.S. Key]) > 0))
