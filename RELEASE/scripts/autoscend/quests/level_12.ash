@@ -1691,7 +1691,7 @@ boolean L12_themtharHills()
 	}
 
 	// delay nuns if we have free fights available as it would cap meat drop to 1,000
-	if(get_property("breathitinCharges").to_int() > 0)
+	if(get_property("breathitinCharges").to_int() > 0 && !isAboutToPowerlevel())
 	{
 		return false;
 	}
