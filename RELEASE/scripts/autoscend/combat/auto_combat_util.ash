@@ -739,6 +739,10 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
 
+		if(auto_have_skill($skill[Fondeluge]) && (my_mp() >= mp_cost($skill[Fondeluge])))
+		{
+			return "skill " + $skill[Fondeluge]; // 50 turns
+		}
 		if((item_amount($item[Yellowcake Bomb]) > 0) && auto_is_valid($item[Yellowcake Bomb]))
 		{
 			return "item " + $item[Yellowcake Bomb]; // 75 turns + quest item

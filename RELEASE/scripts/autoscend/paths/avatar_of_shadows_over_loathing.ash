@@ -273,7 +273,7 @@ boolean aosol_buySkills()
 				auto_log_info("Skill points found: " + skillPoints);
 				while(skillPoints > 0)
 				{
-					if(!have_skill($skill[Fondeluge])) //Yellow ray
+					if(!have_skill($skill[Fondeluge])) //50 turn yellow ray
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=21", true);
 					}
@@ -461,7 +461,7 @@ boolean aosol_buySkills()
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=11", true);
 				set_property("auto_aosolLastSkill", 10);
 			}
-			if(!have_skill($skill[Fondeluge]) && my_level()>=11 && my_meat()>1100) //Yellow ray
+			if(!have_skill($skill[Fondeluge]) && my_level()>=11 && my_meat()>1100) //50 turn yellow ray
 			{
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=21", true);
 				set_property("auto_aosolLastSkill", 100);
