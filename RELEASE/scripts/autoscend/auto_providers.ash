@@ -726,6 +726,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		Blessing of the Bird,
 		Blessing of Your Favorite Bird,
 		Feeling Peaceful,
+		Shifted Reality,
 	]))
 		return result();
 

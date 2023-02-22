@@ -262,6 +262,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Celestial Saltiness]:			useItem = $item[Celestial Au Jus];				break;
 	case $effect[Celestial Sheen]:				useItem = $item[Celestial Olive Oil];			break;
 	case $effect[Celestial Vision]:				useItem = $item[Celestial Carrot Juice];		break;
+	case $effect[Cheddarmored]:					useSkill = $skill[Cheddarmor];					break;
 	case $effect[Cheerled]:						useSkill = $skill[Cheerlead];					break;
 	case $effect[Cinnamon Challenger]:			useItem = $item[Pulled Red Taffy];				break;
 	case $effect[Clear Ears, Can\'t Lose]:		useItem = $item[Ear Candle];					break;
@@ -587,6 +588,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Puzzle Fury]:					useItem = $item[37x37x37 puzzle cube];			break;
 	case $effect[Pyrite Pride]:					useItem = $item[pebble of proud pyrite];		break;
 	case $effect[Pyromania]:					useSkill = $skill[Pyromania];					break;
+	case $effect[Queso Fustulento]:				useSkill = $skill[Queso Fustulento];			break;
 	case $effect[Quiet Desperation]:			useSkill = $skill[Quiet Desperation];			break;
 	case $effect[Quiet Determination]:			useSkill = $skill[Quiet Determination];			break;
 	case $effect[Quiet Judgement]:				useSkill = $skill[Quiet Judgement];				break;
@@ -649,6 +651,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}
 		break;
 	case $effect[Shelter of Shed]:				useSkill = $skill[Shelter of Shed];				break;
+	case $effect[Shifted Reality]:				useSkill = $skill[Reality Shift];				break;
 	case $effect[Shrieking Weasel]:				useItem = $item[Shrieking Weasel Holo-Record];	break;
 	case $effect[Simmering]:					useSkill = $skill[Simmer];						break;
 	case $effect[Simply Invisible]:				useItem = $item[Invisibility Potion];			break;

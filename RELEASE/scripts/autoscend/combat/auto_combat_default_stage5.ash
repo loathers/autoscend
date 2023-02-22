@@ -655,11 +655,47 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		break;
 
 	case $class[Pig Skinner]:
+		if(my_hp() < 0.6 * my_maxhp() && canUse($skill[Second Wind]))
+		{
+			attackMajor = useSkill($skill[Second Wind], false);
+			attackMinor = useSkill($skill[Second Wind], false);
+			costMajor = mp_cost($skill[Second Wind]);
+			costMinor = mp_cost($skill[Second Wind]);
+		}
+		if(canUse($skill[Hot Foot]) && expected_damage() > 0 && !enemyCanBlocksSkills())
+		{
+			attackMajor = useSkill($skill[Hot Foot], false);
+			attackMinor = "attack with weapon";
+			costMajor = mp_cost($skill[Hot Foot]);
+			costMinor = 0;
+		}
 		if(canUse($skill[Ball Throw]) && (enemy.physical_resistance < 80))
 		{
 			attackMajor = useSkill($skill[Ball Throw], false);
 			attackMinor = "attack with weapon";
 			costMajor = mp_cost($skill[Ball Throw]);
+			costMinor = 0;
+		}
+	case $class[Cheese Wizard]:
+		if(canUse($skill[Emmental Elemental]) && my_hp() < my_maxhp() - expected_damage())
+		{
+			attackMajor = useSkill($skill[Emmental Elemental], false);
+			attackMinor = useSkill($skill[Emmental Elemental], false);
+			costMajor = mp_cost($skill[Emmental Elemental]);
+			costMinor = mp_cost($skill[Emmental Elemental]);
+		}
+		if(canUse($skill[Stilton Splatter]) && (enemy.physical_resistance < 80))
+		{
+			attackMajor = useSkill($skill[Stilton Splatter], false);
+			attackMinor = useSkill($skill[Stilton Splatter], false);
+			costMajor = mp_cost($skill[Stilton Splatter]);
+			costMinor = mp_cost($skill[Stilton Splatter]);
+		}
+		if(canUse($skill[Parmesan Missile]) && (enemy.physical_resistance < 80 && enemy.defense_element != "stench" && enemy.defense_element != "hot"))
+		{
+			attackMajor = useSkill($skill[Parmesan Missile], false);
+			attackMinor = "attack with weapon";
+			costMajor = mp_cost($skill[Parmesan Missile]);
 			costMinor = 0;
 		}
 	}

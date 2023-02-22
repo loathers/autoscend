@@ -355,13 +355,26 @@ skill getStunner(monster enemy)
 		}
 		break;
 	case $class[Pig Skinner]:
-		if(canUse($skill[Noogie]) && expected_damage() > 0 && !enemyCanBlocksSkills())
+		if(canUse($skill[Noogie]) && expected_damage() > 0 && !enemyCanBlocksSkills() && my_hp() > 0.6 * my_maxhp())
 		{
 			return $skill[Noogie];
 		}
-		if(canUse($skill[Stop Hitting Yourself]) && expected_damage() > 0 && !enemyCanBlocksSkills())
+		if(canUse($skill[Stop Hitting Yourself]) && expected_damage() > 0 && !enemyCanBlocksSkills() && my_hp() > 0.6 * my_maxhp())
 		{
 			return $skill[Stop Hitting Yourself];
+		}
+	case $class[Cheese Wizard]:
+		if(canUse($skill[Gather Cheese-Chi]) && expected_damage() > 0 && !enemyCanBlocksSkills() && my_hp() < my_maxhp() - 30)
+		{
+			return $skill[Gather Cheese-Chi];
+		}
+		if(canUse($skill[Crack Knuckles]) && expected_damage() > 0 && !enemyCanBlocksSkills())
+		{
+			return $skill[Crack Knuckles];
+		}
+		if(canUse($skill[Mind Melt]) && expected_damage() > 0 && !enemyCanBlocksSkills())
+		{
+			return $skill[Mind Melt];
 		}
 	}
 	
