@@ -691,7 +691,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stilton Splatter]);
 			costMinor = mp_cost($skill[Stilton Splatter]);
 		}
-		if(canUse($skill[Parmesan Missile]) && (enemy.physical_resistance < 80 && enemy.defense_element != "stench" && enemy.defense_element != "hot"))
+		if(canUse($skill[Parmesan Missile]) && (enemy.physical_resistance < 80 && enemy.defense_element != $element[stench] && enemy.defense_element != $element[hot]))
 		{
 			attackMajor = useSkill($skill[Parmesan Missile], false);
 			attackMinor = "attack with weapon";

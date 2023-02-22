@@ -325,7 +325,7 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=4", true);
 					}
-					if(!have_skill($skill[Gorgonzola/'s Guile])) //+25% Item Drops
+					if(!have_skill($skill[Gorgonzola\'s Guile])) //+25% Item Drops
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=9", true);
 					}
@@ -441,7 +441,7 @@ boolean aosol_buySkills()
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=19", true);
 				set_property("auto_aosolLastSkill", 8);
 			}
-			if(!have_skill($skill[Gorgonzola/'s Guile]) && my_level()>=9 && my_meat()>900) //+25% Item Drops
+			if(!have_skill($skill[Gorgonzola\'s Guile]) && my_level()>=9 && my_meat()>900) //+25% Item Drops
 			{
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=9", true);
 				set_property("auto_aosolLastSkill", 9);
