@@ -4200,7 +4200,18 @@ boolean auto_forceNextNoncombat(location loc)
 boolean auto_haveQueuedForcedNonCombat()
 {
 	// This isn't always reset properly: see __MONSTERS_FOLLOWING_NONCOMBATS in auto_post_adv.ash
-	return get_property("auto_forceNonCombatSource") != "";
+	string forceNCMethod = get_property("auto_forceNonCombatSource");
+	if(forceNCMethod == "")
+	{
+		return false;
+	}
+	// if going to force with parka, but spikes haven't been deployed return false
+	if(forceNCMethod == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean)
+	{
+		return false;
+	}
+	// for all other sources, simply return true
+	return true;
 }
 
 boolean is_expectedForcedNonCombat(string encounterName)
