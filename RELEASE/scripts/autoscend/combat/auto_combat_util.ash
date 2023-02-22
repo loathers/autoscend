@@ -368,10 +368,6 @@ skill getStunner(monster enemy)
 		{
 			return $skill[Gather Cheese-Chi];
 		}
-		if(canUse($skill[Crack Knuckles]) && expected_damage() > 0 && !enemyCanBlocksSkills())
-		{
-			return $skill[Crack Knuckles];
-		}
 		if(canUse($skill[Mind Melt]) && expected_damage() > 0 && !enemyCanBlocksSkills())
 		{
 			return $skill[Mind Melt];

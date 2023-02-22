@@ -691,6 +691,13 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stilton Splatter]);
 			costMinor = mp_cost($skill[Stilton Splatter]);
 		}
+		if(canUse($skill[Crack Knuckles]) && (enemy.physical_resistance < 80))
+		{
+			attackMajor = useSkill($skill[Crack Knuckles], false);
+			attackMinor = useSkill($skill[Crack Knuckles], false);
+			costMajor = mp_cost($skill[Crack Knuckles]);
+			costMinor = mp_cost($skill[Crack Knuckles]);
+		}
 		if(canUse($skill[Parmesan Missile]) && (enemy.physical_resistance < 80 && enemy.defense_element != $element[stench] && enemy.defense_element != $element[hot]))
 		{
 			attackMajor = useSkill($skill[Parmesan Missile], false);
