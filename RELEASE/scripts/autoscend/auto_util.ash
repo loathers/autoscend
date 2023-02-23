@@ -4206,7 +4206,7 @@ boolean auto_haveQueuedForcedNonCombat()
 		return false;
 	}
 	// if going to force with parka, but spikes haven't been deployed return false
-	if(forceNCMethod == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean)
+	if(forceNCMethod == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		return false;
 	}
