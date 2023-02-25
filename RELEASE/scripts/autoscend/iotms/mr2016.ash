@@ -476,6 +476,7 @@ boolean auto_advWitchess(string target, string option)
 	}
 	temp = visit_url("choice.php?pwd=&option=2&whichchoice=1182");
 
+	set_property("auto_nextEncounter",to_string((to_monster(goal))));
 	string[int] pages;
 	pages[0] = "campground.php?action=witchess";
 	pages[1] = "choice.php?whichchoice=1181&pwd=&option=1";

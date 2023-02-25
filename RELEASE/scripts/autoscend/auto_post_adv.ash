@@ -61,6 +61,8 @@ boolean auto_post_adventure()
 		return true;
 	}
 
+	set_property("auto_nextEncounter","");
+
 	/* This tracks noncombat-forcers like Clara's Bell and stench jelly, which
 	 * set our noncombat rate to maximum until we encounter a noncombat.
 	 * Superlikelies do not reset this effect. There's some complexity here -
