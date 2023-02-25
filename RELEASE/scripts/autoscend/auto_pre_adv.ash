@@ -350,8 +350,8 @@ boolean auto_pre_adventure()
 
 	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
-		autoEquip($item[jurassic parka]);
-		auto_configureParka("spikes");
+		autoForceEquip($item[jurassic parka]); //equips parka and forbids maximizer tampering with shirt slot
+		set_property("auto_parkaSetting","spikes"); //not using auto_configureParka("spikes") so maximizer stays aware of ML from shirt, instead of maximizing with another shirt or no shirt before changing to parka
 	}
 	
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
