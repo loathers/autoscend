@@ -1814,7 +1814,7 @@ boolean L11_hiddenCity()
 		}
 
 		int turnsUntilWorkingHoliday = zone_delay($location[The Hidden Office Building])._int;
-		boolean workingHoliday = (turnsUntilWorkingHoliday == 0);
+		boolean workingHoliday = (turnsUntilWorkingHoliday == 0 || auto_haveQueuedForcedNonCombat()) ;
 		
 		if(turnsUntilWorkingHoliday > 1 && item_amount($item[McClusky file (complete)]) > 0 && auto_canForceNextNoncombat()) {
 			if(auto_forceNextNoncombat($location[The Hidden Office Building]))	//how many delay turns should this save to be considered?
