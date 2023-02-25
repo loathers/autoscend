@@ -57,7 +57,6 @@ boolean wantToThrowGravel(location loc, monster enemy)
 	// look for specific monsters in zones where some monsters we do care about
 	static boolean[string] gravelTargets = $strings[
 		// The Haunted Wine Cellar
-		mad wino,
 		skeletal sommelier,
 
 		// The Haunted Laundry Room
