@@ -44,7 +44,9 @@ boolean wantToThrowGravel(location loc, monster enemy)
 
 	// use gravel in battlefield if no breathitin charges
 	if(get_property("breathitinCharges").to_int() == 0 && 
-		(loc == $location[The Battlefield (Frat Uniform)] || loc == $location[The Battlefield (Hippy Uniform)]))
+		(loc == $location[The Battlefield (Frat Uniform)] || loc == $location[The Battlefield (Hippy Uniform)]) &&
+		!($monsters[Green Ops Soldier,C.A.R.N.I.V.O.R.E. Operative,Glass of Orange Juice,Sorority Nurse,
+		Naughty Sorority Nurse,Monty Basingstoke-Pratt\, IV,Next-generation Frat Boy] contains enemy))
 	{
 		return true;
 	}
