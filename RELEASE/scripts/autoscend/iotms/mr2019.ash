@@ -807,9 +807,9 @@ int auto_beachCombFreeUsesLeft(){
 }
 
 boolean auto_beachUseFreeCombs() {
-	if(!auto_beachCombAvailable()) { return false; }
-	if(get_property("_freeBeachWalksUsed").to_int() >= 11) { return false; }
-	cli_execute("CombBeach free");
+	int freeCombs = auto_beachCombFreeUsesLeft();
+	if(freeCombs <= 0) { return false; }
+	cli_execute(`combo {freeCombs}`);
 	return true;
 }
 
