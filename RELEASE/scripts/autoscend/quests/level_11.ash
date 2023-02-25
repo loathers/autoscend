@@ -1677,7 +1677,7 @@ boolean L11_hiddenCity()
 	{
 		auto_log_info("The idden [sic] apartment!", "blue");
 
-		boolean elevatorAction = !zone_delay($location[The Hidden Apartment Building])._boolean;
+		boolean elevatorAction = !zone_delay($location[The Hidden Apartment Building])._boolean || auto_haveQueuedForcedNonCombat();
 		
 		boolean canDrinkCursedPunch = canDrink($item[Cursed Punch]) && !get_property("auto_limitConsume").to_boolean() && !in_tcrs();
 		//todo: in_tcrs check quality and size of cursed punch instead of skipping? if that is possible
