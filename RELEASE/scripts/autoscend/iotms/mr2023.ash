@@ -41,6 +41,8 @@ boolean wantToThrowGravel(location loc, monster enemy)
 
 	if(item_amount($item[groveling gravel]) == 0) return false;
 	if(!auto_is_valid($item[groveling gravel])) return false;
+	// prevent overuse after breaking ronin or in casual
+	if(can_interact()) return false;
 
 	// use gravel in battlefield if no breathitin charges
 	if(get_property("breathitinCharges").to_int() == 0 && 
