@@ -1,5 +1,111 @@
 # This is meant for items that have a date of 2021
 
+boolean auto_haveCrystalBall()
+{
+	return possessEquipment($item[miniature crystal ball]) && auto_is_valid($item[miniature crystal ball]) && pathHasFamiliar();
+}
+
+monster crystalBallMonster(location loc)
+{
+	// returns a monster if the crystal ball predicts one in the location
+
+	string [int] crystalBallPredictions = get_property("crystalBallPredictions").split_string("[|]");
+	if(crystalBallPredictions[0] == "")
+	{
+		return $monster[none];	// no prediction
+	}
+	foreach i in crystalBallPredictions
+	{
+        string [int] thisPrediction = crystalBallPredictions[i].split_string(":"); // turn:location:monster
+		// turn: thisPrediction[0].to_int() is useless unless mafia fails to update the property
+		if(thisPrediction[1].to_location() != loc)
+		{
+			continue;
+		}
+		return thisPrediction[2].to_monster();
+	}
+	return $monster[none];	// no prediction in the location
+}
+
+boolean auto_allowCrystalBall(monster predicted_monster, location loc)
+{	
+	// blacklisted locations
+	if($locations[Next to that barrel with something burning in it, Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator] contains loc)
+	{
+		//predictions can't tell tool gremlins apart from non tool gremlins
+		return false;
+	}
+	
+	// allowed elsewhere if no prediction
+	if(predicted_monster == $monster[none])
+	{
+		return true;
+	}
+
+	// next monster forced by mapping overrides any prediction so no need to forbid equipping crystal ball 
+	if(get_property("mappingMonsters").to_boolean())
+	{
+		return true;
+	}
+
+	// next monster forced by clover so no need to forbid equipping crystal ball
+	if(have_effect($effect[Lucky!]) > 0)
+	{
+		if(loc == $location[The Hidden Temple])
+		{
+			// the only lucky adventure with a fight that could use the chance of item drop bonus
+			return true;
+		}
+	}
+
+	//if already forced by something else, no need to handle your ball
+	//pre_adv handles this as it already tracks burningDelay and forced encounters
+	
+	if(is_banished(predicted_monster) || auto_wantToReplace(predicted_monster,loc) || auto_wantToBanish(predicted_monster,loc))
+	{
+		// next prediction is unwanted, do not allow
+		return false;
+	}
+	
+	return true;
+}
+
+boolean auto_forceHandleCrystalBall(location loc)
+{
+	//full support would need changing how autoscend chooses tasks to move between zones and reset predictions
+	//instead just allow it to make unwanted monsters less likely and confirm wanted monsters
+
+	monster predicted_monster = crystalBallMonster(loc);
+
+	boolean shouldForceEquip;
+	if(predicted_monster != $monster[none])
+	{
+		if((auto_wantToSniff(predicted_monster,loc) || 				//sniff targets are wanted monsters
+		$monsters[Monstrous Boiler, beanbat] contains predicted_monster)	//some wanted monsters are not sniff targets
+		&& appearance_rates(loc,false)[predicted_monster] < 100)		//other monsters possible
+		{
+			shouldForceEquip = true;	// should not waste the prediction entered in queue
+		}
+	}
+
+	if(shouldForceEquip)
+	{
+		addToMaximize(`+equip {$item[miniature crystal ball].to_string()}`);
+		set_property("auto_nextEncounter",to_string(predicted_monster));
+		return true;	//handled
+	}
+	else if(!auto_allowCrystalBall(predicted_monster, loc))
+	{
+		addToMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
+		return true;	//handled
+	}
+
+	//equipping the crystal ball can't hurt but it is neither forced nor forbidden
+	//pre_adv will consider giving it a maximizer bonus after checking if monster queue control is wanted
+	//removeFromMaximize(`-equip {$item[miniature crystal ball].to_string()}`);	//this should already get reset after every loop
+	return false;
+}
+
 boolean auto_haveEmotionChipSkills()
 {
 	return auto_is_valid($skill[Emotionally Chipped]) && have_skill($skill[Emotionally Chipped]);
