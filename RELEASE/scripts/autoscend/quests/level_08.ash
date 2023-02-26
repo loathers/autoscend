@@ -734,6 +734,14 @@ boolean L8_trapperGroar()
 	{
 		auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 		equipMaximizedGear();
+		if($location[Mist-shrouded Peak].turns_spent >= 3)	//does not account for possible defeats
+		{
+			set_property("auto_nextEncounter","Groar");
+		}
+		else
+		{
+			set_property("auto_nextEncounter","panicking Knott Yeti");
+		}
 		retval = autoAdv($location[Mist-shrouded Peak]);
 	}
 	if(retval && initial_adv == my_session_adv())

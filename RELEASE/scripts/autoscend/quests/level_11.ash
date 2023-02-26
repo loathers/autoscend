@@ -1795,6 +1795,10 @@ boolean L11_hiddenCity()
 					}
 				}
 			}
+			else
+			{
+				set_property("auto_nextEncounter","ancient protector spirit (The Hidden Apartment Building)");
+			}
 			auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
 			return autoAdv($location[The Hidden Apartment Building]);
 		}
@@ -1814,7 +1818,7 @@ boolean L11_hiddenCity()
 		}
 
 		int turnsUntilWorkingHoliday = zone_delay($location[The Hidden Office Building])._int;
-		boolean workingHoliday = (turnsUntilWorkingHoliday == 0);
+		boolean workingHoliday = (turnsUntilWorkingHoliday == 0 || auto_haveQueuedForcedNonCombat()) ;
 		
 		if(turnsUntilWorkingHoliday > 1 && item_amount($item[McClusky file (complete)]) > 0 && auto_canForceNextNoncombat()) {
 			if(auto_forceNextNoncombat($location[The Hidden Office Building]))	//how many delay turns should this save to be considered?
@@ -1858,6 +1862,11 @@ boolean L11_hiddenCity()
 			}
 			return autoAdv($location[The Hidden Apartment Building]);
 		}
+
+		if(workingHoliday && item_amount($item[McClusky file (complete)]) > 0)
+		{
+			set_property("auto_nextEncounter","ancient protector spirit (The Hidden Office Building)");
+		}
 		return autoAdv($location[The Hidden Office Building]);
 	}
 
@@ -1887,6 +1896,10 @@ boolean L11_hiddenCity()
 		{
 			auto_log_info("Bringing the Camel to spit on a Pygmy Bowler for bowling balls.");
 			handleFamiliar($familiar[Melodramedary]);
+		}
+		if(item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() == 5)
+		{
+			set_property("auto_nextEncounter","ancient protector spirit (The Hidden Bowling Alley)");
 		}
 		return autoAdv($location[The Hidden Bowling Alley]);
 	}
@@ -1951,6 +1964,7 @@ boolean L11_hiddenCity()
 	if (item_amount($item[stone triangle]) == 4) {
 		auto_log_info("Fighting the out-of-work spirit", "blue");
 		acquireHP();
+		set_property("auto_nextEncounter","Protector Spectre");
 		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
 		if (internalQuestStatus("questL11MacGuffin") > 2) {
 			// Actually Ed finishes this quest when all 3 parts of the staff are returned
@@ -2445,6 +2459,7 @@ boolean L11_ronCopperhead()
 			auto_log_info("Bringing the Camel to spit on a Red Butler for glark cables.");
 			handleFamiliar($familiar[Melodramedary]);
 		}
+		//set_property("auto_nextEncounter","Ron \"The Weasel\" Copperhead");	//this encounter is technically predictable, but mafia does not track progress?
 		boolean retval = autoAdv($location[The Red Zeppelin]);
 		// open red boxes when we get them (not sure if this is the place for this but it'll do for now)
 		if (item_amount($item[red box]) > 0)
@@ -2819,6 +2834,7 @@ boolean L11_palindome()
 		string[int] pages;
 		pages[0] = "place.php?whichplace=palindome&action=pal_drlabel";
 		pages[1] = "choice.php?pwd&whichchoice=131&option=" + palinChoice;
+		set_property("auto_nextEncounter","Dr. Awkward");
 		autoAdvBypass(0, pages, $location[Noob Cave], "");
 		return true;
 	}
@@ -3151,6 +3167,7 @@ boolean L11_defeatEd()
 
 	auto_log_info("Time to waste all of Ed's Ka Coins :(", "blue");
 
+	set_property("auto_nextEncounter","Ed the Undying");
 	autoAdv($location[The Lower Chambers]);
 	if(in_pokefam() || in_koe())
 	{
