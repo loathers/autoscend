@@ -106,6 +106,77 @@ boolean auto_forceHandleCrystalBall(location loc)
 	return false;
 }
 
+void simulatePreAdvForCrystalBall(location place)
+{
+	// used only when simulating maximizer equipment
+	// replicates most of pre_adv monster queue checks in order to know if miniature crystal ball will be allowed
+	
+	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
+	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
+	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
+	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
+
+	boolean considerCrystalBallBonus;
+	if(!zoneQueueIgnored && get_property("auto_nextEncounter").to_monster() == $monster[none] && 
+	!auto_forceHandleCrystalBall(place))
+	{
+		//equipping the crystal ball can't hurt but it is neither forced nor forbidden
+		//will consider giving it a maximizer bonus after checking if monster queue control is wanted
+		considerCrystalBallBonus = true;
+	}
+	
+	monster [int] possible_monsters;
+	if(get_property("auto_nextEncounter").to_monster() != $monster[none])
+	{
+		//next monster is forced by zone mechanics or by now locked-in miniature crystal ball
+		possible_monsters[count(possible_monsters)] = get_property("auto_nextEncounter").to_monster();
+	}
+	else
+	{
+		foreach i,mon in get_monsters(place)
+		{
+			if(appearance_rates(place)[mon] > 0)
+			{
+				possible_monsters[count(possible_monsters)] = mon;
+			}
+		}
+	}
+	
+	boolean zoneHasUnwantedMonsters;
+	boolean zoneHasWantedMonsters;
+	if (!zoneQueueIgnored)	//next encounter is a monster from the zone
+	{
+		foreach i,mon in possible_monsters
+		{
+			if(auto_wantToYellowRay(mon, place))
+			{
+				zoneHasWantedMonsters = true;
+			}
+			if(auto_wantToBanish(mon, place))
+			{
+				zoneHasUnwantedMonsters = true;
+			}
+			if(auto_wantToReplace(mon, place))
+			{
+				zoneHasUnwantedMonsters = true;
+			}
+			if(auto_wantToSniff(mon, place))
+			{
+				zoneHasWantedMonsters = true;
+			}
+		}
+	}
+	if(considerCrystalBallBonus)
+	{
+		//give miniature crystal ball a maximizer bonus only if the location has monsters to avoid or target
+		int crystalBallMaximizerBonus = 0 + (zoneHasUnwantedMonsters ? 300 : 0) + (zoneHasWantedMonsters ? 300 : 0);
+		if(crystalBallMaximizerBonus != 0)
+		{
+			addToMaximize("+" + crystalBallMaximizerBonus + "bonus miniature crystal ball");
+		}
+	}
+}
+
 boolean auto_haveEmotionChipSkills()
 {
 	return auto_is_valid($skill[Emotionally Chipped]) && have_skill($skill[Emotionally Chipped]);
