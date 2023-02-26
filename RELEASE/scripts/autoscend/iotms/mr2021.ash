@@ -59,7 +59,7 @@ boolean auto_allowCrystalBall(monster predicted_monster, location loc)
 	}
 
 	//if already forced by something else, no need to handle your ball
-	//pre_adv handles this as it already tracks burningDelay and forced encounters
+	//pre_adv, or simulatePreAdvForCrystalBall, handles this as it already tracks burningDelay and forced encounters
 	
 	if(is_banished(predicted_monster) || auto_wantToReplace(predicted_monster,loc) || auto_wantToBanish(predicted_monster,loc))
 	{
@@ -102,7 +102,7 @@ boolean auto_forceHandleCrystalBall(location loc)
 
 	//equipping the crystal ball can't hurt but it is neither forced nor forbidden
 	//pre_adv will consider giving it a maximizer bonus after checking if monster queue control is wanted
-	//removeFromMaximize(`-equip {$item[miniature crystal ball].to_string()}`);	//this should already get reset after every loop
+	//removeFromMaximize(`-equip {$item[miniature crystal ball].to_string()}`);	//this should already get reset after every loop or maximizer simulation
 	return false;
 }
 
