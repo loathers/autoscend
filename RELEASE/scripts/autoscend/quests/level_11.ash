@@ -2459,7 +2459,10 @@ boolean L11_ronCopperhead()
 			auto_log_info("Bringing the Camel to spit on a Red Butler for glark cables.");
 			handleFamiliar($familiar[Melodramedary]);
 		}
-		//set_property("auto_nextEncounter","Ron \"The Weasel\" Copperhead");	//this encounter is technically predictable, but mafia does not track progress?
+		if(internalQuestStatus("questL11Ron") == 4)
+		{
+			set_property("auto_nextEncounter","Ron \"The Weasel\" Copperhead");
+		}
 		boolean retval = autoAdv($location[The Red Zeppelin]);
 		// open red boxes when we get them (not sure if this is the place for this but it'll do for now)
 		if (item_amount($item[red box]) > 0)
