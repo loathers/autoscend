@@ -657,16 +657,16 @@ void addBonusToMaximize(item it, int amt)
 
 void finalizeMaximize(boolean speculative)
 {
-	if (possessEquipment($item[miniature crystal ball]))
+	if(auto_hasStillSuit() && pathHasFamiliar() && inebriety_limit() > 0)
 	{
-		// until we add support for this, we shouldn't allow the maximizer to equip it
-		// I noticed it being worn in preference to the astral pet sweater which is a waste
-		addToMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
+		//always enough bonus to beat the 25 default maximizer score of miniature crystal ball's +initiative enchantment
+		//100 to 200 bonus for diminishing returns when drams already high
+		addBonusToMaximize($item[tiny stillsuit], (100 + to_int(100*min(1,(10.0 / max(1,auto_expectedStillsuitAdvs()))))));
 	}
+	//miniature crystal ball is handled along with monster goals in pre_adv
 	
 	monster nextMonster = get_property("auto_nextEncounter").to_monster();
 	boolean nextMonsterIsFree = (nextMonster != $monster[none] && isFreeMonster(nextMonster)) || (get_property("breathitinCharges").to_int() > 0 && my_location().environment == "outdoor");
-	//todo if crystal ball is supported and locked in next monster is also known. appearance_rates (with queue parameter true) also reflects this
 
 	if (auto_haveKramcoSausageOMatic())
 	{
