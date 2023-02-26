@@ -415,6 +415,7 @@ boolean auto_buyCrimboCommerceMallItem();
 boolean auto_haveCrystalBall();
 monster crystalBallMonster(location loc);
 boolean auto_forceHandleCrystalBall(location loc);
+void simulatePreAdvForCrystalBall(location place);
 boolean auto_haveEmotionChipSkills();
 boolean auto_canFeelEnvy();
 boolean auto_canFeelHatred();
