@@ -372,22 +372,27 @@ boolean LX_burnDelay()
 		if(wannaVote)
 		{
 			auto_log_info("Burn some delay somewhere (voting), if we found a place!", "green");
+			set_property("auto_nextEncounter",get_property("_voteMonster"));
 			if(auto_voteMonster(true, burnZone, ""))
 			{
 				return true;
 			}
+			set_property("auto_nextEncounter","");
 		}
 		if(wannaDigitize)
 		{
 			auto_log_info("Burn some delay somewhere (digitize), if we found a place!", "green");
+			set_property("auto_nextEncounter",get_property("_sourceTerminalDigitizeMonster"));
 			if(autoAdv(burnZone))
 			{
 				return true;
 			}
+			set_property("auto_nextEncounter","");
 		}
 		if(wannaSausage)
 		{
 			auto_log_info("Burn some delay somewhere (sausage goblin), if we found a place!", "green");
+			//"auto_nextEncounter" property is set by auto_sausageGoblin when it adventures with the equipment
 			if(auto_sausageGoblin(burnZone, ""))
 			{
 				return true;
@@ -396,18 +401,22 @@ boolean LX_burnDelay()
 		if(wannaBackup)
 		{
 			auto_log_info("Burn some delay somewhere (backup camera), if we found a place!", "green");
+			set_property("auto_nextEncounter",get_property("lastCopyableMonster"));
 			if(autoAdv(burnZone))
 			{
 				return true;
 			}
+			set_property("auto_nextEncounter","");
 		}
 		if(voidMonsterNext)
 		{
 			auto_log_info("Burn some delay somewhere (cursed magnifying glass), if we found a place!", "green");
+			set_property("auto_nextEncounter","void guy");	//which of the 3 is random, but they're all same phylum and free under same conditions
 			if(autoAdv(burnZone))
 			{
 				return true;
 			}
+			set_property("auto_nextEncounter","");
 		}
 	}
 	else if(wannaVote || wannaDigitize || wannaSausage || voidMonsterNext)
@@ -420,10 +429,12 @@ boolean LX_burnDelay()
 	else if(wannaBackup)
 	{
 		auto_log_info("Couldn't find zone to burn delay. Using back-up camera at Noob Cave", "green");
+		set_property("auto_nextEncounter",get_property("lastCopyableMonster"));
 		if(autoAdv($location[noob cave]))
 		{
 			return true;
-		}	
+		}
+		set_property("auto_nextEncounter","");
 	}
 	return false;
 }
@@ -1539,6 +1550,7 @@ void resetState() {
 	set_property("auto_familiarChoice", ""); // which familiar do we want to switch to during pre_adventure
 	set_property("choiceAdventure1387", -1); // using the force non-combat
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
+	set_property("auto_nextEncounter", ""); // monster that was expected last turn
 
 	if(doNotBuffFamiliar100Run())		//some familiars are always bad
 	{
