@@ -285,31 +285,83 @@ boolean auto_pre_adventure()
 	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
 	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
+	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !burningDelay && !gettingLucky && !forcedNonCombat) {
+	if (combatModifier._boolean && !zoneQueueIgnored) {
 		acquireCombatMods(combatModifier._int, true);
 	}
 
-	foreach i,mon in get_monsters(place)
+	boolean considerCrystalBallBonus;
+	if(auto_haveCrystalBall())
 	{
-		if(auto_wantToYellowRay(mon, place) && !burningDelay)
+		if(zoneQueueIgnored || get_property("auto_nextEncounter").to_monster() != $monster[none])
 		{
-			adjustForYellowRayIfPossible(mon);
+			//if already forced by something else, no need to handle your ball
 		}
-
-		if(auto_wantToBanish(mon, place) && !burningDelay)
+		else if(!auto_forceHandleCrystalBall(place))
 		{
-			adjustForBanishIfPossible(mon, place);
+			//equipping the crystal ball can't hurt but it is neither forced nor forbidden
+			//will consider giving it a maximizer bonus after checking if monster queue control is wanted
+			considerCrystalBallBonus = true;
 		}
-
-		if(auto_wantToReplace(mon, place) && !burningDelay)
+	}
+	
+	monster [int] possible_monsters;
+	if(get_property("auto_nextEncounter").to_monster() != $monster[none])
+	{
+		//next monster is forced by zone mechanics or by now locked-in miniature crystal ball
+		possible_monsters[count(possible_monsters)] = get_property("auto_nextEncounter").to_monster();
+	}
+	else
+	{
+		foreach i,mon in get_monsters(place)
 		{
-			adjustForReplaceIfPossible(mon);
+			//consider all possible monsters, with queue effects argument false
+			//	queue argument true would return only crystal ball prediction if there is one and equipped,
+			//	but here keeping ball equipped will be either not guaranteed if monsters don't matter, or forbidden
+			if(appearance_rates(place)[mon] > 0)
+			{
+				possible_monsters[count(possible_monsters)] = mon;
+			}
 		}
-
-		if (auto_wantToSniff(mon, place) && !burningDelay)
+	}
+	
+	boolean zoneHasUnwantedMonsters;
+	boolean zoneHasWantedMonsters;
+	if (!zoneQueueIgnored)	//next encounter is a monster from the zone
+	{
+		foreach i,mon in possible_monsters
 		{
-			adjustForSniffingIfPossible(mon);
+			if(auto_wantToYellowRay(mon, place))
+			{
+				adjustForYellowRayIfPossible(mon);
+				zoneHasWantedMonsters = true;
+			}
+			if(auto_wantToBanish(mon, place))
+			{
+				adjustForBanishIfPossible(mon, place);
+				zoneHasUnwantedMonsters = true;
+			}
+			if(auto_wantToReplace(mon, place))
+			{
+				adjustForReplaceIfPossible(mon);
+				zoneHasUnwantedMonsters = true;
+			}
+			if(auto_wantToSniff(mon, place))
+			{
+				adjustForSniffingIfPossible(mon);
+				zoneHasWantedMonsters = true;
+			}
+		}
+	}
+	if(considerCrystalBallBonus)
+	{
+		//give miniature crystal ball a maximizer bonus only if the location has monsters to avoid or target
+		//TODO give 0 if tally of available banishes and no sniff makes trying to avoid unwanted monsters with ball not worthwhile?
+		int crystalBallMaximizerBonus = 0 + (zoneHasUnwantedMonsters ? 300 : 0) + (zoneHasWantedMonsters ? 300 : 0);
+		if(crystalBallMaximizerBonus != 0)
+		{
+			addToMaximize("+" + crystalBallMaximizerBonus + "bonus miniature crystal ball");
 		}
 	}
 
