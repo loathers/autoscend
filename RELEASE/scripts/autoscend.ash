@@ -1,4 +1,4 @@
-since r27182;	// Buying hat from firework shop only requires autoSatisfyWithNPCs
+since r27228;	// More once per combat skills
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

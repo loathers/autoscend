@@ -677,12 +677,12 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMinor = 0;
 		}
 	case $class[Cheese Wizard]:
-		if(canUse($skill[Emmental Elemental]) && my_hp() < my_maxhp() - expected_damage())
+		if(canUse($skill[Crack Knuckles]) && (enemy.physical_resistance < 80))
 		{
-			attackMajor = useSkill($skill[Emmental Elemental], false);
-			attackMinor = useSkill($skill[Emmental Elemental], false);
-			costMajor = mp_cost($skill[Emmental Elemental]);
-			costMinor = mp_cost($skill[Emmental Elemental]);
+			attackMajor = useSkill($skill[Crack Knuckles], false);
+			attackMinor = useSkill($skill[Crack Knuckles], false);
+			costMajor = mp_cost($skill[Crack Knuckles]);
+			costMinor = mp_cost($skill[Crack Knuckles]);
 		}
 		if(canUse($skill[Stilton Splatter]) && (enemy.physical_resistance < 80))
 		{
@@ -691,19 +691,19 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stilton Splatter]);
 			costMinor = mp_cost($skill[Stilton Splatter]);
 		}
-		if(canUse($skill[Crack Knuckles]) && (enemy.physical_resistance < 80))
+		if(canUse($skill[Emmental Elemental]) && (my_hp() < my_maxhp() * 0.6 || round > 10))
 		{
-			attackMajor = useSkill($skill[Crack Knuckles], false);
-			attackMinor = useSkill($skill[Crack Knuckles], false);
-			costMajor = mp_cost($skill[Crack Knuckles]);
-			costMinor = mp_cost($skill[Crack Knuckles]);
+			attackMajor = useSkill($skill[Emmental Elemental], false);
+			attackMinor = useSkill($skill[Emmental Elemental], false);
+			costMajor = mp_cost($skill[Emmental Elemental]);
+			costMinor = mp_cost($skill[Emmental Elemental]);
 		}
-		if(canUse($skill[Parmesan Missile]) && (enemy.physical_resistance < 80 && enemy.defense_element != $element[stench] && enemy.defense_element != $element[hot]))
+		if(canUse($skill[Parmesan Missile]) && round > 11)
 		{
 			attackMajor = useSkill($skill[Parmesan Missile], false);
-			attackMinor = "attack with weapon";
+			attackMinor = useSkill($skill[Parmesan Missile], false);
 			costMajor = mp_cost($skill[Parmesan Missile]);
-			costMinor = 0;
+			costMinor = mp_cost($skill[Parmesan Missile]);
 		}
 	}
 
