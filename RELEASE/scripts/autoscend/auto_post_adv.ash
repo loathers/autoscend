@@ -77,24 +77,30 @@ boolean auto_post_adventure()
 	static boolean[monster] __MONSTERS_FOLLOWING_NONCOMBATS = $monsters[
 		// These monsters follow noncombats, so we should reset the noncombat-forcing tracker when we fight one.
 		Protector Spectre, ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley), Cosmetics wraith,
-
-		// If |lastEncounter| was a noncombat adventure,
-		// it'll to_monster() to $monster[none].
-		none
 	];
 
-	if(get_property("auto_forceNonCombatSource") != "" && (__MONSTERS_FOLLOWING_NONCOMBATS contains get_property("lastEncounter").to_monster() && !is_superlikely(get_property("lastEncounter"))))
+	if(get_property("auto_forceNonCombatSource") != "" && 
+		((__MONSTERS_FOLLOWING_NONCOMBATS contains get_property("lastEncounter").to_monster() || is_expectedForcedNonCombat(get_property("lastEncounter")))))
 	{
-		auto_log_info("Encountered (assumed) forced noncombat: " + get_property("lastEncounter"), "blue");
+		// possible to get desired NC when preparing spikes. Only log usage if NC was actually forced
+		if(get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean())
+		{
+			auto_log_info("Encountered (assumed) forced noncombat: " + get_property("lastEncounter"), "blue");
+			handleTracker(get_property("auto_forceNonCombatSource"), get_property("lastEncounter"), "auto_forcedNC");
+		}
 		set_property("auto_forceNonCombatSource", "");
+		set_property("auto_forceNonCombatLocation", "");
+		set_property("auto_parkaSpikesDeployed", false);
 		set_property("auto_forceNonCombatTurn", -1);
 	}
 
-	if(get_property("auto_forceNonCombatSource") != "" && get_property("auto_forceNonCombatTurn").to_int() > my_turncount() - 10)
+	if(get_property("auto_forceNonCombatSource") != "" && (get_property("auto_forceNonCombatTurn").to_int() + 10) <= my_turncount())
 	{
 		auto_log_warning("It's been 10 adventures since we forced a noncombat (" + get_property("auto_forceNonCombatSource") +
 			"), am going to assume it happened but we missed it.", "blue");
 		set_property("auto_forceNonCombatSource", "");
+		set_property("auto_forceNonCombatLocation", "");
+		set_property("auto_parkaSpikesDeployed", false);
 		set_property("auto_forceNonCombatTurn", 0);
 	}
 

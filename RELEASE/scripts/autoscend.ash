@@ -176,6 +176,10 @@ void initializeSettings() {
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
+	remove_property("auto_forcedNC");
+	set_property("auto_forceNonCombatLocation", "");
+	set_property("auto_forceNonCombatSource", "");
+	set_property("auto_forceNonCombatTurn", -1);
 	set_property("auto_forceTavern", false);
 	set_property("auto_freeruns", "");
 	set_property("auto_funTracker", "");
@@ -203,6 +207,7 @@ void initializeSettings() {
 	set_property("auto_otherstuff", "");
 	set_property("auto_paranoia", -1);
 	set_property("auto_paranoia_counter", 0);
+	set_property("auto_parkaSpikesDeployed", false);
 	set_property("auto_priorCharpaneMode", "0");
 	set_property("auto_powerLevelLastLevel", "0");
 	set_property("auto_powerLevelAdvCount", "0");
@@ -1612,6 +1617,7 @@ boolean process_tasks()
 
 	foreach i,task_function,condition_function in task_order[task_path]
 	{
+		auto_log_debug("Attempting to execute task " + i + " " + task_function);
 		if (condition_function == "" || (call boolean condition_function()))
 		{
 			boolean result = call boolean task_function();
@@ -1735,7 +1741,6 @@ boolean doTasks()
 	auto_buyFireworksHat();
 	auto_CMCconsult();
 	auto_checkTrainSet();
-	auto_autumnatonQuest();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
@@ -1808,6 +1813,7 @@ boolean doTasks()
 
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
+	if(LX_ForceNC())					return true;
 	if(LM_bond())						return true;
 	if(LX_calculateTheUniverse(false))	return true;
 	rockGardenEnd();
