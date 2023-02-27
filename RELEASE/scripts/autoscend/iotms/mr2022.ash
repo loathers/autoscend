@@ -520,10 +520,14 @@ boolean auto_autumnatonQuest()
 {
 	if(!auto_autumnatonReadyToQuest()) return false;
 
-	// complete any pending upgrades if it just returned
-	if (total_turns_played() == get_property("autumnatonQuestTurn").to_int() + 1)
+	// complete any pending upgrades if haven't checked since last return
+	// both of these props reset to 0 at start of day or new life due to "_" at start of them
+	int completedQuestsToday = get_property("_autumnatonQuests").to_int();
+	int lastQuestUpgradesChecked = get_property("_auto_lastAutumnatonUpgrade").to_int();
+	if(completedQuestsToday > lastQuestUpgradesChecked)
 	{
 		catch cli_execute("autumnaton upgrade");
+		set_property("_auto_lastAutumnatonUpgrade",completedQuestsToday);
 	}
 
 	// prioritize getting important upgrades
@@ -593,7 +597,8 @@ boolean auto_autumnatonQuest()
 		if(!auto_autumnatonCanAdv(targetLocation) && zone_available(targetLocation))
 		{
 			// force one turn in zone to unlock it for bot
-			return autoAdv(1, targetLocation);
+			// twin peak requires NC setup, call function instead of directly adventuring there
+			return L9_twinPeak();
 		}
 		if(auto_sendAutumnaton(targetLocation)) return false;
 	}

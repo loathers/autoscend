@@ -1690,6 +1690,12 @@ boolean L12_themtharHills()
 		return false;
 	}
 
+	// delay nuns if we have free fights available as it would cap meat drop to 1,000
+	if(get_property("breathitinCharges").to_int() > 0 && !isAboutToPowerlevel())
+	{
+		return false;
+	}
+
 	if((get_property("hippiesDefeated").to_int() < 192 && !get_property("auto_hippyInstead").to_boolean()) || get_property("auto_skipNuns").to_boolean())
 	{
 		return false;
