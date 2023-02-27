@@ -31,9 +31,9 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combatFallOfTheDinosaursStage5(round, enemy, text);
 	if(retval != "") return retval;
 
-	// Path = AoSOL, class = Pig Skinner
-	/*retval = auto_combatAoSOLStage5(round, enemy, text);
-	if(retval != "") return retval;*/
+	// Path = AoSOL
+	//retval = auto_combatAoSOLStage5(round, enemy, text);
+	//if(retval != "") return retval;
 
 	phylum type = monster_phylum(enemy);
 	string attackMinor = "attack with weapon";
@@ -655,28 +655,28 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		break;
 
 	case $class[Pig Skinner]:
-		if(my_hp() < 0.6 * my_maxhp() && canUse($skill[Second Wind]))
+	case $class[Cheese Wizard]:
+		if(canUse($skill[Hot Foot]) && (enemy.defense_element != $element[hot]) && (expected_damage() > 0) && !enemyCanBlocksSkills())
+		{
+			attackMajor = useSkill($skill[Hot Foot], false);
+			attackMinor = useSkill($skill[Hot Foot], false);
+			costMajor = mp_cost($skill[Hot Foot]);
+			costMinor = mp_cost($skill[Hot Foot]);
+		}
+		if((my_hp() / 0.7 < my_maxhp()) && canUse($skill[Second Wind]))
 		{
 			attackMajor = useSkill($skill[Second Wind], false);
 			attackMinor = useSkill($skill[Second Wind], false);
 			costMajor = mp_cost($skill[Second Wind]);
 			costMinor = mp_cost($skill[Second Wind]);
 		}
-		if(canUse($skill[Hot Foot]) && expected_damage() > 0 && !enemyCanBlocksSkills())
-		{
-			attackMajor = useSkill($skill[Hot Foot], false);
-			attackMinor = "attack with weapon";
-			costMajor = mp_cost($skill[Hot Foot]);
-			costMinor = 0;
-		}
 		if(canUse($skill[Ball Throw]) && (enemy.physical_resistance < 80))
 		{
 			attackMajor = useSkill($skill[Ball Throw], false);
-			attackMinor = "attack with weapon";
+			attackMinor = useSkill($skill[Ball Throw], false);
 			costMajor = mp_cost($skill[Ball Throw]);
-			costMinor = 0;
+			costMinor = mp_cost($skill[Ball Throw]);
 		}
-	case $class[Cheese Wizard]:
 		if(canUse($skill[Crack Knuckles]) && (enemy.physical_resistance < 80))
 		{
 			attackMajor = useSkill($skill[Crack Knuckles], false);
@@ -691,20 +691,22 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stilton Splatter]);
 			costMinor = mp_cost($skill[Stilton Splatter]);
 		}
-		if(canUse($skill[Emmental Elemental]) && (my_hp() < my_maxhp() * 0.6 || round > 10))
+		if(canUse($skill[Emmental Elemental]) && ((((my_hp()*10)/7) < my_maxhp()) || (round > 4)))
 		{
 			attackMajor = useSkill($skill[Emmental Elemental], false);
 			attackMinor = useSkill($skill[Emmental Elemental], false);
 			costMajor = mp_cost($skill[Emmental Elemental]);
 			costMinor = mp_cost($skill[Emmental Elemental]);
 		}
-		if(canUse($skill[Parmesan Missile]) && round > 11)
+		if(canUse($skill[Parmesan Missile]))
 		{
 			attackMajor = useSkill($skill[Parmesan Missile], false);
 			attackMinor = useSkill($skill[Parmesan Missile], false);
 			costMajor = mp_cost($skill[Parmesan Missile]);
 			costMinor = mp_cost($skill[Parmesan Missile]);
 		}
+		break;
+
 	}
 
 	if(((my_hp() * 10)/3) < my_maxhp())

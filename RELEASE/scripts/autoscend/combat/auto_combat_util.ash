@@ -364,11 +364,11 @@ skill getStunner(monster enemy)
 			return $skill[Stop Hitting Yourself];
 		}
 	case $class[Cheese Wizard]:
-		if(canUse($skill[Gather Cheese-Chi]) && expected_damage() > 0 && !enemyCanBlocksSkills() && my_hp() < my_maxhp() - 30)
+		if(canUse($skill[Gather Cheese-Chi]) && expected_damage() > 0 && !enemyCanBlocksSkills() && my_hp() <= my_maxhp() - 30)
 		{
 			return $skill[Gather Cheese-Chi];
 		}
-		if(canUse($skill[Mind Melt]) && expected_damage() > 0 && !enemyCanBlocksSkills())
+		if(canUse($skill[Mind Melt]) && expected_damage() > 0 && !enemyCanBlocksSkills() && monster_element(enemy) != $element[hot] )
 		{
 			return $skill[Mind Melt];
 		}

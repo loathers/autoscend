@@ -56,7 +56,7 @@ boolean aosol_buySkills()
 			string page = visit_url("inv_use.php?pwd&which=3&whichitem=11163");
 
 			//Check if there are already skill points
-			matcher my_skillPoints = create_matcher("You have (\\d\+) skill point.", page);
+			matcher my_skillPoints = create_matcher("You have <b>(\\d+)<\\/b> skill", page);
 			if(my_skillPoints.find())
 			{
 				int skillPoints = to_int(my_skillPoints.group(1));
@@ -195,7 +195,7 @@ boolean aosol_buySkills()
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=5", true);
 				set_property("auto_aosolLastSkill", 4);
 			}
-			if(!have_skill($skill[Hot Foot]) && my_level()>=5 && my_meat()>500) //Deal Mys in Fire Dmg and set enemy on fire
+			if(!have_skill($skill[Hot Foot]) && my_level()>=5 && my_meat()>500) //Deal Mys in Hot Dmg and set enemy on fire
 			{
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=15", true);
 				set_property("auto_aosolLastSkill", 5);
@@ -266,7 +266,7 @@ boolean aosol_buySkills()
 			string page = visit_url("inv_use.php?pwd&which=3&whichitem=11164");
 
 			//Check if there are already skill points
-			matcher my_skillPoints = create_matcher("You have (\\d\+) skill point.", page);
+			matcher my_skillPoints = create_matcher("You have <b>(\\d+)<\\/b> skill", page);
 			if(my_skillPoints.find())
 			{
 				int skillPoints = to_int(my_skillPoints.group(1));
