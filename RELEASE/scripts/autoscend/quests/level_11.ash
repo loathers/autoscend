@@ -422,7 +422,7 @@ boolean LX_unlockHauntedLibrary()
 	if (internalQuestStatus("questM20Necklace") == 2)
 	{
 		// only force after we get the pool cue NC.
-		auto_forceNextNoncombat();
+		auto_forceNextNoncombat($location[The Haunted Billiards Room]);
 	}
 	auto_log_info("It's billiards time!", "blue");
 	return autoAdv($location[The Haunted Billiards Room]);
@@ -681,7 +681,7 @@ boolean LX_getLadySpookyravensPowderPuff() {
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
 	if (!zone_delay($location[The Haunted Bathroom])._boolean) {
-		auto_forceNextNoncombat();
+		auto_forceNextNoncombat($location[The Haunted Bathroom]);
 	}
 	if (autoAdv($location[The Haunted Bathroom])) {
 		return true;
@@ -842,7 +842,7 @@ boolean L11_getBeehive()
 
 	auto_log_info("Must find a beehive!", "blue");
 
-	auto_forceNextNoncombat();
+	auto_forceNextNoncombat($location[The Black Forest]);
 	boolean advSpent = autoAdv($location[The Black Forest]);
 	if(item_amount($item[beehive]) > 0)
 	{
@@ -1677,7 +1677,7 @@ boolean L11_hiddenCity()
 	{
 		auto_log_info("The idden [sic] apartment!", "blue");
 
-		boolean elevatorAction = !zone_delay($location[The Hidden Apartment Building])._boolean;
+		boolean elevatorAction = !zone_delay($location[The Hidden Apartment Building])._boolean || auto_haveQueuedForcedNonCombat();
 		
 		boolean canDrinkCursedPunch = canDrink($item[Cursed Punch]) && !get_property("auto_limitConsume").to_boolean() && !in_tcrs();
 		//todo: in_tcrs check quality and size of cursed punch instead of skipping? if that is possible
@@ -1748,7 +1748,7 @@ boolean L11_hiddenCity()
 			
 			if(shouldForceElevatorAction)
 			{
-				elevatorAction = auto_forceNextNoncombat();
+				elevatorAction = auto_forceNextNoncombat($location[The Hidden Apartment Building]);
 			}
 		}
 
@@ -1818,10 +1818,10 @@ boolean L11_hiddenCity()
 		}
 
 		int turnsUntilWorkingHoliday = zone_delay($location[The Hidden Office Building])._int;
-		boolean workingHoliday = (turnsUntilWorkingHoliday == 0);
+		boolean workingHoliday = (turnsUntilWorkingHoliday == 0 || auto_haveQueuedForcedNonCombat()) ;
 		
 		if(turnsUntilWorkingHoliday > 1 && item_amount($item[McClusky file (complete)]) > 0 && auto_canForceNextNoncombat()) {
-			if(auto_forceNextNoncombat())	//how many delay turns should this save to be considered?
+			if(auto_forceNextNoncombat($location[The Hidden Office Building]))	//how many delay turns should this save to be considered?
 			{
 				workingHoliday = true;
 			}

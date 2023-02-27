@@ -684,7 +684,7 @@ boolean L9_twinPeak()
 		return false;
 	}
 
-	if(hedgeTrimmersNeeded() > 0 && auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[Twin Peak].turns_spent > 0)
+	if(hedgeTrimmersNeeded() > 0 && auto_autumnatonCanAdv($location[Twin Peak]) && !isAboutToPowerlevel() && $location[Twin Peak].turns_spent > 0)
 	{
 		// delay zone to allow autumnaton to grab rusty hedge trimmers
 		// unless we have ran out of other stuff to do
