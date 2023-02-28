@@ -698,6 +698,13 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Emmental Elemental]);
 			costMinor = mp_cost($skill[Emmental Elemental]);
 		}
+		if(canUse($skill[Mind Melt]))
+		{
+			attackMajor = useSkill($skill[Mind Melt], false);
+			attackMinor = useSkill($skill[Mind Melt], false);
+			costMajor = mp_cost($skill[Mind Melt]);
+			costMinor = mp_cost($skill[Mind Melt]);
+		}
 		if(canUse($skill[Parmesan Missile]))
 		{
 			attackMajor = useSkill($skill[Parmesan Missile], false);
