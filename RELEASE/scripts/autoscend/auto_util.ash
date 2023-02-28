@@ -4226,7 +4226,7 @@ boolean is_expectedForcedNonCombat(string encounterName)
 		// dark neck of the woods
 		How Do We Do It? Quaint and Curious Volume!,
 		Strike One!,
-		Olive My Love To You, Oh.,
+		Olive My Love To You\, Oh.,
 		The Oracle Will See You Now,
 		Dodecahedrariffic!,
 
