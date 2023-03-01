@@ -222,6 +222,9 @@ boolean isSniffed(monster enemy, skill sk)
 		case $skill[Offer Latte to Opponent]:
 			retval = contains_text(get_property("_latteMonster"), enemy);
 			break;
+		case $skill[Motif]:
+			retval = contains_text(get_property("motifMonster"), enemy);
+			break;
 		default:
 			abort("isSniffed was asked to check an unidentified skill: " +sk);
 	}
@@ -231,7 +234,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Offer Latte to Opponent]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Offer Latte to Opponent, Motif]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -258,6 +261,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	if(canUse($skill[Perceive Soul], true , inCombat) && !isSniffed(enemy, $skill[Perceive Soul]))
 	{
 		return $skill[Perceive Soul];
+	}
+	if(canUse($skill[Motif], true , inCombat) && !isSniffed(enemy, $skill[Motif]) && !(have_effect($effect[Everything Looks Blue]) > 0))
+	{
+		return $skill[Motif];
 	}
 	if(canUse($skill[Gallapagosian Mating Call], true , inCombat) && !isSniffed(enemy, $skill[Gallapagosian Mating Call]))
 	{
@@ -355,6 +362,8 @@ skill getStunner(monster enemy)
 		}
 		break;
 	case $class[Pig Skinner]:
+	case $class[Cheese Wizard]:
+	case $class[Jazz Agent]:
 		if(canUse($skill[Noogie]) && expected_damage() > 0 && !enemyCanBlocksSkills() && my_hp() > 0.6 * my_maxhp())
 		{
 			return $skill[Noogie];
@@ -363,14 +372,17 @@ skill getStunner(monster enemy)
 		{
 			return $skill[Stop Hitting Yourself];
 		}
-	case $class[Cheese Wizard]:
 		if(canUse($skill[Gather Cheese-Chi]) && expected_damage() > 0 && !enemyCanBlocksSkills() && my_hp() <= my_maxhp() - 30)
 		{
 			return $skill[Gather Cheese-Chi];
 		}
-		if(canUse($skill[Mind Melt]) && expected_damage() > 0 && !enemyCanBlocksSkills() && monster_element(enemy) != $element[hot] )
+		if(canUse($skill[Mind Melt]) && expected_damage() > 0 && !enemyCanBlocksSkills() && monster_element(enemy) != $element[hot])
 		{
 			return $skill[Mind Melt];
+		}
+		if(canUse($skill[Drum Roll]) && !enemyCanBlocksSkills())
+		{
+			return $skill[Drum Roll];
 		}
 	}
 	

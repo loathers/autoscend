@@ -656,19 +656,20 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 
 	case $class[Pig Skinner]:
 	case $class[Cheese Wizard]:
-		if(canUse($skill[Hot Foot]) && (enemy.defense_element != $element[hot]) && (expected_damage() > 0) && !enemyCanBlocksSkills())
-		{
-			attackMajor = useSkill($skill[Hot Foot], false);
-			attackMinor = useSkill($skill[Hot Foot], false);
-			costMajor = mp_cost($skill[Hot Foot]);
-			costMinor = mp_cost($skill[Hot Foot]);
-		}
+	case $class[Jazz Agent]:
 		if((my_hp() / 0.7 < my_maxhp()) && canUse($skill[Second Wind]))
 		{
 			attackMajor = useSkill($skill[Second Wind], false);
 			attackMinor = useSkill($skill[Second Wind], false);
 			costMajor = mp_cost($skill[Second Wind]);
 			costMinor = mp_cost($skill[Second Wind]);
+		}
+		if(canUse($skill[Hot Foot]) && (enemy.defense_element != $element[hot]) && (expected_damage() > 0) && !enemyCanBlocksSkills())
+		{
+			attackMajor = useSkill($skill[Hot Foot], false);
+			attackMinor = useSkill($skill[Hot Foot], false);
+			costMajor = mp_cost($skill[Hot Foot]);
+			costMinor = mp_cost($skill[Hot Foot]);
 		}
 		if(canUse($skill[Ball Throw]) && (enemy.physical_resistance < 80))
 		{
@@ -684,12 +685,12 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Crack Knuckles]);
 			costMinor = mp_cost($skill[Crack Knuckles]);
 		}
-		if(canUse($skill[Stilton Splatter]) && (enemy.physical_resistance < 80))
+		if(canUse($skill[Mind Melt]))
 		{
-			attackMajor = useSkill($skill[Stilton Splatter], false);
-			attackMinor = useSkill($skill[Stilton Splatter], false);
-			costMajor = mp_cost($skill[Stilton Splatter]);
-			costMinor = mp_cost($skill[Stilton Splatter]);
+			attackMajor = useSkill($skill[Mind Melt], false);
+			attackMinor = useSkill($skill[Mind Melt], false);
+			costMajor = mp_cost($skill[Mind Melt]);
+			costMinor = mp_cost($skill[Mind Melt]);
 		}
 		if(canUse($skill[Emmental Elemental]) && ((((my_hp()*10)/7) < my_maxhp()) || (round > 4)))
 		{
@@ -698,12 +699,12 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Emmental Elemental]);
 			costMinor = mp_cost($skill[Emmental Elemental]);
 		}
-		if(canUse($skill[Mind Melt]))
+		if(canUse($skill[Stilton Splatter]) && (enemy.physical_resistance < 80))
 		{
-			attackMajor = useSkill($skill[Mind Melt], false);
-			attackMinor = useSkill($skill[Mind Melt], false);
-			costMajor = mp_cost($skill[Mind Melt]);
-			costMinor = mp_cost($skill[Mind Melt]);
+			attackMajor = useSkill($skill[Stilton Splatter], false);
+			attackMinor = useSkill($skill[Stilton Splatter], false);
+			costMajor = mp_cost($skill[Stilton Splatter]);
+			costMinor = mp_cost($skill[Stilton Splatter]);
 		}
 		if(canUse($skill[Parmesan Missile]))
 		{
@@ -711,6 +712,34 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			attackMinor = useSkill($skill[Parmesan Missile], false);
 			costMajor = mp_cost($skill[Parmesan Missile]);
 			costMinor = mp_cost($skill[Parmesan Missile]);
+		}
+		if(canUse($skill[Knife In The Darkness]))
+		{
+			attackMajor = useSkill($skill[Knife In The Darkness], false);
+			attackMinor = useSkill($skill[Knife In The Darkness], false);
+			costMajor = mp_cost($skill[Knife In The Darkness]);
+			costMinor = mp_cost($skill[Knife In The Darkness]);
+		}
+		if(canUse($skill[Venomous Riff]))
+		{
+			attackMajor = useSkill($skill[Venomous Riff], false);
+			attackMinor = useSkill($skill[Venomous Riff], false);
+			costMajor = mp_cost($skill[Venomous Riff]);
+			costMinor = mp_cost($skill[Venomous Riff]);
+		}
+		if(canUse($skill[Orchestra Strike]))
+		{
+			attackMajor = useSkill($skill[Orchestra Strike], false);
+			attackMinor = useSkill($skill[Orchestra Strike], false);
+			costMajor = mp_cost($skill[Orchestra Strike]);
+			costMinor = mp_cost($skill[Orchestra Strike]);
+		}
+		if(canUse($skill[Sax of Violence]) && (enemy.defense_element != $element[sleaze]))
+		{
+			attackMajor = useSkill($skill[Sax of Violence], false);
+			attackMinor = useSkill($skill[Sax of Violence], false);
+			costMajor = mp_cost($skill[Sax of Violence]);
+			costMinor = mp_cost($skill[Sax of Violence]);
 		}
 		break;
 

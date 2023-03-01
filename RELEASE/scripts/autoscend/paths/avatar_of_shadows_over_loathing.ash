@@ -42,6 +42,8 @@ void aosol_unCurse()
 	}
 }
 
+
+
 boolean aosol_buySkills()
 {
 	if(!in_aosol())
@@ -349,13 +351,13 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=18", true);
 					}
-					if(!have_skill($skill[Queso Fustulento])) //Queso Fustulento (10 advs, Stench dmg each round)
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=20", true);
-					}
 					if(!have_skill($skill[Cheddarmor])) //Cheddarmored (10 advs, +10 max HP, +50 DA, +3 DR)
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=12", true);
+					}
+					if(!have_skill($skill[Queso Fustulento])) //Queso Fustulento (10 advs, Stench dmg each round)
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=20", true);
 					}
 					skillPoints -= 1;
 				}
@@ -467,10 +469,217 @@ boolean aosol_buySkills()
 				set_property("auto_aosolLastSkill", 100);
 			}
 		}
+		if(my_class() == $class[Jazz Agent])
+		{
+			string page = visit_url("inv_use.php?pwd&which=3&whichitem=11165");
+
+			//Check if there are already skill points
+			matcher my_skillPoints = create_matcher("You have <b>(\\d+)<\\/b> skill", page);
+			if(my_skillPoints.find())
+			{
+				int skillPoints = to_int(my_skillPoints.group(1));
+				auto_log_info("Skill points found: " + skillPoints);
+				while(skillPoints > 0)
+				{
+					if(!have_skill($skill[Motif])) //25 turn blue ray (olfaction-esque)
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=21", true);
+					}
+					if(!have_skill($skill[Air of Mystery])) //First attack against you always misses
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=6", true);
+					}
+					if(!have_skill($skill[C Sharp Eyes])) //+50% item drop, +50% meat drop
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=5", true);
+					}
+					if(!have_skill($skill[Fashion Sense])) //Mox +20
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=3", true);
+					}
+					if(!have_skill($skill[Knife In The Darkness])) //Deal 50% of your foe's HP and gives 10 adv In The Darkness (-10% combat)
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=14", true);
+					}
+					if(!have_skill($skill[Orchestra Strike])) //Deal your Mox in Phys Dmg, Weaken Enemy
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=13", true);
+					}
+					if(!have_skill($skill[Venomous Riff])) //Deal Mys in dmg and poison foe
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=15", true);
+					}
+					if(!have_skill($skill[Sax of Violence])) //Deal Mus in Sleaze dmg
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=17", true);
+					}
+					if(!have_skill($skill[Grit Teeth])) //In combat 20 HP heal
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=19", true);
+					}
+					if(!have_skill($skill[Perfect Embrouchre])) //Musical skills deal 33% more damage
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=8", true);
+					}
+					if(!have_skill($skill[Virtuosity])) //+3 Moxie Stats per fight
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=10", true);
+					}
+					if(!have_skill($skill[Thick Calluses])) //DA +50, DR +3
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=1", true);
+					}
+					if(!have_skill($skill[Impeccable Timing])) //passive +100% combat initiative
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=2", true);
+					}
+					if(!have_skill($skill[Improv Muscles])) //+25% Max HP, +25% Initiatve
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=9", true);
+					}
+					if(!have_skill($skill[Rhythm In Your Blood])) //+20% Max HP
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=11", true);
+					}
+					if(!have_skill($skill[Rhythmic Precision])) //-3 MP to use skills
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=7", true);
+					}
+					if(!have_skill($skill[Jazz Hands])) //Regen 4-5 mp per adv
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=4", true);
+					}
+					if(!have_skill($skill[Drum Roll]) && my_level()>=6 && my_meat()>600) //Stun enemy for a few rounds
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=16", true);
+					}
+					if(!have_skill($skill[Tricky Timpani])) //Tricky Timpani (10 advs, +5 prismatic dmg)
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=18", true);
+					}
+					if(!have_skill($skill[Call For Backup])) //Reliable Backup (10 advs, +10 Fam Weight, Familiar acts more often)
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=12", true);
+					}
+					if(!have_skill($skill[Soothing Flute])) //Soothing Flute (10 advs, +5 fam weight, regen 8-10 hp per adv)
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=20", true);
+					}
+					skillPoints -= 1;
+				}
+			}
+			//If there are no skill points, we still want to buy skills outright
+			if(!have_skill($skill[Thick Calluses]) && my_level()>=1 && my_meat()>100) //DA +50, DR +3
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=1", true);
+				set_property("auto_aosolLastSkill", 1);
+			}
+			if(!have_skill($skill[Call For Backup]) && my_level()>=2 && my_meat()>200) //Reliable Backup (10 advs, +10 Fam Weight, Familiar acts more often)
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=12", true);
+				set_property("auto_aosolLastSkill", 1);
+			}
+			if(!have_skill($skill[Virtuosity]) && my_level()>=2 && my_meat()>200) //+3 Moxie Stats per fight
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=10", true);
+				set_property("auto_aosolLastSkill", 2);
+			}
+			if(!have_skill($skill[Orchestra Strike]) && my_level()>=3 && my_meat()>300) //Deal your Mox in Phys Dmg, Weaken Enemy
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=13", true);
+				set_property("auto_aosolLastSkill", 2);
+			}
+			if(!have_skill($skill[Fashion Sense]) && my_level()>=3 && my_meat()>300) //Mox +20
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=3", true);
+				set_property("auto_aosolLastSkill", 3);
+			}
+			if(!have_skill($skill[Knife In The Darkness]) && my_level()>=4 && my_meat()>400) //Deal 50% of your foe's HP and gives 10 adv In The Darkness (-10% combat)
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=14", true);
+				set_property("auto_aosolLastSkill", 3);
+			}
+			if(!have_skill($skill[Jazz Hands]) && my_level()>=4 && my_meat()>400) //Regen 4-5 mp per adv
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=4", true);
+				set_property("auto_aosolLastSkill", 4);
+			}
+			if(!have_skill($skill[C Sharp Eyes]) && my_level()>=5 && my_meat()>500) //+50% item drop, +50% meat drop
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=5", true);
+				set_property("auto_aosolLastSkill", 4);
+			}
+			if(!have_skill($skill[Venomous Riff]) && my_level()>=5 && my_meat()>500) //Deal Mys in dmg and poison foe
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=15", true);
+				set_property("auto_aosolLastSkill", 5);
+			}
+			if(!have_skill($skill[Air of Mystery]) && my_level()>=6 && my_meat()>600) //First attack against you always misses
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=6", true);
+				set_property("auto_aosolLastSkill", 5);
+			}
+			if(!have_skill($skill[Drum Roll]) && my_level()>=6 && my_meat()>600) //Stun enemy for a few rounds
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=16", true);
+				set_property("auto_aosolLastSkill", 6);
+			}
+			if(!have_skill($skill[Sax of Violence]) && my_level()>=7 && my_meat()>700) //Deal Mus in Sleaze dmg
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=17", true);
+				set_property("auto_aosolLastSkill", 6);
+			}
+			if(!have_skill($skill[Rhythmic Precision]) && my_level()>=7 && my_meat()>700) //-3 MP to use skills
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=7", true);
+				set_property("auto_aosolLastSkill", 7);
+			}
+			if(!have_skill($skill[Tricky Timpani]) && my_level()>=8 && my_meat()>800) //Tricky Timpani (10 advs, +5 prismatic dmg)
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=18", true);
+				set_property("auto_aosolLastSkill", 7);
+			}
+			if(!have_skill($skill[Perfect Embrouchre]) && my_level()>=8 && my_meat()>800) //Musical skills deal 33% more damage
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=8", true);
+				set_property("auto_aosolLastSkill", 8);
+			}
+			if(!have_skill($skill[Grit Teeth]) && my_level()>=9 && my_meat()>900) //In combat 20 HP heal
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=19", true);
+				set_property("auto_aosolLastSkill", 8);
+			}
+			if(!have_skill($skill[Improv Muscles]) && my_level()>=9 && my_meat()>900) //+25% Max HP, +25% Initiatve
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=9", true);
+				set_property("auto_aosolLastSkill", 9);
+			}
+			if(!have_skill($skill[Impeccable Timing]) && my_level()>=10 && my_meat()>1000) //passive +100% combat initiative
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=2", true);
+				set_property("auto_aosolLastSkill", 9);
+			}
+			if(!have_skill($skill[Soothing Flute]) && my_level()>=10 && my_meat()>1000) //Soothing Flute (10 advs, +5 fam weight, regen 8-10 hp per adv)
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=20", true);
+				set_property("auto_aosolLastSkill", 10);
+			}
+			if(!have_skill($skill[Rhythm In Your Blood]) && my_level()>=11 && my_meat()>1100) //+20% Max HP
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=11", true);
+				set_property("auto_aosolLastSkill", 10);
+			}
+			if(!have_skill($skill[Motif]) && my_level()>=11 && my_meat()>1100) //25 turn blue ray (olfaction-esque)
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=21", true);
+				set_property("auto_aosolLastSkill", 100);
+			}
+		}
 	}
 	else
 	{
 		return false;
 	}
+	
 	return false;
 }

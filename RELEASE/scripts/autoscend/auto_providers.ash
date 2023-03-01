@@ -46,7 +46,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		}
 	}
 
-	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness] {
+	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness, In The Darkness] {
 		uneffect(eff);
 		if(pass()) {
 			return result();

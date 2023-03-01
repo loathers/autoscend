@@ -1474,6 +1474,10 @@ boolean L13_towerNSTower()
 		uneffect($effect[Scarysauce]);
 		uneffect($effect[Jalape&ntilde;o Saucesphere]);
 		uneffect($effect[Spiky Shell]);
+		if(in_aosol()){
+			uneffect($effect[Queso Fustulento]);
+			uneffect($effect[Tricky Timpani]);
+		}
 		uneffect($effect[Psalm of Pointiness]);
 		uneffect($effect[Mayeaugh]);
 		uneffect($effect[Feeling Nervous]);
@@ -1714,6 +1718,12 @@ boolean L13_towerNSFinal()
 	if(my_class() == $class[Plumber] && (0 < item_amount($item[Thwaitgold buzzy beetle statuette])))
 	{
 		abort("Freeing the king will lose your extra stomach space. Enjoy the rest of your video game.");
+	}
+
+	if($classes[Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class())
+	{
+		visit_url("place.php?whichplace=nstower&action=ns_11_prism");
+		return true;
 	}
 
 	if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))

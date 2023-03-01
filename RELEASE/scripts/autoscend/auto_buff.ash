@@ -610,6 +610,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Record Hunger]:				useItem = $item[The Pigs Holo-Record];			break;
 	case $effect[Red Lettered]:					useItem = $item[Red Letter];					break;
 	case $effect[Red Door Syndrome]:			useItem = $item[Can of Black Paint];			break;
+	case $effect[Reliable Backup]:				useSkill = $skill[Call For Backup];				break;
 	case $effect[Reptilian Fortitude]:
 		if(auto_have_skill($skill[Reptilian Fortitude]) && acquireTotem())
 		{
@@ -689,6 +690,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Song of Solitude]:				useSkill = $skill[Song of Solitude];			break;
 	case $effect[Song of Starch]:				useSkill = $skill[Song of Starch];				break;
 	case $effect[The Sonata of Sneakiness]:		useSkill = $skill[The Sonata of Sneakiness];	break;
+	case $effect[Soothing Flute]:				useSkill = $skill[Soothing Flute];				break;
 	case $effect[Soulerskates]:					useSkill = $skill[Soul Rotation];				break;
 	case $effect[Sour Softshoe]:				useItem = $item[pulled yellow taffy];			break;
 	case $effect[Spectral Awareness]: 			useSkill = $skill[Spectral Awareness]; 			break;
@@ -756,6 +758,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Tomato Power]:					useItem = $item[Tomato Juice of Powerful Power];break;
 	case $effect[Too Shamed]:					useItem = $item[shim of shame shale];			break;
 	case $effect[Tortious]:						useItem = $item[Mocking Turtle];				break;
+	case $effect[Tricky Timpani]:				useSkill = $skill[Tricky Timpani];				break;
 	case $effect[Triple-Sized]:					useSkill = $skill[none];						break;
 	case $effect[Truly Gritty]:					useItem = $item[True Grit];						break;
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;

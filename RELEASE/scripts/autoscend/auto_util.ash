@@ -3386,6 +3386,8 @@ boolean auto_check_conditions(string conds)
 					return true;
 				if(get_property("_latteMonster").to_monster() == check_sniffed)
 					return true;
+				if(get_property("motifMonster").to_monster() == check_sniffed)
+					return true;
 				return false;
 			// data: Doesn't matter, but put something so I don't have to support dataless conditions
 			// True when you expect a protonic ghost report
@@ -4383,6 +4385,10 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 		buffMaintain($effect[Jalape&ntilde;o Saucesphere]);	//5 MP
 		buffMaintain($effect[Scariersauce]);				//10 MP
 		buffMaintain($effect[Scarysauce]);						//10 MP
+		if(in_aosol()){
+			buffMaintain($effect[Queso Fustulento]);		//10 MP
+			buffMaintain($effect[Tricky Timpani]);			//30 MP
+		}
 	}
 	
 	//1MP Non-Combat skills from each class

@@ -218,6 +218,10 @@ boolean auto_pre_adventure()
 		junkyardML = true;
 		uneffect($effect[Spiky Shell]);
 		uneffect($effect[Scarysauce]);
+		if(in_aosol()){
+			uneffect($effect[Queso Fustulento]);
+			uneffect($effect[Tricky Timpani]);
+		}
 		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
 
