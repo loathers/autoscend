@@ -41,6 +41,7 @@ boolean wantToThrowGravel(location loc, monster enemy)
 
 	if(item_amount($item[groveling gravel]) == 0) return false;
 	if(!auto_is_valid($item[groveling gravel])) return false;
+	if (enemy.attributes.to_lower_case().contains_text("free")) { return false; } // don't use gravel against inherently free fights
 	// prevent overuse after breaking ronin or in casual
 	if(can_interact()) return false;
 
