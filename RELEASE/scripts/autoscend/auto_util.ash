@@ -4252,7 +4252,7 @@ boolean is_expectedForcedNonCombat(string encounterName)
 		// The Castle in the Clouds in the Sky (Top Floor)
 		Copper Feel,
 		Melon Collie and the Infinite Lameness,
-		Yeah\, You're for Me, Punk Rock Giant,
+		Yeah\, You're for Me\, Punk Rock Giant,
 		Flavor of a Raver,
 
 		// The Haunted Billiards Room
