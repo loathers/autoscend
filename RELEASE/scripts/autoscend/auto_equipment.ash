@@ -937,22 +937,11 @@ int equipmentAmount(item equipment)
 		return 0;
 	}
 
-	int amount = item_amount(equipment) + equipped_amount(equipment);
+	int amount = item_amount(equipment) + equipped_amount(equipment, true);
 
 	if (get_related($item[broken champagne bottle], "fold") contains equipment)
 	{
 		amount = item_amount($item[January\'s Garbage Tote]);
-	}
-
-	if(item_type(equipment) == "familiar equipment")
-	{
-		foreach fam in $familiars[]
-		{
-			if(fam != my_familiar() && familiar_equipped_equipment(fam) == equipment)
-			{
-				amount++;
-			}
-		}
 	}
 
 	return amount;
