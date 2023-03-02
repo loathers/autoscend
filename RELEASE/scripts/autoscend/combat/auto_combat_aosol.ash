@@ -18,7 +18,12 @@ string auto_combatAoSOLStage5(int round, monster enemy, string text)
 		}
 		if(canUse($skill[Hot Foot]) && monster_element(enemy) != $element[hot] && !enemyCanBlocksSkills())
 		{
-			return useSkill($skill[Hot Foot], false);
+			
+			dmg = my_buffedstat($stat[mysticality]);
+			if(canSurvive(turns_to_kill(dmg)))
+			{
+				return useSkill($skill[Hot Foot], false);
+			}
 		}
 		if(canUse($skill[Ball Throw]) && !enemy_physical_immune)
 		{
