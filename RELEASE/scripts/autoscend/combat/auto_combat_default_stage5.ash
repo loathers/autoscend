@@ -740,7 +740,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			attackMinor = useSkill($skill[Orchestra Strike], false);
 			costMajor = mp_cost($skill[Orchestra Strike]);
 			costMinor = mp_cost($skill[Orchestra Strike]);
-		}/
+		}
 		break;
 
 	}
