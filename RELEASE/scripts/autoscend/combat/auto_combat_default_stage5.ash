@@ -657,26 +657,28 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	case $class[Pig Skinner]:
 	case $class[Cheese Wizard]:
 	case $class[Jazz Agent]:
+		attackMinor = "attack with weapon";
+		if(canUse($skill[Ball Throw]) && (enemy.physical_resistance < 80))
+		{
+			attackMajor = useSkill($skill[Ball Throw], false);
+			costMajor = mp_cost($skill[Ball Throw]);
+		}
+		if(canUse($skill[Hot Foot]) && (enemy.defense_element != $element[hot]) && !enemyCanBlocksSkills())
+		{
+			attackMajor = useSkill($skill[Hot Foot], false);
+			costMajor = mp_cost($skill[Hot Foot]);
+		}
+		if(canUse($skill[Stop Hitting Yourself]) && (enemy.physical_resistance < 80))
+		{
+			attackMajor = useSkill($skill[Stop Hitting Yourself], false);
+			costMajor = mp_cost($skill[Stop Hitting Yourself]);
+		}
 		if((my_hp() / 0.7 < my_maxhp()) && canUse($skill[Second Wind]))
 		{
 			attackMajor = useSkill($skill[Second Wind], false);
 			attackMinor = useSkill($skill[Second Wind], false);
 			costMajor = mp_cost($skill[Second Wind]);
 			costMinor = mp_cost($skill[Second Wind]);
-		}
-		if(canUse($skill[Hot Foot]) && (enemy.defense_element != $element[hot]) && (expected_damage() > 0) && !enemyCanBlocksSkills())
-		{
-			attackMajor = useSkill($skill[Hot Foot], false);
-			attackMinor = useSkill($skill[Hot Foot], false);
-			costMajor = mp_cost($skill[Hot Foot]);
-			costMinor = mp_cost($skill[Hot Foot]);
-		}
-		if(canUse($skill[Ball Throw]) && (enemy.physical_resistance < 80))
-		{
-			attackMajor = useSkill($skill[Ball Throw], false);
-			attackMinor = useSkill($skill[Ball Throw], false);
-			costMajor = mp_cost($skill[Ball Throw]);
-			costMinor = mp_cost($skill[Ball Throw]);
 		}
 		if(canUse($skill[Crack Knuckles]) && (enemy.physical_resistance < 80))
 		{

@@ -1978,6 +1978,10 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 		return true;
 	}
 
+	if(my_class() == $class[Pig Skinner] && have_skill($skill[Second Wind]))
+	{
+		return pigSkinnerAcquireHP(0.7 * goal);
+	}
 	if(is_boris())
 	{
 		return borisAcquireHP(goal);

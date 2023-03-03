@@ -567,6 +567,7 @@ boolean in_aosol();
 boolean aosol_initializeSettings();
 void aosol_unCurse();
 boolean aosol_buySkills();
+boolean pigSkinnerAcquireHP(int goal);
 
 ########################################################################################################
 //Defined in autoscend/paths/bees_hate_you.ash

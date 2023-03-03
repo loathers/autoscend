@@ -50,6 +50,10 @@ string auto_combatAoSOLStage5(int round, monster enemy, string text)
 			return useSkill(skill[Parmesan Missile]);
 		}
 	}
+	// if(my_class() == "Jazz Agent")
+	// {
+	// 	if(canUse($skill[]))
+	// }
 	
 	return "";
 }
