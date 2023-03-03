@@ -658,53 +658,59 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	case $class[Cheese Wizard]:
 	case $class[Jazz Agent]:
 		attackMinor = "attack with weapon";
-		if(canUse($skill[Ball Throw]) && (enemy.physical_resistance < 80))
+		if(canUse($skill[Ball Throw], true) && (enemy.physical_resistance < 80))
 		{
-			attackMajor = useSkill($skill[Ball Throw], false);
+			attackMajor = useSkill($skill[Ball Throw], true);
+			attackMinor = useSkill($skill[Ball Throw], true);
 			costMajor = mp_cost($skill[Ball Throw]);
+			costMinor = mp_cost($skill[Ball Throw]);
 		}
-		if(canUse($skill[Hot Foot]) && (enemy.defense_element != $element[hot]) && !enemyCanBlocksSkills())
+		if(canUse($skill[Hot Foot], true) && (enemy.defense_element != $element[hot]) && !enemyCanBlocksSkills())
 		{
-			attackMajor = useSkill($skill[Hot Foot], false);
+			attackMajor = useSkill($skill[Hot Foot], true);
+			attackMinor = useSkill($skill[Hot Foot], true);
 			costMajor = mp_cost($skill[Hot Foot]);
+			costMinor = mp_cost($skill[Hot Foot]);
 		}
-		if(canUse($skill[Stop Hitting Yourself]) && (enemy.physical_resistance < 80))
+		if(canUse($skill[Stop Hitting Yourself], true) && (enemy.physical_resistance < 80))
 		{
-			attackMajor = useSkill($skill[Stop Hitting Yourself], false);
+			attackMajor = useSkill($skill[Stop Hitting Yourself], true);
+			attackMinor = useSkill($skill[Stop Hitting Yourself], true);
 			costMajor = mp_cost($skill[Stop Hitting Yourself]);
+			costMinor = mp_cost($skill[Stop Hitting Yourself]);
 		}
-		if((my_hp() / 0.7 < my_maxhp()) && canUse($skill[Second Wind]))
+		if((my_hp() / 0.7 < my_maxhp()) && canUse($skill[Second Wind], true))
 		{
-			attackMajor = useSkill($skill[Second Wind], false);
-			attackMinor = useSkill($skill[Second Wind], false);
+			attackMajor = useSkill($skill[Second Wind], true);
+			attackMinor = useSkill($skill[Second Wind], true);
 			costMajor = mp_cost($skill[Second Wind]);
 			costMinor = mp_cost($skill[Second Wind]);
 		}
 		if(canUse($skill[Crack Knuckles]) && (enemy.physical_resistance < 80))
 		{
-			attackMajor = useSkill($skill[Crack Knuckles], false);
-			attackMinor = useSkill($skill[Crack Knuckles], false);
+			attackMajor = useSkill($skill[Crack Knuckles], true);
+			attackMinor = useSkill($skill[Crack Knuckles], true);
 			costMajor = mp_cost($skill[Crack Knuckles]);
 			costMinor = mp_cost($skill[Crack Knuckles]);
 		}
-		if(canUse($skill[Mind Melt]))
+		if(canUse($skill[Mind Melt], true))
 		{
-			attackMajor = useSkill($skill[Mind Melt], false);
-			attackMinor = useSkill($skill[Mind Melt], false);
+			attackMajor = useSkill($skill[Mind Melt], true);
+			attackMinor = useSkill($skill[Mind Melt], true);
 			costMajor = mp_cost($skill[Mind Melt]);
 			costMinor = mp_cost($skill[Mind Melt]);
 		}
-		if(canUse($skill[Emmental Elemental]) && ((((my_hp()*10)/7) < my_maxhp()) || (round > 4)))
+		if(canUse($skill[Emmental Elemental], true) && ((((my_hp()*10)/7) < my_maxhp()) || (round > 4)))
 		{
-			attackMajor = useSkill($skill[Emmental Elemental], false);
-			attackMinor = useSkill($skill[Emmental Elemental], false);
+			attackMajor = useSkill($skill[Emmental Elemental], true);
+			attackMinor = useSkill($skill[Emmental Elemental], true);
 			costMajor = mp_cost($skill[Emmental Elemental]);
 			costMinor = mp_cost($skill[Emmental Elemental]);
 		}
-		if(canUse($skill[Stilton Splatter]) && (enemy.physical_resistance < 80))
+		if(canUse($skill[Stilton Splatter], true) && (enemy.physical_resistance < 80))
 		{
-			attackMajor = useSkill($skill[Stilton Splatter], false);
-			attackMinor = useSkill($skill[Stilton Splatter], false);
+			attackMajor = useSkill($skill[Stilton Splatter], true);
+			attackMinor = useSkill($skill[Stilton Splatter], true);
 			costMajor = mp_cost($skill[Stilton Splatter]);
 			costMinor = mp_cost($skill[Stilton Splatter]);
 		}
@@ -715,17 +721,17 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Parmesan Missile]);
 			costMinor = mp_cost($skill[Parmesan Missile]);
 		}
-		if(canUse($skill[Knife In The Darkness]))
+		if(canUse($skill[Knife In The Darkness], true))
 		{
-			attackMajor = useSkill($skill[Knife In The Darkness], false);
-			attackMinor = useSkill($skill[Knife In The Darkness], false);
+			attackMajor = useSkill($skill[Knife In The Darkness], true);
+			attackMinor = useSkill($skill[Knife In The Darkness], true);
 			costMajor = mp_cost($skill[Knife In The Darkness]);
 			costMinor = mp_cost($skill[Knife In The Darkness]);
 		}
-		if(canUse($skill[Venomous Riff]))
+		if(canUse($skill[Venomous Riff], true))
 		{
-			attackMajor = useSkill($skill[Venomous Riff], false);
-			attackMinor = useSkill($skill[Venomous Riff], false);
+			attackMajor = useSkill($skill[Venomous Riff], true);
+			attackMinor = useSkill($skill[Venomous Riff], true);
 			costMajor = mp_cost($skill[Venomous Riff]);
 			costMinor = mp_cost($skill[Venomous Riff]);
 		}

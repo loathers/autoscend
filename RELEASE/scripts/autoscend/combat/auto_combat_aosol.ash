@@ -10,28 +10,15 @@ string auto_combatAoSOLStage5(int round, monster enemy, string text)
 	//float enemy_physical_res = 1 - (enemy.physical_resistance * 0.01);	//convert % into float
 	float dmg;
 	
-	if(my_class() == "Pig Skinner")
+	if(my_class() == $class[Pig Skinner])
 	{
-		if(my_hp() < 0.7 * my_maxhp() && canUse($skill[Second Wind]))) //because stats are very high, want to use this earlier rather than later
-		{
-			return useSkill($skill[Second Wind], false);
-		}
-		if(canUse($skill[Hot Foot]) && monster_element(enemy) != $element[hot] && !enemyCanBlocksSkills())
-		{
-			
-			dmg = my_buffedstat($stat[mysticality]);
-			if(canSurvive(turns_to_kill(dmg)))
-			{
-				return useSkill($skill[Hot Foot], false);
-			}
-		}
-		if(canUse($skill[Ball Throw]) && !enemy_physical_immune)
-		{
-			return useSkill($skill[Ball Throw], false);
-		}
+		if(my_hp() < 0.7 * my_maxhp() && canUse($skill[Second Wind])) return useSkill($skill[Second Wind], true); //because stats are very high, want to use this earlier rather than later
+		if(canUse($skill[Stop Hitting Yourself], true)) return useSkill($skill[Stop Hitting Yourself], true);
+		if(canUse($skill[Hot Foot], true) && (enemy.defense_element != $element[hot]) && !enemyCanBlocksSkills()) return useSkill($skill[Hot Foot], true);
+		if(canUse($skill[Ball Throw], true) && !enemy_physical_immune) return useSkill($skill[Ball Throw], true);
 		return "attack with weapon";
 	}
-	if(my_class() == "Cheese Wizard")
+	/*if(my_class() == "Cheese Wizard")
 	{
 		if(canUse($skill[Stilton Splatter]) && !enemy_physical_immune)
 		{
@@ -49,7 +36,7 @@ string auto_combatAoSOLStage5(int round, monster enemy, string text)
 		{
 			return useSkill(skill[Parmesan Missile]);
 		}
-	}
+	}*/
 	// if(my_class() == "Jazz Agent")
 	// {
 	// 	if(canUse($skill[]))
