@@ -348,13 +348,7 @@ void utilizeStillsuit() {
 	{
 		if(item_amount($item[tiny stillsuit]) == 0)
 		{
-			foreach f in $familiars[]
-			{
-				if (have_familiar(f) && familiar_equipped_equipment(f) == $item[tiny stillsuit])
-				{	//recover the stillsuit
-					visit_url("familiar.php?action=unequip&pwd&famid=" + f.to_int(), true);
-				}
-			}
+			retrieve_item($item[tiny stillsuit]);
 		}
 		if(item_amount($item[tiny stillsuit]) > 0)
 		{
