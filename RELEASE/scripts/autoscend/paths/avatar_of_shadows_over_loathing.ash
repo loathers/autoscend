@@ -23,22 +23,27 @@ void aosol_unCurse()
 	if(item_amount($item[Cursed Goblin Cape]) > 0) //-15% combat and vulnerability to 2 elements
 	{
 		visit_url("inv_use.php?pwd&which=2&whichitem=11149"); //-5% combat after uncursing
+		cli_execute("refresh inventory");
 	}
 	if(item_amount($item[Cursed Bat Paw]) > 0) //+ML and -Attributes
 	{
 		visit_url("inv_use.php?pwd&which=2&whichitem=11147"); //-25 ML after uncursing
+		cli_execute("refresh inventory");
 	}
 	if(item_amount($item[Cursed Stats]) > 0) //+5 stats but limits stats to NIIIIICCCCEE (69)
 	{
 		visit_url("inv_use.php?pwd&which=2&whichitem=11153");
+		cli_execute("refresh inventory");
 	}
 	if(item_amount($item[Cursed Machete]) > 0) //+50% meat, but cut yourself every turn
 	{
 		visit_url("inv_use.php?pwd&which=2&whichitem=11157"); //+20% meat after uncursing
+		cli_execute("refresh inventory");
 	}
 	if(item_amount($item[Cursed Medallion]) > 0) //+100% initiative, but -50% Weapon Dmg and -50% Spell Dmg
 	{
 		visit_url("inv_use.php?pwd&which=2&whichitem=11161"); //+25% Initiative after uncursing
+		cli_execute("refresh inventory");
 	}
 }
 
@@ -686,7 +691,7 @@ boolean pigSkinnerAcquireHP(int goal)
 {
 	while (my_hp() < goal)
 	{
-		doTasks();
+		break;
 	}
 	return goal >= my_hp();
 }
