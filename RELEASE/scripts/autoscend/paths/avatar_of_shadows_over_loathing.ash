@@ -72,13 +72,17 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=21", true);
 					}
-					if(!have_skill($skill[Hot Foot])) //Deal Mys in Fire Dmg and set enemy on fire
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=15", true);
-					}
 					if(!have_skill($skill[Second Wind])) //Restore 50% max HP during combat
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=16", true);
+					}
+					if(!have_skill($skill[Free-For-All])) //Free kill
+					{
+						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=19", true);
+					}
+					if(!have_skill($skill[Hot Foot])) //Deal Mys in Fire Dmg and set enemy on fire
+					{
+						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=15", true);
 					}
 					if(!have_skill($skill[Competitive Instincts])) //+100% Meat
 					{
@@ -92,21 +96,21 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=6", true);
 					}
+					if(!have_skill($skill[Cheerlead])) //Cheerled (10 advs, +50% all stats)
+					{
+						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=18", true);
+					}
 					if(!have_skill($skill[Strong Back])) //Passive Mus +20
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=3", true);
-					}
-					if(!have_skill($skill[Ball Throw])) //Deal your Mus in Phys Dmg
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=13", true);
 					}
 					if(!have_skill($skill[Stop Hitting Yourself])) //Deal Moxie in phys dmg and stun
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=17", true);
 					}
-					if(!have_skill($skill[Free-For-All])) //Free kill
+					if(!have_skill($skill[Ball Throw])) //Deal your Mus in Phys Dmg
 					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=19", true);
+						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=13", true);
 					}
 					if(!have_skill($skill[Anatomy Expertise])) //Damaging skills have chance to double dmg
 					{
@@ -132,10 +136,6 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=8", true);
 					}
-					if(!have_skill($skill[Second Wind])) //Restore 50% max HP during combat
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=16", true);
-					}
 					if(!have_skill($skill[Matter Over Mind])) //+25% Max MP
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=11", true);
@@ -147,10 +147,6 @@ boolean aosol_buySkills()
 					if(!have_skill($skill[Stretch])) //Stretched (10 advs, +75% Initiative)
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=12", true);
-					}
-					if(!have_skill($skill[Cheerlead])) //Cheerled (10 advs, +50% all stats)
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=18", true);
 					}
 					if(!have_skill($skill[Tape Up])) //Taped Up (10 advs, +100% Max HP, +100 DA, Regen 8-10 HP)
 					{
