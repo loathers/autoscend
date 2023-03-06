@@ -387,7 +387,7 @@ boolean aosol_buySkills()
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=3", true);
 				set_property("auto_aosolLastSkill", 3);
 			}
-			if(!have_skill($skill[Gather Cheese-Chi]) && my_level()>=4 && my_meat()> + meatReserve()) //Heal +30HP and stun enemy
+			if(!have_skill($skill[Gather Cheese-Chi]) && my_level()>=4 && my_meat()>400 + meatReserve()) //Heal +30HP and stun enemy
 			{
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=14", true);
 				set_property("auto_aosolLastSkill", 3);
