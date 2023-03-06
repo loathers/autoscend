@@ -4488,6 +4488,10 @@ int meatReserve()
 	{
 		reserve_extra += npc_price($item[pump grease]);
 	}
+	if(in_aosol() && inGnomeSign() && !have_skill($skill[Torso Awareness]) && isDesertAvailable())
+	{
+		reserve_extra += 5000; //we want Torso
+	}
 	
 	if(my_level() < 10)		//meat income is pretty low and the quests that need the reserve far away. Use restores freely
 	{
