@@ -278,6 +278,10 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=21", true);
 					}
+					if(!have_skill($skill[Emmental Elemental])) //Deal Moxie in cold dmg and heal for same amt
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=17", true);
+					}
 					if(!have_skill($skill[Peccorino Bravado])) //+20% all stats
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=6", true);
@@ -301,10 +305,6 @@ boolean aosol_buySkills()
 					if(!have_skill($skill[Crack Knuckles])) //Deal Mus in phys Dmg and weaken enemy
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=15", true);
-					}
-					if(!have_skill($skill[Emmental Elemental])) //Deal Moxie in cold dmg and heal for same amt
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=17", true);
 					}
 					if(!have_skill($skill[Stilton Splatter])) //Deal mys in phys dmg and +fam exp
 					{
