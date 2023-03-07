@@ -12,7 +12,16 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 	if((my_meat() >= meatReserve() + 6000)
 	   && gnomads_available()
 	   && (!have_skill($skill[Torso Awareness]))
-	   && have_useful_shirt)
+	   && have_useful_shirt
+	   && !in_aosol())
+	{
+		visit_url("gnomes.php?action=trainskill&whichskill=12");
+	}
+	else if((my_meat() >= meatReserve())  //we want Torso ASAP if we have a Parka and we're in AoSOL so we reserve meat in the meatReserve function only in AoSOL
+	   && gnomads_available()
+	   && (!have_skill($skill[Torso Awareness]))
+	   && item_amount($item[Jurassic Parka]) > 0
+	   && in_aosol())
 	{
 		visit_url("gnomes.php?action=trainskill&whichskill=12");
 	}
