@@ -714,7 +714,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stilton Splatter]);
 			costMinor = mp_cost($skill[Stilton Splatter]);
 		}
-		if(canUse($skill[Emmental Elemental], true) && ((((my_hp()*.7) < my_maxhp()) || (round > 4))))
+		if(canUse($skill[Emmental Elemental], true) && (my_hp() / 0.7) < my_maxhp())
 		{
 			attackMajor = useSkill($skill[Emmental Elemental], true);
 			attackMinor = useSkill($skill[Emmental Elemental], true);
