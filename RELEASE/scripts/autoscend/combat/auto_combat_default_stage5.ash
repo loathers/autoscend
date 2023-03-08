@@ -749,8 +749,8 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			attackMajor = useSkill($skill[Grit Teeth], false);
 			attackMinor = useSkill($skill[Grit Teeth], false);
-			costMajor = mp_cost($skill[Grit Teeth], false);
-			costMinor = mp_cost($skill[Grit Teeth], false)
+			costMajor = mp_cost($skill[Grit Teeth]);
+			costMinor = mp_cost($skill[Grit Teeth])
 		}
 		break;
 
