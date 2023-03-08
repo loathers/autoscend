@@ -717,19 +717,19 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Emmental Elemental]);
 			costMinor = mp_cost($skill[Emmental Elemental]);
 		}
-		if(canUse($skill[Sax of Violence]) && (enemy.defense_element != $element[sleaze]))
-		{
-			attackMajor = useSkill($skill[Sax of Violence], false);
-			attackMinor = useSkill($skill[Sax of Violence], false);
-			costMajor = mp_cost($skill[Sax of Violence]);
-			costMinor = mp_cost($skill[Sax of Violence]);
-		}
-		if(canUse($skill[Orchestra Strike]) && (enemy.physical_resistance < 80))
+		if(canUse($skill[Orchestra Strike], false) && (enemy.physical_resistance < 80))
 		{
 			attackMajor = useSkill($skill[Orchestra Strike], false);
 			attackMinor = useSkill($skill[Orchestra Strike], false);
 			costMajor = mp_cost($skill[Orchestra Strike]);
 			costMinor = mp_cost($skill[Orchestra Strike]);
+		}
+		if(canUse($skill[Sax of Violence], false) && (enemy.defense_element != $element[sleaze]))
+		{
+			attackMajor = useSkill($skill[Sax of Violence], false);
+			attackMinor = useSkill($skill[Sax of Violence], false);
+			costMajor = mp_cost($skill[Sax of Violence]);
+			costMinor = mp_cost($skill[Sax of Violence]);
 		}
 		if(canUse($skill[Venomous Riff], true))
 		{
