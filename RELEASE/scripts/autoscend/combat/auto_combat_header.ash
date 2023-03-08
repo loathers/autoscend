@@ -51,10 +51,6 @@ boolean combat_status_check(string mark);
 void combat_status_add(string mark);
 
 #####################################################
-//defined in /autoscend/combat/auto_combat_aosol.ash
-string auto_combatAoSOLStage5(int round, monster enemy, string text);
-
-#####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash
 void awol_combat_helper(string page);
 
