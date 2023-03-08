@@ -683,7 +683,15 @@ boolean aosol_buySkills()
 	return false;
 }
 
-boolean pigSkinnerAcquireHP(int goal)
+boolean auto_pigSkinnerAcquireHP(int goal)
+{
+	while (my_hp() < goal)
+	{
+		break;
+	}
+	return goal >= my_hp();
+}
+boolean auto_cheeseWizardAcquireHP(int goal)
 {
 	while (my_hp() < goal)
 	{
