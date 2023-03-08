@@ -1,4 +1,4 @@
-since r27241;	// equipped_amount(item, boolean)
+since r27263;	// AoSoL council quests text
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
