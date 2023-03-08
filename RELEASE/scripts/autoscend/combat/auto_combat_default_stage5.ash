@@ -738,12 +738,19 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Venomous Riff]);
 			costMinor = mp_cost($skill[Venomous Riff]);
 		}
-		if(canUse($skill[Knife In The Darkness], true))
+		if(canUse($skill[Knife In The Darkness], true) && providePlusNonCombat(10))
 		{
 			attackMajor = useSkill($skill[Knife In The Darkness], true);
 			attackMinor = useSkill($skill[Knife In The Darkness], true);
 			costMajor = mp_cost($skill[Knife In The Darkness]);
 			costMinor = mp_cost($skill[Knife In The Darkness]);
+		}
+		if(canUse($skill[Grit Teeth], false) && my_hp() < my_maxhp()-21 && get_property("_auto_combatState").to_string() == "stunned")
+		{
+			attackMajor = useSkill($skill[Grit Teeth], false);
+			attackMinor = useSkill($skill[Grit Teeth], false);
+			costMajor = mp_cost($skill[Grit Teeth], false);
+			costMinor = mp_cost($skill[Grit Teeth], false)
 		}
 		break;
 
