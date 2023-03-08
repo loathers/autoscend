@@ -4488,7 +4488,11 @@ int meatReserve()
 	{
 		reserve_extra += npc_price($item[pump grease]);
 	}
-	if(in_aosol() && !have_skill($skill[Torso Awareness]) && gnomads_available() && item_amount($item[Jurassic Parka]) > 0)
+	if(in_aosol() && !have_skill($skill[Torso Awareness]) && !gnomads_available() && auto_hasParka() && inGnomeSign())
+	{
+		reserve_extra +=5000 * npcStoreDiscountMulti(); //In AoSOL, going to need 5k anyway so might as well start saving early. Worst case scenario we make a meatcar
+	}
+	if(in_aosol() && !have_skill($skill[Torso Awareness]) && gnomads_available() && auto_hasParka())
 	{
 		reserve_extra += 5000; //we want Torso ASAP if we have a Parka
 	}
