@@ -620,7 +620,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Feel Hatred];
 	}
 	
-	if(auto_have_skill($skill[Punt]) && (my_mp() > mp_cost($skill[Punt])) &&!(used contains "Punt"))
+	if(auto_have_skill($skill[Punt]) && (my_mp() > mp_cost($skill[Punt])) && !(used contains "Punt"))
 	{
 		return "skill " + $skill[Punt];
 	}
