@@ -738,24 +738,24 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Venomous Riff]);
 			costMinor = mp_cost($skill[Venomous Riff]);
 		}
-		if(canUse($skill[Knife In The Darkness], true) && providePlusNonCombat(10))
+		if(canUse($skill[Knife In The Darkness], true) && zone_combatMod(my_location())._int < 0)
 		{
 			attackMajor = useSkill($skill[Knife In The Darkness], true);
 			attackMinor = useSkill($skill[Knife In The Darkness], true);
 			costMajor = mp_cost($skill[Knife In The Darkness]);
 			costMinor = mp_cost($skill[Knife In The Darkness]);
 		}
-		if(canUse($skill[Grit Teeth], false) && my_hp() < my_maxhp()-21 && get_property("_auto_combatState").to_string() == "stunned")
+		if(canUse($skill[Grit Teeth], false, true) && my_hp() < my_maxhp()-21 && combat_status_check("stunned"))
 		{
-			attackMajor = useSkill($skill[Grit Teeth], false);
-			attackMinor = useSkill($skill[Grit Teeth], false);
+			attackMajor = useSkill($skill[Grit Teeth], true);
+			attackMinor = useSkill($skill[Grit Teeth], true);
 			costMajor = mp_cost($skill[Grit Teeth]);
 			costMinor = mp_cost($skill[Grit Teeth]);
 		}
-		if(canUse($skill[Drum Roll], false) && get_property("_auto_combatState").to_string() != "stunned" && !enemyCanBlocksSkills())
+		if(canUse($skill[Drum Roll], false, true) && !combat_status_check("stunned") && !enemyCanBlocksSkills())
 		{
-			attackMajor = useSkill($skill[Drum Roll], false);
-			attackMinor = useSkill($skill[Drum Roll], false);
+			attackMajor = useSkill($skill[Drum Roll], true);
+			attackMinor = useSkill($skill[Drum Roll], true);
 			costMajor = mp_cost($skill[Drum Roll]);
 			costMinor = mp_cost($skill[Drum Roll]);
 		}

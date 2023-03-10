@@ -108,49 +108,9 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=17", true);
 					}
-					if(!have_skill($skill[Ball Throw])) //Deal your Mus in Phys Dmg
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=13", true);
-					}
-					if(!have_skill($skill[Anatomy Expertise])) //Damaging skills have chance to double dmg
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=5", true);
-					}
-					if(!have_skill($skill[Overconfidence])) //+3 Mus Stats per Fight
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=4", true);
-					}
-					if(!have_skill($skill[Blasted Glutes])) //max hp +50%
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=2", true);
-					}
-					if(!have_skill($skill[Taut Hamstrings])) //Passive +50% Initiative
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=7", true);
-					}
-					if(!have_skill($skill[Head in the Game])) //+50% chance of Crit
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=9", true);
-					}
 					if(!have_skill($skill[Ripped Triceps])) //Damaging skills deal 25% more dmg
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=8", true);
-					}
-					if(!have_skill($skill[Matter Over Mind])) //+25% Max MP
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=11", true);
-					}
-					if(!have_skill($skill[Ribald Memories])) //passive sleaze res and sleaze dmg
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=1", true);
-					}
-					if(!have_skill($skill[Stretch])) //Stretched (10 advs, +75% Initiative)
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=12", true);
-					}
-					if(!have_skill($skill[Tape Up])) //Taped Up (10 advs, +100% Max HP, +100 DA, Regen 8-10 HP)
-					{
-						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=20", true);
 					}
 					skillPoints -= 1;
 				}
@@ -298,9 +258,9 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=14", true);
 					}
-					if(!have_skill($skill[Parmesan Missile])) //Deal your Mys in Stench, Hot, or Phys Dmg
+					if(!have_skill($skill[Mind Melt])) //Deal your Mys in hot damage and stun enemy
 					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=13", true);
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=16", true);
 					}
 					if(!have_skill($skill[Crack Knuckles])) //Deal Mus in phys Dmg and weaken enemy
 					{
@@ -314,49 +274,9 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=8", true);
 					}
-					if(!have_skill($skill[Wisdom of Jarlsberg])) //+3 Mys stats per fight
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=7", true);
-					}
-					if(!have_skill($skill[Subcutaneous Gouda])) //passive DA +75, DR +5
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=2", true);
-					}
-					if(!have_skill($skill[Limberger Limberness])) //Passive +75% Initiative
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=4", true);
-					}
 					if(!have_skill($skill[Gorgonzola\'s Guile])) //+25% Item Drops
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=9", true);
-					}
-					if(!have_skill($skill[Medical Manchego])) //passive +20% max HP, regen 3-5 HP per adv
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=10", true);
-					}
-					if(!have_skill($skill[Swiss Cunning])) //-3mp to use skills
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=5", true);
-					}
-					if(!have_skill($skill[Mind Over Muenster])) //max mp +30%, regen 3-4 mp per adv
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=1", true);
-					}
-					if(!have_skill($skill[Mind Melt])) //Deal your Mys in hot damage and stun enemy
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=16", true);
-					}
-					if(!have_skill($skill[Reality Shift])) //Shifted Reality (10 advs, +3 prismatic res)
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=18", true);
-					}
-					if(!have_skill($skill[Cheddarmor])) //Cheddarmored (10 advs, +10 max HP, +50 DA, +3 DR)
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=12", true);
-					}
-					if(!have_skill($skill[Queso Fustulento])) //Queso Fustulento (10 advs, Stench dmg each round)
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=20", true);
 					}
 					skillPoints -= 1;
 				}
@@ -488,9 +408,17 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=6", true);
 					}
+					if(!have_skill($skill[Drum Roll])) //Stun enemy for a few rounds
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=16", true);
+					}
 					if(!have_skill($skill[C Sharp Eyes])) //+50% item drop, +50% meat drop
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=5", true);
+					}
+					if(!have_skill($skill[Sax of Violence])) //Deal Mus in Sleaze dmg
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=17", true);
 					}
 					if(!have_skill($skill[Fashion Sense])) //Mox +20
 					{
@@ -508,10 +436,6 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=15", true);
 					}
-					if(!have_skill($skill[Sax of Violence])) //Deal Mus in Sleaze dmg
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=17", true);
-					}
 					if(!have_skill($skill[Grit Teeth])) //In combat 20 HP heal
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=19", true);
@@ -519,50 +443,6 @@ boolean aosol_buySkills()
 					if(!have_skill($skill[Perfect Embrouchre])) //Musical skills deal 33% more damage
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=8", true);
-					}
-					if(!have_skill($skill[Virtuosity])) //+3 Moxie Stats per fight
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=10", true);
-					}
-					if(!have_skill($skill[Thick Calluses])) //DA +50, DR +3
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=1", true);
-					}
-					if(!have_skill($skill[Impeccable Timing])) //passive +100% combat initiative
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=2", true);
-					}
-					if(!have_skill($skill[Improv Muscles])) //+25% Max HP, +25% Initiatve
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=9", true);
-					}
-					if(!have_skill($skill[Rhythm In Your Blood])) //+20% Max HP
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=11", true);
-					}
-					if(!have_skill($skill[Rhythmic Precision])) //-3 MP to use skills
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=7", true);
-					}
-					if(!have_skill($skill[Jazz Hands])) //Regen 4-5 mp per adv
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=4", true);
-					}
-					if(!have_skill($skill[Drum Roll]) && my_level()>=6 && my_meat()>600) //Stun enemy for a few rounds
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=16", true);
-					}
-					if(!have_skill($skill[Tricky Timpani])) //Tricky Timpani (10 advs, +5 prismatic dmg)
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=18", true);
-					}
-					if(!have_skill($skill[Call For Backup])) //Reliable Backup (10 advs, +10 Fam Weight, Familiar acts more often)
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=12", true);
-					}
-					if(!have_skill($skill[Soothing Flute])) //Soothing Flute (10 advs, +5 fam weight, regen 8-10 hp per adv)
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=20", true);
 					}
 					skillPoints -= 1;
 				}
