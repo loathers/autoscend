@@ -579,3 +579,11 @@ boolean auto_cheeseWizardAcquireHP(int goal)
 	}
 	return goal >= my_hp();
 }
+boolean auto_jazzAgentAcquireHP(int goal)
+{
+	while(my_hp() < goal)
+	{
+		break;
+	}
+	return goal >= my_hp();
+}

@@ -364,15 +364,15 @@ skill getStunner(monster enemy)
 	case $class[Pig Skinner]:
 	case $class[Cheese Wizard]:
 	case $class[Jazz Agent]:
-		if(canUse($skill[Noogie]) && expected_damage() > 0 && !enemyCanBlocksSkills())
+		if(canUse($skill[Noogie]))
 		{
 			return $skill[Noogie];
 		}
-		if(canUse($skill[Gather Cheese-Chi]) && expected_damage() > 0 && !enemyCanBlocksSkills() && my_hp() <= my_maxhp() - 30)
+		if(canUse($skill[Gather Cheese-Chi]) && my_hp() <= my_maxhp() - 30)
 		{
 			return $skill[Gather Cheese-Chi];
 		}
-		if(canUse($skill[Drum Roll]) && !enemyCanBlocksSkills())
+		if(canUse($skill[Drum Roll], true))
 		{
 			return $skill[Drum Roll];
 		}

@@ -569,6 +569,7 @@ void aosol_unCurse();
 boolean aosol_buySkills();
 boolean auto_pigSkinnerAcquireHP(int goal);
 boolean auto_cheeseWizardAcquireHP(int goal);
+boolean auto_jazzAgentAcquireHP(int goal);
 
 ########################################################################################################
 //Defined in autoscend/paths/bees_hate_you.ash

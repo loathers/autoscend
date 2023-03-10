@@ -745,7 +745,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Knife In The Darkness]);
 			costMinor = mp_cost($skill[Knife In The Darkness]);
 		}
-		if(canUse($skill[Grit Teeth], false, true) && my_hp() < my_maxhp()-21 && combat_status_check("stunned"))
+		if(canUse($skill[Grit Teeth], false, true) && my_hp() < my_maxhp() && combat_status_check("stunned") && round < 5)
 		{
 			attackMajor = useSkill($skill[Grit Teeth], true);
 			attackMinor = useSkill($skill[Grit Teeth], true);
