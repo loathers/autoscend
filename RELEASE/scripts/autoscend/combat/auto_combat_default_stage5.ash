@@ -752,13 +752,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Grit Teeth]);
 			costMinor = mp_cost($skill[Grit Teeth]);
 		}
-		if(canUse($skill[Drum Roll], false, true) && !combat_status_check("stunned") && !enemyCanBlocksSkills())
-		{
-			attackMajor = useSkill($skill[Drum Roll], true);
-			attackMinor = useSkill($skill[Drum Roll], true);
-			costMajor = mp_cost($skill[Drum Roll]);
-			costMinor = mp_cost($skill[Drum Roll]);
-		}
 		break;
 
 	}
