@@ -1720,7 +1720,7 @@ boolean L13_towerNSFinal()
 		abort("Freeing the king will lose your extra stomach space. Enjoy the rest of your video game.");
 	}
 
-	if($classes[Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class())
+	if($classes[Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class() && (0 < item_amount($item[Thwaitgold anti-moth statuette])))
 	{
 		visit_url("place.php?whichplace=nstower&action=ns_11_prism");
 		return true;
