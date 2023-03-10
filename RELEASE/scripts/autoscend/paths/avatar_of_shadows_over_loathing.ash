@@ -9,6 +9,7 @@ boolean aosol_initializeSettings()
 	{
 		set_property("auto_aosolLastSkill", 0);
 		set_property("auto_wandOfNagamar", false);
+		set_property("auto_aosol_dontUnCurse", true);
 	}
 	return false;
 }
