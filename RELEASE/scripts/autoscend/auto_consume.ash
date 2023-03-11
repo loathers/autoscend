@@ -866,18 +866,13 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	}
 
 	cli_execute("refresh inv");
-
-	if ((item_amount($item[unremarkable duffel bag]) > 0) && (pulls_remaining() != -1))
+	
+	foreach it in $items[unremarkable duffel bag,van key,Knob Goblin lunchbox,gold Boozehounds Anonymous token,booze bindle]
 	{
-		use(item_amount($item[unremarkable duffel bag]), $item[unremarkable duffel bag]);
-	}
-	if ((item_amount($item[van key]) > 0) && (pulls_remaining() != -1))
-	{
-		use(item_amount($item[van key]), $item[van key]);
-	}
-	if ((item_amount($item[Knob Goblin lunchbox]) > 0) && (pulls_remaining() != -1))
-	{
-		use(item_amount($item[Knob Goblin lunchbox]), $item[Knob Goblin lunchbox]);
+		if ((item_amount(it) > 0) && (pulls_remaining() != -1))
+		{
+			use(item_amount(it), it);
+		}
 	}
 
 	// type is "eat" or "drink"
