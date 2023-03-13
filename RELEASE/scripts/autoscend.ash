@@ -1,4 +1,4 @@
-since r27263;	// AoSoL council quests text
+since r27267;	// add support for certain aosol skills
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
