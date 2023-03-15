@@ -756,7 +756,7 @@ void auto_checkTrainSet()
 		}
 	}
 	int eight = 13; //monster level
-	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != ""){
+	if((monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != "") || get_property("auto_MLSafetyLimit").to_int() == -1){
 		eight = 9; //cold res, stench dmg
 	}
 	int turnsSinceTSConfigured = min(trainsetPosition - lastTrainsetConfiguration, 40);
