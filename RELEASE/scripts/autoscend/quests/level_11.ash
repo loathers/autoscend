@@ -1965,6 +1965,7 @@ boolean L11_hiddenCity()
 		auto_log_info("Fighting the out-of-work spirit", "blue");
 		acquireHP();
 		set_property("auto_nextEncounter","Protector Spectre");
+		handleFamiliar("boss");
 		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
 		if (internalQuestStatus("questL11MacGuffin") > 2) {
 			// Actually Ed finishes this quest when all 3 parts of the staff are returned
