@@ -35,7 +35,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	
 	//iotm skill that duplicates dropped items
 	//prioritize grey goose over xo and extinguisher because the drones last multiple fights until they are consumed 
-	if(canUse($skill[Emit Matter Duplicating Drones]) && my_familiar() == $familar[Grey Goose])
+	if(canUse($skill[Emit Matter Duplicating Drones]) && my_familiar() == $familiar[Grey Goose])
 	{
 		boolean forceDrop = false;
 		//dupe Smut Orc Keepsake
@@ -43,13 +43,13 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			forceDrop = true;
 		}
 		//dupe some hedge trimmers if we're lucky
-		if(($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy) && auto_autumnatonQuestingIn() != $location[Twin Peak] && hedgeTrimmersNeeded() > 1)
+		if(($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy) && auto_autumnatonQuestingIn() != $location[Twin Peak] && hedgeTrimmersNeeded() > 1){
 			forceDrop = true;
-		
+		}
 		//dupe tomb ratchets if we're lucky
-		if(($monsters[Tomb rat, Tomb rat king] contains enemy) and (item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet]) < 10))
+		if(($monsters[Tomb rat, Tomb rat king] contains enemy) and (item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet]) < 10)){
 			forceDrop = true;
-
+		}
 		if(forceDrop)
 		{
 			handleTracker(enemy, $skill[Emit Matter Duplicating Drones], "auto_otherstuff");
