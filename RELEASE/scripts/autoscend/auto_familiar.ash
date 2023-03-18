@@ -466,7 +466,7 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// If we have Grey Goose and we're farming bridge parts and Smut Orc Pervert is coming up, we should use the Goose to dupe the Keepsake box
-	if ($location[The Smut Orc Logging Camp] == place && internalQuestStatus("questL09Topping") < 1 && is_integer(($location[The Smut Orc Logging Camp].turns_spent - 1)/20) and auto_haveGreyGoose())
+	if ($location[The Smut Orc Logging Camp] == place && internalQuestStatus("questL09Topping") < 1 && is_integer(($location[The Smut Orc Logging Camp].turns_spent - 1)/20) && auto_haveGreyGoose())
 	{
 		famChoice = $familiar[Grey Goose];
 	}
