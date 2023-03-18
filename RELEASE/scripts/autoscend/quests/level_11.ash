@@ -3134,6 +3134,11 @@ boolean L11_unlockEd()
 		auto_log_info("Attemping to use Map the Monsters to olfact a Tomb Rat.");
 	}
 	
+	if(auto_haveGreyGoose())
+	{
+		handleFamiliar($familiar[Grey Goose]);
+	}
+	
 	return autoAdv(1, $location[The Middle Chamber]);
 }
 

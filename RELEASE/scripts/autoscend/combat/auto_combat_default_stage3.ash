@@ -33,6 +33,30 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		return useSkill($skill[Tunnel Downwards]);
 	}
 	
+	//iotm skill that duplicates dropped items
+	//prioritize grey goose over xo and extinguisher because the drones last multiple fights until they are consumed 
+	if(canUse($skill[Emit Matter Duplicating Drones]) && my_familiar() == $familar[Grey Goose])
+	{
+		boolean forceDrop = false;
+		//dupe Smut Orc Keepsake
+		if(is_integer(($location[The Smut Orc Logging Camp].turns_spent - 1)/20) && auto_autumnatonQuestingIn() != $location[The Smut Orc Logging Camp]){
+			forceDrop = true;
+		}
+		//dupe some hedge trimmers if we're lucky
+		if(($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy) && auto_autumnatonQuestingIn() != $location[Twin Peak] && hedgeTrimmersNeeded() > 1)
+			forceDrop = true;
+		
+		//dupe tomb ratchets if we're lucky
+		if(($monsters[Tomb rat, Tomb rat king] contains enemy) and (item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet]) < 10))
+			forceDrop = true;
+
+		if(forceDrop)
+		{
+			handleTracker(enemy, $skill[Emit Matter Duplicating Drones], "auto_otherstuff");
+			return useSkill($skill[Emit Matter Duplicating Drones]);			
+		}
+	}
+	
 	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
 	if(canUse($skill[Hugs and Kisses!]) && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
 	{

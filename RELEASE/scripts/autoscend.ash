@@ -196,6 +196,7 @@ void initializeSettings() {
 	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
 	set_property("auto_L8_extremeInstead", false);
+	set_property("auto_L9_smutOrcPervert", false);
 	set_property("auto_haveSourceTerminal", false);
 	set_property("auto_hedge", "fast");
 	set_property("auto_hippyInstead", false);
