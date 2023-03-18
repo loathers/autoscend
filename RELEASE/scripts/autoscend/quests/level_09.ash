@@ -836,6 +836,9 @@ boolean L9_twinPeak()
 			return false;
 		}
 	}
+	if(auto_haveGreyGoose()){
+		handleFamiliar($familiar[Grey Goose]);
+	}
 	return autoAdv($location[Twin Peak]);
 }
 
