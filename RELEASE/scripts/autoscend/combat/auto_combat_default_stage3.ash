@@ -39,17 +39,30 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	{
 		boolean forceDrop = false;
 		//dupe Smut Orc Keepsake
-		if(is_integer(($location[The Smut Orc Logging Camp].turns_spent - 1)/20) && auto_autumnatonQuestingIn() != $location[The Smut Orc Logging Camp] && my_location() == $location[The Smut Orc Logging Camp]){
+		if(($monsters[Smut orc pervert] contains enemy) && auto_autumnatonQuestingIn() != $location[The Smut Orc Logging Camp] && my_location() == $location[The Smut Orc Logging Camp]){
 			forceDrop = true;
 		}
+		
 		//dupe some hedge trimmers if we're lucky
-		if(($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy) && auto_autumnatonQuestingIn() != $location[Twin Peak] && hedgeTrimmersNeeded() > 1){
+		if((auto_fireExtinguisherCharges() <= 30 || !canUse($skill[Fire Extinguisher: Polar Vortex], false)) && ($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy) && auto_autumnatonQuestingIn() != $location[Twin Peak] && hedgeTrimmersNeeded() > 1){
 			forceDrop = true;
 		}
+
 		//dupe tomb ratchets if we're lucky
 		if(($monsters[Tomb rat, Tomb rat king] contains enemy) && (item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet]) < 10)){
 			forceDrop = true;
 		}
+
+		//dupe some stars/lines
+		if(my_location() == $location[The Hole in the Sky] && needStarKey() && (item_amount($item[star]) < 8 && item_amount($item[line]) < 7)){
+			forceDrop = true;
+		}
+		
+		//dupe some bowling balls if we can't use an Industrial Fire Extinguisher
+		if((auto_fireExtinguisherCharges() <= 30 || !canUse($skill[Fire Extinguisher: Polar Vortex], false)) && (enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 6)){
+			forceDrop = true;
+		}
+
 		if(forceDrop)
 		{
 			handleTracker(enemy, $skill[Emit Matter Duplicating Drones], "auto_otherstuff");
