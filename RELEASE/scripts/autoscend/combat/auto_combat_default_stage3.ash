@@ -47,7 +47,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			forceDrop = true;
 		}
 		//dupe tomb ratchets if we're lucky
-		if(($monsters[Tomb rat, Tomb rat king] contains enemy) and (item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet]) < 10)){
+		if(($monsters[Tomb rat, Tomb rat king] contains enemy) && (item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet]) < 10)){
 			forceDrop = true;
 		}
 		if(forceDrop)
