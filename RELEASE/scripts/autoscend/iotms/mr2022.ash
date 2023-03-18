@@ -145,6 +145,16 @@ boolean auto_fightLocketMonster(monster mon, boolean speculative)
 
 }
 
+boolean auto_haveGreyGoose()
+{
+	if(auto_have_familiar($familiar[Grey Goose]))
+	{
+		return true;
+	}
+	return false;
+}
+
+
 boolean canUseCleaver() {
 	if (possessEquipment($item[June cleaver]) && can_equip($item[June cleaver]) && auto_is_valid($item[June cleaver])) {
 		return true;
