@@ -39,7 +39,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	{
 		boolean forceDrop = false;
 		//dupe Smut Orc Keepsake
-		if(is_integer(($location[The Smut Orc Logging Camp].turns_spent - 1)/20) && auto_autumnatonQuestingIn() != $location[The Smut Orc Logging Camp]){
+		if(is_integer(($location[The Smut Orc Logging Camp].turns_spent - 1)/20) && auto_autumnatonQuestingIn() != $location[The Smut Orc Logging Camp] && my_location() == $location[The Smut Orc Logging Camp]){
 			forceDrop = true;
 		}
 		//dupe some hedge trimmers if we're lucky
