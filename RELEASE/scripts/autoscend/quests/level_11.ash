@@ -815,7 +815,7 @@ boolean L11_blackMarket()
 	if (get_property("auto_getBeehive").to_boolean() && my_adventures() < 3) {
 		return false;
 	}
-	if(item_amount($item[Reassembled Blackbird]) > 0 && auto_haveGreyGoose() && !possessEquipment($item[Blackberry Galoshes] && item_amount($item[Blackberry]) < 3 && !in_darkGyffte())){
+	if(item_amount($item[Reassembled Blackbird]) > 0 && auto_haveGreyGoose() && !possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) < 3 && !in_darkGyffte()){
 		auto_log_info("Bringing the Grey Goose to emit some drones at a blackberry bush.");
 		handleFamiliar($familiar[Grey Goose]);
 	}
