@@ -36,7 +36,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 	{
 		return false;
 	}
-	if(is_boris() || is_jarlsberg || is_pete())
+	if(is_boris() || is_jarlsberg() || is_pete())
 	{
 		return false;
 	}
