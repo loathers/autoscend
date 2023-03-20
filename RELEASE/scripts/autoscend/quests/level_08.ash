@@ -273,10 +273,15 @@ boolean L8_getGoatCheese()
 	{
 		auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
 	}
+	if(auto_haveGreyGoose()){
+		auto_log_info("Bringing the Grey Goose to emit some drones at a Dairy Goat for cheese, Gromit.");
+		handleFamiliar($familiar[Grey Goose]);
+	}
 	if(canSniff($monster[Dairy Goat], $location[The Goatlet]) && auto_mapTheMonsters())
 	{
 		auto_log_info("Attemping to use Map the Monsters to olfact a Dairy Goat.");
 	}
+	
 	boolean retval = autoAdv($location[The Goatlet]);
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 	return retval;
