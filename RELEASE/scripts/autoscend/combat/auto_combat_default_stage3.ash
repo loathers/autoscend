@@ -92,6 +92,16 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		{
 			forceDrop = true;
 		}
+
+		//dupe some blackberries
+		if(enemy == $monster[Blackberry bush] && drones >= 1){
+			forceDrop = true;
+		}
+
+		//dupe some glark cables
+		if(enemy == $monster[Red butler]){
+			forceDrop = true;
+		}
 		
 		//dupe some bowling balls if we can't use an Industrial Fire Extinguisher
 		if(canExtingo = false && (enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 6) && drones)
