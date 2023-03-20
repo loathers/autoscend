@@ -263,6 +263,10 @@ boolean LX_getStarKey()
 			set_property("choiceAdventure1221", 2 + (my_ascensions() % 2));
 		}
 	}
+	if(auto_haveGreyGoose()){
+		auto_log_info("Bringing the Grey Goose to emit some drones at some Constellations.");
+		handleFamiliar($familiar[Grey Goose]);
+	}
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
