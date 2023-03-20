@@ -154,6 +154,10 @@ boolean auto_haveGreyGoose()
 	return false;
 }
 
+int gooseExpectedDrones()
+{
+	return familiar_weight($familiar[Grey Goose]) - 5;
+}
 
 boolean canUseCleaver() {
 	if (possessEquipment($item[June cleaver]) && can_equip($item[June cleaver]) && auto_is_valid($item[June cleaver])) {
@@ -766,7 +770,7 @@ void auto_checkTrainSet()
 		}
 	}
 	int eight = 13; //monster level
-	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != ""){
+	if((monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != "") || get_property("auto_MLSafetyLimit").to_int() == -1){
 		eight = 9; //cold res, stench dmg
 	}
 	int turnsSinceTSConfigured = min(trainsetPosition - lastTrainsetConfiguration, 40);
