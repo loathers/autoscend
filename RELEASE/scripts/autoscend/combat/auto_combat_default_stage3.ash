@@ -38,28 +38,29 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	if(canUse($skill[Emit Matter Duplicating Drones]) && my_familiar() == $familiar[Grey Goose])
 	{
 		boolean forceDrop = false;
+		int drones = gooseExpectedDrones();
 		//dupe Smut Orc Keepsake
 		if(($monsters[Smut orc pervert] contains enemy) && auto_autumnatonQuestingIn() != $location[The Smut Orc Logging Camp] && my_location() == $location[The Smut Orc Logging Camp]){
 			forceDrop = true;
 		}
 		
 		//dupe some hedge trimmers if we're lucky
-		if((auto_fireExtinguisherCharges() <= 30 || !canUse($skill[Fire Extinguisher: Polar Vortex], false)) && ($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy) && auto_autumnatonQuestingIn() != $location[Twin Peak] && hedgeTrimmersNeeded() > 1){
+		if((auto_fireExtinguisherCharges() <= 30 || !canUse($skill[Fire Extinguisher: Polar Vortex], false)) && ($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy) && auto_autumnatonQuestingIn() != $location[Twin Peak] && hedgeTrimmersNeeded() > 1 && drones >= 2){
 			forceDrop = true;
 		}
 
 		//dupe tomb ratchets if we're lucky
-		if(($monsters[Tomb rat, Tomb rat king] contains enemy) && (item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet]) < 10)){
+		if(($monsters[Tomb rat, Tomb rat king] contains enemy) && (item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet]) < 10) && drones >= 3){
 			forceDrop = true;
 		}
 
 		//dupe some stars/lines
-		if(my_location() == $location[The Hole in the Sky] && needStarKey() && (item_amount($item[star]) < 8 && item_amount($item[line]) < 7)){
+		if(my_location() == $location[The Hole in the Sky] && needStarKey() && (item_amount($item[star]) < 8 && item_amount($item[line]) < 7) && drones >= 8){
 			forceDrop = true;
 		}
 		
 		//dupe some bowling balls if we can't use an Industrial Fire Extinguisher
-		if((auto_fireExtinguisherCharges() <= 30 || !canUse($skill[Fire Extinguisher: Polar Vortex], false)) && (enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 6)){
+		if((auto_fireExtinguisherCharges() <= 30 || !canUse($skill[Fire Extinguisher: Polar Vortex], false)) && (enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 6) && drones >= 2){
 			forceDrop = true;
 		}
 
