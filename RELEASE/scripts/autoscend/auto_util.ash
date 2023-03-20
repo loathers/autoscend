@@ -1622,6 +1622,7 @@ int freeCrafts()
 boolean isFreeMonster(monster mon)
 {
 	if ($monsters[Angry Ghost, Annoyed Snake, Government Bureaucrat, Slime Blob, Terrible Mutant] contains mon && get_property("_voteFreeFights").to_int() < 3)
+	{
 		return true;
 	}
 
