@@ -545,6 +545,10 @@ boolean warAdventure()
 
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
+		if(enemies_defeated > 400 && auto_haveGreyGoose()){
+			auto_log_info("Bringing the Grey Goose to emit some drones at a GrOPs hopefully.");
+			handleFamiliar($familiar[Grey Goose]);
+		}
 		if(!autoAdv(1, $location[The Battlefield (Frat Uniform)]))
 		{
 			set_property("hippiesDefeated", get_property("hippiesDefeated").to_int() + 1);

@@ -444,7 +444,11 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// The World's Biggest Jerk can send us here so only use +item if we're farming sonars.
-	if ($location[The Batrat and Ratbat Burrow] == place && internalQuestStatus("questL04Bat") < 3) {
+	if ($location[The Batrat and Ratbat Burrow] == place && internalQuestStatus("questL04Bat") < 3 && auto_haveGreyGoose()) {
+		auto_log_info("Bringing the Grey Goose to emit some drones at a bat to get Sonar.");
+		famChoice = $familiar[Grey Goose];
+	}
+	else if ($location[The Batrat and Ratbat Burrow] == place && internalQuestStatus("questL04Bat") < 3) {
 		famChoice = lookupFamiliarDatafile("item");
 	}
 
@@ -468,6 +472,7 @@ boolean autoChooseFamiliar(location place)
 	// If we have Grey Goose and we're farming bridge parts and Smut Orc Pervert is coming up, we should use the Goose to dupe the Keepsake box
 	if ($location[The Smut Orc Logging Camp] == place && internalQuestStatus("questL09Topping") < 1 && is_integer(($location[The Smut Orc Logging Camp].turns_spent - 1)/20) && auto_haveGreyGoose())
 	{
+		auto_log_info("Bringing the Grey Goose to emit some drones at smut orc pervert to dupe a Box.");
 		famChoice = $familiar[Grey Goose];
 	}
 
