@@ -1644,7 +1644,7 @@ boolean isFreeMonster(monster mon)
 		return true;
 	}
 
-	if ($monsters[void guy, void slab, void spider] contains mon && get_property("_voidFreeFights").to_int() < 5 && equipped_amount($item[cursed magnifying glass]) > 0)
+	if ($monsters[void guy, void slab, void spider] contains mon && get_property("_voidFreeFights").to_int() < 5)
 	{
 		return true;
 	}
