@@ -71,7 +71,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 		
 		//dupe some stars/lines
-		if(my_location() == $location[The Hole in the Sky] && item_drops(enemy) contains $item[star] && item_drops(enemy) contains $item[hole] && needStarKey() && (item_amount($item[star]) < 8 && item_amount($item[line]) < 7) && drones >= 8){
+		if(my_location() == $location[The Hole in the Sky] && item_drops(enemy) contains $item[star] && item_drops(enemy) contains $item[line] && needStarKey() && (item_amount($item[star]) < 8 && item_amount($item[line]) < 7) && drones >= 8){
 			forceDrop = true;
 		}
 
