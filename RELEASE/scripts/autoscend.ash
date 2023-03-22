@@ -1,4 +1,4 @@
-since r27241;	// equipped_amount(item, boolean)
+since r27245;	// Add FREE attribute to some inherently free encounters
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
