@@ -1621,127 +1621,49 @@ int freeCrafts()
 
 boolean isFreeMonster(monster mon)
 {
-	boolean[monster] classRevamp = $monsters[Box of Crafty Dinner, depressing french accordionist, Frozen Bag of Tortellini, lively cajun accordionist, Possessed Can of Creepy Pasta, Possessed Can of Linguine-Os, Possessed Jar of Alphredo&trade;, quirky indie-rock accordionist];
-
-	boolean[monster] bricko = $monsters[BRICKO airship, BRICKO bat, BRICKO cathedral, BRICKO elephant, BRICKO gargantuchicken, BRICKO octopus, BRICKO ooze, BRICKO oyster, BRICKO python, BRICKO turtle, BRICKO vacuum cleaner];
-
-	boolean[monster] gothKid = $monsters[Black Crayon Beast, Black Crayon Beetle, Black Crayon Constellation, Black Crayon Golem, Black Crayon Demon, Black Crayon Man, Black Crayon Elemental, Black Crayon Crimbo Elf, Black Crayon Fish, Black Crayon Goblin, Black Crayon Hippy, Black Crayon Hobo, Black Crayon Shambling Monstrosity, Black Crayon Manloid, Black Crayon Mer-kin, Black Crayon Frat Orc, Black Crayon Penguin, Black Crayon Pirate, Black Crayon Flower, Black Crayon Slime, Black Crayon Undead Thing, Black Crayon Spiraling Shape];
-
-	boolean[monster] hipster = $monsters[angry bassist, blue-haired girl, evil ex-girlfriend, peeved roommate, random scenester];
-
-	boolean[monster] infernalSeals = $monsters[Broodling Seal, Centurion of Sparky, Hermetic Seal, Spawn of Wally, Heat Seal, Navy Seal, Servant of Grodstank, Shadow of Black Bubbles, Watertight Seal, Wet Seal];
-
-	boolean[monster] witchess = $monsters[Witchess Bishop, Witchess King, Witchess Knight, Witchess Ox, Witchess Pawn, Witchess Queen, Witchess Rook, Witchess Witch];
-
-	boolean[monster] halloween = $monsters[kid who is too old to be Trick-or-Treating, suburban security civilian, vandal kid];
-
-	boolean[monster] lovecrate = $monsters[LOV Enforcer, LOV Engineer, LOV Equivocator];
-
-	boolean[monster] neverland = $monsters[biker, burnout, jock, party girl, "plain" girl];
-
-	boolean[monster] voting = $monsters[Angry Ghost, Annoyed Snake, Government Bureaucrat, Slime Blob, Terrible Mutant];
-
-	boolean[monster] other = $monsters[giant rubber spider, God Lobster, lynyrd, time-spinner prank, Travoltron, sausage goblin];
-
-	//boolean[monster] protonGhosts: See isProtonGhost, we want to detect these separately as well so we\'ll functionalize it here.
-
-	if(classRevamp contains mon)
-	{
-		return true;
-	}
-	if(bricko contains mon)
-	{
-		return true;
-	}
-	if(gothKid contains mon)
-	{
-		return true;
-	}
-	if(hipster contains mon)
-	{
-		return true;
-	}
-	if(infernalSeals contains mon)
-	{
-		return true;
-	}
-	if(witchess contains mon)
-	{
-		return true;
-	}
-	if(halloween contains mon)
-	{
-		return true;
-	}
-	if(lovecrate contains mon)
-	{
-		return true;
-	}
-	if(other contains mon)
-	{
-		return true;
-	}
-	if(isProtonGhost(mon))
+	if ($monsters[Angry Ghost, Annoyed Snake, Government Bureaucrat, Slime Blob, Terrible Mutant] contains mon && get_property("_voteFreeFights").to_int() < 3)
 	{
 		return true;
 	}
 
-	if(voting contains mon)
+	if ($monsters[biker, burnout, jock, party girl, "plain" girl] contains mon && get_property("_neverendingPartyFreeTurns").to_int() < 10)
 	{
-		if(get_property("_voteFreeFights").to_int() < 3)
+		return true;
+	}
+
+	if ($monsters[Perceiver of Sensations, Performer of Actions, Thinker of Thoughts] contains mon)
+	{
+		if (my_familiar() == $familiar[Machine Elf] && get_property("_machineTunnelsAdv").to_int() < 5 && my_location() == $location[The Deep Machine Tunnels])
 		{
 			return true;
 		}
 	}
 
-	if(neverland contains mon)
-	{
-		if(get_property("_neverendingPartyFreeTurns").to_int() < 10)
-		{
-			return true;
-		}
-	}
-
-	if($monsters[Perceiver of Sensations, Performer of Actions, Thinker of Thoughts] contains mon)
-	{
-		if((my_familiar() == $familiar[Machine Elf]) && (get_property("_machineTunnelsAdv").to_int() < 5) && (my_location() == $location[The Deep Machine Tunnels]))
-		{
-			return true;
-		}
-	}
-
-	if($monster[X-32-F Combat Training Snowman] == mon)
-	{
-		if(get_property("_snojoFreeFights").to_int() < 10)
-		{
-			return true;
-		}
-	}
-
-	if($monsters[void guy, void slab, void spider] contains mon && get_property("_voidFreeFights").to_int() < 5 && equipped_amount($item[cursed magnifying glass]) > 0)
+	if ($monster[X-32-F Combat Training Snowman] == mon && get_property("_snojoFreeFights").to_int() < 10)
 	{
 		return true;
 	}
 
-	if(($monster[Eldritch Tentacle] == mon) && (have_effect($effect[Eldritch Attunement]) > 0))
+	if ($monsters[void guy, void slab, void spider] contains mon && get_property("_voidFreeFights").to_int() < 5)
 	{
 		return true;
 	}
 
-	if($monster[Eldritch Tentacle] == mon)
+	if ($monster[Drunk Pygmy] == mon && item_amount($item[Bowl of Scorpions]) > 0)
 	{
 		return true;
 	}
 
-	if(($monster[Drunk Pygmy] == mon) && (item_amount($item[Bowl of Scorpions]) > 0))
+	if (mon.random_modifiers["optimal"])
 	{
 		return true;
 	}
 
-	if(mon.random_modifiers["optimal"])
+	if (mon.attributes.to_lower_case().contains_text("free"))
 	{
 		return true;
 	}
+
 	return false;
 }
 
