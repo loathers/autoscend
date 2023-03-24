@@ -1,4 +1,4 @@
-since r27267;	// add support for certain aosol skills
+since r27299;	// feat: Perfect Embouchure spelling corrected
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
