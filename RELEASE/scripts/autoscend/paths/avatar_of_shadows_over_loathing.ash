@@ -441,7 +441,7 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=19", true);
 					}
-					if(!have_skill($skill[Perfect Embrouchre])) //Musical skills deal 33% more damage
+					if(!have_skill($skill[Perfect Embouchre])) //Musical skills deal 33% more damage
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=8", true);
 					}
@@ -519,7 +519,7 @@ boolean aosol_buySkills()
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=18", true);
 				set_property("auto_aosolLastSkill", 7);
 			}
-			if(!have_skill($skill[Perfect Embrouchre]) && my_level()>=8 && my_meat()>800 + meatReserve()) //Musical skills deal 33% more damage
+			if(!have_skill($skill[Perfect Embouchre]) && my_level()>=8 && my_meat()>800 + meatReserve()) //Musical skills deal 33% more damage
 			{
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=8", true);
 				set_property("auto_aosolLastSkill", 8);
