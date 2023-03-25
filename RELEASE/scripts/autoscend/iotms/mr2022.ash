@@ -302,6 +302,12 @@ void utilizeStillsuit() {
 		return;
 	}
 
+	//if there is a tiny stillsuit in inventory then unless there was a tracking error it is not worn by any familiar
+	if(!pathAllowsChangingFamiliar())
+	{
+		return;
+	}
+
 	//make sure all this nice familiar sweat doesn't go uncollected when current familiar is wearing something else
 	if(familiar_equipped_equipment(my_familiar()) == $item[tiny stillsuit])
 	{
