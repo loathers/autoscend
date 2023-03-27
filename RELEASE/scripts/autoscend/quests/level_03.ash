@@ -91,8 +91,8 @@ boolean auto_tavern()
 
 	if(!maximized)
 	{
-		// Tails are a better time saving investment
-		simMaximizeWith("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(150) + "max");
+		// Tails are a better time saving investment. Add -combat to ensure sim and real maximizer results match
+		simMaximizeWith("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(150) + "max,-200combat 25max");
 		maximized = true;
 	}
 	int [string] eleChoiceCombos =

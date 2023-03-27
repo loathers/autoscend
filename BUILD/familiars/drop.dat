@@ -60,3 +60,5 @@ Blavious Kloop	prop:_kloopDrops<5
 Green Pixie	prop:_absintheDrops<5
 # Hot ashes can make a potion that gives +15 ML for 15 adv. drop limit 5/day
 Galloping Grill	prop:_hotAshesDrops<5
+# If all else fails, keep generating CBB ingredients
+Cookbookbat
