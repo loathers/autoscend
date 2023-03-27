@@ -89,7 +89,7 @@ void auto_ghost_prep(location place)
 	//a few iconic spells per avatar is ok. no need to be too exhaustive
 	foreach sk in $skills[
 		Saucestorm, saucegeyser,	//base classes
-		Fist of the Mummy,		//actually ed the undying
+		Fist of the Mummy,		    //actually ed the undying
 		Boil,						//avatar of jarlsberg
 		Bilious Burst,				//zombie slayer
 		Heroic Belch				//avatar of boris
