@@ -2,25 +2,20 @@
 
 boolean auto_buySkills()  // This handles skill acquisition for general paths
 {
-	// See if we have any shirts worth wearing
-	boolean have_useful_shirt = false;
-	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac, jurassic parka]
-	{
-		have_useful_shirt = have_useful_shirt || (item_amount(it) != 0 && is_unrestricted(it));
-	}
+	
 	//we need 5000 meat for the skill. and want to save an additional 1000 meat above meat reserve since torso awareness is somewhat low priority
 	if((my_meat() >= meatReserve() + 6000)
 	   && gnomads_available()
-	   && (!have_skill($skill[Torso Awareness]))
-	   && have_useful_shirt
+	   && (!hasTorso())
+	   && hasUsefulShirt()
 	   && !in_aosol())
 	{
 		visit_url("gnomes.php?action=trainskill&whichskill=12");
 	}
 	else if((my_meat() >= meatReserve())  //we want Torso ASAP if we have a Parka and we're in AoSOL so we reserve meat in the meatReserve function only in AoSOL
 	   && gnomads_available()
-	   && (!have_skill($skill[Torso Awareness]))
-	   && auto_hasParka()
+	   && (!hasTorso())
+	   && hasUsefulShirt() 
 	   && in_aosol())
 	{
 		visit_url("gnomes.php?action=trainskill&whichskill=12");

@@ -92,7 +92,8 @@ void auto_ghost_prep(location place)
 		Storm of the Scarab,		//actually ed the undying
 		Boil,						//avatar of jarlsberg
 		Bilious Burst,				//zombie slayer
-		Heroic Belch				//avatar of boris
+		Heroic Belch,				//avatar of boris
+		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
 		]
 	{
 		if(auto_have_skill(sk))
@@ -220,7 +221,6 @@ boolean auto_pre_adventure()
 		uneffect($effect[Scarysauce]);
 		if(in_aosol()){
 			uneffect($effect[Queso Fustulento]);
-			uneffect($effect[Tricky Timpani]);
 		}
 		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}

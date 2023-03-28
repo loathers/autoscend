@@ -651,8 +651,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		break;
 
 	case $class[Pig Skinner]:
-	case $class[Cheese Wizard]:
-	case $class[Jazz Agent]:
 		attackMinor = "attack with weapon";
 		if(canUse($skill[Ball Throw], true) && (enemy.physical_resistance < 80))
 		{
@@ -675,13 +673,17 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Stop Hitting Yourself]);
 			costMinor = mp_cost($skill[Stop Hitting Yourself]);
 		}
-		if((my_hp() / 0.7 < my_maxhp()) && canUse($skill[Second Wind], true))
+		if((my_hp() / 0.5 < my_maxhp()) && canUse($skill[Second Wind], true))
 		{
 			attackMajor = useSkill($skill[Second Wind], true);
 			attackMinor = useSkill($skill[Second Wind], true);
 			costMajor = mp_cost($skill[Second Wind]);
 			costMinor = mp_cost($skill[Second Wind]);
 		}
+		break;
+
+	case $class[Cheese Wizard]:
+		attackMinor = "attack with weapon";
 		if(canUse($skill[Parmesan Missile]))
 		{
 			attackMajor = useSkill($skill[Parmesan Missile], false);
@@ -717,6 +719,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Emmental Elemental]);
 			costMinor = mp_cost($skill[Emmental Elemental]);
 		}
+		break;
+		
+	case $class[Jazz Agent]:
+		attackMinor = "attack with weapon";
 		if(canUse($skill[Orchestra Strike], false) && (enemy.physical_resistance < 80))
 		{
 			attackMajor = useSkill($skill[Orchestra Strike], false);

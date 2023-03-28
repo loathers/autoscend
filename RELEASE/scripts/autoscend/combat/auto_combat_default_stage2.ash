@@ -248,7 +248,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		boolean wantFreeKillNowEspecially;
 		
 		boolean waitForDesert = false;	//free kills can save turns of Ultrahydrated
-		if(get_property("desertExploration").to_int() < 100 && !isActuallyEd() && !in_aosol())	//need to explore desert
+		if(get_property("desertExploration").to_int() < 100 && !isActuallyEd())	//need to explore desert
 		{
 			int currentDesertProgressPerTurn = 1 + 
 			(get_property("bondDesert").to_boolean() ? 2 : 0) +

@@ -362,20 +362,23 @@ skill getStunner(monster enemy)
 		}
 		break;
 	case $class[Pig Skinner]:
-	case $class[Cheese Wizard]:
-	case $class[Jazz Agent]:
 		if(canUse($skill[Noogie]))
 		{
 			return $skill[Noogie];
 		}
-		if(canUse($skill[Gather Cheese-Chi]) && my_hp() <= my_maxhp() - 30)
+		break;
+	case $class[Cheese Wizard]:
+		if(canUse($skill[Gather Cheese-Chi]))
 		{
 			return $skill[Gather Cheese-Chi];
 		}
+		break;
+	case $class[Jazz Agent]:
 		if(canUse($skill[Drum Roll], true))
 		{
 			return $skill[Drum Roll];
 		}
+		break;
 	}
 	
 	// Decreases in stun duration the more it's used

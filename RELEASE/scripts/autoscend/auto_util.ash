@@ -4398,6 +4398,23 @@ int poolSkillPracticeGains()
 	return count;
 }
 
+boolean hasUsefulShirt()
+{
+	int amtUsefulShirts = 0;
+	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac, jurassic parka]
+	{
+		if(item_amount(it) != 0 && is_unrestricted(it)) amtUsefulShirts += 1;
+	}
+	if(amtUsefulShirts > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 int meatReserve()
 {
 	//the amount of meat we want to reserve for quest usage when performing a restore
@@ -4410,13 +4427,13 @@ int meatReserve()
 	{
 		reserve_extra += npc_price($item[pump grease]);
 	}
-	if(in_aosol() && !have_skill($skill[Torso Awareness]) && !gnomads_available() && auto_hasParka() && inGnomeSign())
+	if(!hasTorso() && hasUsefulShirt() && !gnomads_available() && inGnomeSign())
 	{
-		reserve_extra +=5000 * npcStoreDiscountMulti(); //In AoSOL, going to need 5k anyway so might as well start saving early. Worst case scenario we make a meatcar
+		reserve_extra +=5000 * npcStoreDiscountMulti(); //Going to need 5k anyway if we need torso so might as well start saving early. Worst case scenario we make a meatcar
 	}
-	if(in_aosol() && !have_skill($skill[Torso Awareness]) && gnomads_available() && auto_hasParka())
+	if(!hasTorso() && gnomads_available() && hasUsefulShirt())
 	{
-		reserve_extra += 5000; //we want Torso ASAP if we have a Parka
+		reserve_extra += 5000; //we want Torso ASAP if we have a useful shirt
 	}
 	
 	if(my_level() < 10)		//meat income is pretty low and the quests that need the reserve far away. Use restores freely

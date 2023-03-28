@@ -1757,4 +1757,5 @@ boolean hasTTBlessing();
 void effectAblativeArmor(boolean passive_dmg_allowed);
 int currentPoolSkill();
 int poolSkillPracticeGains();
+boolean hasUsefulShirt();
 int meatReserve();

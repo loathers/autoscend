@@ -33,7 +33,7 @@ void aosol_unCurse()
 	}
 	if(item_amount($item[Cursed Stats]) > 0) //+5 stats but limits stats to NIIIIICCCCEE (69)
 	{
-		visit_url("inv_use.php?pwd&which=2&whichitem=11153");
+		visit_url("inv_use.php?pwd&which=2&whichitem=11153"); //+1 stat per fight
 		cli_execute("refresh inventory");
 	}
 	if(item_amount($item[Cursed Machete]) > 0) //+50% meat, but cut yourself every turn
@@ -409,6 +409,10 @@ boolean aosol_buySkills()
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=6", true);
 					}
+					if(!have_skill($skill[Sax of Violence])) //Deal Mus in Sleaze dmg
+					{
+						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=17", true);
+					}
 					if(!have_skill($skill[Drum Roll])) //Stun enemy for a few rounds
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=16", true);
@@ -416,10 +420,6 @@ boolean aosol_buySkills()
 					if(!have_skill($skill[C Sharp Eyes])) //+50% item drop, +50% meat drop
 					{
 						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=5", true);
-					}
-					if(!have_skill($skill[Sax of Violence])) //Deal Mus in Sleaze dmg
-					{
-						page = visit_url("choice.php?pwd&whichchoice=1495&option=1&use=points&whichsk=17", true);
 					}
 					if(!have_skill($skill[Fashion Sense])) //Mox +20
 					{
