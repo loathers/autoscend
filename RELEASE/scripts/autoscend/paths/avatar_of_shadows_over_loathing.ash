@@ -564,6 +564,9 @@ boolean aosol_buySkills()
 	return false;
 }
 
+//Breaking the auto-restore code so that we can heal in-combat instead of before combat
+//These are only called in auto_restore if the player has the in-combat heals for a given class
+//The code might not be 100% correct but they do what they were programmed to do, so c'est la vie.
 boolean auto_pigSkinnerAcquireHP(int goal)
 {
 	while (my_hp() < goal)
