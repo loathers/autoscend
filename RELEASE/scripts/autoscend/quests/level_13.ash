@@ -1658,6 +1658,12 @@ boolean L13_towerNSFinal()
 
 	addToMaximize("10dr,3moxie,0.5da 1000max,-5ml,1.5hp,0item,0meat");
 	autoEquip($slot[acc2], $item[Attorney\'s Badge]);
+	//AoSOL buffs
+	if(in_aosol())
+	{
+		buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+		buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+	}
 
 	if(internalQuestStatus("questL13Final") < 13)
 	{

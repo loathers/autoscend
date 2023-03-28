@@ -734,6 +734,12 @@ boolean L8_trapperGroar()
 	{
 		auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 		equipMaximizedGear();
+		//AoSOL buffs
+		if(in_aosol())
+		{
+			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+		}
 		if($location[Mist-shrouded Peak].turns_spent >= 3)	//does not account for possible defeats
 		{
 			set_property("auto_nextEncounter","Groar");

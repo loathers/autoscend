@@ -138,6 +138,12 @@ boolean L5_goblinKing()
 		buyUpTo(1, $item[Blood of the Wereseal]);
 		buffMaintain($effect[Temporary Lycanthropy]);
 	}
+	//AoSOL buffs
+	if(in_aosol())
+	{
+		buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+		buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+	}
 
 	// TODO: I died here, maybe we should heal a bit?
 	if(!in_plumber())

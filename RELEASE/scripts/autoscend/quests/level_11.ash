@@ -1964,6 +1964,12 @@ boolean L11_hiddenCity()
 	if (item_amount($item[stone triangle]) == 4) {
 		auto_log_info("Fighting the out-of-work spirit", "blue");
 		acquireHP();
+		//AoSOL buffs
+		if(in_aosol())
+		{
+			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+		}
 		set_property("auto_nextEncounter","Protector Spectre");
 		handleFamiliar("boss");
 		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
@@ -2108,6 +2114,12 @@ boolean L11_mauriceSpookyraven()
 	if (internalQuestStatus("questL11Manor") > 2)
 	{
 		auto_log_info("Down with the tyrant of Spookyraven!", "blue");
+		//AoSOL buffs
+		if(in_aosol())
+		{
+			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+		}
 		acquireHP();
 		int [element] resGoal;
 		foreach ele in $elements[hot, cold, stench, sleaze, spooky]
@@ -2836,6 +2848,12 @@ boolean L11_palindome()
 		pages[0] = "place.php?whichplace=palindome&action=pal_drlabel";
 		pages[1] = "choice.php?pwd&whichchoice=131&option=" + palinChoice;
 		set_property("auto_nextEncounter","Dr. Awkward");
+		//AoSOL buffs
+		if(in_aosol())
+		{
+			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+		}
 		autoAdvBypass(0, pages, $location[Noob Cave], "");
 		return true;
 	}
