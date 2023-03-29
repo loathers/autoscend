@@ -354,6 +354,16 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 		}
 
+		if(canUse($item[shadow brick]) && (get_property("_shadowBricksUsed").to_int() < 13) && !reserveFreekills)
+		{
+			if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			{
+				handleTracker(enemy, $item[shadow brick], "auto_instakill");
+				loopHandlerDelayAll();
+				return useItem($item[shadow brick]);
+			}
+		}
+
 		if(canUse($skill[Fire the Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean())
 		{
 			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "auto_instakill");
