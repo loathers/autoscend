@@ -327,6 +327,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 				return useSkill($skill[Gingerbread Mob Hit]);
 			}
 		}
+		if(canUse($skill[Free-For-All]) && have_effect($effect[Everything Looks Red]) == 0 && (wantFreeKillNowEspecially || !reserveFreekills) && my_mp() > 80) //Only want to cast this when you have mp to spare because it is 50mp
+		{
+			handleTracker(enemy, $skill[Free-For-All], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[Free-For-All]);
+		}
 
 	//		Can not use _usedReplicaBatoomerang if we have more than 1 because of the double item use issue...
 	//		Sure, we can try to use a second item (if we have it or are forced to buy it... ugh).
@@ -345,6 +351,16 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 				handleTracker(enemy, $item[Replica Bat-oomerang], "auto_instakill");
 				loopHandlerDelayAll();
 				return useItem($item[Replica Bat-oomerang]);
+			}
+		}
+
+		if(canUse($item[shadow brick]) && (get_property("_shadowBricksUsed").to_int() < 13) && !reserveFreekills)
+		{
+			if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			{
+				handleTracker(enemy, $item[shadow brick], "auto_instakill");
+				loopHandlerDelayAll();
+				return useItem($item[shadow brick]);
 			}
 		}
 

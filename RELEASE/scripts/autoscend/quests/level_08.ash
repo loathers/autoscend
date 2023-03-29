@@ -716,7 +716,7 @@ boolean L8_trapperGroar()
 	}
 	
 	// error catching for if we are actually on step5 and mafia did not notice.
-	if(item_amount($item[Groar\'s Fur]) > 0 || item_amount($item[Winged Yeti Fur]) > 0)
+	if(item_amount($item[Groar\'s Fur]) > 0 || item_amount($item[Winged Yeti Fur]) > 0 || item_amount($item[Cursed Blanket]) > 0)
 	{
 		auto_log_info("Quest tracking error detected. Mafia thinks we are in step4 of questL08Trapper but we are in fact in step5. Correcting. Current Path = " +my_path().name, "red");
 		set_property("questL08Trapper", "step5");
@@ -739,6 +739,12 @@ boolean L8_trapperGroar()
 	{
 		auto_log_info("Time to take out Gargle, sure, Gargle (Groar)", "blue");
 		equipMaximizedGear();
+		//AoSOL buffs
+		if(in_aosol())
+		{
+			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+		}
 		if($location[Mist-shrouded Peak].turns_spent >= 3)	//does not account for possible defeats
 		{
 			set_property("auto_nextEncounter","Groar");

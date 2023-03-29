@@ -23,7 +23,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	{
 		return useSkill($skill[Intimidating Bellow]);
 	}
-	
+
 	//if monster level adjustment is over 150 then they are immune to staggers. many deleveling skills also stagger.
 	int enemy_la = monster_level_adjustment();
 	

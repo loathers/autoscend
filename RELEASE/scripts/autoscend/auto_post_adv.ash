@@ -323,6 +323,27 @@ boolean auto_post_adventure()
 		}
 		return true;
 	}
+	if(in_aosol())
+	{
+		if(my_class() == $class[Pig Skinner])
+		{
+			buffMaintain($effect[Cheerled], 30, 1, 10);
+			buffMaintain($effect[Taped Up], 20, 1, 10);
+			//buffMaintain($effect[Stretched], 10, 1, 10); In Providers
+		}
+		if(my_class() == $class[Cheese Wizard])
+		{
+			//buffMaintain($effect[Shifted Reality], 25, 1, 10);  In Providers
+			buffMaintain($effect[Cheddarmored], 5, 1, 10);
+			//buffMaintain($effect[Queso Fustulento], 10, 1, 10); //Only on boss fights
+		}
+		if(my_class() == $class[Jazz Agent])
+		{
+			buffMaintain($effect[Reliable Backup], 10, 1, 10);
+			buffMaintain($effect[Soothing Flute], 15, 1, 10);
+			//buffMaintain($effect[Tricky Timpani], 30, 1, 10); //Only on boss fights
+		}
+	}
 
 	skill libram = preferredLibram();
 

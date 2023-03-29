@@ -92,7 +92,8 @@ void auto_ghost_prep(location place)
 		Fist of the Mummy,		    //actually ed the undying
 		Boil,						//avatar of jarlsberg
 		Bilious Burst,				//zombie slayer
-		Heroic Belch				//avatar of boris
+		Heroic Belch,				//avatar of boris
+		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
 		]
 	{
 		if(auto_have_skill(sk))
@@ -218,6 +219,9 @@ boolean auto_pre_adventure()
 		junkyardML = true;
 		uneffect($effect[Spiky Shell]);
 		uneffect($effect[Scarysauce]);
+		if(in_aosol()){
+			uneffect($effect[Queso Fustulento]);
+		}
 		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
 
