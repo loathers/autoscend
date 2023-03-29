@@ -138,6 +138,12 @@ boolean L5_goblinKing()
 		buyUpTo(1, $item[Blood of the Wereseal]);
 		buffMaintain($effect[Temporary Lycanthropy]);
 	}
+	//AoSOL buffs
+	if(in_aosol())
+	{
+		buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+		buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+	}
 
 	// TODO: I died here, maybe we should heal a bit?
 	if(!in_plumber())
@@ -147,7 +153,7 @@ boolean L5_goblinKing()
 	set_property("auto_nextEncounter","Knob Goblin King");
 	boolean advSpent = autoAdv($location[Throne Room]);
 
-	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished") || in_plumber())
+	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished") || in_plumber() || (item_amount($item[Cursed Goblin Cape]) > 0))
 	{
 		council();
 	}

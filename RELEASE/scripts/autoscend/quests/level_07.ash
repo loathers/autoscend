@@ -341,6 +341,12 @@ boolean L7_crypt()
 			buyUpTo(1, $item[Blood of the Wereseal]);
 			buffMaintain($effect[Temporary Lycanthropy]);
 		}
+		//AoSOL buffs
+		if(in_aosol())
+		{
+			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+		}
 
 		acquireHP();
 		if(auto_have_familiar($familiar[Machine Elf]))

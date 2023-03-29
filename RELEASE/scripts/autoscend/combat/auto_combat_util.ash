@@ -222,6 +222,9 @@ boolean isSniffed(monster enemy, skill sk)
 		case $skill[Offer Latte to Opponent]:
 			retval = contains_text(get_property("_latteMonster"), enemy);
 			break;
+		case $skill[Motif]:
+			retval = contains_text(get_property("motifMonster"), enemy);
+			break;
 		default:
 			abort("isSniffed was asked to check an unidentified skill: " +sk);
 	}
@@ -231,7 +234,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Offer Latte to Opponent]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Offer Latte to Opponent, Motif]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -258,6 +261,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	if(canUse($skill[Perceive Soul], true , inCombat) && !isSniffed(enemy, $skill[Perceive Soul]))
 	{
 		return $skill[Perceive Soul];
+	}
+	if(canUse($skill[Motif], true , inCombat) && !isSniffed(enemy, $skill[Motif]) && !(have_effect($effect[Everything Looks Blue]) > 0))
+	{
+		return $skill[Motif];
 	}
 	if(canUse($skill[Gallapagosian Mating Call], true , inCombat) && !isSniffed(enemy, $skill[Gallapagosian Mating Call]))
 	{
@@ -352,6 +359,24 @@ skill getStunner(monster enemy)
 		if(canUse($skill[Blood Chains]) && my_hp() > 3 * hp_cost($skill[Blood Chains]))
 		{
 			return $skill[Blood Chains];
+		}
+		break;
+	case $class[Pig Skinner]:
+		if(canUse($skill[Noogie]))
+		{
+			return $skill[Noogie];
+		}
+		break;
+	case $class[Cheese Wizard]:
+		if(canUse($skill[Gather Cheese-Chi]))
+		{
+			return $skill[Gather Cheese-Chi];
+		}
+		break;
+	case $class[Jazz Agent]:
+		if(canUse($skill[Drum Roll], true))
+		{
+			return $skill[Drum Roll];
 		}
 		break;
 	}
@@ -597,6 +622,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Feel Hatred];
 	}
+	
+	if(auto_have_skill($skill[Punt]) && (my_mp() > mp_cost($skill[Punt])) && !(used contains "Punt"))
+	{
+		return "skill " + $skill[Punt];
+	}
 
 	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && auto_is_valid($skill[Use the Force]) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force"))
 	{
@@ -712,6 +742,10 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
 
+		if(auto_have_skill($skill[Fondeluge]) && (my_mp() >= mp_cost($skill[Fondeluge])))
+		{
+			return "skill " + $skill[Fondeluge]; // 50 turns
+		}
 		if((item_amount($item[Yellowcake Bomb]) > 0) && auto_is_valid($item[Yellowcake Bomb]))
 		{
 			return "item " + $item[Yellowcake Bomb]; // 75 turns + quest item

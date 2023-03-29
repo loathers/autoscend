@@ -3009,6 +3009,10 @@ boolean auto_is_valid(item it)
 	{
 		return bhy_is_item_valid(it);
 	}
+	if(my_class() == $class[Pig Skinner]) //want to ignore Red Rocket in PS because Free-For-All is more important
+	{
+		if(it == $item[Red Rocket]) return false;
+	}
 	
 	return is_unrestricted(it);
 }
@@ -3307,6 +3311,8 @@ boolean auto_check_conditions(string conds)
 				if(get_property("_gallapagosMonster").to_monster() == check_sniffed)
 					return true;
 				if(get_property("_latteMonster").to_monster() == check_sniffed)
+					return true;
+				if(get_property("motifMonster").to_monster() == check_sniffed)
 					return true;
 				return false;
 			// data: Doesn't matter, but put something so I don't have to support dataless conditions
@@ -4305,6 +4311,10 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 		buffMaintain($effect[Jalape&ntilde;o Saucesphere]);	//5 MP
 		buffMaintain($effect[Scariersauce]);				//10 MP
 		buffMaintain($effect[Scarysauce]);						//10 MP
+		if(in_aosol()){
+			buffMaintain($effect[Queso Fustulento]);		//10 MP
+			buffMaintain($effect[Tricky Timpani]);			//30 MP
+		}
 	}
 	
 	//1MP Non-Combat skills from each class
@@ -4388,6 +4398,23 @@ int poolSkillPracticeGains()
 	return count;
 }
 
+boolean hasUsefulShirt()
+{
+	int amtUsefulShirts = 0;
+	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac, jurassic parka]
+	{
+		if(item_amount(it) != 0 && is_unrestricted(it)) amtUsefulShirts += 1;
+	}
+	if(amtUsefulShirts > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 int meatReserve()
 {
 	//the amount of meat we want to reserve for quest usage when performing a restore
@@ -4399,6 +4426,14 @@ int meatReserve()
 	if(in_wildfire() && !get_property("wildfirePumpGreased").to_boolean() && item_amount($item[pump grease]) == 0)
 	{
 		reserve_extra += npc_price($item[pump grease]);
+	}
+	if(!hasTorso() && hasUsefulShirt() && !gnomads_available() && inGnomeSign())
+	{
+		reserve_extra +=5000 * npcStoreDiscountMulti(); //Going to need 5k anyway if we need torso so might as well start saving early. Worst case scenario we make a meatcar
+	}
+	if(!hasTorso() && gnomads_available() && hasUsefulShirt())
+	{
+		reserve_extra += 5000; //we want Torso ASAP if we have a useful shirt
 	}
 	
 	if(my_level() < 10)		//meat income is pretty low and the quests that need the reserve far away. Use restores freely
