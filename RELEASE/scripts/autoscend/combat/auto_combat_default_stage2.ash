@@ -327,6 +327,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 				return useSkill($skill[Gingerbread Mob Hit]);
 			}
 		}
+		if(canUse($skill[Free-For-All]) && have_effect($effect[Everything Looks Red]) == 0 && (wantFreeKillNowEspecially || !reserveFreekills) && my_mp() > 80) //Only want to cast this when you have mp to spare because it is 50mp
+		{
+			handleTracker(enemy, $skill[Free-For-All], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[Free-For-All]);
+		}
 
 	//		Can not use _usedReplicaBatoomerang if we have more than 1 because of the double item use issue...
 	//		Sure, we can try to use a second item (if we have it or are forced to buy it... ugh).

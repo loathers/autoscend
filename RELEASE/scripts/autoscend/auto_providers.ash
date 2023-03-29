@@ -46,7 +46,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		}
 	}
 
-	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness] {
+	foreach eff in $effects[Driving Stealthily, The Sonata of Sneakiness, In The Darkness] {
 		uneffect(eff);
 		if(pass()) {
 			return result();
@@ -445,6 +445,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		Bone Springs,
 		Living Fast,
 		Nearly Silent Hunting,
+		Stretched,
 	]))
 		return result();
 
@@ -725,6 +726,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		Blessing of the Bird,
 		Blessing of Your Favorite Bird,
 		Feeling Peaceful,
+		Shifted Reality,
 	]))
 		return result();
 
@@ -971,6 +973,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 		Mariachi Mood,						//+1 mox. +3 maxHP. 0.2 MP/adv
 
 		// all-stat effects
+		Cheerled,							//+50% all. Class=Pig Skinner
 		Big,								//+20% all. 1.5 MP/adv
 		Song of Bravado,					//+15% all. NOT a song. 10 MP/adv
 		Stevedave's Shanty of Superiority,	//+10% all. song. 30 MP (duration varies).

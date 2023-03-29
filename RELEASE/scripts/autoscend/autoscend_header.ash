@@ -562,6 +562,16 @@ effect awol_walkBuff();
 boolean awol_buySkills();
 
 ########################################################################################################
+//Defined in autoscend/paths/avatar_of_shadows_over_loathing.ash
+boolean in_aosol();
+boolean aosol_initializeSettings();
+void aosol_unCurse();
+boolean aosol_buySkills();
+boolean auto_pigSkinnerAcquireHP(int goal);
+boolean auto_cheeseWizardAcquireHP(int goal);
+boolean auto_jazzAgentAcquireHP(int goal);
+
+########################################################################################################
 //Defined in autoscend/paths/bees_hate_you.ash
 boolean in_bhy();
 void bhy_initializeSettings();
@@ -1747,4 +1757,5 @@ boolean hasTTBlessing();
 void effectAblativeArmor(boolean passive_dmg_allowed);
 int currentPoolSkill();
 int poolSkillPracticeGains();
+boolean hasUsefulShirt();
 int meatReserve();

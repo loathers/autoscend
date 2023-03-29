@@ -1,4 +1,4 @@
-since r27245;	// Add FREE attribute to some inherently free encounters
+since r27299;	// feat: Perfect Embouchure spelling corrected
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -51,6 +51,7 @@ import <autoscend/paths/auto_path_util.ash>
 import <autoscend/paths/avatar_of_boris.ash>
 import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
+import <autoscend/paths/avatar_of_shadows_over_loathing.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
 import <autoscend/paths/bees_hate_you.ash>
 import <autoscend/paths/bugbear_invasion.ash>
@@ -243,6 +244,7 @@ void initializeSettings() {
 	eudora_initializeSettings();
 	heavyrains_initializeSettings();
 	awol_initializeSettings();
+	aosol_initializeSettings();
 	theSource_initializeSettings();
 	ed_initializeSettings();
 	boris_initializeSettings();
@@ -1711,6 +1713,8 @@ boolean doTasks()
 	auto_buySkills();		// formerly picky_buyskills() now moved here
 	awol_buySkills();
 	awol_useStuff();
+	aosol_unCurse();
+	aosol_buySkills();
 	theSource_buySkills();
 	jarlsberg_buySkills();
 	boris_buySkills();
