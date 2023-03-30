@@ -189,10 +189,11 @@ boolean LX_islandAccess()
 		return false;
 	}
 
-    if(in_lowkeysummer() || in_zombieSlayer())
-    {
-        return LX_hippyBoatman();
-    }
+	if(in_lowkeysummer() || in_zombieSlayer())
+	{
+		return LX_hippyBoatman();
+	}
+
 
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
 
