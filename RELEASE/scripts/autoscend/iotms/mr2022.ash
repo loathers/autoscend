@@ -191,6 +191,11 @@ void prioritizeGoose() //prioritize Goose only if we still have things to get
 	set_property("auto_prioritizeGoose", false);
 }
 
+int dronesOut()
+{
+	return get_property("gooseDronesRemaining").to_int();
+}
+
 boolean canUseCleaver() {
 	if (possessEquipment($item[June cleaver]) && can_equip($item[June cleaver]) && auto_is_valid($item[June cleaver])) {
 		return true;
