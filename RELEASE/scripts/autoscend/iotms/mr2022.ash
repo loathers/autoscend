@@ -159,6 +159,11 @@ int gooseExpectedDrones()
 	return familiar_weight($familiar[Grey Goose]) - 5;
 }
 
+int dronesOut()
+{
+	return get_property("gooseDronesRemaining").to_int();
+}
+
 boolean canUseCleaver() {
 	if (possessEquipment($item[June cleaver]) && can_equip($item[June cleaver]) && auto_is_valid($item[June cleaver])) {
 		return true;
