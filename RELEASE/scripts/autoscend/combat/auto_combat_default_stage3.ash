@@ -45,8 +45,8 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 		int drones = gooseExpectedDrones();
 
-		//dupe a sonar-in-a-biscuit if we're lucky
-		if((item_drops(enemy) contains $item[sonar-in-a-biscuit]) && (count(item_drops(enemy)) <= 2) && (get_property("questL04Bat")) != "finished" && drones >= 1){
+		//dupe a sonar-in-a-biscuit if we're lucky, only want to try it if we need more than 1 biscuit
+		if((item_drops(enemy) contains $item[sonar-in-a-biscuit]) && (count(item_drops(enemy)) <= 2) && (internalQuestStatus("questL04Bat") <= 1) && drones >= 1){
 			forceDrop = true;
 		}
 		
