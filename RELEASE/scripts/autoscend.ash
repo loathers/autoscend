@@ -1246,8 +1246,8 @@ boolean adventureFailureHandler()
 		//in KOLHS path you must spend 40 adv per day split between those locations. zones only exist in kolhs
 		The Hallowed Halls, Art Class, Chemistry Class, Shop Class,
 		
-		//holiday event. must spend 100 turns there to complete the holiday.
-		The Arrrboretum] contains place)
+		//holiday events
+		The Arrrboretum, The Spectral Pickle Factory] contains place)
 		{
 			tooManyAdventures = false;
 		}
