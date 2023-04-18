@@ -891,3 +891,52 @@ boolean LX_ForceNC()
 			return false;
 	}
 }
+
+boolean LX_dronesOut()
+{
+	if(!dronesOut())
+	{
+		return false;
+	}
+	location desiredDronesLocation = get_property("auto_dronesRouting").to_location();
+	if(desiredDronesLocation == $location[none]) return false;
+	boolean canExtingo = true;
+	if(auto_fireExtinguisherCharges() <= 30 || !canUse($skill[Fire Extinguisher: Polar Vortex], false))
+	{
+		canExtingo = false;
+	}
+
+	//where to go to. Not handling Smut Orc Keepsake, Blackberry Bush due to adventuring conditions required
+	if(internalQuestStatus("questL04Bat") <= 1)
+	{
+		return autoAdv($location[The Batrat and Ratbat Burrow]); //Sonar-in-a-Biscuit
+	}
+	if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]))
+	{
+		return summonMonster($monster[Baa\'baa\'bu\'ran]); //Stone wool
+	}
+	if(internalQuestStatus("questL08Trapper") == 1)
+	{
+		return autoAdv($location[The Goatlet]); //Goat cheese
+	}
+	if((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15)
+	{
+		return autoAdv($location[Twin Peak]); //Hedge trimmers
+	}
+	if(needStarKey() && (item_amount($item[star]) < 8 && item_amount($item[line]) < 7))
+	{
+		return autoAdv($location[The Hole In The Sky]); //Stars and Lines
+	}
+	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
+	{
+		return autoAdv($location[The Red Zeppelin]); //Glark cables
+	}
+	if(canExtingo = false && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 6)
+	{
+		return autoAdv($location[The Hidden Bowling Alley]); //Bowling balls
+	}
+	if (get_property("middleChamberUnlock").to_boolean() && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10))
+	{
+		return autoAdv($location[The Middle Chamber]); //Tomb ratchets
+	}
+}
