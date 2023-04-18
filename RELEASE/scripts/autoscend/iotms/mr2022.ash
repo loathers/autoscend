@@ -176,7 +176,7 @@ boolean dronesOut() //want a function to override the task order if we have dron
 
 void prioritizeGoose() //prioritize Goose only if we still have things to get
 {
-	if(!auto_haveGreyGoose()) return false;
+	if(!auto_haveGreyGoose()) return;
 	if(	internalQuestStatus("questL04Bat") <= 1 ||
 		(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && internalQuestStatus("questL11Worship") <= 2) ||
 		internalQuestStatus("questL08Trapper") <= 1 ||
