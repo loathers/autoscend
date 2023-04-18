@@ -156,12 +156,21 @@ boolean auto_haveGreyGoose()
 
 int gooseExpectedDrones()
 {
-	return familiar_weight($familiar[Grey Goose]) - 5;
+	if(!auto_haveGreyGoose()) return 0;
+	if(my_familiar() == $familiar[Grey Goose])
+	{
+		set_property("auto_gooseExpectedDrones", familiar_weight($familiar[Grey Goose]) - 5);
+	}
+	return get_property("auto_gooseExpectedDrones").to_int();
 }
 
-int dronesOut()
+boolean dronesOut() //want a function to override the task order if we have drones out so as not to waste them
 {
-	return get_property("gooseDronesRemaining").to_int();
+	if(!auto_haveGreyGoose()) return false;
+	if(get_property("gooseDronesRemaining").to_int() > 0)
+	{
+		return true;
+	}
 }
 
 boolean canUseCleaver() {

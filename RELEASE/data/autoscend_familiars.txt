@@ -113,68 +113,70 @@ item	2	Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
 item	3	Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
 # 1.1x multiplier fairy
 item	4	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
+# fairy with useful special powers above a certain weight
+item	5	Grey Goose	prop:auto_gooseExpectedDrones<8
 # fairy that generates extra adventures
-item	5	Reagnimated Gnome	!path:Heavy Rains
+item	6	Reagnimated Gnome	!path:Heavy Rains
 # Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
-item	6	XO Skeleton
+item	7	XO Skeleton
 # Fairy that drops bacon with no limit. 1 per combat
-item	7	Intergnat
+item	8	Intergnat
 # Fairyballs
-item	8	Elf Operative
-item	9	Optimistic Candle
-item	10	Rockin' Robin
-item	11	God Lobster	item:God Lobster's Crown>0
-item	12	Hobo in Sheep's Clothing
+item	9	Elf Operative
+item	10	Optimistic Candle
+item	11	Rockin' Robin
+item	12	God Lobster	item:God Lobster's Crown>0
+item	13	Hobo in Sheep's Clothing
 # Fairywhelps
-item	13	Pocket Professor
-item	14	Garbage Fire
-item	15	Dandy Lion
-item	16	Choctopus
+item	14	Pocket Professor
+item	15	Garbage Fire
+item	16	Dandy Lion
+item	17	Choctopus
 # Fairychauns
-item	17	Fist Turkey
-item	18	Cat Burglar
-item	19	Angry Jung Man
-item	20	Grimstone Golem
-item	21	Adventurous Spelunker
-item	22	Blavious Kloop
-item	23	Hippo Ballerina
-item	24	Dancing Frog
-item	25	Coffee Pixie
-item	26	Attention-Deficit Demon
-item	27	Jitterbug
-item	28	Casagnova Gnome
-item	29	Psychedelic Bear
-item	30	Piano Cat
+item	18	Fist Turkey
+item	19	Cat Burglar
+item	20	Angry Jung Man
+item	21	Grimstone Golem
+item	22	Adventurous Spelunker
+item	23	Blavious Kloop
+item	24	Hippo Ballerina
+item	25	Dancing Frog
+item	26	Coffee Pixie
+item	27	Attention-Deficit Demon
+item	28	Jitterbug
+item	29	Casagnova Gnome
+item	30	Psychedelic Bear
+item	31	Piano Cat
 # Slightly special fairies
-item	31	Grey Goose
-item	32	Ghost of Crimbo Carols
-item	33	Red-Nosed Snapper
-item	34	Pair of Stomping Boots	!path:G-Lover
-item	35	Gelatinous Cubeling
-item	36	Steam-Powered Cheerleader
-item	37	Obtuse Angel
-item	38	Green Pixie
+item	32	Grey Goose
+item	33	Ghost of Crimbo Carols
+item	34	Red-Nosed Snapper
+item	35	Pair of Stomping Boots	!path:G-Lover
+item	36	Gelatinous Cubeling
+item	37	Steam-Powered Cheerleader
+item	38	Obtuse Angel
+item	39	Green Pixie
 # Elemental fairies
-item	39	Sleazy Gravy Fairy
-item	40	Stinky Gravy Fairy
-item	41	Flaming Gravy Fairy
-item	42	Frozen Gravy Fairy
-item	43	Spooky Gravy Fairy
+item	40	Sleazy Gravy Fairy
+item	41	Stinky Gravy Fairy
+item	42	Flaming Gravy Fairy
+item	43	Frozen Gravy Fairy
+item	44	Spooky Gravy Fairy
 # Physical damage fairy
-item	44	Bowlet
+item	45	Bowlet
 # Barely special fairies
-item	45	Mechanical Songbird
-item	46	Grouper Groupie
-item	47	Peppermint Rhino
+item	46	Mechanical Songbird
+item	47	Grouper Groupie
+item	48	Peppermint Rhino
 # Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
-item	48	Slimeling
+item	49	Slimeling
 # Turtles are cute
-item	49	Syncopated Turtle
+item	50	Syncopated Turtle
 # The original
-item	50	Baby Gravy Fairy
+item	51	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
-item	51	Mutant Fire Ant
+item	52	Mutant Fire Ant
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
