@@ -457,6 +457,7 @@ boolean auto_fightLocketMonster(monster mon, boolean speculative);
 boolean auto_haveGreyGoose();
 int gooseExpectedDrones();
 boolean dronesOut();
+void prioritizeGoose();
 boolean canUseCleaver();
 void juneCleaverChoiceHandler(int choice);
 boolean canUseSweatpants();
