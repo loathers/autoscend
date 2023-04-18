@@ -939,4 +939,5 @@ boolean LX_dronesOut()
 	{
 		return autoAdv($location[The Middle Chamber]); //Tomb ratchets
 	}
+	return false;
 }

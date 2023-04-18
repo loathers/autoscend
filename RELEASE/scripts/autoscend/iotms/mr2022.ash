@@ -171,6 +171,7 @@ boolean dronesOut() //want a function to override the task order if we have dron
 	{
 		return true;
 	}
+	return false;
 }
 
 boolean canUseCleaver() {
