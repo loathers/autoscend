@@ -46,52 +46,62 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		int drones = gooseExpectedDrones();
 
 		//dupe a sonar-in-a-biscuit if we're lucky, only want to try it if we need more than 1 biscuit
-		if((item_drops(enemy) contains $item[sonar-in-a-biscuit]) && (count(item_drops(enemy)) <= 2) && (internalQuestStatus("questL04Bat") <= 1) && drones >= 1){
+		if((item_drops(enemy) contains $item[sonar-in-a-biscuit]) && (count(item_drops(enemy)) <= 2) && (internalQuestStatus("questL04Bat") <= 1) && drones >= 1)
+		{
 			forceDrop = true;
 		}
 		
 		//dupe stone wool
-		if((item_drops(enemy) contains $item[stone wool]) && item_amount($item[stone wool]) < 2 && drones >= 1){
+		if((item_drops(enemy) contains $item[stone wool]) && item_amount($item[stone wool]) < 2 && drones >= 1)
+		{
 			forceDrop = true;
 		}
 
 		//dupe goat cheese
-		if(enemy == $monster[Dairy goat] && canExtingo = false && item_amount($item[Goat Cheese]) < 3 && drones >= 1){
+		if(enemy == $monster[Dairy goat] && canExtingo = false && item_amount($item[Goat Cheese]) < 3 && drones >= 1)
+		{
 			forceDrop = true;
 		}
 
 		//dupe Smut Orc Keepsake
-		if(enemy == $monster[Smut orc pervert] && auto_autumnatonQuestingIn() != $location[The Smut Orc Logging Camp] && my_location() == $location[The Smut Orc Logging Camp] && drones >= 1){
+		if(enemy == $monster[Smut orc pervert] && auto_autumnatonQuestingIn() != $location[The Smut Orc Logging Camp] && my_location() == $location[The Smut Orc Logging Camp] && drones >= 1)
+		{
 			forceDrop = true;
 		}
 		
 		//dupe some hedge trimmers if we're lucky
-		if(canExtingo = false && ($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy) && auto_autumnatonQuestingIn() != $location[Twin Peak] && hedgeTrimmersNeeded() > 1 && drones >= 2){
+		if(canExtingo = false && ($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy) && auto_autumnatonQuestingIn() != $location[Twin Peak] && hedgeTrimmersNeeded() > 1 && drones >= 2)
+		{
 			forceDrop = true;
 		}
 		
 		//dupe some stars/lines
-		if(my_location() == $location[The Hole in the Sky] && item_drops(enemy) contains $item[star] && item_drops(enemy) contains $item[line] && needStarKey() && (item_amount($item[star]) < 8 && item_amount($item[line]) < 7) && drones >= 8){
+		if(my_location() == $location[The Hole in the Sky] && item_drops(enemy) contains $item[star] && item_drops(enemy) contains $item[line] && needStarKey() && (item_amount($item[star]) < 8 && item_amount($item[line]) < 7) && drones >= 8)
+		{
 			forceDrop = true;
 		}
 
 		//dupe some blackberries
-		if(enemy == $monster[Blackberry bush] && drones >= 1){
+		if(enemy == $monster[Blackberry bush] && drones >= 1)
+		{
 			forceDrop = true;
 		}
 
 		//dupe some glark cables
-		if(enemy == $monster[Red butler]){
+		if(enemy == $monster[Red butler])
+		{
 			forceDrop = true;
 		}
 		
 		//dupe some bowling balls if we can't use an Industrial Fire Extinguisher
-		if(canExtingo = false && (enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 6) && drones >= 2){
+		if(canExtingo = false && (enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 6) && drones >= 2)
+		{
 			forceDrop = true;
 		}
 
 		//dupe tomb ratchets if we're lucky
-		if(($monsters[Tomb rat, Tomb rat king] contains enemy) && (item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet]) < 10) && drones >= 3){
+		if(($monsters[Tomb rat, Tomb rat king] contains enemy) && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && drones >= 3)
+		{
 			forceDrop = true;
 		}
 		
@@ -99,6 +109,11 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		/*if(enemy == $monster[Green Ops Soldier] and combat_status_check("yellowray") and drones >= 5){
 			forceDrop = true;
 		}*/
+
+		if(dronesOut()) //If we have drones out, let's not use the skill again
+		{
+			forceDrop = false;
+		}
 
 		if(forceDrop)
 		{
