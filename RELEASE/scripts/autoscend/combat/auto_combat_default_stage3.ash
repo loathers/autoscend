@@ -94,12 +94,14 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 
 		//dupe some blackberries
-		if(enemy == $monster[Blackberry bush] && drones >= 1){
+		if(enemy == $monster[Blackberry bush] && drones >= 1)
+		{
 			forceDrop = true;
 		}
 
 		//dupe some glark cables
-		if(enemy == $monster[Red butler]){
+		if(enemy == $monster[Red butler])
+		{
 			forceDrop = true;
 		}
 		
