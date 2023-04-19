@@ -91,3 +91,36 @@ void auto_SITCourse()
 		return;
 	}
 }
+
+boolean auto_haveMonkeyPaw()
+{
+	static item paw = $item[cursed monkey\'s paw];
+	return auto_is_valid(paw) && item_amount(paw) > 0;
+}
+
+boolean auto_makeMonkeyPawWish(effect wish)
+{
+	boolean success = monkey_paw(wish);
+	if (success) {
+		handleTracker(to_string($item[cursed monkey\'s paw]), to_string(wish), "auto_wishes");
+	}
+	return success;
+}
+
+boolean auto_makeMonkeyPawWish(item wish)
+{
+	boolean success = monkey_paw(wish);
+	if (success) {
+		handleTracker(to_string($item[cursed monkey\'s paw]), to_string(wish), "auto_wishes");
+	}
+	return success;
+}
+
+boolean auto_makeMonkeyPawWish(string wish)
+{
+	boolean success = monkey_paw(wish);
+	if (success) {
+		handleTracker(to_string($item[cursed monkey\'s paw]), wish, "auto_wishes");
+	}
+	return success;
+}

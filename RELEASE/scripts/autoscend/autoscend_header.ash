@@ -230,6 +230,7 @@ void horseDark();
 void horseCrazy();
 void horsePale();
 boolean horsePreAdventure();
+boolean auto_haveGenieBottle();
 boolean auto_shouldUseWishes();
 int auto_wishesAvailable();
 boolean makeGenieWish(string wish);
@@ -490,6 +491,10 @@ void pickRocks();
 boolean wantToThrowGravel(location loc, monster enemy);
 boolean auto_haveSITCourse();
 void auto_SITCourse();
+boolean auto_haveMonkeyPaw();
+boolean auto_makeMonkeyPawWish(effect wish);
+boolean auto_makeMonkeyPawWish(item wish);
+boolean auto_makeMonkeyPawWish(string wish);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
