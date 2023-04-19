@@ -2355,9 +2355,22 @@ boolean L11_redZeppelin()
 	{
 		if(cloversAvailable() >= 3 && auto_shouldUseWishes())
 		{
-			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
-			makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
-		}
+			if (auto_haveGenieBottle()) {
+				makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
+				makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
+			}
+			if (auto_haveMonkeyPaw())
+			{
+				if(have_effect($effect[Fifty Ways to Bereave Your Lover])==0)
+				{
+					monkey_paw($effect[Fifty Ways to Bereave Your Lover]);
+				}
+				if(have_effect($effect[Dirty Pear])==0)
+				{
+					monkey_paw($effect[Dirty Pear]);
+				}
+			} // monkey paw
+		} // use wishes
 		if(in_tcrs())
 		{
 			if(my_class() == $class[Sauceror] && my_sign() == "Blender")
