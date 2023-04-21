@@ -94,13 +94,13 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 
 		//dupe some blackberries
-		if(enemy == $monster[Blackberry bush] && drones >= 1)
+		if(enemy == $monster[Blackberry bush] && drones)
 		{
 			forceDrop = true;
 		}
 
 		//dupe some glark cables
-		if(enemy == $monster[Red butler])
+		if(enemy == $monster[Red butler] && drones)
 		{
 			forceDrop = true;
 		}
@@ -112,13 +112,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 
 		//dupe tomb ratchets if we're lucky
-		if(($monsters[Tomb rat, Tomb rat king] contains enemy) && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && drones)
-		{
-			forceDrop = true;
-		}
-
-		//dupe Cursed Dragon Wishbone and Cursed Bat Paw if in AoSOL
-		if(($monsters[two-headed shadow bat, shadowboner shadowdagon] contains enemy) && drones)
+		if(($monsters[Tomb rat, Tomb rat king] contains enemy) && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && drones >= 3)
 		{
 			forceDrop = true;
 		}
