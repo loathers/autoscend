@@ -2363,11 +2363,11 @@ boolean L11_redZeppelin()
 			{
 				if(have_effect($effect[Fifty Ways to Bereave Your Lover])==0)
 				{
-					monkey_paw($effect[Fifty Ways to Bereave Your Lover]);
+					auto_makeMonkeyPawWish($effect[Fifty Ways to Bereave Your Lover]);
 				}
 				if(have_effect($effect[Dirty Pear])==0)
 				{
-					monkey_paw($effect[Dirty Pear]);
+					auto_makeMonkeyPawWish($effect[Dirty Pear]);
 				}
 			} // monkey paw
 		} // use wishes
