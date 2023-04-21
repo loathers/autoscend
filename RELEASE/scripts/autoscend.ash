@@ -1,4 +1,4 @@
-since r27299;	// feat: Perfect Embouchure spelling corrected
+since r27327;	// feat: Monkey Paw support
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
