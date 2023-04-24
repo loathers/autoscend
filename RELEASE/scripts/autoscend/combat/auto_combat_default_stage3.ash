@@ -116,6 +116,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		{
 			forceDrop = true;
 		}
+
+		//dupe Cursed Dragon Wishbone and Cursed Bat Paw if in AoSOL
+		if(($monsters[two-headed shadow bat, shadowboner shadowdagon] contains enemy) && drones)
+		{
+			forceDrop = true;
+		}
 		
 		//dupe GROPs if yellow rayed that didn't instakill. Commented out until support for green smoke bombs is added
 		/*if(enemy == $monster[Green Ops Soldier] and combat_status_check("yellowray") and drones){
