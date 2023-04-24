@@ -1760,6 +1760,9 @@ boolean LX_summonMonster()
 		(lumberCount() < 30 || fastenerCount() < 30) && canSummonMonster($monster[smut orc pervert]))
 	{
 		// summon pervert here but handling of L9 quest will open box
+		if(auto_haveGreyGoose()){
+			handleFamiliar($familiar[Grey Goose]);
+		}
 		if(summonMonster($monster[smut orc pervert])) return true;
 	}
 
