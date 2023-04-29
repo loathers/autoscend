@@ -628,6 +628,14 @@ boolean auto_pre_adventure()
 		purgeML = false;
 	}
 
+	// monster level increases zone damage. don't re apply ML buff shrugged by level_11.ash
+	if(place == $location[The Copperhead Club])
+	{
+		doML = false;
+		removeML = true;
+		purgeML = false;
+	}
+
 	// Location Specific Conditions
 	if(lowMLZones contains place)
 	{

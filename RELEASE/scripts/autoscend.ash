@@ -725,7 +725,7 @@ void initializeDay(int day)
 	}
 
 	// Get emotionally chipped if you have the item.  boris\zombie slayer\ed cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_darkGyffte()))
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_gnoob() || in_darkGyffte()))
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -1247,8 +1247,8 @@ boolean adventureFailureHandler()
 		//in KOLHS path you must spend 40 adv per day split between those locations. zones only exist in kolhs
 		The Hallowed Halls, Art Class, Chemistry Class, Shop Class,
 		
-		//holiday event. must spend 100 turns there to complete the holiday.
-		The Arrrboretum] contains place)
+		//holiday events
+		The Arrrboretum, The Spectral Pickle Factory] contains place)
 		{
 			tooManyAdventures = false;
 		}
