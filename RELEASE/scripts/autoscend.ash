@@ -1706,6 +1706,7 @@ boolean doTasks()
 		{
 		  set_property("_auto_maxBonusRolloverAdv", maxBonusRolloverAdventures());
 		}
+		// 130 = 200 adv limit - 40 adv per day - 30 adv for nightcap
 		return (my_adventures() < (130 - get_property("_auto_maxBonusRolloverAdv").to_int());
 	}
 	
