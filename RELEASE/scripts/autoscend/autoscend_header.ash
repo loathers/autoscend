@@ -1457,6 +1457,7 @@ boolean hasTorso(monster enemy);
 
 ########################################################################################################
 //Defined in autoscend/auto_path_util.ash
+boolean almostRollover();
 boolean auto_buySkills();
 void pathDroppedCheck();
 

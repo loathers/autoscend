@@ -1,5 +1,14 @@
 //A file full of utility functions which we import into autoscend.ash
 
+boolean almostRollover()
+{
+	int warning_time = get_property("auto_stopMinutesToRollover").to_int() * 60;
+	int remaining_time = rollover() - (now_to_int()/1000);
+	print(`{warning_time} secs warning`, 'olive');
+	print(`{remaining_time} secs to rollover`, 'olive');
+	return (remaining_time <= warning_time);
+}
+
 boolean autoMaximize(string req, boolean simulate)
 {
 	if(!simulate)

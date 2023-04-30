@@ -223,6 +223,7 @@ void initializeSettings() {
 	set_property("auto_delayLastLevel", 0);
 
 	set_property("auto_sniffs", "");
+	set_property("auto_stopMinutesToRollover", "5");
 	set_property("auto_waitingArrowAlcove", "50");
 	set_property("auto_wandOfNagamar", true);
 	set_property("auto_wineracksencountered", 0);
@@ -280,6 +281,8 @@ void initializeSession() {
 	// should be set in here.
 
 	auto_enableBackupCameraReverser();
+	set_property("_auto_organSpace", -1.0);
+	set_property("_auto_maxRolloverAdv", "");
 	ed_initializeSession();
 	bat_initializeSession();
 }
@@ -1485,6 +1488,19 @@ boolean autosellCrap()
 	return true;
 }
 
+int maxRolloverAdventures()
+{
+	int result = round(numeric_modifier("adventures"));
+	foreach n, rec in maximize("adventures", 0, 0, true, true)
+	{
+		if(rec.item != $item[none])
+		{
+			result += rec.score;
+		}
+	}
+	return result;
+}
+
 void print_header()
 {
 	if(my_thunder() > get_property("auto_lastthunder").to_int())
@@ -1664,6 +1680,35 @@ boolean doTasks()
 		auto_log_warning("I am in aftercore", "red");
 		return false;
 	}
+	// Check if rollover's coming up soon
+	if(almostRollover())
+	{
+		// How much organ space left?  If none, go to bed
+		float organ_space = consumptionProgress();
+		print(`{organ_space} organ space`, 'olive');
+		if(organ_space >= 0.999)
+		{
+		  return false;
+		}
+		// How much organ space was available the last time we were here?
+		float previous_space = get_property("_auto_organSpace").to_float();
+		float organ_space_change = organ_space - previous_space;
+		print(`{previous_space} previous space`, 'olive');
+		print(`{organ_space_change} organ space change`, 'olive');
+		set_property("_auto_organSpace", organ_space);
+		// If no space used the last time consumption was done, don't bother trying again
+		if(organ_space_change < 0.001)
+		{
+		  return false;
+		}
+		// There's space left to fill, but let's continue only if we don't have enough adventures
+		if(get_property("_auto_maxRolloverAdv") == "")
+		{
+		  set_property("_auto_maxRolloverAdv", maxRolloverAdventures());
+		}
+		return (my_adventures() < (130 - get_property("_auto_maxRolloverAdv").to_int());
+	}
+	
 	casualCheck();
 	
 	print_header();
