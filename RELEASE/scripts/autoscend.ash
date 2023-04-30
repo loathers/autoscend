@@ -282,7 +282,7 @@ void initializeSession() {
 
 	auto_enableBackupCameraReverser();
 	set_property("_auto_organSpace", -1.0);
-	set_property("_auto_maxRolloverAdv", "");
+	set_property("_auto_maxBonusRolloverAdv", "");
 	ed_initializeSession();
 	bat_initializeSession();
 }
@@ -1488,7 +1488,7 @@ boolean autosellCrap()
 	return true;
 }
 
-int maxRolloverAdventures()
+int maxBonusRolloverAdventures()
 {
 	int result = round(numeric_modifier("adventures"));
 	foreach n, rec in maximize("adventures", 0, 0, true, true)
@@ -1702,11 +1702,11 @@ boolean doTasks()
 		  return false;
 		}
 		// There's space left to fill, but let's continue only if we don't have enough adventures
-		if(get_property("_auto_maxRolloverAdv") == "")
+		if(get_property("_auto_maxBonusRolloverAdv") == "")
 		{
-		  set_property("_auto_maxRolloverAdv", maxRolloverAdventures());
+		  set_property("_auto_maxBonusRolloverAdv", maxBonusRolloverAdventures());
 		}
-		return (my_adventures() < (130 - get_property("_auto_maxRolloverAdv").to_int());
+		return (my_adventures() < (130 - get_property("_auto_maxBonusRolloverAdv").to_int());
 	}
 	
 	casualCheck();
