@@ -317,6 +317,20 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	// Equip the combat lover's locket if we're missing a monster in the zone
+	if (auto_haveCombatLoversLocket())
+	{
+		foreach mon,rate in appearance_rates(place)
+		{
+			if (rate > 0 && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon))
+			{
+				auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from ' + place + ", so we're bringing it along.", "blue");
+				autoEquip($item[combat lover\'s locket]);
+				break;
+			}
+		}
+	}
+
 	if(in_koe() && possessEquipment($item[low-pressure oxygen tank]))
 	{
 		autoEquip($item[low-pressure oxygen tank]);
