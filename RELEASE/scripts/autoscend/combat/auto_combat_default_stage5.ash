@@ -845,6 +845,8 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 
 	// final check for physically immune monsters we are planning on simply attacking
 	// determine if attacking will deal reasonable damage
+	// note preadv *should* ensure we can damage physically immune monsters via a spell or attack
+	// this check could be redundant. If preadv worked as intended and we haven't picked a spell yet, attack should deal damage
 	if(enemy.physical_resistance >= 80 && attackMinor == "attack with weapon")
 	{
 		boolean success = false;
