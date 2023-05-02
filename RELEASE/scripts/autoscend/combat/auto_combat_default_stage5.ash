@@ -169,7 +169,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 
 		if(enemy.physical_resistance > 80)
 		{
-			boolean success = false;
 			foreach sk in $skills[Saucestorm, Saucegeyser, Northern Explosion]
 			{
 				if(canUse(sk, false))
@@ -178,13 +177,8 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 					attackMajor = useSkill(sk, false);
 					costMinor = mp_cost(sk);
 					costMajor = mp_cost(sk);
-					success = true;
 					break;
 				}
-			}
-			if(!success)
-			{
-				abort("I am fighting a physically immune monster and I do not know how to kill it");
 			}
 		}
 
@@ -847,6 +841,61 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	if((enemy.physical_resistance >= 100) && (monster_element(enemy) != $element[stench]) && canUse($skill[Skunk Glands], false))
 	{
 		return useSkill($skill[Skunk Glands], false);
+	}
+
+	// final check for physically immune monsters we are planning on simply attacking
+	// determine if attacking will deal reasonable damage
+	// note preadv *should* ensure we can damage physically immune monsters via a spell or attack
+	// this check could be redundant. If preadv worked as intended and we haven't picked a spell yet, attack should deal damage
+	if(enemy.physical_resistance >= 80 && attackMinor == "attack with weapon")
+	{
+		boolean success = false;
+		int m_hot = 1;
+		int m_cold = 1;
+		int m_spooky = 1;
+		int m_sleaze = 1;
+		int m_stench = 1;
+		switch(monster_element(enemy))
+		{
+			case $element[hot]:
+				m_hot = 0;
+				m_sleaze = 2;
+				m_stench = 2;
+				break;
+			case $element[cold]:
+				m_cold = 0;
+				m_hot = 2;
+				m_spooky = 2;
+				break;
+			case $element[spooky]:
+				m_spooky = 0;
+				m_hot = 2;
+				m_stench = 2;
+				break;
+			case $element[sleaze]:
+				m_sleaze = 0;
+				m_cold = 2;
+				m_spooky = 2;
+				break;
+			case $element[stench]:
+				m_stench = 0;
+				m_sleaze = 2;
+				m_cold = 2;
+				break;
+		}
+
+		int elementalDamage =
+							m_hot * numeric_modifier("hot damage") +
+							m_cold * numeric_modifier("cold damage") +
+							m_spooky * numeric_modifier("spooky damage") +
+							m_sleaze * numeric_modifier("sleaze damage") +
+							m_stench * numeric_modifier("stench damage");
+
+		// try to kill within 5 turns
+		if(elementalDamage * 5 < monster_hp())
+		{
+			abort("I am fighting a physically immune monster and I do not know how to kill it");
+		}
 	}
 
 	if((my_location() == $location[The X-32-F Combat Training Snowman]) && contains_text(text, "Cattle Prod") && (my_mp() >= costMajor))
