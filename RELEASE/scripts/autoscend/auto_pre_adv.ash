@@ -93,6 +93,10 @@ void auto_ghost_prep(location place)
 		Boil,						//avatar of jarlsberg
 		Bilious Burst,				//zombie slayer
 		Heroic Belch,				//avatar of boris
+		Smoke Break,				//avatar of sneaky pete
+		Fireball Toss,				//path of the plumber
+		Chill of the Tomb,			//dark gyffte
+		Lavafava,					//avatar of west of loathing
 		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
 		]
 	{
