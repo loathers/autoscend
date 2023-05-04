@@ -1,4 +1,4 @@
-since r27182;	// Buying hat from firework shop only requires autoSatisfyWithNPCs
+since r27299;	// feat: Perfect Embouchure spelling corrected
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -51,6 +51,7 @@ import <autoscend/paths/auto_path_util.ash>
 import <autoscend/paths/avatar_of_boris.ash>
 import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
+import <autoscend/paths/avatar_of_shadows_over_loathing.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
 import <autoscend/paths/bees_hate_you.ash>
 import <autoscend/paths/bugbear_invasion.ash>
@@ -176,6 +177,10 @@ void initializeSettings() {
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
+	remove_property("auto_forcedNC");
+	set_property("auto_forceNonCombatLocation", "");
+	set_property("auto_forceNonCombatSource", "");
+	set_property("auto_forceNonCombatTurn", -1);
 	set_property("auto_forceTavern", false);
 	set_property("auto_freeruns", "");
 	set_property("auto_funTracker", "");
@@ -203,6 +208,7 @@ void initializeSettings() {
 	set_property("auto_otherstuff", "");
 	set_property("auto_paranoia", -1);
 	set_property("auto_paranoia_counter", 0);
+	set_property("auto_parkaSpikesDeployed", false);
 	set_property("auto_priorCharpaneMode", "0");
 	set_property("auto_powerLevelLastLevel", "0");
 	set_property("auto_powerLevelAdvCount", "0");
@@ -238,6 +244,7 @@ void initializeSettings() {
 	eudora_initializeSettings();
 	heavyrains_initializeSettings();
 	awol_initializeSettings();
+	aosol_initializeSettings();
 	theSource_initializeSettings();
 	ed_initializeSettings();
 	boris_initializeSettings();
@@ -717,7 +724,7 @@ void initializeDay(int day)
 	}
 
 	// Get emotionally chipped if you have the item.  boris\zombie slayer\ed cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_darkGyffte()))
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_gnoob() || in_darkGyffte()))
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -1239,8 +1246,8 @@ boolean adventureFailureHandler()
 		//in KOLHS path you must spend 40 adv per day split between those locations. zones only exist in kolhs
 		The Hallowed Halls, Art Class, Chemistry Class, Shop Class,
 		
-		//holiday event. must spend 100 turns there to complete the holiday.
-		The Arrrboretum] contains place)
+		//holiday events
+		The Arrrboretum, The Spectral Pickle Factory] contains place)
 		{
 			tooManyAdventures = false;
 		}
@@ -1612,6 +1619,7 @@ boolean process_tasks()
 
 	foreach i,task_function,condition_function in task_order[task_path]
 	{
+		auto_log_debug("Attempting to execute task " + i + " " + task_function);
 		if (condition_function == "" || (call boolean condition_function()))
 		{
 			boolean result = call boolean task_function();
@@ -1705,6 +1713,8 @@ boolean doTasks()
 	auto_buySkills();		// formerly picky_buyskills() now moved here
 	awol_buySkills();
 	awol_useStuff();
+	aosol_unCurse();
+	aosol_buySkills();
 	theSource_buySkills();
 	jarlsberg_buySkills();
 	boris_buySkills();
@@ -1735,7 +1745,6 @@ boolean doTasks()
 	auto_buyFireworksHat();
 	auto_CMCconsult();
 	auto_checkTrainSet();
-	auto_autumnatonQuest();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
@@ -1808,6 +1817,7 @@ boolean doTasks()
 
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
+	if(LX_ForceNC())					return true;
 	if(LM_bond())						return true;
 	if(LX_calculateTheUniverse(false))	return true;
 	rockGardenEnd();

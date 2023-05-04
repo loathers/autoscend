@@ -77,24 +77,30 @@ boolean auto_post_adventure()
 	static boolean[monster] __MONSTERS_FOLLOWING_NONCOMBATS = $monsters[
 		// These monsters follow noncombats, so we should reset the noncombat-forcing tracker when we fight one.
 		Protector Spectre, ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley), Cosmetics wraith,
-
-		// If |lastEncounter| was a noncombat adventure,
-		// it'll to_monster() to $monster[none].
-		none
 	];
 
-	if(get_property("auto_forceNonCombatSource") != "" && (__MONSTERS_FOLLOWING_NONCOMBATS contains get_property("lastEncounter").to_monster() && !is_superlikely(get_property("lastEncounter"))))
+	if(get_property("auto_forceNonCombatSource") != "" && 
+		((__MONSTERS_FOLLOWING_NONCOMBATS contains get_property("lastEncounter").to_monster() || is_expectedForcedNonCombat(get_property("lastEncounter")))))
 	{
-		auto_log_info("Encountered (assumed) forced noncombat: " + get_property("lastEncounter"), "blue");
+		// possible to get desired NC when preparing spikes. Only log usage if NC was actually forced
+		if(get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean())
+		{
+			auto_log_info("Encountered (assumed) forced noncombat: " + get_property("lastEncounter"), "blue");
+			handleTracker(get_property("auto_forceNonCombatSource"), get_property("lastEncounter"), "auto_forcedNC");
+		}
 		set_property("auto_forceNonCombatSource", "");
+		set_property("auto_forceNonCombatLocation", "");
+		set_property("auto_parkaSpikesDeployed", false);
 		set_property("auto_forceNonCombatTurn", -1);
 	}
 
-	if(get_property("auto_forceNonCombatSource") != "" && get_property("auto_forceNonCombatTurn").to_int() > my_turncount() - 10)
+	if(get_property("auto_forceNonCombatSource") != "" && (get_property("auto_forceNonCombatTurn").to_int() + 10) <= my_turncount())
 	{
 		auto_log_warning("It's been 10 adventures since we forced a noncombat (" + get_property("auto_forceNonCombatSource") +
 			"), am going to assume it happened but we missed it.", "blue");
 		set_property("auto_forceNonCombatSource", "");
+		set_property("auto_forceNonCombatLocation", "");
+		set_property("auto_parkaSpikesDeployed", false);
 		set_property("auto_forceNonCombatTurn", 0);
 	}
 
@@ -316,6 +322,27 @@ boolean auto_post_adventure()
 			acquireMP(100, my_meat());
 		}
 		return true;
+	}
+	if(in_aosol())
+	{
+		if(my_class() == $class[Pig Skinner])
+		{
+			buffMaintain($effect[Cheerled], 30, 1, 10);
+			buffMaintain($effect[Taped Up], 20, 1, 10);
+			//buffMaintain($effect[Stretched], 10, 1, 10); In Providers
+		}
+		if(my_class() == $class[Cheese Wizard])
+		{
+			//buffMaintain($effect[Shifted Reality], 25, 1, 10);  In Providers
+			buffMaintain($effect[Cheddarmored], 5, 1, 10);
+			//buffMaintain($effect[Queso Fustulento], 10, 1, 10); //Only on boss fights
+		}
+		if(my_class() == $class[Jazz Agent])
+		{
+			buffMaintain($effect[Reliable Backup], 10, 1, 10);
+			buffMaintain($effect[Soothing Flute], 15, 1, 10);
+			//buffMaintain($effect[Tricky Timpani], 30, 1, 10); //Only on boss fights
+		}
 	}
 
 	skill libram = preferredLibram();

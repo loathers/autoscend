@@ -1978,6 +1978,18 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 		return true;
 	}
 
+	if(my_class() == $class[Pig Skinner] && have_skill($skill[Second Wind]))
+	{
+		return auto_pigSkinnerAcquireHP(0.7 * goal);
+	}
+	if(my_class() == $class[Cheese Wizard] && have_skill($skill[Emmental Elemental]))
+	{
+		return auto_cheeseWizardAcquireHP(goal - 0.3*my_buffedstat($stat[Moxie]));
+	}
+	if(my_class() == $class[Jazz Agent] && have_skill($skill[Grit Teeth]))
+	{
+		return auto_jazzAgentAcquireHP(goal - 60);
+	}
 	if(is_boris())
 	{
 		return borisAcquireHP(goal);

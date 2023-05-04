@@ -89,10 +89,15 @@ void auto_ghost_prep(location place)
 	//a few iconic spells per avatar is ok. no need to be too exhaustive
 	foreach sk in $skills[
 		Saucestorm, saucegeyser,	//base classes
-		Storm of the Scarab,		//actually ed the undying
+		Fist of the Mummy,		    //actually ed the undying
 		Boil,						//avatar of jarlsberg
 		Bilious Burst,				//zombie slayer
-		Heroic Belch				//avatar of boris
+		Heroic Belch,				//avatar of boris
+		Smoke Break,				//avatar of sneaky pete
+		Fireball Toss,				//path of the plumber
+		Chill of the Tomb,			//dark gyffte
+		Lavafava,					//avatar of west of loathing
+		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
 		]
 	{
 		if(auto_have_skill(sk))
@@ -218,6 +223,9 @@ boolean auto_pre_adventure()
 		junkyardML = true;
 		uneffect($effect[Spiky Shell]);
 		uneffect($effect[Scarysauce]);
+		if(in_aosol()){
+			uneffect($effect[Queso Fustulento]);
+		}
 		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
 
@@ -365,6 +373,20 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	// Equip the combat lover's locket if we're missing a monster in the zone
+	if (auto_haveCombatLoversLocket())
+	{
+		foreach mon,rate in appearance_rates(place)
+		{
+			if (rate > 0 && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon))
+			{
+				auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from ' + place + ", so we're bringing it along.", "blue");
+				autoEquip($item[combat lover\'s locket]);
+				break;
+			}
+		}
+	}
+
 	if(in_koe() && possessEquipment($item[low-pressure oxygen tank]))
 	{
 		autoEquip($item[low-pressure oxygen tank]);
@@ -398,6 +420,17 @@ boolean auto_pre_adventure()
 	if(auto_backupTarget())
 	{
 		autoEquip($slot[acc3], $item[backup camera]);
+	}
+
+	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
+	{
+		autoForceEquip($item[jurassic parka]); //equips parka and forbids maximizer tampering with shirt slot
+		//not using auto_configureParka("spikes") so maximizer stays aware of ML from shirt, instead of maximizing with another shirt or no shirt before changing to parka
+		set_property("auto_parkaSetting","spikes"); 
+		if (get_property("parkaMode") != "spikolodon")
+		{
+			cli_execute(`parka spikolodon`);
+		}
 	}
 	
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
@@ -659,6 +692,14 @@ boolean auto_pre_adventure()
 	
 	// Gremlins specific. need to let them hit so avoid ML unless defense is very high
 	if(junkyardML && my_buffedstat($stat[moxie]) < (2*monster_attack($monster[erudite gremlin])))
+	{
+		doML = false;
+		removeML = true;
+		purgeML = false;
+	}
+
+	// monster level increases zone damage. don't re apply ML buff shrugged by level_11.ash
+	if(place == $location[The Copperhead Club])
 	{
 		doML = false;
 		removeML = true;

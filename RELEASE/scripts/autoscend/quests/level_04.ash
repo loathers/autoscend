@@ -56,6 +56,12 @@ boolean L4_batCave()
 	if(batStatus >= 3)
 	{
 		buffMaintain($effect[Polka of Plenty], 15, 1, 1);
+		//AoSOL buffs
+		if(in_aosol())
+		{
+			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+		}
 		bat_formWolf();
 		addToMaximize("10meat");
 		int batskinBelt = item_amount($item[Batskin Belt]);

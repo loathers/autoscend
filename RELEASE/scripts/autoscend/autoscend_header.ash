@@ -491,6 +491,7 @@ void auto_checkTrainSet();
 boolean auto_haveRockGarden();
 void rockGardenEnd();
 void pickRocks();
+boolean wantToThrowGravel(location loc, monster enemy);
 boolean auto_haveSITCourse();
 void auto_SITCourse();
 
@@ -563,6 +564,16 @@ boolean awol_initializeSettings();
 void awol_useStuff();
 effect awol_walkBuff();
 boolean awol_buySkills();
+
+########################################################################################################
+//Defined in autoscend/paths/avatar_of_shadows_over_loathing.ash
+boolean in_aosol();
+boolean aosol_initializeSettings();
+void aosol_unCurse();
+boolean aosol_buySkills();
+boolean auto_pigSkinnerAcquireHP(int goal);
+boolean auto_cheeseWizardAcquireHP(int goal);
+boolean auto_jazzAgentAcquireHP(int goal);
 
 ########################################################################################################
 //Defined in autoscend/paths/bees_hate_you.ash
@@ -1743,10 +1754,12 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();
 boolean auto_haveQueuedForcedNonCombat();
+boolean is_expectedForcedNonCombat(string encounterName);
 boolean is_superlikely(string encounterName);
 int auto_predictAccordionTurns();
 boolean hasTTBlessing();
 void effectAblativeArmor(boolean passive_dmg_allowed);
 int currentPoolSkill();
 int poolSkillPracticeGains();
+boolean hasUsefulShirt();
 int meatReserve();

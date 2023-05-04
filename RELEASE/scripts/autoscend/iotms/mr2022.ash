@@ -177,7 +177,7 @@ void juneCleaverChoiceHandler(int choice)
 		case 1469: // Beware of Alligators
 			if (my_meat() < meatReserve()) {
 				run_choice(3); // 1500 meat
-			} else if (can_drink() && my_inebriety() < inebriety_limit()) {
+			} else if (canDrink($item[Dad\'s Brandy]) && my_inebriety() < inebriety_limit()) {
 				run_choice(2); // size 1 awesome booze
 			} else {
 				run_choice(3); // 1500 meat
@@ -348,13 +348,7 @@ void utilizeStillsuit() {
 	{
 		if(item_amount($item[tiny stillsuit]) == 0)
 		{
-			foreach f in $familiars[]
-			{
-				if (have_familiar(f) && familiar_equipped_equipment(f) == $item[tiny stillsuit])
-				{	//recover the stillsuit
-					visit_url("familiar.php?action=unequip&pwd&famid=" + f.to_int(), true);
-				}
-			}
+			retrieve_item($item[tiny stillsuit]);
 		}
 		if(item_amount($item[tiny stillsuit]) > 0)
 		{
@@ -520,10 +514,14 @@ boolean auto_autumnatonQuest()
 {
 	if(!auto_autumnatonReadyToQuest()) return false;
 
-	// complete any pending upgrades if it just returned
-	if (total_turns_played() == get_property("autumnatonQuestTurn").to_int() + 1)
+	// complete any pending upgrades if haven't checked since last return
+	// both of these props reset to 0 at start of day or new life due to "_" at start of them
+	int completedQuestsToday = get_property("_autumnatonQuests").to_int();
+	int lastQuestUpgradesChecked = get_property("_auto_lastAutumnatonUpgrade").to_int();
+	if(completedQuestsToday > lastQuestUpgradesChecked)
 	{
 		catch cli_execute("autumnaton upgrade");
+		set_property("_auto_lastAutumnatonUpgrade",completedQuestsToday);
 	}
 
 	// prioritize getting important upgrades
@@ -593,7 +591,8 @@ boolean auto_autumnatonQuest()
 		if(!auto_autumnatonCanAdv(targetLocation) && zone_available(targetLocation))
 		{
 			// force one turn in zone to unlock it for bot
-			return autoAdv(1, targetLocation);
+			// twin peak requires NC setup, call function instead of directly adventuring there
+			return L9_twinPeak();
 		}
 		if(auto_sendAutumnaton(targetLocation)) return false;
 	}
