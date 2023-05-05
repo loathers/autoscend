@@ -93,6 +93,10 @@ void auto_ghost_prep(location place)
 		Boil,						//avatar of jarlsberg
 		Bilious Burst,				//zombie slayer
 		Heroic Belch,				//avatar of boris
+		Smoke Break,				//avatar of sneaky pete
+		Fireball Toss,				//path of the plumber
+		Chill of the Tomb,			//dark gyffte
+		Lavafava,					//avatar of west of loathing
 		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
 		]
 	{
@@ -314,6 +318,20 @@ boolean auto_pre_adventure()
 		if (auto_wantToSniff(mon, place) && !burningDelay)
 		{
 			adjustForSniffingIfPossible(mon);
+		}
+	}
+
+	// Equip the combat lover's locket if we're missing a monster in the zone
+	if (auto_haveCombatLoversLocket())
+	{
+		foreach mon,rate in appearance_rates(place)
+		{
+			if (rate > 0 && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon))
+			{
+				auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from ' + place + ", so we're bringing it along.", "blue");
+				autoEquip($item[combat lover\'s locket]);
+				break;
+			}
 		}
 	}
 
