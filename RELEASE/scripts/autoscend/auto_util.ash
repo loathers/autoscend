@@ -4,8 +4,8 @@ boolean almostRollover()
 {
 	int warning_time = get_property("auto_stopMinutesToRollover").to_int() * 60;
 	int remaining_time = rollover() - (now_to_int()/1000);
-	print(`{warning_time} secs warning`, 'olive');
-	print(`{remaining_time} secs to rollover`, 'olive');
+	print(`{warning_time} secs warning`, '#00dddd');
+	print(`{remaining_time} secs to rollover`, '#00dddd');
 	return (remaining_time <= warning_time);
 }
 

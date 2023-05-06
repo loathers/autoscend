@@ -1685,7 +1685,7 @@ boolean doTasks()
 	{
 		// How much organ space left?  If none, go to bed
 		float organ_space = consumptionProgress();
-		print(`{organ_space} organ space`, 'olive');
+		print(`{organ_space} organ space`, '#00dddd');
 		if(organ_space >= 0.999)
 		{
 		  return false;
@@ -1693,8 +1693,8 @@ boolean doTasks()
 		// How much organ space was available the last time we were here?
 		float previous_space = get_property("_auto_organSpace").to_float();
 		float organ_space_change = organ_space - previous_space;
-		print(`{previous_space} previous space`, 'olive');
-		print(`{organ_space_change} organ space change`, 'olive');
+		print(`{previous_space} previous space`, '#00dddd');
+		print(`{organ_space_change} organ space change`, '#00dddd');
 		set_property("_auto_organSpace", organ_space);
 		// If no space used the last time consumption was done, don't bother trying again
 		if(organ_space_change < 0.001)
@@ -1704,10 +1704,14 @@ boolean doTasks()
 		// There's space left to fill, but let's continue only if we don't have enough adventures
 		if(get_property("_auto_maxBonusRolloverAdv") == "")
 		{
+		  // Let's only maximize once
 		  set_property("_auto_maxBonusRolloverAdv", maxBonusRolloverAdventures());
 		}
 		// 130 = 200 adv limit - 40 adv per day - 30 adv for nightcap
-		return (my_adventures() < (130 - get_property("_auto_maxBonusRolloverAdv").to_int());
+		print(`Max bonus rollover adv: {get_property("_auto_maxBonusRolloverAdv")}`, '#00dddd');
+		int target_adv = 130 - get_property("_auto_maxBonusRolloverAdv").to_int();
+		print(`Target adventures: {target_adv}`, '#00dddd');
+		return (my_adventures() < target_adv);
 	}
 	
 	casualCheck();
