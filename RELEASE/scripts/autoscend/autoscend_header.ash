@@ -1457,7 +1457,6 @@ boolean hasTorso(monster enemy);
 
 ########################################################################################################
 //Defined in autoscend/auto_path_util.ash
-boolean almostRollover();
 boolean auto_buySkills();
 void pathDroppedCheck();
 
@@ -1573,6 +1572,8 @@ boolean[location] monster_to_location(monster target);
 //Defined in autoscend/auto_util.ash
 //Other files are placed alphabetically. But due to its sheer size auto_util.ash goes last
 
+boolean almostRollover();
+boolean needToConsumeForEmergencyRollover();
 boolean autoMaximize(string req, boolean simulate);
 boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate);
 aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);
