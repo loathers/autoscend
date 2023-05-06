@@ -4,9 +4,23 @@ boolean almostRollover()
 {
 	int warning_time = get_property("auto_stopMinutesToRollover").to_int() * 60;
 	int remaining_time = rollover() - (now_to_int()/1000);
-	print(`{warning_time} secs warning`, '#00dddd');
-	print(`{remaining_time} secs to rollover`, '#00dddd');
+	auto_log_debug(`Less than {(remaining_time/60)+1} min until rollover, bedtime at {warning_time/60} min`, "blue");
 	return (remaining_time <= warning_time);
+}
+
+boolean needToConsumeForEmergencyRollover()
+{
+	int max_bonus_adv = round(numeric_modifier("adventures"));
+	foreach n, rec in maximize("adventures", 0, 0, true, true)
+	{
+		if(rec.item != $item[none])
+		{
+			max_bonus_adv += rec.score;
+		}
+	}
+	int target_adv = 130 - max_bonus_adv;
+	auto_log_debug(`Max bonus rollover adv: {max_bonus_adv}, target adv: {target_adv}`, "blue");
+	return (my_adventures() < target_adv);
 }
 
 boolean autoMaximize(string req, boolean simulate)
