@@ -670,8 +670,8 @@ void consumeStuff()
 			autoEat(1, $item[guilty sprout]);
 		}
 	}
-	// If adventures low 
-	if ((my_adventures() < 10 && !edSpleenCheck) || almostRollover())
+	// If adventures low, or it's almost Rollover, we need to consume
+	if ((my_adventures() < 10 && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover()))
 	{
 		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
 		if (inebriety_left() > 0)
