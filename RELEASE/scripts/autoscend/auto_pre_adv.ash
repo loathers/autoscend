@@ -299,7 +299,7 @@ boolean auto_pre_adventure()
 		acquireCombatMods(combatModifier._int, true);
 	}
 
-	boolean considerCrystalBallBonus;
+	boolean considerCrystalBallBonus = false;
 	if(auto_haveCrystalBall())
 	{
 		if(zoneQueueIgnored || get_property("auto_nextEncounter").to_monster() != $monster[none])
