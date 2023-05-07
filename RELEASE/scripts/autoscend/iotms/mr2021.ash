@@ -80,7 +80,8 @@ boolean auto_forceHandleCrystalBall(location loc)
 	boolean shouldForceEquip;
 	if(predicted_monster != $monster[none])
 	{
-		if((auto_wantToSniff(predicted_monster,loc) || 				//sniff targets are wanted monsters
+		if((auto_wantToSniff(predicted_monster,loc) || 	//sniff targets are wanted monsters TODO it's not exhaustive, neither is careAboutDrops()
+		isSniffed(predicted_monster) ||	//ball will likely be forbidden before getting to last monster, but last wanted one isn't sniff target
 		$monsters[Monstrous Boiler, beanbat] contains predicted_monster)	//some wanted monsters are not sniff targets
 		&& appearance_rates(loc,false)[predicted_monster] < 100)		//other monsters possible
 		{
