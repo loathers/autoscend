@@ -1556,23 +1556,38 @@ ConsumeAction auto_findBestConsumeAction(string type)
 
 ConsumeAction auto_findBestConsumeAction()
 {
+	if(stomach_left() == 0 && inebriety_left() == 0)
+	{
+		return MakeConsumeAction($item[none]);
+	}
+	
+	// if one organ is full and the other isn't, return the not full one
+	if(stomach_left() == 0 && inebriety_left() > 0)
+	{
+		return auto_findBestConsumeAction("drink");
+	}
+	if(stomach_left() > 0 && inebriety_left() == 0)
+	{
+		return auto_findBestConsumeAction("eat");
+	}
+
 	// deterimine if we want to avoid drinking
-	boolean canDrink = true;
+	boolean considerDrink = true;
 	if (!hasSpookyravenLibraryKey() && my_inebriety() >= 10)
 	{
 		auto_log_info("Will not drink to maintain pool skill for Haunted Billiards room.");
-		canDrink = false;
+		considerDrink = false;
 		if (fullness_left() == 0)
 		{
 			auto_log_warning("Need to drink as no fullness is available, pool skill will suffer.");
-			canDrink = true;
+			considerDrink = true;
 		}
 	}
 
 	ConsumeAction bestFoodAction = auto_findBestConsumeAction("eat");
 	
 	// if we are avoiding drinking, simply return the best food
-	if(!canDrink)
+	if(!considerDrink)
 	{
 		return bestFoodAction;
 	}
