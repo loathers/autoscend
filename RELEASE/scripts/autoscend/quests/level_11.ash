@@ -2351,14 +2351,7 @@ boolean L11_redZeppelin()
 		return autoAdvBypass("inv_use.php?pwd=&whichitem=7204&checked=1", $location[A Mob of Zeppelin Protesters]);
 	}
 
-	// save a clover for wand if in HC and need wand
-	int reserveClovers = 0;
-	if(in_hardcore() && get_property("auto_wandOfNagamar").to_boolean() && (item_amount($item[Wand Of Nagamar]) == 0))
-	{
-		reserveClovers = 1;
-	}
-
-	if(get_property("zeppelinProtestors").to_int() < 75 && cloversAvailable() > reserveClovers)
+	if(get_property("zeppelinProtestors").to_int() < 75 && cloversAvailable() > 0)
 	{
 		if(cloversAvailable() >= 3 && auto_shouldUseWishes())
 		{
