@@ -1560,7 +1560,7 @@ ConsumeAction auto_findBestConsumeAction()
 	{
 		return MakeConsumeAction($item[none]);
 	}
-	
+
 	// if one organ is full and the other isn't, return the not full one
 	if(stomach_left() == 0 && inebriety_left() > 0)
 	{
@@ -2029,21 +2029,20 @@ void consumeStuff()
 		borisDemandSandwich(true);
 	}
 
-	// guilty sprouts provide big stats
-	if(auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13 && !in_tcrs())
+	// guilty sprouts provide big stats. Eat if powerleveling
+	if(isAboutToPowerlevel() && auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13 && !in_tcrs())
 	{
 		// attempt to eat spaghetti breakfast as can only be eaten as the first food of the day
 		if(my_level() >= 11 && my_fullness() == 0 && !get_property("_spaghettiBreakfastEaten").to_boolean())
 		{
 			autoEat(1, $item[Spaghetti Breakfast]);
 		}
-		
-		// important for leveling. Attempt to pull if we don't have one
-		pullXWhenHaveY($item[guilty sprout], 1, 0);
 
 		// use food to level if ready for it
 		if(prepare_food_xp_multi())
 		{
+			// important for leveling. Attempt to pull if we don't have one
+			pullXWhenHaveY($item[guilty sprout], 1, 0);
 			autoEat(1, $item[guilty sprout]);
 		}
 	}
