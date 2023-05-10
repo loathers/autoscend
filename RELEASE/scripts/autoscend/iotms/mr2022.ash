@@ -177,7 +177,7 @@ void juneCleaverChoiceHandler(int choice)
 		case 1469: // Beware of Alligators
 			if (my_meat() < meatReserve()) {
 				run_choice(3); // 1500 meat
-			} else if (can_drink() && my_inebriety() < inebriety_limit()) {
+			} else if (canDrink($item[Dad\'s Brandy]) && my_inebriety() < inebriety_limit()) {
 				run_choice(2); // size 1 awesome booze
 			} else {
 				run_choice(3); // 1500 meat
