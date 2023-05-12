@@ -1742,9 +1742,9 @@ boolean L12_themtharHills()
 	handleFamiliar("meat");
 	addToMaximize("200meat drop");
 
-	if(auto_shouldUseWishes())
+	if(have_effect($effect[Frosty])==0)
 	{
-		makeGenieWish($effect[Frosty]);
+		auto_wishForEffect($effect[Frosty]);
 	}
 	buffMaintain($effect[Greedy Resolve]);
 	buffMaintain($effect[Disco Leer], 10, 1, 1);

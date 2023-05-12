@@ -1390,9 +1390,9 @@ boolean L11_unlockHiddenCity()
 	}
 	else if(in_glover())
 	{
-		if(auto_shouldUseWishes() && have_effect($effect[Stone-Faced]) == 0)
+		if(have_effect($effect[Stone-Faced]) == 0)
 		{
-			makeGenieWish($effect[Stone-Faced]);
+			auto_wishForEffect($effect[Stone-Faced]);
 		}
 		else return false;
 	}
