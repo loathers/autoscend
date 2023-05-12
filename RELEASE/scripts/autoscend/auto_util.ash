@@ -4515,7 +4515,7 @@ boolean auto_wishForEffect(effect wish)
 		if (auto_makeMonkeyPawWish(wish)) { return true; }
 	}
 	// If we're allowed to use the genie bottle, do that.
-	if(auto_shouldUseWishes() && auto_haveGenieBottle())
+	if(auto_shouldUseWishes() && auto_haveGenieBottleOrPocketWishes())
 	{
 		if(makeGenieWish(wish)) { return true; }
 	}

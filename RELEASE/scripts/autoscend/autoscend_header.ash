@@ -230,7 +230,7 @@ void horseDark();
 void horseCrazy();
 void horsePale();
 boolean horsePreAdventure();
-boolean auto_haveGenieBottle();
+boolean auto_haveGenieBottleOrPocketWishes();
 boolean auto_shouldUseWishes();
 int auto_wishesAvailable();
 boolean makeGenieWish(string wish);
