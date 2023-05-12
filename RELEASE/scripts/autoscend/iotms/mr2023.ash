@@ -95,7 +95,7 @@ void auto_SITCourse()
 boolean auto_haveMonkeyPaw()
 {
 	static item paw = $item[cursed monkey\'s paw];
-	return auto_is_valid(paw) && item_amount(paw) > 0;
+	return auto_is_valid(paw) && (item_amount(paw) > 0 || have_equipped(paw));
 }
 
 boolean auto_makeMonkeyPawWish(effect wish)
