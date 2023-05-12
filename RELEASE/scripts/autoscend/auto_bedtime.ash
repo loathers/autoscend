@@ -1187,9 +1187,12 @@ boolean doBedtime()
 	// Use up any cursed monkey paw wishes on Frosty (+100% item, +100% meat, +25 ML)
 	// Unless we're limiting ML, then do One Very Clear Eye
 	effect effect_to_wish = $effect[Frosty];
-	if (get_property("auto_MLSafetyLimit").to_int() < 25) // We're adding +25 ML that won't be shrugged.
+	if (get_property("auto_MLSafetyLimit")!="")
 	{
-		effect_to_wish = $effect[One Very Clear Eye];
+		if (get_property("auto_MLSafetyLimit").to_int() < 25) // We're adding +25 ML that won't be shrugged.
+		{
+			effect_to_wish = $effect[One Very Clear Eye];
+		}
 	}
 	if (auto_haveMonkeyPaw())
 	{
