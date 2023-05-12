@@ -2355,11 +2355,14 @@ boolean L11_redZeppelin()
 	{
 		if(cloversAvailable() >= 3)
 		{
-			foreach ef in $effects[Fifty Ways to Bereave Your Lover,Dirty Pear] //+100 sleaze dmg, double sleaze dmg
+			foreach ef in $effects[Dirty Pear, Fifty Ways to Bereave Your Lover] // double sleaze dmg, +100 sleaze dmg, 
 			{
-				if (have_effect(ef)==0)
+				if (numeric_modifier("sleaze_damage")+numeric_modifier("sleaze spell damage") < 400)
 				{
-					auto_wishForEffect(ef);
+					if (have_effect(ef)==0)
+					{
+						auto_wishForEffect(ef);
+					}
 				}
 			} // effects
 		} // have clovers
