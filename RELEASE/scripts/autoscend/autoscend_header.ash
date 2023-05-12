@@ -1764,3 +1764,4 @@ int currentPoolSkill();
 int poolSkillPracticeGains();
 boolean hasUsefulShirt();
 int meatReserve();
+boolean auto_wishForEffect(effect wish);
