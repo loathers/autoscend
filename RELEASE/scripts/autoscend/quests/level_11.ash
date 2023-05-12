@@ -2353,24 +2353,16 @@ boolean L11_redZeppelin()
 
 	if(get_property("zeppelinProtestors").to_int() < 75 && cloversAvailable() > 0)
 	{
-		if(cloversAvailable() >= 3 && auto_shouldUseWishes())
+		if(cloversAvailable() >= 3)
 		{
-			if (auto_haveGenieBottle()) {
-				makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
-				makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
-			}
-			if (auto_haveMonkeyPaw())
+			foreach ef in $effects[Fifty Ways to Bereave Your Lover,Dirty Pear] //+100 sleaze dmg, double sleaze dmg
 			{
-				if(have_effect($effect[Fifty Ways to Bereave Your Lover])==0)
+				if (have_effect(ef)==0)
 				{
-					auto_makeMonkeyPawWish($effect[Fifty Ways to Bereave Your Lover]);
+					auto_wishForEffect(ef);
 				}
-				if(have_effect($effect[Dirty Pear])==0)
-				{
-					auto_makeMonkeyPawWish($effect[Dirty Pear]);
-				}
-			} // monkey paw
-		} // use wishes
+			} // effects
+		} // have clovers
 		if(in_tcrs())
 		{
 			if(my_class() == $class[Sauceror] && my_sign() == "Blender")
