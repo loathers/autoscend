@@ -1278,10 +1278,12 @@ boolean canDrink(item toDrink);
 boolean canEat(item toEat);
 boolean canChew(item toChew);
 float consumptionProgress();
-void consumeStuff();
 boolean consumeFortune();
 void auto_printNightcap();
 void auto_drinkNightcap();
+ConsumeAction auto_findBestConsumeAction(string type);
+ConsumeAction auto_findBestConsumeAction();
+boolean auto_autoConsumeOne(ConsumeAction action);
 boolean auto_autoConsumeOne(string type);
 item auto_autoConsumeOneSimulation(string type);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
@@ -1292,6 +1294,7 @@ item still_targetToOrigin(item target);
 boolean stillReachable();
 boolean distill(item target);
 boolean prepare_food_xp_multi();
+void consumeStuff();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash

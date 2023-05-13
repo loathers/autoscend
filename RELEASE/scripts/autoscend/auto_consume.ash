@@ -603,117 +603,6 @@ float consumptionProgress()
 	}
 }
 
-void consumeStuff()
-{
-	if (auto_haveKramcoSausageOMatic())
-	{
-		auto_sausageWanted();
-	}
-
-	if (get_property("auto_limitConsume").to_boolean())
-	{
-		return;
-	}
-
-	if (bat_consumption())
-	{
-		return;
-	}
-	if (inAftercore())
-	{
-		return;
-	}
-	if(in_community())
-	{
-		cs_eat_spleen();
-		return;
-	}
-	if(in_kolhs())
-	{
-		kolhs_consume();
-		return;
-	}
-	if(in_robot())
-	{
-		robot_get_adv();
-		return;
-	}
-
-	// fills up spleen for Ed.
-	if (ed_eatStuff())
-	{
-		return;
-	}
-
-	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
-	
-	if (my_adventures() < 10 && fullness_left() > 0 && is_boris())
-	{
-		borisDemandSandwich(true);
-	}
-
-	// guilty sprouts provide big stats
-	if(auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13 && !in_tcrs())
-	{
-		// attempt to eat spaghetti breakfast as can only be eaten as the first food of the day
-		if(my_level() >= 11 && my_fullness() == 0 && !get_property("_spaghettiBreakfastEaten").to_boolean())
-		{
-			autoEat(1, $item[Spaghetti Breakfast]);
-		}
-		
-		// important for leveling. Attempt to pull if we don't have one
-		pullXWhenHaveY($item[guilty sprout], 1, 0);
-
-		// use food to level if ready for it
-		if(prepare_food_xp_multi())
-		{
-			autoEat(1, $item[guilty sprout]);
-		}
-	}
-	// If adventures low, or it's almost Rollover, we need to consume
-	if ((my_adventures() < 10 && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover()))
-	{
-		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
-		if (inebriety_left() > 0)
-		{
-			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 
-			&& pathAllowsChangingFamiliar()) //check path allows changing of familiars
-			{
-				use_familiar($familiar[Mosquito]);
-			}
-			boolean shouldDrink = true;
-			if (!hasSpookyravenLibraryKey() && my_inebriety() >= 10)
-			{
-				auto_log_info("Will not drink to maintain pool skill for Haunted Billiards room.");
-				shouldDrink = false;
-				if (fullness_left() == 0)
-				{
-					auto_log_warning("Need to drink as no fullness is available, pool skill will suffer.");
-					shouldDrink = true;
-				}
-			}
-			if (shouldDrink && auto_autoConsumeOne("drink"))
-			{
-				return;
-			}
-		}
-		if (fullness_left() > 0)
-		{
-			if (auto_autoConsumeOne("eat"))
-			{
-				return;
-			}
-		}
-	}
-	
-	//if stomach and liver are full and out of adv then chew size 4 iotm derivative spleen items that give 1.875 adv/size.
-	if (auto_chewAdventures())
-	{
-		return;
-	}
-}
-
-
 int AUTO_ORGAN_STOMACH = 1;
 int AUTO_ORGAN_LIVER   = 2;
 
@@ -1665,37 +1554,106 @@ ConsumeAction auto_findBestConsumeAction(string type)
 	}
 }
 
-boolean auto_autoConsumeOne(string type)
+ConsumeAction auto_findBestConsumeAction()
 {
-	
-	ConsumeAction bestAction = auto_findBestConsumeAction(type);
+	if(stomach_left() == 0 && inebriety_left() == 0)
+	{
+		return MakeConsumeAction($item[none]);
+	}
 
-	if (bestAction.it == $item[none] && bestAction.cafeId == 0)
+	// if one organ is full and the other isn't, return the not full one
+	if(stomach_left() == 0 && inebriety_left() > 0)
+	{
+		return auto_findBestConsumeAction("drink");
+	}
+	if(stomach_left() > 0 && inebriety_left() == 0)
+	{
+		return auto_findBestConsumeAction("eat");
+	}
+
+	// deterimine if we want to avoid drinking
+	boolean considerDrink = true;
+	if (!hasSpookyravenLibraryKey() && my_inebriety() >= 10)
+	{
+		auto_log_info("Will not drink to maintain pool skill for Haunted Billiards room.");
+		considerDrink = false;
+		if (fullness_left() == 0)
+		{
+			auto_log_warning("Need to drink as no fullness is available, pool skill will suffer.");
+			considerDrink = true;
+		}
+	}
+
+	ConsumeAction bestFoodAction = auto_findBestConsumeAction("eat");
+
+	// if we are avoiding drinking, simply return the best food
+	if(!considerDrink)
+	{
+		return bestFoodAction;
+	}
+
+	// since we are considering drinking, determine if we should eat or drink
+	ConsumeAction bestDrinkAction = auto_findBestConsumeAction("drink");
+	float drink_desirability_per_fill = 0.0;
+	float food_desirability_per_fill = 0.0;
+
+	// leave desirability at 0 if an action wasn't found
+	if(bestDrinkAction.it != $item[none] || bestDrinkAction.cafeId != 0) 
+	{
+		drink_desirability_per_fill = bestDrinkAction.desirability/bestDrinkAction.size;
+	}
+	if(bestFoodAction.it != $item[none] || bestFoodAction.cafeId != 0)
+	{
+	 	food_desirability_per_fill = bestFoodAction.desirability/bestFoodAction.size;
+	}
+
+	// decsion time
+	if(drink_desirability_per_fill > food_desirability_per_fill)
+	{
+		return bestDrinkAction;
+	}
+	else
+	{
+		return bestFoodAction;
+	}
+
+}
+
+boolean auto_autoConsumeOne(ConsumeAction action)
+{
+	if (action.it == $item[none] && action.cafeId == 0)
 	{
 		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
 		return false;
 	}
 
-	int best_adv_per_fill = bestAction.adventures / bestAction.size;
-	if($items[Boris\'s key lime pie,Jarlsberg\'s key lime pie,Sneaky Pete\'s key lime pie] contains bestAction.it)
+	int best_adv_per_fill = action.adventures / action.size;
+	if($items[Boris\'s key lime pie,Jarlsberg\'s key lime pie,Sneaky Pete\'s key lime pie] contains action.it)
 	{
 		//the turn value of key lime pie is an exception so use its desirability instead of base adventures, after cancelling any effects of obtention method
-		if (bestAction.howToGet == AUTO_OBTAIN_PULL)	best_adv_per_fill = (bestAction.desirability + 5) / bestAction.size;
-		else if (bestAction.howToGet == AUTO_OBTAIN_CRAFT)	best_adv_per_fill = (bestAction.desirability + 1) / bestAction.size;
-		else	best_adv_per_fill = bestAction.desirability / bestAction.size;
+		if (action.howToGet == AUTO_OBTAIN_PULL)	best_adv_per_fill = (action.desirability + 5) / action.size;
+		else if (action.howToGet == AUTO_OBTAIN_CRAFT)	best_adv_per_fill = (action.desirability + 1) / action.size;
+		else	best_adv_per_fill = action.desirability / action.size;
 	}
-	auto_log_info("auto_autoConsumeOne: Planning to execute " + type + " " + to_pretty_string(bestAction), "blue");
+	// todo - put back in ` + type + " "` after execute================================================
+	auto_log_info("auto_autoConsumeOne: Planning to execute " + to_pretty_string(action), "blue");
 	if (best_adv_per_fill < get_property("auto_consumeMinAdvPerFill").to_float())
 	{
 		auto_log_warning("auto_autoConsumeOne: Will not consume, min adventures per full " + best_adv_per_fill + " is less than auto_consumeMinAdvPerFill " + get_property("auto_consumeMinAdvPerFill"));
 		return false;
 	}
-
-	if (!autoPrepConsume(bestAction)) 
+	if (!autoPrepConsume(action)) 
 	{
 		return false;
 	}
-	return autoConsume(bestAction);
+	return autoConsume(action);
+}
+
+//this should be definded second to avoid risking it calling itself.
+boolean auto_autoConsumeOne(string type)
+{
+	ConsumeAction bestAction = auto_findBestConsumeAction(type);
+	return auto_autoConsumeOne(bestAction);
 }
 
 // Need separate function to simulate since return type is different
@@ -2022,4 +1980,114 @@ boolean prepare_food_xp_multi()
 	}
 	
 	return true;
+}
+
+void consumeStuff()
+{
+	if (auto_haveKramcoSausageOMatic())
+	{
+		auto_sausageWanted();
+	}
+
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return;
+	}
+
+	if (bat_consumption())
+	{
+		return;
+	}
+	if (inAftercore())
+	{
+		return;
+	}
+	if(in_community())
+	{
+		cs_eat_spleen();
+		return;
+	}
+	if(in_kolhs())
+	{
+		kolhs_consume();
+		return;
+	}
+	if(in_robot())
+	{
+		robot_get_adv();
+		return;
+	}
+
+	// fills up spleen for Ed.
+	if (ed_eatStuff())
+	{
+		return;
+	}
+
+	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
+	
+	if (my_adventures() < 10 && fullness_left() > 0 && is_boris())
+	{
+		borisDemandSandwich(true);
+	}
+
+	// guilty sprouts provide big stats
+	if(auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13 && !in_tcrs())
+	{
+		// attempt to eat spaghetti breakfast as can only be eaten as the first food of the day
+		if(my_level() >= 11 && my_fullness() == 0 && !get_property("_spaghettiBreakfastEaten").to_boolean())
+		{
+			autoEat(1, $item[Spaghetti Breakfast]);
+		}
+		
+		// important for leveling. Attempt to pull if we don't have one
+		pullXWhenHaveY($item[guilty sprout], 1, 0);
+
+		// use food to level if ready for it
+		if(prepare_food_xp_multi())
+		{
+			autoEat(1, $item[guilty sprout]);
+		}
+	}
+	// If adventures low, or it's almost Rollover, we need to consume
+	if ((my_adventures() < 10 && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover()))
+	{
+		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
+		if (inebriety_left() > 0)
+		{
+			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 
+			&& pathAllowsChangingFamiliar()) //check path allows changing of familiars
+			{
+				use_familiar($familiar[Mosquito]);
+			}
+			boolean shouldDrink = true;
+			if (!hasSpookyravenLibraryKey() && my_inebriety() >= 10)
+			{
+				auto_log_info("Will not drink to maintain pool skill for Haunted Billiards room.");
+				shouldDrink = false;
+				if (fullness_left() == 0)
+				{
+					auto_log_warning("Need to drink as no fullness is available, pool skill will suffer.");
+					shouldDrink = true;
+				}
+			}
+			if (shouldDrink && auto_autoConsumeOne("drink"))
+			{
+				return;
+			}
+		}
+		if (fullness_left() > 0)
+		{
+			if (auto_autoConsumeOne("eat"))
+			{
+				return;
+			}
+		}
+	}
+	
+	//if stomach and liver are full and out of adv then chew size 4 iotm derivative spleen items that give 1.875 adv/size.
+	if (auto_chewAdventures())
+	{
+		return;
+	}
 }
