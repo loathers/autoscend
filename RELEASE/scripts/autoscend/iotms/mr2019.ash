@@ -317,8 +317,13 @@ boolean auto_sausageGoblin(location loc, string option)
 		return true;
 	}
 
-	autoEquip($item[Kramco Sausage-o-Matic&trade;]);
-	return autoAdv(1, loc, option);
+	if(autoEquip($item[Kramco Sausage-o-Matic&trade;]))
+	{
+		set_property("auto_nextEncounter","sausage goblin");
+		return autoAdv(1, loc, option);
+	}
+	set_property("auto_nextEncounter","");
+	return false;
 }
 
 boolean pirateRealmAvailable()
@@ -807,9 +812,9 @@ int auto_beachCombFreeUsesLeft(){
 }
 
 boolean auto_beachUseFreeCombs() {
-	if(!auto_beachCombAvailable()) { return false; }
-	if(get_property("_freeBeachWalksUsed").to_int() >= 11) { return false; }
-	cli_execute("CombBeach free");
+	int freeCombs = auto_beachCombFreeUsesLeft();
+	if(freeCombs <= 0) { return false; }
+	cli_execute(`combo {freeCombs}`);
 	return true;
 }
 

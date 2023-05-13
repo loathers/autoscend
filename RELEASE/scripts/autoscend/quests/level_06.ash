@@ -48,13 +48,13 @@ boolean L6_friarsGetParts()
 	if(item_amount($item[dodecagram]) == 0)
 	{
 		auto_log_info("Getting Dodecagram", "blue");
-		auto_forceNextNoncombat();
+		auto_forceNextNoncombat($location[The Dark Neck of the Woods]);
 		return autoAdv($location[The Dark Neck of the Woods]);
 	}
 	if(item_amount($item[eldritch butterknife]) == 0)
 	{
 		auto_log_info("Getting Eldritch Butterknife", "blue");
-		auto_forceNextNoncombat();
+		auto_forceNextNoncombat($location[The Dark Elbow of the Woods]);
 		return autoAdv($location[The Dark Elbow of the Woods]);
 	}
 	if(item_amount($item[box of birthday candles]) == 0)
@@ -66,7 +66,7 @@ boolean L6_friarsGetParts()
 			return false;
 		}
 		auto_log_info("Getting Box of Birthday Candles", "blue");
-		auto_forceNextNoncombat();
+		auto_forceNextNoncombat($location[The Dark Heart of the Woods]);
 		return autoAdv($location[The Dark Heart of the Woods]);
 	}
 
