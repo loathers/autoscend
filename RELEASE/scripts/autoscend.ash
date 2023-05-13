@@ -452,6 +452,10 @@ boolean LX_calculateTheUniverse(boolean speculative)
 	{
 		return false;
 	}
+	if(get_property("_universeCalculated").to_int() >= min(3, get_property("skillLevel144").to_int()))
+	{
+		return false;
+	}
 	
 	//do we want to summon a [War Frat 151st Infantryman] for the frat warrior outfit?
 	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy")
