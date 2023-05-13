@@ -611,23 +611,6 @@ int AUTO_OBTAIN_CRAFT = 101;
 int AUTO_OBTAIN_PULL  = 102;
 int AUTO_OBTAIN_BUY   = 103;
 
-// Used internally for knapsack optimization.
-record ConsumeAction
-{
-	// exactly one of these is non-none
-	item it;
-	int cafeId;
-
-	int size;           // how much of organ is used
-	float adventures;   // expected adv from (thing)
-
-	float desirability; // adv count that will be used for optimization
-	                    // (lower for pulls, higher for buffs/tower keys)
-
-	int organ;          // AUTO_ORGAN_*
-	int howToGet;       // AUTO_OBTAIN_*
-};
-
 string consumable_name(ConsumeAction action)
 {
 	string name = "<name not found>";
@@ -1585,7 +1568,7 @@ ConsumeAction auto_findBestConsumeAction()
 	}
 
 	ConsumeAction bestFoodAction = auto_findBestConsumeAction("eat");
-
+	
 	// if we are avoiding drinking, simply return the best food
 	if(!considerDrink)
 	{
@@ -1642,6 +1625,7 @@ boolean auto_autoConsumeOne(ConsumeAction action)
 		auto_log_warning("auto_autoConsumeOne: Will not consume, min adventures per full " + best_adv_per_fill + " is less than auto_consumeMinAdvPerFill " + get_property("auto_consumeMinAdvPerFill"));
 		return false;
 	}
+
 	if (!autoPrepConsume(action)) 
 	{
 		return false;
@@ -2031,57 +2015,38 @@ void consumeStuff()
 		borisDemandSandwich(true);
 	}
 
-	// guilty sprouts provide big stats
-	if(auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13 && !in_tcrs())
+	// guilty sprouts provide big stats. Eat if powerleveling
+	if(isAboutToPowerlevel() && auto_is_valid($item[guilty sprout]) && canEat($item[guilty sprout]) && my_level() < 13 && !in_tcrs())
 	{
 		// attempt to eat spaghetti breakfast as can only be eaten as the first food of the day
 		if(my_level() >= 11 && my_fullness() == 0 && !get_property("_spaghettiBreakfastEaten").to_boolean())
 		{
 			autoEat(1, $item[Spaghetti Breakfast]);
 		}
-		
-		// important for leveling. Attempt to pull if we don't have one
-		pullXWhenHaveY($item[guilty sprout], 1, 0);
 
 		// use food to level if ready for it
 		if(prepare_food_xp_multi())
 		{
+			// important for leveling. Attempt to pull if we don't have one
+			pullXWhenHaveY($item[guilty sprout], 1, 0);
 			autoEat(1, $item[guilty sprout]);
 		}
 	}
 	// If adventures low, or it's almost Rollover, we need to consume
 	if ((my_adventures() < 10 && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover()))
 	{
-		// Stop drinking at 10 drunk if spookyraven billiards room isn't completed, unless no fullness is available
-		if (inebriety_left() > 0)
+		// always unequip stooper as only useful for roll over
+		if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 
+		&& pathAllowsChangingFamiliar()) //check path allows changing of familiars
 		{
-			if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 
-			&& pathAllowsChangingFamiliar()) //check path allows changing of familiars
-			{
-				use_familiar($familiar[Mosquito]);
-			}
-			boolean shouldDrink = true;
-			if (!hasSpookyravenLibraryKey() && my_inebriety() >= 10)
-			{
-				auto_log_info("Will not drink to maintain pool skill for Haunted Billiards room.");
-				shouldDrink = false;
-				if (fullness_left() == 0)
-				{
-					auto_log_warning("Need to drink as no fullness is available, pool skill will suffer.");
-					shouldDrink = true;
-				}
-			}
-			if (shouldDrink && auto_autoConsumeOne("drink"))
-			{
-				return;
-			}
+			use_familiar($familiar[Mosquito]);
 		}
-		if (fullness_left() > 0)
+
+		ConsumeAction bestAction = auto_findBestConsumeAction();
+
+		if(auto_autoConsumeOne(bestAction))
 		{
-			if (auto_autoConsumeOne("eat"))
-			{
-				return;
-			}
+			return;
 		}
 	}
 	
