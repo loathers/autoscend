@@ -2032,6 +2032,7 @@ void consumeStuff()
 			autoEat(1, $item[guilty sprout]);
 		}
 	}
+
 	// If adventures low, or it's almost Rollover, we need to consume
 	if ((my_adventures() < 10 && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover()))
 	{
