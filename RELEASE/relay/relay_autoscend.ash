@@ -315,6 +315,9 @@ void main()
 	writeln("<h2>Beaten Up</h2>");
 	writeln(get_property("auto_beatenUpLocations"));
 
+	writeln("<h2>Forced Noncombats</h2>");
+	generateTrackingData("auto_forcedNC");
+
 	writeln("<h2>Eated</h2>");
 	generateTrackingData("auto_eaten");
 

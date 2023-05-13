@@ -663,6 +663,10 @@ void finalizeMaximize(boolean speculative)
 		// I noticed it being worn in preference to the astral pet sweater which is a waste
 		addToMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
 	}
+	
+	monster nextMonster = get_property("auto_nextEncounter").to_monster();
+	boolean nextMonsterIsFree = (nextMonster != $monster[none] && isFreeMonster(nextMonster)) || (get_property("breathitinCharges").to_int() > 0 && my_location().environment == "outdoor");
+	//todo if crystal ball is supported and locked in next monster is also known. appearance_rates (with queue parameter true) also reflects this
 
 	if (auto_haveKramcoSausageOMatic())
 	{
@@ -692,9 +696,9 @@ void finalizeMaximize(boolean speculative)
 				addBonusToMaximize($item[Cursed Magnifying Glass], 1000);
 			}
 		}
-		else if(get_property("_voidFreeFights").to_int() < 5 && solveDelayZone() != $location[none])
+		else if(!nextMonsterIsFree && get_property("_voidFreeFights").to_int() < 5 && solveDelayZone() != $location[none])
 		{
-			// add bonus to charge free fights
+			// add bonus to charge free fights. charge is added when completing nonfree fights only
 			addBonusToMaximize($item[Cursed Magnifying Glass], 200);
 		}
 	}
@@ -717,7 +721,10 @@ void finalizeMaximize(boolean speculative)
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
 	}
-	addBonusToMaximize($item[mafia thumb ring], 200); // 4% chance +1 adventure
+	if(!nextMonsterIsFree) //does not trigger on free fights
+	{
+		addBonusToMaximize($item[mafia thumb ring], 200); // 4% chance +1 adventure
+	}
 	if(possessEquipment($item[carnivorous potted plant]))
 	{
 		if(get_property("mappingMonsters").to_boolean() || auto_backupTarget())
@@ -726,7 +733,8 @@ void finalizeMaximize(boolean speculative)
 			// should also block equipping if support is added for Feel Nostalgic, Lecture on relativity, or fax for YR or other special combat actions
 			addToMaximize("-equip " + $item[carnivorous potted plant].to_string());
 		}
-		else if(get_property("auto_MLSafetyLimit") == "" || get_property("auto_MLSafetyLimit").to_int() >= 25)
+		else if((nextMonster == $monster[none] || instakillable(nextMonster)) && !in_pokefam() && 
+		get_property("auto_MLSafetyLimit") == "" || get_property("auto_MLSafetyLimit").to_int() >= 25)
 		{
 			addBonusToMaximize($item[carnivorous potted plant], 200); // 4% chance free kill but also 25 ML
 		}
@@ -929,22 +937,11 @@ int equipmentAmount(item equipment)
 		return 0;
 	}
 
-	int amount = item_amount(equipment) + equipped_amount(equipment);
+	int amount = item_amount(equipment) + equipped_amount(equipment, true);
 
 	if (get_related($item[broken champagne bottle], "fold") contains equipment)
 	{
 		amount = item_amount($item[January\'s Garbage Tote]);
-	}
-
-	if(item_type(equipment) == "familiar equipment")
-	{
-		foreach fam in $familiars[]
-		{
-			if(fam != my_familiar() && familiar_equipped_equipment(fam) == equipment)
-			{
-				amount++;
-			}
-		}
 	}
 
 	return amount;

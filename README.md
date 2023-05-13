@@ -66,6 +66,10 @@ The recommended choices in Valhalla for Actually Ed the Undying are
 * Astral Ring if you have less than 20 skill points, Astral Belt otherwise.
 * Opossum moon sign
 
+## Avatar of Shadows Over Loathing (AoSOL)
+
+If you do run AoSOL, you will likely run into MP regen issues if you are not well-equipped.
+
 ## Warning
 
 This code base has changed hands and evolved over years of development. Most of the code was written by people who are no longer playing the game or maintaining it. So, there may be mistakes and learning curves. Please be patient and understanding, this is a hobby for us.

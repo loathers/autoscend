@@ -1476,6 +1476,10 @@ boolean L13_towerNSTower()
 		uneffect($effect[Scarysauce]);
 		uneffect($effect[Jalape&ntilde;o Saucesphere]);
 		uneffect($effect[Spiky Shell]);
+		if(in_aosol()){
+			uneffect($effect[Queso Fustulento]);
+			uneffect($effect[Tricky Timpani]);
+		}
 		uneffect($effect[Psalm of Pointiness]);
 		uneffect($effect[Mayeaugh]);
 		uneffect($effect[Feeling Nervous]);
@@ -1632,7 +1636,7 @@ boolean L13_towerNSFinal()
 		acquireMP(200, 0);
 	}
 	
-	if(!(isActuallyEd() || is_boris() || is_jarlsberg() || is_pete() || in_bhy() || in_bugbear() || in_community() || in_theSource() || in_wotsf() || in_zombieSlayer()))
+	if(!(isActuallyEd() || is_boris() || is_jarlsberg() || is_pete() || in_bhy() || in_bugbear() || in_community() || in_theSource() || in_wotsf() || in_zombieSlayer() || in_aosol()))
 	{
 		//Only if the final boss does not unbuff us...
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
@@ -1657,6 +1661,12 @@ boolean L13_towerNSFinal()
 
 	addToMaximize("10dr,3moxie,0.5da 1000max,-5ml,1.5hp,0item,0meat");
 	autoEquip($slot[acc2], $item[Attorney\'s Badge]);
+	//AoSOL buffs
+	if(in_aosol())
+	{
+		buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+		buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+	}
 
 	if(internalQuestStatus("questL13Final") < 13)
 	{
@@ -1716,6 +1726,12 @@ boolean L13_towerNSFinal()
 	if(my_class() == $class[Plumber] && (0 < item_amount($item[Thwaitgold buzzy beetle statuette])))
 	{
 		abort("Freeing the king will lose your extra stomach space. Enjoy the rest of your video game.");
+	}
+
+	if($classes[Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class() && (0 < item_amount($item[Thwaitgold anti-moth statuette])))
+	{
+		visit_url("place.php?whichplace=nstower&action=ns_11_prism");
+		return true;
 	}
 
 	if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))

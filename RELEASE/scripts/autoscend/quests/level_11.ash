@@ -422,7 +422,7 @@ boolean LX_unlockHauntedLibrary()
 	if (internalQuestStatus("questM20Necklace") == 2)
 	{
 		// only force after we get the pool cue NC.
-		auto_forceNextNoncombat();
+		auto_forceNextNoncombat($location[The Haunted Billiards Room]);
 	}
 	auto_log_info("It's billiards time!", "blue");
 	return autoAdv($location[The Haunted Billiards Room]);
@@ -528,7 +528,7 @@ void hauntedBedroomChoiceHandler(int choice, string[int] options)
 	else if(choice == 878) // One Ornate Nightstand (The Haunted Bedroom)
 	{
 		boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
-		if(is_boris() || in_wotsf() || (in_nuclear() && in_hardcore()))
+		if(is_boris() || in_wotsf() || (in_zombieSlayer() && in_hardcore()) || (in_nuclear() && in_hardcore()))
 		{
 			needSpectacles = false;
 		}
@@ -598,7 +598,7 @@ boolean LX_getLadySpookyravensFinestGown() {
 	// Might not be worth it since we need to fight ornate nightstands for the spectacles and camera
 	boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
 	boolean needCamera = (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1);
-	if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
+	if (is_boris() || in_wotsf() || (in_zombieSlayer() && in_hardcore()) || (in_nuclear() && in_hardcore())) {
 		needSpectacles = false;
 	}
 	else if(needCamera && needSpectacles) {
@@ -681,7 +681,7 @@ boolean LX_getLadySpookyravensPowderPuff() {
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
 	if (!zone_delay($location[The Haunted Bathroom])._boolean) {
-		auto_forceNextNoncombat();
+		auto_forceNextNoncombat($location[The Haunted Bathroom]);
 	}
 	if (autoAdv($location[The Haunted Bathroom])) {
 		return true;
@@ -842,7 +842,7 @@ boolean L11_getBeehive()
 
 	auto_log_info("Must find a beehive!", "blue");
 
-	auto_forceNextNoncombat();
+	auto_forceNextNoncombat($location[The Black Forest]);
 	boolean advSpent = autoAdv($location[The Black Forest]);
 	if(item_amount($item[beehive]) > 0)
 	{
@@ -1650,7 +1650,7 @@ boolean L11_hiddenCity()
 
 
 	//can we handle this zone?
-	if(!in_pokefam() && !in_darkGyffte())
+	if(!in_pokefam() && !in_darkGyffte() && !in_aosol())
 	{
 		if(!acquireHP())	//try to restore HP to max.
 		{
@@ -1677,7 +1677,7 @@ boolean L11_hiddenCity()
 	{
 		auto_log_info("The idden [sic] apartment!", "blue");
 
-		boolean elevatorAction = !zone_delay($location[The Hidden Apartment Building])._boolean;
+		boolean elevatorAction = !zone_delay($location[The Hidden Apartment Building])._boolean || auto_haveQueuedForcedNonCombat();
 		
 		boolean canDrinkCursedPunch = canDrink($item[Cursed Punch]) && !get_property("auto_limitConsume").to_boolean() && !in_tcrs();
 		//todo: in_tcrs check quality and size of cursed punch instead of skipping? if that is possible
@@ -1748,7 +1748,7 @@ boolean L11_hiddenCity()
 			
 			if(shouldForceElevatorAction)
 			{
-				elevatorAction = auto_forceNextNoncombat();
+				elevatorAction = auto_forceNextNoncombat($location[The Hidden Apartment Building]);
 			}
 		}
 
@@ -1795,6 +1795,10 @@ boolean L11_hiddenCity()
 					}
 				}
 			}
+			else
+			{
+				set_property("auto_nextEncounter","ancient protector spirit (The Hidden Apartment Building)");
+			}
 			auto_log_info("Hidden Apartment Progress: " + get_property("hiddenApartmentProgress"), "blue");
 			return autoAdv($location[The Hidden Apartment Building]);
 		}
@@ -1814,10 +1818,10 @@ boolean L11_hiddenCity()
 		}
 
 		int turnsUntilWorkingHoliday = zone_delay($location[The Hidden Office Building])._int;
-		boolean workingHoliday = (turnsUntilWorkingHoliday == 0);
+		boolean workingHoliday = (turnsUntilWorkingHoliday == 0 || auto_haveQueuedForcedNonCombat()) ;
 		
 		if(turnsUntilWorkingHoliday > 1 && item_amount($item[McClusky file (complete)]) > 0 && auto_canForceNextNoncombat()) {
-			if(auto_forceNextNoncombat())	//how many delay turns should this save to be considered?
+			if(auto_forceNextNoncombat($location[The Hidden Office Building]))	//how many delay turns should this save to be considered?
 			{
 				workingHoliday = true;
 			}
@@ -1858,6 +1862,11 @@ boolean L11_hiddenCity()
 			}
 			return autoAdv($location[The Hidden Apartment Building]);
 		}
+
+		if(workingHoliday && item_amount($item[McClusky file (complete)]) > 0)
+		{
+			set_property("auto_nextEncounter","ancient protector spirit (The Hidden Office Building)");
+		}
 		return autoAdv($location[The Hidden Office Building]);
 	}
 
@@ -1887,6 +1896,10 @@ boolean L11_hiddenCity()
 		{
 			auto_log_info("Bringing the Camel to spit on a Pygmy Bowler for bowling balls.");
 			handleFamiliar($familiar[Melodramedary]);
+		}
+		if(item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() == 5)
+		{
+			set_property("auto_nextEncounter","ancient protector spirit (The Hidden Bowling Alley)");
 		}
 		return autoAdv($location[The Hidden Bowling Alley]);
 	}
@@ -1951,6 +1964,14 @@ boolean L11_hiddenCity()
 	if (item_amount($item[stone triangle]) == 4) {
 		auto_log_info("Fighting the out-of-work spirit", "blue");
 		acquireHP();
+		//AoSOL buffs
+		if(in_aosol())
+		{
+			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+		}
+		set_property("auto_nextEncounter","Protector Spectre");
+		handleFamiliar("boss");
 		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
 		if (internalQuestStatus("questL11MacGuffin") > 2) {
 			// Actually Ed finishes this quest when all 3 parts of the staff are returned
@@ -2093,6 +2114,12 @@ boolean L11_mauriceSpookyraven()
 	if (internalQuestStatus("questL11Manor") > 2)
 	{
 		auto_log_info("Down with the tyrant of Spookyraven!", "blue");
+		//AoSOL buffs
+		if(in_aosol())
+		{
+			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+		}
 		acquireHP();
 		int [element] resGoal;
 		foreach ele in $elements[hot, cold, stench, sleaze, spooky]
@@ -2135,7 +2162,7 @@ boolean L11_mauriceSpookyraven()
 		}
 	}
 
-	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_wotsf() || in_bhy() || in_robot() || (in_nuclear() && !get_property("auto_haveoven").to_boolean()))
+	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_zombieSlayer() || in_wotsf() || in_bhy() || in_robot() || (in_nuclear() && !get_property("auto_haveoven").to_boolean()))
 	{
 		auto_log_warning("Alternate fulminate pathway... how sad :(", "red");
 		# I suppose we can let anyone in without the Spectacles.
@@ -2445,6 +2472,7 @@ boolean L11_ronCopperhead()
 			auto_log_info("Bringing the Camel to spit on a Red Butler for glark cables.");
 			handleFamiliar($familiar[Melodramedary]);
 		}
+		//set_property("auto_nextEncounter","Ron \"The Weasel\" Copperhead");	//this encounter is technically predictable, but mafia does not track progress?
 		boolean retval = autoAdv($location[The Red Zeppelin]);
 		// open red boxes when we get them (not sure if this is the place for this but it'll do for now)
 		if (item_amount($item[red box]) > 0)
@@ -2819,6 +2847,13 @@ boolean L11_palindome()
 		string[int] pages;
 		pages[0] = "place.php?whichplace=palindome&action=pal_drlabel";
 		pages[1] = "choice.php?pwd&whichchoice=131&option=" + palinChoice;
+		set_property("auto_nextEncounter","Dr. Awkward");
+		//AoSOL buffs
+		if(in_aosol())
+		{
+			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
+			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+		}
 		autoAdvBypass(0, pages, $location[Noob Cave], "");
 		return true;
 	}
@@ -3151,6 +3186,7 @@ boolean L11_defeatEd()
 
 	auto_log_info("Time to waste all of Ed's Ka Coins :(", "blue");
 
+	set_property("auto_nextEncounter","Ed the Undying");
 	autoAdv($location[The Lower Chambers]);
 	if(in_pokefam() || in_koe())
 	{
