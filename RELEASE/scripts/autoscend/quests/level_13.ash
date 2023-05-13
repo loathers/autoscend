@@ -1793,7 +1793,7 @@ boolean L13_towerNSNagamar()
 		boolean haveA = item_amount($item[metallic A]) != 0;
 		boolean haveN = item_amount($item[lowercase N]) != 0;
 		boolean haveD = item_amount($item[heavy D]) != 0;
-		if((!haveW || !haveA) && canHaveND)
+		if(!haveW || !haveA)
 		{
 			if((haveN && haveD) || item_amount($item[ND]) > 0 || pulls_remaining() > 1)	//if no ND, need 2 pulls
 			{
