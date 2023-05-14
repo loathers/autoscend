@@ -49,3 +49,20 @@ record generic_t
 	element _element;
 	phylum _phylum;
 };
+
+//used in auto_consume.ash
+record ConsumeAction
+{
+	// exactly one of these is non-none
+	item it;
+	int cafeId;
+
+	int size;           // how much of organ is used
+	float adventures;   // expected adv from (thing)
+
+	float desirability; // adv count that will be used for optimization
+	                    // (lower for pulls, higher for buffs/tower keys)
+
+	int organ;          // AUTO_ORGAN_*
+	int howToGet;       // AUTO_OBTAIN_*
+};
