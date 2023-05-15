@@ -273,7 +273,7 @@ boolean L8_getGoatCheese()
 	{
 		auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
 	}
-	if(auto_haveGreyGoose()){
+	if(auto_haveGreyGoose() && item_amount($item[Goat Cheese]) >= 2){
 		auto_log_info("Bringing the Grey Goose to emit some drones at a Dairy Goat for cheese, Gromit.");
 		handleFamiliar($familiar[Grey Goose]);
 	}

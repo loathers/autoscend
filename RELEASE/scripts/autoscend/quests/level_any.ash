@@ -911,7 +911,7 @@ boolean LX_dronesOut()
 	{
 		return autoAdv($location[The Batrat and Ratbat Burrow]); //Sonar-in-a-Biscuit
 	}
-	if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]))
+	if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]) && internalQuestStatus("questL11Worship") < 3 && my_level() >= 11)
 	{
 		return summonMonster($monster[Baa\'baa\'bu\'ran]); //Stone wool
 	}
@@ -923,7 +923,7 @@ boolean LX_dronesOut()
 	{
 		return autoAdv($location[Twin Peak]); //Hedge trimmers
 	}
-	if(needStarKey() && (item_amount($item[star]) < 8 && item_amount($item[line]) < 7) && zone_isAvailable($location[The Hole In The Sky]))
+	if(needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6) && zone_isAvailable($location[The Hole In The Sky]))
 	{
 		return autoAdv($location[The Hole In The Sky]); //Stars and Lines
 	}
