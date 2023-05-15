@@ -695,7 +695,7 @@ boolean L12_preOutfit()
 	}
 
 	//use 1 wish if we can guarentee outfit drops via yellow ray
-	if(canGenieCombat() && auto_shouldUseWishes() && canYellowRay())
+	if(canGenieCombat($monster[Orcish Frat Boy Spy]) && auto_shouldUseWishes() && canYellowRay())
 	{
 		monster wishTarget = $monster[War Hippy Spy];
 		if(!get_property("auto_hippyInstead").to_boolean())

@@ -1780,7 +1780,7 @@ boolean makeGenieWish(effect eff)
 	return makeGenieWish("to be " + eff) || have_effect(eff) > 0;
 }
 
-boolean canGenieCombat()
+boolean canGenieCombat(monster mon)
 {
 	boolean haveBottle = item_amount($item[Genie Bottle]) > 0;
 	boolean bottleWishesLeft = get_property("_genieWishesUsed").to_int() < 3;
@@ -1799,12 +1799,17 @@ boolean canGenieCombat()
 	{
 		return false;  // cannot fight if no adv remaining
 	}
+	string attr = mon.attributes.to_lower_case();
+	if (attr.contains_text("nocopy") || attr.contains_text("boss"))
+	{
+		return false;
+	}
 	return true;
 }
 
 boolean makeGenieCombat(monster mon, string option)
 {
-	if(!canGenieCombat())
+	if(!canGenieCombat(mon))
 	{
 		return false;
 	}

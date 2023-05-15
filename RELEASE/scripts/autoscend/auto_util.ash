@@ -1848,7 +1848,7 @@ boolean summonMonster(monster mon, boolean speculative)
 	}
 	if(auto_shouldUseWishes())
 	{
-		if(speculative && canGenieCombat())
+		if(speculative && canGenieCombat(mon))
 		{
 			auto_log_debug("Can summon " + mon, "blue");
 			return true;
