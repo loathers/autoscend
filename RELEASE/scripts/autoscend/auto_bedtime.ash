@@ -721,7 +721,7 @@ boolean doBedtime()
 			makeGeniePocket();
 		}
 	}
-	if(canGenieCombat() && !possessOutfit("frat warrior fatigues"))
+	if(canGenieCombat($monster[Orcish Frat Boy Spy]) && !possessOutfit("frat warrior fatigues"))
 	{
 		auto_log_info("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 	}

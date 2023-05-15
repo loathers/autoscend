@@ -235,7 +235,7 @@ boolean auto_shouldUseWishes();
 int auto_wishesAvailable();
 boolean makeGenieWish(string wish);
 boolean makeGenieWish(effect eff);
-boolean canGenieCombat();
+boolean canGenieCombat(monster mon);
 boolean makeGenieCombat(monster mon, string option);
 boolean makeGenieCombat(monster mon);
 boolean makeGeniePocket();
