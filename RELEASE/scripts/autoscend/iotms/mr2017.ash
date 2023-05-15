@@ -1698,6 +1698,12 @@ boolean horsePreAdventure()
 	return getHorse(desiredHorse);
 }
 
+boolean auto_haveGenieBottleOrPocketWishes()
+{
+	return (item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[Genie Bottle]) ||
+	        item_amount($item[Pocket Wish] ) > 0 && auto_is_valid($item[Pocket Wish] ) );
+}
+
 boolean auto_shouldUseWishes()
 {
 	return get_property("auto_useWishes").to_boolean();

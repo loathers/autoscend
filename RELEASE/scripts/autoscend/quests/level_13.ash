@@ -409,6 +409,14 @@ boolean L13_towerNSContests()
 					cli_execute("concert White-boy Angst");
 				}
 
+			if(crowd1Insufficient())
+			{
+				if (have_effect($effect[New and Improved])==0)
+				{
+					auto_wishForEffect($effect[New and Improved]);
+				}
+			}
+
 				if(crowd1Insufficient())
 				{
 					if(get_property("auto_secondPlaceOrBust").to_boolean())
@@ -478,6 +486,14 @@ boolean L13_towerNSContests()
 					if(crowd2Insufficient()) fightClubSpa($effect[Uncucumbered]);
 				}
 				break;
+			}
+			
+			if(crowd2Insufficient())
+			{
+				if (have_effect($effect[New and Improved])==0)
+				{
+					auto_wishForEffect($effect[New and Improved]);
+				}
 			}
 
 			if(crowd2Insufficient())
@@ -563,24 +579,24 @@ boolean L13_towerNSContests()
 
 			score = numeric_modifier(challenge + " damage");
 			score += numeric_modifier(challenge + " spell damage");
-			if((score < 80) && auto_shouldUseWishes())
+			if((score < 80))
 			{
 				switch(challenge)
 				{
 				case $element[cold]:
-					makeGenieWish($effect[Staying Frosty]);
+					auto_wishForEffect($effect[Staying Frosty]);
 					break;
 				case $element[hot]:
-					makeGenieWish($effect[Dragged Through the Coals]);
+					auto_wishForEffect($effect[Dragged Through the Coals]);
 					break;
 				case $element[sleaze]:
-					makeGenieWish($effect[Fifty Ways to Bereave your Lover]);
+					auto_wishForEffect($effect[Fifty Ways to Bereave your Lover]);
 					break;
 				case $element[stench]:
-					makeGenieWish($effect[Sewer-Drenched]);
+					auto_wishForEffect($effect[Sewer-Drenched]);
 					break;
 				case $element[spooky]:
-					makeGenieWish($effect[You\'re Back...]);
+					auto_wishForEffect($effect[You\'re Back...]);
 					break;
 				}
 			}
