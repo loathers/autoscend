@@ -100,6 +100,14 @@ boolean auto_haveMonkeyPaw()
 
 boolean auto_makeMonkeyPawWish(effect wish)
 {
+	if (!auto_haveMonkeyPaw()) {
+		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
+		return false;
+	}
+	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+		auto_log_info("Out of monkey paw wishes, skipping "+to_string(wish));
+		return false;
+	}
 	boolean success = monkey_paw(wish);
 	if (success) {
 		handleTracker(to_string($item[cursed monkey\'s paw]), to_string(wish), "auto_wishes");
@@ -109,6 +117,14 @@ boolean auto_makeMonkeyPawWish(effect wish)
 
 boolean auto_makeMonkeyPawWish(item wish)
 {
+	if (!auto_haveMonkeyPaw()) {
+		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
+		return false;
+	}
+	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+		auto_log_info("Out of monkey paw wishes, skipping "+to_string(wish));
+		return false;
+	}
 	boolean success = monkey_paw(wish);
 	if (success) {
 		handleTracker(to_string($item[cursed monkey\'s paw]), to_string(wish), "auto_wishes");
@@ -118,6 +134,14 @@ boolean auto_makeMonkeyPawWish(item wish)
 
 boolean auto_makeMonkeyPawWish(string wish)
 {
+	if (!auto_haveMonkeyPaw()) {
+		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
+		return false;
+	}
+	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+		auto_log_info("Out of monkey paw wishes, skipping "+wish);
+		return false;
+	}
 	boolean success = monkey_paw(wish);
 	if (success) {
 		handleTracker(to_string($item[cursed monkey\'s paw]), wish, "auto_wishes");
