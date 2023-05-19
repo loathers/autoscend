@@ -19,8 +19,10 @@ boolean lol_buyReplicas()
 		return false;
 	}
 
-	if(item_amount($item[replica mr. accessory]) > 0)
+	while(item_amount($item[replica mr. accessory]) > 0)
 	{
 		abort("go spend the mr. replica!");
 	}
+	
+	return true;
 }
