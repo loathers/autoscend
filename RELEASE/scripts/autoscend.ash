@@ -66,6 +66,7 @@ import <autoscend/paths/grey_goo.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
+import <autoscend/paths/legacy_of_loathing.ash>
 import <autoscend/paths/license_to_adventure.ash>
 import <autoscend/paths/live_ascend_repeat.ash>
 import <autoscend/paths/low_key_summer.ash>
