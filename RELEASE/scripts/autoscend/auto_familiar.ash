@@ -886,7 +886,7 @@ void acquireFamiliars()
 {
 	//this function acquires hatchlings for important or easy to get familiars and then hatches them.
 	//use is_unrestricted instead of auto_is_valid because familiar hatching is not using an item and ignores most restrictions.
-	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar() || in_lol())
 	{
 		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
