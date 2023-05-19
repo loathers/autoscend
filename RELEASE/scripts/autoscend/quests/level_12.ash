@@ -695,7 +695,7 @@ boolean L12_preOutfit()
 	}
 
 	//use 1 wish if we can guarentee outfit drops via yellow ray
-	if(canGenieCombat() && auto_shouldUseWishes() && canYellowRay())
+	if(canGenieCombat($monster[Orcish Frat Boy Spy]) && auto_shouldUseWishes() && canYellowRay())
 	{
 		monster wishTarget = $monster[War Hippy Spy];
 		if(!get_property("auto_hippyInstead").to_boolean())
@@ -1742,9 +1742,9 @@ boolean L12_themtharHills()
 	handleFamiliar("meat");
 	addToMaximize("200meat drop");
 
-	if(auto_shouldUseWishes())
+	if(have_effect($effect[Frosty])==0)
 	{
-		makeGenieWish($effect[Frosty]);
+		auto_wishForEffect($effect[Frosty]);
 	}
 	buffMaintain($effect[Greedy Resolve]);
 	buffMaintain($effect[Disco Leer], 10, 1, 1);

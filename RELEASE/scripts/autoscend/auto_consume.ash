@@ -611,23 +611,6 @@ int AUTO_OBTAIN_CRAFT = 101;
 int AUTO_OBTAIN_PULL  = 102;
 int AUTO_OBTAIN_BUY   = 103;
 
-// Used internally for knapsack optimization.
-record ConsumeAction
-{
-	// exactly one of these is non-none
-	item it;
-	int cafeId;
-
-	int size;           // how much of organ is used
-	float adventures;   // expected adv from (thing)
-
-	float desirability; // adv count that will be used for optimization
-	                    // (lower for pulls, higher for buffs/tower keys)
-
-	int organ;          // AUTO_ORGAN_*
-	int howToGet;       // AUTO_OBTAIN_*
-};
-
 string consumable_name(ConsumeAction action)
 {
 	string name = "<name not found>";
@@ -1619,12 +1602,6 @@ ConsumeAction auto_findBestConsumeAction()
 
 }
 
-boolean auto_autoConsumeOne(string type)
-{
-	ConsumeAction bestAction = auto_findBestConsumeAction(type);
-	return auto_autoConsumeOne(bestAction);
-}
-
 boolean auto_autoConsumeOne(ConsumeAction action)
 {
 	if (action.it == $item[none] && action.cafeId == 0)
@@ -1654,6 +1631,13 @@ boolean auto_autoConsumeOne(ConsumeAction action)
 		return false;
 	}
 	return autoConsume(action);
+}
+
+//this should be definded second to avoid risking it calling itself.
+boolean auto_autoConsumeOne(string type)
+{
+	ConsumeAction bestAction = auto_findBestConsumeAction(type);
+	return auto_autoConsumeOne(bestAction);
 }
 // Need separate function to simulate since return type is different
 // For simulation, want to know what would be consumes instead of actually consuming it

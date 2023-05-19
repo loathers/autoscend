@@ -230,11 +230,12 @@ void horseDark();
 void horseCrazy();
 void horsePale();
 boolean horsePreAdventure();
+boolean auto_haveGenieBottleOrPocketWishes();
 boolean auto_shouldUseWishes();
 int auto_wishesAvailable();
 boolean makeGenieWish(string wish);
 boolean makeGenieWish(effect eff);
-boolean canGenieCombat();
+boolean canGenieCombat(monster mon);
 boolean makeGenieCombat(monster mon, string option);
 boolean makeGenieCombat(monster mon);
 boolean makeGeniePocket();
@@ -490,6 +491,10 @@ void pickRocks();
 boolean wantToThrowGravel(location loc, monster enemy);
 boolean auto_haveSITCourse();
 void auto_SITCourse();
+boolean auto_haveMonkeyPaw();
+boolean auto_makeMonkeyPawWish(effect wish);
+boolean auto_makeMonkeyPawWish(item wish);
+boolean auto_makeMonkeyPawWish(string wish);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1284,10 +1289,12 @@ boolean canDrink(item toDrink);
 boolean canEat(item toEat);
 boolean canChew(item toChew);
 float consumptionProgress();
-void consumeStuff();
 boolean consumeFortune();
 void auto_printNightcap();
 void auto_drinkNightcap();
+ConsumeAction auto_findBestConsumeAction(string type);
+ConsumeAction auto_findBestConsumeAction();
+boolean auto_autoConsumeOne(ConsumeAction action);
 boolean auto_autoConsumeOne(string type);
 item auto_autoConsumeOneSimulation(string type);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
@@ -1298,6 +1305,7 @@ item still_targetToOrigin(item target);
 boolean stillReachable();
 boolean distill(item target);
 boolean prepare_food_xp_multi();
+void consumeStuff();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
@@ -1765,3 +1773,4 @@ int currentPoolSkill();
 int poolSkillPracticeGains();
 boolean hasUsefulShirt();
 int meatReserve();
+boolean auto_wishForEffect(effect wish);
