@@ -34,7 +34,10 @@ boolean lol_buyReplicas()
 			visit_url("shop.php?whichshop=mrreplica&action=buyitem&quantity=1&whichrow=1319&pwd");
 			use(1, $item[Replica Dark Jill-O-Lantern]);
 		}
-		abort("go spend the mr. replica!");
+		if(item_amount($item[replica mr. accessory]) > 0)
+		{
+			abort("go spend the mr. replica! This year not supported yet");
+		}
 	}
 
 	return true;
