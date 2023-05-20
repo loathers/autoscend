@@ -4,7 +4,11 @@ boolean almostRollover()
 {
 	int warning_time = get_property("auto_stopMinutesToRollover").to_int() * 60;
 	int remaining_time = rollover() - (now_to_int()/1000);
-	auto_log_debug(`Less than {(remaining_time/60)+1} min until rollover, bedtime at {warning_time/60} min`, "blue");
+	if ((remaining_time-300) < warning_time)
+	{
+		// Only print debug messages less than 5 minutes before emergency bedtime
+		auto_log_debug(`Less than {(remaining_time/60)+1} min until rollover, bedtime at {warning_time/60} min`, "blue");
+	}
 	return (remaining_time <= warning_time);
 }
 
