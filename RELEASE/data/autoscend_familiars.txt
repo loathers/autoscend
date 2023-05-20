@@ -335,7 +335,7 @@ stat	26	Party Mouse
 stat	27	Lil' Barrel Mimic
 stat	28	Piranha Plant
 stat	29	Antique Nutcracker
-stat	30	Dark Jill-O-Lantern
+stat	30	Jill-O-Lantern
 # Fancy
 stat	31	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
