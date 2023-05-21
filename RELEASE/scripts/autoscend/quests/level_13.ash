@@ -1513,7 +1513,7 @@ boolean L13_towerNSTower()
 		//Wall Of Bones combat uses Unleash The Greash, Garbage Nova, or Saucegeyser
 		if(!auto_have_skill($skill[Garbage Nova]) && have_effect($effect[Takin\' It Greasy]) == 0)
 		{
-			float saucegeyserDamage = MLDamageToMonsterMultiplier()*ceil((numeric_modifier("Spell Damage Percent")/100.0)*(60 + numeric_modifier("Spell Damage") + numeric_modifier("Hot Spell Damage") + 0.4*my_buffedstat($stat[mysticality])));
+			float saucegeyserDamage = MLDamageToMonsterMultiplier()*ceil((numeric_modifier("Spell Damage Percent")/100.0)*(60 + numeric_modifier("Spell Damage") + max(numeric_modifier("Hot Spell Damage"),numeric_modifier("Cold Spell Damage")) + 0.4*my_buffedstat($stat[mysticality])));
 			if(saucegeyserDamage < 1667)
 			{
 				//counting on Saucegeyser and its damage will be too low
