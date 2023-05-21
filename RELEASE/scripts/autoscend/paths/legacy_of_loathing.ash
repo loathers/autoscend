@@ -19,21 +19,31 @@ boolean lol_buyReplicas()
 		return false;
 	}
 
+	if(item_amount($item[replica mr. accessory]) == 0)
+	{
+		return false;
+	}
+
 	while(item_amount($item[replica mr. accessory]) > 0)
 	{
 		string page = visit_url("shop.php?whichshop=mrreplica");
 
-		// check 2023 first since they will be available if you own the IOTM already
+		// check cincho first since it will be available immediately if you own the IOTM already
 		if(contains_text(page, "Cincho"))
 		{
 			abort("determine how to buy cincho");
 			visit_url("shop.php?whichshop=mrreplica&action=buyitem&quantity=1&whichrow=1320&pwd");
 		}
-		else if(contains_text(page, "Dark Jill"))
+		else if(contains_text(page, "Dark Jill")) //2004
 		{
 			visit_url("shop.php?whichshop=mrreplica&action=buyitem&quantity=1&whichrow=1319&pwd");
 			use(1, $item[Replica Dark Jill-O-Lantern]);
 		}
+		else if(contains_text(page, "replica wax lips")) //2005
+		{
+			visit_url("shop.php?whichshop=mrreplica&action=buyitem&quantity=1&whichrow=1324&pwd");
+		}
+
 		if(item_amount($item[replica mr. accessory]) > 0)
 		{
 			abort("go spend the mr. replica! This year not supported yet");
