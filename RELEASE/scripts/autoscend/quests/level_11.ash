@@ -1390,9 +1390,9 @@ boolean L11_unlockHiddenCity()
 	}
 	else if(in_glover())
 	{
-		if(auto_shouldUseWishes() && have_effect($effect[Stone-Faced]) == 0)
+		if(have_effect($effect[Stone-Faced]) == 0)
 		{
-			makeGenieWish($effect[Stone-Faced]);
+			auto_wishForEffect($effect[Stone-Faced]);
 		}
 		else return false;
 	}
@@ -2353,11 +2353,19 @@ boolean L11_redZeppelin()
 
 	if(get_property("zeppelinProtestors").to_int() < 75 && cloversAvailable() > 0)
 	{
-		if(cloversAvailable() >= 3 && auto_shouldUseWishes())
+		if(cloversAvailable() >= 3)
 		{
-			makeGenieWish($effect[Fifty Ways to Bereave Your Lover]); // +100 sleaze dmg
-			makeGenieWish($effect[Dirty Pear]); // double sleaze dmg
-		}
+			foreach ef in $effects[Dirty Pear, Fifty Ways to Bereave Your Lover] // double sleaze dmg, +100 sleaze dmg, 
+			{
+				if (numeric_modifier("sleaze_damage")+numeric_modifier("sleaze spell damage") < 400)
+				{
+					if (have_effect(ef)==0)
+					{
+						auto_wishForEffect(ef);
+					}
+				}
+			} // effects
+		} // have clovers
 		if(in_tcrs())
 		{
 			if(my_class() == $class[Sauceror] && my_sign() == "Blender")
