@@ -1,0 +1,106 @@
+LX_freeCombatsTask
+LX_unlockPirateRealm
+catBurglarHeist
+auto_breakfastCounterVisit
+chateauPainting
+LX_setWorkshed
+LX_artistQuest
+LX_galaktikSubQuest
+LX_armorySideQuest
+LX_meatsmithSubQuest
+L9_leafletQuest
+L5_findKnob
+L12_sonofaPrefix
+LX_burnDelay
+LX_summonMonster
+LM_edTheUndying
+LX_bugbearInvasion
+LX_lowkeySummer
+resolveSixthDMT
+LX_dinseylandfillFunbucks
+L12_flyerFinish
+L12_getOutfit
+L12_startWar
+LX_loggingHatchet
+LX_guildUnlock
+LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+LX_unlockDesert
+handleRainDoh
+routineRainManHandler
+LX_spookyravenManorFirstFloor
+L6_friarsGetParts	LX_steelOrgan_condition_slow
+LX_steelOrgan	LX_steelOrgan_condition_slow
+# *************Following task gives replica Mr A********************
+L4_batCave
+L2_mosquito
+LX_unlockHiddenTemple
+L6_dakotaFanning
+LX_lockPicking
+LX_fatLootToken
+# *************Following task gives replica Mr A********************
+L5_slayTheGoblinKing
+# *************Following task gives replica Mr A********************
+L8_trapperQuest
+# *************Following task gives replica Mr A********************
+L7_crypt
+LX_islandAccess
+L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
+LX_spookyravenManorSecondFloor
+L3_tavern
+L6_friarsGetParts
+LX_steelOrgan	in_hardcore
+fancyOilPainting
+LX_steelOrgan
+L10_plantThatBean
+L12_preOutfit
+L10_airship
+L10_basement
+L10_ground
+L11_blackMarket
+L11_forgedDocuments
+L11_mcmuffinDiary
+L10_topFloor
+L10_holeInTheSkyUnlock
+L9_chasmBuild
+L9_highLandlord
+L12_flyerBackup
+Lsc_flyerSeals
+# *************Following task gives replica Mr A********************
+L11_mauriceSpookyraven
+L11_unlockHiddenCity
+L11_hiddenCityZones
+LX_ornateDowsingRod
+L11_aridDesert
+# *************Following task gives replica Mr A********************
+L11_hiddenCity
+L11_talismanOfNam
+# *************Following task gives replica Mr A********************
+L11_palindome
+L11_unlockPyramid
+L11_unlockEd
+L11_defeatEd
+L12_gremlins
+L12_sonofaFinish
+L12_sonofaBeach
+L12_filthworms
+L12_orchardFinalize
+L12_themtharHills
+L12_farm
+L11_getBeehive
+// *************Following task gives replica Mr A********************
+L12_finalizeWar
+L12_clearBattlefield
+LX_koeInvaderHandler
+setSoftblockDelay	allowSoftblockDelay
+setSoftblockShen	allowSoftblockShen
+LX_getDigitalKey
+LX_getStarKey
+L12_lastDitchFlyer
+LX_bugbearInvasionFinale
+L13_towerNSContests
+L13_towerNSHedge
+L13_sorceressDoor
+L13_towerNSTower
+L13_towerNSNagamar
+L13_towerNSFinal
+LX_attemptPowerLevel
