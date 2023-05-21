@@ -230,11 +230,12 @@ void horseDark();
 void horseCrazy();
 void horsePale();
 boolean horsePreAdventure();
+boolean auto_haveGenieBottleOrPocketWishes();
 boolean auto_shouldUseWishes();
 int auto_wishesAvailable();
 boolean makeGenieWish(string wish);
 boolean makeGenieWish(effect eff);
-boolean canGenieCombat();
+boolean canGenieCombat(monster mon);
 boolean makeGenieCombat(monster mon, string option);
 boolean makeGenieCombat(monster mon);
 boolean makeGeniePocket();
@@ -490,6 +491,10 @@ void pickRocks();
 boolean wantToThrowGravel(location loc, monster enemy);
 boolean auto_haveSITCourse();
 void auto_SITCourse();
+boolean auto_haveMonkeyPaw();
+boolean auto_makeMonkeyPawWish(effect wish);
+boolean auto_makeMonkeyPawWish(item wish);
+boolean auto_makeMonkeyPawWish(string wish);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1762,3 +1767,4 @@ int currentPoolSkill();
 int poolSkillPracticeGains();
 boolean hasUsefulShirt();
 int meatReserve();
+boolean auto_wishForEffect(effect wish);
