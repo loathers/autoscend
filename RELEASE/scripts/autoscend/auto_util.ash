@@ -1906,7 +1906,7 @@ boolean summonMonster(monster mon, boolean speculative)
 	}
 	if(auto_shouldUseWishes())
 	{
-		if(speculative && canGenieCombat())
+		if(speculative && canGenieCombat(mon))
 		{
 			auto_log_debug("Can summon " + mon, "blue");
 			return true;
@@ -4564,4 +4564,18 @@ int meatReserve()
 	}
 	
 	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
+}
+
+boolean auto_wishForEffect(effect wish)
+{
+	// First try to use the monkey paw
+	if (auto_haveMonkeyPaw()) {
+		if (auto_makeMonkeyPawWish(wish)) { return true; }
+	}
+	// If we're allowed to use the genie bottle, do that.
+	if(auto_shouldUseWishes() && auto_haveGenieBottleOrPocketWishes())
+	{
+		if(makeGenieWish(wish)) { return true; }
+	}
+	return false;
 }
