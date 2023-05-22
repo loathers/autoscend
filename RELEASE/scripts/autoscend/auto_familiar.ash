@@ -850,7 +850,7 @@ boolean hatchFamiliar(familiar adult)
 void hatchList()
 {
 	//this function goes through a list of hatchlings to hatch if available.
-	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar() || in_lol())
 	{
 		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
