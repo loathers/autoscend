@@ -88,7 +88,7 @@ boolean lol_buyReplicas()
 		else if(contains_text(page, "— 2016 —"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Source terminal]);
-			use(1, $item[replica Source terminalg]); // put in campsite
+			use(1, $item[replica Source terminal]); // put in campsite
 		}
 		else if(contains_text(page, "— 2017 —"))
 		{
