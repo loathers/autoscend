@@ -64,112 +64,112 @@ Avatar of Jarlsberg	56	setSoftblockShen	allowSoftblockShen
 Avatar of Jarlsberg	57	L13_towerAscent
 Avatar of Jarlsberg	58	LX_attemptPowerLevel
 
-Legacy Of Loathing	0	LX_freeCombatsTask
-Legacy Of Loathing	1	LX_unlockPirateRealm
-Legacy Of Loathing	2	catBurglarHeist
-Legacy Of Loathing	3	auto_breakfastCounterVisit
-Legacy Of Loathing	4	chateauPainting
-Legacy Of Loathing	5	LX_setWorkshed
-Legacy Of Loathing	6	LX_artistQuest
-Legacy Of Loathing	7	LX_galaktikSubQuest
-Legacy Of Loathing	8	LX_armorySideQuest
-Legacy Of Loathing	9	LX_meatsmithSubQuest
-Legacy Of Loathing	10	L9_leafletQuest
-Legacy Of Loathing	11	L5_findKnob
-Legacy Of Loathing	12	L12_sonofaPrefix
-Legacy Of Loathing	13	LX_burnDelay
-Legacy Of Loathing	14	LX_summonMonster
-Legacy Of Loathing	15	LM_edTheUndying
-Legacy Of Loathing	16	LX_bugbearInvasion
-Legacy Of Loathing	17	LX_lowkeySummer
-Legacy Of Loathing	18	resolveSixthDMT
-Legacy Of Loathing	19	LX_dinseylandfillFunbucks
-Legacy Of Loathing	20	L12_flyerFinish
-Legacy Of Loathing	21	L12_getOutfit
-Legacy Of Loathing	22	L12_startWar
-Legacy Of Loathing	23	LX_loggingHatchet
-Legacy Of Loathing	24	LX_guildUnlock
-Legacy Of Loathing	25	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
-Legacy Of Loathing	26	LX_unlockDesert
-Legacy Of Loathing	27	handleRainDoh
-Legacy Of Loathing	28	routineRainManHandler
-Legacy Of Loathing	29	LX_spookyravenManorFirstFloor
-Legacy Of Loathing	30	L6_friarsGetParts	LX_steelOrgan_condition_slow
-Legacy Of Loathing	31	LX_steelOrgan	LX_steelOrgan_condition_slow
+Legacy of Loathing	0	LX_freeCombatsTask
+Legacy of Loathing	1	LX_unlockPirateRealm
+Legacy of Loathing	2	catBurglarHeist
+Legacy of Loathing	3	auto_breakfastCounterVisit
+Legacy of Loathing	4	chateauPainting
+Legacy of Loathing	5	LX_setWorkshed
+Legacy of Loathing	6	LX_artistQuest
+Legacy of Loathing	7	LX_galaktikSubQuest
+Legacy of Loathing	8	LX_armorySideQuest
+Legacy of Loathing	9	LX_meatsmithSubQuest
+Legacy of Loathing	10	L9_leafletQuest
+Legacy of Loathing	11	L5_findKnob
+Legacy of Loathing	12	L12_sonofaPrefix
+Legacy of Loathing	13	LX_burnDelay
+Legacy of Loathing	14	LX_summonMonster
+Legacy of Loathing	15	LM_edTheUndying
+Legacy of Loathing	16	LX_bugbearInvasion
+Legacy of Loathing	17	LX_lowkeySummer
+Legacy of Loathing	18	resolveSixthDMT
+Legacy of Loathing	19	LX_dinseylandfillFunbucks
+Legacy of Loathing	20	L12_flyerFinish
+Legacy of Loathing	21	L12_getOutfit
+Legacy of Loathing	22	L12_startWar
+Legacy of Loathing	23	LX_loggingHatchet
+Legacy of Loathing	24	LX_guildUnlock
+Legacy of Loathing	25	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+Legacy of Loathing	26	LX_unlockDesert
+Legacy of Loathing	27	handleRainDoh
+Legacy of Loathing	28	routineRainManHandler
+Legacy of Loathing	29	LX_spookyravenManorFirstFloor
+Legacy of Loathing	30	L6_friarsGetParts	LX_steelOrgan_condition_slow
+Legacy of Loathing	31	LX_steelOrgan	LX_steelOrgan_condition_slow
 # *************Following task gives replica Mr A********************
-Legacy Of Loathing	32	L4_batCave
-Legacy Of Loathing	33	L2_mosquito
-Legacy Of Loathing	34	LX_unlockHiddenTemple
-Legacy Of Loathing	35	L6_dakotaFanning
-Legacy Of Loathing	36	LX_lockPicking
-Legacy Of Loathing	37	LX_fatLootToken
+Legacy of Loathing	32	L4_batCave
+Legacy of Loathing	33	L2_mosquito
+Legacy of Loathing	34	LX_unlockHiddenTemple
+Legacy of Loathing	35	L6_dakotaFanning
+Legacy of Loathing	36	LX_lockPicking
+Legacy of Loathing	37	LX_fatLootToken
 # *************Following task gives replica Mr A********************
-Legacy Of Loathing	38	L5_slayTheGoblinKing
+Legacy of Loathing	38	L5_slayTheGoblinKing
 # *************Following task gives replica Mr A********************
-Legacy Of Loathing	39	L8_trapperQuest
+Legacy of Loathing	39	L8_trapperQuest
 # *************Following task gives replica Mr A********************
-Legacy Of Loathing	40	L7_crypt
-Legacy Of Loathing	41	LX_islandAccess
-Legacy Of Loathing	42	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
-Legacy Of Loathing	43	LX_spookyravenManorSecondFloor
-Legacy Of Loathing	44	L3_tavern
-Legacy Of Loathing	45	L6_friarsGetParts
-Legacy Of Loathing	46	LX_steelOrgan	in_hardcore
-Legacy Of Loathing	47	fancyOilPainting
-Legacy Of Loathing	48	LX_steelOrgan
-Legacy Of Loathing	49	L10_plantThatBean
-Legacy Of Loathing	50	L12_preOutfit
-Legacy Of Loathing	51	L10_airship
-Legacy Of Loathing	52	L10_basement
-Legacy Of Loathing	53	L10_ground
-Legacy Of Loathing	54	L11_blackMarket
-Legacy Of Loathing	55	L11_forgedDocuments
-Legacy Of Loathing	56	L11_mcmuffinDiary
-Legacy Of Loathing	57	L10_topFloor
-Legacy Of Loathing	58	L10_holeInTheSkyUnlock
-Legacy Of Loathing	59	L9_chasmBuild
-Legacy Of Loathing	60	L9_highLandlord
-Legacy Of Loathing	61	L12_flyerBackup
-Legacy Of Loathing	62	Lsc_flyerSeals
+Legacy of Loathing	40	L7_crypt
+Legacy of Loathing	41	LX_islandAccess
+Legacy of Loathing	42	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
+Legacy of Loathing	43	LX_spookyravenManorSecondFloor
+Legacy of Loathing	44	L3_tavern
+Legacy of Loathing	45	L6_friarsGetParts
+Legacy of Loathing	46	LX_steelOrgan	in_hardcore
+Legacy of Loathing	47	fancyOilPainting
+Legacy of Loathing	48	LX_steelOrgan
+Legacy of Loathing	49	L10_plantThatBean
+Legacy of Loathing	50	L12_preOutfit
+Legacy of Loathing	51	L10_airship
+Legacy of Loathing	52	L10_basement
+Legacy of Loathing	53	L10_ground
+Legacy of Loathing	54	L11_blackMarket
+Legacy of Loathing	55	L11_forgedDocuments
+Legacy of Loathing	56	L11_mcmuffinDiary
+Legacy of Loathing	57	L10_topFloor
+Legacy of Loathing	58	L10_holeInTheSkyUnlock
+Legacy of Loathing	59	L9_chasmBuild
+Legacy of Loathing	60	L9_highLandlord
+Legacy of Loathing	61	L12_flyerBackup
+Legacy of Loathing	62	Lsc_flyerSeals
 # *************Following task gives replica Mr A********************
-Legacy Of Loathing	63	L11_mauriceSpookyraven
-Legacy Of Loathing	64	L11_unlockHiddenCity
-Legacy Of Loathing	65	L11_hiddenCityZones
-Legacy Of Loathing	66	LX_ornateDowsingRod
-Legacy Of Loathing	67	L11_aridDesert
+Legacy of Loathing	63	L11_mauriceSpookyraven
+Legacy of Loathing	64	L11_unlockHiddenCity
+Legacy of Loathing	65	L11_hiddenCityZones
+Legacy of Loathing	66	LX_ornateDowsingRod
+Legacy of Loathing	67	L11_aridDesert
 # *************Following task gives replica Mr A********************
-Legacy Of Loathing	68	L11_hiddenCity
-Legacy Of Loathing	69	L11_talismanOfNam
+Legacy of Loathing	68	L11_hiddenCity
+Legacy of Loathing	69	L11_talismanOfNam
 # *************Following task gives replica Mr A********************
-Legacy Of Loathing	70	L11_palindome
-Legacy Of Loathing	71	L11_unlockPyramid
-Legacy Of Loathing	72	L11_unlockEd
-Legacy Of Loathing	73	L11_defeatEd
-Legacy Of Loathing	74	L12_gremlins
-Legacy Of Loathing	75	L12_sonofaFinish
-Legacy Of Loathing	76	L12_sonofaBeach
-Legacy Of Loathing	77	L12_filthworms
-Legacy Of Loathing	78	L12_orchardFinalize
-Legacy Of Loathing	79	L12_themtharHills
-Legacy Of Loathing	80	L12_farm
-Legacy Of Loathing	81	L11_getBeehive
-Legacy Of Loathing	82	// *************Following task gives replica Mr A********************
-Legacy Of Loathing	83	L12_finalizeWar
-Legacy Of Loathing	84	L12_clearBattlefield
-Legacy Of Loathing	85	LX_koeInvaderHandler
-Legacy Of Loathing	86	setSoftblockDelay	allowSoftblockDelay
-Legacy Of Loathing	87	setSoftblockShen	allowSoftblockShen
-Legacy Of Loathing	88	LX_getDigitalKey
-Legacy Of Loathing	89	LX_getStarKey
-Legacy Of Loathing	90	L12_lastDitchFlyer
-Legacy Of Loathing	91	LX_bugbearInvasionFinale
-Legacy Of Loathing	92	L13_towerNSContests
-Legacy Of Loathing	93	L13_towerNSHedge
-Legacy Of Loathing	94	L13_sorceressDoor
-Legacy Of Loathing	95	L13_towerNSTower
-Legacy Of Loathing	96	L13_towerNSNagamar
-Legacy Of Loathing	97	L13_towerNSFinal
-Legacy Of Loathing	98	LX_attemptPowerLevel
+Legacy of Loathing	70	L11_palindome
+Legacy of Loathing	71	L11_unlockPyramid
+Legacy of Loathing	72	L11_unlockEd
+Legacy of Loathing	73	L11_defeatEd
+Legacy of Loathing	74	L12_gremlins
+Legacy of Loathing	75	L12_sonofaFinish
+Legacy of Loathing	76	L12_sonofaBeach
+Legacy of Loathing	77	L12_filthworms
+Legacy of Loathing	78	L12_orchardFinalize
+Legacy of Loathing	79	L12_themtharHills
+Legacy of Loathing	80	L12_farm
+Legacy of Loathing	81	L11_getBeehive
+Legacy of Loathing	82	// *************Following task gives replica Mr A********************
+Legacy of Loathing	83	L12_finalizeWar
+Legacy of Loathing	84	L12_clearBattlefield
+Legacy of Loathing	85	LX_koeInvaderHandler
+Legacy of Loathing	86	setSoftblockDelay	allowSoftblockDelay
+Legacy of Loathing	87	setSoftblockShen	allowSoftblockShen
+Legacy of Loathing	88	LX_getDigitalKey
+Legacy of Loathing	89	LX_getStarKey
+Legacy of Loathing	90	L12_lastDitchFlyer
+Legacy of Loathing	91	LX_bugbearInvasionFinale
+Legacy of Loathing	92	L13_towerNSContests
+Legacy of Loathing	93	L13_towerNSHedge
+Legacy of Loathing	94	L13_sorceressDoor
+Legacy of Loathing	95	L13_towerNSTower
+Legacy of Loathing	96	L13_towerNSNagamar
+Legacy of Loathing	97	L13_towerNSFinal
+Legacy of Loathing	98	LX_attemptPowerLevel
 
 Quantum Terrarium	0	LX_freeCombatsTask
 Quantum Terrarium	1	LX_unlockPirateRealm
