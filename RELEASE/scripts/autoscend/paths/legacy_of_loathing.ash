@@ -33,95 +33,93 @@ boolean lol_buyReplicas()
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Cincho de Mayo]);
 		}
-		else if(contains_text(page, "— 2004 —"))
+		else if(contains_text(page, "<b>2004</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[Replica Dark Jill-O-Lantern]);
 			//visit_url("shop.php?whichshop=mrreplica&action=buyitem&quantity=1&whichrow=1319&pwd");
 			use(1, $item[Replica Dark Jill-O-Lantern]); // put in terrarium
 		}
-		else if(contains_text(page, "— 2005 —"))
+		else if(contains_text(page, "<b>2005</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica wax lips]);
 		}
-		else if(contains_text(page, "— 2006 —"))
+		else if(contains_text(page, "<b>2006</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica jewel-eyed wizard hat]);
 		}
-		else if(contains_text(page, "— 2007 —"))
+		else if(contains_text(page, "<b>2007</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica navel ring of navel gazing]);
 		}
-		else if(contains_text(page, "— 2008 —"))
+		else if(contains_text(page, "<b>2008</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica haiku katana]);
 		}
-		else if(contains_text(page, "— 2009 —"))
+		else if(contains_text(page, "<b>2009</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Elvish sunglasses]);
 		}
-		else if(contains_text(page, "— 2010 —"))
+		else if(contains_text(page, "<b>2010</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Greatest American Pants]);
 		}
-		else if(contains_text(page, "— 2011 —"))
+		else if(contains_text(page, "<b>2011</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica cute angel]);
 			use(1, $item[replica cute angel]); // put in terrarium
 		}
-		else if(contains_text(page, "— 2012 —"))
+		else if(contains_text(page, "<b>2012</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Libram of Resolutions]); // todo - add support to use daily
 		}
-		else if(contains_text(page, "— 2013 —"))
+		else if(contains_text(page, "<b>2013</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Smith\'s Tome]); // todo - add support to use daily
 		}
-		else if(contains_text(page, "— 2014 —"))
+		else if(contains_text(page, "<b>2014</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Crimbo sapling]);
 			use(1, $item[replica Crimbo sapling]); // put in terrarium
 		}
-		else if(contains_text(page, "— 2015 —"))
+		else if(contains_text(page, "<b>2015</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Deck of Every Card]);
 		}
-		else if(contains_text(page, "— 2016 —"))
+		else if(contains_text(page, "<b>2016</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Source terminal]);
 			use(1, $item[replica Source terminal]); // put in campsite
 		}
-		else if(contains_text(page, "— 2017 —"))
+		else if(contains_text(page, "<b>2017</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica genie bottle]);
 		}
-		else if(contains_text(page, "— 2018 —"))
+		else if(contains_text(page, "<b>2018</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica January\'s Garbage Tote]);
 		}
-		else if(contains_text(page, "— 2019 —"))
+		else if(contains_text(page, "<b>2019</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Kramco Sausage-o-Matic&trade;]);
 		}
-		else if(contains_text(page, "— 2020 —"))
+		else if(contains_text(page, "<b>2020</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica baby camelCalf]);
 			use(1, $item[replica baby camelCalf]); // put in terrarium
 		}
-		else if(contains_text(page, "— 2021 —"))
+		else if(contains_text(page, "<b>2021</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica emotion chip]);
 			use(1, $item[replica emotion chip]); // learn skills
 		}
-		else if(contains_text(page, "— 2022 —"))
+		else if(contains_text(page, "<b>2022</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Jurassic Parka]);
 		}
-
-
-
-		if(item_amount($item[replica mr. accessory]) > 0)
+		//
+		else if(item_amount($item[replica mr. accessory]) > 0)
 		{
-			abort("go spend the mr. replica! This year not supported yet");
+			abort("Didn't buy from replica Mr. Store even though we have a replica Mr. A. Report to devs");
 		}
 	}
 
