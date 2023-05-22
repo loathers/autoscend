@@ -316,6 +316,14 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 		return useSkill($skill[Gulp Latte]);
 	}
 
+	//use haiku katana's HP and MP restore skill
+	if((!in_plumber() && !in_darkGyffte() && !in_zombieSlayer()) &&	//paths that do not use MP
+	canUse($skill[Spring Raindrop Attack]) &&
+	my_mp() < 0.9 * my_maxmp())
+	{
+		return useSkill($skill[Gulp Latte]);
+	}
+
 	//stinkbug physically resistant monsters
 	if(!(have_equipped($item[Protonic Accelerator Pack]) && isGhost(enemy)))
 	{
