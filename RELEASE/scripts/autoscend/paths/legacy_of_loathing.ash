@@ -26,47 +26,115 @@ boolean lol_buyReplicas()
 
 	while(item_amount($item[replica mr. accessory]) > 0)
 	{
-		string page = visit_url("shop.php?whichshop=mrreplica");
+		string page = to_lower_case(visit_url("shop.php?whichshop=mrreplica"));
 
-		// check cincho first since it will be available immediately if you own the IOTM already
+		// attempt to buy 2023 IOTM first as if you one them, they are immediately available
+		// then attempt to buy sequentially year by year starting with 2004
+		// note with enough progress, can a second option up to year 2011
 		if(contains_text(page, "Cincho")) //2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Cincho de Mayo]);
 		}
 		else if(contains_text(page, "<b>2004</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[Replica Dark Jill-O-Lantern]);
-			//visit_url("shop.php?whichshop=mrreplica&action=buyitem&quantity=1&whichrow=1319&pwd");
-			use(1, $item[Replica Dark Jill-O-Lantern]); // put in terrarium
+			if(!contains_text(page, "replica dark jill-o-lantern") || !contains_text(page, "replica hand turkey outline"))
+			{
+				// already bought one
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica crimbo elfling]);
+				use(1, $item[replica crimbo elfling]); // put in terrarium
+			}
+			else if(item_amount($item[replica mr. accessory]) >= 6)
+			{
+				// buy hand turkey if can get bander t0
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica hand turkey outline]);
+				use(1, $item[replica hand turkey outline]); // put in terrarium
+			}
+			else
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[Replica Dark Jill-O-Lantern]);
+				use(1, $item[Replica Dark Jill-O-Lantern]); // put in terrarium
+			}
 		}
 		else if(contains_text(page, "<b>2005</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica wax lips]);
+			if(contains_text(page, "replica wax lips"))
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica wax lips]);
+			}
+			else
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica miniature gravy-covered maypole]);
+			}
 		}
 		else if(contains_text(page, "<b>2006</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica jewel-eyed wizard hat]);
+			if(contains_text(page, "replica jewel-eyed wizard hat"))
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica jewel-eyed wizard hat]);
+			}
+			else
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica Tome of Snowcone Summoning]);
+			}
 		}
 		else if(contains_text(page, "<b>2007</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica navel ring of navel gazing]);
+			if(contains_text(page, "replica navel ring of navel gazing"))
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica navel ring of navel gazing]);
+			}
+			else
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica V for Vivala mask]);
+			}
 		}
 		else if(contains_text(page, "<b>2008</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica haiku katana]);
+			if(contains_text(page, "replica haiku katana"))
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica haiku katana]);
+			}
+			else
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica cotton candy cocoon]);
+				use(1, $item[replica cotton candy cocoon]); // put in terrarium
+			}
 		}
 		else if(contains_text(page, "<b>2009</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica Elvish sunglasses]);
+			if(contains_text(page, "replica Apathargic Bandersnatch"))
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica Apathargic Bandersnatch]);
+				use(1, $item[replica Apathargic Bandersnatch]); // put in terrarium
+			}
+			else
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica squamous polyp]);
+				use(1, $item[replica squamous polyp]); // put in terrarium
+			}
 		}
 		else if(contains_text(page, "<b>2010</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica Greatest American Pants]);
+			if(contains_text(page, "replica Greatest American Pants"))
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica Greatest American Pants]);
+			}
+			else
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica organ grinder]);
+			}
 		}
 		else if(contains_text(page, "<b>2011</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica cute angel]);
-			use(1, $item[replica cute angel]); // put in terrarium
+			if(contains_text(page, "replica cute angel"))
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica cute angel]);
+				use(1, $item[replica cute angel]); // put in terrarium
+			}
+			else
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica Operation Patriot Shield]);
+			}
 		}
 		else if(contains_text(page, "<b>2012</b>"))
 		{
