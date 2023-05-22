@@ -1747,7 +1747,10 @@ boolean L13_towerNSFinal()
 		return true;
 	}
 
-	// todo - prevent auto breaking prism in lol?
+	if(in_lol())
+	{
+		abort("Freeing the king will result in losing all your replica IOTM. Enjoy them while you have them!");
+	}
 
 	if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))
 	{
