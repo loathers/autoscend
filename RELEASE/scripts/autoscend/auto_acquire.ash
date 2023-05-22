@@ -196,7 +196,7 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	}
 	if(in_lol())
 	{
-		// todo - add check if it is gear and create error log if it is
+		// todo - add check if it is pullable and create error log if it is not
 	}
 	if(in_hardcore())
 	{
