@@ -153,23 +153,23 @@ Legacy of Loathing	78	L12_orchardFinalize
 Legacy of Loathing	79	L12_themtharHills
 Legacy of Loathing	80	L12_farm
 Legacy of Loathing	81	L11_getBeehive
-Legacy of Loathing	82	// *************Following task gives replica Mr A********************
-Legacy of Loathing	83	L12_finalizeWar
-Legacy of Loathing	84	L12_clearBattlefield
-Legacy of Loathing	85	LX_koeInvaderHandler
-Legacy of Loathing	86	setSoftblockDelay	allowSoftblockDelay
-Legacy of Loathing	87	setSoftblockShen	allowSoftblockShen
-Legacy of Loathing	88	LX_getDigitalKey
-Legacy of Loathing	89	LX_getStarKey
-Legacy of Loathing	90	L12_lastDitchFlyer
-Legacy of Loathing	91	LX_bugbearInvasionFinale
-Legacy of Loathing	92	L13_towerNSContests
-Legacy of Loathing	93	L13_towerNSHedge
-Legacy of Loathing	94	L13_sorceressDoor
-Legacy of Loathing	95	L13_towerNSTower
-Legacy of Loathing	96	L13_towerNSNagamar
-Legacy of Loathing	97	L13_towerNSFinal
-Legacy of Loathing	98	LX_attemptPowerLevel
+# *************Following task gives replica Mr A********************
+Legacy of Loathing	82	L12_finalizeWar
+Legacy of Loathing	83	L12_clearBattlefield
+Legacy of Loathing	84	LX_koeInvaderHandler
+Legacy of Loathing	85	setSoftblockDelay	allowSoftblockDelay
+Legacy of Loathing	86	setSoftblockShen	allowSoftblockShen
+Legacy of Loathing	87	LX_getDigitalKey
+Legacy of Loathing	88	LX_getStarKey
+Legacy of Loathing	89	L12_lastDitchFlyer
+Legacy of Loathing	90	LX_bugbearInvasionFinale
+Legacy of Loathing	91	L13_towerNSContests
+Legacy of Loathing	92	L13_towerNSHedge
+Legacy of Loathing	93	L13_sorceressDoor
+Legacy of Loathing	94	L13_towerNSTower
+Legacy of Loathing	95	L13_towerNSNagamar
+Legacy of Loathing	96	L13_towerNSFinal
+Legacy of Loathing	97	LX_attemptPowerLevel
 
 Quantum Terrarium	0	LX_freeCombatsTask
 Quantum Terrarium	1	LX_unlockPirateRealm
