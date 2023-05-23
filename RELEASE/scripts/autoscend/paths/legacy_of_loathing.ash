@@ -30,7 +30,7 @@ boolean lol_buyReplicas()
 
 		// attempt to buy 2023 IOTM first as if you one them, they are immediately available
 		// then attempt to buy sequentially year by year starting with 2004
-		// note with enough progress, can a second option up to year 2011
+		// note with enough progress, can a second option up to year 2012
 		if(contains_text(page, "Cincho")) //2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Cincho de Mayo]);
@@ -102,7 +102,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2009</b>"))
 		{
-			if(contains_text(page, "replica Apathargic Bandersnatch"))
+			if(contains_text(page, "replica apathargic bandersnatch"))
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica Apathargic Bandersnatch]);
 				use(1, $item[replica Apathargic Bandersnatch]); // put in terrarium
@@ -115,7 +115,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2010</b>"))
 		{
-			if(contains_text(page, "replica Greatest American Pants"))
+			if(contains_text(page, "replica greatest american pants"))
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica Greatest American Pants]);
 			}
@@ -138,11 +138,21 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2012</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica Libram of Resolutions]); // todo - add support to use daily
+			if(contains_text(page, "replica libram of resolutions"))
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica Libram of Resolutions]); // todo - add support to use daily
+				use(1, $item[replica Libram of Resolutions]); // get items
+			}
+			else
+			{
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica deactivated nanobots]);
+				use(1, $item[replica deactivated nanobots]); // put in terrarium
+			}
 		}
 		else if(contains_text(page, "<b>2013</b>"))
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Smith\'s Tome]); // todo - add support to use daily
+			use(1, $item[replica Smith\'s Tome]); // get items
 		}
 		else if(contains_text(page, "<b>2014</b>"))
 		{
