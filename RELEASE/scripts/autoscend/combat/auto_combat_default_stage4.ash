@@ -321,7 +321,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	canUse($skill[Spring Raindrop Attack]) &&
 	my_mp() < 0.9 * my_maxmp())
 	{
-		return useSkill($skill[Gulp Latte]);
+		return useSkill($skill[Spring Raindrop Attack]);
 	}
 
 	//stinkbug physically resistant monsters

@@ -196,7 +196,7 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	}
 	if(in_lol())
 	{
-		// per kol "Only food, booze, potions, combat and usable items may be pulled on this path."
+		// kol states "Only food, booze, potions, combat and usable items may be pulled on this path."
 		if(it.fullness == 0 && it.inebriety == 0 && !it.potion && !it.combat && !it.usable)
 		{
 			return false;
