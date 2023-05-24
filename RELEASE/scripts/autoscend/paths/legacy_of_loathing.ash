@@ -31,7 +31,7 @@ boolean lol_buyReplicas()
 		// attempt to buy 2023 IOTM first as if you one them, they are immediately available
 		// then attempt to buy sequentially year by year starting with 2004
 		// note with enough progress, can a second option up to year 2012
-		if(contains_text(page, "Cincho")) //2023
+		if(contains_text(page, "cincho")) //2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Cincho de Mayo]);
 		}
