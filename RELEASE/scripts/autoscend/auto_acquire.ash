@@ -196,7 +196,11 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	}
 	if(in_lol())
 	{
-		// todo - add check if it is pullable and create error log if it is not
+		// per kol "Only food, booze, potions, combat and usable items may be pulled on this path."
+		if(it.fullness == 0 && it.inebriety == 0 && !it.potion && !it.combat && !it.usable)
+		{
+			return false;
+		}
 	}
 	if(in_hardcore())
 	{
