@@ -758,6 +758,7 @@ boolean LM_kolhs();
 boolean in_lol();
 void lol_initializeSettings();
 boolean lol_buyReplicas();
+void auto_LegacyOfLoathingDailies();
 
 ########################################################################################################
 //Defined in autoscend/paths/license_to_adventure.ash

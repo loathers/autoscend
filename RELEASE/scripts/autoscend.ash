@@ -1106,6 +1106,7 @@ boolean dailyEvents()
 	auto_harvestBatteries();
 	pickRocks();
 	auto_SITCourse();
+	auto_LegacyOfLoathingDailies();
 	
 	return true;
 }

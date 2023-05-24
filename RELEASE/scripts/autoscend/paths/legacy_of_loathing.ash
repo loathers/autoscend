@@ -140,7 +140,7 @@ boolean lol_buyReplicas()
 		{
 			if(contains_text(page, "replica libram of resolutions"))
 			{
-				buy($coinmaster[Replica Mr. Store], 1, $item[replica Libram of Resolutions]); // todo - add support to use daily
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica Libram of Resolutions]);
 				use(1, $item[replica Libram of Resolutions]); // get items
 			}
 			else
@@ -151,7 +151,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2013</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica Smith\'s Tome]); // todo - add support to use daily
+			buy($coinmaster[Replica Mr. Store], 1, $item[replica Smith\'s Tome]);
 			use(1, $item[replica Smith\'s Tome]); // get items
 		}
 		else if(contains_text(page, "<b>2014</b>"))
@@ -202,4 +202,17 @@ boolean lol_buyReplicas()
 	}
 
 	return true;
+}
+
+void auto_LegacyOfLoathingDailies()
+{
+	if(item_amount($item[replica Libram of Resolutions]) > 0)
+	{
+		use(1, $item[replica Libram of Resolutions]); // get items
+	}
+
+	if(item_amount($item[replica Smith\'s Tome]) > 0)
+	{
+		use(1, $item[replica Smith\'s Tome]); // get items
+	}
 }
