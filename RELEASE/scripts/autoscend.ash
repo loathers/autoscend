@@ -1,4 +1,4 @@
-since r27327;	// feat: Monkey Paw support
+since r27370;	// legacy of loathing support - mr. replica is a store
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -66,6 +66,7 @@ import <autoscend/paths/grey_goo.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
+import <autoscend/paths/legacy_of_loathing.ash>
 import <autoscend/paths/license_to_adventure.ash>
 import <autoscend/paths/live_ascend_repeat.ash>
 import <autoscend/paths/low_key_summer.ash>
@@ -269,6 +270,7 @@ void initializeSettings() {
 	wildfire_initializeSettings();
 	zombieSlayer_initializeSettings();
 	fotd_initializeSettings();
+	lol_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -1106,6 +1108,7 @@ boolean dailyEvents()
 	auto_harvestBatteries();
 	pickRocks();
 	auto_SITCourse();
+	auto_LegacyOfLoathingDailies();
 	
 	return true;
 }
@@ -1748,6 +1751,7 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	lol_buyReplicas();
 
 	oldPeoplePlantStuff();
 	use_barrels();

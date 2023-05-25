@@ -754,6 +754,13 @@ void kolhsChoiceHandler(int choice);
 boolean LM_kolhs();
 
 ########################################################################################################
+//Defined in autoscend/paths/legacy_of_loathing.ash
+boolean in_lol();
+void lol_initializeSettings();
+boolean lol_buyReplicas();
+void auto_LegacyOfLoathingDailies();
+
+########################################################################################################
 //Defined in autoscend/paths/license_to_adventure.ash
 boolean in_lta();
 void bond_initializeSettings();
