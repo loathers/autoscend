@@ -194,6 +194,14 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	{
 		return false;
 	}
+	if(in_lol())
+	{
+		// kol states "Only food, booze, potions, combat and usable items may be pulled on this path."
+		if(it.fullness == 0 && it.inebriety == 0 && !it.potion && !it.combat && !it.usable)
+		{
+			return false;
+		}
+	}
 	if(in_hardcore())
 	{
 		return false;

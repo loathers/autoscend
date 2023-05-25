@@ -2018,7 +2018,7 @@ boolean L11_hiddenCityZones()
 	L11_hiddenTavernUnlock();
 
 	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam();
-	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && in_hardcore();
+	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && (in_hardcore() || in_lol());
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
 	if (needMachete || needRelocate) {
