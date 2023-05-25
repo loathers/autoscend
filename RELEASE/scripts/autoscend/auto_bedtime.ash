@@ -611,7 +611,6 @@ boolean doBedtime()
 			return false;
 		}
 	}
-	//abort("We'd proceed to bedtime if this debug abort weren't here");
 	
 	ed_terminateSession();
 	bat_terminateSession();
