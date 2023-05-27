@@ -148,3 +148,44 @@ boolean auto_makeMonkeyPawWish(string wish)
 	}
 	return success;
 }
+
+boolean auto_haveCincho()
+{
+	// check for normal version
+	static item cincho = $item[Cincho de Mayo];
+	if(auto_is_valid(cincho) && (item_amount(cincho) > 0 || have_equipped(cincho)))
+	{
+		return true;
+	}
+
+	// check for replica in LoL path
+	static item replicaCincho = $item[replica Cincho de Mayo];
+	return auto_is_valid(replicaCincho) && (item_amount(replicaCincho) > 0 || have_equipped(replicaCincho));
+}
+
+int auto_currentCinch()
+{
+	return 100 - get_property("_cinchUsed").to_int();
+}
+
+int auto_cinchAfterNextRest()
+{
+	int cinchoRestsAlready = get_property("_cinchoRests").to_int();
+	// calculating for how much cinch NEXT rest will give
+	cinchoRestsAlready++;
+
+	int cinchGainedNextRest = 5;
+	if(cinchoRestsAlready <= 5) cinchGainedNextRest = 30;
+	else if(cinchoRestsAlready == 6) cinchGainedNextRest = 25;
+	else if(cinchoRestsAlready == 7) cinchGainedNextRest = 20;
+	else if(cinchoRestsAlready == 8) cinchGainedNextRest = 15;
+	else if(cinchoRestsAlready == 9) cinchGainedNextRest = 10;
+	// 10 and above give 5
+
+	return auto_currentCinch() + cinchGainedNextRest;
+}
+
+boolean auto_nextRestOverCinch()
+{
+	return auto_cinchAfterNextRest() > 100;
+}
