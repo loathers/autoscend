@@ -224,6 +224,7 @@ void initializeSettings() {
 	set_property("auto_delayLastLevel", 0);
 
 	set_property("auto_sniffs", "");
+	set_property("auto_stopMinutesToRollover", "5");
 	set_property("auto_waitingArrowAlcove", "50");
 	set_property("auto_wandOfNagamar", true);
 	set_property("auto_wineracksencountered", 0);
@@ -282,6 +283,7 @@ void initializeSession() {
 	// should be set in here.
 
 	auto_enableBackupCameraReverser();
+	set_property("_auto_organSpace", -1.0);
 	ed_initializeSession();
 	bat_initializeSession();
 }
@@ -451,6 +453,10 @@ boolean LX_calculateTheUniverse(boolean speculative)
 		return LX_wildfire_calculateTheUniverse();
 	}
 	if(my_mp() < mp_cost($skill[Calculate the Universe]))
+	{
+		return false;
+	}
+	if(get_property("_universeCalculated").to_int() >= min(3, get_property("skillLevel144").to_int()))
 	{
 		return false;
 	}
@@ -1667,6 +1673,32 @@ boolean doTasks()
 		auto_log_warning("I am in aftercore", "red");
 		return false;
 	}
+	// Check if rollover's coming up soon
+	if(almostRollover())
+	{
+		print("Rollover's coming!  Gotta consume what we can and go to bed!", "red");
+		// How much organ space left?  If none, go to bed
+		float organ_space = consumptionProgress();
+		auto_log_debug(`{organ_space} organ space`, "blue");
+		if(organ_space >= 0.999)
+		{
+		  return false;
+		}
+		// How much organ space was available the last time we were here?
+		float previous_space = get_property("_auto_organSpace").to_float();
+		float organ_space_change = organ_space - previous_space;
+		auto_log_debug(`{previous_space} previous space`, "blue");
+		auto_log_debug(`{organ_space_change} organ space change`, "blue");
+		set_property("_auto_organSpace", organ_space);
+		// If no space used the last time consumption was done, don't bother trying again
+		if(organ_space_change < 0.001)
+		{
+		  return false;
+		}
+		// There's space left to fill, but let's continue only if we don't have enough adventures
+		return needToConsumeForEmergencyRollover();
+	}
+	
 	casualCheck();
 	
 	print_header();
