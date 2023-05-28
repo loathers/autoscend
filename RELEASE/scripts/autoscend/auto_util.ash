@@ -1852,6 +1852,7 @@ boolean summonMonster(monster mon, boolean speculative)
 			return true;
 		}
 	}
+	// todo add support for Baa'baa'bu'ran with deck of every card sheep card
 	if(timeSpinnerCombat(mon, speculative))
 	{
 		return true;
