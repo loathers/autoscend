@@ -162,19 +162,20 @@ item	42	Frozen Gravy Fairy
 item	43	Spooky Gravy Fairy
 # Physical damage fairy
 item	44	Bowlet
+item	45	Crimbo Elf
 # Barely special fairies
-item	45	Mechanical Songbird
-item	46	Grouper Groupie
-item	47	Peppermint Rhino
+item	46	Mechanical Songbird
+item	47	Grouper Groupie
+item	48	Peppermint Rhino
 # Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
-item	48	Slimeling
+item	49	Slimeling
 # Turtles are cute
-item	49	Syncopated Turtle
+item	50	Syncopated Turtle
 # The original
-item	50	Baby Gravy Fairy
+item	51	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
-item	51	Mutant Fire Ant
+item	52	Mutant Fire Ant
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
@@ -334,15 +335,16 @@ stat	26	Party Mouse
 stat	27	Lil' Barrel Mimic
 stat	28	Piranha Plant
 stat	29	Antique Nutcracker
+stat	30	Jill-O-Lantern
 # Fancy
-stat	30	Miniature Sword &amp; Martini Guy
+stat	31	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	31	Grinning Turtle
+stat	32	Grinning Turtle
 # His winning smile
-stat	32	Smiling Rat
+stat	33	Smiling Rat
 # The original
-stat	33	Blood-Faced Volleyball
+stat	34	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work

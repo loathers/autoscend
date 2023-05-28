@@ -262,6 +262,12 @@ void bedtime_pulls_rollover_equip(float desirability)
 {
 	//scan through all pullable items for items that have a better rollover adv gain than currently best equipped item.
 	
+	// can't pull gear in Legacy of Loathing
+	if(in_lol())
+	{
+		return;
+	}
+
 	equipRollover(true);
 	for(int i=0; i<10; i++)
 	{
@@ -512,7 +518,7 @@ void bedtime_pulls()
 		bedtime_pulls_rollover_equip(desirability);
 	}
 	
-	if(get_property("auto_bedtime_pulls_min_desirability").to_float() <= 5.0)
+	if(get_property("auto_bedtime_pulls_min_desirability").to_float() <= 5.0 && !in_lol())
 	{
 		if(storage_amount($item[potato alarm clock]) > 0)
 		{
@@ -520,7 +526,8 @@ void bedtime_pulls()
 		}
 	}
 
-	if(item_amount($item[Muculent Machete]) == 0 && (!is_boris() || !in_wotsf() || !in_pokefam())) // no need in paths where can't use machete
+	if(item_amount($item[Muculent Machete]) == 0 && 
+		!(is_boris() || in_wotsf() || in_pokefam() || in_lol())) // no need in paths where can't use machete
 	{
 		pullXWhenHaveY($item[Antique Machete], 1, 0);
 	}
@@ -528,7 +535,7 @@ void bedtime_pulls()
 	{
 		pullXWhenHaveY($item[wet stew], 1, 0);
 	}
-	if(!black_market_available())
+	if(!black_market_available() && !in_lol())
 	{
 		pullXWhenHaveY($item[blackberry galoshes], 1, 0);
 	}
