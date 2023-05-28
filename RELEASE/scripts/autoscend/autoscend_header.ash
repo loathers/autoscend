@@ -754,6 +754,13 @@ void kolhsChoiceHandler(int choice);
 boolean LM_kolhs();
 
 ########################################################################################################
+//Defined in autoscend/paths/legacy_of_loathing.ash
+boolean in_lol();
+void lol_initializeSettings();
+boolean lol_buyReplicas();
+void auto_LegacyOfLoathingDailies();
+
+########################################################################################################
 //Defined in autoscend/paths/license_to_adventure.ash
 boolean in_lta();
 void bond_initializeSettings();
@@ -1580,6 +1587,8 @@ boolean[location] monster_to_location(monster target);
 //Defined in autoscend/auto_util.ash
 //Other files are placed alphabetically. But due to its sheer size auto_util.ash goes last
 
+boolean almostRollover();
+boolean needToConsumeForEmergencyRollover();
 boolean autoMaximize(string req, boolean simulate);
 boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate);
 aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);

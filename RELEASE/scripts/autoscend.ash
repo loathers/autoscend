@@ -1,4 +1,4 @@
-since r27327;	// feat: Monkey Paw support
+since r27370;	// legacy of loathing support - mr. replica is a store
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -66,6 +66,7 @@ import <autoscend/paths/grey_goo.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
+import <autoscend/paths/legacy_of_loathing.ash>
 import <autoscend/paths/license_to_adventure.ash>
 import <autoscend/paths/live_ascend_repeat.ash>
 import <autoscend/paths/low_key_summer.ash>
@@ -223,6 +224,7 @@ void initializeSettings() {
 	set_property("auto_delayLastLevel", 0);
 
 	set_property("auto_sniffs", "");
+	set_property("auto_stopMinutesToRollover", "5");
 	set_property("auto_waitingArrowAlcove", "50");
 	set_property("auto_wandOfNagamar", true);
 	set_property("auto_wineracksencountered", 0);
@@ -268,6 +270,7 @@ void initializeSettings() {
 	wildfire_initializeSettings();
 	zombieSlayer_initializeSettings();
 	fotd_initializeSettings();
+	lol_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -280,6 +283,7 @@ void initializeSession() {
 	// should be set in here.
 
 	auto_enableBackupCameraReverser();
+	set_property("_auto_organSpace", -1.0);
 	ed_initializeSession();
 	bat_initializeSession();
 }
@@ -1108,6 +1112,7 @@ boolean dailyEvents()
 	auto_harvestBatteries();
 	pickRocks();
 	auto_SITCourse();
+	auto_LegacyOfLoathingDailies();
 	
 	return true;
 }
@@ -1668,6 +1673,32 @@ boolean doTasks()
 		auto_log_warning("I am in aftercore", "red");
 		return false;
 	}
+	// Check if rollover's coming up soon
+	if(almostRollover())
+	{
+		print("Rollover's coming!  Gotta consume what we can and go to bed!", "red");
+		// How much organ space left?  If none, go to bed
+		float organ_space = consumptionProgress();
+		auto_log_debug(`{organ_space} organ space`, "blue");
+		if(organ_space >= 0.999)
+		{
+		  return false;
+		}
+		// How much organ space was available the last time we were here?
+		float previous_space = get_property("_auto_organSpace").to_float();
+		float organ_space_change = organ_space - previous_space;
+		auto_log_debug(`{previous_space} previous space`, "blue");
+		auto_log_debug(`{organ_space_change} organ space change`, "blue");
+		set_property("_auto_organSpace", organ_space);
+		// If no space used the last time consumption was done, don't bother trying again
+		if(organ_space_change < 0.001)
+		{
+		  return false;
+		}
+		// There's space left to fill, but let's continue only if we don't have enough adventures
+		return needToConsumeForEmergencyRollover();
+	}
+	
 	casualCheck();
 	
 	print_header();
@@ -1724,6 +1755,7 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	lol_buyReplicas();
 
 	oldPeoplePlantStuff();
 	use_barrels();
