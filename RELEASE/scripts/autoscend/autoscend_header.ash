@@ -499,6 +499,7 @@ boolean auto_haveCincho();
 int auto_currentCinch();
 int auto_cinchAfterNextRest();
 boolean auto_nextRestOverCinch();
+boolean auto_getCinch(int goal);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
