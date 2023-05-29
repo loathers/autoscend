@@ -798,9 +798,10 @@ boolean L11_blackMarket()
 	if (internalQuestStatus("questL11Black") == 0 && item_amount($item[black map]) == 0)
 	{
 		council();
-		if (!possessEquipment($item[Blackberry Galoshes]) && auto_can_equip($item[Blackberry Galoshes]))
+		item galoshes = $item[Blackberry Galoshes];
+		if (!possessEquipment(galoshes) && auto_can_equip(galoshes) && canPull(galoshes))
 		{
-			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
+			pullXWhenHaveY(galoshes, 1, 0);
 		}
 	}
 
@@ -1998,7 +1999,7 @@ boolean L11_hiddenCityZones()
 			{
 				return autoForceEquip($item[Antique Machete]);
 			}
-			else if (!possessEquipment($item[Muculent Machete]))
+			else if (!possessEquipment($item[Muculent Machete]) && canPull($item[Antique Machete]))
 			{
 				pullXWhenHaveY($item[Antique Machete], 1, 0);
 				return autoForceEquip($item[Antique Machete]);
@@ -2006,7 +2007,7 @@ boolean L11_hiddenCityZones()
 		}
 		if (auto_can_equip($item[Muculent Machete]))
 		{
-			if (!possessEquipment($item[Muculent Machete]))
+			if (!possessEquipment($item[Muculent Machete]) && canPull($item[Muculent Machete]))
 			{
 				pullXWhenHaveY($item[Muculent Machete], 1, 0);
 			}

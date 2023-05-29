@@ -552,7 +552,7 @@ boolean L13_towerNSContests()
 				if(crowd3Insufficient()) buffMaintain($effect[Stinky Hands]);
 				if(crowd3Insufficient()) buffMaintain($effect[Stinky Weapon]);
 				if(crowd3Insufficient()) buffMaintain($effect[Rotten Memories], 15, 1, 1);
-				if((storage_amount($item[Halibut]) > 0) && auto_is_valid($item[Halibut]))
+				if(canPull($item[Halibut]))
 				{
 					pullXWhenHaveY($item[Halibut], 1, 0);
 					autoMaximize(challenge + " dmg, " + challenge + " spell dmg -equip snow suit", 1500, 0, false);
@@ -1662,7 +1662,7 @@ boolean L13_towerNSFinal()
 
 	if((pulls_remaining() == -1) || (pulls_remaining() > 0))
 	{
-		if(can_equip($item[Oscus\'s Garbage Can Lid]))
+		if(canPull($item[Oscus\'s Garbage Can Lid]))
 		{
 			pullXWhenHaveY($item[Oscus\'s Garbage Can Lid], 1, 0);
 		}
