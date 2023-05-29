@@ -165,6 +165,10 @@ boolean auto_haveCincho()
 
 int auto_currentCinch()
 {
+	if(!auto_haveCincho())
+	{
+		return 0;
+	}
 	return 100 - get_property("_cinchUsed").to_int();
 }
 
@@ -228,4 +232,29 @@ boolean auto_getCinch(int goal)
 		return true;
 	}
 	return false;
+}
+
+boolean shouldCinchoConfetti()
+{
+	// Cincho: Confetti Extravaganza doubles stat gains of current combat
+	// costs 5 cinch and flips out the monster
+	// cast this skill when we can't cast any more fiesta exists
+
+	// can't cast it if we don't have it
+	if(!canUse($skill[Cincho: Confetti Extravaganza]))
+	{
+		return false;
+	}
+	// save cinch for fiest exit
+	if(auto_currentCinch() > 60)
+	{
+		return false;
+	}
+	// use all free rests before using confetti. May get enough cinch to fiesta exit
+	if(freeRestsRemaining())
+	{
+		return false;
+	}
+	// canSurvive checked in calling location. This function is only available to combat files
+	return true;
 }
