@@ -251,7 +251,7 @@ boolean shouldCinchoConfetti()
 		return false;
 	}
 	// use all free rests before using confetti. May get enough cinch to fiesta exit
-	if(freeRestsRemaining())
+	if(haveFreeRestAvailable())
 	{
 		return false;
 	}
