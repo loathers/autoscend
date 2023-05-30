@@ -4073,7 +4073,7 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "clara's bell");
 		return true;
 	}
-	else if(auto_haveCincho() && auto_getCinch(60))
+	else if(auto_haveCincho() && auto_currentCinch() >= 60)
 	{
 		if(speculative) return true;
 		use_skill(1, $skill[Cincho: Fiesta Exit]);
