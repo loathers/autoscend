@@ -4044,45 +4044,24 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 // ADVENTURE FORCING FUNCTIONS
 boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 {
-	// return true if already have a forcer acitve
-	if(auto_haveQueuedForcedNonCombat())
-	{
-		return true;
-	}
-
 	// Use stench jelly or other item to set the combat rate to zero until the next noncombat.
+
+	boolean ret = false;
 	if(auto_pillKeeperFreeUseAvailable())
 	{
 		if(speculative) return true;
-		auto_pillKeeper("noncombat");
-		if(!auto_haveQueuedForcedNonCombat())
-		{
-			abort("Attempted to force a noncombat with [free pillkeeper] but was unable to.");
+		ret = auto_pillKeeper("noncombat");
+		if(ret) {
+			set_property("auto_forceNonCombatSource", "pillkeeper");
 		}
-		set_property("auto_forceNonCombatSource", "pillkeeper");
-		return true;
 	}
 	else if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0) && auto_is_valid($item[Clara\'s Bell]))
 	{
 		if(speculative) return true;
-		use(1, $item[Clara\'s Bell]);
-		if(!auto_haveQueuedForcedNonCombat())
-		{
-			abort("Attempted to force a noncombat with [Clara's Bell] but was unable to.");
+		ret = use(1, $item[Clara\'s Bell]);
+		if(ret) {
+			set_property("auto_forceNonCombatSource", "clara's bell");
 		}
-		set_property("auto_forceNonCombatSource", "clara's bell");
-		return true;
-	}
-	else if(auto_haveCincho() && auto_currentCinch() >= 60)
-	{
-		if(speculative) return true;
-		use_skill(1, $skill[Cincho: Fiesta Exit]);
-		if(!auto_haveQueuedForcedNonCombat())
-		{
-			abort("Attempted to force a noncombat with [Cincho] but was unable to.");
-		}
-		set_property("auto_forceNonCombatSource", "cincho");
-		return true;
 	}
 	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso())
 	{
@@ -4092,33 +4071,31 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "jurassic parka");
 		// track desired NC location so we know where to go when parka spikes are preped
 		set_property("auto_forceNonCombatLocation", loc);
-		return true;
+		ret = true;
 	}
 	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && !isActuallyEd()
 		&& spleen_left() >= $item[stench jelly].spleen)
 	{
 		if(speculative) return true;
-		autoChew(1, $item[stench jelly]);
-		if(!auto_haveQueuedForcedNonCombat())
-		{
-			abort("Attempted to force a noncombat with [Stench Jelly] but was unable to.");
+		ret = autoChew(1, $item[stench jelly]);
+		if(ret) {
+			set_property("auto_forceNonCombatSource", "stench jelly");
 		}
-		set_property("auto_forceNonCombatSource", "stench jelly");
-		return true;
 	}
 	else if(auto_pillKeeperAvailable() && !isActuallyEd() && spleen_left() >= 3) // don't use Spleen as Ed, it's his main source of adventures.
 	{
 		if(speculative) return true;
-		auto_pillKeeper("noncombat");
-		if(!auto_haveQueuedForcedNonCombat())
-		{
-			abort("Attempted to force a noncombat with [not free pillkeeper] but was unable to.");
+		ret = auto_pillKeeper("noncombat");
+		if(ret) {
+			set_property("auto_forceNonCombatSource", "pillkeeper");
 		}
-		set_property("auto_forceNonCombatSource", "pillkeeper");
-		return true;
 	}
 
-	return false;
+	if(ret)
+	{
+		set_property("auto_forceNonCombatTurn", my_turncount());
+	}
+	return ret;
 }
 
 boolean auto_canForceNextNoncombat()
@@ -4156,9 +4133,77 @@ boolean auto_forceNextNoncombat(location loc)
 
 boolean auto_haveQueuedForcedNonCombat()
 {
-	return get_property("noncombatForcerActive").to_boolean();
+	// This isn't always reset properly: see __MONSTERS_FOLLOWING_NONCOMBATS in auto_post_adv.ash
+	string forceNCMethod = get_property("auto_forceNonCombatSource");
+	if(forceNCMethod == "")
+	{
+		return false;
+	}
+	// if going to force with parka, but spikes haven't been deployed return false
+	if(forceNCMethod == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
+	{
+		return false;
+	}
+	// for all other sources, simply return true
+	return true;
 }
 
+boolean is_expectedForcedNonCombat(string encounterName)
+{
+	static boolean[string] expectedNCs = $strings[
+		// dark neck of the woods
+		How Do We Do It? Quaint and Curious Volume!,
+		Strike One!,
+		Olive My Love To You\, Oh.,
+		The Oracle Will See You Now,
+		Dodecahedrariffic!,
+
+		// dark elbow of the woods
+		Deep Imp Act,
+		Imp Art\, Some Wisdom,
+		A Secret\, But Not the Secret You're Looking For,
+		Butter Knife? I'll Take the Knife,
+
+		// dark heart of the woods
+		Moon Over the Dark Heart,
+		Running the Lode,
+		I\, Martin,
+		Imp Be Nimble\, Imp Be Quick,
+
+		// The Castle in the Clouds in the Sky (Basement)
+		You Don't Mess Around with Gym,
+		Out in the Open Source,
+		The Fast and the Furry-ous,
+
+		// The Castle in the Clouds in the Sky (Top Floor)
+		Copper Feel,
+		Melon Collie and the Infinite Lameness,
+		Yeah\, You're for Me\, Punk Rock Giant,
+		Flavor of a Raver,
+
+		// The Haunted Billiards Room
+		Welcome To Our ool Table,
+
+		// The Haunted Bathroom
+		Never Gonna Make You Up,
+		Having a Medicine Ball,
+		Bad Medicine is What You Need,
+
+		// The Black Forest
+		All Over the Map,
+		You Found Your Thrill,
+		The Blackest Smith,
+		Be Mine,
+		Sunday Black Sunday,
+
+		// The Hidden Apartment Building
+		Action Elevator,
+
+		// The Hidden Office Building
+		Working Holiday,
+	];
+	return expectedNCs contains encounterName;
+}
 boolean is_superlikely(string encounterName)
 {
 	static boolean[string] __SUPERLIKELIES = $strings[
