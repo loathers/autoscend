@@ -245,6 +245,11 @@ boolean shouldCinchoConfetti()
 	{
 		return false;
 	}
+	// don't over level
+	if(!disregardInstantKarma())
+	{
+		return false;
+	}
 	// save cinch for fiest exit
 	if(auto_currentCinch() > 60)
 	{
