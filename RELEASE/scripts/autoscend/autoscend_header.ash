@@ -500,7 +500,6 @@ int auto_currentCinch();
 int auto_cinchAfterNextRest();
 boolean auto_nextRestOverCinch();
 boolean auto_getCinch(int goal);
-boolean shouldCinchoConfetti();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
