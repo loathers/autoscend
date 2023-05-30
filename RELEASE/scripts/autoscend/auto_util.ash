@@ -1,5 +1,32 @@
 //A file full of utility functions which we import into autoscend.ash
 
+boolean almostRollover()
+{
+	int warning_time = get_property("auto_stopMinutesToRollover").to_int() * 60;
+	int remaining_time = rollover() - (now_to_int()/1000);
+	if ((remaining_time-300) < warning_time)
+	{
+		// Only print debug messages less than 5 minutes before emergency bedtime
+		auto_log_debug(`Less than {(remaining_time/60)+1} min until rollover, bedtime at {warning_time/60} min`, "blue");
+	}
+	return (remaining_time <= warning_time);
+}
+
+boolean needToConsumeForEmergencyRollover()
+{
+	int max_bonus_adv = round(numeric_modifier("adventures"));
+	foreach n, rec in maximize("adventures", 0, 0, true, true)
+	{
+		if(rec.item != $item[none])
+		{
+			max_bonus_adv += rec.score;
+		}
+	}
+	int target_adv = 130 - max_bonus_adv;
+	auto_log_debug(`Max bonus rollover adv: {max_bonus_adv}, target adv: {target_adv}`, "blue");
+	return (my_adventures() < target_adv);
+}
+
 boolean autoMaximize(string req, boolean simulate)
 {
 	if(!simulate)
@@ -1825,6 +1852,7 @@ boolean summonMonster(monster mon, boolean speculative)
 			return true;
 		}
 	}
+	// todo add support for Baa'baa'bu'ran with deck of every card sheep card
 	if(timeSpinnerCombat(mon, speculative))
 	{
 		return true;

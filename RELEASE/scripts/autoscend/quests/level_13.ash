@@ -1526,6 +1526,19 @@ boolean L13_towerNSTower()
 			}
 		}
 		
+		//Wall Of Bones combat uses Unleash The Greash, Garbage Nova, or Saucegeyser
+		if(!auto_have_skill($skill[Garbage Nova]) && have_effect($effect[Takin\' It Greasy]) == 0)
+		{
+			float saucegeyserDamage = MLDamageToMonsterMultiplier()*ceil((numeric_modifier("Spell Damage Percent")/100.0)*(60 + numeric_modifier("Spell Damage") + max(numeric_modifier("Hot Spell Damage"),numeric_modifier("Cold Spell Damage")) + 0.4*my_buffedstat($stat[mysticality])));
+			if(saucegeyserDamage < 1667)
+			{
+				//counting on Saucegeyser and its damage will be too low
+				auto_log_warning("Estimate would fail to towerkill Wall of Bones. Reverting to Boning Knife", "red");
+				set_property("auto_getBoningKnife", true);
+				return true;
+			}
+		}
+		
 		acquireMP(216, 0);
 		acquireHP();
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
@@ -1803,9 +1816,12 @@ boolean L13_towerNSNagamar()
 		boolean haveD = item_amount($item[heavy D]) != 0;
 		if(!haveW || !haveA)
 		{
-			pullXWhenHaveY($item[WA], 1, 0);
+			if((haveN && haveD) || item_amount($item[ND]) > 0 || pulls_remaining() > 1)	//if no ND, need 2 pulls
+			{
+				pullXWhenHaveY($item[WA], 1, 0);
+			}
 		}
-		if(!haveN || !haveD)
+		if((!haveN || !haveD) && ((haveA && haveW) || item_amount($item[WA]) > 0))	//if no WA, should not pull
 		{
 			pullXWhenHaveY($item[ND], 1, 0);
 		}
