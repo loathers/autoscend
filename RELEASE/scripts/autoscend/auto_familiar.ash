@@ -595,7 +595,7 @@ boolean autoChooseFamiliar(location place)
 
 	// in legacy of loathing, may only have 1 of the 2004 fams
 	if (famChoice == $familiar[none]) {
-	foreach fam in $familiars[Jill-O-Lantern, Hand Turkey, Crimbo Elf]
+		foreach fam in $familiars[Jill-O-Lantern, Hand Turkey, Crimbo Elf]
 		{
 			if(canChangeToFamiliar(fam))
 			{
