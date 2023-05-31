@@ -570,43 +570,48 @@ boolean doBedtime()
 
 	auto_process_kmail("auto_deleteMail");
 
-	if(my_adventures() > 4)
+	// If rollover isn't approaching, check for reasons to stop bedtime
+	boolean out_of_blood = false;
+	if(! almostRollover())
 	{
-		if(my_inebriety() <= inebriety_limit())
+		if(my_adventures() > 4)
 		{
-			if(!in_gnoob() && my_familiar() != $familiar[Stooper])
+			if(my_inebriety() <= inebriety_limit())
 			{
-				auto_log_warning("Still adventurous! Stopping bedtime.", "red");
-				return false;
+				if(!in_gnoob() && my_familiar() != $familiar[Stooper])
+				{
+					auto_log_warning("Still adventurous! Stopping bedtime.", "red");
+					return false;
+				}
 			}
 		}
+		out_of_blood = (in_darkGyffte() && item_amount($item[blood bag]) == 0);
+		if((fullness_left() > 0) && can_eat() && !out_of_blood)
+		{
+			auto_log_warning("Still hungry! Stopping bedtime.", "red");
+			return false;
+		}
+		if((inebriety_left() > 0) && can_drink() && !out_of_blood)
+		{
+			auto_log_warning("Still sober! Stopping bedtime.", "red");
+			return false;
+		}
+		int spleenlimit = spleen_limit();
+		if(!canChangeFamiliar())
+		{
+			spleenlimit -= 3;
+		}
+		if(!haveSpleenFamiliar())
+		{
+			spleenlimit = 0;
+		}
+		if((my_spleen_use() < spleenlimit) && !in_hardcore() && (inebriety_left() > 0))
+		{
+			auto_log_warning("Still spleeny! Stopping bedtime.", "red");
+			return false;
+		}
 	}
-	boolean out_of_blood = (in_darkGyffte() && item_amount($item[blood bag]) == 0);
-	if((fullness_left() > 0) && can_eat() && !out_of_blood)
-	{
-		auto_log_warning("Still hungry! Stopping bedtime.", "red");
-		return false;
-	}
-	if((inebriety_left() > 0) && can_drink() && !out_of_blood)
-	{
-		auto_log_warning("Still sober! Stopping bedtime.", "red");
-		return false;
-	}
-	int spleenlimit = spleen_limit();
-	if(!canChangeFamiliar())
-	{
-		spleenlimit -= 3;
-	}
-	if(!haveSpleenFamiliar())
-	{
-		spleenlimit = 0;
-	}
-	if((my_spleen_use() < spleenlimit) && !in_hardcore() && (inebriety_left() > 0))
-	{
-		auto_log_warning("Still spleeny! Stopping bedtime.", "red");
-		return false;
-	}
-
+	
 	ed_terminateSession();
 	bat_terminateSession();
 

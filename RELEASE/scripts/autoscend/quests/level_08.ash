@@ -330,12 +330,12 @@ boolean L8_getMineOres()
 		}
 	}
 	
-	// use 1 wish if we can guarentee it will be enough via cat burglar
-	if(canGenieCombat($monster[mountain man]) && auto_shouldUseWishes() && catBurglarHeistsLeft() > 1)
+	// use a summon if we can guarentee it will be enough via cat burglar
+	if(canSummonMonster($monster[mountain man]) && catBurglarHeistsLeft() > 1)
 	{
-		auto_log_info("Trying to wish for a mountain man, which the cat will then burgle, hopefully.");
+		auto_log_info("Trying to summon a mountain man, which the cat will then burgle, hopefully.");
 		handleFamiliar($familiar[cat burglar]);
-		return makeGenieCombat($monster[mountain man]);
+		return summonMonster($monster[mountain man]);
 	}
 	
 	// try to clover for the ore
