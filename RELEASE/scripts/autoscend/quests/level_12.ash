@@ -594,8 +594,8 @@ boolean L12_getOutfit()
 		}
 	}
 
-	//softcore pull handling for all other paths
-	if(!in_hardcore() && (!in_heavyrains()))
+	//softcore pull handling for all other paths. Can't pull gear in LoL
+	if(!in_hardcore() && !in_heavyrains() && !in_lol())
 	{
 		if(get_property("auto_hippyInstead").to_boolean())
 		{
