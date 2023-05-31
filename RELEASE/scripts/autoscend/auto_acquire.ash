@@ -46,6 +46,18 @@ boolean canPull(item it, boolean historical)
 	{
 		return false;
 	}
+	if(in_community())
+	{
+		return false;
+	}
+	if(in_lol())
+	{
+		// kol states "Only food, booze, potions, combat and usable items may be pulled on this path."
+		if(it.fullness == 0 && it.inebriety == 0 && !it.potion && !it.combat && !it.usable)
+		{
+			return false;
+		}
+	}
 	if(it == $item[none])
 	{
 		return false;
@@ -70,6 +82,11 @@ boolean canPull(item it, boolean historical)
 	else if(!is_tradeable(it))
 	{
 		return false;	//we do not have it in storage and we can not trade for it. gifts currently not handled
+	}
+
+	if (!auto_is_valid(it))
+	{
+		return false;
 	}
 
 	int meat = my_storage_meat();
@@ -190,39 +207,7 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	{
 		return pullXWhenHaveYCasual(it, howMany, whenHave);
 	}
-	if(in_community())
-	{
-		return false;
-	}
-	if(in_lol())
-	{
-		// kol states "Only food, booze, potions, combat and usable items may be pulled on this path."
-		if(it.fullness == 0 && it.inebriety == 0 && !it.potion && !it.combat && !it.usable)
-		{
-			return false;
-		}
-	}
-	if(in_hardcore())
-	{
-		return false;
-	}
-	if(it == $item[none])
-	{
-		return false;
-	}
-	if(!is_unrestricted(it) && !inAftercore())
-	{
-		return false;
-	}
-	if(pulls_remaining() == 0)
-	{
-		return false;
-	}
-	if(pulledToday(it))
-	{
-		return false;
-	}
-	if (!auto_is_valid(it))
+	if(!canPull(it))
 	{
 		return false;
 	}

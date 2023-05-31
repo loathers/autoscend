@@ -321,7 +321,7 @@ boolean L8_getMineOres()
 	}
 	
 	// in softcore we want to pull an ore
-	if(!in_hardcore())
+	if(canPull(oreGoal))
 	{
 		pullXWhenHaveY(oreGoal, 1, item_amount(oreGoal));
 		if(item_amount(oreGoal) == 3)
@@ -828,7 +828,7 @@ boolean L8_trapperSlope()
 	{
 		return L8_slopeCasual(); // mallbuy everything. or go do something else if too poor to do so
 	}
-	else if(!in_hardcore()) // !casual && !postronin && !hardcore == in softcore. which requires special handling
+	else if(!in_hardcore() && !in_lol()) // !casual && !postronin && !hardcore == in softcore. which requires special handling. LoL can't pull ninja gear
 	{
 		return L8_trapperSlopeSoftcore(); // pull ninja climbing gear. unless assassins are being copied, then go do something else
 	}
