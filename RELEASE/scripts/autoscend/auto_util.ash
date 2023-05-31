@@ -830,7 +830,7 @@ boolean[string] auto_banishesUsedAt(location loc)
 
 boolean auto_wantToBanish(monster enemy, location loc)
 {
-	if(appearance_rates(loc,true)[enemy] <= 0)
+	if(appearance_rates(loc)[enemy] <= 0)
 	{
 		return false;
 	}
@@ -3685,7 +3685,7 @@ boolean autoFlavour(location place)
 		}
 	}
 
-	foreach mon,chance in appearance_rates(place, true)
+	foreach mon,chance in appearance_rates(place)
 	{
 		handle_monster(mon, chance);
 	}

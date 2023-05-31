@@ -657,16 +657,24 @@ void addBonusToMaximize(item it, int amt)
 
 void finalizeMaximize(boolean speculative)
 {
-	if (possessEquipment($item[miniature crystal ball]))
+	if(auto_hasStillSuit() && pathHasFamiliar() && inebriety_limit() > 0)
 	{
-		// until we add support for this, we shouldn't allow the maximizer to equip it
-		// I noticed it being worn in preference to the astral pet sweater which is a waste
-		addToMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
+		//always enough bonus to beat the 25 default maximizer score of miniature crystal ball's +initiative enchantment
+		//100 to 200 bonus for diminishing returns when drams already high
+		addBonusToMaximize($item[tiny stillsuit], (100 + to_int(100*min(1,(10.0 / max(1,auto_expectedStillsuitAdvs()))))));
 	}
+	if(speculative && auto_haveCrystalBall())
+	{	//when doing simMaximize, in order to know if miniature crystal ball will be allowed in the simulated location, 
+		//location queue checks that would normally be done by pre_adv before maximizing equipment need to be simulated here too
+		//		TODO consider if simulating all pre_adv equipment changes needs to done in general instead of only the queue part for crystal ball, 
+		//		crystal ball directly needs this because it has an initiative bonus relevant in a zone where it can be forbidden (twin peak)
+		//		but other equipment could be wanted by simulation then replaced by something forced in pre_adv?
+		simulatePreAdvForCrystalBall(my_location());
+	}
+	//otherwise miniature crystal ball is handled along with monster goals in pre_adv
 	
 	monster nextMonster = get_property("auto_nextEncounter").to_monster();
 	boolean nextMonsterIsFree = (nextMonster != $monster[none] && isFreeMonster(nextMonster)) || (get_property("breathitinCharges").to_int() > 0 && my_location().environment == "outdoor");
-	//todo if crystal ball is supported and locked in next monster is also known. appearance_rates (with queue parameter true) also reflects this
 
 	if (auto_haveKramcoSausageOMatic())
 	{
@@ -828,9 +836,11 @@ boolean maximizeContains(string check)
 boolean simMaximize()
 {
 	string backup = get_property("auto_maximize_current");
+	string backupNextMonster = get_property("auto_nextEncounter");
 	finalizeMaximize(true);
 	boolean res = autoMaximize(get_property("auto_maximize_current"), true);
 	set_property("auto_maximize_current", backup);
+	set_property("auto_nextEncounter", backupNextMonster);
 	return res;
 }
 
