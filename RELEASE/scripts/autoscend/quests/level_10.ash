@@ -137,16 +137,18 @@ boolean L10_basement()
 
 	if(!in_hardcore())
 	{
-		if(!possessEquipment($item[Amulet of Extreme Plot Significance]) && auto_can_equip($item[Amulet of Extreme Plot Significance]))
+		item amulet = $item[Amulet of Extreme Plot Significance];
+		if(!possessEquipment(amulet) && auto_can_equip(amulet) && canPull(amulet))
 		{
-			pullXWhenHaveY($item[Amulet of Extreme Plot Significance], 1, 0);
+			pullXWhenHaveY(amulet, 1, 0);
 		}
 		
-		if(!possessEquipment($item[Amulet of Extreme Plot Significance]))			//only consider umbrella if getting amulet fails somehow
+		if(!possessEquipment(amulet))			//only consider umbrella if getting amulet fails somehow
 		{
-			if(!possessEquipment($item[Titanium Assault Umbrella]) && auto_can_equip($item[Titanium Assault Umbrella]) && !possessEquipment($item[unbreakable umbrella]))
+			item umbrella = $item[Titanium Assault Umbrella];
+			if(!possessEquipment(umbrella) && auto_can_equip(umbrella) && canPull(umbrella) && !possessEquipment($item[unbreakable umbrella]))
 			{
-				pullXWhenHaveY($item[Titanium Assault Umbrella], 1, 0);
+				pullXWhenHaveY(umbrella, 1, 0);
 			}
 		}
 	}
@@ -232,7 +234,7 @@ boolean L10_topFloor()
 
 	auto_log_info("Castle (Top Floor) - Finishing L10 Quest.", "blue");
 	
-	if(!possessEquipment($item[Mohawk wig]) && auto_can_equip($item[Mohawk wig]) && !in_hardcore())
+	if(!possessEquipment($item[Mohawk wig]) && auto_can_equip($item[Mohawk wig]) && canPull($item[Mohawk wig]))
 	{
 		pullXWhenHaveY($item[Mohawk wig], 1, 0);
 	}

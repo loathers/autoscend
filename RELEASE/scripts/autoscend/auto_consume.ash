@@ -1639,7 +1639,6 @@ boolean auto_autoConsumeOne(string type)
 	ConsumeAction bestAction = auto_findBestConsumeAction(type);
 	return auto_autoConsumeOne(bestAction);
 }
-
 // Need separate function to simulate since return type is different
 // For simulation, want to know what would be consumes instead of actually consuming it
 item auto_autoConsumeOneSimulation(string type)
@@ -1784,7 +1783,8 @@ boolean auto_chewAdventures()
 {
 	//tries to chew a size 4 familiar spleen item that gives adventures. All are IOTM derivatives with 1.875 adv/size
 	boolean liver_check = my_inebriety() < inebriety_limit() && !in_kolhs();	//kolhs has special drinking. liver often unfilled
-	if(liver_check || my_fullness() < fullness_limit() || my_adventures() > 1+auto_advToReserve())
+	if(liver_check || my_fullness() < fullness_limit()
+		|| ((my_adventures() > 1+auto_advToReserve()) && !almostRollover()))
 	{
 		return false;	//1.875 A/S is bad. only chew if 1 adv remains
 	}
@@ -2031,7 +2031,9 @@ void consumeStuff()
 			autoEat(1, $item[guilty sprout]);
 		}
 	}
-	if (my_adventures() < 10 && !edSpleenCheck)
+
+	// If adventures low, or it's almost Rollover, we need to consume
+	if ((my_adventures() < 10 && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover()))
 	{
 		// always unequip stooper as only useful for roll over
 		if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 

@@ -594,8 +594,8 @@ boolean L12_getOutfit()
 		}
 	}
 
-	//softcore pull handling for all other paths
-	if(!in_hardcore() && (!in_heavyrains()))
+	//softcore pull handling for all other paths. Can't pull gear in LoL
+	if(!in_hardcore() && !in_heavyrains() && !in_lol())
 	{
 		if(get_property("auto_hippyInstead").to_boolean())
 		{
@@ -694,16 +694,16 @@ boolean L12_preOutfit()
 		return false;
 	}
 
-	//use 1 wish if we can guarentee outfit drops via yellow ray
-	if(canGenieCombat($monster[Orcish Frat Boy Spy]) && auto_shouldUseWishes() && canYellowRay())
+	//use a summon if we can guarentee outfit drops via yellow ray
+	if(canSummonMonster($monster[Orcish Frat Boy Spy]) && canYellowRay())
 	{
-		monster wishTarget = $monster[War Hippy Spy];
+		monster summonTarget = $monster[War Hippy Spy];
 		if(!get_property("auto_hippyInstead").to_boolean())
 		{
-			wishTarget = $monster[Orcish Frat Boy Spy];
+			summonTarget = $monster[Orcish Frat Boy Spy];
 		}
-		auto_log_info(`Trying to wish for a {wishTarget}, which we will yellow ray for war outfit.`);
-		return makeGenieCombat(wishTarget);		
+		auto_log_info(`Trying to summon a {summonTarget}, which we will yellow ray for war outfit.`);
+		return summonMonster(summonTarget);
 	}
 
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
