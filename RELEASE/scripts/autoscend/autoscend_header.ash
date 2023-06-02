@@ -499,6 +499,12 @@ boolean auto_haveMonkeyPaw();
 boolean auto_makeMonkeyPawWish(effect wish);
 boolean auto_makeMonkeyPawWish(item wish);
 boolean auto_makeMonkeyPawWish(string wish);
+boolean auto_haveCincho();
+int auto_currentCinch();
+int auto_cinchAfterNextRest();
+boolean auto_nextRestOverCinch();
+boolean auto_getCinch(int goal);
+boolean shouldCinchoConfetti();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1771,7 +1777,6 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();
 boolean auto_haveQueuedForcedNonCombat();
-boolean is_expectedForcedNonCombat(string encounterName);
 boolean is_superlikely(string encounterName);
 int auto_predictAccordionTurns();
 boolean hasTTBlessing();

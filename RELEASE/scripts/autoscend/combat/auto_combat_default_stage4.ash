@@ -364,6 +364,12 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 		set_property("auto_parkaSpikesDeployed", true);
 		return useSkill($skill[Launch spikolodon spikes]);
 	}
+
+	// get extra combat stats
+	if(shouldCinchoConfetti() && canSurvive(5.0))
+	{
+		return useSkill($skill[Cincho: Confetti Extravaganza]);
+	}
 	
 	return "";
 }

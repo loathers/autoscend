@@ -1,4 +1,4 @@
-since r27370;	// legacy of loathing support - mr. replica is a store
+since r27374;	// track noncombat forcers
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
