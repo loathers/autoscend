@@ -220,6 +220,11 @@ void auto_LegacyOfLoathingDailies()
 		use(1, $item[replica Smith\'s Tome]); // get items
 	}
 
+	if(item_amount($item[Replica 2002 Mr. Store Catalog]) > 0)
+	{
+		use(1, $item[Replica 2002 Mr. Store Catalog]); //get catalog credits
+	}
+
 	pullXWhenHaveY($item[Breathitin&trade;], 1, 0);
 	if (item_amount($item[Breathitin&trade;]) > 0)
 		{

@@ -613,7 +613,8 @@ boolean chateauPainting()
 
 boolean deck_available()
 {
-	return (((item_amount($item[Deck of Every Card]) > 0) && is_unrestricted($item[Deck of Every Card]) && auto_is_valid($item[Deck of Every Card])) || ((item_amount($item[Replica Deck of Every Card]) > 0) && (in_lol())));
+	//return (((item_amount($item[Deck of Every Card]) > 0) && is_unrestricted($item[Deck of Every Card]) && auto_is_valid($item[Deck of Every Card])) || ((item_amount($item[Replica Deck of Every Card]) > 0) && (in_lol())));
+	return ((item_amount($item[Deck of Every Card]) > 0) && is_unrestricted($item[Deck of Every Card]) && auto_is_valid($item[Deck of Every Card]));
 }
 
 int deck_draws_left()
