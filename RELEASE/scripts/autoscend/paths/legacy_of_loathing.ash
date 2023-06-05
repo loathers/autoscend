@@ -215,4 +215,40 @@ void auto_LegacyOfLoathingDailies()
 	{
 		use(1, $item[replica Smith\'s Tome]); // get items
 	}
+
+	pullXWhenHaveY($item[Breathitin™], 1, 0);
+	if (item_amount($item[Breathitin™]) > 0)
+		{
+			use(1, $item[Breathitin™]); // get free outdoor fight charges
+		}
+		else
+		{
+			print("Failed to pull a Breathitin","red");
+		}
+
+	if (get_property(homebodylCharges).to_int() == 0) 
+	{
+		pullXWhenHaveY($item[Homebodyl™], 1, 0);
+		if (item_amount($item[Homebodyl™]) > 0)
+		{
+			use(1, $item[Homebodyl™]); // get free craft charges
+		}
+		else
+		{
+			print("Failed to pull a Homebodyl","red");
+		}
+	}
+
+	if (get_property(chasmBridgeProgress).to_int() < 30)
+	{
+		pullXWhenHaveY($item[smut orc keepsake box], 1, 0);
+		if (item_amount($item[smut orc keepsake box]) > 0)
+		{
+			use(1, $item[smut orc keepsake box]); // get bridge parts
+		}
+		else
+		{
+			print("Failed to pull a smut orc keepsake box","red");
+		}
+	}
 }
