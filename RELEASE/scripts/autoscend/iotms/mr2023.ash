@@ -278,9 +278,3 @@ boolean auto_haveCatalog()
 	return auto_is_valid(replicaCatalog) && (item_amount(replicaCatalog) > 0);
 
 }
-
-boolean auto_useCatalog()
-{
-	//http://127.0.0.1:60080/inv_use.php?pwd=e9b6ac69c68f79351fa5dd7016617c4d&which=3&whichitem=11280
-
-}
