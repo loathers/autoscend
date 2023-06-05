@@ -31,9 +31,13 @@ boolean lol_buyReplicas()
 		// attempt to buy 2023 IOTM first as if you one them, they are immediately available
 		// then attempt to buy sequentially year by year starting with 2004
 		// note with enough progress, can a second option up to year 2012
-		if(contains_text(page, "cincho")) //2023
+		if(contains_text(page, "cincho")) //May 2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Cincho de Mayo]);
+		}
+		else if(contains_text(page,"2002")) //June 2023
+		{
+			buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]); //no mafia support yet, but at least buy it
 		}
 		else if(contains_text(page, "<b>2004</b>"))
 		{
@@ -216,22 +220,22 @@ void auto_LegacyOfLoathingDailies()
 		use(1, $item[replica Smith\'s Tome]); // get items
 	}
 
-	pullXWhenHaveY($item[Breathitin™], 1, 0);
-	if (item_amount($item[Breathitin™]) > 0)
+	pullXWhenHaveY($item[Breathitin&trade;], 1, 0);
+	if (item_amount($item[Breathitin&trade;]) > 0)
 		{
-			use(1, $item[Breathitin™]); // get free outdoor fight charges
+			use(1, $item[Breathitin&trade;]); // get free outdoor fight charges
 		}
 		else
 		{
 			print("Failed to pull a Breathitin","red");
 		}
 
-	if (get_property(homebodylCharges).to_int() == 0) 
+	if (get_property("homebodylCharges").to_int() == 0) 
 	{
-		pullXWhenHaveY($item[Homebodyl™], 1, 0);
-		if (item_amount($item[Homebodyl™]) > 0)
+		pullXWhenHaveY($item[Homebodyl&trade;], 1, 0);
+		if (item_amount($item[Homebodyl&trade;]) > 0)
 		{
-			use(1, $item[Homebodyl™]); // get free craft charges
+			use(1, $item[Homebodyl&trade;]); // get free craft charges
 		}
 		else
 		{
@@ -239,7 +243,7 @@ void auto_LegacyOfLoathingDailies()
 		}
 	}
 
-	if (get_property(chasmBridgeProgress).to_int() < 30)
+	if (get_property("chasmBridgeProgress").to_int() < 30)
 	{
 		pullXWhenHaveY($item[smut orc keepsake box], 1, 0);
 		if (item_amount($item[smut orc keepsake box]) > 0)
