@@ -31,6 +31,16 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combatFallOfTheDinosaursStage5(round, enemy, text);
 	if(retval != "") return retval;
 
+	//with loofah, you can stagger and deal cold or hot damage
+	if(canUse($skill[loofah stew]) && monster_element(enemy) != $element[cold])
+	{
+		return useSkill($skill[loofah stew], false);
+	}
+	if (canUse($skill[loofah lava]) && monster_element(enemy) != $element[hot])
+	{
+		return useSkill($skill[loofah lava], false);
+	}
+
 	phylum type = monster_phylum(enemy);
 	string attackMinor = "attack with weapon";
 	string attackMajor = "attack with weapon";
