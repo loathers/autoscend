@@ -1,4 +1,4 @@
-since r27400;	// Coinmaster support for Mr. Replica
+since r27402;	// Coinmaster support for Mr. Replica
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1107,7 +1107,7 @@ boolean dailyEvents()
 		}
 	}
 
-	if(!isActuallyEd() && day > 1)
+	if(!isActuallyEd() && my_daycount() > 1)
 	{
 		pullXWhenHaveY($item[Breathitin&trade;], 1, 0);
 		if (item_amount($item[Breathitin&trade;]) > 0)
