@@ -1,4 +1,4 @@
-since r27374;	// track noncombat forcers
+since r27400;	// Coinmaster support for Mr. Replica
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1106,6 +1106,21 @@ boolean dailyEvents()
 			makeGeniePocket();
 		}
 	}
+
+	if(!isActuallyEd() && day > 1)
+	{
+		pullXWhenHaveY($item[Breathitin&trade;], 1, 0);
+		if (item_amount($item[Breathitin&trade;]) > 0)
+		{
+			use(1, $item[Breathitin&trade;]); // get free outdoor fight charges
+			auto_log_info("Huffing some Breathitin before adventuring for the day. That's the stuff!","blue");
+		}
+		else
+		{
+			auto_log_info("Couldn't pull a Breathitin. Be a lot cooler if we could.","red");
+		}
+	}
+
 
 	auto_getGuzzlrCocktailSet();
 	auto_latheAppropriateWeapon();
