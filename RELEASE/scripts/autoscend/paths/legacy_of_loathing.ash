@@ -35,10 +35,10 @@ boolean lol_buyReplicas()
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Cincho de Mayo]);
 		}
-		else if(contains_text(page,"2002")) //June 2023
-		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]); //no mafia support yet, but at least buy it
-		}
+		//else if(contains_text(page,"2002")) //June 2023
+		//{
+		//	buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]); //no mafia support yet, but at least buy it
+		//}
 		else if(contains_text(page, "<b>2004</b>"))
 		{
 			if(!contains_text(page, "replica dark jill-o-lantern") || !contains_text(page, "replica hand turkey outline"))
