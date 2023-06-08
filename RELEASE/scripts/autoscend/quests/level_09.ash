@@ -210,6 +210,19 @@ void prepareForSmutOrcs()
 	
 	// This adds a tonne of damage and NC progress
 	buffMaintain($effect[Triple-Sized]);
+
+	// pull a keepsake box if we can
+	pullXWhenHaveY($item[smut orc keepsake box], 1, 0);
+	if (item_amount($item[smut orc keepsake box]) > 0)
+	{
+		use(1, $item[smut orc keepsake box]); // get bridge parts
+		auto_log_info("Pulled a smut orc keepsake box and opened it. Ew.","blue");
+	}
+	else
+	{
+		auto_log_info("Failed to pull a smut orc keepsake box. I don't think you really wanted to know what was in there, though.","red");
+	}
+	
 	
 	if(get_property("smutOrcNoncombatProgress").to_int() == 15)
 	{
@@ -310,6 +323,7 @@ boolean L9_chasmBuild()
 	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
 	// use any keepsake boxes we have
+
 	if(item_amount($item[Smut Orc Keepsake Box]) > 0 && auto_is_valid($item[Smut Orc Keepsake Box]))
 	{
 		use(1, $item[Smut Orc Keepsake Box]);

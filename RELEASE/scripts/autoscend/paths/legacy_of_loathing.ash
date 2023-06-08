@@ -225,30 +225,7 @@ void auto_LegacyOfLoathingDailies()
 		use(1, $item[Replica 2002 Mr. Store Catalog]); //get catalog credits
 	}
 
-	pullXWhenHaveY($item[Breathitin&trade;], 1, 0);
-	if (item_amount($item[Breathitin&trade;]) > 0)
-		{
-			use(1, $item[Breathitin&trade;]); // get free outdoor fight charges
-		}
-		else
-		{
-			print("Failed to pull a Breathitin","red");
-		}
-
-	if (get_property("homebodylCharges").to_int() == 0) 
-	{
-		pullXWhenHaveY($item[Homebodyl&trade;], 1, 0);
-		if (item_amount($item[Homebodyl&trade;]) > 0)
-		{
-			use(1, $item[Homebodyl&trade;]); // get free craft charges
-		}
-		else
-		{
-			print("Failed to pull a Homebodyl","red");
-		}
-	}
-
-	if (get_property("chasmBridgeProgress").to_int() < 30)
+	if (get_property("chasmBridgeProgress").to_int() == 0)
 	{
 		pullXWhenHaveY($item[smut orc keepsake box], 1, 0);
 		if (item_amount($item[smut orc keepsake box]) > 0)
