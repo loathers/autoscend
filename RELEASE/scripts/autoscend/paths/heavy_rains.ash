@@ -205,7 +205,7 @@ boolean heavyrains_buySkills()
 	return false;
 }
 
-boolean canRainManSummon(monster mon)
+boolean canRainManSummon(monster target)
 {
 	if(!have_skill($skill[Rain Man]) || my_rain() < 50)
 	{
@@ -213,13 +213,13 @@ boolean canRainManSummon(monster mon)
 	}
 
 	// Can only rain man summon copyable monsters
-	if(!mon.copyable)
+	if(!target.copyable)
 	{
 		return false;
 	}
 
 	// Can summon any monster with available factoids
-	if (mon.monster_factoidss_available(false) > 0)
+	if (target.monster_factoidss_available(false) > 0)
 	{
 		return true;
 	}
@@ -230,7 +230,7 @@ boolean canRainManSummon(monster mon)
 	run_choice(6);
 
 	// TODO
-	boolean canSummon = page.contains_text("id=" + mon.id);
+	boolean canSummon = page.contains_text("id=" + target.id);
 
 	return canSummon;
 }
@@ -242,7 +242,7 @@ boolean rainManSummon(monster target, boolean speculative)
 		return false;
 	}
 
-	boolean canSummon = canRainManSummon(mon);
+	boolean canSummon = canRainManSummon(target);
 	if (!canSummon || speculative)
 	{
 		return canSummon;
@@ -256,8 +256,8 @@ boolean rainManSummon(monster target, boolean speculative)
 	// autoAdvBypass will escape from the choice and return false if the monster cannot be fought
 	if(autoAdvBypass(1, pages, $location[Noob Cave], ""))
 	{
-		handleTracker(mon, $skill[Rain Man], "auto_copies");
-		return true
+		handleTracker(target, $skill[Rain Man], "auto_copies");
+		return true;
 	}
 	return false;
 }
