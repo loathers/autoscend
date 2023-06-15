@@ -219,7 +219,7 @@ boolean canRainManSummon(monster target)
 	}
 
 	// Can summon any monster with available factoids
-	if (target.monster_factoidss_available(false) > 0)
+	if (target.monster_factoids_available(false) > 0)
 	{
 		return true;
 	}
