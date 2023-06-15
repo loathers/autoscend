@@ -1183,10 +1183,11 @@ boolean canTimeSpinnerMonster(monster mon)
 	{
 		return false;
 	}
-	
+
+	string name = mon.to_string();
 	foreach loc in $locations[]
 	{
-		if(contains_text(loc.combat_queue, to_string(mon))) return true;
+		if(contains_text(loc.combat_queue, name)) return true;
 	}
 	return false;
 }
