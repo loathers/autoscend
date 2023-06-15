@@ -1917,7 +1917,7 @@ boolean summonMonster(monster mon, boolean speculative)
 	{
 		if(speculative && canGenieCombat(mon))
 		{
-			auto_log_debug("Can summon " + mon " via wishing", "blue");
+			auto_log_debug("Can summon " + mon + " via wishing", "blue");
 			return true;
 		}
 		else if(!speculative && makeGenieCombat(mon))
