@@ -213,7 +213,7 @@ boolean canRainManSummon(monster target)
 	}
 
 	// Can only rain man summon copyable monsters
-	if(!target.copyable)
+	if(!target.copyable || target.id < 0)
 	{
 		return false;
 	}
@@ -227,12 +227,9 @@ boolean canRainManSummon(monster target)
 	// If no factoids, check the page directly
 	string page = visit_url("runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1");
 	// Escape without spending rain
-	run_choice(6);
+	run_choice(2);
 
-	// TODO
-	boolean canSummon = page.contains_text("id=" + target.id);
-
-	return canSummon;
+	return page.contains_text("<option value=\"" + target.id + "\">");
 }
 
 boolean rainManSummon(monster target, boolean speculative)
