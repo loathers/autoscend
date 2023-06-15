@@ -311,6 +311,12 @@ boolean auto_backupTarget()
 		return false;
 	}
 
+	// don't backup if nextAdventure is Noob Cave as a combat was started via autoAdvBypass
+	if (get_property("nextAdventure").to_location() == $location[Noob Cave])
+	{
+		return false;
+	}
+
 	// determine if we want to backup
 	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && my_level() >= 12 && !auto_hasAutumnaton();
 	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean();

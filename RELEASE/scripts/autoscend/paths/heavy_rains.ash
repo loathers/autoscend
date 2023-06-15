@@ -224,12 +224,7 @@ boolean canRainManSummon(monster target)
 		return true;
 	}
 
-	// If no factoids, check the page directly
-	string page = visit_url("runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1");
-	// Escape without spending rain
-	run_choice(2);
-
-	return page.contains_text("<option value=\"" + target.id + "\">");
+	return false;
 }
 
 boolean rainManSummon(monster target, boolean speculative)
@@ -249,9 +244,9 @@ boolean rainManSummon(monster target, boolean speculative)
 	auto_log_info("Rain Man will summon: " +target, "blue");
 	string[int] pages;
 	pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1";
-	pages[1] = "choice.php?pwd&whichchoice=970&whichmonster=" +target.to_int()+ "&option=1&choice2=and+Fight%21";
+	pages[1] = "choice.php?pwd&whichchoice=970&whichmonster=" + target.id + "&option=1&choice2=and+Fight%21";
 	// autoAdvBypass will escape from the choice and return false if the monster cannot be fought
-	if(autoAdvBypass(1, pages, $location[Noob Cave], ""))
+	if(autoAdvBypass(0, pages, $location[Noob Cave], ""))
 	{
 		handleTracker(target, $skill[Rain Man], "auto_copies");
 		return true;
