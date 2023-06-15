@@ -311,8 +311,8 @@ boolean auto_backupTarget()
 		return false;
 	}
 
-	// don't backup if nextAdventure is Noob Cave as a combat was started via autoAdvBypass
-	if (get_property("nextAdventure").to_location() == $location[Noob Cave])
+	// don't backup if nextAdventure is Noob Cave or None as a combat was started via autoAdvBypass or somewhere that is not a zone
+	if (get_property("nextAdventure").to_location() == $location[Noob Cave] || get_property("nextAdventure").to_location() == $location[None])
 	{
 		return false;
 	}
