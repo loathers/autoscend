@@ -25,62 +25,6 @@ void heavyrains_initializeSettings()
 	}
 }
 
-boolean routineRainManHandler()
-{
-	if(!have_skill($skill[Rain Man]))
-	{
-		return false;
-	}
-	if(my_rain() < 50)
-	{
-		return false;	//not enough rain to use skill
-	}
-	if(my_rain() < 80 && my_adventures() > (1 + auto_advToReserve()) && inebriety_left() > 0 && stomach_left() > 0)
-	{
-		return false;	//if we got plenty of adventures left then delay using rain man until rain meter reaches 80
-	}
-	
-	if(my_daycount() == 2 && (!get_property("chateauAvailable").to_boolean() || get_property("chateauMonster") != "lobsterfrogman"))
-	{
-		return rainManSummon($monster[lobsterfrogman], true, true);
-	}
-	if(get_property("auto_mountainmen") == "")
-	{
-		set_property("auto_mountainmen", "1");
-		return rainManSummon($monster[mountain man], true, false);
-	}
-	if(internalQuestStatus("questL08Trapper") == 1 && needOre())
-	{
-		return rainManSummon($monster[mountain man], false, false);
-	}
-	if(!get_property("auto_ninjasnowmanassassin").to_boolean())
-	{
-		return rainManSummon($monster[ninja snowman assassin], true, false);
-	}
-	if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_orcishfratboyspy") == "") && !get_property("auto_hippyInstead").to_boolean())
-	{
-		return rainManSummon($monster[orcish frat boy spy], false, false);
-	}
-	if((have_effect($effect[Everything Looks Yellow]) == 0) && (get_property("auto_warhippyspy") == "") && get_property("auto_hippyInstead").to_boolean())
-	{
-		return rainManSummon($monster[war hippy spy], false, false);
-	}
-	if(needStarKey())
-	{
-		if(item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
-		{
-			return rainManSummon($monster[skinflute], true, false);
-		}
-		else if((item_amount($item[star chart]) == 0))
-		{
-			return rainManSummon($monster[astronomer], false, false);
-		}
-	}
-
-	return false;
-}
-
-
 
 void heavyrains_initializeDay(int day)
 {
@@ -261,143 +205,47 @@ boolean heavyrains_buySkills()
 	return false;
 }
 
-boolean rainManSummon(monster target, boolean copy, boolean wink)
+boolean canRainManSummon(monster mon)
 {
-	if(!have_skill($skill[Rain Man]))
+	if(!have_skill($skill[Rain Man]) || my_rain() < 50)
 	{
 		return false;
 	}
 
-	# Some of the logic here has been lost due to auto_combat.ash
-	# It will probably never be updated since it just slows down the script and has no actual damage.
-
-	if(my_rain() < 50)
+	// Can only rain man summon copyable monsters
+	if(!mon.copyable)
 	{
 		return false;
 	}
 
-	if(item_amount($item[richard\'s star key]) == 1 && target == $monster[skinflute])
+	// Can summon any monster with available factoids
+	if (mon.monster_factoidss_available(false) > 0)
 	{
-		return false;		//already have the goal, don't summon
-	}
-	if(target == $monster[astronomer])
-	{
-		if(item_amount($item[richard\'s star key]) == 1 || item_amount($item[star chart]) > 0)
-		{
-			return false;		//already have the goal, don't summon
-		}
+		return true;
 	}
 
-	if((item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && target == $monster[skinflute])
+	// If no factoids, check the page directly
+	string page = visit_url("runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1");
+	// Escape without spending rain
+	run_choice(6);
+
+	// TODO
+	boolean canSummon = page.contains_text("id=" + mon.id);
+
+	return canSummon;
+}
+
+boolean rainManSummon(monster target, boolean speculative)
+{
+	if(!have_skill($skill[Rain Man]) || my_rain() < 50)
 	{
-		#already have the subgoal, don't summon
 		return false;
 	}
-	if((item_amount($item[digital key]) == 1) && target == $monster[ghost])
-	{
-		#already have the goal, don't summon
-		return false;
-	}
-	if ((get_property("sidequestLighthouseCompleted") != "none" || item_amount($item[barrel of gunpowder]) >= 5) && target == $monster[lobsterfrogman])
-	{
-		#already have the subgoal, don't summon
-		return false;
-	}
-	##Handle reject after we satisfy the lobsterfrogman
-	if(target == $monster[ninja snowman assassin])
-	{
-		int count = min(item_amount($item[ninja rope]), 1);
-		count = count + min(item_amount($item[ninja crampons]), 1);
-		count = count + min(item_amount($item[ninja carabiner]), 1);
-		if(count == 3)
-		{
-			set_property("auto_ninjasnowmanassassin", true);
-			#already have all ninja gear
-			return false;
-		}
-		if(count == 2)
-		{
-			set_property("auto_ninjasnowmanassassin", true);
-			copy = false;
-		}
-		wink = false;
-	}
 
-	if(target == $monster[orcish frat boy spy])
+	boolean canSummon = canRainManSummon(mon);
+	if (!canSummon || speculative)
 	{
-		set_property("auto_orcishfratboyspy", "done");
-		if((item_amount($item[beer helmet]) > 0) || (item_amount($item[bejeweled pledge pin]) > 0) || (item_amount($item[distressed denim pants]) > 0))
-		{
-			return false;
-		}
-		if((have_effect($effect[everything looks yellow]) > 0) || (my_lightning() < 5))
-		{
-			return false;
-		}
-	}
-	
-	if(target == $monster[war hippy spy])
-	{
-		set_property("auto_warhippyspy", "done");
-		if((item_amount($item[reinforced beaded headband]) > 0) || (item_amount($item[round purple sunglasses]) > 0) || (item_amount($item[bullet-proof corduroys]) > 0))
-		{
-			return false;
-		}
-		if((have_effect($effect[everything looks yellow]) > 0) || (my_lightning() < 5))
-		{
-			return false;
-		}
-	}
-
-	if(target == $monster[skinflute])
-	{
-		if(item_amount($item[star]) >= 8)
-		{
-			target = $monster[trouser snake];
-			copy = false;
-			wink = false;
-		}
-		else if(item_amount($item[line]) >= 7)
-		{
-			target = $monster[family jewels];
-			copy = false;
-			wink = false;
-		}
-	}
-
-	
-	if(item_amount($item[Rain-Doh black box]) == 0 ||			//do we actually have a black box to copy with
-	get_property("_raindohCopiesMade").to_int() >= 5 ||			//ran out of uses today
-	item_amount($item[Rain-doh box full of monster]) > 0)		//must discharge the full box before we can use the empty box again
-	{
-		copy = false;
-	}
-
-	//prepare wink/arrow familiar
-	if(get_property("_badlyRomanticArrows") == "1")		//shared property for [Obtuse Angel] && [Reanimated Reanimator]
-	{
-		wink = false;		//we already used our only daily wink/arrow today
-	}
-	if(wink == true)
-	{
-		if(canChangeToFamiliar($familiar[Reanimated Reanimator]))
-		{
-			handleFamiliar($familiar[Reanimated Reanimator]);
-		}
-		else if(canChangeToFamiliar($familiar[Obtuse Angel]))
-		{
-			handleFamiliar($familiar[Obtuse Angel]);
-		}
-		else
-		{
-			wink = false;
-			handleFamiliar("item");
-		}
-	}
-
-	if(copy)
-	{
-		set_property("auto_doCombatCopy", "yes");
+		return canSummon;
 	}
 
 	//use the rainman to summon a monster
@@ -405,14 +253,13 @@ boolean rainManSummon(monster target, boolean copy, boolean wink)
 	string[int] pages;
 	pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1";
 	pages[1] = "choice.php?pwd&whichchoice=970&whichmonster=" +target.to_int()+ "&option=1&choice2=and+Fight%21";
-	autoAdvBypass(0, pages, $location[Noob Cave], "");
-
-	if(copy && item_amount($item[Rain-doh box full of monster]) == 0)
+	// autoAdvBypass will escape from the choice and return false if the monster cannot be fought
+	if(autoAdvBypass(1, pages, $location[Noob Cave], ""))
 	{
-		abort("Tried to make a copy but failed");
+		handleTracker(mon, $skill[Rain Man], "auto_copies");
+		return true
 	}
-
-	return true;
+	return false;
 }
 
 boolean L13_heavyrains_towerFinal()

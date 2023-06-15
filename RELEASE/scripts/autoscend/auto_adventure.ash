@@ -117,6 +117,10 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	if (contains_text(page, combatPage)) {
 		auto_log_info("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
 		run_combat(option);
+	} else if contains_text(page, "Rainy Fax Dreams") {
+		// Escape without spending rain
+		run_choice(6);
+		return false;
 	} else {
 		auto_log_info("autoAdvBypass has encountered a choice!", "green");
 		run_choice(-1);
