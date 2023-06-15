@@ -1881,48 +1881,48 @@ boolean summonMonster(monster mon, boolean speculative)
 		// calculate the universe's only summon we want, so prioritize using it
 		if(LX_calculateTheUniverse(speculative))
 		{
-			auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+			auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via calculate the universe", "blue");
 			return true;
 		}
 	}
 	// todo add support for Baa'baa'bu'ran with deck of every card sheep card
 	if(timeSpinnerCombat(mon, speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via time spinner", "blue");
 		return true;
 	}
 	// methods which can only summon monsters should be attempted first
 	if (rainManSummon(mon, speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via rain man", "blue");
 		return true;
 	}
 	if(auto_fightLocketMonster(mon, speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via combat lover's locket", "blue");
 		return true;
 	}
 	if(handleFaxMonster(mon, !speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via fax", "blue");
 		return true;
 	}
 	// methods which can do more than summon monsters
 	if(auto_cargoShortsOpenPocket(mon, speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via cargo shorts", "blue");
 		return true;
 	}
 	if(auto_shouldUseWishes())
 	{
 		if(speculative && canGenieCombat(mon))
 		{
-			auto_log_debug("Can summon " + mon, "blue");
+			auto_log_debug("Can summon " + mon " via wishing", "blue");
 			return true;
 		}
 		else if(!speculative && makeGenieCombat(mon))
 		{
-			auto_log_debug("Did summon " + mon, "blue");
+			auto_log_debug("Did summon " + mon + " via wishing", "blue");
 			return true;
 		}
 	}
