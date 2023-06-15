@@ -119,7 +119,7 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 		run_combat(option);
 	} else if (contains_text(page, "Rainy Fax Dreams") {
 		// Escape without spending rain
-		ash visit_url("choice.php?whichchoice=970&option=2");
+		run_choice(2);
 		return false;
 	} else {
 		auto_log_info("autoAdvBypass has encountered a choice!", "green");
