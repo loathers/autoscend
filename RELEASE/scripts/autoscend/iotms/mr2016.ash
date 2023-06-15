@@ -1205,7 +1205,7 @@ boolean timeSpinnerCombat(monster goal, boolean speculative)
 boolean timeSpinnerCombat(monster goal, string option, boolean speculative)
 {
 	//spend 3 minutes to Travel to a Recent Fight
-	if(timeSpinnerRemaining(true) < 3)
+	if(timeSpinnerRemaining(!speculative) < 3)
 	{
 		return false;
 	}
