@@ -100,7 +100,8 @@ boolean snojoFightAvailable()
 
 boolean auto_haveSourceTerminal()
 {
-	if(!is_unrestricted($item[Source Terminal]))
+	item terminal = wrap_item($item[Source Terminal]);
+	if(!is_unrestricted(terminal))
 	{
 		return false;
 	}
