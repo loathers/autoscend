@@ -183,7 +183,8 @@ void simulatePreAdvForCrystalBall(location place)
 
 boolean auto_haveEmotionChipSkills()
 {
-	return auto_is_valid($skill[Emotionally Chipped]) && have_skill($skill[Emotionally Chipped]);
+	return (auto_is_valid($skill[Emotionally Chipped]) && have_skill($skill[Emotionally Chipped])) || 
+	  (auto_is_valid($skill[Replica Emotionally Chipped]) && have_skill($skill[Replica Emotionally Chipped]));
 }
 
 boolean auto_canFeelEnvy()
