@@ -369,7 +369,7 @@ boolean auto_pre_adventure()
 		int crystalBallMaximizerBonus = 0 + (zoneHasUnwantedMonsters ? 300 : 0) + (zoneHasWantedMonsters ? 300 : 0);
 		if(crystalBallMaximizerBonus != 0)
 		{
-			addToMaximize("+" + crystalBallMaximizerBonus + "bonus "+wrap_item($miniature crystal ball).to_string());
+			addToMaximize("+" + crystalBallMaximizerBonus + "bonus "+wrap_item($item[miniature crystal ball]).to_string());
 		}
 	}
 
