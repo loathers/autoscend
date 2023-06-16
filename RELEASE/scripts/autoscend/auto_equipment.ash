@@ -685,7 +685,7 @@ void finalizeMaximize(boolean speculative)
 		// also don't equip Kramco when using Map the Monsters as sausage goblins override the NC
 		if (saveGoblinForDelay || dontSausageBackups || get_property("mappingMonsters").to_boolean())
 		{
-			addToMaximize("-equip " + $item[Kramco Sausage-o-Matic&trade;].to_string());
+			addToMaximize("-equip " + wrap_item($item[Kramco Sausage-o-Matic&trade;]).to_string());
 		}
 	}
 	if (possessEquipment($item[Cursed Magnifying Glass]))

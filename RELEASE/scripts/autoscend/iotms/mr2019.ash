@@ -160,7 +160,7 @@ boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 		return false;
 		
 	//it is actually possible to have a casing but not have the kramco grinder
-	if(!possessEquipment($item[Kramco Sausage-o-Matic&trade;]))
+	if(!possessEquipment(wrap_item($item[Kramco Sausage-o-Matic&trade;])))
 	{
 		return false;
 	}
@@ -272,7 +272,8 @@ boolean auto_sausageEatEmUp() {
 }
 
 boolean auto_haveKramcoSausageOMatic() {
-	if (possessEquipment($item[Kramco Sausage-o-Matic&trade;]) && auto_can_equip($item[Kramco Sausage-o-Matic&trade;])) {
+	item kramco = wrap_item($item[Kramco Sausage-o-Matic&trade;]);
+	if (possessEquipment(kramco) && auto_can_equip(kramco)) {
 		return true;
 	}
 	return false;
@@ -317,7 +318,7 @@ boolean auto_sausageGoblin(location loc, string option)
 		return true;
 	}
 
-	if(autoEquip($item[Kramco Sausage-o-Matic&trade;]))
+	if(autoEquip(wrap_item($item[Kramco Sausage-o-Matic&trade;])))
 	{
 		set_property("auto_nextEncounter","sausage goblin");
 		return autoAdv(1, loc, option);

@@ -3690,7 +3690,7 @@ boolean autoFlavour(location place)
 		handle_monster(mon, chance);
 	}
 
-	if(equipped_amount($item[Kramco Sausage-o-Matic&trade;]) > 0)
+	if(equipped_amount(wrap_item($item[Kramco Sausage-o-Matic&trade;])) > 0)
 	{
 		handle_monster($monster[sausage goblin], 0.5);
 	}
