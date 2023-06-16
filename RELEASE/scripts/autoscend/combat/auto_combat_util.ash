@@ -102,7 +102,7 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[Vampyric Cloake]), $skills[Become a Wolf, Become a Cloud of Mist, Become a Bat]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Shadow Noodles, Entangling Noodles]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Silent Slam, Silent Squirt, Silent Slice]);
-		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[haiku katana]) + equipped_amount($item[replica haiku katana]), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter\'s Bite Technique]);
+		exclusives[exclusives.count()] = new SkillSet(equipped_amount(wrap_item($item[haiku katana])), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter\'s Bite Technique]);
 		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[bottle-rocket crossbow])  + equipped_amount($item[replica bottle-rocket crossbow]), $skills[Fire Red Bottle-Rocket, Fire Blue Bottle-Rocket, Fire Orange Bottle-Rocket, Fire Purple Bottle-Rocket, Fire Black Bottle-Rocket]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Kodiak Moment, Grizzly Scene, Bear-Backrub, Bear-ly Legal, Bear Hug]);
 	}
