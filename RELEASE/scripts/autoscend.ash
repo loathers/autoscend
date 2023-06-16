@@ -1,4 +1,4 @@
-since r27374;	// track noncombat forcers
+since r27415;	// more replica item support
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
