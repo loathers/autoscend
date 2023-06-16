@@ -4504,3 +4504,12 @@ boolean auto_wishForEffect(effect wish)
 	}
 	return false;
 }
+
+item wrap_item(item it) // convert an item into another item, used for replicas in LoL
+{
+	if (in_lol())
+	{
+		return auto_ItemToReplica(it);
+	}
+	return it;
+}
