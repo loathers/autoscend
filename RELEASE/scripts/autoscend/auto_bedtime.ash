@@ -1320,8 +1320,9 @@ boolean doBedtime()
 		{
 			auto_log_info("You can still Calculate the Universe!", "blue");
 		}
-
-		if(is_unrestricted($item[Deck of Every Card]) && (item_amount($item[Deck of Every Card]) > 0) && (get_property("_deckCardsDrawn").to_int() < 15) && auto_is_valid($item[Deck of Every Card]))
+		
+		item deck = wrap_item($item[Deck of Every Card]);
+		if(is_unrestricted(deck) && (item_amount(deck) > 0) && (get_property("_deckCardsDrawn").to_int() < 15) && auto_is_valid(deck))
 		{
 			auto_log_info("You have a Deck of Every Card and " + (15 - get_property("_deckCardsDrawn").to_int()) + " draws remaining!", "blue");
 		}

@@ -613,7 +613,8 @@ boolean chateauPainting()
 
 boolean deck_available()
 {
-	return ((item_amount($item[Deck of Every Card]) > 0) && is_unrestricted($item[Deck of Every Card]) && auto_is_valid($item[Deck of Every Card]));
+	item deck = wrap_item($item[Deck of Every Card]);
+	return ((item_amount(deck) > 0) && is_unrestricted(deck) && auto_is_valid(deck));
 }
 
 int deck_draws_left()
@@ -644,7 +645,8 @@ boolean deck_draw()
 	{
 		return false;
 	}
-	string page = visit_url("inv_use.php?pwd=&which=3&whichitem=8382");
+	item deck = wrap_item($item[Deck of Every Card]);
+	string page = visit_url("inv_use.php?pwd=&which=3&whichitem="+deck.to_int());
 	page = visit_url("choice.php?pwd=&whichchoice=1085&option=1", true);
 	return true;
 }
@@ -779,8 +781,8 @@ boolean deck_cheat(string cheat)
 		}
 	}
 
-
-	string page = visit_url("inv_use.php?cheat=1&pwd=&whichitem=8382");
+	item deck = wrap_item($item[Deck of Every Card]);
+	string page = visit_url("inv_use.php?cheat=1&pwd=&whichitem="+deck.to_int());
 
 	// Check that a valid card was selected, otherwise this wastes 5 draws.
 	if(card != 0)
