@@ -210,31 +210,18 @@ boolean lol_buyReplicas()
 
 void auto_LegacyOfLoathingDailies()
 {
-	if(item_amount($item[replica Libram of Resolutions]) > 0)
+	if(item_amount($item[replica Libram of Resolutions]) > 0 && get_property("_replicaResolutionsLibramUsed") == "false")
 	{
 		use(1, $item[replica Libram of Resolutions]); // get items
 	}
 
-	if(item_amount($item[replica Smith\'s Tome]) > 0)
+	if(item_amount($item[replica Smith\'s Tome]) > 0 && get_property("_replicaSmithsTomeUsed") == "false")
 	{
 		use(1, $item[replica Smith\'s Tome]); // get items
 	}
 
-	if(item_amount($item[Replica 2002 Mr. Store Catalog]) > 0)
+	if(item_amount($item[Replica 2002 Mr. Store Catalog]) > 0 && get_property("_2002MrStoreCreditsCollected") == "false")
 	{
 		use(1, $item[Replica 2002 Mr. Store Catalog]); //get catalog credits
-	}
-
-	if (get_property("chasmBridgeProgress").to_int() == 0)
-	{
-		pullXWhenHaveY($item[smut orc keepsake box], 1, 0);
-		if (item_amount($item[smut orc keepsake box]) > 0)
-		{
-			use(1, $item[smut orc keepsake box]); // get bridge parts
-		}
-		else
-		{
-			print("Failed to pull a smut orc keepsake box","red");
-		}
 	}
 }

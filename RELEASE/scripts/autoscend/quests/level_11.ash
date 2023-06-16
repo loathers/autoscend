@@ -2205,19 +2205,6 @@ boolean L11_mauriceSpookyraven()
 	{
 		auto_log_info("Time to cook up something explosive! Science fair unstable fulminate time!", "green");
 		ovenHandle();
-		if(freeCrafts() == 0)
-		{
-			pullXWhenHaveY($item[Homebodyl&trade;], 1, 0);
-			if (item_amount($item[Homebodyl&trade;]) > 0)
-			{
-				use(1, $item[Homebodyl&trade;]); // get free craft charges
-				auto_log_info("Huffing some Homebodyl and hyperfocusing on kitchen-grade demolitions.","blue");	
-			}
-			else
-			{
-				auto_log_info("Couldn't pull a Homebodyl. Square.","red");
-			}
-		}
 		autoCraft("cook", 1, $item[bottle of Chateau de Vinegar], $item[blasting soda]);
 		if(item_amount($item[Unstable Fulminate]) == 0)
 		{

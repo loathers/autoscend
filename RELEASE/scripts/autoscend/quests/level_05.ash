@@ -30,7 +30,7 @@ boolean L5_getEncryptionKey()
 		}
 	}
 
-	if(!isActuallyEd())
+	if(!isActuallyEd() && canChew($item[Breathitin&trade;]) && spleen_left() >= $item[Breathitin&trade;].spleen))
 	{
 		pullXWhenHaveY($item[Breathitin&trade;], 1, 0);
 		if (item_amount($item[Breathitin&trade;]) > 0)

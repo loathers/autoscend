@@ -793,6 +793,7 @@ boolean deck_cheat(string cheat)
 
 	if(in_lol())
 	{
+		//replica Deck id for when in Legacy of Loathing
 		deckItemId = "11230";
 	}
 	else

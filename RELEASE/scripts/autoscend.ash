@@ -1115,11 +1115,17 @@ boolean dailyEvents()
 			use(1, $item[Breathitin&trade;]); // get free outdoor fight charges
 			auto_log_info("Huffing some Breathitin before adventuring for the day. That's the stuff!","blue");
 		}
-		else
-		{
-			auto_log_info("Couldn't pull a Breathitin. Be a lot cooler if we could.","red");
-		}
 	}
+
+	if(freeCrafts() == 0 && canChew($item[Homebodyl&trade;]) && spleen_left() >= $item[Homebodyl&trade;].spleen)
+		{
+			pullXWhenHaveY($item[Homebodyl&trade;], 1, 0);
+			if (item_amount($item[Homebodyl&trade;]) > 0)
+			{
+				use(1, $item[Homebodyl&trade;]); // get free craft charges
+				auto_log_info("Huffing some Homebodyl and hyperfocusing on kitchen-grade demolitions.","blue");	
+			}
+		}
 
 
 	auto_getGuzzlrCocktailSet();
