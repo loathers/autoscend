@@ -224,7 +224,13 @@ boolean canRainManSummon(monster target)
 		return true;
 	}
 
-	return false;
+	// Check the page text
+	auto_log_info(target + " factoids unavailable, checking Rain Man if summon is possible", "blue");
+	buffer page = visit_url("runskillz.php?pwd&action=Skillz&whichskill=16011&quantity=1");
+	// Escape
+	run_choice(2);
+
+	return page.contains_text("<option value=" + target.id + ">");
 }
 
 boolean rainManSummon(monster target, boolean speculative)
