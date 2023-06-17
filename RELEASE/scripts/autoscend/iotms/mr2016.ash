@@ -1179,17 +1179,15 @@ boolean timeSpinnerAdventure(string option)
 boolean canTimeSpinnerMonster(monster mon)
 {
 	// Can only time spinner summon copyable monsters
-	if(!mon.copyable)
+	if(!mon.copyable || mon.id < 0)
 	{
 		return false;
 	}
-	// If adding spinner support for a new monster, ensure the monster's native zone is listed below
-	boolean[location] possibleSpinnerMonsterZones = $locations[Guano Junction, The Batrat and Ratbat Burrow, The Beanbat Chamber, The Haunted Pantry,
-		The Skeleton Store, The Secret Government Laboratory, The Goatlet, The Haunted Bedroom, Sonofa Beach, The Outskirts of Cobb's Knob];
-	
-	foreach loc in possibleSpinnerMonsterZones
+
+	string name = mon.to_string();
+	foreach loc in $locations[]
 	{
-		if(contains_text(loc.combat_queue, to_string(mon))) return true;
+		if(contains_text(loc.combat_queue, name)) return true;
 	}
 	return false;
 }
@@ -1207,7 +1205,7 @@ boolean timeSpinnerCombat(monster goal, boolean speculative)
 boolean timeSpinnerCombat(monster goal, string option, boolean speculative)
 {
 	//spend 3 minutes to Travel to a Recent Fight
-	if(timeSpinnerRemaining(true) < 3)
+	if(timeSpinnerRemaining(!speculative) < 3)
 	{
 		return false;
 	}

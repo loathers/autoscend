@@ -437,6 +437,9 @@ boolean auto_run_choice(int choice, string page)
 		case 928: // You Found Your Thrill (The Black Forest)
 			blackForestChoiceHandler(choice);
 			break;
+		case 970: // Rainy Fax Dreams on your Wedding Day
+			run_choice(2); // leave and get your rain back
+			break;
 		case 976: // Ed the Undrowning (Heavy Rains)
 			run_choice(1); // fight Ed in a Heavy Rains run
 			break;

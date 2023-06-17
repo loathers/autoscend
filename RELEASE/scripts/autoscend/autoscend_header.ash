@@ -728,11 +728,10 @@ boolean LA_grey_goo_tasks();
 //Defined in autoscend/paths/heavy_rains.ash
 boolean in_heavyrains();
 void heavyrains_initializeSettings();
-boolean routineRainManHandler();
 void heavyrains_initializeDay(int day);
 void heavyrains_doBedtime();
 boolean heavyrains_buySkills();
-boolean rainManSummon(monster target, boolean copy, boolean wink);
+boolean rainManSummon(monster target, boolean speculative);
 boolean L13_heavyrains_towerFinal();
 
 ########################################################################################################
