@@ -432,6 +432,14 @@ boolean auto_pre_adventure()
 			cli_execute(`parka spikolodon`);
 		}
 	}
+
+	if (in_heavyrains())
+	{
+		if (possessEquipment($item[Thor\'s Pliers]) && my_lightning() < 100)
+		{
+			addBonusToMaximize($item[Thor\'s Pliers], 200); // regenerate lightning
+		}
+	}
 	
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
