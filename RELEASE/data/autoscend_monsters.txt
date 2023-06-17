@@ -85,20 +85,6 @@ replace	24	Slime Blob	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequest
 replace	25	Angry Ghost	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 replace	26	Annoyed Snake	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 replace	27	Sausage Goblin	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
-# community service
-replace	28	Lava Golem	path:Community Service;loc:LavaCo Lamp Factory
-replace	29	Healing Crystal Golem	path:Community Service;loc:The Velvet / Gold Mine
-replace	30	Mine Worker (female)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask>0
-replace	31	Mine Worker (male)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask>0
-replace	32	Mine Overseer (female)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask=0
-replace	33	Mine Overseer (male)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask=0
-replace	34	Factory-Irregular Skeleton	path:Community Service;loc:The Skeleton Store
-replace	35	Remaindered Skeleton	path:Community Service;loc:The Skeleton Store
-replace	36	Swarm of Skulls	path:Community Service;loc:The Skeleton Store
-replace	37	Ancient Insane Monk	path:Community Service;loc:The Haiku Dungeon
-replace	38	Ferocious Bugbear	path:Community Service;loc:The Haiku Dungeon
-replace	39	Gelatinous Cube	path:Community Service;loc:The Haiku Dungeon
-replace	40	Knob Goblin Poseur	path:Community Service;loc:The Haiku Dungeon
 # Bugbear Invasion Mothership
 replace	41	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing
 replace	42	bugaboo	path:Bugbear Invasion;loc:Morgue;item:bugbear autopsy tweezers<1

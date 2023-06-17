@@ -45,13 +45,6 @@ boolean snojoFightAvailable()
 			standard[2] = "Moxie";
 			standard[3] = "Mysticality";
 		}
-		if(in_community())
-		{
-			standard[0] = "Mysticality";
-			standard[1] = "Moxie";
-			standard[2] = "Muscle";
-			standard[3] = "Mysticality";
-		}
 		if(in_lta())
 		{
 			standard[0] = "Mysticality";
@@ -537,14 +530,6 @@ int auto_advWitchessTargets(string target)
 
 boolean witchessFights()
 {
-	if(in_community())
-	{
-		return false;
-	}
-	if(cs_witchess())
-	{
-		return true;
-	}
 	if(!auto_haveWitchess())
 	{
 		return false;
@@ -562,7 +547,7 @@ boolean witchessFights()
 	switch(my_daycount())
 	{
 	case 1:
-		if((item_amount($item[Greek Fire]) == 0) && !in_community())
+		if((item_amount($item[Greek Fire]) == 0))
 		{
 			return auto_advWitchess("ml");
 		}
@@ -1011,10 +996,6 @@ boolean LX_ghostBusting()
 	// goal & progress specific reasons to skip busting this turn go below.
 	location goal = get_property("ghostLocation").to_location();
 	if(goal == $location[none])
-	{
-		return false;
-	}
-	if(in_community() && my_daycount() == 1 && goal == $location[The Spooky Forest])
 	{
 		return false;
 	}

@@ -51,8 +51,7 @@ Other things that help greatly but shouldn't be strictly required (I think):
 
 ## Community Service
 
-If you want to run HCCS, the recommended setup is Sauceror with all of the skills mentioned in the
-requirements section. Other classes should work as well, but Sauceror works best.
+Community Service is no longer supported.
 
 ## Two Crazy Random Summer
 

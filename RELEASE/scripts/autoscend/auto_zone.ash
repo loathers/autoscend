@@ -330,22 +330,10 @@ generic_t zone_needItem(location loc)
 		}
 		break;
 	case $location[The Haunted Pantry]:
-		if(in_community() && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
-		{
-			retval._float = 59.4;
-		}
 		break;
 	case $location[The Skeleton Store]:
-		if(in_community() && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
-		{	//No idea, should spade this for great justice.
-			retval._float = 33.0;
-		}
 		break;
 	case $location[The Secret Government Laboratory]:
-		if(in_community() && (item_amount($item[Experimental Serum G-9]) < 2))
-		{	//No idea, assume it is low.
-			retval._float = 10.0;
-		}
 		break;
 	// Bugbear Invasion Locations
 	case $location[Waste Processing]:
@@ -469,16 +457,8 @@ generic_t zone_needItemFood(location loc)
 		}
 		break;
 	case $location[The Haunted Pantry]:
-		if(in_community() && (item_amount($item[Tomato]) < 2) && have_skill($skill[Advanced Saucecrafting]))
-		{
-			retval._float = 59.4;
-		}
 		break;
 	case $location[The Skeleton Store]:
-		if(in_community() && have_skill($skill[Advanced Saucecrafting]) && ((item_amount($item[Cherry]) < 1) || (item_amount($item[Grapefruit]) < 1) || (item_amount($item[Lemon]) < 1)))
-		{	//No idea, should spade this for great justice.
-			retval._float = 33.0;
-		}
 		break;
 	default:
 		retval._error = true;

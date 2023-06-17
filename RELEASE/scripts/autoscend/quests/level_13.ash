@@ -1662,7 +1662,7 @@ boolean L13_towerNSFinal()
 		acquireMP(200, 0);
 	}
 	
-	if(!(isActuallyEd() || is_boris() || is_jarlsberg() || is_pete() || in_bhy() || in_bugbear() || in_community() || in_theSource() || in_wotsf() || in_zombieSlayer() || in_aosol()))
+	if(!(isActuallyEd() || is_boris() || is_jarlsberg() || is_pete() || in_bhy() || in_bugbear() || in_theSource() || in_wotsf() || in_zombieSlayer() || in_aosol()))
 	{
 		//Only if the final boss does not unbuff us...
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
