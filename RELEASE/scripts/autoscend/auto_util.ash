@@ -1826,6 +1826,29 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[Astronomer])) return true;
 	}
 
+	// summon additional monsters in heavy rains with rain man when available
+	if(have_skill($skill[Rain Man]) && my_rain() >= 50)
+	{
+		// summon Family Jewels or Bush to get only stars
+		if(needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) >= 7)
+		{
+			if(canSummonMonster($monster[Family Jewels]) && summonMonster($monster[Family Jewels])) return true;
+			if(canSummonMonster($monster[Bush]) && summonMonster($monster[Bush])) return true;
+		}
+		// summon Trouser Snake or Box to get only lines
+		if(needStarKey() && item_amount($item[star]) >= 8 && item_amount($item[line]) < 7)
+		{
+			if(canSummonMonster($monster[Trouser Snake]) && summonMonster($monster[Trouser Snake])) return true;	
+			if(canSummonMonster($monster[Box]) && summonMonster($monster[Box])) return true;
+		}
+		// summon Skinflute or Camel's Toe to get both stars and lines
+		if(needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
+		{
+			if(canSummonMonster($monster[Skinflute]) && summonMonster($monster[Skinflute])) return true;
+			if(canSummonMonster($monster[Camel's Toe]) && summonMonster($monster[Camel's Toe])) return true;
+		}
+	}
+
 	return false;
 }
 
@@ -1842,54 +1865,67 @@ boolean summonMonster(monster mon)
 boolean summonMonster(monster mon, boolean speculative)
 {
 	auto_log_debug((speculative ? "Checking if we can" : "Trying to") + " summon " + mon, "blue");
+
+	if (!speculative)
+	{
+		// Equip the combat lover's locket if we're missing a monster about to be summoned
+		if (auto_haveCombatLoversLocket() && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon))
+		{
+			auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from summoning, so we\'re bringing it along.', "blue");
+			autoEquip($item[combat lover\'s locket]);
+		}
+	}
 	// methods which require specific circumstances
 	if(mon == $monster[War Frat 151st Infantryman])
 	{	
 		// calculate the universe's only summon we want, so prioritize using it
 		if(LX_calculateTheUniverse(speculative))
 		{
-			auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+			auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via calculate the universe", "blue");
 			return true;
 		}
+	}
+	if (rainManSummon(mon, speculative))
+	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via rain man", "blue");
+		return true;
 	}
 	// todo add support for Baa'baa'bu'ran with deck of every card sheep card
 	if(timeSpinnerCombat(mon, speculative))
 	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via time spinner", "blue");
 		return true;
 	}
 	// methods which can only summon monsters should be attempted first
 	if(auto_fightLocketMonster(mon, speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via combat lover's locket", "blue");
 		return true;
 	}
 	if(handleFaxMonster(mon, !speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via fax", "blue");
 		return true;
 	}
 	// methods which can do more than summon monsters
 	if(auto_cargoShortsOpenPocket(mon, speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via cargo shorts", "blue");
 		return true;
 	}
 	if(auto_shouldUseWishes())
 	{
 		if(speculative && canGenieCombat(mon))
 		{
-			auto_log_debug("Can summon " + mon, "blue");
+			auto_log_debug("Can summon " + mon + " via wishing", "blue");
 			return true;
 		}
 		else if(!speculative && makeGenieCombat(mon))
 		{
-			auto_log_debug("Did summon " + mon, "blue");
+			auto_log_debug("Did summon " + mon + " via wishing", "blue");
 			return true;
 		}
 	}
-
-	//todo
-	// add support for rainManSummon(). Look to routineRainManHandler()
 
 	return false;
 }

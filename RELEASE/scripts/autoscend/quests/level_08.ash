@@ -302,24 +302,6 @@ boolean L8_getMineOres()
 		return false;
 	}
 
-	// heavy rain copy handling.
-	if(in_heavyrains() && have_skill($skill[Rain Man]))
-	{
-		if(my_rain() < 50)
-		{
-			auto_log_info("Need Ore but not enough rain. Delaying ore for trapper", "blue");
-			return false;
-		}
-		if(have_effect($effect[Ultrahydrated]) == 0 && my_rain() < 90)
-		{
-			auto_log_info("Do not waste ultrahydrated. Delaying ore for trapper", "blue");
-			return false;
-		}
-		auto_log_info("Trying to summon a mountain man", "blue");
-		set_property("auto_mountainmen", "1");
-		return rainManSummon($monster[mountain man], false, false);
-	}
-	
 	// in softcore we want to pull an ore
 	if(canPull(oreGoal))
 	{
@@ -576,11 +558,6 @@ boolean L8_trapperSlopeSoftcore()
 	// special path or IOTM handling
 	if(!get_property("auto_L8_ninjaAssassinFail").to_boolean()) // can defeat assassins
 	{
-		if(have_skill($skill[Rain Man]))
-		{
-			auto_log_info("Delay pulling ninja climbing gear. we want to summon assassins with rain man skill", "blue");
-			return false;
-		}
 		if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
 		{
 			auto_log_info("Delay pulling ninja climbing gear. we have already digitized [ninja snowman assassin]", "blue");
@@ -653,11 +630,6 @@ boolean L8_trapperNinjaLair()
 	if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
 	{
 		auto_log_info("Have a digitized Ninja Snowman Assassin, let's put off the Ninja Snowmen Lair", "blue");
-		return false;
-	}
-	if(have_skill($skill[Rain Man]))
-	{
-		auto_log_info("Delay adventuring in ninja snowmen lair. we are going to be copying them instead with rain man skill", "blue");
 		return false;
 	}
 
