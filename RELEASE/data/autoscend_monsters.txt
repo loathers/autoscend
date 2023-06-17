@@ -86,13 +86,13 @@ replace	25	Angry Ghost	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sideques
 replace	26	Annoyed Snake	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 replace	27	Sausage Goblin	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 # Bugbear Invasion Mothership
-replace	41	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing
-replace	42	bugaboo	path:Bugbear Invasion;loc:Morgue;item:bugbear autopsy tweezers<1
-replace	43	bugbear scientist	path:Bugbear Invasion;loc:Science Lab;item:quantum nanopolymer spider web<1
-replace	44	liquid metal bugbear	path:Bugbear Invasion:loc:Engineering;item:drone self-destruct chip<1
-replace	45	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering
-replace	46	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation
-replace	47	trendy bugbear chef	path:Bugbear Invasion;loc:Galley
+replace	28	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing
+replace	29	bugaboo	path:Bugbear Invasion;loc:Morgue;item:bugbear autopsy tweezers<1
+replace	30	bugbear scientist	path:Bugbear Invasion;loc:Science Lab;item:quantum nanopolymer spider web<1
+replace	31	liquid metal bugbear	path:Bugbear Invasion:loc:Engineering;item:drone self-destruct chip<1
+replace	32	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering
+replace	33	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation
+replace	34	trendy bugbear chef	path:Bugbear Invasion;loc:Galley
 
 sniff	0	pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed;prop:hiddenApartmentProgress<7
 sniff	1	Writing Desk	prop:writingDesksDefeated<4
