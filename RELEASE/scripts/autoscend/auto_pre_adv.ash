@@ -437,7 +437,7 @@ boolean auto_pre_adventure()
 	{
 		if (possessEquipment($item[Thor\'s Pliers]) && my_lightning() < 100)
 		{
-			addBonusToMaximize($item[Thor\'s Pliers], 200); // regenerate lightning
+			addBonusToMaximize($item[Thor\'s Pliers], 300); // regenerate lightning
 		}
 	}
 	
