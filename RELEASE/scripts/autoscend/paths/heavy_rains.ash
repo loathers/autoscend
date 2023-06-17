@@ -235,11 +235,6 @@ boolean canRainManSummon(monster target)
 
 boolean rainManSummon(monster target, boolean speculative)
 {
-	if(!have_skill($skill[Rain Man]) || my_rain() < 50)
-	{
-		return false;
-	}
-
 	boolean canSummon = canRainManSummon(target);
 	if (!canSummon || speculative)
 	{
