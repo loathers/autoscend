@@ -1773,6 +1773,9 @@ boolean makeGenieWish(effect eff)
 	return makeGenieWish("to be " + eff) || have_effect(eff) > 0;
 }
 
+// Track any failed wishes this run
+boolean[monster] failedWishMonsters;
+
 boolean canGenieCombat(monster mon)
 {
 	boolean haveBottle = item_amount($item[Genie Bottle]) > 0;
@@ -1797,6 +1800,10 @@ boolean canGenieCombat(monster mon)
 	{
 		return false;
 	}
+	if (failedWishMonsters contains mon)
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -1809,6 +1816,7 @@ boolean makeGenieCombat(monster mon, string option)
 
 	auto_log_info("Using genie to summon " + mon.name, "blue");
 	string wish = "to fight a " + mon;
+	int prev_genieFightsUsed = get_property("_genieFightsUsed").to_int();
 	string[int] pages;
 	int wish_provider = $item[genie bottle].to_int();
 	if (item_amount($item[pocket wish]) > 0)
@@ -1821,8 +1829,9 @@ boolean makeGenieCombat(monster mon, string option)
 
 	autoAdvBypass(5, pages, $location[Noob Cave], option);
 
-	if(get_property("lastEncounter") != mon && get_property("lastEncounter") != "Using the Force")
+	if(prev_genieFightsUsed == get_property("_genieFightsUsed").to_int())
 	{
+		failedWishMonsters[mon] = true;
 		auto_log_warning("Wish: '" + wish + "' failed", "red");
 		return false;
 	}
