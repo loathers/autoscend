@@ -373,58 +373,6 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Go Get \'Em\, Tiger!]);
 	}
 
-	if(in_community())
-	{
-		if(auto_have_skill($skill[Summon BRICKOs]) && (get_property("_brickoEyeSummons").to_int() < 3))
-		{
-			libram = $skill[Summon BRICKOs];
-		}
-		else if(auto_have_skill($skill[Summon Taffy]))
-		{
-			libram = $skill[Summon Taffy];
-		}
-
-		int missing = (my_maxmp() - my_mp()) / 15;
-		int casts = (my_soulsauce() - 25) / 5;
-		if(casts < 0)
-		{
-			casts = 0;
-		}
-		int regen = casts;
-		if(casts > missing)
-		{
-			regen = missing;
-		}
-		if(regen > 0)
-		{
-			use_skill(regen, $skill[Soul Food]);
-		}
-
-		buffMaintain($effect[Inscrutable Gaze], 30, 1, 1);
-		buffMaintain($effect[Big], 50, 1, 1);
-
-		boolean [skill] toCast = $skills[Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Bowl Full of Jelly, Chubby and Plump, Communism!, Eye and a Twist, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Prevent Scurvy and Sobriety, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
-
-		foreach sk in toCast
-		{
-			if(is_unrestricted(sk) && auto_have_skill(sk) && (my_mp() >= mp_cost(sk)))
-			{
-				use_skill(1, sk);
-			}
-		}
-
-		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 15) && (mp_cost(libram) < 75))
-		{
-			use_skill(1, libram);
-		}
-		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 175))
-		{
-			use_skill(1, libram);
-		}
-
-		return true;
-	}
-
 	if(in_theSource())
 	{
 		if((get_property("sourceInterval").to_int() > 0) && (get_property("sourceInterval").to_int() <= 600) && (get_property("sourceAgentsDefeated").to_int() >= 9))

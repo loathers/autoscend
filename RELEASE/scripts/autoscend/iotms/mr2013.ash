@@ -118,63 +118,6 @@ void oldPeoplePlantStuff()
 		return;
 	}
 
-	if(in_community())
-	{
-		if(my_location() == $location[The Velvet / Gold Mine])
-		{
-			cli_execute("florist plant horn of plenty");
-			cli_execute("florist plant max headshroom");
-			cli_execute("florist plant foul toadstool");
-		}
-		else if(my_location() == $location[The Secret Government Laboratory])
-		{
-			cli_execute("florist plant pitcher plant");
-			cli_execute("florist plant spider plant");
-			cli_execute("florist plant stealing magnolia");
-		}
-		else if(my_location() == $location[The Bubblin\' Caldera])
-		{
-			cli_execute("florist plant seltzer watercress");
-			cli_execute("florist plant lettuce spray");
-			cli_execute("florist plant skunk cabbage");
-		}
-		else if(my_location() == $location[The Skeleton Store])
-		{
-			cli_execute("florist plant canned spinach");
-			cli_execute("florist plant aloe guv'nor");
-		}
-		else if(my_location() == $location[LavaCo&trade; Lamp Factory])
-		{
-			cli_execute("florist plant impatiens");
-			cli_execute("florist plant red fern");
-			cli_execute("florist plant bamboo!");
-		}
-		else if(my_location() == $location[8-bit realm])
-		{
-			cli_execute("florist plant rad-ish radish");
-			cli_execute("florist plant smoke-ra");
-			cli_execute("florist plant deadly cinnamon");
-		}
-		else if(my_location() == $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice])
-		{
-			cli_execute("florist plant war lily");
-			cli_execute("florist plant arctic moss");
-		}
-		else if(my_location() == $location[The Deep Machine Tunnels])
-		{
-			cli_execute("florist plant blustery puffball");
-			cli_execute("florist plant dis lichen");
-			cli_execute("florist plant loose morels");
-		}
-		else if((my_location() == $location[The X-32-F Combat Training Snowman]) && (my_daycount() == 2))
-		{
-			cli_execute("florist plant canned spinach");
-			cli_execute("florist plant red fern");
-			cli_execute("florist plant spider plant");
-		}
-		return;
-	}
-
 	if((my_location() == $location[The Outskirts of Cobb\'s Knob]))
 	{
 		cli_execute("florist plant rad-ish radish");

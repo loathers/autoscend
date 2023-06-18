@@ -8,7 +8,7 @@
 //	Denoted as L<classification>[<path>]_<name>:
 //		<classification>: Level to be used (Numeric, X for any). A for entire ascension.
 //		<classification>: M for most of ascension, "sc" for Seal Clubber only
-//		<path>: [optional] indicates path to be used in. "ed" for ed, "cs" for community service
+//		<path>: [optional] indicates path to be used in. ex. "ed" for ed
 //			Usually separated with _
 ########################################################################################################
 
@@ -187,7 +187,6 @@ boolean rethinkingCandy(effect acquire, boolean simulate);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2017.ash
-boolean auto_hasMummingTrunk();
 boolean auto_checkFamiliarMummery(familiar fam);
 boolean mummifyFamiliar(familiar fam, string bonus);
 boolean mummifyFamiliar(familiar fam);
@@ -616,36 +615,6 @@ boolean LM_canInteract();
 ########################################################################################################
 //Defined in autoscend/paths/community_service.ash
 boolean in_community();
-boolean LA_cs_communityService();
-boolean cs_witchess();
-void cs_initializeDay(int day);
-boolean do_chateauGoat();
-boolean cs_spendRests();
-void cs_make_stuff(int curQuest);
-boolean cs_eat_spleen();
-boolean cs_eat_stuff(int quest);
-void cs_dnaPotions();
-boolean cs_giant_growth();
-boolean auto_csHandleGrapes();
-int estimate_cs_questCost(int quest);
-int [int] get_cs_questList();
-int expected_next_cs_quest();
-string what_cs_quest(int quest);
-int expected_next_cs_quest_internal();
-boolean do_cs_quest(int quest);
-boolean do_cs_quest(string quest);
-int get_cs_questCost(int quest);
-int get_cs_questCost(string input);
-int get_cs_questNum(string input);
-void set_cs_questListFast(int[int] fast);
-boolean cs_preTurnStuff(int curQuest);
-boolean cs_healthMaintain();
-boolean cs_mpMaintain();
-boolean cs_mpMaintain(int target);
-boolean canTrySaberTrickMeteorShower();
-boolean trySaberTrickMeteorShower();
-int beachHeadTurnSavings(int quest);
-boolean tryBeachHeadBuff(int quest);
 
 ########################################################################################################
 //Defined in autoscend/paths/dark_gyffte.ash

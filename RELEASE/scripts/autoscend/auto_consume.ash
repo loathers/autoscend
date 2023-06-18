@@ -589,7 +589,6 @@ float consumptionProgress()
 		organs_used += my_spleen_use();
 		organs_max += spleen_limit();
 	}
-	// if(my_path() == $path[Community Service]), autoscend does try to use spleen for adventures but also for buffs
 	// if(my_path() == $path[Avatar of Sneaky Pete]), autoscend doesn't try to use molotov soda or create Hate to produce them
 	
 	if (organs_max == 0)
@@ -1983,11 +1982,6 @@ void consumeStuff()
 	}
 	if (inAftercore())
 	{
-		return;
-	}
-	if(in_community())
-	{
-		cs_eat_spleen();
 		return;
 	}
 	if(in_kolhs())
