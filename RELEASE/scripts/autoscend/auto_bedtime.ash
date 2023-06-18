@@ -75,7 +75,7 @@ int pullsNeeded(string data)
 	{
 		return 0;
 	}
-	if (isActuallyEd() || in_community())
+	if (isActuallyEd())
 	{
 		return 0;
 	}
@@ -1108,7 +1108,6 @@ boolean doBedtime()
 	}
 	if(get_property("timesRested").to_int() < total_free_rests())
 	{
-		cs_spendRests();
 		auto_log_info("You have " + (total_free_rests() - get_property("timesRested").to_int()) + " free rests remaining.", "blue");
 	}
 	if(possessEquipment($item[Kremlin\'s Greatest Briefcase]) && (get_property("_kgbClicksUsed").to_int() < 24))

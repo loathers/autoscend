@@ -1,6 +1,5 @@
 #	This is meant for items that have a date of 2017.
 
-// This should probably only be called directly from community_service.ash.
 boolean auto_hasMummingTrunk()
 {
 	if(!pathHasFamiliar()  || item_amount($item[Mumming Trunk]) == 0 || !auto_is_valid($item[Mumming Trunk]))
@@ -127,12 +126,6 @@ boolean mummifyFamiliar(familiar fam)
 
 boolean mummifyFamiliar()
 {
-	auto_hasMummingTrunk();
-	if (in_community())
-	{
-		return false;
-	}
-	
 	return mummifyFamiliar(my_familiar());
 }
 

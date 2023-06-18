@@ -535,7 +535,7 @@ boolean auto_run_choice(int choice, string page)
 			doghouseChoiceHandler(choice);
 			break;
 		case 1115: // VYKEA! (VYKEA)
-			if(!get_property("_VYKEACafeteriaRaided").to_boolean() && !in_community())
+			if(!get_property("_VYKEACafeteriaRaided").to_boolean())
 			{
 				run_choice(1); // get consumables
 			}

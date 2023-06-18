@@ -755,7 +755,7 @@ void preAdvUpdateFamiliar(location place)
 		}
 	}
 	
-	if(!in_community() && auto_checkFamiliarMummery(my_familiar()))
+	if(auto_checkFamiliarMummery(my_familiar()))
 	{
 		mummifyFamiliar();
 	}
