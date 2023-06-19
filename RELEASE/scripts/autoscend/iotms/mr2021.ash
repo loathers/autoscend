@@ -311,7 +311,7 @@ boolean auto_backupTarget()
 		return false;
 	}
 
-	// don't backup if nextAdventure isNone as a combat was somewhere that is not a zone
+	// don't backup if nextAdventure is None as a combat was somewhere that is not a zone
 	if (get_property("nextAdventure").to_location() == $location[None])
 	{
 		return false;
