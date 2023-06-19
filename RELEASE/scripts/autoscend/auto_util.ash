@@ -948,6 +948,29 @@ string findFreeRunSource(boolean inCombat)
 		}
 	}
 
+	if(canChangeToFamiliar($familiar[Pair of Stomping Boots]))
+	{
+		// TODO add fam weight buffing
+		// boots and bander share same counter
+		int banderRunsLeft = floor((familiar_weight($familiar[Pair of Stomping Boots]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		if(!inCombat)
+		{
+			if(banderRunsLeft > 0 && handleFamiliar($familiar[Pair of Stomping Boots]))
+			{
+				// update familiar already called in pre-adv so have to force.
+				use_familiar($familiar[Pair of Stomping Boots]);
+				return "Pair of Stomping Boots";
+			}
+		}
+		else
+		{
+			if(my_familiar() == $familiar[Pair of Stomping Boots] && banderRunsLeft > 0)
+			{
+				return "Pair of Stomping Boots";
+			}
+		}
+	}
+
 	if(auto_hasNavelRing())
 	{
 		// currently only prioritize equipping if at least 80% chance of free run away
