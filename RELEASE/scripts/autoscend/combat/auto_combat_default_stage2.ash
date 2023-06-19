@@ -159,6 +159,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		//TODO use $item[Tattered Scrap Of Paper] as a free runaway?
 		//TODO use $item[Green Smoke Bomb] as a free runaway?
 
+		string freeRunSource = findFreeRunSource(true);
+		if(freeRunSource != "")
+		{
+			handleTracker(enemy, freeRunSource, "auto_freeruns");
+			return "runaway";
+		}
 		if (canUse($skill[Peel Out]) && pete_peelOutRemaining() > 0)
 		{
 			handleTracker(enemy, $skill[Peel Out], "auto_freeruns");
