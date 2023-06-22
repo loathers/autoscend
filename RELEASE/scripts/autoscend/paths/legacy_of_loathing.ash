@@ -113,18 +113,22 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2009</b>"))
 		{
-			if(contains_text(page, "replica apathargic bandersnatch"))
+			if(is100FamRun())//If on a 100% Fam Run, will get sunglasses on the first time around
 			{
-				if(!is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
-				{	
+				if(contains_text(page, "replica Elvish sunglasses"))
+				{
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica Elvish sunglasses]);
+				}
+				else 
+				{
 					buy($coinmaster[Replica Mr. Store], 1, $item[replica Apathargic Bandersnatch]);
 					use(1, $item[replica Apathargic Bandersnatch]); // put in terrarium
 				}
-				else //This is a 100% familiar run, no need to buy another familiar
-				{ 
-					buy($coinmaster[Replica Mr. Store], 1, $item[replica Elvish sunglasses]);
-
-				} 
+			}
+			else if(contains_text(page, "replica apathargic bandersnatch"))
+			{
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica Apathargic Bandersnatch]);
+					use(1, $item[replica Apathargic Bandersnatch]); // put in terrarium
 			}
 			else
 			{
@@ -145,17 +149,21 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2011</b>"))
 		{
-			if(contains_text(page, "replica cute angel"))
+			if(is100FamRun())//If on a 100% Fam Run, will get non-familiars
 			{
-				if(!is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
-				{	
+				if(contains_text(page, "replica Operation Patriot Shield"))
+				{
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica Operation Patriot Shield]);
+				}
+				else
+				{
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica plastic vampire fangs]);	
+				}
+			}
+			else if(contains_text(page, "replica cute angel"))
+			{
 					buy($coinmaster[Replica Mr. Store], 1, $item[replica cute angel]);
 					use(1, $item[replica cute angel]); // put in terrarium
-				}
-				else //This is a 100% familiar run, no need to buy another familiar
-				{ 
-					buy($coinmaster[Replica Mr. Store], 1, $item[replica plastic vampire fangs]);
-				} 
 			}
 			else
 			{
