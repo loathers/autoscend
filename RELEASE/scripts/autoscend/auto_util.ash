@@ -1885,11 +1885,6 @@ boolean summonMonster(monster mon, boolean speculative)
 			return true;
 		}
 	}
-	if (rainManSummon(mon, speculative))
-	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via rain man", "blue");
-		return true;
-	}
 	// todo add support for Baa'baa'bu'ran with deck of every card sheep card
 	if(timeSpinnerCombat(mon, speculative))
 	{
@@ -1897,6 +1892,11 @@ boolean summonMonster(monster mon, boolean speculative)
 		return true;
 	}
 	// methods which can only summon monsters should be attempted first
+	if (rainManSummon(mon, speculative))
+	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via rain man", "blue");
+		return true;
+	}
 	if(auto_fightLocketMonster(mon, speculative))
 	{
 		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via combat lover's locket", "blue");
