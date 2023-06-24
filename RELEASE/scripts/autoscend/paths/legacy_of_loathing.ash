@@ -115,7 +115,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2010</b>"))
 		{
-			if(available_amount($item[replica greatest american pants]))
+			if(available_amount($item[replica greatest american pants]) > 0)
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica Greatest American Pants]);
 			}
@@ -138,7 +138,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2012</b>"))
 		{
-			if(item_amount(replica libram of resolutions) == 0)
+			if(item_amount($item[replica libram of resolutions]) == 0)
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica Libram of Resolutions]);
 				use(1, $item[replica Libram of Resolutions]); // get items
