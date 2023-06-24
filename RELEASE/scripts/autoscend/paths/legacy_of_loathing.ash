@@ -115,7 +115,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2010</b>"))
 		{
-			if(available_amount($item[replica greatest american pants]) > 0)
+			if(available_amount($item[replica greatest american pants]) == 0)
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica Greatest American Pants]);
 			}
