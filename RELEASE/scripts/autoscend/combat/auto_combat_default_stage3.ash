@@ -69,12 +69,6 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 	}
 
-	//delevel if you have a loofah lei
-	if(canUse($skill[loofah lei lasso]))
-	{
-		return useSkill($skill[loofah lei lasso]);
-	}
-
 	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
 	//prioritize XO over extinguisher since extinguisher has other uses
 	//take into account if a yellow ray has been used. Must have been one that doesn't insta-kill
@@ -182,6 +176,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		if(canUse($skill[Curse of Weaksauce]) && have_skill($skill[Itchy Curse Finger]) && (my_mp() >= 60) && doWeaksauce)
 		{
 			return useSkill($skill[Curse Of Weaksauce]);
+		}
+
+		//delevel if you have a loofah lei
+		if(canUse($skill[loofah lei lasso]))
+		{
+			return useSkill($skill[loofah lei lasso]);
 		}
 
 		if($item[Daily Affirmation: Keep Free Hate In Your Heart].combat)
