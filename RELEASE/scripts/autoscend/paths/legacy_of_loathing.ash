@@ -116,7 +116,7 @@ boolean lol_buyReplicas()
 
 			if(is100FamRun())//If on a 100% Fam Run, will get sunglasses on the first time around
 			{
-				if(item_amount($item[replica Elvish sunglasses])>0)
+				if(item_amount($item[replica Elvish sunglasses])<1)
 				{
 					buy($coinmaster[Replica Mr. Store], 1, $item[replica Elvish sunglasses]);
 				}
