@@ -37,7 +37,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2004</b>"))
 		{
-			if(!contains_text(page, "replica dark jill-o-lantern") || !contains_text(page, "replica hand turkey outline"))
+			if(have_familiar($familiar[Jill-O-Lantern]) || have_familiar($familiar[Hand Turkey]))
 			{
 				// already bought one
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica crimbo elfling]);
@@ -57,7 +57,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2005</b>"))
 		{
-			if(contains_text(page, "replica wax lips"))
+			if(available_amount($item[replica wax lips]) == 0)
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica wax lips]);
 			}
@@ -68,7 +68,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2006</b>"))
 		{
-			if(contains_text(page, "replica jewel-eyed wizard hat"))
+			if(available_amount($item[replica jewel-eyed wizard hat]) == 0)
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica jewel-eyed wizard hat]);
 			}
@@ -79,7 +79,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2007</b>"))
 		{
-			if(contains_text(page, "replica navel ring of navel gazing"))
+			if(available_amount($item[replica navel ring of navel gazing]) == 0)
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica navel ring of navel gazing]);
 			}
@@ -90,7 +90,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2008</b>"))
 		{
-			if(contains_text(page, "replica haiku katana"))
+			if(available_amount($item[replica haiku katana]) == 0)
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica haiku katana]);
 			}
@@ -102,7 +102,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2009</b>"))
 		{
-			if(contains_text(page, "replica apathargic bandersnatch"))
+			if(!have_familiar($familiar[Frumious Bandersnatch]))
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica Apathargic Bandersnatch]);
 				use(1, $item[replica Apathargic Bandersnatch]); // put in terrarium
@@ -115,7 +115,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2010</b>"))
 		{
-			if(contains_text(page, "replica greatest american pants"))
+			if(available_amount($item[replica greatest american pants]) == 0)
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica Greatest American Pants]);
 			}
@@ -126,7 +126,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2011</b>"))
 		{
-			if(contains_text(page, "replica cute angel"))
+			if(!have_familiar($familiar[Obtuse Angel]))
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica cute angel]);
 				use(1, $item[replica cute angel]); // put in terrarium
@@ -138,7 +138,7 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2012</b>"))
 		{
-			if(contains_text(page, "replica libram of resolutions"))
+			if(item_amount($item[replica libram of resolutions]) == 0)
 			{
 				buy($coinmaster[Replica Mr. Store], 1, $item[replica Libram of Resolutions]);
 				use(1, $item[replica Libram of Resolutions]); // get items
