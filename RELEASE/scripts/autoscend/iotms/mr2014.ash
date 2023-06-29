@@ -107,10 +107,6 @@ boolean dna_startAcquire()
 	{
 		return false;
 	}
-	if(in_community())
-	{
-		return false;
-	}
 	if((get_property("auto_day1_dna") == "finished") || (my_daycount() != 1))
 	{
 		return false;
@@ -183,15 +179,6 @@ boolean dna_generic()
 		case 1:			potion = $phylums[construct, construct, fish];		break;
 		case 2:			potion = $phylums[fish, constellation, dude];		break;
 		case 3:			potion = $phylums[construct, humanoid, dude];		break;
-		default:		potion = $phylums[humanoid, construct, dude];		break;
-		}
-	}
-	else if(in_community())
-	{
-		switch(my_daycount())
-		{
-		case 1:			potion = $phylums[beast, pirate, elemental];		break;
-		case 2:			potion = $phylums[construct, dude, humanoid];		break;
 		default:		potion = $phylums[humanoid, construct, dude];		break;
 		}
 	}

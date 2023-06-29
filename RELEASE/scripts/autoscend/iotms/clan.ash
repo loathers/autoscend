@@ -49,7 +49,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 		return false;
 	}
 	// don't try to fax unfaxable monsters
-	if($monsters[smut orc pervert, screambat, War Frat 151st Infantryman] contains enemy)
+	if(!can_faxbot(enemy))
 	{
 		return false;
 	}
@@ -76,7 +76,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 	}
 
 	auto_log_info("Faxing: " + enemy + ".", "green");
-	chat_private("cheesefax", enemy.to_string());
+	faxbot(enemy);
 	for(int i = 0; i < 3; i++)
 	{
 		//wait 10 seconds before trying to get fax

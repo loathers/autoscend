@@ -1,5 +1,32 @@
 //A file full of utility functions which we import into autoscend.ash
 
+boolean almostRollover()
+{
+	int warning_time = get_property("auto_stopMinutesToRollover").to_int() * 60;
+	int remaining_time = rollover() - (now_to_int()/1000);
+	if ((remaining_time-300) < warning_time)
+	{
+		// Only print debug messages less than 5 minutes before emergency bedtime
+		auto_log_debug(`Less than {(remaining_time/60)+1} min until rollover, bedtime at {warning_time/60} min`, "blue");
+	}
+	return (remaining_time <= warning_time);
+}
+
+boolean needToConsumeForEmergencyRollover()
+{
+	int max_bonus_adv = round(numeric_modifier("adventures"));
+	foreach n, rec in maximize("adventures", 0, 0, true, true)
+	{
+		if(rec.item != $item[none])
+		{
+			max_bonus_adv += rec.score;
+		}
+	}
+	int target_adv = 130 - max_bonus_adv;
+	auto_log_debug(`Max bonus rollover adv: {max_bonus_adv}, target adv: {target_adv}`, "blue");
+	return (my_adventures() < target_adv);
+}
+
 boolean autoMaximize(string req, boolean simulate)
 {
 	if(!simulate)
@@ -803,7 +830,7 @@ boolean[string] auto_banishesUsedAt(location loc)
 
 boolean auto_wantToBanish(monster enemy, location loc)
 {
-	if(appearance_rates(loc,true)[enemy] <= 0)
+	if(appearance_rates(loc)[enemy] <= 0)
 	{
 		return false;
 	}
@@ -1802,6 +1829,29 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[Astronomer])) return true;
 	}
 
+	// summon additional monsters in heavy rains with rain man when available
+	if(have_skill($skill[Rain Man]) && my_rain() >= 50)
+	{
+		// summon Family Jewels or Bush to get only stars
+		if(needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) >= 7)
+		{
+			if(canSummonMonster($monster[Family Jewels]) && summonMonster($monster[Family Jewels])) return true;
+			if(canSummonMonster($monster[Bush]) && summonMonster($monster[Bush])) return true;
+		}
+		// summon Trouser Snake or Box to get only lines
+		if(needStarKey() && item_amount($item[star]) >= 8 && item_amount($item[line]) < 7)
+		{
+			if(canSummonMonster($monster[Trouser Snake]) && summonMonster($monster[Trouser Snake])) return true;	
+			if(canSummonMonster($monster[Box]) && summonMonster($monster[Box])) return true;
+		}
+		// summon Skinflute or Camel's Toe to get both stars and lines
+		if(needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
+		{
+			if(canSummonMonster($monster[Skinflute]) && summonMonster($monster[Skinflute])) return true;
+			if(canSummonMonster($monster[Camel's Toe]) && summonMonster($monster[Camel's Toe])) return true;
+		}
+	}
+
 	return false;
 }
 
@@ -1818,53 +1868,67 @@ boolean summonMonster(monster mon)
 boolean summonMonster(monster mon, boolean speculative)
 {
 	auto_log_debug((speculative ? "Checking if we can" : "Trying to") + " summon " + mon, "blue");
+
+	if (!speculative)
+	{
+		// Equip the combat lover's locket if we're missing a monster about to be summoned
+		if (auto_haveCombatLoversLocket() && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon))
+		{
+			auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from summoning, so we\'re bringing it along.', "blue");
+			autoEquip($item[combat lover\'s locket]);
+		}
+	}
 	// methods which require specific circumstances
 	if(mon == $monster[War Frat 151st Infantryman])
 	{	
 		// calculate the universe's only summon we want, so prioritize using it
 		if(LX_calculateTheUniverse(speculative))
 		{
-			auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+			auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via calculate the universe", "blue");
 			return true;
 		}
 	}
+	if (rainManSummon(mon, speculative))
+	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via rain man", "blue");
+		return true;
+	}
+	// todo add support for Baa'baa'bu'ran with deck of every card sheep card
 	if(timeSpinnerCombat(mon, speculative))
 	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via time spinner", "blue");
 		return true;
 	}
 	// methods which can only summon monsters should be attempted first
 	if(auto_fightLocketMonster(mon, speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via combat lover's locket", "blue");
 		return true;
 	}
 	if(handleFaxMonster(mon, !speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via fax", "blue");
 		return true;
 	}
 	// methods which can do more than summon monsters
 	if(auto_cargoShortsOpenPocket(mon, speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via cargo shorts", "blue");
 		return true;
 	}
 	if(auto_shouldUseWishes())
 	{
-		if(speculative && canGenieCombat())
+		if(speculative && canGenieCombat(mon))
 		{
-			auto_log_debug("Can summon " + mon, "blue");
+			auto_log_debug("Can summon " + mon + " via wishing", "blue");
 			return true;
 		}
 		else if(!speculative && makeGenieCombat(mon))
 		{
-			auto_log_debug("Did summon " + mon, "blue");
+			auto_log_debug("Did summon " + mon + " via wishing", "blue");
 			return true;
 		}
 	}
-
-	//todo
-	// add support for rainManSummon(). Look to routineRainManHandler()
 
 	return false;
 }
@@ -3660,7 +3724,7 @@ boolean autoFlavour(location place)
 		}
 	}
 
-	foreach mon,chance in appearance_rates(place, true)
+	foreach mon,chance in appearance_rates(place)
 	{
 		handle_monster(mon, chance);
 	}
@@ -4047,24 +4111,45 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 // ADVENTURE FORCING FUNCTIONS
 boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 {
-	// Use stench jelly or other item to set the combat rate to zero until the next noncombat.
+	// return true if already have a forcer acitve
+	if(auto_haveQueuedForcedNonCombat())
+	{
+		return true;
+	}
 
-	boolean ret = false;
+	// Use stench jelly or other item to set the combat rate to zero until the next noncombat.
 	if(auto_pillKeeperFreeUseAvailable())
 	{
 		if(speculative) return true;
-		ret = auto_pillKeeper("noncombat");
-		if(ret) {
-			set_property("auto_forceNonCombatSource", "pillkeeper");
+		auto_pillKeeper("noncombat");
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [free pillkeeper] but was unable to.");
 		}
+		set_property("auto_forceNonCombatSource", "pillkeeper");
+		return true;
 	}
 	else if(!get_property("_claraBellUsed").to_boolean() && (item_amount($item[Clara\'s Bell]) > 0) && auto_is_valid($item[Clara\'s Bell]))
 	{
 		if(speculative) return true;
-		ret = use(1, $item[Clara\'s Bell]);
-		if(ret) {
-			set_property("auto_forceNonCombatSource", "clara's bell");
+		use(1, $item[Clara\'s Bell]);
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [Clara's Bell] but was unable to.");
 		}
+		set_property("auto_forceNonCombatSource", "clara's bell");
+		return true;
+	}
+	else if(auto_haveCincho() && auto_getCinch(60))
+	{
+		if(speculative) return true;
+		use_skill(1, $skill[Cincho: Fiesta Exit]);
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [Cincho] but was unable to.");
+		}
+		set_property("auto_forceNonCombatSource", "cincho");
+		return true;
 	}
 	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso())
 	{
@@ -4074,31 +4159,33 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "jurassic parka");
 		// track desired NC location so we know where to go when parka spikes are preped
 		set_property("auto_forceNonCombatLocation", loc);
-		ret = true;
+		return true;
 	}
 	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && !isActuallyEd()
 		&& spleen_left() >= $item[stench jelly].spleen)
 	{
 		if(speculative) return true;
-		ret = autoChew(1, $item[stench jelly]);
-		if(ret) {
-			set_property("auto_forceNonCombatSource", "stench jelly");
+		autoChew(1, $item[stench jelly]);
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [Stench Jelly] but was unable to.");
 		}
+		set_property("auto_forceNonCombatSource", "stench jelly");
+		return true;
 	}
 	else if(auto_pillKeeperAvailable() && !isActuallyEd() && spleen_left() >= 3) // don't use Spleen as Ed, it's his main source of adventures.
 	{
 		if(speculative) return true;
-		ret = auto_pillKeeper("noncombat");
-		if(ret) {
-			set_property("auto_forceNonCombatSource", "pillkeeper");
+		auto_pillKeeper("noncombat");
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [not free pillkeeper] but was unable to.");
 		}
+		set_property("auto_forceNonCombatSource", "pillkeeper");
+		return true;
 	}
 
-	if(ret)
-	{
-		set_property("auto_forceNonCombatTurn", my_turncount());
-	}
-	return ret;
+	return false;
 }
 
 boolean auto_canForceNextNoncombat()
@@ -4136,77 +4223,9 @@ boolean auto_forceNextNoncombat(location loc)
 
 boolean auto_haveQueuedForcedNonCombat()
 {
-	// This isn't always reset properly: see __MONSTERS_FOLLOWING_NONCOMBATS in auto_post_adv.ash
-	string forceNCMethod = get_property("auto_forceNonCombatSource");
-	if(forceNCMethod == "")
-	{
-		return false;
-	}
-	// if going to force with parka, but spikes haven't been deployed return false
-	if(forceNCMethod == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
-	{
-		return false;
-	}
-	// for all other sources, simply return true
-	return true;
+	return get_property("noncombatForcerActive").to_boolean();
 }
 
-boolean is_expectedForcedNonCombat(string encounterName)
-{
-	static boolean[string] expectedNCs = $strings[
-		// dark neck of the woods
-		How Do We Do It? Quaint and Curious Volume!,
-		Strike One!,
-		Olive My Love To You\, Oh.,
-		The Oracle Will See You Now,
-		Dodecahedrariffic!,
-
-		// dark elbow of the woods
-		Deep Imp Act,
-		Imp Art\, Some Wisdom,
-		A Secret\, But Not the Secret You're Looking For,
-		Butter Knife? I'll Take the Knife,
-
-		// dark heart of the woods
-		Moon Over the Dark Heart,
-		Running the Lode,
-		I\, Martin,
-		Imp Be Nimble\, Imp Be Quick,
-
-		// The Castle in the Clouds in the Sky (Basement)
-		You Don't Mess Around with Gym,
-		Out in the Open Source,
-		The Fast and the Furry-ous,
-
-		// The Castle in the Clouds in the Sky (Top Floor)
-		Copper Feel,
-		Melon Collie and the Infinite Lameness,
-		Yeah\, You're for Me\, Punk Rock Giant,
-		Flavor of a Raver,
-
-		// The Haunted Billiards Room
-		Welcome To Our ool Table,
-
-		// The Haunted Bathroom
-		Never Gonna Make You Up,
-		Having a Medicine Ball,
-		Bad Medicine is What You Need,
-
-		// The Black Forest
-		All Over the Map,
-		You Found Your Thrill,
-		The Blackest Smith,
-		Be Mine,
-		Sunday Black Sunday,
-
-		// The Hidden Apartment Building
-		Action Elevator,
-
-		// The Hidden Office Building
-		Working Holiday,
-	];
-	return expectedNCs contains encounterName;
-}
 boolean is_superlikely(string encounterName)
 {
 	static boolean[string] __SUPERLIKELIES = $strings[
@@ -4509,4 +4528,18 @@ int meatReserve()
 	}
 	
 	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
+}
+
+boolean auto_wishForEffect(effect wish)
+{
+	// First try to use the monkey paw
+	if (auto_haveMonkeyPaw()) {
+		if (auto_makeMonkeyPawWish(wish)) { return true; }
+	}
+	// If we're allowed to use the genie bottle, do that.
+	if(auto_shouldUseWishes() && auto_haveGenieBottleOrPocketWishes())
+	{
+		if(makeGenieWish(wish)) { return true; }
+	}
+	return false;
 }

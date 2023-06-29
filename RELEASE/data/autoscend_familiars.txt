@@ -163,7 +163,8 @@ item	42	Flaming Gravy Fairy
 item	43	Frozen Gravy Fairy
 item	44	Spooky Gravy Fairy
 # Physical damage fairy
-item	45	Bowlet
+item	44	Bowlet
+item	45	Crimbo Elf
 # Barely special fairies
 item	46	Mechanical Songbird
 item	47	Grouper Groupie
@@ -336,15 +337,16 @@ stat	26	Party Mouse
 stat	27	Lil' Barrel Mimic
 stat	28	Piranha Plant
 stat	29	Antique Nutcracker
+stat	30	Jill-O-Lantern
 # Fancy
-stat	30	Miniature Sword &amp; Martini Guy
+stat	31	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	31	Grinning Turtle
+stat	32	Grinning Turtle
 # His winning smile
-stat	32	Smiling Rat
+stat	33	Smiling Rat
 # The original
-stat	33	Blood-Faced Volleyball
+stat	34	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work

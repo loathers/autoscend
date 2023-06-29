@@ -154,7 +154,7 @@ boolean awol_buySkills()
 		return false;
 	}
 
-	if(item_amount($item[Tales of the West: Cow Punching]) > 0)
+	if(item_amount($item[Tales of the West: \ Cow Punching]) > 0)
 	{
 		string page = visit_url("inv_use.php?pwd=&which=3&whichitem=8955");
 

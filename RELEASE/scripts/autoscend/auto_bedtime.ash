@@ -75,7 +75,7 @@ int pullsNeeded(string data)
 	{
 		return 0;
 	}
-	if (isActuallyEd() || in_community())
+	if (isActuallyEd())
 	{
 		return 0;
 	}
@@ -262,6 +262,12 @@ void bedtime_pulls_rollover_equip(float desirability)
 {
 	//scan through all pullable items for items that have a better rollover adv gain than currently best equipped item.
 	
+	// can't pull gear in Legacy of Loathing
+	if(in_lol())
+	{
+		return;
+	}
+
 	equipRollover(true);
 	for(int i=0; i<10; i++)
 	{
@@ -512,7 +518,7 @@ void bedtime_pulls()
 		bedtime_pulls_rollover_equip(desirability);
 	}
 	
-	if(get_property("auto_bedtime_pulls_min_desirability").to_float() <= 5.0)
+	if(get_property("auto_bedtime_pulls_min_desirability").to_float() <= 5.0 && !in_lol())
 	{
 		if(storage_amount($item[potato alarm clock]) > 0)
 		{
@@ -520,7 +526,8 @@ void bedtime_pulls()
 		}
 	}
 
-	if(item_amount($item[Muculent Machete]) == 0 && (!is_boris() || !in_wotsf() || !in_pokefam())) // no need in paths where can't use machete
+	if(item_amount($item[Muculent Machete]) == 0 && 
+		!(is_boris() || in_wotsf() || in_pokefam() || in_lol())) // no need in paths where can't use machete
 	{
 		pullXWhenHaveY($item[Antique Machete], 1, 0);
 	}
@@ -528,7 +535,7 @@ void bedtime_pulls()
 	{
 		pullXWhenHaveY($item[wet stew], 1, 0);
 	}
-	if(!black_market_available())
+	if(!black_market_available() && !in_lol())
 	{
 		pullXWhenHaveY($item[blackberry galoshes], 1, 0);
 	}
@@ -563,43 +570,48 @@ boolean doBedtime()
 
 	auto_process_kmail("auto_deleteMail");
 
-	if(my_adventures() > 4)
+	// If rollover isn't approaching, check for reasons to stop bedtime
+	boolean out_of_blood = false;
+	if(! almostRollover())
 	{
-		if(my_inebriety() <= inebriety_limit())
+		if(my_adventures() > 4)
 		{
-			if(!in_gnoob() && my_familiar() != $familiar[Stooper])
+			if(my_inebriety() <= inebriety_limit())
 			{
-				auto_log_warning("Still adventurous! Stopping bedtime.", "red");
-				return false;
+				if(!in_gnoob() && my_familiar() != $familiar[Stooper])
+				{
+					auto_log_warning("Still adventurous! Stopping bedtime.", "red");
+					return false;
+				}
 			}
 		}
+		out_of_blood = (in_darkGyffte() && item_amount($item[blood bag]) == 0);
+		if((fullness_left() > 0) && can_eat() && !out_of_blood)
+		{
+			auto_log_warning("Still hungry! Stopping bedtime.", "red");
+			return false;
+		}
+		if((inebriety_left() > 0) && can_drink() && !out_of_blood)
+		{
+			auto_log_warning("Still sober! Stopping bedtime.", "red");
+			return false;
+		}
+		int spleenlimit = spleen_limit();
+		if(!canChangeFamiliar())
+		{
+			spleenlimit -= 3;
+		}
+		if(!haveSpleenFamiliar())
+		{
+			spleenlimit = 0;
+		}
+		if((my_spleen_use() < spleenlimit) && !in_hardcore() && (inebriety_left() > 0))
+		{
+			auto_log_warning("Still spleeny! Stopping bedtime.", "red");
+			return false;
+		}
 	}
-	boolean out_of_blood = (in_darkGyffte() && item_amount($item[blood bag]) == 0);
-	if((fullness_left() > 0) && can_eat() && !out_of_blood)
-	{
-		auto_log_warning("Still hungry! Stopping bedtime.", "red");
-		return false;
-	}
-	if((inebriety_left() > 0) && can_drink() && !out_of_blood)
-	{
-		auto_log_warning("Still sober! Stopping bedtime.", "red");
-		return false;
-	}
-	int spleenlimit = spleen_limit();
-	if(!canChangeFamiliar())
-	{
-		spleenlimit -= 3;
-	}
-	if(!haveSpleenFamiliar())
-	{
-		spleenlimit = 0;
-	}
-	if((my_spleen_use() < spleenlimit) && !in_hardcore() && (inebriety_left() > 0))
-	{
-		auto_log_warning("Still spleeny! Stopping bedtime.", "red");
-		return false;
-	}
-
+	
 	ed_terminateSession();
 	bat_terminateSession();
 
@@ -721,7 +733,7 @@ boolean doBedtime()
 			makeGeniePocket();
 		}
 	}
-	if(canGenieCombat() && !possessOutfit("frat warrior fatigues"))
+	if(canGenieCombat($monster[Orcish Frat Boy Spy]) && !possessOutfit("frat warrior fatigues"))
 	{
 		auto_log_info("Please consider genie wishing for an orcish frat boy spy (You want Frat Warrior Fatigues).", "blue");
 	}
@@ -1096,7 +1108,6 @@ boolean doBedtime()
 	}
 	if(get_property("timesRested").to_int() < total_free_rests())
 	{
-		cs_spendRests();
 		auto_log_info("You have " + (total_free_rests() - get_property("timesRested").to_int()) + " free rests remaining.", "blue");
 	}
 	if(possessEquipment($item[Kremlin\'s Greatest Briefcase]) && (get_property("_kgbClicksUsed").to_int() < 24))
@@ -1183,6 +1194,29 @@ boolean doBedtime()
 	auto_beachUseFreeCombs();
 	auto_drinkNightcap();
 	equipRollover(false);
+	
+	// Use up any cursed monkey paw wishes on Frosty (+100% item, +100% meat, +25 ML)
+	// Unless we're limiting ML, then do One Very Clear Eye
+	effect effect_to_wish = $effect[Frosty];
+	if (get_property("auto_MLSafetyLimit")!="")
+	{
+		if (get_property("auto_MLSafetyLimit").to_int() < 25) // We're adding +25 ML that won't be shrugged.
+		{
+			effect_to_wish = $effect[One Very Clear Eye];
+		}
+	}
+	if (auto_haveMonkeyPaw())
+	{
+		boolean success = true;
+		while (get_property("_monkeyPawWishesUsed").to_int() < 5 && success)
+		{
+			success = auto_makeMonkeyPawWish(effect_to_wish);
+		}
+		if (!success)
+		{
+			print("Something went wrong using up monkey paw wishes.", "red");
+		}
+	}
 
 	if(in_plumber() && fullness_left() > 0)
 	{

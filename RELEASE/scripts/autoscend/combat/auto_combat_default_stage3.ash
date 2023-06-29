@@ -273,6 +273,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			return useSkill($skill[Curse Of Weaksauce]);
 		}
 
+		//delevel if you have a loofah lei
+		if(canUse($skill[loofah lei lasso]))
+		{
+			return useSkill($skill[loofah lei lasso]);
+		}
+
 		if($item[Daily Affirmation: Keep Free Hate In Your Heart].combat)
 		{
 			if(canUse($item[Daily Affirmation: Keep Free Hate In Your Heart]) && inAftercore() && hippy_stone_broken() && !get_property("_affirmationHateUsed").to_boolean())

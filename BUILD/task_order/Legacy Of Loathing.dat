@@ -29,22 +29,26 @@ handleRainDoh
 LX_spookyravenManorFirstFloor
 L6_friarsGetParts	LX_steelOrgan_condition_slow
 LX_steelOrgan	LX_steelOrgan_condition_slow
+# *************Following task gives replica Mr A********************
 L4_batCave
 L2_mosquito
 LX_unlockHiddenTemple
 L6_dakotaFanning
 LX_lockPicking
 LX_fatLootToken
+# *************Following task gives replica Mr A********************
 L5_slayTheGoblinKing
+# *************Following task gives replica Mr A********************
+L8_trapperQuest
+# *************Following task gives replica Mr A********************
+L7_crypt
 LX_islandAccess
 L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
 LX_spookyravenManorSecondFloor
 L3_tavern
 L6_friarsGetParts
 LX_steelOrgan	in_hardcore
-L7_crypt
 fancyOilPainting
-L8_trapperQuest
 LX_steelOrgan
 L10_plantThatBean
 L12_preOutfit
@@ -60,13 +64,16 @@ L9_chasmBuild
 L9_highLandlord
 L12_flyerBackup
 Lsc_flyerSeals
+# *************Following task gives replica Mr A********************
 L11_mauriceSpookyraven
 L11_unlockHiddenCity
 L11_hiddenCityZones
 LX_ornateDowsingRod
 L11_aridDesert
+# *************Following task gives replica Mr A********************
 L11_hiddenCity
 L11_talismanOfNam
+# *************Following task gives replica Mr A********************
 L11_palindome
 L11_unlockPyramid
 L11_unlockEd
@@ -79,6 +86,7 @@ L12_orchardFinalize
 L12_themtharHills
 L12_farm
 L11_getBeehive
+# *************Following task gives replica Mr A********************
 L12_finalizeWar
 L12_clearBattlefield
 LX_koeInvaderHandler

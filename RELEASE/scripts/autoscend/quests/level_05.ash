@@ -16,8 +16,8 @@ boolean L5_getEncryptionKey()
 		return true;
 	}
 
-
-	if(canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
+	// want to fight goblin king quickly in legacy of loathing to get another replica mr a
+	if(!in_lol() && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
 	{
 		return false;
 	}
@@ -63,7 +63,9 @@ boolean L5_haremOutfit()
 		return false;
 	}
 
-	if(!adjustForYellowRayIfPossible($monster[Knob Goblin Harem Girl]))
+	// want to fight goblin king quickly in legacy of loathing to get another replica mr a
+	// check for LoL path so we actually prep for yellow raying
+	if(!adjustForYellowRayIfPossible($monster[Knob Goblin Harem Girl]) && !in_lol())
 	{
 		if(!isAboutToPowerlevel())
 		{
@@ -91,7 +93,7 @@ boolean L5_goblinKing()
 	{
 		return false;
 	}
-	if(my_level() < 8 && !isAboutToPowerlevel()) // needs to be changed to check if we'll survive
+	if(!canSurvive(3.0))
 	{
 		return false;
 	}

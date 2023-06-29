@@ -88,7 +88,8 @@ boolean L4_batCave()
 			autoAdv($location[The Beanbat Chamber]);
 			return true;
 		}
-		if(shenShouldDelayZone($location[The Batrat and Ratbat Burrow]))
+		// prioritize getting replica Mr. A in LoL
+		if(shenShouldDelayZone($location[The Batrat and Ratbat Burrow]) && !in_lol())
 		{
 			auto_log_debug("Delaying Batrat Burrow in case of Shen.");
 			return false;
@@ -101,7 +102,8 @@ boolean L4_batCave()
 	}
 	if(batStatus >= 1)
 	{
-		if(shenShouldDelayZone($location[The Batrat and Ratbat Burrow]))
+		// prioritize getting replica Mr. A in LoL
+		if(shenShouldDelayZone($location[The Batrat and Ratbat Burrow]) && !in_lol())
 		{
 			auto_log_debug("Delaying Batrat Burrow in case of Shen.");
 			return false;

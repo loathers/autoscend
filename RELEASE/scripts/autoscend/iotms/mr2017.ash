@@ -1,6 +1,5 @@
 #	This is meant for items that have a date of 2017.
 
-// This should probably only be called directly from community_service.ash.
 boolean auto_hasMummingTrunk()
 {
 	if(!pathHasFamiliar()  || item_amount($item[Mumming Trunk]) == 0 || !auto_is_valid($item[Mumming Trunk]))
@@ -127,12 +126,6 @@ boolean mummifyFamiliar(familiar fam)
 
 boolean mummifyFamiliar()
 {
-	auto_hasMummingTrunk();
-	if (in_community())
-	{
-		return false;
-	}
-	
 	return mummifyFamiliar(my_familiar());
 }
 
@@ -1698,6 +1691,12 @@ boolean horsePreAdventure()
 	return getHorse(desiredHorse);
 }
 
+boolean auto_haveGenieBottleOrPocketWishes()
+{
+	return (item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[Genie Bottle]) ||
+	        item_amount($item[Pocket Wish] ) > 0 && auto_is_valid($item[Pocket Wish] ) );
+}
+
 boolean auto_shouldUseWishes()
 {
 	return get_property("auto_useWishes").to_boolean();
@@ -1774,7 +1773,10 @@ boolean makeGenieWish(effect eff)
 	return makeGenieWish("to be " + eff) || have_effect(eff) > 0;
 }
 
-boolean canGenieCombat()
+// Track any failed wishes this run
+boolean[monster] failedWishMonsters;
+
+boolean canGenieCombat(monster mon)
 {
 	boolean haveBottle = item_amount($item[Genie Bottle]) > 0;
 	boolean bottleWishesLeft = get_property("_genieWishesUsed").to_int() < 3;
@@ -1793,18 +1795,28 @@ boolean canGenieCombat()
 	{
 		return false;  // cannot fight if no adv remaining
 	}
+	string attr = mon.attributes.to_lower_case();
+	if (attr.contains_text("nocopy") || attr.contains_text("boss"))
+	{
+		return false;
+	}
+	if (failedWishMonsters contains mon)
+	{
+		return false;
+	}
 	return true;
 }
 
 boolean makeGenieCombat(monster mon, string option)
 {
-	if(!canGenieCombat())
+	if(!canGenieCombat(mon))
 	{
 		return false;
 	}
 
 	auto_log_info("Using genie to summon " + mon.name, "blue");
 	string wish = "to fight a " + mon;
+	int prev_genieFightsUsed = get_property("_genieFightsUsed").to_int();
 	string[int] pages;
 	int wish_provider = $item[genie bottle].to_int();
 	if (item_amount($item[pocket wish]) > 0)
@@ -1817,8 +1829,9 @@ boolean makeGenieCombat(monster mon, string option)
 
 	autoAdvBypass(5, pages, $location[Noob Cave], option);
 
-	if(get_property("lastEncounter") != mon && get_property("lastEncounter") != "Using the Force")
+	if(prev_genieFightsUsed == get_property("_genieFightsUsed").to_int())
 	{
+		failedWishMonsters[mon] = true;
 		auto_log_warning("Wish: '" + wish + "' failed", "red");
 		return false;
 	}

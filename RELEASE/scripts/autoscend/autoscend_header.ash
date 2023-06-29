@@ -8,7 +8,7 @@
 //	Denoted as L<classification>[<path>]_<name>:
 //		<classification>: Level to be used (Numeric, X for any). A for entire ascension.
 //		<classification>: M for most of ascension, "sc" for Seal Clubber only
-//		<path>: [optional] indicates path to be used in. "ed" for ed, "cs" for community service
+//		<path>: [optional] indicates path to be used in. ex. "ed" for ed
 //			Usually separated with _
 ########################################################################################################
 
@@ -187,7 +187,6 @@ boolean rethinkingCandy(effect acquire, boolean simulate);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2017.ash
-boolean auto_hasMummingTrunk();
 boolean auto_checkFamiliarMummery(familiar fam);
 boolean mummifyFamiliar(familiar fam, string bonus);
 boolean mummifyFamiliar(familiar fam);
@@ -230,11 +229,12 @@ void horseDark();
 void horseCrazy();
 void horsePale();
 boolean horsePreAdventure();
+boolean auto_haveGenieBottleOrPocketWishes();
 boolean auto_shouldUseWishes();
 int auto_wishesAvailable();
 boolean makeGenieWish(string wish);
 boolean makeGenieWish(effect eff);
-boolean canGenieCombat();
+boolean canGenieCombat(monster mon);
 boolean makeGenieCombat(monster mon, string option);
 boolean makeGenieCombat(monster mon);
 boolean makeGeniePocket();
@@ -412,6 +412,10 @@ boolean auto_buyCrimboCommerceMallItem();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2021.ash
+boolean auto_haveCrystalBall();
+monster crystalBallMonster(location loc);
+boolean auto_forceHandleCrystalBall(location loc);
+void simulatePreAdvForCrystalBall(location place);
 boolean auto_haveEmotionChipSkills();
 boolean auto_canFeelEnvy();
 boolean auto_canFeelHatred();
@@ -494,6 +498,16 @@ void pickRocks();
 boolean wantToThrowGravel(location loc, monster enemy);
 boolean auto_haveSITCourse();
 void auto_SITCourse();
+boolean auto_haveMonkeyPaw();
+boolean auto_makeMonkeyPawWish(effect wish);
+boolean auto_makeMonkeyPawWish(item wish);
+boolean auto_makeMonkeyPawWish(string wish);
+boolean auto_haveCincho();
+int auto_currentCinch();
+int auto_cinchAfterNextRest();
+boolean auto_nextRestOverCinch();
+boolean auto_getCinch(int goal);
+boolean shouldCinchoConfetti();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -605,36 +619,6 @@ boolean LM_canInteract();
 ########################################################################################################
 //Defined in autoscend/paths/community_service.ash
 boolean in_community();
-boolean LA_cs_communityService();
-boolean cs_witchess();
-void cs_initializeDay(int day);
-boolean do_chateauGoat();
-boolean cs_spendRests();
-void cs_make_stuff(int curQuest);
-boolean cs_eat_spleen();
-boolean cs_eat_stuff(int quest);
-void cs_dnaPotions();
-boolean cs_giant_growth();
-boolean auto_csHandleGrapes();
-int estimate_cs_questCost(int quest);
-int [int] get_cs_questList();
-int expected_next_cs_quest();
-string what_cs_quest(int quest);
-int expected_next_cs_quest_internal();
-boolean do_cs_quest(int quest);
-boolean do_cs_quest(string quest);
-int get_cs_questCost(int quest);
-int get_cs_questCost(string input);
-int get_cs_questNum(string input);
-void set_cs_questListFast(int[int] fast);
-boolean cs_preTurnStuff(int curQuest);
-boolean cs_healthMaintain();
-boolean cs_mpMaintain();
-boolean cs_mpMaintain(int target);
-boolean canTrySaberTrickMeteorShower();
-boolean trySaberTrickMeteorShower();
-int beachHeadTurnSavings(int quest);
-boolean tryBeachHeadBuff(int quest);
 
 ########################################################################################################
 //Defined in autoscend/paths/dark_gyffte.ash
@@ -717,11 +701,10 @@ boolean LA_grey_goo_tasks();
 //Defined in autoscend/paths/heavy_rains.ash
 boolean in_heavyrains();
 void heavyrains_initializeSettings();
-boolean routineRainManHandler();
 void heavyrains_initializeDay(int day);
 void heavyrains_doBedtime();
 boolean heavyrains_buySkills();
-boolean rainManSummon(monster target, boolean copy, boolean wink);
+boolean rainManSummon(monster target, boolean speculative);
 boolean L13_heavyrains_towerFinal();
 
 ########################################################################################################
@@ -751,6 +734,13 @@ boolean LX_kolhs_yearbookCameraQuest();
 boolean LX_kolhs_school();
 void kolhsChoiceHandler(int choice);
 boolean LM_kolhs();
+
+########################################################################################################
+//Defined in autoscend/paths/legacy_of_loathing.ash
+boolean in_lol();
+void lol_initializeSettings();
+boolean lol_buyReplicas();
+void auto_LegacyOfLoathingDailies();
 
 ########################################################################################################
 //Defined in autoscend/paths/license_to_adventure.ash
@@ -1283,10 +1273,12 @@ boolean canDrink(item toDrink);
 boolean canEat(item toEat);
 boolean canChew(item toChew);
 float consumptionProgress();
-void consumeStuff();
 boolean consumeFortune();
 void auto_printNightcap();
 void auto_drinkNightcap();
+ConsumeAction auto_findBestConsumeAction(string type);
+ConsumeAction auto_findBestConsumeAction();
+boolean auto_autoConsumeOne(ConsumeAction action);
 boolean auto_autoConsumeOne(string type);
 item auto_autoConsumeOneSimulation(string type);
 boolean auto_knapsackAutoConsume(string type, boolean simulate);
@@ -1297,6 +1289,7 @@ item still_targetToOrigin(item target);
 boolean stillReachable();
 boolean distill(item target);
 boolean prepare_food_xp_multi();
+void consumeStuff();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
@@ -1577,6 +1570,8 @@ boolean[location] monster_to_location(monster target);
 //Defined in autoscend/auto_util.ash
 //Other files are placed alphabetically. But due to its sheer size auto_util.ash goes last
 
+boolean almostRollover();
+boolean needToConsumeForEmergencyRollover();
 boolean autoMaximize(string req, boolean simulate);
 boolean autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate);
 aggregate autoMaximize(string req, int maxPrice, int priceLevel, boolean simulate, boolean includeEquip);
@@ -1755,7 +1750,6 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();
 boolean auto_haveQueuedForcedNonCombat();
-boolean is_expectedForcedNonCombat(string encounterName);
 boolean is_superlikely(string encounterName);
 int auto_predictAccordionTurns();
 boolean hasTTBlessing();
@@ -1764,3 +1758,4 @@ int currentPoolSkill();
 int poolSkillPracticeGains();
 boolean hasUsefulShirt();
 int meatReserve();
+boolean auto_wishForEffect(effect wish);

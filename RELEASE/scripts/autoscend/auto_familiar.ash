@@ -604,6 +604,18 @@ boolean autoChooseFamiliar(location place)
 		famChoice = lookupFamiliarDatafile("regen");
 	}
 
+	// in legacy of loathing, may only have 1 of the 2004 fams
+	if (famChoice == $familiar[none]) {
+		foreach fam in $familiars[Jill-O-Lantern, Hand Turkey, Crimbo Elf]
+		{
+			if(canChangeToFamiliar(fam))
+			{
+				famChoice = fam;
+				break;
+			}
+		}
+	}
+
 	return handleFamiliar(famChoice);
 }
 
@@ -754,7 +766,7 @@ void preAdvUpdateFamiliar(location place)
 		}
 	}
 	
-	if(!in_community() && auto_checkFamiliarMummery(my_familiar()))
+	if(auto_checkFamiliarMummery(my_familiar()))
 	{
 		mummifyFamiliar();
 	}
@@ -861,7 +873,7 @@ boolean hatchFamiliar(familiar adult)
 void hatchList()
 {
 	//this function goes through a list of hatchlings to hatch if available.
-	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar() || in_lol())
 	{
 		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
@@ -897,7 +909,7 @@ void acquireFamiliars()
 {
 	//this function acquires hatchlings for important or easy to get familiars and then hatches them.
 	//use is_unrestricted instead of auto_is_valid because familiar hatching is not using an item and ignores most restrictions.
-	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar() || in_lol())
 	{
 		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
