@@ -124,6 +124,22 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 		return useItem($item[Abstraction: Action]);
 	}
 	
+	//these loofah skills stagger and provide MP, meat, or XP
+	if (monster_level_adjustment() <= 150) {
+		if(canUse($skill[loofah leglifts]))
+		{
+			return useSkill($skill[loofah leglifts]);
+		}
+		if(canUse($skill[loofah hosenzittern]))
+		{
+			return useSkill($skill[loofah hosenzittern]);
+		}
+		if(canUse($skill[loofah head-scratch]))
+		{
+			return useSkill($skill[loofah head-scratch]);
+		}
+	}
+	
 	//stocking mimic can produce meat until round 10.
 	if((my_familiar() == $familiar[Stocking Mimic]) && (round < 12) && canSurvive(1.5))
 	{

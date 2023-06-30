@@ -480,7 +480,14 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 	if(doEquips && auto_have_familiar($familiar[Grim Brother]) && (have_effect($effect[Soles of Glass]) == 0) && (get_property("_grimBuff").to_boolean() == false))
 	{
 		if(!speculative)
+		{
+			// We must visit the familiar's page before we can select the choice.
+			auto_log_debug("Attempting to visit Grim brother");
+			visit_url("familiar.php?action=chatgrim&pwd", true);
+			auto_log_debug("Attempting to select Soles of Glass");
 			visit_url("choice.php?pwd&whichchoice=835&option=1", true);
+		}
+			
 		handleEffect($effect[Soles of Glass]);
 		if(pass())
 			return result();
