@@ -593,7 +593,7 @@ boolean chateauPainting()
 
 boolean deck_available()
 {
-	return ((item_amount($item[Deck of Every Card]) > 0) && is_unrestricted($item[Deck of Every Card]) && auto_is_valid($item[Deck of Every Card]));
+	return (((item_amount($item[Deck of Every Card]) > 0) && is_unrestricted($item[Deck of Every Card]) && auto_is_valid($item[Deck of Every Card])) || ((item_amount($item[Replica Deck of Every Card]) > 0) && (in_lol())));
 }
 
 int deck_draws_left()
@@ -624,7 +624,17 @@ boolean deck_draw()
 	{
 		return false;
 	}
-	string page = visit_url("inv_use.php?pwd=&which=3&whichitem=8382");
+
+	string deckItemId = "";
+	if(in_lol())
+	{
+		deckItemId = "11230";
+	}
+	else
+	{	
+		deckItemId = "8382";
+	}
+	string page = visit_url("inv_use.php?cheat=1&pwd=&whichitem=" + deckItemId);
 	page = visit_url("choice.php?pwd=&whichchoice=1085&option=1", true);
 	return true;
 }
@@ -759,8 +769,18 @@ boolean deck_cheat(string cheat)
 		}
 	}
 
+	string deckItemId = "";
 
-	string page = visit_url("inv_use.php?cheat=1&pwd=&whichitem=8382");
+	if(in_lol())
+	{
+		//replica Deck id for when in Legacy of Loathing
+		deckItemId = "11230";
+	}
+	else
+	{	
+		deckItemId = "8382";
+	}
+	string page = visit_url("inv_use.php?cheat=1&pwd=&whichitem=" + deckItemId);
 
 	// Check that a valid card was selected, otherwise this wastes 5 draws.
 	if(card != 0)

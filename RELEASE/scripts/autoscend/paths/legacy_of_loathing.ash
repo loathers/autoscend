@@ -31,10 +31,14 @@ boolean lol_buyReplicas()
 		// attempt to buy 2023 IOTM first as if you one them, they are immediately available
 		// then attempt to buy sequentially year by year starting with 2004
 		// note with enough progress, can a second option up to year 2012
-		if(contains_text(page, "cincho")) //2023
+		if(contains_text(page, "cincho")) //May 2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Cincho de Mayo]);
 		}
+		//else if(contains_text(page,"2002")) //June 2023
+		//{
+		//	buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]); //no mafia support yet, but at least buy it
+		//}
 		else if(contains_text(page, "<b>2004</b>"))
 		{
 			if(have_familiar($familiar[Jill-O-Lantern]) || have_familiar($familiar[Hand Turkey]))
@@ -206,13 +210,18 @@ boolean lol_buyReplicas()
 
 void auto_LegacyOfLoathingDailies()
 {
-	if(item_amount($item[replica Libram of Resolutions]) > 0)
+	if(item_amount($item[replica Libram of Resolutions]) > 0 && get_property("_replicaResolutionsLibramUsed") == "false")
 	{
 		use(1, $item[replica Libram of Resolutions]); // get items
 	}
 
-	if(item_amount($item[replica Smith\'s Tome]) > 0)
+	if(item_amount($item[replica Smith\'s Tome]) > 0 && get_property("_replicaSmithsTomeUsed") == "false")
 	{
 		use(1, $item[replica Smith\'s Tome]); // get items
+	}
+
+	if(item_amount($item[Replica 2002 Mr. Store Catalog]) > 0 && get_property("_2002MrStoreCreditsCollected") == "false")
+	{
+		use(1, $item[Replica 2002 Mr. Store Catalog]); //get catalog credits
 	}
 }

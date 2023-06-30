@@ -30,6 +30,20 @@ boolean L5_getEncryptionKey()
 		}
 	}
 
+	if(!isActuallyEd() && canChew($item[Breathitin&trade;]) && spleen_left() >= $item[Breathitin&trade;].spleen))
+	{
+		pullXWhenHaveY($item[Breathitin&trade;], 1, 0);
+		if (item_amount($item[Breathitin&trade;]) > 0)
+		{
+			use(1, $item[Breathitin&trade;]); // get free outdoor fight charges
+			auto_log_info("Huffing some Breathitin before looking for the encryption key. That's the stuff!","blue");
+		}
+		else
+		{
+			auto_log_info("Couldn't pull a Breathitin. Be a lot cooler if we could.","red");
+		}
+	}
+
 	auto_log_info("Looking for the knob.", "blue");
 	return autoAdv($location[The Outskirts of Cobb\'s Knob]);
 }

@@ -272,3 +272,18 @@ boolean shouldCinchoConfetti()
 	// canSurvive checked in calling location. This function is only available to combat files
 	return true;
 }
+
+boolean auto_haveCatalog()
+{
+	// check for normal version
+	static item catalog = $item[2002 Mr. Store Catalog];
+	if(auto_is_valid(catalog) && (item_amount(catalog) > 0))
+	{
+		return true;
+	}
+
+	// check for replica in LoL path
+	static item replicaCatalog = $item[replica 2002 Mr. Store Catalog];
+	return auto_is_valid(replicaCatalog) && (item_amount(replicaCatalog) > 0);
+
+}

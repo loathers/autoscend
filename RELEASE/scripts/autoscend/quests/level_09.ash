@@ -309,7 +309,16 @@ boolean L9_chasmBuild()
 	// make sure our progress count is correct before we do anything.
 	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
+	// pull a keepsake box if we can
+	pullXWhenHaveY($item[smut orc keepsake box], 1, 0);
+	if (item_amount($item[smut orc keepsake box]) > 0)
+	{
+		use(1, $item[smut orc keepsake box]); // get bridge parts
+		auto_log_info("Pulled a smut orc keepsake box and opened it. Ew.","blue");
+	}
+
 	// use any keepsake boxes we have
+
 	if(item_amount($item[Smut Orc Keepsake Box]) > 0 && auto_is_valid($item[Smut Orc Keepsake Box]))
 	{
 		use(1, $item[Smut Orc Keepsake Box]);

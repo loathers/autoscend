@@ -1,4 +1,4 @@
-since r27374;	// track noncombat forcers
+since r27402;	// Coinmaster support for Mr. Replica
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1099,6 +1099,27 @@ boolean dailyEvents()
 			makeGeniePocket();
 		}
 	}
+
+	if(!isActuallyEd() && my_daycount() > 1)
+	{
+		pullXWhenHaveY($item[Breathitin&trade;], 1, 0);
+		if (item_amount($item[Breathitin&trade;]) > 0)
+		{
+			use(1, $item[Breathitin&trade;]); // get free outdoor fight charges
+			auto_log_info("Huffing some Breathitin before adventuring for the day. That's the stuff!","blue");
+		}
+	}
+
+	if(freeCrafts() == 0 && canChew($item[Homebodyl&trade;]) && spleen_left() >= $item[Homebodyl&trade;].spleen)
+		{
+			pullXWhenHaveY($item[Homebodyl&trade;], 1, 0);
+			if (item_amount($item[Homebodyl&trade;]) > 0)
+			{
+				use(1, $item[Homebodyl&trade;]); // get free craft charges
+				auto_log_info("Huffing some Homebodyl and hyperfocusing on kitchen-grade demolitions.","blue");	
+			}
+		}
+
 
 	auto_getGuzzlrCocktailSet();
 	auto_latheAppropriateWeapon();
