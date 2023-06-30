@@ -78,7 +78,7 @@ boolean isAttackFamiliar(familiar fam)
 	{
 		//can be an attack familiar with this part equipped
 		//todo: is it possible to know if it will be equipped after this check?
-		if(possessEquipment($item[gnomish athlete's foot]))
+		if(possessEquipment($item[gnomish athlete\'s foot]))
 		{
 			return true;
 		}
@@ -183,6 +183,11 @@ boolean canChangeToFamiliar(familiar target)
 {
 	// answers the question of "am I allowed to change familiar to a familiar named target"
 	
+	if(my_familiar() == target)
+	{
+		return true;
+	}
+
 	if(get_property("auto_disableFamiliarChanging").to_boolean())
 	{
 		return false;

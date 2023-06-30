@@ -327,7 +327,7 @@ stat	19	Cymbal-Playing Monkey
 stat	20	Cheshire Bat
 # VolleyWhelps
 stat	21	Melodramedary
-# Might as well build up weight for free runs, even though I'm pretty sure we don't use them...
+# Build up weight for free runs
 stat	22	Frumious Bandersnatch
 # Slightly special volleyballs
 stat	23	Ghost of Crimbo Cheer

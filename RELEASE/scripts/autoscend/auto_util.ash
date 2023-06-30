@@ -915,6 +915,105 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 	return false;
 }
 
+boolean canFreeRun(monster enemy, location loc)
+{
+	// are there any restrictions on free running?
+	return true;
+}
+
+string findFreeRunSource(boolean inCombat)
+{
+	if(canChangeToFamiliar($familiar[Frumious Bandersnatch]))
+	{
+		// TODO add fam weight buffing
+		int banderRunsLeft = floor((familiar_weight($familiar[Frumious Bandersnatch]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		if(!inCombat)
+		{
+			if(auto_have_skill($skill[The Ode to Booze]) &&
+				banderRunsLeft > 0 &&
+				(have_effect($effect[Ode to Booze]) > 0 || buffMaintain($effect[Ode to Booze])) &&
+				handleFamiliar($familiar[Frumious Bandersnatch]))
+			{
+				// update familiar already called in pre-adv so have to force.
+				use_familiar($familiar[Frumious Bandersnatch]);
+				return "Frumious Bandersnatch";
+			}
+		}
+		else
+		{
+			if(my_familiar() == $familiar[Frumious Bandersnatch] && have_effect($effect[Ode to Booze]) > 0 && banderRunsLeft > 0)
+			{
+				return "Frumious Bandersnatch";
+			}
+		}
+	}
+
+	if(canChangeToFamiliar($familiar[Pair of Stomping Boots]))
+	{
+		// TODO add fam weight buffing
+		// boots and bander share same counter
+		int banderRunsLeft = floor((familiar_weight($familiar[Pair of Stomping Boots]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		if(!inCombat)
+		{
+			if(banderRunsLeft > 0 && handleFamiliar($familiar[Pair of Stomping Boots]))
+			{
+				// update familiar already called in pre-adv so have to force.
+				use_familiar($familiar[Pair of Stomping Boots]);
+				return "Pair of Stomping Boots";
+			}
+		}
+		else
+		{
+			if(my_familiar() == $familiar[Pair of Stomping Boots] && banderRunsLeft > 0)
+			{
+				return "Pair of Stomping Boots";
+			}
+		}
+	}
+
+	if(auto_hasNavelRing())
+	{
+		// currently only prioritize equipping if at least 80% chance of free run away
+		if(!inCombat && auto_navelFreeRunChance() >= 80)
+		{
+			if(in_lol())
+			{
+				autoEquip($item[replica Navel ring of navel gazing]);
+			}
+			else
+			{
+				autoEquip($item[Navel ring of navel gazing]);
+			}
+			return "Navel ring of navel gazing";
+		}
+		else
+		{
+			// use in combat if have high chance of a free run away or at least level 13
+			if(have_equipped($item[Navel ring of navel gazing]) || have_equipped($item[replica Navel ring of navel gazing]) &&
+				(auto_navelFreeRunChance() >= 80 || my_level() >= 13))
+			{
+				return "Navel ring of navel gazing";
+			}
+		}
+	}
+	
+	return "";
+}
+
+boolean adjustForFreeRunIfPossible(monster enemy, location loc)
+{
+	if(canFreeRun(enemy, loc))
+	{
+		string free_run_string = findFreeRunSource(false);
+		if(free_run_string != "")
+		{
+			auto_log_info("Adjusted to have free run available for " + enemy + ": " + free_run_string, "blue");
+			return true;
+		}
+	}
+	return false;
+}
+
 boolean adjustForYellowRay(string combat_string)
 {
 	//Adjust equipment/familiars to have access to the desired Yellow Ray

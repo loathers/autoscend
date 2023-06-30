@@ -2,4 +2,5 @@
 *.sh
 .github/kolmafia.jar
 .vs*
+*.DS_Store
 *.swp

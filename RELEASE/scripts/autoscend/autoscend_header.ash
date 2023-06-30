@@ -88,6 +88,11 @@ item eudora_current();
 int[item] eudora_xiblaxian();
 
 ########################################################################################################
+//Defined in autoscend/iotms/mr2007.ash
+boolean auto_hasNavelRing();
+int auto_navelFreeRunChance();
+
+########################################################################################################
 //Defined in autoscend/iotms/mr2011.ash
 boolean isClipartItem(item it);
 boolean hasLegionKnife();
@@ -1610,6 +1615,9 @@ boolean auto_wantToBanish(monster enemy, location loc);
 boolean canBanish(monster enemy, location loc);
 boolean adjustForBanish(string combat_string);
 boolean adjustForBanishIfPossible(monster enemy, location loc);
+boolean canFreeRun(monster enemy, location loc);
+string findFreeRunSource(boolean inCombat);
+boolean adjustForFreeRunIfPossible(monster enemy, location loc);
 boolean adjustForYellowRay(string combat_string);
 boolean adjustForYellowRayIfPossible(monster target);
 boolean adjustForYellowRayIfPossible();
