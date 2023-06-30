@@ -111,10 +111,10 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			emitDrones = true;
 		}
 		
-		//dupe GROPs if yellow rayed that didn't instakill. Commented out until support for green smoke bombs is added
-		/*if(enemy == $monster[Green Ops Soldier] and combat_status_check("yellowray") and drones){
+		//dupe GROPs
+		if(enemy == $monster[Green Ops Soldier] && drones){
 			emitDrones = true;
-		}*/
+		}
 
 		if(dronesOut()) //If we have drones out, let's not use the skill again
 		{

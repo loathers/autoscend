@@ -177,25 +177,19 @@ boolean dronesOut() //want a function to override the task order if we have dron
 void prioritizeGoose() //prioritize Goose only if we still have things to get
 {
 	if(!auto_haveGreyGoose()) return;
-	if(gooseExpectedDrones() < 8)
+	if(	(internalQuestStatus("questL04Bat") <= 1 && gooseExpectedDrones() < 1) ||
+			((item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && internalQuestStatus("questL11Worship") <= 2) && gooseExpectedDrones() < 1) ||
+			(internalQuestStatus("questL08Trapper") <= 1 && gooseExpectedDrones() < 1) ||
+			(((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15) && gooseExpectedDrones() < 2) ||
+			((needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6)) && gooseExpectedDrones() < 8) ||
+			(internalQuestStatus("questL11Ron") < 5 && gooseExpectedDrones() < 2) ||
+			((get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 5 && gooseExpectedDrones() < 2) ||
+			(((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 9) && gooseExpectedDrones() < 3))
 	{
-		if(	internalQuestStatus("questL04Bat") <= 1 ||
-			(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && internalQuestStatus("questL11Worship") <= 2) ||
-			internalQuestStatus("questL08Trapper") <= 1 ||
-			((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15) ||
-			(needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6)) ||
-			internalQuestStatus("questL11Ron") < 5 ||
-			(get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 5 ||
-			((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 9))
-		{
-			set_property("auto_prioritizeGoose", true);
-		}
-		set_property("auto_prioritizeGoose", false);
+		set_property("auto_prioritizeGoose", true);
+		return;
 	}
-	else
-	{
-		set_property("auto_prioritizeGoose", false);
-	}
+	set_property("auto_prioritizeGoose", false);
 }
 
 boolean canUseCleaver() {

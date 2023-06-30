@@ -898,34 +898,25 @@ boolean LX_dronesOut()
 	{
 		return false;
 	}
-	location desiredDronesLocation = get_property("auto_dronesRouting").to_location();
-	if(desiredDronesLocation == $location[none]) return false;
 	boolean canExtingo = true;
 	if(auto_fireExtinguisherCharges() <= 30 || !canUse($skill[Fire Extinguisher: Polar Vortex], false))
 	{
 		canExtingo = false;
 	}
+	auto_log_info("Have drones out so re-routing to not waste");
 
 	//where to go to. Not handling Smut Orc Keepsake, Blackberry Bush due to adventuring conditions required. If they happen to show up, they are handled in auto_combat
-	if(internalQuestStatus("questL04Bat") <= 1 && zone_isAvailable($location[The Batrat and Ratbat Burrow]))
+	if(needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6) && zone_isAvailable($location[The Hole In The Sky]))
 	{
-		return autoAdv($location[The Batrat and Ratbat Burrow]); //Sonar-in-a-Biscuit
+		return autoAdv($location[The Hole In The Sky]); //Stars and Lines
 	}
-	if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]) && internalQuestStatus("questL11Worship") < 3 && my_level() >= 11)
+	if (get_property("middleChamberUnlock").to_boolean() && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && item_amount($item[Tangle of rat tails]) >= 1 && zone_isAvailable($location[The Middle Chamber]))
 	{
-		return summonMonster($monster[Baa\'baa\'bu\'ran]); //Stone wool
-	}
-	if(internalQuestStatus("questL08Trapper") == 1 && zone_isAvailable($location[The Goatlet]))
-	{
-		return autoAdv($location[The Goatlet]); //Goat cheese
+		return autoAdv($location[The Middle Chamber]); //Tomb ratchets
 	}
 	if((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15 && zone_isAvailable($location[Twin Peak]))
 	{
 		return autoAdv($location[Twin Peak]); //Hedge trimmers
-	}
-	if(needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6) && zone_isAvailable($location[The Hole In The Sky]))
-	{
-		return autoAdv($location[The Hole In The Sky]); //Stars and Lines
 	}
 	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5 && zone_isAvailable($location[The Red Zeppelin]))
 	{
@@ -935,9 +926,17 @@ boolean LX_dronesOut()
 	{
 		return autoAdv($location[The Hidden Bowling Alley]); //Bowling balls
 	}
-	if (get_property("middleChamberUnlock").to_boolean() && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && zone_isAvailable($location[The Middle Chamber]))
+	if(internalQuestStatus("questL04Bat") <= 1 && zone_isAvailable($location[The Batrat and Ratbat Burrow]))
 	{
-		return autoAdv($location[The Middle Chamber]); //Tomb ratchets
+		return autoAdv($location[The Batrat and Ratbat Burrow]); //Sonar-in-a-Biscuit
+	}
+	if(internalQuestStatus("questL08Trapper") == 1 && zone_isAvailable($location[The Goatlet]))
+	{
+		return autoAdv($location[The Goatlet]); //Goat cheese
+	}
+	if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]) && internalQuestStatus("questL11Worship") < 3 && my_level() >= 11)
+	{
+		return summonMonster($monster[Baa\'baa\'bu\'ran]); //Stone wool
 	}
 	return false;
 }

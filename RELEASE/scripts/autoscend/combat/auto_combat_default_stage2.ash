@@ -170,6 +170,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			handleTracker(enemy, $skill[Peel Out], "auto_freeruns");
 			return useSkill($skill[Peel Out]);
 		}
+		if (item_amount($item[Green Smoke Bomb]) > 0)
+		{
+			handleTracker(enemy, $item[Green Smoke Bomb], "auto_freeruns");
+			return useItem($item[Green Smoke Bomb]);
+		}
 	}
 
 	if (!combat_status_check("replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
