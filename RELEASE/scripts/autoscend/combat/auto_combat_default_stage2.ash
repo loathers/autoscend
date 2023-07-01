@@ -117,7 +117,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()))
 	{
 		string freeRunAction = freeRunCombatStringPreBanish(enemy, my_location(), true);
-		if(freeRunSource != "")
+		if(freeRunAction != "")
 		{
 			f(index_of(freeRunAction, "skill") == 0)
 			{
@@ -164,7 +164,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	if(!combat_status_check("freeruncheck") && auto_wantToBanish(enemy, my_location()))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
-		if(freeRunSource != "")
+		if(freeRunAction != "")
 		{
 			if (index_of(freeRunAction, "runaway familiar") == 0)
 			{
