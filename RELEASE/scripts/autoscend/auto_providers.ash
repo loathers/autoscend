@@ -1,4 +1,85 @@
 
+record maximizerOutput
+{
+	string display; //What would be shown in the Modifier Maximizer tab
+	string command; //The CLI command the Maximizer would execute
+	float score;    //The score added from equipping the item or gaining 1 turn of the effect
+	effect ef;  //The effect you would gain
+	item it;      //The item being used or equipped
+	skill sk;    //The skill you need to cast
+	float efficiency; // how MP efficient is this
+};
+
+// use maximizer to determine related buffs. Includes limited use items and skills
+maximizerOutput [int] auto_getFilteredMaximizerBuffs(string expression, int minEfficiency)
+{
+	// always simulate maximizer since we just want to understand our options
+	// never tell maximizer to equip as that is handled seprately
+	// record [int] maximize(string expression ,int max_price ,int price_level ,boolean simulate ,boolean include_equip )
+	maximizerOutput[int] maxOut;
+	foreach it, entry in maximize(expression, 0, 0, true, false) 
+	{
+		maxOut[it].display = entry.display;
+		maxOut[it].command = entry.command;
+		maxOut[it].score = entry.score;
+		maxOut[it].ef = entry.effect;
+		maxOut[it].it = entry.item;
+		maxOut[it].sk = entry.skill;
+		maxOut[it].efficiency = -1;
+	}
+
+	maximizerOutput[int] filteredMaxOut;
+	foreach it, entry in maxOut
+	{
+		// if there is more than one way to get a buff, maximizer only lists skill or item to get it on first entry
+		// ignore alt ways to get a buff
+		if(entry.it == $item[none] && entry.sk == $skill[none]) continue;
+
+		// filter items
+		if(entry.it != $item[none])
+		{
+			if(!auto_is_valid(entry.it)) continue;
+			// todo add support for crafting suggestions?
+			if(item_amount(entry.it) < 1) continue;
+			if(entry.it.fullness > 0) continue;
+			if(entry.it.inebriety > 0) continue;
+			if(entry.it.spleen > 0) continue;
+		} 
+
+		// filter skills
+		float efficiency = entry.efficiency;
+		if(entry.sk != $skill[none])
+		{
+			if(!auto_is_valid(entry.sk)) continue;
+			if($skills[feel lost] contains entry.sk) continue;
+			if(mp_cost(entry.sk) > 0)
+			{
+				// bigger number for efficiency is better
+				efficiency = (turns_per_cast(entry.sk) * entry.score) / mp_cost(entry.sk);
+				if(efficiency < minEfficiency) continue;
+			}
+			else
+			{
+				// skill costing 0 MP has high efficiency
+				efficiency = 999; 
+			}
+		}
+		
+		int indexCount = count(filteredMaxOut);
+		filteredMaxOut[indexCount].display = entry.display;
+		filteredMaxOut[indexCount].command = entry.command; 
+		filteredMaxOut[indexCount].score = entry.score;
+		filteredMaxOut[indexCount].ef = entry.ef;
+		filteredMaxOut[indexCount].it = entry.it;
+		filteredMaxOut[indexCount].sk = entry.sk;
+		filteredMaxOut[indexCount].efficiency = efficiency;
+	}
+
+	// sort in decending efficiency so most efficient skills will be cast first if we happen to run out of mana
+	sort filteredMaxOut by -value.efficiency;
+	return filteredMaxOut;
+}
+
 float providePlusCombat(int amt, location loc, boolean doEquips, boolean speculative) {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
