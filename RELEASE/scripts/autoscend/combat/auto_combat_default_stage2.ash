@@ -119,7 +119,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		string freeRunAction = freeRunCombatStringPreBanish(enemy, my_location(), true);
 		if(freeRunAction != "")
 		{
-			f(index_of(freeRunAction, "skill") == 0)
+			if(index_of(freeRunAction, "skill") == 0)
 			{
 				handleTracker(enemy, to_skill(substring(freeRunAction, 6)), "auto_freeruns");
 			}
