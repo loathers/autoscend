@@ -1048,7 +1048,7 @@ boolean adjustForFreeRunIfPossible(monster enemy, location loc)
 {
 	if(canFreeRun(enemy, loc))
 	{
-		string free_run_string = freeRunCombatString(enemy, loc, false)
+		string free_run_string = freeRunCombatString(enemy, loc, false);
 		if(free_run_string != "")
 		{
 			auto_log_info("Adjusted to have free run available for " + enemy + ": " + free_run_string, "blue");
