@@ -921,8 +921,36 @@ boolean canFreeRun(monster enemy, location loc)
 	return true;
 }
 
-string findFreeRunSource(boolean inCombat)
+// monsters that we want to run away from before banishing
+string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat)
 {
+	if (isFreeMonster(enemy)) return "";
+
+	// Prefer some specalized free run items before other sources
+	if (!inAftercore())
+	{
+		// todo: other ghosts
+		if(enemy == $monster[Plaid Ghost] && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
+		{
+			return "item " + $item[T.U.R.D.S. Key];
+		}
+		//free runaway against pygmies. accelerates hidden city quest
+		if(canUse($item[short writ of habeas corpus]) && item_amount($item[short writ of habeas corpus]) > 0
+			&& $monsters[Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse] contains enemy)
+		{
+			return "item " + $item[Short Writ Of Habeas Corpus];
+		}
+	}
+
+	return "";
+}
+
+string freeRunCombatString(monster enemy, location loc, boolean inCombat)
+{
+	if (isFreeMonster(enemy)) return "";
+	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
+	if (pre_banish != "") return pre_banish;
+
 	if(canChangeToFamiliar($familiar[Frumious Bandersnatch]))
 	{
 		// TODO add fam weight buffing
@@ -936,14 +964,14 @@ string findFreeRunSource(boolean inCombat)
 			{
 				// update familiar already called in pre-adv so have to force.
 				use_familiar($familiar[Frumious Bandersnatch]);
-				return "Frumious Bandersnatch";
+				return "runaway familiar " + $familiar[Frumious Bandersnatch];
 			}
 		}
 		else
 		{
 			if(my_familiar() == $familiar[Frumious Bandersnatch] && have_effect($effect[Ode to Booze]) > 0 && banderRunsLeft > 0)
 			{
-				return "Frumious Bandersnatch";
+				return "runaway familiar " + $familiar[Frumious Bandersnatch];
 			}
 		}
 	}
@@ -959,14 +987,14 @@ string findFreeRunSource(boolean inCombat)
 			{
 				// update familiar already called in pre-adv so have to force.
 				use_familiar($familiar[Pair of Stomping Boots]);
-				return "Pair of Stomping Boots";
+				return "runaway familiar " + $familiar[Pair of Stomping Boots];
 			}
 		}
 		else
 		{
 			if(my_familiar() == $familiar[Pair of Stomping Boots] && banderRunsLeft > 0)
 			{
-				return "Pair of Stomping Boots";
+				return "runaway familiar " + $familiar[Pair of Stomping Boots];
 			}
 		}
 	}
@@ -984,7 +1012,7 @@ string findFreeRunSource(boolean inCombat)
 			{
 				autoEquip($item[Navel ring of navel gazing]);
 			}
-			return "Navel ring of navel gazing";
+			return "runaway item " + $item[Navel ring of navel gazing];
 		}
 		else
 		{
@@ -992,7 +1020,23 @@ string findFreeRunSource(boolean inCombat)
 			if(have_equipped($item[Navel ring of navel gazing]) || have_equipped($item[replica Navel ring of navel gazing]) &&
 				(auto_navelFreeRunChance() >= 80 || my_level() >= 13))
 			{
-				return "Navel ring of navel gazing";
+				return "runaway item " + $item[Navel ring of navel gazing];
+			}
+		}
+	}
+
+	if (canUse($skill[Peel Out]) && pete_peelOutRemaining() > 0)
+	{
+		return "skill " + $skill[Peel Out];
+	}
+
+	if (!inAftercore())
+	{
+		foreach it in $items[giant eraser, green smoke bomb, tattered scrap of paper, GOTO]
+		{
+			if (canUse(it) && item_amount(it) > 0)
+			{
+				return "item " + it;
 			}
 		}
 	}
@@ -1004,7 +1048,7 @@ boolean adjustForFreeRunIfPossible(monster enemy, location loc)
 {
 	if(canFreeRun(enemy, loc))
 	{
-		string free_run_string = findFreeRunSource(false);
+		string free_run_string = freeRunCombatString(enemy, loc, false)
 		if(free_run_string != "")
 		{
 			auto_log_info("Adjusted to have free run available for " + enemy + ": " + free_run_string, "blue");

@@ -109,21 +109,29 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	//throw gravel to free kill the enemy but don't get any items
 	if(wantToThrowGravel(my_location(), enemy))
 	{
+		handleTracker(enemy, $item[groveling gravel], "auto_instakill");
 		return useItem($item[groveling gravel]);
 	}
 	
-	//chance for a free runaway
-	if((enemy == $monster[Plaid Ghost]) && (item_amount($item[T.U.R.D.S. Key]) > 0))
+	// Free run before banishing for a few monsters
+	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()))
 	{
-		return "item " + $item[T.U.R.D.S. Key];
-	}
-
-	//free runaway against pygmies. accelerates hidden city quest
-	if(item_amount($item[short writ of habeas corpus]) > 0 && canUse($item[short writ of habeas corpus]) && !inAftercore())
-	{
-		if($monsters[Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse] contains enemy)
+		string freeRunAction = freeRunCombatStringPreBanish(enemy, my_location(), true);
+		if(freeRunSource != "")
 		{
-			return "item " + $item[Short Writ Of Habeas Corpus];
+			f(index_of(freeRunAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(freeRunAction, 6)), "auto_freeruns");
+			}
+			else if(index_of(freeRunAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(freeRunAction, 5)), "auto_freeruns");
+			}
+			else
+			{
+				auto_log_warning("Unable to track runaway behavior: " + freeRunAction, "red");
+			}
+			return freeRunAction;
 		}
 	}
 
@@ -153,23 +161,38 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 
 	// Free run from monsters we want to banish but are unable to
-	if(auto_wantToBanish(enemy, my_location()))
+	if(!combat_status_check("freeruncheck") && auto_wantToBanish(enemy, my_location()))
 	{
-		//TODO: Make freeRunCombatString() like banish
-		//TODO use $item[Tattered Scrap Of Paper] as a free runaway?
-		//TODO use $item[Green Smoke Bomb] as a free runaway?
-
-		string freeRunSource = findFreeRunSource(true);
+		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunSource != "")
 		{
-			handleTracker(enemy, freeRunSource, "auto_freeruns");
-			return "runaway";
+			if (index_of(freeRunAction, "runaway familiar") == 0)
+			{
+				handleTracker(enemy, to_familiar(substring(freeRunAction, 17)), "auto_freeruns");
+				freeRunAction = "runaway";
+			}
+			else if (index_of(freeRunAction, "runaway item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(freeRunAction, 13)), "auto_freeruns");
+				freeRunAction = "runaway";
+			}
+			else if(index_of(freeRunAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(freeRunAction, 6)), "auto_freeruns");
+			}
+			else if(index_of(freeRunAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(freeRunAction, 5)), "auto_freeruns");
+			}
+			else
+			{
+				auto_log_warning("Unable to track runaway behavior: " + freeRunAction, "red");
+			}
+			return freeRunAction;
 		}
-		if (canUse($skill[Peel Out]) && pete_peelOutRemaining() > 0)
-		{
-			handleTracker(enemy, $skill[Peel Out], "auto_freeruns");
-			return useSkill($skill[Peel Out]);
-		}
+
+		//we wanted to free run an enemy and failed. set a property so we do not bother trying in subsequent rounds
+		combat_status_add("freeruncheck");
 	}
 
 	if (!combat_status_check("replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
