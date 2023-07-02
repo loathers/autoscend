@@ -255,96 +255,98 @@ regen	4	XO Skeleton
 regen	5	Lil' Barrel Mimic	item:brass bung spigot>0
 # It's a starfish with reduced activation rate, except it ALWAYS attacks on turn one, so that's probably more hits per battle on average in short battles? oh, and it's a sombrero too
 regen	6	Galloping Grill
+regen	7	Patriotic Eagle
 # A super starfish (50% activation instead of 33%)
-regen	7	Sausage Golem
+regen	8	Sausage Golem
 # A slightly boosted starfish, for pastamancers
-regen	8	Animated Macaroni Duck	class:Pastamancer
+regen	9	Animated Macaroni Duck	class:Pastamancer
 # Regular starfish
-regen	9	Unspeakachu
-regen	10	Twitching Space Critter
-regen	11	Rock Lobster
-regen	12	Animated Macaroni Duck
-regen	13	Midget Clownfish
-regen	14	Snow Angel
-regen	15	Underworld Bonsai
-regen	16	Star Starfish
+regen	10	Unspeakachu
+regen	11	Twitching Space Critter
+regen	12	Rock Lobster
+regen	13	Animated Macaroni Duck
+regen	14	Midget Clownfish
+regen	15	Snow Angel
+regen	16	Underworld Bonsai
+regen	17	Star Starfish
 # Fairysuperwhelps
-regen	17	Choctopus
+regen	18	Choctopus
 # Superwhelps
-regen	18	Plastic Pirate Skull
-regen	19	Trick-or-Treating Tot
+regen	19	Plastic Pirate Skull
+regen	20	Trick-or-Treating Tot
 # Fairywhelps
-regen	20	Dandy Lion
+regen	21	Dandy Lion
 # Special whelps
-regen	21	Ms. Puck Man
-regen	22	Puck Man
-regen	23	Squamous Gibberer
-regen	24	He-Boulder
-regen	25	Cotton Candy Carnie
+regen	22	Ms. Puck Man
+regen	23	Puck Man
+regen	24	Squamous Gibberer
+regen	25	He-Boulder
+regen	26	Cotton Candy Carnie
 # Slightly better whelp for saucerors
-regen	26	Pet Cheezling	class:Sauceror
+regen	27	Pet Cheezling	class:Sauceror
 # Whelps with a multiplier, why not I guess
 #Mutant Gila Monster	grimdark:0
 #Mutant Gila Monster	grimdark:1
 # Marginally special whelps
 #Mutant Gila Monster	grimdark:2
-regen	27	Pottery Barn Owl
+regen	28	Pottery Barn Owl
 # Regular old whelps
-regen	28	Pet Cheezling
-regen	29	Ghuol Whelp
+regen	29	Pet Cheezling
+regen	30	Ghuol Whelp
 # The absolute default that everyone should have after their first run
-regen	30	Mosquito
+regen	31	Mosquito
 
 # Sombrero is desirable with a decent amount of ML
 stat	0	Galloping Grill	ML:>=120
 stat	1	Baby Sandworm	ML:>=120
 stat	2	God Lobster	ML:>=120;item:God Lobster's Ring>0
-stat	3	Hovering Sombrero	ML:>=120
+stat	3	Patriotic Eagle	ML:>=120
+stat	4	Hovering Sombrero	ML:>=120
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
-stat	4	Crimbo Shrub
+stat	5	Crimbo Shrub
 # Volleyballs with a multiplier
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
 # Fairyballs
-stat	5	Elf Operative
-stat	6	Optimistic Candle
-stat	7	Rockin' Robin
-stat	8	Hobo in Sheep's Clothing
+stat	6	Elf Operative
+stat	7	Optimistic Candle
+stat	8	Rockin' Robin
+stat	9	Hobo in Sheep's Clothing
 # Volleychauns
-stat	9	Ghost of Crimbo Commerce
-stat	10	Golden Monkey
-stat	11	Bloovian Groose
-stat	12	Unconscious Collective
-stat	13	Grim Brother
-stat	14	Dramatic Hedgehog
-stat	15	Chauvinist Pig
-stat	16	Uniclops
-stat	17	Hunchbacked Minion
-stat	18	Nervous Tick
-stat	19	Cymbal-Playing Monkey
-stat	20	Cheshire Bat
+stat	10	Ghost of Crimbo Commerce
+stat	11	Golden Monkey
+stat	12	Bloovian Groose
+stat	13	Unconscious Collective
+stat	14	Grim Brother
+stat	15	Dramatic Hedgehog
+stat	16	Chauvinist Pig
+stat	17	Uniclops
+stat	18	Hunchbacked Minion
+stat	19	Nervous Tick
+stat	20	Cymbal-Playing Monkey
+stat	21	Cheshire Bat
 # VolleyWhelps
-stat	21	Melodramedary
+stat	22	Melodramedary
 # Build up weight for free runs
-stat	22	Frumious Bandersnatch
+stat	23	Frumious Bandersnatch
 # Slightly special volleyballs
-stat	23	Ghost of Crimbo Cheer
-stat	24	Reanimated Reanimator
-stat	25	God Lobster
-stat	26	Party Mouse
-stat	27	Lil' Barrel Mimic
-stat	28	Piranha Plant
-stat	29	Antique Nutcracker
-stat	30	Jill-O-Lantern
+stat	24	Ghost of Crimbo Cheer
+stat	25	Reanimated Reanimator
+stat	26	God Lobster
+stat	27	Party Mouse
+stat	28	Lil' Barrel Mimic
+stat	29	Piranha Plant
+stat	30	Antique Nutcracker
+stat	31	Jill-O-Lantern
 # Fancy
-stat	31	Miniature Sword &amp; Martini Guy
+stat	32	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	32	Grinning Turtle
+stat	33	Grinning Turtle
 # His winning smile
-stat	33	Smiling Rat
+stat	34	Smiling Rat
 # The original
-stat	34	Blood-Faced Volleyball
+stat	35	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work
