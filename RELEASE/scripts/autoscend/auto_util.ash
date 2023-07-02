@@ -930,7 +930,7 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 	if (!inAftercore())
 	{
 		// todo: other ghosts
-		if(enemy == $monster[Plaid Ghost] && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
+		if(isGhost(enemy) && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
 		{
 			return "item " + $item[T.U.R.D.S. Key];
 		}
