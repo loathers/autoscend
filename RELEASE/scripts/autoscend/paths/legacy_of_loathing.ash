@@ -225,6 +225,20 @@ boolean lol_buyReplicas()
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Source terminal]);
 			use(1, $item[replica Source terminal]); // put in campsite
+			// initialize
+			auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+			if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq") && pathHasFamiliar())
+			{
+				auto_sourceTerminalRequest("enquiry familiar.enq");
+			}
+			else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "stats.enq"))
+			{
+				auto_sourceTerminalRequest("enquiry stats.enq");
+			}
+			else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "protect.enq"))
+			{
+				auto_sourceTerminalRequest("enquiry protect.enq");
+			}
 		}
 		else if(contains_text(page, "<b>2017</b>"))
 		{
