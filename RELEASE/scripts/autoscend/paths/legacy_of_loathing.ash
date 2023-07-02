@@ -42,6 +42,7 @@ boolean lol_buyReplicas()
 		if(contains_text(page, "patriotic eagle")) //2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica sleeping patriotic eagle]);
+			use(1, $item[replica sleeping patriotic eagle]); // put in terrarium
 		}
 		else if(contains_text(page, "<b>2004</b>"))
 		{
