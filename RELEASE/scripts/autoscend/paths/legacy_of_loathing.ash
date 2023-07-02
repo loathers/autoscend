@@ -39,6 +39,10 @@ boolean lol_buyReplicas()
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]);
 		}
+		if(contains_text(page, "patriotic eagle")) //2023
+		{
+			buy($coinmaster[Replica Mr. Store], 1, $item[replica sleeping patriotic eagle]);
+		}
 		else if(contains_text(page, "<b>2004</b>"))
 		{
 			if(have_familiar($familiar[Jill-O-Lantern]) || have_familiar($familiar[Hand Turkey]))
