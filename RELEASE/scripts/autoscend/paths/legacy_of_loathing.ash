@@ -28,12 +28,21 @@ boolean lol_buyReplicas()
 	{
 		string page = to_lower_case(visit_url("shop.php?whichshop=mrreplica"));
 
-		// attempt to buy 2023 IOTM first as if you one them, they are immediately available
+		// attempt to buy 2023 IOTMs first as if you one them, they are immediately available
 		// then attempt to buy sequentially year by year starting with 2004
 		// note with enough progress, can a second option up to year 2012
 		if(contains_text(page, "cincho")) //2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Cincho de Mayo]);
+		}
+		if(contains_text(page, "2002")) //2023
+		{
+			buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]);
+		}
+		if(contains_text(page, "patriotic eagle")) //2023
+		{
+			buy($coinmaster[Replica Mr. Store], 1, $item[replica sleeping patriotic eagle]);
+			use(1, $item[replica sleeping patriotic eagle]); // put in terrarium
 		}
 		else if(contains_text(page, "<b>2004</b>"))
 		{
@@ -96,16 +105,36 @@ boolean lol_buyReplicas()
 			}
 			else
 			{
-				buy($coinmaster[Replica Mr. Store], 1, $item[replica cotton candy cocoon]);
-				use(1, $item[replica cotton candy cocoon]); // put in terrarium
+				if(!is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
+				{	
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica cotton candy cocoon]);
+					use(1, $item[replica cotton candy cocoon]); // put in terrarium
+				}
+				else //This is a 100% familiar run, no need to buy another familiar
+				{ 
+					buy($coinmaster[Replica Mr. Store], 1, $item[Replica little box of fireworks]);
+				} 
 			}
 		}
 		else if(contains_text(page, "<b>2009</b>"))
 		{
-			if(!have_familiar($familiar[Frumious Bandersnatch]))
+
+			if(is100FamRun())//If on a 100% Fam Run, will get sunglasses on the first time around
 			{
-				buy($coinmaster[Replica Mr. Store], 1, $item[replica Apathargic Bandersnatch]);
-				use(1, $item[replica Apathargic Bandersnatch]); // put in terrarium
+				if(item_amount($item[replica Elvish sunglasses])<1)
+				{
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica Elvish sunglasses]);
+				}
+				else 
+				{
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica Apathargic Bandersnatch]);
+					use(1, $item[replica Apathargic Bandersnatch]); // put in terrarium
+				}
+			}
+			else if(!have_familiar($familiar[Frumious Bandersnatch]))
+			{
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica Apathargic Bandersnatch]);
+					use(1, $item[replica Apathargic Bandersnatch]); // put in terrarium
 			}
 			else
 			{
@@ -126,10 +155,23 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2011</b>"))
 		{
-			if(!have_familiar($familiar[Obtuse Angel]))
+
+			if(is100FamRun())//If on a 100% Fam Run, will get non-familiars
 			{
-				buy($coinmaster[Replica Mr. Store], 1, $item[replica cute angel]);
-				use(1, $item[replica cute angel]); // put in terrarium
+				if(contains_text(page, "replica Operation Patriot Shield"))
+				{
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica Operation Patriot Shield]);
+				}
+				else
+				{
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica plastic vampire fangs]);	
+				}
+			}
+			else if(!have_familiar($familiar[Obtuse Angel]))
+
+			{
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica cute angel]);
+					use(1, $item[replica cute angel]); // put in terrarium
 			}
 			else
 			{
@@ -145,8 +187,15 @@ boolean lol_buyReplicas()
 			}
 			else
 			{
-				buy($coinmaster[Replica Mr. Store], 1, $item[replica deactivated nanobots]);
-				use(1, $item[replica deactivated nanobots]); // put in terrarium
+				if(!is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
+				{	
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica deactivated nanobots]);
+					use(1, $item[replica deactivated nanobots]); // put in terrarium
+				}
+				else //This is a 100% familiar run, no need to buy another familiar
+				{ 
+					buy($coinmaster[Replica Mr. Store], 1, $item[replica Camp Scout backpack]);
+				} 
 			}
 		}
 		else if(contains_text(page, "<b>2013</b>"))
@@ -156,8 +205,17 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2014</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica Crimbo sapling]);
-			use(1, $item[replica Crimbo sapling]); // put in terrarium
+			if(!is100FamRun())//If this isn't a 100% familiar run, go ahead and get another familiar
+			{ 
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica Crimbo sapling]);
+				use(1, $item[replica Crimbo sapling]); // put in terrarium
+			}
+			else //This is a 100% familiar run, no need to buy another familiar
+			{ 
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica Little Geneticist DNA-Splicing Lab]);
+				use(1, $item[replica Little Geneticist DNA-Splicing Lab]); // put in workshed
+
+			} 			
 		}
 		else if(contains_text(page, "<b>2015</b>"))
 		{
@@ -167,6 +225,20 @@ boolean lol_buyReplicas()
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica Source terminal]);
 			use(1, $item[replica Source terminal]); // put in campsite
+			// initialize
+			auto_sourceTerminalEducate($skill[Extract], $skill[Digitize]);
+			if(contains_text(get_property("sourceTerminalEnquiryKnown"), "familiar.enq") && pathHasFamiliar())
+			{
+				auto_sourceTerminalRequest("enquiry familiar.enq");
+			}
+			else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "stats.enq"))
+			{
+				auto_sourceTerminalRequest("enquiry stats.enq");
+			}
+			else if(contains_text(get_property("sourceTerminalEnquiryKnown"), "protect.enq"))
+			{
+				auto_sourceTerminalRequest("enquiry protect.enq");
+			}
 		}
 		else if(contains_text(page, "<b>2017</b>"))
 		{
@@ -182,8 +254,15 @@ boolean lol_buyReplicas()
 		}
 		else if(contains_text(page, "<b>2020</b>"))
 		{
-			buy($coinmaster[Replica Mr. Store], 1, $item[replica baby camelCalf]);
-			use(1, $item[replica baby camelCalf]); // put in terrarium
+			if(!is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
+			{	
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica baby camelCalf]);
+				use(1, $item[replica baby camelCalf]); // put in terrarium
+			}
+			else //This is a 100% familiar run, no need to buy another familiar
+			{ 
+				buy($coinmaster[Replica Mr. Store], 1, $item[replica Powerful Glove]);
+			}
 		}
 		else if(contains_text(page, "<b>2021</b>"))
 		{
