@@ -1,4 +1,4 @@
-since r27374;	// track noncombat forcers
+since r27442;	// support replica eagle
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
