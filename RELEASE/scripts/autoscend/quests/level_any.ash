@@ -908,34 +908,42 @@ boolean LX_dronesOut()
 	//where to go to. Not handling Smut Orc Keepsake, Blackberry Bush due to adventuring conditions required. If they happen to show up, they are handled in auto_combat
 	if(needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6) && zone_isAvailable($location[The Hole In The Sky]))
 	{
+		auto_log_info("Going to HiTS");
 		return autoAdv($location[The Hole In The Sky]); //Stars and Lines
 	}
 	if (get_property("middleChamberUnlock").to_boolean() && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && item_amount($item[Tangle of rat tails]) >= 1 && zone_isAvailable($location[The Middle Chamber]))
 	{
+		auto_log_info("Going to Middle Chamber");
 		return autoAdv($location[The Middle Chamber]); //Tomb ratchets
 	}
 	if((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15 && zone_isAvailable($location[Twin Peak]))
 	{
+		auto_log_info("Going to Twin Peak");
 		return autoAdv($location[Twin Peak]); //Hedge trimmers
 	}
 	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5 && zone_isAvailable($location[The Red Zeppelin]))
 	{
+		auto_log_info("Going to the Red Zeppelin");
 		return autoAdv($location[The Red Zeppelin]); //Glark cables
 	}
 	if(canExtingo = false && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 6 && zone_isAvailable($location[The Hidden Bowling Alley]))
 	{
+		auto_log_info("Going to the Hidden Bowling Alley");
 		return autoAdv($location[The Hidden Bowling Alley]); //Bowling balls
 	}
 	if(internalQuestStatus("questL04Bat") <= 1 && zone_isAvailable($location[The Batrat and Ratbat Burrow]))
 	{
+		auto_log_info("Going to the Batrat and Ratbat Burrow");
 		return autoAdv($location[The Batrat and Ratbat Burrow]); //Sonar-in-a-Biscuit
 	}
 	if(internalQuestStatus("questL08Trapper") == 1 && zone_isAvailable($location[The Goatlet]))
 	{
+		auto_log_info("Going to the Goatlet");
 		return autoAdv($location[The Goatlet]); //Goat cheese
 	}
 	if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]) && internalQuestStatus("questL11Worship") < 3 && my_level() >= 11)
 	{
+		auto_log_info("Summoning Baa baa buran");
 		return summonMonster($monster[Baa\'baa\'bu\'ran]); //Stone wool
 	}
 	return false;
