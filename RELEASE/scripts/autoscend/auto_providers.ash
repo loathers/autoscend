@@ -172,6 +172,42 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	// Now handle buffs that cost MP, items or other resources
 
 	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
+	maximizerOutput [int] maxOut = auto_getFilteredMaximizerBuffs("+combat", 1);
+	foreach it, entry in maxOut
+	{
+		// use items
+		if(entry.it != $item[none])
+		{
+			if(!auto_is_valid(entry.it)) continue;
+			// todo add support for crafting suggestions?
+			if(item_amount(entry.it) < 1) continue;
+			if(entry.it.fullness > 0) continue;
+			if(entry.it.inebriety > 0) continue;
+			if(entry.it.spleen > 0) continue;
+		}
+
+		if (pass()) {
+			return true;
+		}
+
+		// use skills
+		if(entry.sk != $skill[none])
+		{
+			if(mp_cost(entry.sk) > my_mp() && !acquireMP(mp_cost(entry.sk)))
+			{
+				//unable to get enough mana to cast. Don't try to cast less efficient skills
+				break;
+			}
+			//todo - equip as needed
+			item mustEquip = $item[none];
+			if(buffMaintain(entry.sk, entry.ef, mustEquip, 0, 1, 1, speculative);) {
+				handleEffect(entry.ef);
+			}
+		}
+		if (pass()) {
+			return true;
+		}
+	}
 	if (tryEffects($effects[
 		Musk of the Moose,
 		Carlweather's Cantata of Confrontation,
