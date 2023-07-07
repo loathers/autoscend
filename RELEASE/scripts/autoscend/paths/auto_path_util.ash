@@ -135,10 +135,6 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 		}
 		break;
 	case $class[Sauceror]:
-		if((my_level() >= 1) && (my_meat() >= 1250) && !have_skill($skill[Simmer]) && in_community())
-		{
-			visit_url("guild.php?action=buyskill&skillid=25", true);
-		}
 		if((my_level() >= 3) && (my_meat() >= 1000) && !have_skill($skill[Expert Panhandling]))
 		{
 			visit_url("guild.php?action=buyskill&skillid=4", true);

@@ -798,9 +798,10 @@ boolean L11_blackMarket()
 	if (internalQuestStatus("questL11Black") == 0 && item_amount($item[black map]) == 0)
 	{
 		council();
-		if (!possessEquipment($item[Blackberry Galoshes]) && auto_can_equip($item[Blackberry Galoshes]))
+		item galoshes = $item[Blackberry Galoshes];
+		if (!possessEquipment(galoshes) && auto_can_equip(galoshes) && canPull(galoshes))
 		{
-			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
+			pullXWhenHaveY(galoshes, 1, 0);
 		}
 	}
 
@@ -1998,7 +1999,7 @@ boolean L11_hiddenCityZones()
 			{
 				return autoForceEquip($item[Antique Machete]);
 			}
-			else if (!possessEquipment($item[Muculent Machete]))
+			else if (!possessEquipment($item[Muculent Machete]) && canPull($item[Antique Machete]))
 			{
 				pullXWhenHaveY($item[Antique Machete], 1, 0);
 				return autoForceEquip($item[Antique Machete]);
@@ -2006,7 +2007,7 @@ boolean L11_hiddenCityZones()
 		}
 		if (auto_can_equip($item[Muculent Machete]))
 		{
-			if (!possessEquipment($item[Muculent Machete]))
+			if (!possessEquipment($item[Muculent Machete]) && canPull($item[Muculent Machete]))
 			{
 				pullXWhenHaveY($item[Muculent Machete], 1, 0);
 			}
@@ -2018,7 +2019,7 @@ boolean L11_hiddenCityZones()
 	L11_hiddenTavernUnlock();
 
 	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam();
-	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && in_hardcore();
+	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && (in_hardcore() || in_lol());
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
 	if (needMachete || needRelocate) {
@@ -2480,7 +2481,10 @@ boolean L11_ronCopperhead()
 			auto_log_info("Bringing the Camel to spit on a Red Butler for glark cables.");
 			handleFamiliar($familiar[Melodramedary]);
 		}
-		//set_property("auto_nextEncounter","Ron \"The Weasel\" Copperhead");	//this encounter is technically predictable, but mafia does not track progress?
+		if(internalQuestStatus("questL11Ron") == 4)
+		{
+			set_property("auto_nextEncounter","Ron \"The Weasel\" Copperhead");
+		}
 		boolean retval = autoAdv($location[The Red Zeppelin]);
 		// open red boxes when we get them (not sure if this is the place for this but it'll do for now)
 		if (item_amount($item[red box]) > 0)

@@ -1,4 +1,4 @@
-since r27327;	// feat: Monkey Paw support
+since r27442;	// support replica eagle
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -32,6 +32,7 @@ import <autoscend/auto_zone.ash>
 import <autoscend/iotms/clan.ash>
 import <autoscend/iotms/elementalPlanes.ash>
 import <autoscend/iotms/eudora.ash>
+import <autoscend/iotms/mr2007.ash>
 import <autoscend/iotms/mr2011.ash>
 import <autoscend/iotms/mr2012.ash>
 import <autoscend/iotms/mr2013.ash>
@@ -66,6 +67,7 @@ import <autoscend/paths/grey_goo.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
+import <autoscend/paths/legacy_of_loathing.ash>
 import <autoscend/paths/license_to_adventure.ash>
 import <autoscend/paths/live_ascend_repeat.ash>
 import <autoscend/paths/low_key_summer.ash>
@@ -223,6 +225,7 @@ void initializeSettings() {
 	set_property("auto_delayLastLevel", 0);
 
 	set_property("auto_sniffs", "");
+	set_property("auto_stopMinutesToRollover", "5");
 	set_property("auto_waitingArrowAlcove", "50");
 	set_property("auto_wandOfNagamar", true);
 	set_property("auto_wineracksencountered", 0);
@@ -239,6 +242,12 @@ void initializeSettings() {
 	remove_property("auto_minedCells");
 	remove_property("auto_shinningStarted");
 	remove_property("auto_boughtCommerceGhostItem");
+	remove_property("auto_saveMargarita");
+	remove_property("auto_csDoWheel");
+	remove_property("auto_hccsTurnSave");
+	remove_property("auto_hccsNoConcludeDay");
+	remove_property("auto_saveSausage");
+	remove_property("auto_saveVintage");
 	beehiveConsider();
 
 	eudora_initializeSettings();
@@ -268,6 +277,7 @@ void initializeSettings() {
 	wildfire_initializeSettings();
 	zombieSlayer_initializeSettings();
 	fotd_initializeSettings();
+	lol_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -280,6 +290,7 @@ void initializeSession() {
 	// should be set in here.
 
 	auto_enableBackupCameraReverser();
+	set_property("_auto_organSpace", -1.0);
 	ed_initializeSession();
 	bat_initializeSession();
 }
@@ -449,6 +460,10 @@ boolean LX_calculateTheUniverse(boolean speculative)
 		return LX_wildfire_calculateTheUniverse();
 	}
 	if(my_mp() < mp_cost($skill[Calculate the Universe]))
+	{
+		return false;
+	}
+	if(get_property("_universeCalculated").to_int() >= min(3, get_property("skillLevel144").to_int()))
 	{
 		return false;
 	}
@@ -697,19 +712,6 @@ void initializeDay(int day)
 		}
 	}
 
-	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 2) && in_community())
-	{
-		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
-		visit_url("inv_use.php?pwd=&which=3&whichitem=6174&confirm=Yep.", true);
-		set_property("auto_disableAdventureHandling", true);
-		autoAdv(1, $location[Video Game Level 1]);
-		set_property("auto_disableAdventureHandling", false);
-		if(item_amount($item[Dungeoneering Kit]) > 0)
-		{
-			use(1, $item[Dungeoneering Kit]);
-		}
-	}
-
 	auto_doPrecinct();
 	if(!(in_koe() || in_lar()) && (item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
 	{
@@ -736,7 +738,6 @@ void initializeDay(int day)
 	boris_initializeDay(day);
 	nuclear_initializeDay(day);
 	pete_initializeDay(day);
-	cs_initializeDay(day);
 	bond_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
@@ -845,7 +846,7 @@ void initializeDay(int day)
 			auto_beachCombHead("exp");
 		}
 
-		if((get_property("lastCouncilVisit").to_int() < my_level()) && !in_community())
+		if((get_property("lastCouncilVisit").to_int() < my_level()))
 		{
 			cli_execute("counters");
 			council();
@@ -917,7 +918,7 @@ void initializeDay(int day)
 				pullXWhenHaveY($item[frost flower], 1, 0);
 			}
 		}
-		if (chateaumantegna_havePainting() && !isActuallyEd() && !in_community())
+		if (chateaumantegna_havePainting() && !isActuallyEd())
 		{
 			if(auto_have_familiar($familiar[Reanimated Reanimator]))
 			{
@@ -1104,6 +1105,7 @@ boolean dailyEvents()
 	auto_harvestBatteries();
 	pickRocks();
 	auto_SITCourse();
+	auto_LegacyOfLoathingDailies();
 	
 	return true;
 }
@@ -1206,7 +1208,7 @@ boolean Lsc_flyerSeals()
 
 boolean councilMaintenance()
 {
-	if (in_community() || in_koe())
+	if (in_koe())
 	{
 		return false;
 	}
@@ -1637,6 +1639,11 @@ boolean doTasks()
 {
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
 
+	if(in_community())
+	{
+		abort("Community Service is no longer supported.");
+	}
+
 	auto_settingsFix();		//check and correct invalid configuration inputs made by users
 	if(!auto_unreservedAdvRemaining())
 	{
@@ -1664,6 +1671,32 @@ boolean doTasks()
 		auto_log_warning("I am in aftercore", "red");
 		return false;
 	}
+	// Check if rollover's coming up soon
+	if(almostRollover())
+	{
+		print("Rollover's coming!  Gotta consume what we can and go to bed!", "red");
+		// How much organ space left?  If none, go to bed
+		float organ_space = consumptionProgress();
+		auto_log_debug(`{organ_space} organ space`, "blue");
+		if(organ_space >= 0.999)
+		{
+		  return false;
+		}
+		// How much organ space was available the last time we were here?
+		float previous_space = get_property("_auto_organSpace").to_float();
+		float organ_space_change = organ_space - previous_space;
+		auto_log_debug(`{previous_space} previous space`, "blue");
+		auto_log_debug(`{organ_space_change} organ space change`, "blue");
+		set_property("_auto_organSpace", organ_space);
+		// If no space used the last time consumption was done, don't bother trying again
+		if(organ_space_change < 0.001)
+		{
+		  return false;
+		}
+		// There's space left to fill, but let's continue only if we don't have enough adventures
+		return needToConsumeForEmergencyRollover();
+	}
+	
 	casualCheck();
 	
 	print_header();
@@ -1720,6 +1753,7 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	lol_buyReplicas();
 
 	oldPeoplePlantStuff();
 	use_barrels();
@@ -1767,7 +1801,6 @@ boolean doTasks()
 	if(LM_plumber())					return true;
 	if(LM_zombieSlayer())				return true;
 
-	if(!in_community())
 	{
 		cheeseWarMachine(0, 0, 0, 0);
 
@@ -1796,15 +1829,6 @@ boolean doTasks()
 	//
 	//Adventuring actually starts here.
 	//
-
-	if(LA_cs_communityService())
-	{
-		return true;
-	}
-	if(in_community())
-	{
-		abort("Should not have gotten here, aborted LA_cs_communityService method allowed return to caller. Uh oh.");
-	}
 
 	if(LA_grey_goo_tasks())
 	{

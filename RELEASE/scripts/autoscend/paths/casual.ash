@@ -63,7 +63,7 @@ void acquireFamiliarRagamuffinImp()
 	{
 		return;		//user did not opt in.
 	}
-	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar() || in_lol())
 	{
 		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
@@ -104,7 +104,7 @@ void acquireFamiliarsCasual()
 {
 	//casual and postronin specific function which acquires hatchlings for important or easy to get familiars and then hatches them.
 	//use is_unrestricted instead of auto_is_valid because familiar hatching is not using an item and ignores most restrictions.
-	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar() || in_lol())
 	{
 		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
@@ -203,7 +203,7 @@ boolean LX_acquireFamiliarLeprechaun()
 	//unlike other acquire familiar functions this one actually spends adventures. and also stomach space.
 	//+meat familiar. If you do not have leprechaun you are a new account so poor that it is worth spending resources to get.
 	//only return true if we spent an adventure and want to restart the loop.
-	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
+	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar() || in_lol())
 	{
 		return false;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
 	}
