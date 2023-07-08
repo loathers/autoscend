@@ -151,16 +151,13 @@ boolean auto_makeMonkeyPawWish(string wish)
 
 boolean auto_haveCincho()
 {
-	// check for normal version
-	static item cincho = $item[Cincho de Mayo];
+	static item cincho = wrap_item($item[Cincho de Mayo]);
 	if(auto_is_valid(cincho) && (item_amount(cincho) > 0 || have_equipped(cincho)))
 	{
 		return true;
 	}
 
-	// check for replica in LoL path
-	static item replicaCincho = $item[replica Cincho de Mayo];
-	return auto_is_valid(replicaCincho) && (item_amount(replicaCincho) > 0 || have_equipped(replicaCincho));
+	return false;
 }
 
 int auto_currentCinch()
@@ -275,16 +272,12 @@ boolean shouldCinchoConfetti()
 
 boolean auto_have2002Catalog()
 {
-	// check for normal version
-	static item catalog = $item[2002 Mr. Store Catalog];
+	static item catalog = wrap_item($item[2002 Mr. Store Catalog]);
 	if(auto_is_valid(catalog) && (item_amount(catalog) > 0 || have_equipped(catalog)))
 	{
 		return true;
 	}
-
-	// check for replica in LoL path
-	static item replicaCatalog = $item[replica 2002 Mr. Store Catalog];
-	return auto_is_valid(replicaCatalog) && (item_amount(replicaCatalog) > 0 || have_equipped(replicaCatalog));
+	return false;
 }
 
 int remainingCatalogCredits()
