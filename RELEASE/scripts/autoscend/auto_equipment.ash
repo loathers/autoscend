@@ -631,7 +631,7 @@ void resetMaximize()
 			}
 		}
 	}
-	else if (item_amount($item[January\'s Garbage Tote]) > 0 && in_bhy())
+	else if (item_amount(wrap_item($item[January\'s Garbage Tote])) > 0 && in_bhy())
 	{
 		// workaround mafia bug with the maximizer where it tries to equip tote items even though the tote is unusable
 		foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt]
@@ -957,7 +957,7 @@ int equipmentAmount(item equipment)
 
 	if (get_related($item[broken champagne bottle], "fold") contains equipment)
 	{
-		amount = item_amount($item[January\'s Garbage Tote]);
+		amount = item_amount(wrap_item($item[January\'s Garbage Tote]));
 	}
 
 	return amount;

@@ -2,7 +2,8 @@
 
 boolean isjanuaryToteAvailable()
 {
-	return item_amount($item[January\'s Garbage Tote]) > 0 && auto_is_valid($item[January\'s Garbage Tote]) && !in_bhy();
+	item tote = wrap_item($item[January\'s Garbage Tote]);
+	return item_amount(tote) > 0 && auto_is_valid(tote) && !in_bhy();
 }
 
 int januaryToteTurnsLeft(item it)
