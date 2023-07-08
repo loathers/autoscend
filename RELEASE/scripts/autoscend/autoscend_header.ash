@@ -1339,7 +1339,7 @@ boolean simMaximize();
 boolean simMaximize(location loc);
 boolean simMaximizeWith(location loc, string add);
 boolean simMaximizeWith(string add);
-float simValue(string modifier);
+float simValue(string mod);
 void equipMaximizedGear();
 void equipOverrides();
 int equipmentAmount(item equipment);
