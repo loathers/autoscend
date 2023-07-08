@@ -1117,9 +1117,10 @@ void gremlinsFamiliar()
 		//there is a limited list of harmful familiar equipment to forbid
 		foreach fameq in $items[tiny bowler,ant hoe,ant pick,ant pitchfork,ant rake,ant sickle,oversized fish scaler,filthy child leash,plastic pumpkin bucket,little box of fireworks,moveable feast]
 		{
-			if(possessEquipment(fameq))
+			item wrapped_fameq = wrap_item(fameq);
+			if(possessEquipment(wrapped_fameq))
 			{
-				addToMaximize("-equip " + fameq.to_string());
+				addToMaximize("-equip " + wrapped_fameq.to_string());
 			}
 		}
 	}

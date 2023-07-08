@@ -350,11 +350,12 @@ boolean LX_unlockPirateRealm()
 
 boolean auto_saberChoice(string choice)
 {
-	if(!is_unrestricted($item[Fourth of May Cosplay Saber]))
+	item saber = wrap_item($item[Fourth of May cosplay saber]);
+	if(!is_unrestricted(saber))
 	{
 		return false;
 	}
-	if(!possessEquipment($item[Fourth of May Cosplay Saber]))
+	if(!possessEquipment(saber))
 	{
 		return false;
 	}
@@ -420,11 +421,12 @@ monster auto_saberCurrentMonster()
  */
 int auto_saberChargesAvailable()
 {
-	if(!is_unrestricted($item[Fourth of May cosplay saber kit]))
+	item saber = wrap_item($item[Fourth of May cosplay saber]);
+	if(!is_unrestricted(saber))
 	{
 		return 0;
 	}
-	if(!possessEquipment($item[Fourth of May cosplay saber]))
+	if(!possessEquipment(saber))
 	{
 		return 0;
 	}

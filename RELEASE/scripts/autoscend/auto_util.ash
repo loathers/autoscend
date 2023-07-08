@@ -884,7 +884,7 @@ boolean adjustForBanish(string combat_string)
 	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
-		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
+		return autoEquip($slot[weapon], wrap_item($item[Fourth of May cosplay saber]));
 	}
 	if(combat_string == "skill " + $skill[KGB Tranquilizer Dart])
 	{
@@ -1068,7 +1068,7 @@ boolean adjustForYellowRay(string combat_string)
 	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
-		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
+		return autoEquip($slot[weapon], wrap_item($item[Fourth of May cosplay saber]));
 	}
 	if(combat_string == ("skill " + $skill[Spit jurassic acid]))
 	{
@@ -4567,7 +4567,8 @@ boolean hasUsefulShirt()
 	int amtUsefulShirts = 0;
 	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac, jurassic parka]
 	{
-		if(item_amount(it) != 0 && is_unrestricted(it)) amtUsefulShirts += 1;
+		item w_it = wrap_item(it);
+		if(item_amount(w_it) != 0 && is_unrestricted(w_it)) amtUsefulShirts += 1;
 	}
 	if(amtUsefulShirts > 0)
 	{

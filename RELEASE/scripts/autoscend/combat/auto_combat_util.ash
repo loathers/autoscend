@@ -630,7 +630,8 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Punt];
 	}
 
-	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && auto_is_valid($skill[Use the Force]) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force"))
+	item saber = wrap_item($item[Fourth of May cosplay saber]);
+	if((inCombat ? have_equipped(saber) : possessEquipment(saber)) && auto_is_valid($skill[Use the Force]) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force"))
 	{
 		// can't use the force on uncopyable monsters
 		if(enemy == $monster[none] || enemy.copyable)
@@ -728,7 +729,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	{
 		//high fire level burns yellow ray items. except for saber's [use the force] as it leads to a noncombat
 		//we only want special handling if fire level is high. otherwise we can proceed to yellowray as per normal
-		if(have_equipped($item[Fourth of May cosplay saber]) && auto_saberChargesAvailable() > 0)
+		if(have_equipped(wrap_item($item[Fourth of May cosplay saber])) && auto_saberChargesAvailable() > 0)
 		{
 			// can't use the force on uncopyable monsters
 			if(target == $monster[none] || (target.copyable && !noForceDrop))
@@ -814,8 +815,9 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	{
 		return "skill " + $skill[Feel Envy];
 	}
-
-	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && (auto_saberChargesAvailable() > 0))
+	
+	item saber = wrap_item($item[Fourth of May cosplay saber]);
+	if((inCombat ? have_equipped(saber) : possessEquipment(saber)) && (auto_saberChargesAvailable() > 0))
 	{
 		// can't use the force on uncopyable monsters
 		if(target == $monster[none] || (target.copyable && !noForceDrop))
