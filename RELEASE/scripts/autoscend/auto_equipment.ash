@@ -883,9 +883,9 @@ boolean simMaximizeWith(string add)
 	return simMaximizeWith(my_location(), add);
 }
 
-float simValue(string modifier)
+float simValue(string mod)
 {
-	return numeric_modifier("Generated:_spec", modifier);
+	return numeric_modifier("Generated:_spec", mod);
 }
 
 void equipMaximizedGear()
