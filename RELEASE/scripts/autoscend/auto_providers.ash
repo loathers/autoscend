@@ -799,7 +799,8 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			Temporarily Filtered,
 			Gritty,
 			Too Shamed,
-			Twangy
+			Twangy,
+			minor invulnerability
 		]))
 			return result();
 	}
