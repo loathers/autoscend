@@ -700,7 +700,7 @@ int handlePulls(int day)
 			}
 		}
 
-		if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && auto_is_valid($item[Over-The-Shoulder Folder Holder]))
+		if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && auto_is_valid(wrap_item($item[Over-The-Shoulder Folder Holder])))
 		{
 			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
 		}

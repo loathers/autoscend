@@ -1008,7 +1008,7 @@ boolean L12_filthworms()
 	
 	if(auto_cargoShortsOpenPocket(343)) // skip straight to the Royal Guard Chamber
 	{
-		handleTracker($item[Cargo Cultist Shorts], $effect[Filthworm Drone Stench], "auto_otherstuff");
+		handleTracker(wrap_item($item[Cargo Cultist Shorts]), $effect[Filthworm Drone Stench], "auto_otherstuff");
 	}
 	
 	preventFratOutfitsIfNeeded();
