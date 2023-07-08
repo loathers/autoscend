@@ -1331,7 +1331,7 @@ boolean doBedtime()
 			auto_log_info("You have " + (10 - get_property("_timeSpinnerMinutesUsed").to_int()) + " minutes left to Time-Spinner!", "blue");
 		}
 
-		if(is_unrestricted($item[Chateau Mantegna Room Key]) && !get_property("_chateauMonsterFought").to_boolean() && get_property("chateauAvailable").to_boolean())
+		if(is_unrestricted(wrap_item($item[Chateau Mantegna Room Key])) && !get_property("_chateauMonsterFought").to_boolean() && get_property("chateauAvailable").to_boolean())
 		{
 			auto_log_info("You can still fight a Chateau Mangtegna Painting today.", "blue");
 		}

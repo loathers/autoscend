@@ -293,11 +293,12 @@ boolean auto_mayoItems()
 
 boolean chateaumantegna_available()
 {
-	if(get_property("chateauAvailable").to_boolean() && is_unrestricted($item[Chateau Mantegna Room Key]))
+	item chateau_key = wrap_item($item[Chateau Mantegna Room Key]);
+	if(get_property("chateauAvailable").to_boolean() && is_unrestricted(chateau_key))
 	{
 		return true;
 	}
-	if(contains_text(visit_url("mountains.php"),"whichplace=chateau") && is_unrestricted($item[Chateau Mantegna Room Key]))
+	if(contains_text(visit_url("mountains.php"),"whichplace=chateau") && is_unrestricted(chateau_key))
 	{
 		return true;
 	}
@@ -774,6 +775,8 @@ boolean deck_cheat(string cheat)
 			// Can we resolve this combat here? Should we?
 			// Do we need to accept a combat filter?
 		}
+		
+		handleTracker(deck,cheat, "auto_otherstuff");
 
 		// If mafia is not tracking cheats, we can track them here.
 		boolean found = false;
