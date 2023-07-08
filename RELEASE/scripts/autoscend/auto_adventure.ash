@@ -146,6 +146,10 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 	{
 		return false;
 	}
+	if(get_property("lastEncounter") == "Rainy Fax Dreams on your Wedding Day")
+	{
+		return false;
+	}
 	return true;
 }
 

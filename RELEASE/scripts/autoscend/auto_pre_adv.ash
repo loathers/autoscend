@@ -347,7 +347,12 @@ boolean auto_pre_adventure()
 			}
 			if(auto_wantToBanish(mon, place))
 			{
-				adjustForBanishIfPossible(mon, place);
+				// attempt to prepare for banishing, but if we can not try free running
+				boolean canBanish = adjustForBanishIfPossible(mon, place);
+				if(!canBanish)
+				{
+					adjustForFreeRunIfPossible(mon,place);
+				}
 				zoneHasUnwantedMonsters = true;
 			}
 			if(auto_wantToReplace(mon, place))

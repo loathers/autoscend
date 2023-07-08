@@ -85,16 +85,6 @@ boolean auto_barrelPrayers()
 		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
 		}
 	}
-	else if(in_community())
-	{
-		switch(my_daycount())
-		{
-		case 1:				prayers = $strings[Glamour, Vigor, Protection];		break;
-		case 2:				prayers = $strings[Protection, Glamour, Vigor];		break;
-		case 3:				prayers = $strings[Protection, Glamour, Vigor];		break;
-		case 4:				prayers = $strings[Protection, Glamour, Vigor];		break;
-		}
-	}
 	else if(is_boris())
 	{
 		switch(my_daycount())
@@ -234,16 +224,6 @@ boolean auto_mayoItems()
 		case 2:				mayos = $items[Mayo Lance];							break;
 		case 3:				mayos = $items[Mayo Lance];							break;
 		case 4:				mayos = $items[Mayo Lance];							break;
-		}
-	}
-	else if(in_community())
-	{
-		switch(my_daycount())
-		{
-		case 1:				mayos = $items[none];								break;
-		case 2:				mayos = $items[Sphygmayomanometer];					break;
-		case 3:				mayos = $items[Sphygmayomanometer];					break;
-		case 4:				mayos = $items[none];								break;
 		}
 	}
 	else if(in_heavyrains() && !in_hardcore())

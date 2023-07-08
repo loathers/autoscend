@@ -181,8 +181,6 @@ boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	int pastesNeeded = 0;
 	int pastesAvail = item_amount($item[meat paste]);
 	int meatToSave = 1000 + meatReserve();
-	if(in_community())
-		meatToSave = 500;
 	for i from 1 to numSaus
 	{
 		int sausNum = i + sausMade;

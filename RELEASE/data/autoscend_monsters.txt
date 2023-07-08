@@ -57,7 +57,7 @@ banish	50	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation;!snif
 banish	51	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!sniffed:trendy bugbear chef
 
 replace	0	Banshee Librarian	item:Killing Jar>0
-replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber;!pathid:41;!path:Wildfire;!path:Fall of the Dinosaurs,!path:Avator of Shadows Over Loathing
+replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber;!pathid:41;!path:Wildfire;!path:Fall of the Dinosaurs;!path:Avator of Shadows Over Loathing;!path:Legacy of Loathing
 replace	2	Knob Goblin Madam	item:Knob Goblin Perfume>0
 replace	3	Bookbat
 replace	4	Craven Carven Raven
@@ -85,28 +85,14 @@ replace	24	Slime Blob	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequest
 replace	25	Angry Ghost	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 replace	26	Annoyed Snake	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
 replace	27	Sausage Goblin	loc:Sonofa Beach;item:barrel of gunpowder<5;prop:sidequestLighthouseCompleted=none
-# community service
-replace	28	Lava Golem	path:Community Service;loc:LavaCo Lamp Factory
-replace	29	Healing Crystal Golem	path:Community Service;loc:The Velvet / Gold Mine
-replace	30	Mine Worker (female)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask>0
-replace	31	Mine Worker (male)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask>0
-replace	32	Mine Overseer (female)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask=0
-replace	33	Mine Overseer (male)	path:Community Service;loc:The Velvet / Gold Mine;item:High-Temperature Mining Mask=0
-replace	34	Factory-Irregular Skeleton	path:Community Service;loc:The Skeleton Store
-replace	35	Remaindered Skeleton	path:Community Service;loc:The Skeleton Store
-replace	36	Swarm of Skulls	path:Community Service;loc:The Skeleton Store
-replace	37	Ancient Insane Monk	path:Community Service;loc:The Haiku Dungeon
-replace	38	Ferocious Bugbear	path:Community Service;loc:The Haiku Dungeon
-replace	39	Gelatinous Cube	path:Community Service;loc:The Haiku Dungeon
-replace	40	Knob Goblin Poseur	path:Community Service;loc:The Haiku Dungeon
 # Bugbear Invasion Mothership
-replace	41	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing
-replace	42	bugaboo	path:Bugbear Invasion;loc:Morgue;item:bugbear autopsy tweezers<1
-replace	43	bugbear scientist	path:Bugbear Invasion;loc:Science Lab;item:quantum nanopolymer spider web<1
-replace	44	liquid metal bugbear	path:Bugbear Invasion:loc:Engineering;item:drone self-destruct chip<1
-replace	45	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering
-replace	46	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation
-replace	47	trendy bugbear chef	path:Bugbear Invasion;loc:Galley
+replace	28	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing
+replace	29	bugaboo	path:Bugbear Invasion;loc:Morgue;item:bugbear autopsy tweezers<1
+replace	30	bugbear scientist	path:Bugbear Invasion;loc:Science Lab;item:quantum nanopolymer spider web<1
+replace	31	liquid metal bugbear	path:Bugbear Invasion:loc:Engineering;item:drone self-destruct chip<1
+replace	32	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering
+replace	33	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation
+replace	34	trendy bugbear chef	path:Bugbear Invasion;loc:Galley
 
 sniff	0	pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed;prop:hiddenApartmentProgress<7
 sniff	1	Writing Desk	prop:writingDesksDefeated<4

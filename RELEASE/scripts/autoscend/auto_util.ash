@@ -915,6 +915,149 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 	return false;
 }
 
+boolean canFreeRun(monster enemy, location loc)
+{
+	// are there any restrictions on free running?
+	return true;
+}
+
+// monsters that we want to run away from before banishing
+string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat)
+{
+	if (isFreeMonster(enemy)) return "";
+
+	// Prefer some specalized free run items before other sources
+	if (!inAftercore())
+	{
+		// todo: other ghosts
+		if(isGhost(enemy) && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
+		{
+			return "item " + $item[T.U.R.D.S. Key];
+		}
+		//free runaway against pygmies. accelerates hidden city quest
+		if(canUse($item[short writ of habeas corpus]) && item_amount($item[short writ of habeas corpus]) > 0
+			&& $monsters[Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse] contains enemy)
+		{
+			return "item " + $item[Short Writ Of Habeas Corpus];
+		}
+	}
+
+	return "";
+}
+
+string freeRunCombatString(monster enemy, location loc, boolean inCombat)
+{
+	if (isFreeMonster(enemy)) return "";
+	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
+	if (pre_banish != "") return pre_banish;
+
+	if(canChangeToFamiliar($familiar[Frumious Bandersnatch]))
+	{
+		// TODO add fam weight buffing
+		int banderRunsLeft = floor((familiar_weight($familiar[Frumious Bandersnatch]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		if(!inCombat)
+		{
+			if(auto_have_skill($skill[The Ode to Booze]) &&
+				banderRunsLeft > 0 &&
+				(have_effect($effect[Ode to Booze]) > 0 || buffMaintain($effect[Ode to Booze])) &&
+				handleFamiliar($familiar[Frumious Bandersnatch]))
+			{
+				// update familiar already called in pre-adv so have to force.
+				use_familiar($familiar[Frumious Bandersnatch]);
+				return "runaway familiar " + $familiar[Frumious Bandersnatch];
+			}
+		}
+		else
+		{
+			if(my_familiar() == $familiar[Frumious Bandersnatch] && have_effect($effect[Ode to Booze]) > 0 && banderRunsLeft > 0)
+			{
+				return "runaway familiar " + $familiar[Frumious Bandersnatch];
+			}
+		}
+	}
+
+	if(canChangeToFamiliar($familiar[Pair of Stomping Boots]))
+	{
+		// TODO add fam weight buffing
+		// boots and bander share same counter
+		int banderRunsLeft = floor((familiar_weight($familiar[Pair of Stomping Boots]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		if(!inCombat)
+		{
+			if(banderRunsLeft > 0 && handleFamiliar($familiar[Pair of Stomping Boots]))
+			{
+				// update familiar already called in pre-adv so have to force.
+				use_familiar($familiar[Pair of Stomping Boots]);
+				return "runaway familiar " + $familiar[Pair of Stomping Boots];
+			}
+		}
+		else
+		{
+			if(my_familiar() == $familiar[Pair of Stomping Boots] && banderRunsLeft > 0)
+			{
+				return "runaway familiar " + $familiar[Pair of Stomping Boots];
+			}
+		}
+	}
+
+	if(auto_hasNavelRing())
+	{
+		// currently only prioritize equipping if at least 80% chance of free run away
+		if(!inCombat && auto_navelFreeRunChance() >= 80)
+		{
+			if(in_lol())
+			{
+				autoEquip($item[replica Navel ring of navel gazing]);
+			}
+			else
+			{
+				autoEquip($item[Navel ring of navel gazing]);
+			}
+			return "runaway item " + $item[Navel ring of navel gazing];
+		}
+		else
+		{
+			// use in combat if have high chance of a free run away or at least level 13
+			if(have_equipped($item[Navel ring of navel gazing]) || have_equipped($item[replica Navel ring of navel gazing]) &&
+				(auto_navelFreeRunChance() >= 80 || my_level() >= 13))
+			{
+				return "runaway item " + $item[Navel ring of navel gazing];
+			}
+		}
+	}
+
+	if (canUse($skill[Peel Out]) && pete_peelOutRemaining() > 0)
+	{
+		return "skill " + $skill[Peel Out];
+	}
+
+	if (!inAftercore())
+	{
+		foreach it in $items[giant eraser, green smoke bomb, tattered scrap of paper, GOTO]
+		{
+			if (canUse(it) && item_amount(it) > 0)
+			{
+				return "item " + it;
+			}
+		}
+	}
+	
+	return "";
+}
+
+boolean adjustForFreeRunIfPossible(monster enemy, location loc)
+{
+	if(canFreeRun(enemy, loc))
+	{
+		string free_run_string = freeRunCombatString(enemy, loc, false);
+		if(free_run_string != "")
+		{
+			auto_log_info("Adjusted to have free run available for " + enemy + ": " + free_run_string, "blue");
+			return true;
+		}
+	}
+	return false;
+}
+
 boolean adjustForYellowRay(string combat_string)
 {
 	//Adjust equipment/familiars to have access to the desired Yellow Ray
@@ -1826,6 +1969,29 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[Astronomer])) return true;
 	}
 
+	// summon additional monsters in heavy rains with rain man when available
+	if(have_skill($skill[Rain Man]) && my_rain() >= 50)
+	{
+		// summon Family Jewels or Bush to get only stars
+		if(needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) >= 7)
+		{
+			if(canSummonMonster($monster[Family Jewels]) && summonMonster($monster[Family Jewels])) return true;
+			if(canSummonMonster($monster[Bush]) && summonMonster($monster[Bush])) return true;
+		}
+		// summon Trouser Snake or Box to get only lines
+		if(needStarKey() && item_amount($item[star]) >= 8 && item_amount($item[line]) < 7)
+		{
+			if(canSummonMonster($monster[Trouser Snake]) && summonMonster($monster[Trouser Snake])) return true;	
+			if(canSummonMonster($monster[Box]) && summonMonster($monster[Box])) return true;
+		}
+		// summon Skinflute or Camel's Toe to get both stars and lines
+		if(needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
+		{
+			if(canSummonMonster($monster[Skinflute]) && summonMonster($monster[Skinflute])) return true;
+			if(canSummonMonster($monster[Camel's Toe]) && summonMonster($monster[Camel's Toe])) return true;
+		}
+	}
+
 	return false;
 }
 
@@ -1842,54 +2008,67 @@ boolean summonMonster(monster mon)
 boolean summonMonster(monster mon, boolean speculative)
 {
 	auto_log_debug((speculative ? "Checking if we can" : "Trying to") + " summon " + mon, "blue");
+
+	if (!speculative)
+	{
+		// Equip the combat lover's locket if we're missing a monster about to be summoned
+		if (auto_haveCombatLoversLocket() && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon))
+		{
+			auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from summoning, so we\'re bringing it along.', "blue");
+			autoEquip($item[combat lover\'s locket]);
+		}
+	}
 	// methods which require specific circumstances
 	if(mon == $monster[War Frat 151st Infantryman])
 	{	
 		// calculate the universe's only summon we want, so prioritize using it
 		if(LX_calculateTheUniverse(speculative))
 		{
-			auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+			auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via calculate the universe", "blue");
 			return true;
 		}
+	}
+	if (rainManSummon(mon, speculative))
+	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via rain man", "blue");
+		return true;
 	}
 	// todo add support for Baa'baa'bu'ran with deck of every card sheep card
 	if(timeSpinnerCombat(mon, speculative))
 	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via time spinner", "blue");
 		return true;
 	}
 	// methods which can only summon monsters should be attempted first
 	if(auto_fightLocketMonster(mon, speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via combat lover's locket", "blue");
 		return true;
 	}
 	if(handleFaxMonster(mon, !speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via fax", "blue");
 		return true;
 	}
 	// methods which can do more than summon monsters
 	if(auto_cargoShortsOpenPocket(mon, speculative))
 	{
-		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon, "blue");
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via cargo shorts", "blue");
 		return true;
 	}
 	if(auto_shouldUseWishes())
 	{
 		if(speculative && canGenieCombat(mon))
 		{
-			auto_log_debug("Can summon " + mon, "blue");
+			auto_log_debug("Can summon " + mon + " via wishing", "blue");
 			return true;
 		}
 		else if(!speculative && makeGenieCombat(mon))
 		{
-			auto_log_debug("Did summon " + mon, "blue");
+			auto_log_debug("Did summon " + mon + " via wishing", "blue");
 			return true;
 		}
 	}
-
-	//todo
-	// add support for rainManSummon(). Look to routineRainManHandler()
 
 	return false;
 }
@@ -3056,6 +3235,8 @@ boolean auto_is_valid(familiar fam)
 
 boolean auto_is_valid(skill sk)
 {
+	// Hack for Legacy of Loathing as is_unrestricted returns false for Source Terminal skills
+	if (in_lol() && $skills[Extract, Turbo, Digitize, Duplicate, Portscan, Compress] contains sk) return true;
 	//do not check check for B in bees hate you path. it only restricts items and not skills.
 	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
 }

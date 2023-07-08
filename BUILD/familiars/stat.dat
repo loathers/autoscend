@@ -2,6 +2,7 @@
 Galloping Grill	ML:>=120
 Baby Sandworm	ML:>=120
 God Lobster	ML:>=120;item:God Lobster's Ring>0
+Patriotic Eagle	ML:>=120
 Hovering Sombrero	ML:>=120
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
 Crimbo Shrub
@@ -28,7 +29,7 @@ Cymbal-Playing Monkey
 Cheshire Bat
 # VolleyWhelps
 Melodramedary
-# Might as well build up weight for free runs, even though I'm pretty sure we don't use them...
+# Build up weight for free runs
 Frumious Bandersnatch
 # Slightly special volleyballs
 Ghost of Crimbo Cheer

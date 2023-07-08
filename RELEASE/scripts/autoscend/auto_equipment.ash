@@ -754,6 +754,12 @@ void finalizeMaximize(boolean speculative)
 		// blocks first hit, but doesn't stack with blood bubble
 		addBonusToMaximize($item[Eight Days a Week Pill Keeper], 100);
 	}
+
+	if (in_heavyrains()) {
+		if (possessEquipment($item[Thor\'s Pliers])) {
+			addBonusToMaximize($item[Thor\'s Pliers], 400); // regenerate lightning
+		}
+	}
 	
 	if (canUseCleaver()) {
 		if (get_property("_juneCleaverFightsLeft").to_int() < my_adventures() * 1.1 || (fullness_limit() == 0 && inebriety_limit() == 0) || consumptionProgress() < 1) {

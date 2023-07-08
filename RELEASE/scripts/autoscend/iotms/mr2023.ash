@@ -215,6 +215,12 @@ boolean auto_getCinch(int goal)
 		// don't have enough cinch and don't have any free rests left
 		return false;
 	}
+	if(!haveAnyIotmAlternativeRestSiteAvailable() && get_dwelling() == $item[big rock])
+	{
+		// don't have anywhere to rest
+		// get dwelling returns big rock when no place to rest in campsite
+		return false;
+	}
 	// use free rests until have enough cinch or out of rests
 	while(auto_currentCinch() < goal && haveFreeRestAvailable())
 	{
@@ -223,7 +229,10 @@ boolean auto_getCinch(int goal)
 			// can't rest if we have full mp and hp
 			return false;
 		}
-		doFreeRest();
+		if(!doFreeRest())
+		{
+			abort("Failed to rest to charge cincho");
+		}
 	}
 
 	// see if we got enough cinch after using free rests

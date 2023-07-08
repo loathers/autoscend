@@ -46,10 +46,6 @@ boolean canPull(item it, boolean historical)
 	{
 		return false;
 	}
-	if(in_community())
-	{
-		return false;
-	}
 	if(in_lol())
 	{
 		// kol states "Only food, booze, potions, combat and usable items may be pulled on this path."
@@ -1010,7 +1006,6 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(!in_community())
 	{
 		if(item_amount($item[Portable Pantogram]) > 0)
 		{

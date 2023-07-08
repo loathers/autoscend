@@ -1,4 +1,4 @@
-since r27415;	// more replica item support
+since r27442;	// support replica eagle
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -32,6 +32,7 @@ import <autoscend/auto_zone.ash>
 import <autoscend/iotms/clan.ash>
 import <autoscend/iotms/elementalPlanes.ash>
 import <autoscend/iotms/eudora.ash>
+import <autoscend/iotms/mr2007.ash>
 import <autoscend/iotms/mr2011.ash>
 import <autoscend/iotms/mr2012.ash>
 import <autoscend/iotms/mr2013.ash>
@@ -241,6 +242,12 @@ void initializeSettings() {
 	remove_property("auto_minedCells");
 	remove_property("auto_shinningStarted");
 	remove_property("auto_boughtCommerceGhostItem");
+	remove_property("auto_saveMargarita");
+	remove_property("auto_csDoWheel");
+	remove_property("auto_hccsTurnSave");
+	remove_property("auto_hccsNoConcludeDay");
+	remove_property("auto_saveSausage");
+	remove_property("auto_saveVintage");
 	beehiveConsider();
 
 	eudora_initializeSettings();
@@ -705,19 +712,6 @@ void initializeDay(int day)
 		}
 	}
 
-	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 2) && in_community())
-	{
-		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
-		visit_url("inv_use.php?pwd=&which=3&whichitem=6174&confirm=Yep.", true);
-		set_property("auto_disableAdventureHandling", true);
-		autoAdv(1, $location[Video Game Level 1]);
-		set_property("auto_disableAdventureHandling", false);
-		if(item_amount($item[Dungeoneering Kit]) > 0)
-		{
-			use(1, $item[Dungeoneering Kit]);
-		}
-	}
-
 	auto_doPrecinct();
 	if(!(in_koe() || in_lar()) && (item_amount($item[Cop Dollar]) >= 10) && (item_amount($item[Shoe Gum]) == 0))
 	{
@@ -744,7 +738,6 @@ void initializeDay(int day)
 	boris_initializeDay(day);
 	nuclear_initializeDay(day);
 	pete_initializeDay(day);
-	cs_initializeDay(day);
 	bond_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
@@ -853,7 +846,7 @@ void initializeDay(int day)
 			auto_beachCombHead("exp");
 		}
 
-		if((get_property("lastCouncilVisit").to_int() < my_level()) && !in_community())
+		if((get_property("lastCouncilVisit").to_int() < my_level()))
 		{
 			cli_execute("counters");
 			council();
@@ -925,7 +918,7 @@ void initializeDay(int day)
 				pullXWhenHaveY($item[frost flower], 1, 0);
 			}
 		}
-		if (chateaumantegna_havePainting() && !isActuallyEd() && !in_community())
+		if (chateaumantegna_havePainting() && !isActuallyEd())
 		{
 			if(auto_have_familiar($familiar[Reanimated Reanimator]))
 			{
@@ -1215,7 +1208,7 @@ boolean Lsc_flyerSeals()
 
 boolean councilMaintenance()
 {
-	if (in_community() || in_koe())
+	if (in_koe())
 	{
 		return false;
 	}
@@ -1646,6 +1639,11 @@ boolean doTasks()
 {
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
 
+	if(in_community())
+	{
+		abort("Community Service is no longer supported.");
+	}
+
 	auto_settingsFix();		//check and correct invalid configuration inputs made by users
 	if(!auto_unreservedAdvRemaining())
 	{
@@ -1803,7 +1801,6 @@ boolean doTasks()
 	if(LM_plumber())					return true;
 	if(LM_zombieSlayer())				return true;
 
-	if(!in_community())
 	{
 		cheeseWarMachine(0, 0, 0, 0);
 
@@ -1832,15 +1829,6 @@ boolean doTasks()
 	//
 	//Adventuring actually starts here.
 	//
-
-	if(LA_cs_communityService())
-	{
-		return true;
-	}
-	if(in_community())
-	{
-		abort("Should not have gotten here, aborted LA_cs_communityService method allowed return to caller. Uh oh.");
-	}
 
 	if(LA_grey_goo_tasks())
 	{

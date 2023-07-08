@@ -1,6 +1,5 @@
 #	This is meant for items that have a date of 2017.
 
-// This should probably only be called directly from community_service.ash.
 boolean auto_hasMummingTrunk()
 {
 	if(!pathHasFamiliar()  || item_amount($item[Mumming Trunk]) == 0 || !auto_is_valid($item[Mumming Trunk]))
@@ -127,12 +126,6 @@ boolean mummifyFamiliar(familiar fam)
 
 boolean mummifyFamiliar()
 {
-	auto_hasMummingTrunk();
-	if (in_community())
-	{
-		return false;
-	}
-	
 	return mummifyFamiliar(my_familiar());
 }
 
@@ -1783,6 +1776,9 @@ boolean makeGenieWish(effect eff)
 	return makeGenieWish("to be " + eff) || have_effect(eff) > 0;
 }
 
+// Track any failed wishes this run
+boolean[monster] failedWishMonsters;
+
 boolean canGenieCombat(monster mon)
 {
 	item bottle = wrap_item($item[Genie Bottle]);
@@ -1808,6 +1804,10 @@ boolean canGenieCombat(monster mon)
 	{
 		return false;
 	}
+	if (failedWishMonsters contains mon)
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -1820,6 +1820,7 @@ boolean makeGenieCombat(monster mon, string option)
 
 	auto_log_info("Using genie to summon " + mon.name, "blue");
 	string wish = "to fight a " + mon;
+	int prev_genieFightsUsed = get_property("_genieFightsUsed").to_int();
 	string[int] pages;
 	item bottle = wrap_item($item[Genie Bottle]);
 	int wish_provider = bottle.to_int();
@@ -1833,8 +1834,9 @@ boolean makeGenieCombat(monster mon, string option)
 
 	autoAdvBypass(5, pages, $location[Noob Cave], option);
 
-	if(get_property("lastEncounter") != mon && get_property("lastEncounter") != "Using the Force")
+	if(prev_genieFightsUsed == get_property("_genieFightsUsed").to_int())
 	{
+		failedWishMonsters[mon] = true;
 		auto_log_warning("Wish: '" + wish + "' failed", "red");
 		return false;
 	}
