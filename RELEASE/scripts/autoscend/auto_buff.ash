@@ -571,6 +571,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Polar Express]:				useItem = $item[Cloaca Cola Polar];				break;
 	case $effect[Polka of Plenty]:				useSkill = $skill[The Polka of Plenty];			break;
 	case $effect[Polonoia]:						useItem = $item[Polo Trophy];					break;
+	case $effect[Poppy Performance]:			
+		if(auto_haveIdolMicrophone())
+		{
+			cli_execute("loathing idol pop");
+		}																						break;
 	case $effect[Power\, Man]:					useItem = $item[Power-Guy 2000 Holo-Record];	break;
 	case $effect[Power Ballad of the Arrowsmith]:useSkill = $skill[The Power Ballad of the Arrowsmith];break;
 	case $effect[Power of Heka]:				useSkill = $skill[Power of Heka];				break;
@@ -615,6 +620,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		if(auto_have_skill($skill[Reptilian Fortitude]) && acquireTotem())
 		{
 			useSkill = $skill[Reptilian Fortitude];
+		}																						break;
+	case $effect[Romantically Roused]:
+		if(auto_haveIdolMicrophone())
+		{
+			cli_execute("loathing idol ballad");
 		}																						break;
 	case $effect[A Rose by Any Other Material]:	useItem = $item[Squeaky Toy Rose];				break;
 	case $effect[Rosewater Mark]:				useItem = $item[Old Rosewater Cream];			break;
@@ -705,6 +715,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Spiritually Aware]:			useItem = $item[Spirit Beer];					break;
 	case $effect[Spiritually Awash]:			useItem = $item[Sacramental Wine];				break;
 	case $effect[Spiro Gyro]:					useItem = $item[Programmable Turtle];			break;
+	case $effect[Spitting Rhymes]:
+		if(auto_haveIdolMicrophone())
+		{
+			cli_execute("loathing idol rhyme");
+		}																						break;
 	case $effect[Spooky Hands]:					useItem = $item[Lotion of Spookiness];			break;
 	case $effect[Spooky Weapon]:				useItem = $item[Spooky Nuggets];				break;
 	case $effect[Spookypants]:					useItem = $item[Spooky Powder];					break;
@@ -761,6 +776,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Tricky Timpani]:				useSkill = $skill[Tricky Timpani];				break;
 	case $effect[Triple-Sized]:					useSkill = $skill[none];						break;
 	case $effect[Truly Gritty]:					useItem = $item[True Grit];						break;
+	case $effect[Twangy]:
+		if(auto_haveIdolMicrophone())
+		{
+			cli_execute("loathing idol country");
+		}																						break;
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
 	case $effect[Unmuffled]:
