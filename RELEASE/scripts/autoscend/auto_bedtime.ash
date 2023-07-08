@@ -725,7 +725,8 @@ boolean doBedtime()
 	januaryToteAcquire($item[Makeshift Garbage Shirt]);		//doubles stat gains in the LOV tunnel. also keep leftover charges for tomorrow.
 	loveTunnelAcquire(true, $stat[none], true, 3, true, 1);
 
-	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[genie bottle]))
+	item bottle = wrap_item($item[Genie Bottle]);
+	if(item_amount(bottle) > 0 && auto_is_valid(bottle))
 	{
 	//we are in bedtime so any wishes we planned to use today were already used. thus even if we can not use pocket wishes in this path we should still make them to avoid waste
 		for(int i=get_property("_genieWishesUsed").to_int(); i<3; i++)
