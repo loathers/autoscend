@@ -724,7 +724,8 @@ boolean auto_buyFireworksHat()
 
 boolean auto_haveFireExtinguisher()
 {
-	return possessEquipment($item[industrial fire extinguisher]) && auto_is_valid($item[industrial fire extinguisher]);
+	item exting = wrap_item($item[industrial fire extinguisher]);
+	return possessEquipment(exting) && auto_is_valid(exting);
 }
 
 int auto_fireExtinguisherCharges()
