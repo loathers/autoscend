@@ -2962,7 +2962,7 @@ void shrugAT(effect anticipated)
 	}
 
 	int maxSongs = 3;
-	if(have_equipped($item[Brimstone Beret]) || have_equipped($item[Operation Patriot Shield]) || have_equipped($item[Plexiglass Pendant]) || have_equipped($item[Scandalously Skimpy Bikini]) || have_equipped($item[Sombrero De Vida]) || have_equipped($item[Super-Sweet Boom Box]))
+	if(have_equipped($item[Brimstone Beret]) || have_equipped(wrap_item($item[Operation Patriot Shield])) || have_equipped($item[Plexiglass Pendant]) || have_equipped($item[Scandalously Skimpy Bikini]) || have_equipped($item[Sombrero De Vida]) || have_equipped($item[Super-Sweet Boom Box]))
 	{
 		maxSongs = 4;
 	}
