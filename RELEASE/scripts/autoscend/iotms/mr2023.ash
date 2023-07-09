@@ -320,6 +320,7 @@ void auto_buyFrom2002MrStore()
 	{
 		return;
 	}
+	auto_log_debug("Have credits to buy from Mr. Store 2002");
 	// meat butler on day 1 of run
 	item itemConsidering = $item[meat butler];
 	if(remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
@@ -350,7 +351,7 @@ void auto_buyFrom2002MrStore()
 	}
 	// loathing idol microphone. Use remaining credits
 	itemConsidering = $item[loathing idol microphone];
-	if(remainingCatalogCredits() > 0 && !auto_haveIdolMicrophone() && auto_is_valid(itemConsidering))
+	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], remainingCatalogCredits(), itemConsidering);
 	}
