@@ -130,14 +130,16 @@ boolean januaryToteAcquire(item it)
 		}
 		if(available_amount($item[Makeshift Garbage Shirt]) == 0)		//only rummage a new shirt if we don't already have one on hand.
 		{
-			visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9690", false);	//rummage in your garbage tote
+			item tote = wrap_item($item[January\'s Garbage Tote]);
+			visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=" + tote.id, false);	//rummage in your garbage tote
 			run_choice(5);																	//get garbage shirt
 		}
 		visit_url("inv_equip.php?pwd=&which=2&action=equip&whichitem=9699");		//url fail to equip shirt to get a letter
 	}
 	else
 	{
-		visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9690", false);	//rummage in your garbage tote
+		item tote = wrap_item($item[January\'s Garbage Tote]);
+		visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=" + tote.id, false);	//rummage in your garbage tote
 		run_choice(choice);																//get desired item
 	}
 	
