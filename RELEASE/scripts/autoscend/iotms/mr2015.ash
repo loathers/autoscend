@@ -294,11 +294,11 @@ boolean auto_mayoItems()
 boolean chateaumantegna_available()
 {
 	item chateau_key = wrap_item($item[Chateau Mantegna Room Key]);
-	if(get_property("chateauAvailable").to_boolean() && is_unrestricted(chateau_key))
+	if(!in_lol() && get_property("chateauAvailable").to_boolean() && is_unrestricted(chateau_key))
 	{
 		return true;
 	}
-	if(contains_text(visit_url("mountains.php"),"whichplace=chateau") && is_unrestricted(chateau_key))
+	if(in_lol() && get_property("replicaChateauAvailable").to_boolean() && is_unrestricted(chateau_key))
 	{
 		return true;
 	}
