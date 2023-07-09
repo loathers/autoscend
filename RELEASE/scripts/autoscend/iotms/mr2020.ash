@@ -386,8 +386,8 @@ boolean auto_latheAppropriateWeapon()
 
 boolean auto_hasCargoShorts()
 {
-	return possessEquipment($item[Cargo Cultist Shorts]) && 
-		auto_is_valid($item[Bagged Cargo Cultist Shorts]);
+	return possessEquipment(wrap_item($item[Cargo Cultist Shorts])) && 
+		auto_is_valid(wrap_item($item[Cargo Cultist Shorts]));
 }
 
 boolean auto_cargoShortsCanOpenPocket()
@@ -500,7 +500,7 @@ boolean auto_cargoShortsOpenPocket(monster m, boolean speculative)
 	pages[1] = `choice.php?pwd={my_hash()}&whichchoice=1420&option=1&pocket={available_pocket(m)}`;
 	if (autoAdvBypass(0, pages, $location[Noob Cave], ""))
 	{
-		handleTracker(m, $item[Cargo Cultist Shorts], "auto_copies");
+		handleTracker(m, wrap_item($item[Cargo Cultist Shorts]), "auto_copies");
 		return true;
 	}
 	return false;

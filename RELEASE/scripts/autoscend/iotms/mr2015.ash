@@ -293,11 +293,12 @@ boolean auto_mayoItems()
 
 boolean chateaumantegna_available()
 {
-	if(get_property("chateauAvailable").to_boolean() && is_unrestricted($item[Chateau Mantegna Room Key]))
+	item chateau_key = wrap_item($item[Chateau Mantegna Room Key]);
+	if(!in_lol() && get_property("chateauAvailable").to_boolean() && is_unrestricted(chateau_key))
 	{
 		return true;
 	}
-	if(contains_text(visit_url("mountains.php"),"whichplace=chateau") && is_unrestricted($item[Chateau Mantegna Room Key]))
+	if(in_lol() && get_property("replicaChateauAvailable").to_boolean() && is_unrestricted(chateau_key))
 	{
 		return true;
 	}
@@ -593,7 +594,8 @@ boolean chateauPainting()
 
 boolean deck_available()
 {
-	return ((item_amount($item[Deck of Every Card]) > 0) && is_unrestricted($item[Deck of Every Card]) && auto_is_valid($item[Deck of Every Card]));
+	item deck = wrap_item($item[Deck of Every Card]);
+	return ((item_amount(deck) > 0) && is_unrestricted(deck) && auto_is_valid(deck));
 }
 
 int deck_draws_left()
@@ -624,7 +626,8 @@ boolean deck_draw()
 	{
 		return false;
 	}
-	string page = visit_url("inv_use.php?pwd=&which=3&whichitem=8382");
+	item deck = wrap_item($item[Deck of Every Card]);
+	string page = visit_url("inv_use.php?pwd=&which=3&whichitem="+deck.to_int());
 	page = visit_url("choice.php?pwd=&whichchoice=1085&option=1", true);
 	return true;
 }
@@ -759,8 +762,8 @@ boolean deck_cheat(string cheat)
 		}
 	}
 
-
-	string page = visit_url("inv_use.php?cheat=1&pwd=&whichitem=8382");
+	item deck = wrap_item($item[Deck of Every Card]);
+	string page = visit_url("inv_use.php?cheat=1&pwd=&whichitem="+deck.to_int());
 
 	// Check that a valid card was selected, otherwise this wastes 5 draws.
 	if(card != 0)
@@ -772,6 +775,8 @@ boolean deck_cheat(string cheat)
 			// Can we resolve this combat here? Should we?
 			// Do we need to accept a combat filter?
 		}
+		
+		handleTracker(deck,cheat, "auto_otherstuff");
 
 		// If mafia is not tracking cheats, we can track them here.
 		boolean found = false;

@@ -298,3 +298,131 @@ void auto_LegacyOfLoathingDailies()
 		use(1, $item[replica Smith\'s Tome]); // get items
 	}
 }
+
+item auto_ItemToReplica(item it)
+{
+	switch(it)
+	{
+		case $item[mr. accessory]:
+			return $item[replica mr. accessory];
+		case $item[crimbo elfling]:
+			return $item[replica crimbo elfling];
+		case $item[Dark Jill-O-Lantern]:
+			return $item[replica Dark Jill-O-Lantern];
+		case $item[hand turkey outline]:
+			return $item[replica hand turkey outline];
+		case $item[miniature gravy-covered maypole]:
+			return $item[replica miniature gravy-covered maypole];
+		case $item[pygmy bugbear shaman]:
+			return $item[replica pygmy bugbear shaman];
+		case $item[wax lips]:
+			return $item[replica wax lips];
+		case $item[jewel-eyed wizard hat]:
+			return $item[replica jewel-eyed wizard hat];
+		case $item[plastic pumpkin bucket]:
+			return $item[replica plastic pumpkin bucket];
+		case $item[Tome of Snowcone Summoning]:
+			return $item[replica Tome of Snowcone Summoning];
+		case $item[bottle-rocket crossbow]:
+			return $item[replica bottle-rocket crossbow];
+		case $item[navel ring of navel gazing]:
+			return $item[replica navel ring of navel gazing];
+		case $item[V for Vivala mask]:
+			return $item[replica V for Vivala mask];
+		case $item[cotton candy cocoon]:
+			return $item[replica cotton candy cocoon];
+		case $item[haiku katana]:
+			return $item[replica haiku katana];
+		case $item[little box of fireworks]:
+			return $item[replica little box of fireworks];
+		case $item[Apathargic Bandersnatch]:
+			return $item[replica Apathargic Bandersnatch];
+		case $item[Elvish sunglasses]:
+			return $item[replica Elvish sunglasses];
+		case $item[squamous polyp]:
+			return $item[replica squamous polyp];
+		case $item[Greatest American Pants]:
+			return $item[replica Greatest American Pants];
+		case $item[Juju Mojo Mask]:
+			return $item[replica Juju Mojo Mask];
+		case $item[organ grinder]:
+			return $item[replica organ grinder];
+		case $item[a cute angel]:
+			return $item[replica cute angel];
+		case $item[Operation Patriot Shield]:
+			return $item[replica Operation Patriot Shield];
+		case $item[plastic vampire fangs]:
+			return $item[replica plastic vampire fangs];
+		case $item[Camp Scout backpack]:
+			return $item[replica Camp Scout backpack];
+		case $item[deactivated nanobots]:
+			return $item[replica deactivated nanobots];
+		case $item[Libram of Resolutions]:
+			return $item[replica Libram of Resolutions];
+		case $item[Order of the Green Thumb Order Form]:
+			return $item[replica Order of the Green Thumb Order Form];
+		case $item[over-the-shoulder Folder Holder]:
+			return $item[replica over-the-shoulder Folder Holder];
+		case $item[The Smith\'s Tome]:
+			return $item[replica Smith\'s Tome];
+		case $item[Crimbo sapling]:
+			return $item[replica Crimbo sapling];
+		case $item[Little Geneticist DNA-Splicing Lab]:
+			return $item[replica Little Geneticist DNA-Splicing Lab];
+		case $item[still grill]:
+			return $item[replica still grill];
+		case $item[Chateau Mantegna room key]:
+			return $item[replica Chateau Mantegna room key];
+		case $item[Deck of Every Card]:
+			return $item[replica Deck of Every Card];
+		case $item[Witchess Set]:
+			return $item[replica Witchess Set];
+		case $item[disconnected intergnat]:
+			return $item[replica disconnected intergnat];
+		case $item[Source terminal]:
+			return $item[replica Source terminal];
+		case $item[yellow puck]:
+			return $item[replica yellow puck];
+		case $item[genie bottle]:
+			return $item[replica genie bottle];
+		case $item[space planula]:
+			return $item[replica space planula];
+		case $item[unpowered Robortender]:
+			return $item[replica unpowered Robortender];
+		case $item[God Lobster Egg]:
+			return $item[replica God Lobster Egg];
+		case $item[January\'s Garbage Tote]:
+			return $item[replica January\'s Garbage Tote];
+		case $item[Neverending Party invitation envelope]:
+			return $item[replica Neverending Party invitation envelope];
+		case $item[Fourth of May Cosplay Saber]:
+			return $item[replica Fourth of May Cosplay Saber];
+		case $item[hewn moon-rune spoon]:
+			return $item[replica hewn moon-rune spoon];
+		case $item[Kramco Sausage-o-Matic&trade;]:
+			return $item[replica Kramco Sausage-o-Matic&trade;];
+		case $item[baby camelCalf]:
+			return $item[replica baby camelCalf];
+		case $item[Cargo Cultist Shorts]:
+			return $item[replica Cargo Cultist Shorts];
+		case $item[Powerful Glove]:
+			return $item[replica Powerful Glove];
+		case $item[emotion chip]:
+			return $item[replica emotion chip];
+		case $item[industrial fire extinguisher]:
+			return $item[replica industrial fire extinguisher];
+		case $item[miniature crystal ball]:
+			return $item[replica miniature crystal ball];
+		case $item[designer sweatpants]:
+			return $item[replica designer sweatpants];
+		case $item[grey gosling]:
+			return $item[replica grey gosling];
+		case $item[Jurassic Parka]:
+			return $item[replica Jurassic Parka];
+		case $item[Cincho de Mayo]:
+			return $item[replica Cincho de Mayo];
+		case $item[2002 Mr. Store Catalog]:
+			return $item[replica 2002 Mr. Store Catalog];
+	}
+	return it;
+}
