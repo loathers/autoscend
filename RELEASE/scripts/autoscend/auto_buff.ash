@@ -575,7 +575,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Poppy Performance]:			
 		if(auto_haveIdolMicrophone())
 		{
-			cli_execute("loathing idol pop");
+			if(speculative)
+			{
+				return true;
+			}
+			cli_execute("loathingidol pop");
 		}																						break;
 	case $effect[Power\, Man]:					useItem = $item[Power-Guy 2000 Holo-Record];	break;
 	case $effect[Power Ballad of the Arrowsmith]:useSkill = $skill[The Power Ballad of the Arrowsmith];break;
@@ -625,7 +629,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Romantically Roused]:
 		if(auto_haveIdolMicrophone())
 		{
-			cli_execute("loathing idol ballad");
+			if(speculative)
+			{
+				return true;
+			}
+			cli_execute("loathingidol ballad");
 		}																						break;
 	case $effect[A Rose by Any Other Material]:	useItem = $item[Squeaky Toy Rose];				break;
 	case $effect[Rosewater Mark]:				useItem = $item[Old Rosewater Cream];			break;
@@ -719,7 +727,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Spitting Rhymes]:
 		if(auto_haveIdolMicrophone())
 		{
-			cli_execute("loathing idol rhyme");
+			if(speculative)
+			{
+				return true;
+			}
+			cli_execute("loathingidol rhyme");
 		}																						break;
 	case $effect[Spooky Hands]:					useItem = $item[Lotion of Spookiness];			break;
 	case $effect[Spooky Weapon]:				useItem = $item[Spooky Nuggets];				break;
@@ -780,7 +792,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Twangy]:
 		if(auto_haveIdolMicrophone())
 		{
-			cli_execute("loathing idol country");
+			if(speculative)
+			{
+				return true;
+			}
+			cli_execute("loathingidol country");
 		}																						break;
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
