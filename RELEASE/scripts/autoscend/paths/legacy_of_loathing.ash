@@ -39,15 +39,14 @@ boolean lol_buyReplicas()
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]);
 		}
-		if(!is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
-		{
-			if(contains_text(page, "patriotic eagle")) //2023
-				{	
-					buy($coinmaster[Replica Mr. Store], 1, $item[replica sleeping patriotic eagle]);
-					use(1, $item[replica sleeping patriotic eagle]); // put in terrarium
-				}
+		if(contains_text(page, "patriotic eagle") && !is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
+		{	
+			buy($coinmaster[Replica Mr. Store], 1, $item[replica sleeping patriotic eagle]);
+			use(1, $item[replica sleeping patriotic eagle]); // put in terrarium
 		}
-		else if(contains_text(page, "<b>2004</b>"))
+		
+		//End of 2023 "Always Available" IoTMs and starting legacy "one at a time" IoTMs
+		if(contains_text(page, "<b>2004</b>"))
 		{
 			if(have_familiar($familiar[Jill-O-Lantern]) || have_familiar($familiar[Hand Turkey]))
 			{
