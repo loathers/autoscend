@@ -1509,6 +1509,10 @@ float provideMoxie(int amt, location loc, boolean doEquips, boolean speculative)
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
 boolean provideMoxie(int amt, location loc, boolean doEquips);
 boolean provideMoxie(int amt, boolean doEquips);
+float provideItem(int amt, location loc, boolean doEquips, boolean speculative);
+float provideItem(int amt, boolean doEquips, boolean speculative);
+boolean provideItem(int amt, location loc, boolean doEquips);
+boolean provideItem(int amt, boolean doEquips);
 
 ########################################################################################################
 //Defined in autoscend/auto_restore.ash

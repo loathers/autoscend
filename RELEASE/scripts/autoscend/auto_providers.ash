@@ -1187,3 +1187,187 @@ boolean provideMoxie(int amt, boolean doEquips)
 	return provideMoxie(amt, my_location(), doEquips);
 }
 
+float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
+{
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " item, " + (doEquips ? "with" : "without") + " equipment", "blue");
+
+	float alreadyHave = numeric_modifier("Item Drpo");
+	float need = amt - alreadyHave;
+
+	if(need > 0)
+	{
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	}
+	else
+	{
+		auto_log_debug("We already have enough!");
+	}
+
+	float delta = 0;
+
+	float result()
+	{
+		return numeric_modifier("Item Drop") + delta;
+	}
+
+	if(doEquips)
+	{
+		string max = "500item " + amt + "max";
+		if(speculative)
+		{
+			simMaximizeWith(loc, max);
+		}
+		else
+		{
+			addToMaximize(max);
+			simMaximize(loc);
+		}
+		delta = simValue("Item Drop") - numeric_modifier("Item Drop");
+		auto_log_debug("With gear we can get to " + result());
+	}
+
+	boolean pass()
+	{
+		return result() >= amt;
+	}
+
+	if(pass())
+		return result();
+
+	if (!speculative && doEquips)
+	{
+		handleFamiliar("item");
+		if(pass())
+			return result();
+	}
+
+	void handleEffect(effect eff)
+	{
+		if(speculative)
+		{
+			delta += numeric_modifier(eff, "Item Drop");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
+	}
+
+	boolean tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(buffMaintain(eff, 0, 1, 1, speculative))
+				handleEffect(eff);
+			if(pass())
+				return true;
+		}
+		return false;
+	}
+
+	// unlimited skills
+	if(tryEffects($effects[
+		Cletus's Canticle of Celerity,
+		Springy Fusilli,
+		Soulerskates,
+		Walberg's Dim Bulb,
+		Song of Slowness,
+		Your Fifteen Minutes,
+		Suspicious Gaze,
+		Bone Springs,
+		Living Fast,
+		Nearly Silent Hunting,
+		Stretched,
+	]))
+		return result();
+
+	if(canAsdonBuff($effect[Driving Quickly]))
+	{
+		if(!speculative)
+			asdonBuff($effect[Driving Quickly]);
+		handleEffect($effect[Driving Quickly]);
+	}
+	if(pass())
+		return result();
+
+	if(bat_formBats(speculative))
+	{
+		handleEffect($effect[Bats Form]);
+	}
+	if(pass())
+		return result();
+
+	if(auto_birdModifier("Item Drop") > 0)
+	{
+		if(tryEffects($effects[Blessing of the Bird]))
+			return result();
+	}
+
+	if(auto_favoriteBirdModifier("Item Drop") > 0)
+	{
+		if(tryEffects($effects[Blessing of Your Favorite Bird]))
+			return result();
+	}
+
+	// items
+	if(tryEffects($effects[
+		Adorable Lookout,
+		Alacri Tea,
+		All Fired Up,
+		Clear Ears\, Can't Lose,
+		Fishy\, Oily,
+		The Glistening,
+		Human-Machine Hybrid,
+		Patent Alacrity,
+		Provocative Perkiness,
+		Sepia Tan,
+		Sugar Rush,
+		Ticking Clock,
+		Well-Swabbed Ear,
+	]))
+		return result();
+
+	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[item.enh]) == 0 && auto_is_valid($effect[init.enh]))
+	{
+		if(!speculative)
+			auto_sourceTerminalEnhance("items");
+		handleEffect($effect[init.enh]);
+		if(pass())
+			return result();
+	}
+
+	if(doEquips && auto_canBeachCombHead("init"))
+	{
+		if(!speculative)
+			auto_beachCombHead("init");
+		handleEffect(auto_beachCombHeadEffect("init"));
+		if(pass())
+			return result();
+	}
+
+	if(doEquips && amt >= 400)
+	{
+		if(!get_property("_bowleggedSwaggerUsed").to_boolean() && buffMaintain($effect[Bow-Legged Swagger], 0, 1, 1, speculative))
+		{
+			if(speculative)
+				delta += delta + numeric_modifier("Initiative");
+			auto_log_debug("With Bow-Legged Swagger we " + (speculative ? "can get to" : "now have") + " " + result());
+		}
+		if(pass())
+			return result();
+	}
+
+	return result();
+}
+
+float provideItem(int amt, boolean doEquips, boolean speculative)
+{
+	return provideItem(amt, my_location(), doEquips, speculative);
+}
+
+boolean provideItem(int amt, location loc, boolean doEquips)
+{
+	return provideItem(amt, loc, doEquips, false) >= amt;
+}
+
+boolean provideItem(int amt, boolean doEquips)
+{
+	return provideItem(amt, my_location(), doEquips);
+}
