@@ -746,6 +746,7 @@ boolean in_lol();
 void lol_initializeSettings();
 boolean lol_buyReplicas();
 void auto_LegacyOfLoathingDailies();
+item auto_ItemToReplica(item it);
 
 ########################################################################################################
 //Defined in autoscend/paths/license_to_adventure.ash
@@ -1343,7 +1344,7 @@ boolean simMaximize();
 boolean simMaximize(location loc);
 boolean simMaximizeWith(location loc, string add);
 boolean simMaximizeWith(string add);
-float simValue(string modifier);
+float simValue(string mod);
 void equipMaximizedGear();
 void equipOverrides();
 int equipmentAmount(item equipment);
@@ -1768,3 +1769,4 @@ int poolSkillPracticeGains();
 boolean hasUsefulShirt();
 int meatReserve();
 boolean auto_wishForEffect(effect wish);
+item wrap_item(item it);

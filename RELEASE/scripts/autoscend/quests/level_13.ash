@@ -995,7 +995,7 @@ boolean L13_towerNSTower()
 				//todo: is this 5 or 6?
 				sourcesAttack = 6;
 			}
-			else if(autoEquip($item[Fourth of May Cosplay Saber]))
+			else if(autoEquip(wrap_item($item[Fourth of May Cosplay Saber])))
 			{
 				sourcesAttack = 6;
 			}

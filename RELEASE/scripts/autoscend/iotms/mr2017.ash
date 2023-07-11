@@ -1693,7 +1693,8 @@ boolean horsePreAdventure()
 
 boolean auto_haveGenieBottleOrPocketWishes()
 {
-	return (item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[Genie Bottle]) ||
+	item bottle = wrap_item($item[Genie Bottle]);
+	return (item_amount(bottle) > 0 && auto_is_valid(bottle) ||
 	        item_amount($item[Pocket Wish] ) > 0 && auto_is_valid($item[Pocket Wish] ) );
 }
 
@@ -1707,7 +1708,8 @@ int auto_wishesAvailable()
 	int retval = 0;
 	if (auto_shouldUseWishes())
 	{
-		if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[Genie Bottle]))
+		item bottle = wrap_item($item[Genie Bottle]);
+		if(item_amount(bottle) > 0 && auto_is_valid(bottle))
 		{
 			retval += 3 - get_property("_genieWishesUsed").to_int();
 		}
@@ -1728,9 +1730,10 @@ boolean makeGenieWish(string wish)
 	}
 
 	int wish_provider = 0;
-	if(auto_is_valid($item[Genie Bottle]) && item_amount($item[Genie Bottle]) > 0 && get_property("_genieWishesUsed").to_int() < 3)
+	item bottle = wrap_item($item[Genie Bottle]);
+	if(auto_is_valid(bottle) && item_amount(bottle) > 0 && get_property("_genieWishesUsed").to_int() < 3)
 	{
-		wish_provider = $item[genie bottle].to_int();
+		wish_provider = bottle.to_int();
 	}
 	else if(item_amount($item[pocket wish]) > 0 && auto_is_valid($item[pocket wish]))
 	{
@@ -1778,9 +1781,10 @@ boolean[monster] failedWishMonsters;
 
 boolean canGenieCombat(monster mon)
 {
-	boolean haveBottle = item_amount($item[Genie Bottle]) > 0;
+	item bottle = wrap_item($item[Genie Bottle]);
+	boolean haveBottle = item_amount(bottle) > 0;
 	boolean bottleWishesLeft = get_property("_genieWishesUsed").to_int() < 3;
-	boolean canUseBottle = haveBottle && bottleWishesLeft && auto_is_valid($item[Genie Bottle]);
+	boolean canUseBottle = haveBottle && bottleWishesLeft && auto_is_valid(bottle);
 	boolean havePocket = item_amount($item[pocket wish]) > 0;
 	boolean canUsePocket = havePocket && auto_is_valid($item[pocket wish]);
 	if(!canUseBottle && !canUsePocket)
@@ -1818,7 +1822,8 @@ boolean makeGenieCombat(monster mon, string option)
 	string wish = "to fight a " + mon;
 	int prev_genieFightsUsed = get_property("_genieFightsUsed").to_int();
 	string[int] pages;
-	int wish_provider = $item[genie bottle].to_int();
+	item bottle = wrap_item($item[Genie Bottle]);
+	int wish_provider = bottle.to_int();
 	if (item_amount($item[pocket wish]) > 0)
 	{
 		wish_provider = $item[pocket wish].to_int();
@@ -1848,7 +1853,8 @@ boolean makeGenieCombat(monster mon)
 
 boolean makeGeniePocket()
 {
-	if(item_amount($item[Genie Bottle]) == 0)
+	item bottle = wrap_item($item[Genie Bottle]);
+	if(item_amount(bottle) == 0)
 	{
 		return false;
 	}
@@ -1868,7 +1874,7 @@ boolean makeGeniePocket()
 		return false;
 	}
 
-	handleTracker($item[Genie Bottle], "for more wishes", "auto_wishes");
+	handleTracker(bottle, "for more wishes", "auto_wishes");
 	return true;
 }
 
