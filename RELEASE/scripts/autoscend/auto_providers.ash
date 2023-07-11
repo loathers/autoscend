@@ -114,7 +114,8 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		High Colognic,
 		Celestial Saltiness,
 		Simply Irresistible,
-		Crunching Leaves
+		Crunching Leaves,
+		Romantically Roused
 	])) {
 		return result();
 	}
@@ -507,6 +508,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		Sugar Rush,
 		Ticking Clock,
 		Well-Swabbed Ear,
+		Poppy Performance
 	]))
 		return result();
 
@@ -797,6 +799,8 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			Temporarily Filtered,
 			Gritty,
 			Too Shamed,
+			Twangy,
+			minor invulnerability
 		]))
 			return result();
 	}
@@ -1062,6 +1066,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 			Superhuman Sarcasm,
 			Unrunnable Face,
 			Gaffe Free,
+			Poppy Performance,
 
 			// all-stat effects
 			Confidence of the Votive,

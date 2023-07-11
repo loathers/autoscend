@@ -903,6 +903,14 @@ boolean auto_post_adventure()
 		// items which give stats
 		buffMaintain($effect[Scorched Earth]);
 		buffMaintain($effect[Wisdom of Others]);
+		foreach it in $items[azurite, eye agate, lapis lazuli]
+		{
+			if(item_amount(it) > 0 && auto_is_valid(it))
+			{
+				use(it, item_amount(it));
+			}
+		}
+		
 	}
 
 
