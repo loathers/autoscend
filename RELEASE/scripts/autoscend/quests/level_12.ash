@@ -943,37 +943,9 @@ boolean L12_filthworms()
 			}
 		}
 	
-		buffMaintain($effect[Joyful Resolve]);
-		buffMaintain($effect[Kindly Resolve]);
-		buffMaintain($effect[Fortunate Resolve]);
-		buffMaintain($effect[One Very Clear Eye]);
-		buffMaintain($effect[Human-Fish Hybrid]);
-		buffMaintain($effect[Human-Human Hybrid]);
-		buffMaintain($effect[Human-Machine Hybrid]);
-		buffMaintain($effect[Unusual Perspective]);
-		buffMaintain($effect[Eagle Eyes]);
-		buffMaintain($effect[Heart of Lavender]);
-		buffMaintain($effect[Five Sticky Fingers]);
-		asdonBuff($effect[Driving Observantly]);
-		bat_formBats();
-
-		if(get_property("auto_dickstab").to_boolean())
-		{
-			buffMaintain($effect[Wet and Greedy]);
-		}
-		buffMaintain($effect[Frosty]);
+		provideItem();
 		
-		//craft IOTM derivative that gives high item bonus
-		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
-		{
-			buyUpTo(1, $item[third-hand lantern]);
-			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
-		}
-
-		if(!canChangeToFamiliar($familiar[XO Skeleton]) && catBurglarHeistsLeft() < 1) {
-			//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
-			januaryToteAcquire($item[Broken Champagne Bottle]);
-		}
+		
 
 		if(in_lar())
 		{

@@ -1217,7 +1217,19 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 
 	if(doEquips)
 	{
-		string max = "500item " + amt + "max";
+		//craft IOTM derivative that gives high item bonus
+		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0) && auto_is_valid($item[A Light That Never Goes Out]))
+		{
+			buyUpTo(1, $item[third-hand lantern]);
+			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
+		}
+
+		if(auto_is_valid($item[Broken Champagne Bottle]) && get_property("garbageChampagneCharge").to_int() > 0) {
+			//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
+			januaryToteAcquire($item[Broken Champagne Bottle]);
+		}
+
+		string max = "500item " + (amt + 100) + "max";
 		if(speculative)
 		{
 			simMaximizeWith(loc, max);
@@ -1267,32 +1279,28 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 		return false;
 	}
 
+	if(in_heavyrains())
+	{
+		buffMaintain($effect[Fishy Whiskers]); // HR only
+	}
+
 	// unlimited skills
 	if(tryEffects($effects[
-		Cletus's Canticle of Celerity,
-		Springy Fusilli,
-		Soulerskates,
-		Walberg's Dim Bulb,
-		Song of Slowness,
-		Your Fifteen Minutes,
-		Suspicious Gaze,
-		Bone Springs,
-		Living Fast,
-		Nearly Silent Hunting,
-		Stretched,
+		Fat Leon\'s Phat Loot Lyric,
+		Singer\'s Faithful Ocelot
 	]))
 		return result();
 
-	if(canAsdonBuff($effect[Driving Quickly]))
+	if(canAsdonBuff($effect[Driving Observantly]))
 	{
 		if(!speculative)
-			asdonBuff($effect[Driving Quickly]);
-		handleEffect($effect[Driving Quickly]);
+			asdonBuff($effect[Driving Observantly]);
+		handleEffect($effect[Driving Observantly]);
 	}
 	if(pass())
 		return result();
 
-	if(bat_formBats(speculative))
+	if(!bat_wantHowl(loc) && bat_formBats(speculative))
 	{
 		handleEffect($effect[Bats Form]);
 	}
@@ -1313,21 +1321,40 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 
 	// items
 	if(tryEffects($effects[
-		Adorable Lookout,
-		Alacri Tea,
-		All Fired Up,
-		Clear Ears\, Can't Lose,
-		Fishy\, Oily,
-		The Glistening,
-		Human-Machine Hybrid,
-		Patent Alacrity,
-		Provocative Perkiness,
-		Sepia Tan,
-		Sugar Rush,
-		Ticking Clock,
-		Well-Swabbed Ear,
+		Joyful Resolve,
+		Fortunate Resolve,
+		Human-Human Hybrid,
+		Unusual Perspective,
+		Eagle Eyes,
+		Heart of Lavender,
+		Five Sticky Fingers
 	]))
 		return result();
+		
+	if(itemDrop < itemNeed._float)
+	{
+		//check specific item drop bonus
+		generic_t itemFoodNeed = zone_needItemFood(place);
+		generic_t itemBoozeNeed = zone_needItemBooze(place);
+		float itemDropFood = itemDrop + simValue("Food Drop");
+		float itemDropBooze = itemDrop + simValue("Booze Drop");
+		if(itemFoodNeed._boolean && itemDropFood < itemFoodNeed._float)
+		{
+			auto_log_debug("Trying food drop supplements");
+			//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
+			addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
+			simMaximize();
+			itemDropFood = simValue("Item Drop") + simValue("Food Drop");
+		}
+		if(itemBoozeNeed._boolean && itemDropBooze < itemBoozeNeed._float)
+		{
+			auto_log_debug("Trying booze drop supplements");
+			addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
+			simMaximize();
+			itemDropBooze = simValue("Item Drop") + simValue("Booze Drop");
+			//no zone item yet needs both food and booze, bottle of Chateau de Vinegar exception is a cooking ingredient but doesn't use food drop bonus
+		}
+	}
 
 	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[item.enh]) == 0 && auto_is_valid($effect[init.enh]))
 	{
@@ -1338,24 +1365,12 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 			return result();
 	}
 
-	if(doEquips && auto_canBeachCombHead("init"))
+	if(get_property("auto_dickstab").to_boolean())
 	{
-		if(!speculative)
-			auto_beachCombHead("init");
-		handleEffect(auto_beachCombHeadEffect("init"));
-		if(pass())
-			return result();
-	}
-
-	if(doEquips && amt >= 400)
-	{
-		if(!get_property("_bowleggedSwaggerUsed").to_boolean() && buffMaintain($effect[Bow-Legged Swagger], 0, 1, 1, speculative))
-		{
-			if(speculative)
-				delta += delta + numeric_modifier("Initiative");
-			auto_log_debug("With Bow-Legged Swagger we " + (speculative ? "can get to" : "now have") + " " + result());
-		}
-		if(pass())
+		if(tryEffects($effects[
+			Wet and Greedy,
+			Frosty
+		]))
 			return result();
 	}
 

@@ -3107,30 +3107,7 @@ boolean L11_unlockEd()
 	}
 	if(total < 10)
 	{
-		buffMaintain($effect[Joyful Resolve]);
-		buffMaintain($effect[One Very Clear Eye]);
-		buffMaintain($effect[Fishy Whiskers]);
-		buffMaintain($effect[Human-Fish Hybrid]);
-		buffMaintain($effect[Human-Human Hybrid]);
-		buffMaintain($effect[Unusual Perspective]);
-		if(!bat_wantHowl($location[The Middle Chamber]))
-		{
-			bat_formBats();
-		}
-		if(get_property("auto_dickstab").to_boolean())
-		{
-			buffMaintain($effect[Wet and Greedy]);
-			buffMaintain($effect[Frosty]);
-		}
-		if((item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
-		{
-			cli_execute("make sugar fairy");
-			buffMaintain($effect[Dance of the Sugar Fairy]);
-		}
-		if(have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
-		{
-			auto_sourceTerminalEnhance("items");
-		}
+		provideItem();
 	}
 
 	if(get_property("controlRoomUnlock").to_boolean())

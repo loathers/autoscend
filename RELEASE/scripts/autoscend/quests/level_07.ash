@@ -219,9 +219,10 @@ boolean L7_crypt()
 
 		if(get_property("cyrptNookEvilness").to_int() > (14 + evilBonus) && auto_is_valid($item[Evil Eye]))
 		{
-			buffMaintain($effect[Joyful Resolve]);
-			bat_formBats();
-			januaryToteAcquire($item[broken champagne bottle]);
+			//buffMaintain($effect[Joyful Resolve]);
+			//bat_formBats();
+			//januaryToteAcquire($item[broken champagne bottle]);
+			provideItem();
 		}
 
 		if(get_property("cyrptNookEvilness").to_int() <= 13)
