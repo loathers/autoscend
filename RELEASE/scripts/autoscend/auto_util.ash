@@ -3111,6 +3111,24 @@ int [item] auto_get_campground()
 	return campItems;
 }
 
+boolean haveCampgroundMaid()
+{
+	int [item] campItems = auto_get_campground();
+	if(campItems contains $item[meat maid])
+	{
+		return true;
+	}
+	if(campItems contains $item[clockwork maid])
+	{
+		return true;
+	}
+	if(campItems contains $item[meat butler])
+	{
+		return true;
+	}
+	return false;
+}
+
 location solveDelayZone()
 {
 	int[location] delayableZones = zone_delayable();
