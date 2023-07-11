@@ -513,6 +513,12 @@ int auto_cinchAfterNextRest();
 boolean auto_nextRestOverCinch();
 boolean auto_getCinch(int goal);
 boolean shouldCinchoConfetti();
+boolean auto_have2002Catalog();
+int remainingCatalogCredits();
+int remainingCatalogCredits();
+boolean auto_haveIdolMicrophone();
+void auto_buyFrom2002MrStore();
+void auto_useBlackMonolith();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

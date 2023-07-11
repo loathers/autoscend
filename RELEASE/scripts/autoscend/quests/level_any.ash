@@ -696,7 +696,7 @@ boolean LX_dolphinKingMap()
 
 boolean LX_meatMaid()
 {
-	if(auto_get_campground() contains $item[Meat Maid])
+	if(!haveCampgroundMaid())
 	{
 		return false;
 	}
