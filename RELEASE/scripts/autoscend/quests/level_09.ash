@@ -357,8 +357,8 @@ boolean L9_aBooPeak()
 
 		if (clueAmt < 3)
 		{
-			//januaryToteAcquire($item[Broken Champagne Bottle]);
-			provideItem();
+			// boo clues have 15% drop
+			provideItem(567, $location[A-Boo Peak], true);
 		}
 
 		return autoAdv(1, $location[A-Boo Peak]);
@@ -646,8 +646,8 @@ boolean L9_aBooPeak()
 	{
 		if ($location[A-Boo Peak].turns_spent < 10)
 		{
-			//januaryToteAcquire($item[Broken Champagne Bottle]);
-			provideItem();
+			// boo clues have 15% drop
+			provideItem(567, $location[A-Boo Peak], true);
 		}
 
 		autoAdv(1, $location[A-Boo Peak]);

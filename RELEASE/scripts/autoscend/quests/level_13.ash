@@ -92,7 +92,7 @@ boolean EightBitRealmHandler()
 			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":
-			provideItem();
+			provideItem(400, $location[Hero\'s Field], true);
 			addToMaximize("200item 500max");
 			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;

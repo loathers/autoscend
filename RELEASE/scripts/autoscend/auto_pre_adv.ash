@@ -590,7 +590,7 @@ boolean auto_pre_adventure()
 	generic_t itemNeed = zone_needItem(place);
 	if(mayNeedItem && itemNeed._boolean)
 	{
-		provideItem();
+		provideItem(ceil(itemNeed._float),place,false);
 	}
 
 

@@ -3107,7 +3107,8 @@ boolean L11_unlockEd()
 	}
 	if(total < 10)
 	{
-		provideItem();
+		// tomb ratchets have 20% drop rate
+		provideItem(400, $location[The MIddle Chamber], true);
 	}
 
 	if(get_property("controlRoomUnlock").to_boolean())

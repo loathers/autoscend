@@ -942,10 +942,10 @@ boolean L12_filthworms()
 				return false;
 			}
 		}
-	
-		provideItem();
-		
-		
+
+		// filth worm glands have 10% drop rate
+		// since we got here, going to try to get one to drop
+		provideItem(900,$location[The Feeding Chamber], true);
 
 		if(in_lar())
 		{
