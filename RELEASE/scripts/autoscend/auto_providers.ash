@@ -1196,7 +1196,7 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " item, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
-	float alreadyHave = numeric_modifier("Item Drpo");
+	float alreadyHave = numeric_modifier("Item Drop");
 	float need = amt - alreadyHave;
 
 	if(need > 0)
@@ -1385,6 +1385,18 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 			Wet and Greedy,
 			Frosty
 		]))
+			return result();
+	}
+
+	if(doEquips && amt >= 400)
+	{
+		if(!get_property("_steelyEyedSquintUsed").to_boolean() && buffMaintain($effect[Steely-Eyed Squint], 0, 1, 1, speculative))
+		{
+			if(speculative)
+				delta += delta + numeric_modifier("Item Drop");
+			auto_log_debug("With Steely Eyed Squint we " + (speculative ? "can get to" : "now have") + " " + result());
+		}
+		if(pass())
 			return result();
 	}
 
