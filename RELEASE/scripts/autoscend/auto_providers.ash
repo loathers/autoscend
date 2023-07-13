@@ -1258,14 +1258,13 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 		{
 			handleFamiliar("item");
 		}
-		else
+		// fam isn't equipped immediatly even if we aren't speculating
+		// so add bonus from fam regardless of speculation
+		familiar target = lookupFamiliarDatafile("item");
+		if(target != $familiar[none])
 		{
-			familiar target = lookupFamiliarDatafile("item");
-			if(target != $familiar[none])
-			{
-				int famWeight = familiar_weight(target) + weight_adjustment();
-				delta += numeric_modifier(target, "Item Drop",famWeight,$item[none]);
-			}
+			int famWeight = familiar_weight(target) + weight_adjustment();
+			delta += numeric_modifier(target, "Item Drop",famWeight,$item[none]);
 		}
 		
 		if(pass())
