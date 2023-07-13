@@ -1251,9 +1251,23 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 	if(pass())
 		return result();
 
-	if (!speculative && doEquips)
+	//see how much familiar will help
+	if(doEquips && pathHasFamiliar() && pathAllowsChangingFamiliar())
 	{
-		handleFamiliar("item");
+		if(!speculative)
+		{
+			handleFamiliar("item");
+		}
+		else
+		{
+			familiar target = lookupFamiliarDatafile("item");
+			if(target != $familiar[none])
+			{
+				int famWeight = familiar_weight(target) + weight_adjustment();
+				delta += numeric_modifier(target, "Item Drop",famWeight,$item[none]);
+			}
+		}
+		
 		if(pass())
 			return result();
 	}
@@ -1331,39 +1345,39 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 	]))
 		return result();
 		
-	if(itemDrop < itemNeed._float)
-	{
-		//check specific item drop bonus
-		generic_t itemFoodNeed = zone_needItemFood(place);
-		generic_t itemBoozeNeed = zone_needItemBooze(place);
-		float itemDropFood = itemDrop + simValue("Food Drop");
-		float itemDropBooze = itemDrop + simValue("Booze Drop");
-		if(itemFoodNeed._boolean && itemDropFood < itemFoodNeed._float)
-		{
-			auto_log_debug("Trying food drop supplements");
-			//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
-			addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
-			simMaximize();
-			itemDropFood = simValue("Item Drop") + simValue("Food Drop");
-		}
-		if(itemBoozeNeed._boolean && itemDropBooze < itemBoozeNeed._float)
-		{
-			auto_log_debug("Trying booze drop supplements");
-			addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
-			simMaximize();
-			itemDropBooze = simValue("Item Drop") + simValue("Booze Drop");
-			//no zone item yet needs both food and booze, bottle of Chateau de Vinegar exception is a cooking ingredient but doesn't use food drop bonus
-		}
-	}
-
-	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[item.enh]) == 0 && auto_is_valid($effect[init.enh]))
+	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
 	{
 		if(!speculative)
 			auto_sourceTerminalEnhance("items");
-		handleEffect($effect[init.enh]);
+		handleEffect($effect[items.enh]);
 		if(pass())
 			return result();
 	}
+
+	//check specific item drop bonus
+	generic_t itemFoodNeed = zone_needItemFood(loc);
+	generic_t itemBoozeNeed = zone_needItemBooze(loc);
+	float itemDropFood = result() + simValue("Food Drop");
+	float itemDropBooze = result() + simValue("Booze Drop");
+	if(itemFoodNeed._boolean && itemDropFood < itemFoodNeed._float)
+	{
+		auto_log_debug("Trying food drop supplements");
+		//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
+		addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
+		simMaximize();
+		itemDropFood = simValue("Item Drop") + simValue("Food Drop");
+	}
+	if(itemBoozeNeed._boolean && itemDropBooze < itemBoozeNeed._float)
+	{
+		auto_log_debug("Trying booze drop supplements");
+		addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
+		simMaximize();
+		itemDropBooze = simValue("Item Drop") + simValue("Booze Drop");
+		//no zone item yet needs both food and booze, bottle of Chateau de Vinegar exception is a cooking ingredient but doesn't use food drop bonus
+	}
+	if(pass())
+		return result();
+	
 
 	if(get_property("auto_dickstab").to_boolean())
 	{

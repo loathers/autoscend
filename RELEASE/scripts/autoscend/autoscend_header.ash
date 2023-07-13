@@ -1565,6 +1565,8 @@ boolean zone_isAvailable(location loc, boolean unlockIfPossible);
 boolean zone_isAvailable(location loc);
 int[location] zone_delayable();
 generic_t zone_needItem(location loc);
+generic_t zone_needItemBooze(location loc);
+generic_t zone_needItemFood(location loc);
 generic_t zone_combatMod(location loc);
 generic_t zone_delay(location loc);
 boolean zone_available(location loc);
