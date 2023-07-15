@@ -45,13 +45,6 @@ boolean snojoFightAvailable()
 			standard[2] = "Moxie";
 			standard[3] = "Mysticality";
 		}
-		if(in_community())
-		{
-			standard[0] = "Mysticality";
-			standard[1] = "Moxie";
-			standard[2] = "Muscle";
-			standard[3] = "Mysticality";
-		}
 		if(in_lta())
 		{
 			standard[0] = "Mysticality";
@@ -100,7 +93,8 @@ boolean snojoFightAvailable()
 
 boolean auto_haveSourceTerminal()
 {
-	if(!is_unrestricted($item[Source Terminal]))
+	item terminal = wrap_item($item[Source Terminal]);
+	if(!is_unrestricted(terminal) && !in_lol())
 	{
 		return false;
 	}
@@ -537,14 +531,6 @@ int auto_advWitchessTargets(string target)
 
 boolean witchessFights()
 {
-	if(in_community())
-	{
-		return false;
-	}
-	if(cs_witchess())
-	{
-		return true;
-	}
 	if(!auto_haveWitchess())
 	{
 		return false;
@@ -562,7 +548,7 @@ boolean witchessFights()
 	switch(my_daycount())
 	{
 	case 1:
-		if((item_amount($item[Greek Fire]) == 0) && !in_community())
+		if((item_amount($item[Greek Fire]) == 0))
 		{
 			return auto_advWitchess("ml");
 		}
@@ -1014,10 +1000,6 @@ boolean LX_ghostBusting()
 	{
 		return false;
 	}
-	if(in_community() && my_daycount() == 1 && goal == $location[The Spooky Forest])
-	{
-		return false;
-	}
 	if(goal == $location[Inside The Palindome] && !possessEquipment($item[Talisman O\' Namsilat]))
 	{
 		return false;
@@ -1179,17 +1161,15 @@ boolean timeSpinnerAdventure(string option)
 boolean canTimeSpinnerMonster(monster mon)
 {
 	// Can only time spinner summon copyable monsters
-	if(!mon.copyable)
+	if(!mon.copyable || mon.id < 0)
 	{
 		return false;
 	}
-	// If adding spinner support for a new monster, ensure the monster's native zone is listed below
-	boolean[location] possibleSpinnerMonsterZones = $locations[Guano Junction, The Batrat and Ratbat Burrow, The Beanbat Chamber, The Haunted Pantry,
-		The Skeleton Store, The Secret Government Laboratory, The Goatlet, The Haunted Bedroom, Sonofa Beach, The Outskirts of Cobb's Knob];
-	
-	foreach loc in possibleSpinnerMonsterZones
+
+	string name = mon.to_string();
+	foreach loc in $locations[]
 	{
-		if(contains_text(loc.combat_queue, to_string(mon))) return true;
+		if(contains_text(loc.combat_queue, name)) return true;
 	}
 	return false;
 }
@@ -1207,7 +1187,7 @@ boolean timeSpinnerCombat(monster goal, boolean speculative)
 boolean timeSpinnerCombat(monster goal, string option, boolean speculative)
 {
 	//spend 3 minutes to Travel to a Recent Fight
-	if(timeSpinnerRemaining(true) < 3)
+	if(timeSpinnerRemaining(!speculative) < 3)
 	{
 		return false;
 	}

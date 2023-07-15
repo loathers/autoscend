@@ -2138,10 +2138,20 @@ int doRest()
 }
 
 boolean haveFreeRestAvailable(){
+	// save free rests to charge cincho
+	if(auto_haveCincho() && auto_nextRestOverCinch())
+	{
+		return false;
+	}
 	return get_property("timesRested").to_int() < total_free_rests();
 }
 
 int freeRestsRemaining(){
+	// save free rests to charge cincho
+	if(auto_haveCincho() && auto_nextRestOverCinch())
+	{
+		return 0;
+	}
 	return max(0, total_free_rests() - get_property("timesRested").to_int());
 }
 

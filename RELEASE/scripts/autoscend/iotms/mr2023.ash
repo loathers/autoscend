@@ -148,3 +148,232 @@ boolean auto_makeMonkeyPawWish(string wish)
 	}
 	return success;
 }
+
+boolean auto_haveCincho()
+{
+	static item cincho = wrap_item($item[Cincho de Mayo]);
+	if(auto_is_valid(cincho) && (item_amount(cincho) > 0 || have_equipped(cincho)))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+int auto_currentCinch()
+{
+	if(!auto_haveCincho())
+	{
+		return 0;
+	}
+	return 100 - get_property("_cinchUsed").to_int();
+}
+
+int auto_cinchAfterNextRest()
+{
+	int cinchoRestsAlready = get_property("_cinchoRests").to_int();
+	// calculating for how much cinch NEXT rest will give
+	cinchoRestsAlready++;
+
+	int cinchGainedNextRest = 5;
+	if(cinchoRestsAlready <= 5) cinchGainedNextRest = 30;
+	else if(cinchoRestsAlready == 6) cinchGainedNextRest = 25;
+	else if(cinchoRestsAlready == 7) cinchGainedNextRest = 20;
+	else if(cinchoRestsAlready == 8) cinchGainedNextRest = 15;
+	else if(cinchoRestsAlready == 9) cinchGainedNextRest = 10;
+	// 10 and above give 5
+
+	return auto_currentCinch() + cinchGainedNextRest;
+}
+
+boolean auto_nextRestOverCinch()
+{
+	return auto_cinchAfterNextRest() > 100;
+}
+
+boolean auto_getCinch(int goal)
+{
+	boolean atMaxMpHp()
+	{
+		return my_mp() == my_maxmp() && my_hp() == my_maxhp();
+	}
+
+	if(auto_currentCinch() >= goal)
+	{
+		return true;
+	}
+	if(atMaxMpHp())
+	{
+		// can't rest if we have full mp and hp
+		return false;
+	}
+	if(!haveFreeRestAvailable())
+	{
+		// don't have enough cinch and don't have any free rests left
+		return false;
+	}
+	if(!haveAnyIotmAlternativeRestSiteAvailable() && get_dwelling() == $item[big rock])
+	{
+		// don't have anywhere to rest
+		// get dwelling returns big rock when no place to rest in campsite
+		return false;
+	}
+	// use free rests until have enough cinch or out of rests
+	while(auto_currentCinch() < goal && haveFreeRestAvailable())
+	{
+		if(atMaxMpHp())
+		{
+			// can't rest if we have full mp and hp
+			return false;
+		}
+		if(!doFreeRest())
+		{
+			abort("Failed to rest to charge cincho");
+		}
+	}
+
+	// see if we got enough cinch after using free rests
+	if(auto_currentCinch() >= goal)
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean shouldCinchoConfetti()
+{
+	// Cincho: Confetti Extravaganza doubles stat gains of current combat
+	// costs 5 cinch and flips out the monster
+	// cast this skill when we can't cast any more fiesta exists
+
+	// can't cast it if we don't have it
+	if(!canUse($skill[Cincho: Confetti Extravaganza]))
+	{
+		return false;
+	}
+	// don't over level
+	if(!disregardInstantKarma())
+	{
+		return false;
+	}
+	// save cinch for fiest exit
+	if(auto_currentCinch() > 60)
+	{
+		return false;
+	}
+	// use all free rests before using confetti. May get enough cinch to fiesta exit
+	if(haveFreeRestAvailable())
+	{
+		return false;
+	}
+	// canSurvive checked in calling location. This function is only available to combat files
+	return true;
+}
+
+boolean auto_have2002Catalog()
+{
+	static item catalog = wrap_item($item[2002 Mr. Store Catalog]);
+	if(auto_is_valid(catalog) && (item_amount(catalog) > 0 || have_equipped(catalog)))
+	{
+		return true;
+	}
+	return false;
+}
+
+int remainingCatalogCredits()
+{
+	if(!auto_have2002Catalog())
+	{
+		return 0;
+	}
+	if(!get_property("_2002MrStoreCreditsCollected").to_boolean())
+	{
+		//todo - collect credits
+	}
+	return get_property("availableMrStore2002Credits").to_int();
+}
+
+boolean auto_haveIdolMicrophone()
+{
+	if(item_amount($item[Loathing Idol Microphone]) > 0)
+	{
+		return true;
+	}
+	if(item_amount($item[Loathing Idol Microphone (75% charged)]) > 0)
+	{
+		return true;
+	}
+	if(item_amount($item[Loathing Idol Microphone (50% charged)]) > 0)
+	{
+		return true;
+	}
+	if(item_amount($item[Loathing Idol Microphone (25% charged)]) > 0)
+	{
+		return true;
+	}
+	return false;
+}
+
+void auto_buyFrom2002MrStore()
+{
+	if(remainingCatalogCredits() == 0)
+	{
+		return;
+	}
+	auto_log_debug("Have " + remainingCatalogCredits() + " credit(s) to buy from Mr. Store 2002. Let's spend them!");
+	// meat butler on day 1 of run
+	item itemConsidering = $item[meat butler];
+	if(remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+		use(itemConsidering);
+	}
+	// manual of secret door detection. skill: Secret door awareness
+	itemConsidering = $item[manual of secret door detection];
+	if(remainingCatalogCredits() > 0 && !auto_have_skill($skill[Secret door awareness]) && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+		use(itemConsidering);
+	}
+	// giant black monlith. Mostly useful at low level for stats
+	itemConsidering = $item[giant black monolith];
+	if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+		use(itemConsidering);
+		visit_url("campground.php?action=monolith");
+	}
+	// crimbo cookie. Should we expand to buy more or use in more paths beyond HC LoL?
+	itemConsidering = $item[Crimbo cookie sheet];
+	if(remainingCatalogCredits() > 0 && in_hardcore() && my_daycount() == 1 && in_lol())
+	{
+		buy($coinmaster[Mr. Store 2002], remainingCatalogCredits(), itemConsidering);
+	}
+	// loathing idol microphone. Use remaining credits
+	itemConsidering = $item[loathing idol microphone];
+	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], remainingCatalogCredits(), itemConsidering);
+	}
+}
+
+void auto_useBlackMonolith()
+{
+	// done if already used it today
+	if(get_property("_blackMonolithUsed").to_boolean())
+	{
+		return;
+	}
+	// done if we don't want stats
+	if(!disregardInstantKarma())
+	{
+		return;
+	}
+	// done if we don't have monolith
+	if(!(auto_get_campground() contains $item[giant black monolith]))
+	{
+		return;
+	}
+	// use monolith
+	visit_url("campground.php?action=monolith");
+}

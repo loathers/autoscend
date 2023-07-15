@@ -7,7 +7,6 @@ import <autoscend/combat/auto_combat_default_stage4.ash>			//default stage 4 = p
 import <autoscend/combat/auto_combat_default_stage5.ash>			//default stage 5 = kill
 import <autoscend/combat/auto_combat_awol.ash>						//path = avatar of west of loathing
 import <autoscend/combat/auto_combat_bees_hate_you.ash>				//path = bees hate you
-import <autoscend/combat/auto_combat_community_service.ash>			//path = community service
 import <autoscend/combat/auto_combat_fall_of_the_dinosaurs.ash>		//path = fall of the dinosaurs
 import <autoscend/combat/auto_combat_heavy_rains.ash>				//path = heavy rains
 import <autoscend/combat/auto_combat_dark_gyffte.ash>				//path = dark gyffte
@@ -101,7 +100,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	if(in_pokefam())
 	{
-		if(svn_exists("Ezandora-Helix-Fossil-branches-Release") || git_exists("Ezandora-Helix-Fossil-Release"))
+		if(git_exists("midgleyc-Helix-Fossil-Release"))
 		{
 		auto_log_info("Combat via Ezandora:", "green");
 		boolean ignore = cli_execute("Pocket Familiars");

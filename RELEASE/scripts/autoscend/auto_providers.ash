@@ -114,7 +114,8 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		High Colognic,
 		Celestial Saltiness,
 		Simply Irresistible,
-		Crunching Leaves
+		Crunching Leaves,
+		Romantically Roused
 	])) {
 		return result();
 	}
@@ -480,7 +481,14 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 	if(doEquips && auto_have_familiar($familiar[Grim Brother]) && (have_effect($effect[Soles of Glass]) == 0) && (get_property("_grimBuff").to_boolean() == false))
 	{
 		if(!speculative)
+		{
+			// We must visit the familiar's page before we can select the choice.
+			auto_log_debug("Attempting to visit Grim brother");
+			visit_url("familiar.php?action=chatgrim&pwd", true);
+			auto_log_debug("Attempting to select Soles of Glass");
 			visit_url("choice.php?pwd&whichchoice=835&option=1", true);
+		}
+			
 		handleEffect($effect[Soles of Glass]);
 		if(pass())
 			return result();
@@ -500,6 +508,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		Sugar Rush,
 		Ticking Clock,
 		Well-Swabbed Ear,
+		Poppy Performance
 	]))
 		return result();
 
@@ -790,6 +799,8 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			Temporarily Filtered,
 			Gritty,
 			Too Shamed,
+			Twangy,
+			minor invulnerability
 		]))
 			return result();
 	}
@@ -1055,6 +1066,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 			Superhuman Sarcasm,
 			Unrunnable Face,
 			Gaffe Free,
+			Poppy Performance,
 
 			// all-stat effects
 			Confidence of the Votive,

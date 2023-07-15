@@ -68,40 +68,19 @@ boolean auto_post_adventure()
 	 * Superlikelies do not reset this effect. There's some complexity here -
 	 * since some noncombats precede a combat encounter (for example, the
 	 * Cosmetics Wraith in the Haunted Bathroom), and we SHOULD reset the
-	 * noncombat-forcer in those cases.
-	 *
-	 * Current solution: Have a list of monsters that can only be encountered
-	 * via noncombats. Have a list of semirare encounters.
-	 */
+	 * noncombat-forcer in those cases.*/
 
-	static boolean[monster] __MONSTERS_FOLLOWING_NONCOMBATS = $monsters[
-		// These monsters follow noncombats, so we should reset the noncombat-forcing tracker when we fight one.
-		Protector Spectre, ancient protector spirit, ancient protector spirit (The Hidden Apartment Building), ancient protector spirit (The Hidden Hospital), ancient protector spirit (The Hidden Office Building), ancient protector spirit (The Hidden Bowling Alley), Cosmetics wraith,
-	];
-
-	if(get_property("auto_forceNonCombatSource") != "" && 
-		((__MONSTERS_FOLLOWING_NONCOMBATS contains get_property("lastEncounter").to_monster() || is_expectedForcedNonCombat(get_property("lastEncounter")))))
+	if(get_property("auto_forceNonCombatSource") != "" && !auto_haveQueuedForcedNonCombat())
 	{
 		// possible to get desired NC when preparing spikes. Only log usage if NC was actually forced
 		if(get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean())
 		{
-			auto_log_info("Encountered (assumed) forced noncombat: " + get_property("lastEncounter"), "blue");
+			auto_log_info("Encountered forced noncombat: " + get_property("lastEncounter"), "blue");
 			handleTracker(get_property("auto_forceNonCombatSource"), get_property("lastEncounter"), "auto_forcedNC");
 		}
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatLocation", "");
 		set_property("auto_parkaSpikesDeployed", false);
-		set_property("auto_forceNonCombatTurn", -1);
-	}
-
-	if(get_property("auto_forceNonCombatSource") != "" && (get_property("auto_forceNonCombatTurn").to_int() + 10) <= my_turncount())
-	{
-		auto_log_warning("It's been 10 adventures since we forced a noncombat (" + get_property("auto_forceNonCombatSource") +
-			"), am going to assume it happened but we missed it.", "blue");
-		set_property("auto_forceNonCombatSource", "");
-		set_property("auto_forceNonCombatLocation", "");
-		set_property("auto_parkaSpikesDeployed", false);
-		set_property("auto_forceNonCombatTurn", 0);
 	}
 
 	if(have_effect($effect[Eldritch Attunement]) > 0)
@@ -392,58 +371,6 @@ boolean auto_post_adventure()
 	{
 		buffMaintain($effect[Butt-Rock Hair]);
 		buffMaintain($effect[Go Get \'Em\, Tiger!]);
-	}
-
-	if(in_community())
-	{
-		if(auto_have_skill($skill[Summon BRICKOs]) && (get_property("_brickoEyeSummons").to_int() < 3))
-		{
-			libram = $skill[Summon BRICKOs];
-		}
-		else if(auto_have_skill($skill[Summon Taffy]))
-		{
-			libram = $skill[Summon Taffy];
-		}
-
-		int missing = (my_maxmp() - my_mp()) / 15;
-		int casts = (my_soulsauce() - 25) / 5;
-		if(casts < 0)
-		{
-			casts = 0;
-		}
-		int regen = casts;
-		if(casts > missing)
-		{
-			regen = missing;
-		}
-		if(regen > 0)
-		{
-			use_skill(regen, $skill[Soul Food]);
-		}
-
-		buffMaintain($effect[Inscrutable Gaze], 30, 1, 1);
-		buffMaintain($effect[Big], 50, 1, 1);
-
-		boolean [skill] toCast = $skills[Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Bowl Full of Jelly, Chubby and Plump, Communism!, Eye and a Twist, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Prevent Scurvy and Sobriety, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
-
-		foreach sk in toCast
-		{
-			if(is_unrestricted(sk) && auto_have_skill(sk) && (my_mp() >= mp_cost(sk)))
-			{
-				use_skill(1, sk);
-			}
-		}
-
-		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 15) && (mp_cost(libram) < 75))
-		{
-			use_skill(1, libram);
-		}
-		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 175))
-		{
-			use_skill(1, libram);
-		}
-
-		return true;
 	}
 
 	if(in_theSource())
@@ -976,6 +903,14 @@ boolean auto_post_adventure()
 		// items which give stats
 		buffMaintain($effect[Scorched Earth]);
 		buffMaintain($effect[Wisdom of Others]);
+		foreach it in $items[azurite, eye agate, lapis lazuli]
+		{
+			if(item_amount(it) > 0 && auto_is_valid(it))
+			{
+				use(it, item_amount(it));
+			}
+		}
+		
 	}
 
 

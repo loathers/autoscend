@@ -160,7 +160,7 @@ boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 		return false;
 		
 	//it is actually possible to have a casing but not have the kramco grinder
-	if(!possessEquipment($item[Kramco Sausage-o-Matic&trade;]))
+	if(!possessEquipment(wrap_item($item[Kramco Sausage-o-Matic&trade;])))
 	{
 		return false;
 	}
@@ -181,8 +181,6 @@ boolean auto_sausageGrind(int numSaus, boolean failIfCantMakeAll)
 	int pastesNeeded = 0;
 	int pastesAvail = item_amount($item[meat paste]);
 	int meatToSave = 1000 + meatReserve();
-	if(in_community())
-		meatToSave = 500;
 	for i from 1 to numSaus
 	{
 		int sausNum = i + sausMade;
@@ -272,7 +270,8 @@ boolean auto_sausageEatEmUp() {
 }
 
 boolean auto_haveKramcoSausageOMatic() {
-	if (possessEquipment($item[Kramco Sausage-o-Matic&trade;]) && auto_can_equip($item[Kramco Sausage-o-Matic&trade;])) {
+	item kramco = wrap_item($item[Kramco Sausage-o-Matic&trade;]);
+	if (possessEquipment(kramco) && auto_can_equip(kramco)) {
 		return true;
 	}
 	return false;
@@ -317,7 +316,7 @@ boolean auto_sausageGoblin(location loc, string option)
 		return true;
 	}
 
-	if(autoEquip($item[Kramco Sausage-o-Matic&trade;]))
+	if(autoEquip(wrap_item($item[Kramco Sausage-o-Matic&trade;])))
 	{
 		set_property("auto_nextEncounter","sausage goblin");
 		return autoAdv(1, loc, option);
@@ -351,11 +350,12 @@ boolean LX_unlockPirateRealm()
 
 boolean auto_saberChoice(string choice)
 {
-	if(!is_unrestricted($item[Fourth of May Cosplay Saber]))
+	item saber = wrap_item($item[Fourth of May cosplay saber]);
+	if(!is_unrestricted(saber))
 	{
 		return false;
 	}
-	if(!possessEquipment($item[Fourth of May Cosplay Saber]))
+	if(!possessEquipment(saber))
 	{
 		return false;
 	}
@@ -421,11 +421,12 @@ monster auto_saberCurrentMonster()
  */
 int auto_saberChargesAvailable()
 {
-	if(!is_unrestricted($item[Fourth of May cosplay saber kit]))
+	item saber = wrap_item($item[Fourth of May cosplay saber]);
+	if(!is_unrestricted(saber))
 	{
 		return 0;
 	}
-	if(!possessEquipment($item[Fourth of May cosplay saber]))
+	if(!possessEquipment(saber))
 	{
 		return 0;
 	}

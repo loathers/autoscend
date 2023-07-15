@@ -102,8 +102,8 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[Vampyric Cloake]), $skills[Become a Wolf, Become a Cloud of Mist, Become a Bat]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Shadow Noodles, Entangling Noodles]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Silent Slam, Silent Squirt, Silent Slice]);
-		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[haiku katana]), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter\'s Bite Technique]);
-		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[bottle-rocket crossbow]), $skills[Fire Red Bottle-Rocket, Fire Blue Bottle-Rocket, Fire Orange Bottle-Rocket, Fire Purple Bottle-Rocket, Fire Black Bottle-Rocket]);
+		exclusives[exclusives.count()] = new SkillSet(equipped_amount(wrap_item($item[haiku katana])), $skills[The 17 Cuts, Falling Leaf Whirlwind, Spring Raindrop Attack, Summer Siesta, Winter\'s Bite Technique]);
+		exclusives[exclusives.count()] = new SkillSet(equipped_amount($item[bottle-rocket crossbow])  + equipped_amount($item[replica bottle-rocket crossbow]), $skills[Fire Red Bottle-Rocket, Fire Blue Bottle-Rocket, Fire Orange Bottle-Rocket, Fire Purple Bottle-Rocket, Fire Black Bottle-Rocket]);
 		exclusives[exclusives.count()] = new SkillSet(1, $skills[Kodiak Moment, Grizzly Scene, Bear-Backrub, Bear-ly Legal, Bear Hug]);
 	}
 
@@ -172,6 +172,8 @@ string useItem(item it, boolean mark)
 {
 	if(mark)
 		markAsUsed(it);
+	if(auto_have_skill($skill[Ambidextrous Funkslinging]))
+		return "item " + it + ", nothing";	//don't double use
 	return "item " + it;
 }
 
@@ -628,7 +630,8 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Punt];
 	}
 
-	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && auto_is_valid($skill[Use the Force]) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force"))
+	item saber = wrap_item($item[Fourth of May cosplay saber]);
+	if((inCombat ? have_equipped(saber) : possessEquipment(saber)) && auto_is_valid($skill[Use the Force]) && auto_saberChargesAvailable() > 0 && !(used contains "Saber Force"))
 	{
 		// can't use the force on uncopyable monsters
 		if(enemy == $monster[none] || enemy.copyable)
@@ -726,7 +729,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	{
 		//high fire level burns yellow ray items. except for saber's [use the force] as it leads to a noncombat
 		//we only want special handling if fire level is high. otherwise we can proceed to yellowray as per normal
-		if(have_equipped($item[Fourth of May cosplay saber]) && auto_saberChargesAvailable() > 0)
+		if(have_equipped(wrap_item($item[Fourth of May cosplay saber])) && auto_saberChargesAvailable() > 0)
 		{
 			// can't use the force on uncopyable monsters
 			if(target == $monster[none] || (target.copyable && !noForceDrop))
@@ -812,8 +815,9 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	{
 		return "skill " + $skill[Feel Envy];
 	}
-
-	if((inCombat ? have_equipped($item[Fourth of May cosplay saber]) : possessEquipment($item[Fourth of May cosplay saber])) && (auto_saberChargesAvailable() > 0))
+	
+	item saber = wrap_item($item[Fourth of May cosplay saber]);
+	if((inCombat ? have_equipped(saber) : possessEquipment(saber)) && (auto_saberChargesAvailable() > 0))
 	{
 		// can't use the force on uncopyable monsters
 		if(target == $monster[none] || (target.copyable && !noForceDrop))

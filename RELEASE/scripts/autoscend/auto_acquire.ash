@@ -46,6 +46,14 @@ boolean canPull(item it, boolean historical)
 	{
 		return false;
 	}
+	if(in_lol())
+	{
+		// kol states "Only food, booze, potions, combat and usable items may be pulled on this path."
+		if(it.fullness == 0 && it.inebriety == 0 && !it.potion && !it.combat && !it.usable)
+		{
+			return false;
+		}
+	}
 	if(it == $item[none])
 	{
 		return false;
@@ -70,6 +78,11 @@ boolean canPull(item it, boolean historical)
 	else if(!is_tradeable(it))
 	{
 		return false;	//we do not have it in storage and we can not trade for it. gifts currently not handled
+	}
+
+	if (!auto_is_valid(it))
+	{
+		return false;
 	}
 
 	int meat = my_storage_meat();
@@ -190,31 +203,7 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 	{
 		return pullXWhenHaveYCasual(it, howMany, whenHave);
 	}
-	if(in_community())
-	{
-		return false;
-	}
-	if(in_hardcore())
-	{
-		return false;
-	}
-	if(it == $item[none])
-	{
-		return false;
-	}
-	if(!is_unrestricted(it) && !inAftercore())
-	{
-		return false;
-	}
-	if(pulls_remaining() == 0)
-	{
-		return false;
-	}
-	if(pulledToday(it))
-	{
-		return false;
-	}
-	if (!auto_is_valid(it))
+	if(!canPull(it))
 	{
 		return false;
 	}
@@ -695,7 +684,7 @@ int handlePulls(int day)
 			}
 		}
 
-		if((in_picky() || !canChangeFamiliar()) && (item_amount($item[Deck of Every Card]) == 0) && (fullness_left() >= 4))
+		if((in_picky() || !canChangeFamiliar()) && (item_amount(wrap_item($item[Deck of Every Card])) == 0) && (fullness_left() >= 4))
 		{
 			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
 			{
@@ -711,7 +700,7 @@ int handlePulls(int day)
 			}
 		}
 
-		if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && auto_is_valid($item[Over-The-Shoulder Folder Holder]))
+		if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && auto_is_valid(wrap_item($item[Over-The-Shoulder Folder Holder])))
 		{
 			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
 		}
@@ -750,7 +739,7 @@ int handlePulls(int day)
 
 		if(((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer])) && !in_wotsf()) // no need for offhands in way of the surprising fist
 		{
-			if((item_amount($item[Deck of Every Card]) == 0) && !auto_have_skill($skill[Summon Smithsness]))
+			if((item_amount(wrap_item($item[Deck of Every Card])) == 0) && !auto_have_skill($skill[Summon Smithsness]))
 			{
 				pullXWhenHaveY($item[Thor\'s Pliers], 1, 0);
 			}
@@ -1017,7 +1006,6 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(!in_community())
 	{
 		if(item_amount($item[Portable Pantogram]) > 0)
 		{

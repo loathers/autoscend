@@ -52,16 +52,7 @@ void combat_status_add(string mark);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash
-void awol_combat_helper(string page);
-
-#####################################################
-//defined in /autoscend/combat/auto_combat_community_service.ash
-string cs_combatNormal(int round, monster enemy, string text);			
-string cs_combatXO(int round, monster enemy, string text);				
-string cs_combatYR(int round, monster enemy, string text);				
-string cs_combatKing(int round, monster enemy, string text);			
-string cs_combatWitch(int round, monster enemy, string text);			
-string cs_combatLTB(int round, monster enemy, string text);				
+void awol_combat_helper(string page);		
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_ed.ash

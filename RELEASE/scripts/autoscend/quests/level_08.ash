@@ -302,26 +302,8 @@ boolean L8_getMineOres()
 		return false;
 	}
 
-	// heavy rain copy handling.
-	if(in_heavyrains() && have_skill($skill[Rain Man]))
-	{
-		if(my_rain() < 50)
-		{
-			auto_log_info("Need Ore but not enough rain. Delaying ore for trapper", "blue");
-			return false;
-		}
-		if(have_effect($effect[Ultrahydrated]) == 0 && my_rain() < 90)
-		{
-			auto_log_info("Do not waste ultrahydrated. Delaying ore for trapper", "blue");
-			return false;
-		}
-		auto_log_info("Trying to summon a mountain man", "blue");
-		set_property("auto_mountainmen", "1");
-		return rainManSummon($monster[mountain man], false, false);
-	}
-	
 	// in softcore we want to pull an ore
-	if(!in_hardcore())
+	if(canPull(oreGoal))
 	{
 		pullXWhenHaveY(oreGoal, 1, item_amount(oreGoal));
 		if(item_amount(oreGoal) == 3)
@@ -330,12 +312,12 @@ boolean L8_getMineOres()
 		}
 	}
 	
-	// use 1 wish if we can guarentee it will be enough via cat burglar
-	if(canGenieCombat($monster[mountain man]) && auto_shouldUseWishes() && catBurglarHeistsLeft() > 1)
+	// use a summon if we can guarentee it will be enough via cat burglar
+	if(canSummonMonster($monster[mountain man]) && catBurglarHeistsLeft() > 1)
 	{
-		auto_log_info("Trying to wish for a mountain man, which the cat will then burgle, hopefully.");
+		auto_log_info("Trying to summon a mountain man, which the cat will then burgle, hopefully.");
 		handleFamiliar($familiar[cat burglar]);
-		return makeGenieCombat($monster[mountain man]);
+		return summonMonster($monster[mountain man]);
 	}
 	
 	// try to clover for the ore
@@ -576,11 +558,6 @@ boolean L8_trapperSlopeSoftcore()
 	// special path or IOTM handling
 	if(!get_property("auto_L8_ninjaAssassinFail").to_boolean()) // can defeat assassins
 	{
-		if(have_skill($skill[Rain Man]))
-		{
-			auto_log_info("Delay pulling ninja climbing gear. we want to summon assassins with rain man skill", "blue");
-			return false;
-		}
 		if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
 		{
 			auto_log_info("Delay pulling ninja climbing gear. we have already digitized [ninja snowman assassin]", "blue");
@@ -653,11 +630,6 @@ boolean L8_trapperNinjaLair()
 	if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
 	{
 		auto_log_info("Have a digitized Ninja Snowman Assassin, let's put off the Ninja Snowmen Lair", "blue");
-		return false;
-	}
-	if(have_skill($skill[Rain Man]))
-	{
-		auto_log_info("Delay adventuring in ninja snowmen lair. we are going to be copying them instead with rain man skill", "blue");
 		return false;
 	}
 
@@ -828,7 +800,7 @@ boolean L8_trapperSlope()
 	{
 		return L8_slopeCasual(); // mallbuy everything. or go do something else if too poor to do so
 	}
-	else if(!in_hardcore()) // !casual && !postronin && !hardcore == in softcore. which requires special handling
+	else if(!in_hardcore() && !in_lol()) // !casual && !postronin && !hardcore == in softcore. which requires special handling. LoL can't pull ninja gear
 	{
 		return L8_trapperSlopeSoftcore(); // pull ninja climbing gear. unless assassins are being copied, then go do something else
 	}
