@@ -1266,7 +1266,9 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 			int famWeight = familiar_weight(target) + weight_adjustment();
 			delta += numeric_modifier(target, "Item Drop",famWeight,$item[none]);
 		}
-		
+
+		auto_log_debug("With familiar we can get to " + result());
+
 		if(pass())
 			return result();
 	}
