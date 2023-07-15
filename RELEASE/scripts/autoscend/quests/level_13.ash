@@ -1486,9 +1486,11 @@ boolean L13_towerNSTower()
 		}
 		
 		//if we reached this spot we decided that we do not need a boning knife and intend to try to towerkill the wall of bones.
+
 		//raise to the max MP that will be trying to acquire
-		provideMaxMP(216, $location[Noob Cave], false, true, false);
-		
+		//maximizer parameters are not able to avoid overvaluing MP for all gear, so just try provider without gear
+		provideMaxMP(216, $location[Noob Cave], false, false, false);
+
 		uneffect($effect[Scarysauce]);
 		uneffect($effect[Jalape&ntilde;o Saucesphere]);
 		uneffect($effect[Spiky Shell]);
