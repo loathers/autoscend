@@ -374,7 +374,7 @@ boolean auto_pre_adventure()
 		int crystalBallMaximizerBonus = 0 + (zoneHasUnwantedMonsters ? 300 : 0) + (zoneHasWantedMonsters ? 300 : 0);
 		if(crystalBallMaximizerBonus != 0)
 		{
-			addToMaximize("+" + crystalBallMaximizerBonus + "bonus miniature crystal ball");
+			addToMaximize("+" + crystalBallMaximizerBonus + "bonus "+wrap_item($item[miniature crystal ball]).to_string());
 		}
 	}
 
@@ -429,7 +429,7 @@ boolean auto_pre_adventure()
 
 	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
-		autoForceEquip($item[jurassic parka]); //equips parka and forbids maximizer tampering with shirt slot
+		autoForceEquip(wrap_item($item[jurassic parka])); //equips parka and forbids maximizer tampering with shirt slot
 		//not using auto_configureParka("spikes") so maximizer stays aware of ML from shirt, instead of maximizing with another shirt or no shirt before changing to parka
 		set_property("auto_parkaSetting","spikes"); 
 		if (get_property("parkaMode") != "spikolodon")
@@ -438,13 +438,14 @@ boolean auto_pre_adventure()
 		}
 	}
 	
+	item exting = wrap_item($item[industrial fire extinguisher]);
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
-		autoEquip($item[industrial fire extinguisher]);
+		autoEquip(exting);
 	}
 	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
 	{
-		addBonusToMaximize($item[industrial fire extinguisher], 200); // extinguisher prevents per-round hot damage in wildfire path 
+		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 
 	}
 
 

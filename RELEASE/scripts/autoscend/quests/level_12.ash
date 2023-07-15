@@ -1008,7 +1008,7 @@ boolean L12_filthworms()
 	
 	if(auto_cargoShortsOpenPocket(343)) // skip straight to the Royal Guard Chamber
 	{
-		handleTracker($item[Cargo Cultist Shorts], $effect[Filthworm Drone Stench], "auto_otherstuff");
+		handleTracker(wrap_item($item[Cargo Cultist Shorts]), $effect[Filthworm Drone Stench], "auto_otherstuff");
 	}
 	
 	preventFratOutfitsIfNeeded();
@@ -1117,9 +1117,10 @@ void gremlinsFamiliar()
 		//there is a limited list of harmful familiar equipment to forbid
 		foreach fameq in $items[tiny bowler,ant hoe,ant pick,ant pitchfork,ant rake,ant sickle,oversized fish scaler,filthy child leash,plastic pumpkin bucket,little box of fireworks,moveable feast]
 		{
-			if(possessEquipment(fameq))
+			item wrapped_fameq = wrap_item(fameq);
+			if(possessEquipment(wrapped_fameq))
 			{
-				addToMaximize("-equip " + fameq.to_string());
+				addToMaximize("-equip " + wrapped_fameq.to_string());
 			}
 		}
 	}

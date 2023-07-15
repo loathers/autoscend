@@ -1106,6 +1106,8 @@ boolean dailyEvents()
 	pickRocks();
 	auto_SITCourse();
 	auto_LegacyOfLoathingDailies();
+	auto_buyFrom2002MrStore();
+	auto_useBlackMonolith();
 	
 	return true;
 }

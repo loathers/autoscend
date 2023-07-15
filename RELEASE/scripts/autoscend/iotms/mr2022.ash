@@ -367,7 +367,8 @@ void utilizeStillsuit() {
 
 boolean auto_hasParka()
 {
-	return possessEquipment($item[Jurassic Parka]) && auto_is_valid($item[Jurassic Parka]);
+	item parka = wrap_item($item[Jurassic Parka]);
+	return possessEquipment(parka) && auto_is_valid(parka);
 }
 
 boolean auto_configureParka(string tag)
@@ -381,7 +382,7 @@ boolean auto_configureParka(string tag)
 	set_property("auto_parkaSetting", tag);
 
 	// cut down potential server hits by telling the maximizer to not consider it.
-	addToMaximize("-equip jurassic parka");
+	addToMaximize("-equip "+wrap_item($item[jurassic parka]).to_string());
 	return true;
 }
 
@@ -435,9 +436,10 @@ boolean auto_handleParka()
 	{
 		cli_execute(`parka {tempDino}`);
 	}
-	equip($item[jurassic parka]); // already configured, just equip
+	item parka = wrap_item($item[jurassic parka]);
+	equip(parka); // already configured, just equip
 
-	return get_property("parkaMode") == tempDino && have_equipped($item[jurassic parka]);
+	return get_property("parkaMode") == tempDino && have_equipped(parka);
 }
 
 boolean auto_hasAutumnaton()

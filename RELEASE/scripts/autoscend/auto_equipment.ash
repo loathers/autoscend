@@ -631,7 +631,7 @@ void resetMaximize()
 			}
 		}
 	}
-	else if (item_amount($item[January\'s Garbage Tote]) > 0 && in_bhy())
+	else if (item_amount(wrap_item($item[January\'s Garbage Tote])) > 0 && in_bhy())
 	{
 		// workaround mafia bug with the maximizer where it tries to equip tote items even though the tote is unusable
 		foreach it in $items[Deceased Crimbo Tree, Broken Champagne Bottle, Tinsel Tights, Wad Of Used Tape, Makeshift Garbage Shirt]
@@ -685,7 +685,7 @@ void finalizeMaximize(boolean speculative)
 		// also don't equip Kramco when using Map the Monsters as sausage goblins override the NC
 		if (saveGoblinForDelay || dontSausageBackups || get_property("mappingMonsters").to_boolean())
 		{
-			addToMaximize("-equip " + $item[Kramco Sausage-o-Matic&trade;].to_string());
+			addToMaximize("-equip " + wrap_item($item[Kramco Sausage-o-Matic&trade;]).to_string());
 		}
 	}
 	if (possessEquipment($item[Cursed Magnifying Glass]))
@@ -883,9 +883,9 @@ boolean simMaximizeWith(string add)
 	return simMaximizeWith(my_location(), add);
 }
 
-float simValue(string modifier)
+float simValue(string mod)
 {
-	return numeric_modifier("Generated:_spec", modifier);
+	return numeric_modifier("Generated:_spec", mod);
 }
 
 void equipMaximizedGear()
@@ -957,7 +957,7 @@ int equipmentAmount(item equipment)
 
 	if (get_related($item[broken champagne bottle], "fold") contains equipment)
 	{
-		amount = item_amount($item[January\'s Garbage Tote]);
+		amount = item_amount(wrap_item($item[January\'s Garbage Tote]));
 	}
 
 	return amount;

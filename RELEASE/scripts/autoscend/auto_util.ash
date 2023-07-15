@@ -942,7 +942,7 @@ boolean adjustForBanish(string combat_string)
 	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
-		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
+		return autoEquip($slot[weapon], wrap_item($item[Fourth of May cosplay saber]));
 	}
 	if(combat_string == "skill " + $skill[KGB Tranquilizer Dart])
 	{
@@ -1126,7 +1126,7 @@ boolean adjustForYellowRay(string combat_string)
 	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
-		return autoEquip($slot[weapon], $item[Fourth of May cosplay saber]);
+		return autoEquip($slot[weapon], wrap_item($item[Fourth of May cosplay saber]));
 	}
 	if(combat_string == ("skill " + $skill[Spit jurassic acid]))
 	{
@@ -3020,7 +3020,7 @@ void shrugAT(effect anticipated)
 	}
 
 	int maxSongs = 3;
-	if(have_equipped($item[Brimstone Beret]) || have_equipped($item[Operation Patriot Shield]) || have_equipped($item[Plexiglass Pendant]) || have_equipped($item[Scandalously Skimpy Bikini]) || have_equipped($item[Sombrero De Vida]) || have_equipped($item[Super-Sweet Boom Box]))
+	if(have_equipped($item[Brimstone Beret]) || have_equipped(wrap_item($item[Operation Patriot Shield])) || have_equipped($item[Plexiglass Pendant]) || have_equipped($item[Scandalously Skimpy Bikini]) || have_equipped($item[Sombrero De Vida]) || have_equipped($item[Super-Sweet Boom Box]))
 	{
 		maxSongs = 4;
 	}
@@ -3167,6 +3167,24 @@ int [item] auto_get_campground()
 	}
 
 	return campItems;
+}
+
+boolean haveCampgroundMaid()
+{
+	int [item] campItems = auto_get_campground();
+	if(campItems contains $item[meat maid])
+	{
+		return true;
+	}
+	if(campItems contains $item[clockwork maid])
+	{
+		return true;
+	}
+	if(campItems contains $item[meat butler])
+	{
+		return true;
+	}
+	return false;
 }
 
 location solveDelayZone()
@@ -3929,7 +3947,7 @@ boolean autoFlavour(location place)
 		handle_monster(mon, chance);
 	}
 
-	if(equipped_amount($item[Kramco Sausage-o-Matic&trade;]) > 0)
+	if(equipped_amount(wrap_item($item[Kramco Sausage-o-Matic&trade;])) > 0)
 	{
 		handle_monster($monster[sausage goblin], 0.5);
 	}
@@ -4625,7 +4643,8 @@ boolean hasUsefulShirt()
 	int amtUsefulShirts = 0;
 	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac, jurassic parka]
 	{
-		if(item_amount(it) != 0 && is_unrestricted(it)) amtUsefulShirts += 1;
+		item w_it = wrap_item(it);
+		if(item_amount(w_it) != 0 && is_unrestricted(w_it)) amtUsefulShirts += 1;
 	}
 	if(amtUsefulShirts > 0)
 	{
@@ -4742,4 +4761,13 @@ boolean auto_wishForEffect(effect wish)
 		if(makeGenieWish(wish)) { return true; }
 	}
 	return false;
+}
+
+item wrap_item(item it) // convert an item into another item, used for replicas in LoL
+{
+	if (in_lol())
+	{
+		return auto_ItemToReplica(it);
+	}
+	return it;
 }

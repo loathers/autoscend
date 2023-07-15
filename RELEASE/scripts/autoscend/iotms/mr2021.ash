@@ -2,7 +2,8 @@
 
 boolean auto_haveCrystalBall()
 {
-	return possessEquipment($item[miniature crystal ball]) && auto_is_valid($item[miniature crystal ball]) && pathHasFamiliar();
+	item crystal_ball = wrap_item($item[miniature crystal ball]);
+	return possessEquipment(crystal_ball) && auto_is_valid(crystal_ball) && pathHasFamiliar();
 }
 
 monster crystalBallMonster(location loc)
@@ -88,22 +89,23 @@ boolean auto_forceHandleCrystalBall(location loc)
 			shouldForceEquip = true;	// should not waste the prediction entered in queue
 		}
 	}
-
+	
+	item crystal_ball = wrap_item($item[miniature crystal ball]);
 	if(shouldForceEquip)
 	{
-		addToMaximize(`+equip {$item[miniature crystal ball].to_string()}`);
+		addToMaximize(`+equip {crystal_ball.to_string()}`);
 		set_property("auto_nextEncounter",to_string(predicted_monster));
 		return true;	//handled
 	}
 	else if(!auto_allowCrystalBall(predicted_monster, loc))
 	{
-		addToMaximize(`-equip {$item[miniature crystal ball].to_string()}`);
+		addToMaximize(`-equip {crystal_ball.to_string()}`);
 		return true;	//handled
 	}
 
 	//equipping the crystal ball can't hurt but it is neither forced nor forbidden
 	//pre_adv will consider giving it a maximizer bonus after checking if monster queue control is wanted
-	//removeFromMaximize(`-equip {$item[miniature crystal ball].to_string()}`);	//this should already get reset after every loop or maximizer simulation
+	//removeFromMaximize(`-equip {crystal_ball.to_string()}`);	//this should already get reset after every loop or maximizer simulation
 	return false;
 }
 
@@ -173,14 +175,16 @@ void simulatePreAdvForCrystalBall(location place)
 		int crystalBallMaximizerBonus = 0 + (zoneHasUnwantedMonsters ? 300 : 0) + (zoneHasWantedMonsters ? 300 : 0);
 		if(crystalBallMaximizerBonus != 0)
 		{
-			addToMaximize("+" + crystalBallMaximizerBonus + "bonus miniature crystal ball");
+			item crystal_ball = wrap_item($item[miniature crystal ball]);
+			addToMaximize("+" + crystalBallMaximizerBonus + "bonus "+crystal_ball.to_string());
 		}
 	}
 }
 
 boolean auto_haveEmotionChipSkills()
 {
-	return auto_is_valid($skill[Emotionally Chipped]) && have_skill($skill[Emotionally Chipped]);
+	return (auto_is_valid($skill[Emotionally Chipped]) && have_skill($skill[Emotionally Chipped])) || 
+	  (auto_is_valid($skill[Replica Emotionally Chipped]) && have_skill($skill[Replica Emotionally Chipped]));
 }
 
 boolean auto_canFeelEnvy()
@@ -720,7 +724,8 @@ boolean auto_buyFireworksHat()
 
 boolean auto_haveFireExtinguisher()
 {
-	return possessEquipment($item[industrial fire extinguisher]) && auto_is_valid($item[industrial fire extinguisher]);
+	item exting = wrap_item($item[industrial fire extinguisher]);
+	return possessEquipment(exting) && auto_is_valid(exting);
 }
 
 int auto_fireExtinguisherCharges()
