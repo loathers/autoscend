@@ -45,22 +45,43 @@ boolean wantToThrowGravel(location loc, monster enemy)
 	// prevent overuse after breaking ronin or in casual
 	if(can_interact()) return false;
 
-	// use gravel in battlefield if no breathitin charges
-	if(get_property("breathitinCharges").to_int() == 0 && 
-		(loc == $location[The Battlefield (Frat Uniform)] || loc == $location[The Battlefield (Hippy Uniform)]) &&
-		!($monsters[Green Ops Soldier,C.A.R.N.I.V.O.R.E. Operative,Glass of Orange Juice,Sorority Nurse,
-		Naughty Sorority Nurse,Monty Basingstoke-Pratt\, IV,Next-generation Frat Boy] contains enemy))
+	// don't use gravel if already free
+	if(get_property("breathitinCharges").to_int() > 0 && loc.environment == "outdoor")
+	{
+		return false;
+	}
+
+	// many monsters in these zones with similar names
+	if(loc == $location[The Battlefield (Frat Uniform)] && 
+		(contains_text(enemy.to_string(), "War Hippy")) ||
+		$strings[Bailey's Beetle, Mobile Armored Sweat Lodge] contains enemy)
+	{
+		return true;
+	}
+	if(loc == $location[The Battlefield (Hippy Uniform)] && contains_text(enemy.to_string(), "War Frat"))
 	{
 		return true;
 	}
 
-	// spookyraven zones 
-	if(loc == $location[The Haunted Bathroom]) return true;
-	if(loc == $location[The Haunted Gallery]) return true;
-	if(loc == $location[The Haunted Bedroom]) return true;
-
 	// look for specific monsters in zones where some monsters we do care about
 	static boolean[string] gravelTargets = $strings[
+		// The Haunted Bathroom
+		claw-foot bathtub,
+		malevolent hair clog,
+		toilet papergeist,
+
+		// The Haunted Gallery
+		cubist bull,
+		empty suit of armor,
+		guy with a pitchfork, and his wife,
+
+		// The Haunted Bedroom
+		animated mahogany nightstand,
+		animated ornate nightstand,
+		animated rustic nightstand,
+		elegant animated nightstand,
+		Wardr&ouml;b nightstand,
+		
 		// The Haunted Wine Cellar
 		skeletal sommelier,
 
@@ -70,7 +91,7 @@ boolean wantToThrowGravel(location loc, monster enemy)
 
 		// The Haunted Boiler Room
 		coaltergeist,
-		steam elemental,
+		steam elemental
 	];
 	return gravelTargets contains enemy;
 }
