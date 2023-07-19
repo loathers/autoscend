@@ -14,6 +14,9 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	// Path = The Source
 	retval = auto_combatZombieSlayerStage4(round, enemy, text);
 	if(retval != "") return retval;
+
+	// Skip if have drones out
+	if(get_property("auto_skipStage4").to_boolean()) return "";
 	
 	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
 	if(auto_wantToSniff(enemy, my_location()))
