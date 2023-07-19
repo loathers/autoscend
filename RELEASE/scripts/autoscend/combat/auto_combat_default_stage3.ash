@@ -2,6 +2,9 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 {
 	// stage 3 = debuff: delevel, stun, curse, damage over time
 	string retval;
+
+	//Unskip stage 2
+	if(get_property("auto_skipStage2").to_boolean()) set_property("auto_skipStage2", false);
 	
 	// Path = Heavy Rains
 	retval = auto_combatHeavyRainsStage3(round, enemy, text);

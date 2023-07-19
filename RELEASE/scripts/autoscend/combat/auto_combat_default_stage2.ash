@@ -2,6 +2,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 {
 	// stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
 	string retval;
+
+	// Skip if have drones out
+	if(get_property("auto_skipStage2").to_boolean()) return "";
 	
 	//if we want to olfact in stage 4 then we should delay stage 2 until we olfact.
 	//we do not want to olfact now because we should do stage 3 first to stun and/or debuff the enemy first before olfacting.
