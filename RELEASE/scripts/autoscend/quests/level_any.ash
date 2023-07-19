@@ -921,8 +921,7 @@ boolean LX_dronesOut()
 		auto_log_info("Going to Middle Chamber");
 		if(get_property("auto_priorLocation").to_location() != $location[The Middle Chamber])
 		{
-			set_property("auto_skipStage2", true);
-			set_property("auto_skipStage4", true);
+			set_property("auto_skipStage4", true);  //don't set skipStage2 because rat king
 		}
 		return autoAdv($location[The Middle Chamber]); //Tomb ratchets
 	}
@@ -941,8 +940,7 @@ boolean LX_dronesOut()
 		auto_log_info("Going to the Red Zeppelin");
 		if(get_property("auto_priorLocation").to_location() != $location[The Red Zeppelin])
 		{
-			set_property("auto_skipStage2", true);
-			set_property("auto_skipStage4", true);
+			set_property("auto_skipStage4", true); //don't set skipStage2 because glark cables
 		}
 		return autoAdv($location[The Red Zeppelin]); //Glark cables
 	}
