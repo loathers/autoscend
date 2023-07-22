@@ -1866,7 +1866,7 @@ boolean makeGeniePocket()
 	int count = item_amount($item[Pocket Wish]);
 
 	string wish = "for more wishes";
-	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9529", false);
+	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=" + bottle.to_int(), false);
 	page = visit_url("choice.php?pwd=" + my_hash() + "&whichchoice=1267&option=1&wish=" + wish);
 
 	if(count == item_amount($item[Pocket Wish]))
