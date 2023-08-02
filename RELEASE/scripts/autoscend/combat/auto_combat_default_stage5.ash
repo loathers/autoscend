@@ -191,7 +191,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				}
 			}
 		}
-
 		break;
 	case $class[Turtle Tamer]:
 		attackMinor = "attack with weapon";
@@ -221,7 +220,20 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
 		}
-
+		if(enemy.physical_resistance > 80)
+		{
+			foreach sk in $skills[Saucestorm, Saucegeyser]
+			{
+				if(canUse(sk, false))
+				{
+					attackMinor = useSkill(sk, false);
+					attackMajor = useSkill(sk, false);
+					costMinor = mp_cost(sk);
+					costMajor = mp_cost(sk);
+					break;
+				}
+			}
+		}
 		break;
 	case $class[Pastamancer]:
 		if(canUse($skill[Cannelloni Cannon], false))
@@ -312,7 +324,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				return useSkill($skill[Salsaball], false);
 			}
 		}
-		
 		break;
 
 	case $class[Avatar of Boris]:
@@ -458,7 +469,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				costMajor = mp_cost($skill[Grill]);
 			}
 		}
-
 		break;
 
 	case $class[Avatar of Sneaky Pete]:
@@ -507,14 +517,20 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Saucestorm]);
 		}
 
-		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
+		if(enemy.physical_resistance > 80)
 		{
-			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMinor = mp_cost($skill[Saucestorm]);
-			costMajor = mp_cost($skill[Saucestorm]);
+			foreach sk in $skills[Saucestorm, Saucegeyser]
+			{
+				if(canUse(sk, false))
+				{
+					attackMinor = useSkill(sk, false);
+					attackMajor = useSkill(sk, false);
+					costMinor = mp_cost(sk);
+					costMajor = mp_cost(sk);
+					break;
+				}
+			}
 		}
-
 		break;
 
 	case $class[Disco Bandit]:
@@ -540,14 +556,20 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Saucestorm]);
 		}
 
-		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
+		if(enemy.physical_resistance > 80)
 		{
-			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMinor = mp_cost($skill[Saucestorm]);
-			costMajor = mp_cost($skill[Saucestorm]);
+			foreach sk in $skills[Saucestorm, Saucegeyser]
+			{
+				if(canUse(sk, false))
+				{
+					attackMinor = useSkill(sk, false);
+					attackMajor = useSkill(sk, false);
+					costMinor = mp_cost(sk);
+					costMajor = mp_cost(sk);
+					break;
+				}
+			}
 		}
-
 		break;
 
 	case $class[Cow Puncher]:
