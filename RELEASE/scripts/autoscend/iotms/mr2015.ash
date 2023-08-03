@@ -836,188 +836,40 @@ boolean deck_useScheme(string action)
 	}
 	else
 	{
-		switch(my_class())
-		{
-		case $class[Seal Clubber]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["Lead Pipe"] = true;		break;
-				#case 2:				cards["Lead Pipe"] = true;		break;
-				#case 3:				cards["Lead Pipe"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Turtle Tamer]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["Lead Pipe"] = true;		break;
-				#case 2:				cards["Lead Pipe"] = true;		break;
-				#case 3:				cards["Lead Pipe"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Pastamancer]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["Wrench"] = true;		break;
-				#case 2:				cards["Wrench"] = true;		break;
-				#case 3:				cards["Wrench"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Sauceror]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["Candlestick"] = true;		break;
-				#case 2:				cards["Candlestick"] = true;		break;
-#				case 3:				cards["Candlestick"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Disco Bandit]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["Knife"] = true;		break;
-				#case 2:				cards["Knife"] = true;		break;
-				#case 3:				cards["Knife"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Accordion Thief]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Avatar of Boris]:
-		case $class[Avatar of Jarlsberg]:
-			switch(my_daycount())
-			{
-			case 1:				cards["key"] = true;						break;
-			case 2:				cards["key"] = true;						break;
-			case 3:				cards["1952 Mickey Mantle"] = true;						break;
-			}
-			break;
-		case $class[Ed the Undying]:
-			switch(my_daycount())
-			{
-			case 1:				cards["ore"] = true;						break;
-			case 2:				cards["ore"] = true;						break;
-			}
-			break;
-		}
-
-		if(in_nuclear() || in_lta())
+		// First priority is grab a key if we need one.
+		int missingHeroKeys = 3 - towerKeyCount();
+		if (missingHeroKeys > 0)
 		{
 			cards["key"] = true;
 		}
-
-		switch(my_daycount())
+		// Next priority is ore, only if we don't have a train set installed
+		if (!auto_haveTrainSet() && needOre())
 		{
-		case 1:
-			#cards[my_primestat() + " stat"] = true;
-			cards["1952 Mickey Mantle"] = true;
-			break;
-		case 2:
-			if(item_amount($item[Stone Wool]) == 0)
-			{
-				cards["Sheep"] = true;
-			}
 			cards["ore"] = true;
-			cards["1952 Mickey Mantle"] = true;
-			break;
-		case 3:
-			cards["key"] = true;
-			cards["ore"] = true;
-			#cards["Ancestral Recall"] = true;
-			break;
 		}
-
+		// Stone wool
+		if (internalQuestStatus("questL11Worship") < 2 && item_amount($item[stone wool]) < 2)
+		{
+			cards["stone wool"] = true;
+		}
+		// Meat
+	  if( count(cards) < 3 && my_meat() < 10000 && !in_wotsf()) {
+			cards["1952 Mickey Mantle"] = true;
+		}
+		if( count(cards) < 3 && my_level() < 11 )
+		{
+			string mainstat = my_primestat().to_string().to_lower_case();
+			cards[mainstat+" stat"] = true;
+		}
 	}
-#	else if((action == "") && in_hardcore() && isGuildClass())
-#	{
-#		cards = $strings[none];
-#	}
-#	else
-#	{
-#		switch(my_daycount())
-#		{
-#		default:				cards = $strings[none];							break;
-#		}
-#	}
 
 	if(count(cards) < 3)
 	{
-		cards["key"] = true;
+		cards["ancestral recall"] = true;
+	}
+	if(count(cards) < 3)
+	{
+		cards["blue mana"] = true;
 	}
 
 	if(count(cards) == 0)
