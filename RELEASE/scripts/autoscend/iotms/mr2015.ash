@@ -847,8 +847,14 @@ boolean deck_useScheme(string action)
 		{
 			cards["ore"] = true;
 		}
+		// Stats are higher priority early on in LoL where we're never gonna need stone wool day1
+		if (in_lol() && my_level() < 4)
+		{
+			string mainstat = my_primestat().to_string().to_lower_case();
+			cards[mainstat+" stat"] = true;
+		}
 		// Stone wool
-		if (internalQuestStatus("questL11Worship") < 2 && item_amount($item[stone wool]) < 2)
+		if (count(cards) < 3 && internalQuestStatus("questL11Worship") < 2 && item_amount($item[stone wool]) < 2)
 		{
 			cards["stone wool"] = true;
 		}
