@@ -733,7 +733,7 @@ boolean deck_cheat(string cheat)
 	cards["black mana"] = 32;
 	cards["red mana"] = 33;
 	cards["green mana"] = 34;
-	cards["blue mana"] = 36;
+	cards["blue mana"] = 35;
 	cards["key"] = 47;
 	cards["tower"] = 47;
 	cards["init"] = 48;
