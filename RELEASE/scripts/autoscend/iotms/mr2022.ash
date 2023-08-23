@@ -257,6 +257,9 @@ void sweatpantsPreAdventure() {
 	if (!canUseSweatpants()) {
 		return;
 	}
+	if(in_small()){
+		return; // small can't clean organs
+	}
 
 	if (my_location() == $location[A Mob of Zeppelin Protesters] && equipped_item($slot[pants]) != $item[lynyrdskin breeches]) {
 		return;	//want to keep all the sleaze damage bonus in this location

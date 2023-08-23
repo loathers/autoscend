@@ -1,4 +1,4 @@
-since r27442;	// support replica eagle
+since r27548;	// support small path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -278,6 +278,7 @@ void initializeSettings() {
 	zombieSlayer_initializeSettings();
 	fotd_initializeSettings();
 	lol_initializeSettings();
+	small_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());

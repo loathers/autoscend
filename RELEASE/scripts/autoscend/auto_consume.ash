@@ -475,6 +475,12 @@ boolean canDrink(item toDrink, boolean checkValidity)
 			return false;
 		}
 	}
+	if(in_small())
+	{
+		// liver size of 1 in small path
+		// small ignores level requirement so simply return here
+		return toDrink.inebriety == 1;
+	}
 
 	if(my_level() < toDrink.levelreq)
 	{
@@ -524,6 +530,12 @@ boolean canEat(item toEat, boolean checkValidity)
 	if(in_zombieSlayer())
 	{
 		return ($items[crappy brain, decent brain, good brain, boss brain, hunter brain, brains casserole, fricasseed brains, steel lasagna] contains toEat);
+	}
+	if(in_small())
+	{
+		// stomach size of 2 in small path
+		// small ignores level requirement so simply return here
+		return toEat.fullness <= 2;
 	}
 
 	if(my_level() < toEat.levelreq)
@@ -787,9 +799,16 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean[item] blacklist;
 	boolean[item] craftable_blacklist;
 
-	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead, Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
+	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead]
 	{
 		blacklist[it] = true;
+	}
+	if(!in_small())
+	{
+		foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
+		{
+			blacklist[it] = true;
+		}
 	}
 	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !possessEquipment($item[Mega Gem]) && !isActuallyEd())
 	{
