@@ -810,6 +810,14 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			blacklist[it] = true;
 		}
 	}
+	if(in_small())
+	{
+		// these items don't get 10x advs and stats in small like most consumables
+		foreach it in $items[blueberry muffin, bran muffin, chocolate chip muffin, Spaghetti Breakfast]
+		{
+			blacklist[it] = true;
+		}
+	}
 	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !possessEquipment($item[Mega Gem]) && !isActuallyEd())
 	{
 		blacklist[$item[wet stew]] = true;
