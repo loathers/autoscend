@@ -1179,7 +1179,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	}
 
 	// Add still suit if we are looking to drink
-	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit() && !in_kolhs())
+	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit() && !in_kolhs() && !in_small())
 	{
 		int size = 1;
 		float adv = auto_expectedStillsuitAdvs().to_float();
