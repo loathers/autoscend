@@ -469,6 +469,12 @@ boolean L13_towerNSContests()
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Ten out of Ten]);
 				}
+
+				// use 50 base as cutoff as above that New and Improved is better
+				if(crowd2Insufficient() && my_basestat($stat[moxie]) < 50 && have_effect($effect[Piratastic])==0)
+				{
+					auto_wishForEffect($effect[Piratastic]);
+				}
 				break;
 			case $stat[muscle]:
 				autoMaximize("muscle -equip snow suit", 1500, 0, false);
@@ -476,6 +482,12 @@ boolean L13_towerNSContests()
 				if(have_effect($effect[Muddled]) == 0 && auto_is_valid($effect[Muddled]))
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Muddled]);
+				}
+
+				// use 50 base as cutoff as above that New and Improved is better
+				if(crowd2Insufficient() && my_basestat($stat[muscle]) < 50 && have_effect($effect[\'Roids of the Rhinoceros])==0)
+				{
+					auto_wishForEffect($effect[\'Roids of the Rhinoceros]);
 				}
 				break;
 			case $stat[mysticality]:
@@ -485,12 +497,18 @@ boolean L13_towerNSContests()
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Uncucumbered]);
 				}
+
+				// use 50 base as cutoff as above that New and Improved is better
+				if(crowd2Insufficient() && my_basestat($stat[mysticality]) < 50 && have_effect($effect[Happy Trails])==0)
+				{
+					auto_wishForEffect($effect[Happy Trails]);
+				}
 				break;
 			}
 			
 			if(crowd2Insufficient())
 			{
-				if (have_effect($effect[New and Improved])==0)
+				if (have_effect($effect[New and Improved])==0 && !in_small())
 				{
 					auto_wishForEffect($effect[New and Improved]);
 				}
