@@ -623,7 +623,7 @@ boolean L12_getOutfit()
 	}
 	// if you reached this point you are either in hardcore or are in softcore but ran out of pulls
 	// if really in softcore and out of pulls then returning false here lets you skip it until tomorrow
-	if(!in_hardcore())
+	if(!in_hardcore() && !in_lol())
 	{
 		return false;
 	}
@@ -659,7 +659,7 @@ boolean L12_preOutfit()
 	}
 	
 	// in softcore you will pull the war outfit, no need to get pre outfit
-	if(!in_hardcore())
+	if(!in_hardcore() && !in_lol())
 	{
 		return false;
 	}
