@@ -14,7 +14,21 @@ void small_initializeSettings()
 
 void auto_SmallPulls()
 {
-	//todo
-	// 250 mainstat dread stuff
-	// sea stuff??
+	// small path ignores stat requirements for gear so can pull high end stuff
+	// attempt to pull seal clubber dread hat
+	if(my_class() == $class[Seal Clubber])
+	{
+		pullXWhenHaveY($item[Great Wolf\'s headband], 1, 0);
+	}
+	// if can't get clubber dread hat (not SC or don't have it), then get nurse's hat
+	if(item_amount($item[Great Wolf\'s headband]) == 0)
+	{
+		pullXWhenHaveY($item[nurse\'s hat], 1, 0);
+	}
+	// always pull sea salt scrubs in small path
+	pullXWhenHaveY($item[Sea salt scrubs], 1, 0);
+	// always attempt to pull jeans of loathing in small path
+	pullXWhenHaveY($item[Jeans of Loathing], 1, 0);
+
+
 }
