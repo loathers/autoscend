@@ -475,14 +475,14 @@ boolean canDrink(item toDrink, boolean checkValidity)
 			return false;
 		}
 	}
-	if(in_small())
+	if(in_small() && toDrink.inebriety > 1)
 	{
 		// liver size of 1 in small path
-		// small ignores level requirement so simply return here
-		return toDrink.inebriety == 1;
+		return false;
 	}
 
-	if(my_level() < toDrink.levelreq)
+	// small path ignores consumable level requirements
+	if(my_level() < toDrink.levelreq && !in_small())
 	{
 		return false;
 	}
@@ -531,14 +531,14 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return ($items[crappy brain, decent brain, good brain, boss brain, hunter brain, brains casserole, fricasseed brains, steel lasagna] contains toEat);
 	}
-	if(in_small())
+	if(in_small() && toEat.fullness > 2)
 	{
 		// stomach size of 2 in small path
-		// small ignores level requirement so simply return here
-		return toEat.fullness <= 2;
+		return false;
 	}
 
-	if(my_level() < toEat.levelreq)
+	// small path ignores consumable level requirements
+	if(my_level() < toEat.levelreq && !in_small())
 	{
 		return false;
 	}
@@ -563,7 +563,7 @@ boolean canChew(item toChew)
 	{
 		return false;
 	}
-	if(my_level() < toChew.levelreq)
+	if(my_level() < toChew.levelreq && !in_small())
 	{
 		return false;
 	}
