@@ -1102,8 +1102,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		{
 			int n = count(actions);
 			actions[n] = MakeConsumeAction(it);
-			if (obtain_mode == AUTO_OBTAIN_PULL)
+			if (obtain_mode == AUTO_OBTAIN_PULL && !in_small())
 			{
+				// don't penalize pulls in small as want best options to utilize limited organs
 				actions[n].desirability -= 5.0;
 				float user_desirability = get_property("auto_consumePullDesirability").to_float();
 				if (user_desirability > 0.0)
