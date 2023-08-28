@@ -25,8 +25,11 @@ void auto_SmallPulls()
 	{
 		pullXWhenHaveY($item[nurse\'s hat], 1, 0);
 	}
-	// always pull sea salt scrubs in small path
-	pullXWhenHaveY($item[Sea salt scrubs], 1, 0);
+	// pull sea salt scrubs in small path if aware of torso
+	if(hasTorso())
+	{
+		pullXWhenHaveY($item[Sea salt scrubs], 1, 0);
+	}
 	// always attempt to pull jeans of loathing in small path
 	pullXWhenHaveY($item[Jeans of Loathing], 1, 0);
 
