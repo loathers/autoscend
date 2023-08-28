@@ -30,8 +30,5 @@ void auto_SmallPulls()
 	{
 		pullXWhenHaveY($item[Sea salt scrubs], 1, 0);
 	}
-	// always attempt to pull jeans of loathing in small path
-	pullXWhenHaveY($item[Jeans of Loathing], 1, 0);
-
 
 }
