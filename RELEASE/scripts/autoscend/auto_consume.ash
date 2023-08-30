@@ -475,8 +475,14 @@ boolean canDrink(item toDrink, boolean checkValidity)
 			return false;
 		}
 	}
+	if(in_small() && toDrink.inebriety > 1)
+	{
+		// liver size of 1 in small path
+		return false;
+	}
 
-	if(my_level() < toDrink.levelreq)
+	// small path ignores consumable level requirements
+	if(my_level() < toDrink.levelreq && !in_small())
 	{
 		return false;
 	}
@@ -525,8 +531,14 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return ($items[crappy brain, decent brain, good brain, boss brain, hunter brain, brains casserole, fricasseed brains, steel lasagna] contains toEat);
 	}
+	if(in_small() && toEat.fullness > 2)
+	{
+		// stomach size of 2 in small path
+		return false;
+	}
 
-	if(my_level() < toEat.levelreq)
+	// small path ignores consumable level requirements
+	if(my_level() < toEat.levelreq && !in_small())
 	{
 		return false;
 	}
@@ -551,7 +563,7 @@ boolean canChew(item toChew)
 	{
 		return false;
 	}
-	if(my_level() < toChew.levelreq)
+	if(my_level() < toChew.levelreq && !in_small())
 	{
 		return false;
 	}
@@ -787,9 +799,24 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean[item] blacklist;
 	boolean[item] craftable_blacklist;
 
-	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead, Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
+	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead]
 	{
 		blacklist[it] = true;
+	}
+	if(!in_small())
+	{
+		foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
+		{
+			blacklist[it] = true;
+		}
+	}
+	if(in_small())
+	{
+		// these items don't get 10x advs and stats in small like most consumables
+		foreach it in $items[blueberry muffin, bran muffin, chocolate chip muffin, Spaghetti Breakfast]
+		{
+			blacklist[it] = true;
+		}
 	}
 	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !possessEquipment($item[Mega Gem]) && !isActuallyEd())
 	{
@@ -907,7 +934,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
 			}
 			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
-			if (is_tradeable(it) && !isSpeakeasyDrink(it) && canPull(it))
+			if (!isSpeakeasyDrink(it) && canPull(it))
 			{
 				if(!can_interact())
 				{
@@ -1075,8 +1102,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		{
 			int n = count(actions);
 			actions[n] = MakeConsumeAction(it);
-			if (obtain_mode == AUTO_OBTAIN_PULL)
+			if (obtain_mode == AUTO_OBTAIN_PULL && !in_small())
 			{
+				// don't penalize pulls in small as want best options to utilize limited organs
 				actions[n].desirability -= 5.0;
 				float user_desirability = get_property("auto_consumePullDesirability").to_float();
 				if (user_desirability > 0.0)
@@ -1160,7 +1188,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	}
 
 	// Add still suit if we are looking to drink
-	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit() && !in_kolhs())
+	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit() && !in_kolhs() && !in_small())
 	{
 		int size = 1;
 		float adv = auto_expectedStillsuitAdvs().to_float();

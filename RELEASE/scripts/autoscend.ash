@@ -1,4 +1,4 @@
-since r27442;	// support replica eagle
+since r27557;	// support small path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -77,6 +77,7 @@ import <autoscend/paths/path_of_the_plumber.ash>
 import <autoscend/paths/picky.ash>
 import <autoscend/paths/pocket_familiars.ash>
 import <autoscend/paths/quantum_terrarium.ash>
+import <autoscend/paths/small.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/way_of_the_surprising_fist.ash>
@@ -278,6 +279,7 @@ void initializeSettings() {
 	zombieSlayer_initializeSettings();
 	fotd_initializeSettings();
 	lol_initializeSettings();
+	small_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
