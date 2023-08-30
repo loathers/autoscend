@@ -14,6 +14,10 @@ void small_initializeSettings()
 
 void auto_SmallPulls()
 {
+	if(!in_small())
+	{
+		return;
+	}
 	// small path ignores stat requirements for gear so can pull high end stuff
 	// attempt to pull seal clubber dread hat
 	if(my_class() == $class[Seal Clubber])
