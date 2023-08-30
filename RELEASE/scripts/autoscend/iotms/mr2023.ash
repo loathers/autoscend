@@ -106,9 +106,15 @@ void auto_SITCourse()
 {
 	if (!auto_haveSITCourse()) return;
 	//Best choice seems to be insectologist
-	if (!have_skill($skill[insectologist])){
+	if (my_level() < 8 && !have_skill($skill[cryptobotanist])){  //Get cryptobotanist if under level 8
 		use(1,$item[S.I.T. Course Completion Certificate]);
-		//auto_run_choice(1484);
+		//auto_run_choice(1494);
+		return;
+	}
+	if(!get_property("_sitCourseCompleted").to_boolean() && my_level() >= 8) //Get insectologist if over level 8 and haven't SIT'd today
+	{
+		use(1,$item[S.I.T. Course Completion Certificate]);
+		//auto_run_choice(1494);
 		return;
 	}
 }
@@ -309,7 +315,7 @@ int remainingCatalogCredits()
 	}
 	if(!get_property("_2002MrStoreCreditsCollected").to_boolean())
 	{
-		//todo - collect credits
+		use(1, $item[2002 Mr. Store Catalog]);
 	}
 	return get_property("availableMrStore2002Credits").to_int();
 }
@@ -397,4 +403,85 @@ void auto_useBlackMonolith()
 	}
 	// use monolith
 	visit_url("campground.php?action=monolith");
+}
+
+boolean auto_haveAugustScepter()
+{
+	static item scepter = wrap_item($item[august scepter]);
+	if(auto_is_valid(scepter) && (item_amount(scepter) > 0 || have_equipped(scepter)))
+	{
+		return true;
+	}
+	return false;
+}
+
+void auto_scepterSkills()
+{
+	if(!auto_haveAugustScepter())
+	{
+		return;
+	}
+	//Day 1 skills
+	if(my_daycount() == 1)
+	{
+		//Get some stats
+		if(my_primestat() == $stat[Muscle])
+		{
+			if(canUse($skill[Aug. 12th: Elephant Day!]) && !get_property("_aug12Cast").to_boolean())
+			{
+				use_skill($skill[Aug. 12th: Elephant Day!]);
+			}
+		}
+		if(my_primestat() == $stat[Mysticality])
+		{
+			if(canUse($skill[Aug. 11th: Presidential Joke Day!]) && !get_property("_aug11Cast").to_boolean())
+			{
+				use_skill($skill[Aug. 11th: Presidential Joke Day!]);
+			}
+		}
+		if(my_primestat() == $stat[Moxie])
+		{
+			if(canUse($skill[Aug. 23rd: Ride the Wind Day!]) && !get_property("_aug23Cast").to_boolean())
+			{
+				use_skill($skill[Aug. 23rd: Ride the Wind Day!]);
+			}
+		}
+		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+		}
+		if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
+		}
+		if(canUse($skill[Aug. 18th: Serendipity Day!]) && !get_property("_aug18Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 18th: Serendipity Day!]); //Serendipity
+		}
+	}
+	//Day 2+ skills
+	if(my_daycount() >= 2)
+	{
+		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+		}
+		if(canUse($skill[Aug. 18th: Serendipity Day!]) && !get_property("_aug18Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 18th: Serendipity Day!]); //Serendipity
+		}
+	}
+}
+
+void auto_lostStomach()
+{
+	if(!auto_haveAugustScepter())
+	{
+		return;
+	}
+	//
+	if(fullness_left() == 0 && inebriety_left() == 0 && my_adventures() < 10  && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug16Cast").to_boolean())
+	{
+		use_skill($skill[Aug. 16th: Roller Coaster Day!]);
+	}
 }

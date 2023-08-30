@@ -38,11 +38,16 @@ boolean lol_buyReplicas()
 		if(contains_text(page, "2002")) //2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]);
+			use(1, $item[replica 2002 Mr. Store Catalog]);
 		}
 		if(contains_text(page, "patriotic eagle") && !is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
 		{	
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica sleeping patriotic eagle]);
 			use(1, $item[replica sleeping patriotic eagle]); // put in terrarium
+		}
+		if(contains_text(page, "august")) //2023
+		{
+			buy($coinmaster[Replica Mr. Store], 1, $item[replica August Scepter]);
 		}
 		
 		//End of 2023 "Always Available" IoTMs and starting legacy "one at a time" IoTMs
@@ -295,6 +300,11 @@ void auto_LegacyOfLoathingDailies()
 	if(item_amount($item[replica Smith\'s Tome]) > 0)
 	{
 		use(1, $item[replica Smith\'s Tome]); // get items
+	}
+	
+	if(item_amount($item[replica 2002 Mr. Store Catalog]) > 0)
+	{
+		use(1, $item[replica 2002 Mr. Store Catalog]);  // get credits
 	}
 }
 

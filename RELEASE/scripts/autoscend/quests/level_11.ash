@@ -2258,6 +2258,10 @@ boolean L11_mauriceSpookyraven()
 		{
 			bat_formBats();
 		}
+		if (my_fullness() > 0 && auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug16Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 16th: Roller Coaster Day!]);
+		}
 		if (canSniff($monster[Cabinet of Dr. Limpieza], $location[The Haunted Laundry Room]) && auto_mapTheMonsters())
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Cabinet of Dr. Limpieza.");

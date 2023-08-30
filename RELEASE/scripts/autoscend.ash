@@ -1108,6 +1108,7 @@ boolean dailyEvents()
 	auto_LegacyOfLoathingDailies();
 	auto_buyFrom2002MrStore();
 	auto_useBlackMonolith();
+	auto_scepterSkills();
 	
 	return true;
 }
@@ -1853,6 +1854,7 @@ boolean doTasks()
 	if(LA_wildfire())					return true;
 	if(LA_robot())						return true;
 	if(auto_autumnatonQuest())			return true;
+	auto_lostStomach();
 	
 	if (process_tasks()) return true;
 

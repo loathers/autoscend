@@ -787,7 +787,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean[item] blacklist;
 	boolean[item] craftable_blacklist;
 
-	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead, Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
+	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead, Pizza of Legend, Calzone of Legend, Deep Dish of Legend, waffle]
 	{
 		blacklist[it] = true;
 	}
