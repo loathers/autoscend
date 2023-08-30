@@ -934,7 +934,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
 			}
 			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
-			if (is_tradeable(it) && !isSpeakeasyDrink(it) && canPull(it))
+			if (!isSpeakeasyDrink(it) && canPull(it))
 			{
 				if(!can_interact())
 				{
