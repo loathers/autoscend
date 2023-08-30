@@ -1,4 +1,4 @@
-since r27548;	// support small path
+since r27557;	// support small path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
