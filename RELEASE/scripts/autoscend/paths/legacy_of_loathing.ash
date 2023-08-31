@@ -432,6 +432,8 @@ item auto_ItemToReplica(item it)
 			return $item[replica Cincho de Mayo];
 		case $item[2002 Mr. Store Catalog]:
 			return $item[replica 2002 Mr. Store Catalog];
+		case $item[August Scepter]:
+			return $item[replica August Scepter];
 	}
 	return it;
 }
