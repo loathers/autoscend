@@ -853,6 +853,12 @@ boolean qt_FamiliarSwap (familiar fam);
 
 ########################################################################################################
 //Defined in autoscend/paths/the_source.ash
+boolean in_small();
+void small_initializeSettings();
+void auto_SmallPulls();
+
+########################################################################################################
+//Defined in autoscend/paths/the_source.ash
 boolean in_theSource();
 boolean theSource_initializeSettings();
 boolean theSource_buySkills();
