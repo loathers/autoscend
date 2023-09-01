@@ -350,9 +350,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 
 	// use red rocket from Clan VIP Lounge to get 5x stats from next food item consumed. Does not stagger on use
-	// consumeStuff fills liver first up to 10 or 15 before eating, pending if billiards room if completed. Gives confidence that we will eat within 100 turns.
-	boolean billiards_check = my_inebriety() >= 10 || !can_drink() || hasSpookyravenLibraryKey();
-	if(canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0 && canSurvive(5.0) && my_adventures() < 100 && billiards_check)
+	if(canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0 && canSurvive(5.0) && my_adventures() < 100)
 	{
 		if(in_plumber())
 		{
