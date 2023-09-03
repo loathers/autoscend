@@ -456,7 +456,7 @@ void auto_scepterSkills()
 		}
 		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
 		{
-			if(!auto_100familiar())
+			if(!is100FamRun())
 			{
 				handleFamiliar("stat"); //get any familiar equipped if not in a 100% run
 			}
