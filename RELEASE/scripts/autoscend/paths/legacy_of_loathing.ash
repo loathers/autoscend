@@ -301,15 +301,6 @@ void auto_LegacyOfLoathingDailies()
 	{
 		use(1, $item[replica Smith\'s Tome]); // get items
 	}
-	
-	if(item_amount($item[replica 2002 Mr. Store Catalog]) > 0)
-	{
-		use(1, $item[replica 2002 Mr. Store Catalog]);  // get credits
-	}
-	if(item_amount($item[replica August scepter]) > 0)
-	{
-		auto_scepterSkills();
-	}
 }
 
 item auto_ItemToReplica(item it)
