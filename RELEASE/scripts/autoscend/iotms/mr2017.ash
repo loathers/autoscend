@@ -1804,6 +1804,12 @@ boolean canGenieCombat(monster mon)
 	{
 		return false;
 	}
+	// Per wiki page these can't be wished. Didn't bother to add other crypt monsters as we don't summon them
+	// https://kol.coldfront.net/thekolwiki/index.php/Rubbed_it_the_Right_Way
+	if ($monsters[Fantasy Bandit, Ninja Snowman Assassin, Modern Zmobie] contains mon)
+	{
+		return false;
+	}
 	if (failedWishMonsters contains mon)
 	{
 		return false;
