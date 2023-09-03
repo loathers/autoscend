@@ -454,7 +454,7 @@ void auto_scepterSkills()
 		{
 			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
 		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater] == 0)) || in_small()))
+		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
 		{
 			if(!auto_100familiar())
 			{
