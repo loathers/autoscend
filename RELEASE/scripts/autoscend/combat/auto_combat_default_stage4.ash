@@ -350,7 +350,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 
 	// use red rocket from Clan VIP Lounge to get 5x stats from next food item consumed. Does not stagger on use
-	if(canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0 && canSurvive(5.0) && my_adventures() < 100)
+	if(fullness_left() > 0 && canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0 && canSurvive(5.0) && my_adventures() < 100)
 	{
 		if(in_plumber())
 		{
