@@ -784,7 +784,7 @@ boolean checkTerrarium()
 	{
 		return false;
 	}
-	if(in_nuclear() || in_robot())
+	if(in_nuclear() || in_robot() || in_small())
 	{
 		return true;	//these paths use an alternative form of terrarium
 	}

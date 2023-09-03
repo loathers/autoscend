@@ -473,6 +473,11 @@ boolean L13_towerNSContests()
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Ten out of Ten]);
 				}
+
+				if(in_small() && crowd2Insufficient() && have_effect($effect[Piratastic])==0)
+				{
+					auto_wishForEffect($effect[Piratastic]);
+				}
 				break;
 			case $stat[muscle]:
 				autoMaximize("muscle -equip snow suit", 1500, 0, false);
@@ -480,6 +485,11 @@ boolean L13_towerNSContests()
 				if(have_effect($effect[Muddled]) == 0 && auto_is_valid($effect[Muddled]))
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Muddled]);
+				}
+
+				if(in_small() && crowd2Insufficient() && have_effect($effect[\'Roids of the Rhinoceros])==0)
+				{
+					auto_wishForEffect($effect[\'Roids of the Rhinoceros]);
 				}
 				break;
 			case $stat[mysticality]:
@@ -489,12 +499,17 @@ boolean L13_towerNSContests()
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Uncucumbered]);
 				}
+
+				if(in_small() && crowd2Insufficient() && have_effect($effect[Happy Trails])==0)
+				{
+					auto_wishForEffect($effect[Happy Trails]);
+				}
 				break;
 			}
 			
-			if(crowd2Insufficient())
+			if(crowd2Insufficient() && !in_small())
 			{
-				if (have_effect($effect[New and Improved])==0)
+				if (have_effect($effect[New and Improved])==0 && !in_small())
 				{
 					auto_wishForEffect($effect[New and Improved]);
 				}

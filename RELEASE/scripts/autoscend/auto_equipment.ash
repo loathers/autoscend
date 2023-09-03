@@ -657,7 +657,7 @@ void addBonusToMaximize(item it, int amt)
 
 void finalizeMaximize(boolean speculative)
 {
-	if(auto_hasStillSuit() && pathHasFamiliar() && inebriety_limit() > 0)
+	if(auto_hasStillSuit() && pathHasFamiliar() && inebriety_limit() > 0 && !in_kolhs() && !in_small())
 	{
 		//always enough bonus to beat the 25 default maximizer score of miniature crystal ball's +initiative enchantment
 		//100 to 200 bonus for diminishing returns when drams already high
