@@ -454,9 +454,13 @@ void auto_scepterSkills()
 		{
 			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
 		}
-		if(canUse($skill[Aug. 18th: Serendipity Day!]) && !get_property("_aug18Cast").to_boolean())
+		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater] == 0)) || in_small()))
 		{
-			use_skill($skill[Aug. 18th: Serendipity Day!]); //Serendipity
+			if(!auto_100familiar())
+			{
+				handleFamiliar("stat"); //get any familiar equipped if not in a 100% run
+			}
+			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
 		}
 	}
 	//Day 2+ skills
@@ -465,10 +469,6 @@ void auto_scepterSkills()
 		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
 		{
 			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
-		}
-		if(canUse($skill[Aug. 18th: Serendipity Day!]) && !get_property("_aug18Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 18th: Serendipity Day!]); //Serendipity
 		}
 	}
 }

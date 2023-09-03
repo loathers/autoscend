@@ -1888,6 +1888,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	buffMaintain($effect[Good Things Are Coming, You Can Smell It]);
+	buffMaintain($effect[Incredibly Well Lit]);
 	bat_formWolf();
 	if(auto_is_valid($effect[Meet the Meat]))
 	{

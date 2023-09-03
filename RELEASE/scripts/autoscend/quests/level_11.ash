@@ -2761,6 +2761,10 @@ boolean L11_palindome()
 				}
 				// +item is nice to get that food
 				bat_formBats();
+				if (my_fullness() > 0 && auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug16Cast").to_boolean())
+				{
+					use_skill($skill[Aug. 16th: Roller Coaster Day!]);
+				}
 				auto_log_info("Off to the grove for some doofy food!", "blue");
 				autoAdv(1, $location[Whitey\'s Grove]);
 			}
