@@ -39,6 +39,7 @@ boolean lol_buyReplicas()
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]);
 			use(1, $item[replica 2002 Mr. Store Catalog]);
+			auto_buyFrom2002MrStore();
 		}
 		if(contains_text(page, "patriotic eagle") && !is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
 		{	
@@ -48,6 +49,7 @@ boolean lol_buyReplicas()
 		if(contains_text(page, "august")) //2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica August Scepter]);
+			auto_scepterSkills();
 		}
 		
 		//End of 2023 "Always Available" IoTMs and starting legacy "one at a time" IoTMs
