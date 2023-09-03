@@ -1804,6 +1804,10 @@ boolean canGenieCombat(monster mon)
 	{
 		return false;
 	}
+	if ($monster[fantasy bandit] == mon)
+	{
+		return false;		//these monsters are copyable except for when using genie
+	}
 	if (failedWishMonsters contains mon)
 	{
 		return false;
