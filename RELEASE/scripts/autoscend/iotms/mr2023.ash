@@ -309,7 +309,8 @@ int remainingCatalogCredits()
 	}
 	if(!get_property("_2002MrStoreCreditsCollected").to_boolean())
 	{
-		//todo - collect credits
+		// using item collects credits
+		use($item[2002 Mr. Store Catalog]);
 	}
 	return get_property("availableMrStore2002Credits").to_int();
 }
