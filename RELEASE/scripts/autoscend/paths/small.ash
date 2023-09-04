@@ -10,6 +10,15 @@ void small_initializeSettings()
 		return;
 	}
 	set_property("auto_wandOfNagamar", true);		//wand  used in this path
+	set_property("auto_getBeehive", true);			//wall is too difficult without it
+	set_property("auto_getBoningKnife", true);		//wall is too difficult without it
+	set_property("auto_getSteelOrgan", false);		//can only consume size 1 drinks
+	if(in_hardcore())
+	{
+		//having vastly lower stats and no easy solutions in hardcore means you always die from flyering
+		//should be replaced with a more elegant solution where detailed estimation / calculation is done.
+		set_property("auto_ignoreFlyer", true);
+	}
 }
 
 void auto_SmallPulls()
