@@ -38,7 +38,6 @@ boolean lol_buyReplicas()
 		if(contains_text(page, "2002")) //2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]);
-			use(1, $item[replica 2002 Mr. Store Catalog]);
 			auto_buyFrom2002MrStore();
 		}
 		if(contains_text(page, "patriotic eagle") && !is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
