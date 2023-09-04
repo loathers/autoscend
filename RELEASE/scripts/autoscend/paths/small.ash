@@ -10,6 +10,10 @@ void small_initializeSettings()
 		return;
 	}
 	set_property("auto_wandOfNagamar", true);		//wand  used in this path
+	set_property("auto_getBeehive", true);			//wall is too difficult without it
+	set_property("auto_getBoningKnife", true);		//wall is too difficult without it
+	set_property("auto_ignoreFlyer", true);			//having vastly lower stats means you always die from flyering
+	set_property("auto_getSteelOrgan", false);		//can only consume size 1 drinks
 }
 
 void auto_SmallPulls()
