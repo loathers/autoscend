@@ -25,12 +25,18 @@ void print_footer()
 	}
 	auto_log_info(next_line, "blue");
 	
+	string stat_sign(int s)
+	{
+		if(s >= 0) return "+" +s;
+		else return s;
+	}
+	
 	int bonus_mus = my_buffedstat($stat[muscle]) - my_basestat($stat[muscle]);
 	int bonus_mys = my_buffedstat($stat[mysticality]) - my_basestat($stat[mysticality]);
 	int bonus_mox = my_buffedstat($stat[moxie]) - my_basestat($stat[moxie]);
-	auto_log_info("mus: " +my_basestat($stat[muscle])+ " + " +bonus_mus+
-	". mys: " +my_basestat($stat[mysticality])+ " + " +bonus_mys+
-	". mox: " +my_basestat($stat[moxie])+ " + " +bonus_mox, "blue");
+	auto_log_info("mus: " +my_basestat($stat[muscle])+stat_sign(bonus_mus)+
+	". mys: " +my_basestat($stat[mysticality])+stat_sign(bonus_mys)+
+	". mox: " +my_basestat($stat[moxie])+stat_sign(bonus_mox), "blue");
 	
 	next_line = "";
 	if(pathHasFamiliar())
