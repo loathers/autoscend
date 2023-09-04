@@ -1077,10 +1077,17 @@ boolean auto_post_adventure()
 	//works with code found in auto_pre_adv.ash
 	if(my_session_adv() == get_property("_auto_inf_session_adv").to_int())
 	{
-		auto_log_debug("auto_post_adv.ash detected that no adventure was spent");
+		auto_log_debug("auto_post_adv.ash detected that no adventure was spent since last auto_pre_adv.ash");
 		
 		//count how many times in a row we went with no adv spent
 		set_property("_auto_inf_counter", get_property("_auto_inf_counter").to_int()+1);
+		
+		//if last monster changed it means we are doing free combats
+		if(get_property("_auto_inf_last_monster").to_monster() != last_monster())
+		{
+			remove_property("_auto_inf_counter");		//reset counter
+		}
+		set_property("_auto_inf_last_monster", last_monster());
 		
 		if(get_property("_auto_inf_counter").to_int() >= 30)
 		{
