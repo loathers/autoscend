@@ -105,14 +105,9 @@ boolean auto_haveSITCourse()
 void auto_SITCourse()
 {
 	if (!auto_haveSITCourse()) return;
-	//Best choice seems to be insectologist
-	if (my_level() < 8 && !have_skill($skill[cryptobotanist])){  //Get cryptobotanist if under level 8
-		use(1,$item[S.I.T. Course Completion Certificate]);
-		//auto_run_choice(1494);
-		return;
-	}
-	if(!get_property("_sitCourseCompleted").to_boolean() && my_level() >= 8) //Get insectologist if over level 8 and haven't SIT'd today
-	{
+	//Get cryptobotanist if under level 8 or switch to insectologist if possible
+	if (my_level() < 8 && !have_skill($skill[cryptobotanist]))
+	|| (!get_property("_sitCourseCompleted").to_boolean() && my_level() >= 8 && !have_skill($skill[insectologist])){
 		use(1,$item[S.I.T. Course Completion Certificate]);
 		//auto_run_choice(1494);
 		return;
