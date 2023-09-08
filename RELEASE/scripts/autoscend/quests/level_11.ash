@@ -200,7 +200,6 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		else
 		{
 			// if we're already level 11, well either be starting ASAP
-			// Change the 1 in the max  if you want to leave it until no earlier than day 2
 			foreach z, _ in shenSnakeLocations(max(1, my_daycount()), 0)
 			{
 				zones_to_avoid[z] = true;
