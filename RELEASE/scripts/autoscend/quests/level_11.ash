@@ -816,6 +816,11 @@ boolean L11_blackMarket()
 	if (get_property("auto_getBeehive").to_boolean() && my_adventures() < 3) {
 		return false;
 	}
+	if(item_amount($item[Reassembled Blackbird]) > 0 && auto_haveGreyGoose() && !possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) < 2 && !in_darkGyffte()){
+		auto_log_info("Bringing the Grey Goose to emit some drones at a blackberry bush.");
+		handleFamiliar($familiar[Grey Goose]);
+	}
+
 	boolean advSpent = autoAdv($location[The Black Forest]);
 	//For people with autoCraft set to false for some reason
 	if(item_amount($item[Reassembled Blackbird]) == 0 && creatable_amount($item[Reassembled Blackbird]) > 0)
@@ -1356,7 +1361,13 @@ boolean L11_unlockHiddenCity()
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]))
 		{
 			//attempt to summon before using a clover
-			handleFamiliar("item");
+			if(auto_haveGreyGoose()){
+				auto_log_info("Bringing the Grey Goose to emit some drones at a Sheep carving.");
+				handleFamiliar($familiar[Grey Goose]);
+			}
+			else {
+				handleFamiliar("item");
+			}
 			addToMaximize("20 item 400max");
 			if(summonMonster($monster[Baa\'baa\'bu\'ran]))
 			{
@@ -1897,6 +1908,11 @@ boolean L11_hiddenCity()
 		{
 			auto_log_info("Bringing the Camel to spit on a Pygmy Bowler for bowling balls.");
 			handleFamiliar($familiar[Melodramedary]);
+		}
+		if (auto_haveGreyGoose() && get_property("hiddenBowlingAlleyProgress").to_int() < 3)
+		{
+			auto_log_info("Bringing the Grey Goose to emit some drones at a Pygmy Bowler for bowling balls.");
+			handleFamiliar($familiar[Grey Goose]);
 		}
 		if(item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() == 5)
 		{
@@ -2480,6 +2496,10 @@ boolean L11_ronCopperhead()
 		{
 			auto_log_info("Bringing the Camel to spit on a Red Butler for glark cables.");
 			handleFamiliar($familiar[Melodramedary]);
+		}
+		if(auto_haveGreyGoose()){
+			auto_log_info("Bringing the Grey Goose to emit some drones at a Red Butler for glark cables.");
+			handleFamiliar($familiar[Grey Goose]);
 		}
 		if(internalQuestStatus("questL11Ron") == 4)
 		{
@@ -3144,6 +3164,12 @@ boolean L11_unlockEd()
 	if (canSniff($monster[Tomb Rat], $location[The Middle Chamber]) && auto_mapTheMonsters())
 	{
 		auto_log_info("Attemping to use Map the Monsters to olfact a Tomb Rat.");
+	}
+	
+	if(auto_haveGreyGoose() && item_amount($item[Tangle of rat tails]) >= 1)
+	{
+		auto_log_info("Bringing the Grey Goose to emit some drones at some rat kings.");
+		handleFamiliar($familiar[Grey Goose]);
 	}
 	
 	return autoAdv(1, $location[The Middle Chamber]);
