@@ -357,7 +357,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			return useItem($item[red rocket]);
 		}
 		//use if next food is large in size. Currently autoConsume doesn't analyze stat gain, which would be better
-		//disabled until fix: https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues/1053
+		//disabled until fix: https://github.com/loathers/autoscend/issues/1053
 		//item simulationOutput = auto_autoConsumeOneSimulation("eat");
 		//if (simulationOutput != $item[none] && simulationOutput.fullness > 3)
 		//{

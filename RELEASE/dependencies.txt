@@ -3,4 +3,4 @@ github Ezandora/Helix-Fossil Release
 github Ezandora/Far-Future Release
 github gausie/excavator
 github midgleyc/Voting-Booth
-github Loathing-Associates-Scripting-Society/combo release
+github loathers/combo release
