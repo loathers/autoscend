@@ -36,7 +36,7 @@ The best place to ask questions is the [autoscend channel on the Ascension Speed
 
 ## Reporting Bugs and Feature Requests
 
-Before submitting bugs or feature request please ask for help in the [autoscend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3) and search through the [issues page](https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues) to see if it is already reported. If you find a similar issue to yours feel free to add extra details or just a +1 to it.
+Before submitting bugs or feature request please ask for help in the [autoscend channel on the Ascension Speed Society discord server](https://discord.gg/96xZxv3) and search through the [issues page](https://github.com/loathers/autoscend/issues) to see if it is already reported. If you find a similar issue to yours feel free to add extra details or just a +1 to it.
 
 Finally, if no one on discord can help your you cant find a similar issue, read and fill out the [issue template](./ISSUE_TEMPLATE.md) that appears when you open a new issue.
 
@@ -55,7 +55,7 @@ Working on your first open source project or pull request? Her are some helpful 
 You can request access to the project which will let you push working branches to the project, but you can also just (or even prefer) to fork the repository and submit pull requests from your fork.
 
 **main** branch:
-The main branch is the current "release" of autoscend. When someone does `git checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend.git` in KoLMafia, they are getting the main branch scripts.
+The main branch is the current "release" of autoscend. When someone does `git checkout loathers/autoscend` in KoLMafia, they are getting the main branch scripts.
 
 `main` is restricted and can only be merged into with a pull request which requires approval from 1 other developer (though admins can by pass this requirements if they need to).
 
@@ -64,7 +64,7 @@ For all of our sanity a good git work flow is something like this:
 2. `git pull`
 3. `git checkout -b my-cool-new-feature`
 4. change code, add and commit files with [good commit messages][5]
-5. when ready, submit a [pull request](https://github.com/Loathing-Associates-Scripting-Society/autoscend/compare/beta...Loathing-Associates-Scripting-Society:main) for your `my-cool-new-feature` branch against the `main` branch
+5. when ready, submit a [pull request](https://github.com/loathers/autoscend/compare/beta...loathers:main) for your `my-cool-new-feature` branch against the `main` branch
 
 ### Merging Pull Requests
 When closing pull requests, please use the "Squash and Merge" option when merging the branch. This creates much cleaner git commit histories and make it much easier to cherry-pick features from one branch to another. After the merge its also good practice to delete the branch from the remote, again trying to keep the repository clean.

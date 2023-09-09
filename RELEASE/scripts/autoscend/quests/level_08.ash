@@ -273,13 +273,13 @@ boolean L8_getGoatCheese()
 	{
 		auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
 	}
+	if(auto_haveGreyGoose() && item_amount($item[Goat Cheese]) >= 2){
+		auto_log_info("Bringing the Grey Goose to emit some drones at a Dairy Goat for cheese, Gromit.");
+		handleFamiliar($familiar[Grey Goose]);
+	}
 	if(canSniff($monster[Dairy Goat], $location[The Goatlet]) && auto_mapTheMonsters())
 	{
 		auto_log_info("Attemping to use Map the Monsters to olfact a Dairy Goat.");
-	}
-	if (my_fullness() > 0 && auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug16Cast").to_boolean())
-	{
-		use_skill($skill[Aug. 16th: Roller Coaster Day!]);
 	}
 	boolean retval = autoAdv($location[The Goatlet]);
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);

@@ -463,6 +463,10 @@ int auto_CombatLoversLocketCharges();
 boolean auto_haveReminiscedMonster(monster mon);
 boolean auto_monsterInLocket(monster mon);
 boolean auto_fightLocketMonster(monster mon, boolean speculative);
+boolean auto_haveGreyGoose();
+int gooseExpectedDrones();
+boolean dronesOut();
+void prioritizeGoose();
 boolean canUseCleaver();
 void juneCleaverChoiceHandler(int choice);
 boolean canUseSweatpants();
@@ -1166,6 +1170,7 @@ boolean LX_dolphinKingMap();
 boolean LX_meatMaid();
 item LX_getDesiredWorkshed();
 boolean LX_setWorkshed();
+boolean LX_dronesOut();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash

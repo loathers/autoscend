@@ -14,6 +14,9 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	// Path = The Source
 	retval = auto_combatZombieSlayerStage4(round, enemy, text);
 	if(retval != "") return retval;
+
+	// Skip if have drones out
+	if(get_property("auto_skipStage4").to_boolean()) return "";
 	
 	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
 	if(auto_wantToSniff(enemy, my_location()))
@@ -357,7 +360,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 			return useItem($item[red rocket]);
 		}
 		//use if next food is large in size. Currently autoConsume doesn't analyze stat gain, which would be better
-		//disabled until fix: https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues/1053
+		//disabled until fix: https://github.com/loathers/autoscend/issues/1053
 		//item simulationOutput = auto_autoConsumeOneSimulation("eat");
 		//if (simulationOutput != $item[none] && simulationOutput.fullness > 3)
 		//{
