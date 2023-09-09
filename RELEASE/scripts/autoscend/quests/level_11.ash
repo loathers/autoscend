@@ -169,11 +169,6 @@ boolean[location] shenSnakeLocations(int day, int n_items_returned)
 
 boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 {
-	if (!allowSoftblockShen())
-	{
-		boolean[location] empty;
-		return empty;
-	}
 	if (get_property("shenInitiationDay").to_int() > 0)
 	{
 		int day = get_property("shenInitiationDay").to_int();
@@ -200,7 +195,7 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		else
 		{
 			// if we're already level 11, well either be starting ASAP
-			foreach z, _ in shenSnakeLocations(max(1, my_daycount()), 0)
+			foreach z, _ in shenSnakeLocations(my_daycount(), 0)
 			{
 				zones_to_avoid[z] = true;
 			}
@@ -2510,10 +2505,6 @@ boolean L11_shenStartQuest()
 		return false;
 	}
 	
-	if (!allowSoftblockShen())
-	{
-		return false;
-	}
 	auto_log_info("Going to see the World's Biggest Jerk about some snakes and stones and stuff.", "blue");
 	if (autoAdv($location[The Copperhead Club]))
 	{
