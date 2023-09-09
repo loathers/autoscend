@@ -199,6 +199,7 @@ void initializeSettings() {
 	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
 	set_property("auto_L8_extremeInstead", false);
+	set_property("auto_L9_smutOrcPervert", false);
 	set_property("auto_haveSourceTerminal", false);
 	set_property("auto_hedge", "fast");
 	set_property("auto_hippyInstead", false);
@@ -1845,6 +1846,8 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if(LX_ForceNC())					return true;
+	prioritizeGoose();
+	if(LX_dronesOut())					return true;
 	if(LM_bond())						return true;
 	if(LX_calculateTheUniverse(false))	return true;
 	rockGardenEnd();

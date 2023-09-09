@@ -836,6 +836,10 @@ boolean L9_twinPeak()
 			return false;
 		}
 	}
+	if(auto_haveGreyGoose()){
+		auto_log_info("Bringing the Grey Goose to emit some drones to get some hedge trimmers.");
+		handleFamiliar($familiar[Grey Goose]);
+	}
 	return autoAdv($location[Twin Peak]);
 }
 
