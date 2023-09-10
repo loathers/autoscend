@@ -503,6 +503,11 @@ boolean autoChooseFamiliar(location place)
 		}
 	}
 
+	// want to ensure we get small gear. Only requires +100 item drop, fam essentially ensures this
+	if ($locations[Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass] contains place) {
+		famChoice = lookupFamiliarDatafile("item");
+	}
+
 	// places where meat drop is required to help save adventures.
 	if ($location[The Themthar Hills] == place) {
 		famChoice = lookupFamiliarDatafile("meat");

@@ -17,7 +17,7 @@ void small_initializeSettings()
 	{
 		//having vastly lower stats and no easy solutions in hardcore means you always die from flyering
 		//should be replaced with a more elegant solution where detailed estimation / calculation is done.
-		set_property("auto_ignoreFlyer", true);
+		//set_property("auto_ignoreFlyer", true);
 
 		//cap ML to 50 to help avoid getting beaten up
 		int MLCap = 50;
@@ -53,5 +53,69 @@ void auto_SmallPulls()
 	{
 		pullXWhenHaveY($item[Sea salt scrubs], 1, 0);
 	}
+
+}
+
+void auto_smallCampgroundGear()
+{
+	if(!in_small())
+	{
+		return;
+	}
+
+	// don't get campground gear in in Normal and haven't gotten beaten up
+	int beatenUpCount = get_property("auto_beatenUpCount").to_int();
+	if(!in_hardcore() && beatenUpCount == 0)
+	{
+		return;
+	}
+
+	boolean haveDirtGear()
+	{
+		foreach it in $items[mesquito proboscis, ncle leg, rutabuga bag, senate fly thorax]
+		{
+			if(item_amount(it) == 0 && !have_equipped(it))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	boolean haveTallGrassGear()
+	{
+		foreach it in $items[birdybug antenna, daddy shortlegs leg, kilopede skull]
+		{
+			if(item_amount(it) == 0 && !have_equipped(it))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	boolean haveVeryTallGrassGear()
+	{
+		foreach it in $items[beetle antenna, mantis skull, spider leg]
+		{
+			if(item_amount(it) == 0 && !have_equipped(it))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// get drops from dirt if we can survive at least 2 rounds of getting hit
+	// always get dirt drops in HC small
+	if(!haveDirtGear() && (my_maxhp() > expected_damage($monster[senate fly]) * 2))
+	{
+		autoAdv($location[Fight in the Dirt]);
+	}
+	// get tall grass drops if we have gotten beaten up and can survive at least 2 rounds of getting hit
+	else if(beatenUpCount > 0 && !haveTallGrassGear() && (my_maxhp() > expected_damage($monster[kilopede]) * 2))
+	{
+		autoAdv($location[Fight in the Tall Grass]);
+	}
+
+	// todo - support very tall grass. Monsters are scaling so not straight forward
 
 }

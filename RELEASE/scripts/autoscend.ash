@@ -1784,6 +1784,7 @@ boolean doTasks()
 	auto_buyFireworksHat();
 	auto_CMCconsult();
 	auto_checkTrainSet();
+	auto_smallCampgroundGear();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
