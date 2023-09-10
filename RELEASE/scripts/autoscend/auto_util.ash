@@ -1619,27 +1619,6 @@ boolean inGnomeSign()
 	return $strings[Blender, Packrat, Wombat] contains my_sign();
 }
 
-boolean allowSoftblockShen()
-{
-	//Some quests have a softblock on doing them because shen might need them. When we run out of things to do this softblock is released.
-	//Return true means the softblock is active. Return false means the softblock is released.
-	if(get_property("questL11Shen") == "finished")
-	{
-		return false;		//shen quest is over. softblock not needed
-	}
-	
-	//We tell users to disable the shen softblock by setting auto_shenSkipLastLevel to 999.
-	//This is why we want to return < my_level() and not != my_level()
-	return get_property("auto_shenSkipLastLevel").to_int() < my_level();
-}
-
-boolean setSoftblockShen()
-{
-	auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do. Releasing softblock.", "red");
-	set_property("auto_shenSkipLastLevel", my_level());
-	return true;
-}
-
 boolean instakillable(monster mon)
 {
 	if(mon.boss)

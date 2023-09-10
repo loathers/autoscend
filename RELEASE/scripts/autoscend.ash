@@ -220,7 +220,6 @@ void initializeSettings() {
 	set_property("auto_pulls", "");
 
 	// Last level during which we ran out of stuff to do without pre-completing some Shen quests.
-	set_property("auto_shenSkipLastLevel", 0); 
 	remove_property("auto_shenZonesTurnsSpent");
 	remove_property("auto_lastShenTurn");
 	
