@@ -1755,6 +1755,13 @@ boolean L13_towerNSFinal()
 		}
 	}
 
+	// restore ML Safety Limit if this run changed it
+	if(property_exists("auto_MLSafetyLimitBackup"))
+	{
+		set_property("auto_MLSafetyLimit","auto_MLSafetyLimitBackup");
+		remove_property("auto_MLSafetyLimitBackup");
+	}
+
 	if(get_property("auto_stayInRun").to_boolean())
 	{
 		abort("User wanted to stay in run (auto_stayInRun), we are done.");
