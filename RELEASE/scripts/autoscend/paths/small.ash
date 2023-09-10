@@ -18,6 +18,16 @@ void small_initializeSettings()
 		//having vastly lower stats and no easy solutions in hardcore means you always die from flyering
 		//should be replaced with a more elegant solution where detailed estimation / calculation is done.
 		set_property("auto_ignoreFlyer", true);
+
+		//cap ML to 50 to help avoid getting beaten up
+		int MLCap = 50;
+		string MLSafetyLimit = get_property("auto_MLSafetyLimit");
+		if (MLSafetyLimit == "" || MLSafetyLimit.to_int() > MLCap)
+		{
+			// record existing MLSafetyLimit so it can be restored at end of run
+			set_property("auto_MLSafetyLimitBackup",MLSafetyLimit);
+			set_property("auto_MLSafetyLimit",MLCap);
+		}
 	}
 }
 
