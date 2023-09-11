@@ -1783,7 +1783,6 @@ boolean doTasks()
 	auto_buyFireworksHat();
 	auto_CMCconsult();
 	auto_checkTrainSet();
-	auto_smallCampgroundGear();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
@@ -1858,6 +1857,7 @@ boolean doTasks()
 	if(LA_wildfire())					return true;
 	if(LA_robot())						return true;
 	if(auto_autumnatonQuest())			return true;
+	if(auto_smallCampgroundGear())		return true;
 	
 	if (process_tasks()) return true;
 
