@@ -806,7 +806,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Thousand-Yard Stare]);
 		}
-		if($monsters[Aquagoblin, Lord Soggyraven, Groar] contains enemy && (my_mp() >= costMajor))
+		if($monsters[Aquagoblin, Lord Soggyraven, Groar, The Big Wisniewski, The Man] contains enemy && (my_mp() >= costMajor))
 		{
 			return attackMajor;
 		}
@@ -943,7 +943,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		return attackMajor;
 	}
 
-	if($monsters[Aquagoblin, Lord Soggyraven, Groar] contains enemy && (my_mp() >= costMajor))
+	if($monsters[Aquagoblin, Lord Soggyraven, Groar, The Big Wisniewski, The Man] contains enemy && (my_mp() >= costMajor))
 	{
 		return attackMajor;
 	}
