@@ -56,45 +56,26 @@ void auto_SmallPulls()
 
 }
 
-void auto_smallCampgroundGear()
+boolean auto_smallCampgroundGear()
 {
 	if(!in_small())
 	{
-		return;
+		return false;
 	}
 
 	// don't get campground gear in in Normal and haven't gotten beaten up
 	int beatenUpCount = get_property("auto_beatenUpCount").to_int();
 	if(!in_hardcore() && beatenUpCount == 0)
 	{
-		return;
+		return false;
 	}
 
-	boolean haveDirtGear()
+	boolean [item] dirtGear = $items[mesquito proboscis, ncle leg, rutabuga bag, senate fly thorax];
+	boolean [item] tallGrassGear = $items[birdybug antenna, daddy shortlegs leg, kilopede skull];
+	boolean [item] veryTallGrassGear = $items[beetle antenna, mantis skull, spider leg];
+	boolean haveGear(boolean [item] gear)
 	{
-		foreach it in $items[mesquito proboscis, ncle leg, rutabuga bag, senate fly thorax]
-		{
-			if(item_amount(it) == 0 && !have_equipped(it))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-	boolean haveTallGrassGear()
-	{
-		foreach it in $items[birdybug antenna, daddy shortlegs leg, kilopede skull]
-		{
-			if(item_amount(it) == 0 && !have_equipped(it))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-	boolean haveVeryTallGrassGear()
-	{
-		foreach it in $items[beetle antenna, mantis skull, spider leg]
+		foreach it in gear
 		{
 			if(item_amount(it) == 0 && !have_equipped(it))
 			{
@@ -106,16 +87,23 @@ void auto_smallCampgroundGear()
 
 	// get drops from dirt if we can survive at least 2 rounds of getting hit
 	// always get dirt drops in HC small
-	if(!haveDirtGear() && (my_maxhp() > expected_damage($monster[senate fly]) * 2))
+	if(!haveGear(dirtGear))
 	{
-		autoAdv($location[Fight in the Dirt]);
+		return autoAdv($location[Fight in the Dirt]);
 	}
 	// get tall grass drops if we have gotten beaten up and can survive at least 2 rounds of getting hit
-	else if(beatenUpCount > 0 && !haveTallGrassGear() && (my_maxhp() > expected_damage($monster[kilopede]) * 2))
+	else if(beatenUpCount > 0 && !haveGear(tallGrassGear) && (my_maxhp() > expected_damage($monster[kilopede]) * 2))
 	{
-		autoAdv($location[Fight in the Tall Grass]);
+		return autoAdv($location[Fight in the Tall Grass]);
 	}
 
-	// todo - support very tall grass. Monsters are scaling so not straight forward
-
+/*
+	// monsters here need spading. Don't know details of how they scale. Uncomment when mafia gets this info
+	// get tall grass drops if we have gotten beaten up twice and can survive at least 2 rounds of getting hit
+	else if(beatenUpCount > 0 && !haveGear(veryTallGrassGear) && (my_maxhp() > expected_damage($monster[flagellating mantis]) * 2))
+	{
+		return autoAdv($location[Fight in the Very Tall Grass]);
+	}
+*/
+	return false;
 }
