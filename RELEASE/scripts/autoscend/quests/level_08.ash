@@ -281,6 +281,8 @@ boolean L8_getGoatCheese()
 	{
 		auto_log_info("Attemping to use Map the Monsters to olfact a Dairy Goat.");
 	}
+	auto_lostStomach(true);
+	
 	boolean retval = autoAdv($location[The Goatlet]);
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 	return retval;

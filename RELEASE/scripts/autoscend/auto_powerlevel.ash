@@ -92,6 +92,31 @@ boolean LX_attemptPowerLevel()
 		return true;
 	}
 
+	//August Scepter Power Levelling
+	if(auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5){
+		if(my_primestat() == $stat[Muscle])
+		{
+			if(canUse($skill[Aug. 12th: Elephant Day!]) && !get_property("_aug12Cast").to_boolean())
+			{
+				use_skill($skill[Aug. 12th: Elephant Day!]);
+			}
+		}
+		if(my_primestat() == $stat[Mysticality])
+		{
+			if(canUse($skill[Aug. 11th: Presidential Joke Day!]) && !get_property("_aug11Cast").to_boolean())
+			{
+				use_skill($skill[Aug. 11th: Presidential Joke Day!]);
+			}
+		}
+		if(my_primestat() == $stat[Moxie])
+		{
+			if(canUse($skill[Aug. 23rd: Ride the Wind Day!]) && !get_property("_aug23Cast").to_boolean())
+			{
+				use_skill($skill[Aug. 23rd: Ride the Wind Day!]);
+			}
+		}
+	}
+
 	//scaling damage zones
 	//all scaling zones have monster level = my_buffedstat($stat[moxie]) + monster_level_adjustment() + enemy_value. up to a cap
 	location scalezone = highestScalingZone();
