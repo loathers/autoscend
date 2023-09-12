@@ -316,7 +316,7 @@ void bedtime_pulls_rollover_equip(float desirability)
 			if(!possessEquipment(it) && !canPull(it,true)) continue;		//do not have it and can not pull it.
 			if(!auto_can_equip(it)) continue;		//we can not equip it
 			string bonusOnlyForClass = string_modifier(it,"Class");
-			if(bonusOnlyForClass != "" && bonusOnlyForClass != my_class()) continue;		//can't get benefit of it
+			if(bonusOnlyForClass != "" && bonusOnlyForClass != my_class()) continue;	//can't get benefit of it
 			
 			if($slot[familiar] == sl && !pathHasFamiliar())
 			{
