@@ -169,11 +169,6 @@ boolean[location] shenSnakeLocations(int day, int n_items_returned)
 
 boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 {
-	if (!allowSoftblockShen())
-	{
-		boolean[location] empty;
-		return empty;
-	}
 	if (get_property("shenInitiationDay").to_int() > 0)
 	{
 		int day = get_property("shenInitiationDay").to_int();
@@ -186,11 +181,9 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		boolean[location] zones_to_avoid;
 		if (my_level() < 11)
 		{
-			//if it's day 1, don't count this day's snakes since it's leaving it until day 2
-			int fromThisDay = (my_daycount() == 1) ? 1 : 0;
 			//if level 10, assume shen today or tomorrow, otherwise up to two days from now
 			int beforeThatDay = (my_level() >= 10) ? 2 : 3;
-			for (int day=fromThisDay; day<beforeThatDay; day++)
+			for (int day=0; day<beforeThatDay; day++)
 			{
 				foreach z, _ in shenSnakeLocations(day+my_daycount(), 0)
 				{
@@ -202,8 +195,7 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		else
 		{
 			// if we're already level 11, well either be starting ASAP
-			// or leaving it until day 2 if we're on day 1
-			foreach z, _ in shenSnakeLocations(max(2, my_daycount()), 0)
+			foreach z, _ in shenSnakeLocations(my_daycount(), 0)
 			{
 				zones_to_avoid[z] = true;
 			}
@@ -2536,11 +2528,7 @@ boolean L11_shenStartQuest()
 	{
 		return false;
 	}
-	if (my_daycount() < 2 || !allowSoftblockShen())
-	{
-		// if you're fast enough to open it on day 1, maybe wait until day 2
-		return false;
-	}
+	
 	auto_log_info("Going to see the World's Biggest Jerk about some snakes and stones and stuff.", "blue");
 	if (autoAdv($location[The Copperhead Club]))
 	{

@@ -1674,8 +1674,6 @@ boolean isDesertAvailable();
 boolean inKnollSign();
 boolean inCanadiaSign();
 boolean inGnomeSign();
-boolean allowSoftblockShen();
-boolean setSoftblockShen();
 boolean instakillable(monster mon);
 boolean stunnable(monster mon);
 float combatItemDamageMultiplier();

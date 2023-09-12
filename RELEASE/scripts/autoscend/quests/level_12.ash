@@ -317,6 +317,10 @@ WarPlan auto_bestWarPlan()
 	{
 		considerNuns = false;
 	}
+	if(get_property("auto_ignoreFlyer").to_boolean())
+	{
+		considerArena = false;
+	}
 	
 	// Calculate the adventure cost of doing each sidequest.
 	int advCostArena = 0;		//Arena actual cost is 0 adventures... unless you mess it up. TODO: check if messed up.

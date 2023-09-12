@@ -60,9 +60,8 @@ Avatar of Jarlsberg	52	L5_slayTheGoblinKing
 Avatar of Jarlsberg	53	L4_batCave
 Avatar of Jarlsberg	54	L3_tavern
 Avatar of Jarlsberg	55	setSoftblockDelay	allowSoftblockDelay
-Avatar of Jarlsberg	56	setSoftblockShen	allowSoftblockShen
-Avatar of Jarlsberg	57	L13_towerAscent
-Avatar of Jarlsberg	58	LX_attemptPowerLevel
+Avatar of Jarlsberg	56	L13_towerAscent
+Avatar of Jarlsberg	57	LX_attemptPowerLevel
 
 Legacy of Loathing	0	LX_freeCombatsTask
 Legacy of Loathing	1	LX_unlockPirateRealm
@@ -157,18 +156,17 @@ Legacy of Loathing	81	L12_finalizeWar
 Legacy of Loathing	82	L12_clearBattlefield
 Legacy of Loathing	83	LX_koeInvaderHandler
 Legacy of Loathing	84	setSoftblockDelay	allowSoftblockDelay
-Legacy of Loathing	85	setSoftblockShen	allowSoftblockShen
-Legacy of Loathing	86	LX_getDigitalKey
-Legacy of Loathing	87	LX_getStarKey
-Legacy of Loathing	88	L12_lastDitchFlyer
-Legacy of Loathing	89	LX_bugbearInvasionFinale
-Legacy of Loathing	90	L13_towerNSContests
-Legacy of Loathing	91	L13_towerNSHedge
-Legacy of Loathing	92	L13_sorceressDoor
-Legacy of Loathing	93	L13_towerNSTower
-Legacy of Loathing	94	L13_towerNSNagamar
-Legacy of Loathing	95	L13_towerNSFinal
-Legacy of Loathing	96	LX_attemptPowerLevel
+Legacy of Loathing	85	LX_getDigitalKey
+Legacy of Loathing	86	LX_getStarKey
+Legacy of Loathing	87	L12_lastDitchFlyer
+Legacy of Loathing	88	LX_bugbearInvasionFinale
+Legacy of Loathing	89	L13_towerNSContests
+Legacy of Loathing	90	L13_towerNSHedge
+Legacy of Loathing	91	L13_sorceressDoor
+Legacy of Loathing	92	L13_towerNSTower
+Legacy of Loathing	93	L13_towerNSNagamar
+Legacy of Loathing	94	L13_towerNSFinal
+Legacy of Loathing	95	LX_attemptPowerLevel
 
 Quantum Terrarium	0	LX_freeCombatsTask
 Quantum Terrarium	1	LX_unlockPirateRealm
@@ -230,9 +228,8 @@ Quantum Terrarium	56	L5_slayTheGoblinKing
 Quantum Terrarium	57	L4_batCave
 Quantum Terrarium	58	L3_tavern
 Quantum Terrarium	59	setSoftblockDelay	allowSoftblockDelay
-Quantum Terrarium	60	setSoftblockShen	allowSoftblockShen
-Quantum Terrarium	61	L13_towerAscent
-Quantum Terrarium	62	LX_attemptPowerLevel
+Quantum Terrarium	60	L13_towerAscent
+Quantum Terrarium	61	LX_attemptPowerLevel
 
 Zombie Slayer	0	LM_zombieSlayer
 Zombie Slayer	1	LX_unlockPirateRealm
@@ -290,9 +287,8 @@ Zombie Slayer	52	L5_slayTheGoblinKing
 Zombie Slayer	53	L4_batCave
 Zombie Slayer	54	L3_tavern
 Zombie Slayer	55	setSoftblockDelay	allowSoftblockDelay
-Zombie Slayer	56	setSoftblockShen	allowSoftblockShen
-Zombie Slayer	57	L13_towerAscent
-Zombie Slayer	58	LX_attemptPowerLevel
+Zombie Slayer	56	L13_towerAscent
+Zombie Slayer	57	LX_attemptPowerLevel
 
 default	0	LX_freeCombatsTask
 default	1	LX_unlockPirateRealm
@@ -379,16 +375,15 @@ default	81	L12_finalizeWar
 default	82	L12_clearBattlefield
 default	83	LX_koeInvaderHandler
 default	84	setSoftblockDelay	allowSoftblockDelay
-default	85	setSoftblockShen	allowSoftblockShen
-default	86	LX_getDigitalKey
-default	87	LX_getStarKey
-default	88	L12_lastDitchFlyer
-default	89	LX_bugbearInvasionFinale
-default	90	L13_towerNSContests
-default	91	L13_towerNSHedge
-default	92	L13_sorceressDoor
-default	93	L13_towerNSTower
-default	94	L13_towerNSNagamar
-default	95	L13_towerNSFinal
-default	96	LX_attemptPowerLevel
+default	85	LX_getDigitalKey
+default	86	LX_getStarKey
+default	87	L12_lastDitchFlyer
+default	88	LX_bugbearInvasionFinale
+default	89	L13_towerNSContests
+default	90	L13_towerNSHedge
+default	91	L13_sorceressDoor
+default	92	L13_towerNSTower
+default	93	L13_towerNSNagamar
+default	94	L13_towerNSFinal
+default	95	LX_attemptPowerLevel
 
