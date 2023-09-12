@@ -214,10 +214,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			else if(index_of(combatAction, "item") == 0)
 			{
-				if (to_item(substring(combatAction, 5)) == $item[waffle])
-				{
-					handleTracker($item[waffle], "auto_replaces");
-				}
 				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
 			}
 			else
