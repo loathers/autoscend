@@ -105,10 +105,10 @@ boolean auto_haveSITCourse()
 void auto_SITCourse()
 {
 	if (!auto_haveSITCourse()) return;
-	//Best choice seems to be insectologist
-	if (!have_skill($skill[insectologist])){
+	//Get cryptobotanist if under level 8 or switch to insectologist if possible
+	if (my_level() < 8 && !have_skill($skill[cryptobotanist]) || (!get_property("_sitCourseCompleted").to_boolean() && my_level() >= 8 && !have_skill($skill[insectologist]))){
 		use(1,$item[S.I.T. Course Completion Certificate]);
-		//auto_run_choice(1484);
+		//auto_run_choice(1494);
 		return;
 	}
 }
@@ -398,4 +398,78 @@ void auto_useBlackMonolith()
 	}
 	// use monolith
 	visit_url("campground.php?action=monolith");
+}
+
+boolean auto_haveAugustScepter()
+{
+	static item scepter = wrap_item($item[august scepter]);
+	if(auto_is_valid(scepter) && (item_amount(scepter) > 0 || have_equipped(scepter)))
+	{
+		return true;
+	}
+	return false;
+}
+
+void auto_scepterSkills()
+{
+	if(!auto_haveAugustScepter())
+	{
+		return;
+	}
+	//Day 1 skills
+	if(my_daycount() == 1)
+	{
+		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+		}
+		if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
+		}
+		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
+		{
+			if(!is100FamRun())
+			{
+				use_familiar($familiar[Mosquito]); //equipping Mosquito so we don't get a big rock
+			}
+			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+		}
+	}
+	//Day 2+ skills
+	if(my_daycount() >= 2)
+	{
+		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+		}
+		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
+		{
+			if(!is100FamRun())
+			{
+				handleFamiliar("stat"); //get any familiar equipped if not in a 100% run
+			}
+			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+		}
+	}
+}
+
+void auto_lostStomach(boolean force)
+{
+	if(!auto_haveAugustScepter() || in_small())
+	{
+		return;
+	}
+
+	//Cast Roller Coaster Day if forced to and fullness is greater than 0 and it's available to cast
+	if (force && my_fullness() > 0 && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug16Cast").to_boolean())
+	{
+		use_skill($skill[Aug. 16th: Roller Coaster Day!]);
+	}
+
+	//Otherwise leave Roller Coaster Day until near the end of the day and it's available to cast
+	if(fullness_left() == 0 && inebriety_left() == 0 && my_adventures() < 10  && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug16Cast").to_boolean() && !force)
+	{
+		use_skill($skill[Aug. 16th: Roller Coaster Day!]);
+	}
 }

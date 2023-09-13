@@ -1381,6 +1381,11 @@ int cloversAvailable()
 			pullXWhenHaveY($item[11-Leaf Clover], 1, item_amount($item[11-Leaf Clover]));
 			retval += item_amount($item[11-Leaf Clover]);
 		}
+		//Get from August Scepter
+		if(auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug2Cast").to_boolean())
+		{
+			retval += 1;
+		}
 	}
 
 	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
@@ -1422,6 +1427,12 @@ boolean cloverUsageInit()
 		{
 			auto_log_warning("Did not acquire Lucky! after using an 11-Leaf Clover");
 		}
+	}
+
+	//Use August Scepter skill if we can
+	if(auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug2Cast").to_boolean())
+	{
+		use_skill($skill[Aug. 2nd: Find an Eleven-Leaf Clover Day]);
 	}
 	
 	//use Astral Energy Drinks if we have room

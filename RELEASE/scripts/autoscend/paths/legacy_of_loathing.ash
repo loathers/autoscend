@@ -38,11 +38,17 @@ boolean lol_buyReplicas()
 		if(contains_text(page, "2002")) //2023
 		{
 			buy($coinmaster[Replica Mr. Store], 1, $item[Replica 2002 Mr. Store Catalog]);
+			auto_buyFrom2002MrStore();
 		}
 		if(contains_text(page, "patriotic eagle") && !is100FamRun()) //If this isn't a 100% familiar run, go ahead and get another familiar
 		{	
 			buy($coinmaster[Replica Mr. Store], 1, $item[replica sleeping patriotic eagle]);
 			use(1, $item[replica sleeping patriotic eagle]); // put in terrarium
+		}
+		if(contains_text(page, "august scepter")) //2023
+		{
+			buy($coinmaster[Replica Mr. Store], 1, $item[replica August Scepter]);
+			auto_scepterSkills();
 		}
 		
 		//End of 2023 "Always Available" IoTMs and starting legacy "one at a time" IoTMs
@@ -422,6 +428,8 @@ item auto_ItemToReplica(item it)
 			return $item[replica Cincho de Mayo];
 		case $item[2002 Mr. Store Catalog]:
 			return $item[replica 2002 Mr. Store Catalog];
+		case $item[August Scepter]:
+			return $item[replica August Scepter];
 	}
 	return it;
 }
