@@ -917,6 +917,10 @@ boolean auto_pre_adventure()
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
 	
+	//try to catch infinite loop where we repeatedly try to do the same thing.
+	//works with code found in auto_post_adv.ash
+	set_property("_auto_inf_session_adv", my_session_adv());
+	
 	//to avoid constant flipping on the MCD. change it right before adventuring
 	int mcd_target = get_property("auto_mcd_target").to_int();
 	if(current_mcd() != mcd_target)

@@ -650,7 +650,14 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1494:
-			run_choice(2); //Insectologist (S.I.T. Course)
+			if(my_level() < 8)
+			{
+				run_choice(3); //Cryptobotanist (S.I.T. Course)
+			}
+			else
+			{
+				run_choice(2); //Insectologist (S.I.T. Course)
+			}
 			break;
 		default:
 			break;

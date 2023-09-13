@@ -2266,6 +2266,7 @@ boolean L11_mauriceSpookyraven()
 		{
 			bat_formBats();
 		}
+		auto_lostStomach(true);
 		if (canSniff($monster[Cabinet of Dr. Limpieza], $location[The Haunted Laundry Room]) && auto_mapTheMonsters())
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Cabinet of Dr. Limpieza.");
@@ -2765,6 +2766,7 @@ boolean L11_palindome()
 				}
 				// +item is nice to get that food
 				bat_formBats();
+				auto_lostStomach(true);
 				auto_log_info("Off to the grove for some doofy food!", "blue");
 				autoAdv(1, $location[Whitey\'s Grove]);
 			}
