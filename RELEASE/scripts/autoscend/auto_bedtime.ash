@@ -315,6 +315,8 @@ void bedtime_pulls_rollover_equip(float desirability)
 			if(!($slots[hat, weapon, off-hand, back, shirt, pants, acc1, familiar] contains sl)) continue;	//exotic slot or not equip
 			if(!possessEquipment(it) && !canPull(it,true)) continue;		//do not have it and can not pull it.
 			if(!auto_can_equip(it)) continue;		//we can not equip it
+			string bonusOnlyForClass = string_modifier(it,"Class");
+			if(bonusOnlyForClass != "" && bonusOnlyForClass != my_class().to_string()) continue;	//can't get benefit of it
 			
 			if($slot[familiar] == sl && !pathHasFamiliar())
 			{
