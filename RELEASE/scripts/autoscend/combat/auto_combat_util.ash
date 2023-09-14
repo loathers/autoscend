@@ -862,7 +862,7 @@ string replaceMonsterCombatString(monster target, boolean inCombat)
 	}
 	if(item_amount($item[waffle]) > 0 && !haveUsed($item[waffle]) && auto_is_valid($item[waffle]))
 	{
-		return "item " + $item[waffle];
+		useItem($item[waffle]);
 	}
 	return "";
 }
