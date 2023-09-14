@@ -1369,11 +1369,7 @@ boolean L11_unlockHiddenCity()
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && cloversAvailable() > 0) 
 		{
 			//use clover to get 2x Stone Wool
-			cloverUsageInit();
-			boolean retval = autoAdv($location[The Hidden Temple]);
-			if(cloverUsageRestart()) retval = autoAdv($location[The Hidden Temple]);
-			cloverUsageFinish();
-			return retval;
+			return autoLuckyAdv($location[The Hidden Temple]);
 		}
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
@@ -2419,11 +2415,7 @@ boolean L11_redZeppelin()
 			{
 				set_property("choiceAdventure866", 3);
 			}
-			cloverUsageInit();
-			boolean retval = autoAdv(1, $location[A Mob of Zeppelin Protesters]);
-			if(cloverUsageRestart()) retval = autoAdv(1, $location[A Mob of Zeppelin Protesters]);
-			cloverUsageFinish();
-			return retval;
+			return autoLuckyAdv($location[A Mob of Zeppelin Protesters]);
 		}
 	}
 

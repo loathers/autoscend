@@ -950,12 +950,10 @@ boolean LX_robot_powerlevel()
 					whereTo = $location[The Haunted Ballroom];
 					break;
 			}
-
-			cloverUsageInit();
-			boolean adv_spent = autoAdv(whereTo);
-			if(cloverUsageRestart()) adv_spent = autoAdv(whereTo);
-			cloverUsageFinish();
-			if(adv_spent) return true;
+			if(autoLuckyAdv(whereTo))
+			{
+				return true;
+			}
 		}
 		
 		//buy 5 primestats from statbot 5000.
