@@ -617,7 +617,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMinor = mp_cost($skill[Beanstorm]);
 		}
 
-		if(canUse($skill[Fan Hammer], false))
+		if(canUse($skill[Fan Hammer], false) && (enemy.physical_resistance < 80))
 		{
 			attackMajor = useSkill($skill[Fan Hammer], false);
 			attackMinor = useSkill($skill[Fan Hammer], false);
