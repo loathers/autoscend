@@ -1759,7 +1759,7 @@ boolean L13_towerNSFinal()
 	// restore ML Safety Limit if this run changed it
 	if(property_exists("auto_MLSafetyLimitBackup"))
 	{
-		set_property("auto_MLSafetyLimit","auto_MLSafetyLimitBackup");
+		set_property("auto_MLSafetyLimit",get_property("auto_MLSafetyLimitBackup"));
 		remove_property("auto_MLSafetyLimitBackup");
 	}
 
