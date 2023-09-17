@@ -1762,6 +1762,13 @@ boolean L13_towerNSFinal()
 		set_property("auto_MLSafetyLimit",get_property("auto_MLSafetyLimitBackup"));
 		remove_property("auto_MLSafetyLimitBackup");
 	}
+	// restore disregard karma if this run changed it
+	if(property_exists("auto_disregardInstantKarmaBackup"))
+	{
+		set_property("auto_disregardInstantKarma",get_property("auto_disregardInstantKarmaBackup"));
+		remove_property("auto_disregardInstantKarmaBackup");
+	}
+
 
 	if(get_property("auto_stayInRun").to_boolean())
 	{

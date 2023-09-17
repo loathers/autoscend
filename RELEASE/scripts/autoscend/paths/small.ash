@@ -28,6 +28,14 @@ void small_initializeSettings()
 			set_property("auto_MLSafetyLimitBackup",MLSafetyLimit);
 			set_property("auto_MLSafetyLimit",MLCap);
 		}
+
+		// don't disregard instant karma either. Helps keep ML low
+		string disregardKarma = get_property("auto_disregardInstandKarma");
+		if(disregardKarma == "true")
+		{
+			set_property("auto_disregardInstantKamraBackup","true");
+			set_property("auto_disregardInstantKarma", "false");
+		}
 	}
 }
 
