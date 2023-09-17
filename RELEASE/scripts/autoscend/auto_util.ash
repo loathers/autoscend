@@ -1413,41 +1413,21 @@ int cloversAvailable()
 
 boolean cloverUsageInit(boolean override)
 {
-	if(cloversAvailable(override) == 0)
+	if (cloversAvailable(override) == 0)
 	{
 		abort("Called cloverUsageInit but have no clovers");
 	}
 	//do we already have Lucky!?
-	if(have_effect($effect[Lucky!]) > 0)
+	if (have_effect($effect[Lucky!]) > 0)
 	{
 		return true;
 	}
 
-	//use a clover if we have one in inventory or closet
-	if(item_amount($item[11-Leaf Clover]) < 1)
-	{
-		//try to get one out of closet, catch to avoid an error being thrown
-		catch retrieve_item(1, $item[11-Leaf Clover]);	
-	}
-	if(item_amount($item[11-Leaf Clover]) > 0)
-	{
-		use(1, $item[11-Leaf Clover]);
-		if(have_effect($effect[Lucky!]) > 0)
-		{
-			auto_log_info("Clover usage initialized");
-			return true;
-		}
-		else
-		{
-			auto_log_warning("Did not acquire Lucky! after using an 11-Leaf Clover");
-		}
-	}
-
 	//Use August Scepter skill if we can
-	if(auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug2Cast").to_boolean())
+	if (auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug2Cast").to_boolean())
 	{
 		use_skill($skill[Aug. 2nd: Find an Eleven-Leaf Clover Day]);
-		if(have_effect($effect[Lucky!]) > 0)
+		if (have_effect($effect[Lucky!]) > 0)
 		{
 			auto_log_info("Clover usage initialized");
 			return true;
@@ -1458,18 +1438,38 @@ boolean cloverUsageInit(boolean override)
 		}
 	}
 	
-	//use Astral Energy Drinks if we have room
-	if(spleen_left() >= 5)
+	//use a clover if we have one in inventory or closet
+	if (item_amount($item[11-Leaf Clover]) < 1)
 	{
-		if(item_amount($item[[10883]Astral Energy Drink]) < 1)
+		//try to get one out of closet, catch to avoid an error being thrown
+		catch retrieve_item(1, $item[11-Leaf Clover]);	
+	}
+	if (item_amount($item[11-Leaf Clover]) > 0)
+	{
+		use(1, $item[11-Leaf Clover]);
+		if (have_effect($effect[Lucky!]) > 0)
+		{
+			auto_log_info("Clover usage initialized");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after using an 11-Leaf Clover");
+		}
+	}
+	
+	//use Astral Energy Drinks if we have room
+	if (spleen_left() >= 5)
+	{
+		if (item_amount($item[[10883]Astral Energy Drink]) < 1)
 		{
 			//try to get one out of closet
 			retrieve_item(1, $item[[10883]Astral Energy Drink]);		
 		}
-		if(item_amount($item[[10883]Astral Energy Drink]) > 0)
+		if (item_amount($item[[10883]Astral Energy Drink]) > 0)
 		{
 			chew(1, $item[[10883]Astral Energy Drink]);
-			if(have_effect($effect[Lucky!]) > 0)
+			if (have_effect($effect[Lucky!]) > 0)
 			{
 				auto_log_info("Clover usage initialized");
 				return true;
