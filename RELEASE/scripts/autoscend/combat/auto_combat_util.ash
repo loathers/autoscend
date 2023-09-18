@@ -860,9 +860,9 @@ string replaceMonsterCombatString(monster target, boolean inCombat)
 	{
 		return "skill " + $skill[CHEAT CODE: Replace Enemy];
 	}
-	if(item_amount($item[waffle]) > 0 && !haveUsed($item[waffle]) && auto_is_valid($item[waffle]))
+	if(canUse($item[waffle]))
 	{
-		return useItem($item[waffle], false);
+		return useItem($item[waffle]);
 	}
 	return "";
 }
