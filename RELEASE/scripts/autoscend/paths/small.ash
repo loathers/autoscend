@@ -22,7 +22,12 @@ void small_initializeSettings()
 		//cap ML to 50 to help avoid getting beaten up
 		int MLCap = 50;
 		string MLSafetyLimit = get_property("auto_MLSafetyLimit");
-		if (MLSafetyLimit == "" || MLSafetyLimit.to_int() > MLCap)
+		if(MLSafetyLimit == "")
+		{
+			set_property("auto_MLSafetyLimitBackup","empty");
+			set_property("auto_MLSafetyLimit",MLCap);
+		}
+		if(MLSafetyLimit.to_int() > MLCap)
 		{
 			// record existing MLSafetyLimit so it can be restored at end of run
 			set_property("auto_MLSafetyLimitBackup",MLSafetyLimit);
@@ -30,7 +35,7 @@ void small_initializeSettings()
 		}
 
 		// don't disregard instant karma either. Helps keep ML low
-		string disregardKarma = get_property("auto_disregardInstandKarma");
+		string disregardKarma = get_property("auto_disregardInstantKarma");
 		if(disregardKarma == "true")
 		{
 			set_property("auto_disregardInstantKamraBackup","true");

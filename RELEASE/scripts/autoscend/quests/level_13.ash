@@ -1759,7 +1759,9 @@ boolean L13_towerNSFinal()
 	// restore ML Safety Limit if this run changed it
 	if(property_exists("auto_MLSafetyLimitBackup"))
 	{
-		set_property("auto_MLSafetyLimit",get_property("auto_MLSafetyLimitBackup"));
+		string MLSafetyLimitBackup = get_property("auto_MLSafetyLimitBackup");
+		if(MLSafetyLimitBackup == "empty") set_property("auto_MLSafetyLimit","");
+		else set_property("auto_MLSafetyLimit", MLSafetyLimitBackup);
 		remove_property("auto_MLSafetyLimitBackup");
 	}
 	// restore disregard karma if this run changed it
