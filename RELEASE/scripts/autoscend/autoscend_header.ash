@@ -625,9 +625,6 @@ boolean inAftercore();
 boolean inPostRonin();
 void casualCheck();
 boolean L8_slopeCasual();
-void acquireFamiliarRagamuffinImp();
-void acquireFamiliarsCasual();
-boolean LX_acquireFamiliarLeprechaun();
 boolean LM_canInteract();
 
 ########################################################################################################
@@ -1241,6 +1238,10 @@ boolean autoAdv(int num, location loc, string option);		//num is ignored
 boolean autoAdv(int num, location loc);						//num is ignored
 boolean autoAdv(location loc);
 boolean autoAdv(location loc, string option);
+
+boolean autoLuckyAdv(location loc, boolean override);
+boolean autoLuckyAdv(location loc);
+
 boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option);
 boolean autoAdvBypass(string url, location loc);
 boolean autoAdvBypass(string url, location loc, string option);
@@ -1392,11 +1393,6 @@ boolean autoChooseFamiliar(location place);
 boolean haveSpleenFamiliar();
 boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
-boolean checkTerrarium();
-void getTerrarium();
-boolean hatchFamiliar(familiar adult);
-void hatchList();
-void acquireFamiliars();
 
 ########################################################################################################
 //Defined in autoscend/auto_list.ash
@@ -1659,7 +1655,9 @@ item whatHiMein();
 boolean ovenHandle();
 boolean isGhost(monster mon);
 boolean isProtonGhost(monster mon);
+int cloversAvailable(boolean override);
 int cloversAvailable();
+boolean cloverUsageInit(boolean override);
 boolean cloverUsageInit();
 boolean cloverUsageRestart();
 boolean cloverUsageFinish();

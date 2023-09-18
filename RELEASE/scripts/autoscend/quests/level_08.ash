@@ -327,21 +327,8 @@ boolean L8_getMineOres()
 	}
 	
 	// try to clover for the ore
-	int numCloversKeep = 0;
-	if(get_property("auto_wandOfNagamar").to_boolean())
+	if (autoLuckyAdv($location[Itznotyerzitz Mine]))
 	{
-		numCloversKeep = 1;
-		if(isAboutToPowerlevel())
-		{
-			numCloversKeep = 0;
-		}
-	}
-	if(cloversAvailable() > numCloversKeep)
-	{
-		cloverUsageInit();
-		autoAdvBypass(270, $location[Itznotyerzitz Mine]);
-		if(cloverUsageRestart()) autoAdvBypass(270, $location[Itznotyerzitz Mine]);
-		cloverUsageFinish();
 		return true;
 	}
 

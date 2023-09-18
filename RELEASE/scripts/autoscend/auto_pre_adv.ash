@@ -102,7 +102,7 @@ void auto_ghost_prep(location place)
 		Smoke Break,				//avatar of sneaky pete
 		Fireball Toss,				//path of the plumber
 		Chill of the Tomb,			//dark gyffte
-		Lavafava,					//avatar of west of loathing
+		Lavafava, Pungent Mung, Beanstorm,			  //avatar of west of loathing
 		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
 		]
 	{

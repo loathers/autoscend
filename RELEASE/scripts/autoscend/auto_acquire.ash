@@ -514,6 +514,9 @@ boolean acquireHermitItem(item it)
 	{
 		return false;
 	}
+	if (it == $item[11-leaf clover] && get_property("_cloversPurchased") >= 3) {
+		return false;
+	}
 	if(!isGeneralStoreAvailable())
 	{
 		return false;
@@ -776,19 +779,9 @@ int handlePulls(int day)
 			}
 		}
 
-		if(get_property("auto_dickstab").to_boolean())
-		{
-			pullXWhenHaveY($item[Shore Inc. Ship Trip Scrip], 3, 0);
-		}
-
 		if(auto_is_valid($item[Infinite BACON Machine]))
 		{
 			pullXWhenHaveY($item[Infinite BACON Machine], 1, 0);
-		}
-
-		if(is_unrestricted($item[Bastille Battalion control rig]))
-		{
-			string temp = visit_url("storage.php?action=pull&whichitem1=" + to_int($item[Bastille Battalion Control Rig]) + "&howmany1=1&pwd");
 		}
 
 		if(!in_pokefam() && auto_is_valid($item[Replica Bat-oomerang]))

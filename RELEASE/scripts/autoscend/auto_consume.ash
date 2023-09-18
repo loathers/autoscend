@@ -906,6 +906,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			if(!value_allowed)	continue;
 			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;
 			if((it == $item[Spaghetti Breakfast]) && (my_level() < 11 || my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean())) continue;
+			if(it == $item[Pizza of Legend] && get_property("pizzaOfLegendEaten").to_boolean()) continue;
+			if(it == $item[Calzone of Legend] && get_property("calzoneOfLegendEaten").to_boolean()) continue;
+			if(it == $item[Deep Dish of Legend] && get_property("deepDishOfLegendEaten").to_boolean()) continue;
 
 			int howmany = (it.inebriety > 0) ? 1 : 0;	//can consider a drink action past inebriety limit. but not food past fullness limit
 			howmany += organLeft()/organCost(it);

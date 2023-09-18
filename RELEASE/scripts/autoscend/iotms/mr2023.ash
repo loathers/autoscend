@@ -233,10 +233,11 @@ boolean auto_getCinch(int goal)
 		// don't have enough cinch and don't have any free rests left
 		return false;
 	}
-	if(!haveAnyIotmAlternativeRestSiteAvailable() && get_dwelling() == $item[big rock])
+	if(!haveAnyIotmAlternativeRestSiteAvailable() && (get_dwelling() == $item[big rock] && !in_small()))
 	{
 		// don't have anywhere to rest
 		// get dwelling returns big rock when no place to rest in campsite
+		// exception for Small path as you can't use housing in-run so you will always have a big rock.
 		return false;
 	}
 	// use free rests until have enough cinch or out of rests

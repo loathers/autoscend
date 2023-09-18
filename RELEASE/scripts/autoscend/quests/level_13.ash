@@ -1871,13 +1871,8 @@ boolean L13_towerNSNagamar()
 		return autoAdv($location[The VERY Unquiet Garves]);
 	}
 	
-	if(cloversAvailable() > 0)
-	{
-		cloverUsageInit();
-		autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
-		if(cloverUsageRestart()) autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
-		cloverUsageFinish();
-		if(creatable_amount($item[Wand Of Nagamar]) > 0)
+	if (autoLuckyAdv($location[The Castle in the Clouds in the Sky (Basement)], true)) {
+		if (creatable_amount($item[Wand Of Nagamar]) > 0)
 		{
 			return create(1, $item[Wand Of Nagamar]);
 		}

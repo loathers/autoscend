@@ -1765,9 +1765,6 @@ boolean doTasks()
 	auto_latteRefill();
 	auto_buyCrimboCommerceMallItem();
 	houseUpgrade();
-	getTerrarium();			//get a familiar terrarium if you do not have one yet so you can use familiars
-	acquireFamiliars();		//get useful and cheap familiars
-	hatchList();			//hatch familiars that are commonly dropped in run
 
 	//This just closets stuff so G-Lover does not mess with us.
 	if(LM_glover())						return true;
