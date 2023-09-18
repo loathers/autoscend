@@ -1873,11 +1873,7 @@ boolean L12_themtharHills()
 	if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]) && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
 		//use clover to get inhaler
-		cloverUsageInit();
-		boolean retval = autoAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
-		if(cloverUsageRestart()) retval = autoAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
-		cloverUsageFinish();
-		return retval;
+		return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
 	}
 
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
