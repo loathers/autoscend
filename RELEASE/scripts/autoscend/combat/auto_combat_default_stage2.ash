@@ -198,12 +198,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		combat_status_add("freeruncheck");
 	}
 
-	if (!combat_status_check("replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
+	if (!combat_status_check("replacercheck") && auto_wantToReplace(enemy, my_location()))
 	{
 		string combatAction = replaceMonsterCombatString(enemy, true);
 		if(combatAction != "")
 		{
-			combat_status_add("replacer");
+			//combat_status_add("replacer");
 			if(index_of(combatAction, "skill") == 0)
 			{
 				if (to_skill(substring(combatAction, 6)) == $skill[CHEAT CODE: Replace Enemy])
@@ -217,6 +217,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 				if (to_item(substring(combatAction, 5)) == $item[waffle])
 				{
 					handleTracker(enemy, $item[waffle],"auto_replaces");
+					abort("used a waffle");
 				}
 				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
 			}
