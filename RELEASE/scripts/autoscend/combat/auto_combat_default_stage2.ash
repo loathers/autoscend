@@ -216,6 +216,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			{
 				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
 				abort("Used item " + to_item(substring(combatAction, 5)));
+			}
 			else
 			{
 				auto_log_warning("Unable to track replacer behavior: " + combatAction, "red");
