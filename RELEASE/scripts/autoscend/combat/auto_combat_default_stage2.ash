@@ -203,7 +203,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		string combatAction = replaceMonsterCombatString(enemy, true);
 		if(combatAction != "")
 		{
-			//combat_status_add("replacer");
+			combat_status_add("replacer");
 			if(index_of(combatAction, "skill") == 0)
 			{
 				if (to_skill(substring(combatAction, 6)) == $skill[CHEAT CODE: Replace Enemy])

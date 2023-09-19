@@ -862,7 +862,7 @@ string replaceMonsterCombatString(monster target, boolean inCombat)
 	}
 	if(canUse($item[waffle]))
 	{
-		return useItem($item[waffle]);
+		return useItems($item[waffle], $item[none]);
 	}
 	return "";
 }
