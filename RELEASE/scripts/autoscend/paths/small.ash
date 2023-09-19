@@ -38,7 +38,7 @@ void small_initializeSettings()
 		string disregardKarma = get_property("auto_disregardInstantKarma");
 		if(disregardKarma == "true")
 		{
-			set_property("auto_disregardInstantKamraBackup","true");
+			set_property("auto_disregardInstantKarmaBackup","true");
 			set_property("auto_disregardInstantKarma", "false");
 		}
 	}
