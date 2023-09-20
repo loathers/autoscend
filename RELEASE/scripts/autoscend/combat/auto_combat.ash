@@ -77,10 +77,16 @@ void auto_combatInitialize(int round, monster enemy, string text)
 
 string auto_combatHandler(int round, monster enemy, string text)
 {
-	if(round > 25)
+	if(round > 25 && !($monsters[The Man, The Big Wisniewski] contains enemy))	//war bosses can go to round 50
 	{
 		abort("Some sort of problem occurred, it is past round 25 but we are still in non-gremlin combat...");
 	}
+
+	if(round > 45)
+	{
+		abort("Some sort of problem occurred, it is past round 45 but we are still in a combat with a war boss...");
+	}
+
 	auto_combatInitialize(round, enemy, text);		//reset properties on round 0 of a new combat
 	string retval;
 	boolean blocked = contains_text(text, "(STUN RESISTED)");
