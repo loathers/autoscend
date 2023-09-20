@@ -432,7 +432,7 @@ void auto_scepterSkills()
 		{
 			if(!is100FamRun())
 			{
-				use_familiar($familiar[Mosquito]); //equipping Mosquito so we don't get a big rock
+				use_familiar(findNonRockFamiliarInTerrarium()); //equipping any non-rock fam so we don't get a big rock
 			}
 			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
 		}
