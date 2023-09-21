@@ -233,7 +233,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		else
 		{
 			auto_log_warning("Wanted a replacer but we can not find one.", "red");
-			abort("Didn't find a replacer");
 		}
 		combat_status_add("replacercheck");
 	}
