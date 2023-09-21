@@ -214,9 +214,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			else if(index_of(combatAction, "item") == 0)
 			{
-				if(contains_text(combatAction, ","))
+				if(contains_text(combatAction, ", none"))
 				{
-					int commapos = index_of(combatAction, ",");
+					int commapos = index_of(combatAction, ", none");
 					handleTracker(enemy, to_item(substring(combatAction, 5, commapos)), "auto_replaces");
 				}
 				else
