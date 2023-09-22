@@ -2064,7 +2064,7 @@ void consumeStuff()
 		if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 
 		&& pathAllowsChangingFamiliar()) //check path allows changing of familiars
 		{
-			use_familiar($familiar[Mosquito]);
+			use_familiar(findNonRockFamiliarInTerrarium());
 		}
 
 		ConsumeAction bestAction = auto_findBestConsumeAction();
