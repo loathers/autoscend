@@ -375,7 +375,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		combat_status_add("banishercheck");
 	}
 
-	if (!combat_status_check("replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
+	if (!combat_status_check("replacercheck") && auto_wantToReplace(enemy, my_location()))
 	{
 		string combatAction = replaceMonsterCombatString(enemy, true);
 		if(combatAction != "")

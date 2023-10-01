@@ -198,7 +198,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		combat_status_add("freeruncheck");
 	}
 
-	if (!combat_status_check("replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
+	if (!combat_status_check("replacercheck") && auto_wantToReplace(enemy, my_location()))
 	{
 		string combatAction = replaceMonsterCombatString(enemy, true);
 		if(combatAction != "")
@@ -214,7 +214,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			else if(index_of(combatAction, "item") == 0)
 			{
-				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
+				if(contains_text(combatAction, ", none"))
+				{
+					int commapos = index_of(combatAction, ", none");
+					handleTracker(enemy, to_item(substring(combatAction, 5, commapos)), "auto_replaces");
+				}
+				else
+				{
+					handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
+				}
 			}
 			else
 			{
