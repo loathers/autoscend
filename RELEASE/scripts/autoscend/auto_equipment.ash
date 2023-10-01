@@ -1043,8 +1043,14 @@ void equipRollover(boolean silent)
 		to_max += ",switch Trick-or-Treating Tot";
 	if(auto_have_familiar($familiar[Left-Hand Man]))
 		to_max += ",switch Left-Hand Man";
-	if(my_familiar() == $familiar[none] && auto_have_familiar($familiar[Mosquito]))
-		to_max += ",switch Mosquito";
+	if(my_familiar() == $familiar[none])
+	{
+		familiar anyFam = findNonRockFamiliarInTerrarium();
+		if(anyFam != $familiar[none])
+		{
+			to_max += ",switch " + anyFam.to_string();
+		}
+	}
 
 	maximize(to_max, false);
 
