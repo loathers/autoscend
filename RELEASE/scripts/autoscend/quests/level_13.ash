@@ -1756,6 +1756,22 @@ boolean L13_towerNSFinal()
 		}
 	}
 
+	// restore ML Safety Limit if this run changed it
+	if(property_exists("auto_MLSafetyLimitBackup"))
+	{
+		string MLSafetyLimitBackup = get_property("auto_MLSafetyLimitBackup");
+		if(MLSafetyLimitBackup == "empty") set_property("auto_MLSafetyLimit","");
+		else set_property("auto_MLSafetyLimit", MLSafetyLimitBackup);
+		remove_property("auto_MLSafetyLimitBackup");
+	}
+	// restore disregard karma if this run changed it
+	if(property_exists("auto_disregardInstantKarmaBackup"))
+	{
+		set_property("auto_disregardInstantKarma",get_property("auto_disregardInstantKarmaBackup"));
+		remove_property("auto_disregardInstantKarmaBackup");
+	}
+
+
 	if(get_property("auto_stayInRun").to_boolean())
 	{
 		abort("User wanted to stay in run (auto_stayInRun), we are done.");

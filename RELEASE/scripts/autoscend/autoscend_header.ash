@@ -857,6 +857,7 @@ boolean qt_FamiliarSwap (familiar fam);
 boolean in_small();
 void small_initializeSettings();
 void auto_SmallPulls();
+boolean auto_smallCampgroundGear();
 
 ########################################################################################################
 //Defined in autoscend/paths/the_source.ash

@@ -1855,6 +1855,7 @@ boolean doTasks()
 	if(LA_wildfire())					return true;
 	if(LA_robot())						return true;
 	if(auto_autumnatonQuest())			return true;
+	if(auto_smallCampgroundGear())		return true;
 	auto_lostStomach(false);
 	
 	if (process_tasks()) return true;

@@ -668,7 +668,7 @@ boolean auto_pre_adventure()
 		boolean purgeML = false;
 
 	boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, The Defiled Cranny];
-	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
+	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp, Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass];
 
 	// Generic Conditions
 	if(inAftercore())

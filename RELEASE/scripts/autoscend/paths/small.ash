@@ -17,7 +17,30 @@ void small_initializeSettings()
 	{
 		//having vastly lower stats and no easy solutions in hardcore means you always die from flyering
 		//should be replaced with a more elegant solution where detailed estimation / calculation is done.
-		set_property("auto_ignoreFlyer", true);
+		//set_property("auto_ignoreFlyer", true);
+
+		//cap ML to 50 to help avoid getting beaten up
+		int MLCap = 50;
+		string MLSafetyLimit = get_property("auto_MLSafetyLimit");
+		if(MLSafetyLimit == "")
+		{
+			set_property("auto_MLSafetyLimitBackup","empty");
+			set_property("auto_MLSafetyLimit",MLCap);
+		}
+		if(MLSafetyLimit.to_int() > MLCap)
+		{
+			// record existing MLSafetyLimit so it can be restored at end of run
+			set_property("auto_MLSafetyLimitBackup",MLSafetyLimit);
+			set_property("auto_MLSafetyLimit",MLCap);
+		}
+
+		// don't disregard instant karma either. Helps keep ML low
+		string disregardKarma = get_property("auto_disregardInstantKarma");
+		if(disregardKarma == "true")
+		{
+			set_property("auto_disregardInstantKarmaBackup","true");
+			set_property("auto_disregardInstantKarma", "false");
+		}
 	}
 }
 
@@ -44,4 +67,56 @@ void auto_SmallPulls()
 		pullXWhenHaveY($item[Sea salt scrubs], 1, 0);
 	}
 
+}
+
+boolean auto_smallCampgroundGear()
+{
+	if(!in_small())
+	{
+		return false;
+	}
+
+	// don't get campground gear in in Normal and haven't gotten beaten up
+	int beatenUpCount = get_property("auto_beatenUpCount").to_int();
+	if(!in_hardcore() && beatenUpCount == 0)
+	{
+		return false;
+	}
+
+	boolean [item] dirtGear = $items[mesquito proboscis, ncle leg, rutabuga bag, senate fly thorax];
+	boolean [item] tallGrassGear = $items[birdybug antenna, daddy shortlegs leg, kilopede skull];
+	boolean [item] veryTallGrassGear = $items[beetle antenna, mantis skull, spider leg];
+	boolean haveGear(boolean [item] gear)
+	{
+		foreach it in gear
+		{
+			if(item_amount(it) == 0 && !have_equipped(it))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// get drops from dirt if we can survive at least 2 rounds of getting hit
+	// always get dirt drops in HC small
+	if(!haveGear(dirtGear))
+	{
+		return autoAdv($location[Fight in the Dirt]);
+	}
+	// get tall grass drops if we have gotten beaten up and can survive at least 2 rounds of getting hit
+	else if(beatenUpCount > 0 && !haveGear(tallGrassGear) && (my_maxhp() > expected_damage($monster[kilopede]) * 2))
+	{
+		return autoAdv($location[Fight in the Tall Grass]);
+	}
+
+/*
+	// monsters here need spading. Don't know details of how they scale. Uncomment when mafia gets this info
+	// get tall grass drops if we have gotten beaten up twice and can survive at least 2 rounds of getting hit
+	else if(beatenUpCount > 0 && !haveGear(veryTallGrassGear) && (my_maxhp() > expected_damage($monster[flagellating mantis]) * 2))
+	{
+		return autoAdv($location[Fight in the Very Tall Grass]);
+	}
+*/
+	return false;
 }

@@ -349,6 +349,17 @@ generic_t zone_needItem(location loc)
 		retval._float = 50.0;
 		break;
 	// End Bugbear Invasion Locations
+	// A Shrunken Adventurer Am I (Small) Locations
+	case $location[Fight in the Dirt]:
+		value = 50.0;
+		break;
+	case $location[Fight in the Tall Grass]:
+		value = 50.0;
+		break;
+	case $location[Fight in the Very Tall Grass]:
+		value = 50.0;
+		break;
+	// End A Shrunken Adventurer Am I (Small) Locations
 	default:
 		retval._error = true;
 		break;
