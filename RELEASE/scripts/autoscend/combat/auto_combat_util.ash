@@ -417,6 +417,22 @@ boolean enemyCanBlocksSkills()
 	return false;
 }
 
+boolean enemyCanDodgeAttacks()
+{
+	//we want to know if enemy can sometimes dodge an attack
+	
+	monster enemy = last_monster();
+	
+	if($monsters[
+	fleaman
+	] contains enemy)
+	{
+		return true;
+	}
+	
+	return false;
+}
+
 boolean canSurvive(float mult, int add)
 {
 	int damage = expected_damage();

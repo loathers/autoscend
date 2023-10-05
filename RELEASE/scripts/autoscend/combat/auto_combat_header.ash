@@ -32,6 +32,7 @@ skill getSniffer(monster enemy, boolean inCombat);
 skill getSniffer(monster enemy);
 skill getStunner(monster enemy);
 boolean enemyCanBlocksSkills();
+boolean enemyCanDodgeAttacks();
 boolean canSurvive(float mult, int add);
 boolean canSurvive(float mult);
 boolean hasClubEquipped();
