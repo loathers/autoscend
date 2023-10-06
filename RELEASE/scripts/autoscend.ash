@@ -1,4 +1,4 @@
-since r27557;	// support small path
+since r27635;	// support jill-of-all-trades
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
