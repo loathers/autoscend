@@ -510,10 +510,17 @@ void auto_handleJillOfAllTrades()
 		return;
 	}
 
+	// only bother to configure candle if Jill is equiped
+	if(my_familiar() != $familiar[Jill-of-All-Trades])
+	{
+		return;
+	}
+
 	string currentMode = getParsedCandleMode();
 	// want to configure jill to have bonus of whatever fam type we last looked up
 	string desiredCandleMode = get_property("auto_lastFamiliarLoopupType");
 
+	auto_log_debug(`Jill current mode: {currentMode} and desired is {desiredCandleMode}`);
 	if(currentMode == desiredCandleMode)
 	{
 		return;
