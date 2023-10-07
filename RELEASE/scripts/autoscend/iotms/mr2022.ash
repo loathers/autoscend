@@ -157,11 +157,9 @@ boolean auto_haveGreyGoose()
 int gooseExpectedDrones()
 {
 	if(!auto_haveGreyGoose()) return 0;
-	if(my_familiar() == $familiar[Grey Goose])
-	{
-		set_property("auto_gooseExpectedDrones", familiar_weight($familiar[Grey Goose]) - 5);
-	}
-	return get_property("auto_gooseExpectedDrones").to_int();
+	int gooseWeight = familiar_weight($familiar[Grey Goose]);
+	if(gooseWeight < 5) return 0;
+	return gooseWeight - 5;
 }
 
 boolean dronesOut() //want a function to override the task order if we have drones out so as not to waste them
