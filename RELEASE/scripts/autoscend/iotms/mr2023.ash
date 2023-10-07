@@ -474,3 +474,12 @@ void auto_lostStomach(boolean force)
 		use_skill($skill[Aug. 16th: Roller Coaster Day!]);
 	}
 }
+
+boolean auto_haveJillOfAllTrades()
+{
+	if(auto_have_familiar($familiar[Jill-of-All-Trades]))
+	{
+		return true;
+	}
+	return false;
+}
