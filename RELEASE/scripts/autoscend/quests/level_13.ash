@@ -82,6 +82,9 @@ boolean EightBitRealmHandler()
 		case "red":
 			buffMaintain($effect[Polka of Plenty], 30, 1, 1);
 			addToMaximize("200meat drop 550max");
+			if(meat_drop_modifier() < 395){
+				auto_getCitizenZone("meat");
+			}
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
@@ -95,6 +98,9 @@ boolean EightBitRealmHandler()
 			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
 			buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
 			addToMaximize("200item 500max");
+			if(item_drop_modifier() < 370){
+				auto_getCitizenZone("item");
+			}
 			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;
 		default:
@@ -1459,6 +1465,9 @@ boolean L13_towerNSTower()
 		if(my_class() == $class[Seal Clubber])
 		{
 			autoEquip($item[Meat Tenderizer is Murder]);
+		}
+		if(meat_drop_modifier() < 475){
+			auto_getCitizenZone("meat");
 		}
 
 		acquireHP();

@@ -462,6 +462,7 @@ boolean LX_unlockManorSecondFloor() {
 			auto_log_info("Attemping to use Map the Monsters to olfact a writing desk.");
 		}
 	}
+	auto_getCitizenZone("item"); //since library is next anyway
 	return autoAdv($location[The Haunted Library]);
 }
 
