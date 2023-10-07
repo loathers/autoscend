@@ -194,7 +194,7 @@ boolean L7_crypt()
 	// not delaying better distributes these charges across days
 	// keep only 11 underground turns in the last 20 advs
 	string[int] lCEMap;
-	lCEMap = split_string(get_property("lastCombatEnvironments"),"");
+	lCEMap = split_string(get_property("lastCombatEnvironments").to_string(),"");
 	int uTurns;
 	foreach turn in lCEMap {
 		if (lCEMap[turn] == "u") {uTurns +=1};

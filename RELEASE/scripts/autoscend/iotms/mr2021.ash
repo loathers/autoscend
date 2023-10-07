@@ -900,7 +900,7 @@ void auto_CMCconsult()
 	{
 		//only looking for Breathitin from at least 11 fights spent underground
 		string[int] lCEMap;
-		lCEMap = split_string(get_property("lastCombatEnvironments","").to_string());
+		lCEMap = split_string(get_property("lastCombatEnvironments").to_string(),"");
 		int uTurns;
 		foreach turn in lCEMap {
 			if (lCEMap[turn] == "u") {uTurns +=1};
