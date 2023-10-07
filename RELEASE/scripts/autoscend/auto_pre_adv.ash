@@ -809,6 +809,7 @@ boolean auto_pre_adventure()
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	auto_handleParka(); //same as retrocape above
+	auto_handleJillOfAllTrades(); // need to configure jill to have desired bonus
 	cli_execute("checkpoint clear");
 
 	//before guaranteed non combats that give stats, overrule maximized equipment to increase stat gains

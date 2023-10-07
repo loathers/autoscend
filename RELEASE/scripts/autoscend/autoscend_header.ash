@@ -523,6 +523,7 @@ boolean auto_haveAugustScepter();
 void auto_scepterSkills();
 void auto_lostStomach();
 boolean auto_haveJillOfAllTrades();
+void auto_handleJillOfAllTrades();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

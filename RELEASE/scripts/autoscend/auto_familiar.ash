@@ -282,6 +282,8 @@ familiar lookupFamiliarDatafile(string type)
 	//we do not want a fallback here. if no matching familiar is found then do nothing here, a familiar will be automatically set in pre adventure
 	
 	auto_log_debug("lookupFamiliarDatafile is checking for type [" + type + "]");
+	// store what type of fam we are looking for
+	set_property("auto_lastFamiliarLoopupType",type);
 	string [string,int,string] familiars_text;
 	if(!file_to_map("autoscend_familiars.txt", familiars_text))
 	{
