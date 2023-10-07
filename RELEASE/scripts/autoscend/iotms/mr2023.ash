@@ -475,7 +475,7 @@ void auto_lostStomach(boolean force)
 	}
 }
 
-void auto_haveEagle()
+boolean auto_haveEagle()
 {
 	if(auto_have_familiar($familiar[Patriotic Eagle]))
 	{

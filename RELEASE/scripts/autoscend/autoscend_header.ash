@@ -522,7 +522,7 @@ void auto_useBlackMonolith();
 boolean auto_haveAugustScepter();
 void auto_scepterSkills();
 void auto_lostStomach();
-void auto_haveEagle();
+boolean auto_haveEagle();
 boolean auto_getCitizenZone(string goal);
 
 ########################################################################################################
