@@ -192,9 +192,17 @@ boolean L7_crypt()
 	// crypt is underground so it will generate breathitins, 5 turns free outside
 	// allow adventuring in Alcove (above) since many backup charges get used for modern zmobies
 	// not delaying better distributes these charges across days
-	if(auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 && 
+	// keep only 11 underground turns in the last 20 advs
+	string[int] lCEMap;
+	lCEMap = split_string(get_property("lastCombatEnvironments",""));
+	int uTurns;
+	foreach turn in lCEMap {
+		if (lCEMap[turn] == "u") {uTurns +=1};
+	}
+	if((auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 && 
 		get_workshed() != $item[cold medicine cabinet] && !isAboutToPowerlevel() && 
-		(LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
+		(LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none])) ||
+		(get_workshed() == $item[cold medicine cabinet] && uTurns > 11))
 	{
 		return false;
 	}

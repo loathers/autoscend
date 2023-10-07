@@ -899,7 +899,13 @@ void auto_CMCconsult()
 	else if(auto_CMCconsultsLeft() <= 2 && freeCrafts() >= 5 && possessEquipment($item[ice crown]) && my_meat() >= meatReserve())
 	{
 		//only looking for Breathitin from at least 11 fights spent underground
-		if(my_location().environment != "underground")
+		string[int] lCEMap;
+		lCEMap = split_string(get_property("lastCombatEnvironments",""));
+		int uTurns;
+		foreach turn in lCEMap {
+			if (lCEMap[turn] == "u") {uTurns +=1};
+		}
+		if(uTurns < 11)
 		{
 			//if Breathitin was not available last turn and last location was not underground it will still not be available now so no visit needed
 			return;

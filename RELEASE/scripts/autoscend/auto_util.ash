@@ -841,6 +841,15 @@ boolean auto_wantToBanish(monster enemy, location loc)
 	return monstersToBanish[enemy];
 }
 
+boolean auto_wantPhylumBanish(phylum enemyphylum, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [phylum] phylumToBanish = auto_getMonsters("phylumbanish");
+	set_location(locCache);
+	return phylumToBanish[enemyphylum];
+}
+
 boolean canBanish(monster enemy, location loc)
 {
 	return banisherCombatString(enemy, loc) != "";
@@ -889,6 +898,10 @@ boolean adjustForBanish(string combat_string)
 	if(combat_string == "skill " + $skill[KGB Tranquilizer Dart])
 	{
 		return autoEquip($item[Kremlin\'s Greatest Briefcase]);
+	}
+	if(combat_string == "skill" + $skill[%fn\, Release the Patriotic Screech!])
+	{
+		return use_familiar($familiar[Patriotic Eagle]);
 	}
 	if(combat_string == "skill " + $skill[Beancannon])
 	{

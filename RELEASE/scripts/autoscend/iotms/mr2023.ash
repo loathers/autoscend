@@ -448,7 +448,7 @@ void auto_scepterSkills()
 		{
 			if(!is100FamRun())
 			{
-				handleFamiliar("stat"); //get any familiar equipped if not in a 100% run
+				use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
 			}
 			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
 		}
@@ -473,4 +473,51 @@ void auto_lostStomach(boolean force)
 	{
 		use_skill($skill[Aug. 16th: Roller Coaster Day!]);
 	}
+}
+
+void auto_haveEagle()
+{
+	if(auto_have_familiar($familiar[Patriotic Eagle]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_getCitizenZone(string goal)
+{
+	familiar eagle = $familiar[Patriotic Eagle];
+	string activeCitZoneMod = get_property("auto_patEagleGoal").to_string();
+	if !auto_haveEagle()
+	{
+		return false;
+	}
+	if(have_effect($effect[Citizen of a Zone]) && goal == activeCitZoneMod)
+	{
+		return false;
+	}
+	if(goal != activeCitZoneMod && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0)
+	{
+		uneffect($effect[Citizen of a Zone]);
+	}
+	//Get +30% item
+	if(can_adventure($location[The Haunted Library]) && goal == "item")
+	{
+		use_familiar(eagle);
+		set_property("auto_patEagleGoal", "item")
+		return autoAdv($location[The Haunted Library]);
+	}
+	//Get +50% meat
+	if(can_adventure($location[Lair of the Ninja Snowmen]) && goal == "meat")
+	{
+		use_familiar(eagle);
+		return autoAdv($location[Lair of the Ninja Snowmen]);
+	}
+	//Get +100% initiative
+	if(can_adventure($location[The Haunted Kitchen]) && goal == "initiative")
+	{
+		use_familiar(eagle);
+		return autoAdv($location[The Haunted Kitchen]);
+	}
+	return false;
 }

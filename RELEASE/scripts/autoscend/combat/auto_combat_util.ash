@@ -501,6 +501,9 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if(!auto_wantToBanish(enemy, loc))
 		return "";
 
+	if(!auto_wantPhylumBanish(enemy.phylum, loc))
+		return "";
+
 	if(inCombat)
 		auto_log_info("Finding a banisher to use on " + enemy + " at " + loc, "green");
 
@@ -613,7 +616,10 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
 	}
-
+	if(auto_have_skill($skill[%fn\, Release the Patriotic Screech!]) && !(used contains "Release the Patriotic Screech!") && auto_wantPhylumBanish(enemy.phylum, loc))
+	{
+		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
+	}
 	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
 	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]) && !(used contains "Bowl a Curveball"))
 	{

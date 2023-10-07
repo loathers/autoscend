@@ -234,6 +234,13 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		handleTracker($skill[%fn\, spit on them!], enemy, "auto_otherstuff");
 		return useSkill($skill[%fn\, spit on them!], true);
 	}
+
+	//[Patriotic Eagle] familiar skill that gives a useful buff
+	if ($locations[The Haunted Library, The Haunted Laundry Room, Whitey\'s Grove, Lair of the Ninja Snowmen, The Hidden Hospital, The Haunted Bathroom, An Oasis, The Haunted Kitchen, Oil Peak] contains my_location() && canUse($skill[%fn\, let's pledge allegiance to a Zone]))
+	{
+		handleTracker($skill[%fn\, let's pledge allegiance to a Zone!], enemy, "auto_otherstuff");
+		return useSkill($skill[%fn\, let's pledge allegiance to a Zone!], true);
+	}
 	
 	//duplicate turns the enemy from a single enemy into a mob containing 2 copies of this enemy. Doubling their stats and doubling their drops
 	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !inAftercore() && !in_nuclear())

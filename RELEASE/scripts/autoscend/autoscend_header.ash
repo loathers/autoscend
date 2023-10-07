@@ -522,6 +522,8 @@ void auto_useBlackMonolith();
 boolean auto_haveAugustScepter();
 void auto_scepterSkills();
 void auto_lostStomach();
+void auto_haveEagle();
+boolean auto_getCitizenZone(string goal);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1626,6 +1628,7 @@ boolean canYellowRay(monster target);
 boolean canYellowRay();
 boolean[string] auto_banishesUsedAt(location loc);
 boolean auto_wantToBanish(monster enemy, location loc);
+boolean auto_wantPhylumBanish(phylum enemyphylum, location loc);
 boolean canBanish(monster enemy, location loc);
 boolean adjustForBanish(string combat_string);
 boolean adjustForBanishIfPossible(monster enemy, location loc);
