@@ -236,10 +236,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	}
 
 	//[Patriotic Eagle] familiar skill that gives a useful buff
-	if ($locations[The Haunted Library, The Haunted Laundry Room, Whitey\'s Grove, Lair of the Ninja Snowmen, The Hidden Hospital, The Haunted Bathroom, The Oasis, The Haunted Kitchen, Oil Peak] contains my_location() && canUse($skill[%fn\, let's pledge allegiance to a Zone]))
+	if ($locations[The Haunted Library, The Haunted Laundry Room, Whitey\'s Grove, Lair of the Ninja Snowmen, The Hidden Hospital, The Haunted Bathroom, The Oasis, The Haunted Kitchen, Oil Peak] contains my_location() && canUse($skill[%fn\, let\'s pledge allegiance to a Zone]))
 	{
-		handleTracker($skill[%fn\, let's pledge allegiance to a Zone!], enemy, "auto_otherstuff");
-		return useSkill($skill[%fn\, let's pledge allegiance to a Zone!], true);
+		handleTracker($skill[%fn\, let\'s pledge allegiance to a Zone!], enemy, "auto_otherstuff");
+		return useSkill($skill[%fn\, let\'s pledge allegiance to a Zone!], true);
 	}
 	
 	//duplicate turns the enemy from a single enemy into a mob containing 2 copies of this enemy. Doubling their stats and doubling their drops
