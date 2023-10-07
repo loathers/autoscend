@@ -193,11 +193,12 @@ boolean L7_crypt()
 	// allow adventuring in Alcove (above) since many backup charges get used for modern zmobies
 	// not delaying better distributes these charges across days
 	// keep only 11 underground turns in the last 20 advs
+	string lCE = get_property("lastCombatEnvironments");
 	string[int] lCEMap;
-	lCEMap = split_string(get_property("lastCombatEnvironments").to_string(),"");
+	lCEMap = split_string(lCE,"");
 	int uTurns;
 	foreach turn in lCEMap {
-		if (lCEMap[turn] == "u") {uTurns +=1};
+		if (lCEMap[turn] == "u") {uTurns +=1;}
 	}
 	if((auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 && 
 		get_workshed() != $item[cold medicine cabinet] && !isAboutToPowerlevel() && 

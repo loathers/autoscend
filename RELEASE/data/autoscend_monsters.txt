@@ -56,19 +56,6 @@ banish	49	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering;!sniffed
 banish	50	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation;!sniffed:ancient unspeakable bugbear
 banish	51	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!sniffed:trendy bugbear chef
 
-phylumbanish	0	dude loc:The Black Forest
-phylumbanish	1	dude loc:Twin Peak
-phylumbanish	2	dude loc:Whitey's Grove
-phylumbanish	3	beast loc:The Hidden Park
-phylumbanish	4	beast loc:Inside the Palindome
-phylumbanish	5	beast loc:The Penultimate Fantasy Airship
-phylumbanish	6	construct loc:The Penultimate Fantasy Airship
-phylumbanish	7	undead loc:The Haunted Library
-phylumbanish	8	undead loc:The Red Zeppelin
-phylumbanish	9	undead loc:The Haunted Wine Cellar
-phylumbanish	10	undead loc:The Haunted Boiler Room
-phylumbanish	11	undead loc:The Middle Chamber
-
 replace	0	Banshee Librarian	item:Killing Jar>0
 replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber;!pathid:41;!path:Wildfire;!path:Fall of the Dinosaurs;!path:Avator of Shadows Over Loathing;!path:Legacy of Loathing
 replace	2	Knob Goblin Madam	item:Knob Goblin Perfume>0

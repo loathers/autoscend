@@ -487,12 +487,12 @@ boolean auto_haveEagle()
 boolean auto_getCitizenZone(string goal)
 {
 	familiar eagle = $familiar[Patriotic Eagle];
-	string activeCitZoneMod = get_property("auto_patEagleGoal").to_string();
-	if !auto_haveEagle()
+	string activeCitZoneMod = get_property("auto_patEagleGoal");
+	if(!auto_haveEagle())
 	{
 		return false;
 	}
-	if(have_effect($effect[Citizen of a Zone]) && goal == activeCitZoneMod)
+	if(have_effect($effect[Citizen of a Zone]) > 0 && goal == activeCitZoneMod)
 	{
 		return false;
 	}
@@ -504,7 +504,7 @@ boolean auto_getCitizenZone(string goal)
 	if(can_adventure($location[The Haunted Library]) && goal == "item")
 	{
 		use_familiar(eagle);
-		set_property("auto_patEagleGoal", "item")
+		set_property("auto_patEagleGoal", "item");
 		return autoAdv($location[The Haunted Library]);
 	}
 	//Get +50% meat

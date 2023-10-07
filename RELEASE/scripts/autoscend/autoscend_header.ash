@@ -1753,6 +1753,7 @@ boolean auto_can_equip(item it);
 boolean auto_can_equip(item it, slot s);
 boolean auto_check_conditions(string conds);
 boolean [monster] auto_getMonsters(string category);
+boolean [phylum] auto_getPhylum(string category);
 boolean auto_wantToSniff(monster enemy, location loc);
 boolean auto_wantToYellowRay(monster enemy, location loc);
 boolean auto_wantToReplace(monster enemy, location loc);

@@ -845,7 +845,7 @@ boolean auto_wantPhylumBanish(phylum enemyphylum, location loc)
 {
 	location locCache = my_location();
 	set_location(loc);
-	boolean [phylum] phylumToBanish = auto_getMonsters("phylumbanish");
+	boolean [phylum] phylumToBanish = auto_getPhylum("banish");
 	set_location(locCache);
 	return phylumToBanish[enemyphylum];
 }
@@ -3655,6 +3655,27 @@ boolean [monster] auto_getMonsters(string category)
 		if(!auto_check_conditions(conds))
 			continue;
 		res[thisMonster] = true;
+	}
+	return res;
+}
+
+boolean [phylum] auto_getPhylum(string category)
+{
+	boolean [phylum] res;
+	string [string,int,string] phylum_text;
+	if(!file_to_map("autoscend_phylum.txt", phylum_text))
+		auto_log_error("Could not load autoscend_phylum.txt. This is bad!");
+	foreach i,name,conds in phylum_text[category]
+	{
+		phylum thisPhylum = name.to_phylum();
+		if(thisPhylum == $phylum[none])
+		{
+			auto_log_warning('"' + name + '" does not convert to a phylum properly!', "red");
+			continue;
+		}
+		if(!auto_check_conditions(conds))
+			continue;
+		res[thisPhylum] = true;
 	}
 	return res;
 }

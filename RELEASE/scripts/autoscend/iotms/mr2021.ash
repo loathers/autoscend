@@ -899,11 +899,12 @@ void auto_CMCconsult()
 	else if(auto_CMCconsultsLeft() <= 2 && freeCrafts() >= 5 && possessEquipment($item[ice crown]) && my_meat() >= meatReserve())
 	{
 		//only looking for Breathitin from at least 11 fights spent underground
+		string lCE = get_property("lastCombatEnvironments");
 		string[int] lCEMap;
-		lCEMap = split_string(get_property("lastCombatEnvironments").to_string(),"");
+		lCEMap = split_string(lCE,"");
 		int uTurns;
 		foreach turn in lCEMap {
-			if (lCEMap[turn] == "u") {uTurns +=1};
+			if (lCEMap[turn] == "u") {uTurns +=1;}
 		}
 		if(uTurns < 11)
 		{
