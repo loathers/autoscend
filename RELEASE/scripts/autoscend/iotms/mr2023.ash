@@ -483,3 +483,61 @@ boolean auto_haveJillOfAllTrades()
 	}
 	return false;
 }
+
+string getParsedCandleMode()
+{
+	// returns candle mode which matches our familiar categories
+	switch(get_property("ledCandleMode"))
+	{
+		case "disco":
+			return "item";
+		case "ultraviolet":
+			return "meat";
+		case "reading":
+			return "stat";
+		case "red":
+			return "boss";
+		default:
+			return "unknown";
+		
+	}
+}
+
+void auto_handleJillOfAllTrades()
+{
+	if (!auto_haveJillOfAllTrades() || item_amount($item[LED candle]) == 0)
+	{
+		return;
+	}
+
+	string currentMode = getParsedCandleMode();
+	// want to configure jill to have bonus of whatever fam type we last looked up
+	string desiredCandleMode = get_property("auto_lastFamiliarLoopupType");
+
+	if(currentMode == desiredCandleMode)
+	{
+		return;
+	}
+
+	switch(desiredCandleMode)
+	{
+		case "item":
+		case "regen":
+			cli_execute("jillcandle item");
+			break;
+		case "meat":
+			cli_execute("jillcandle meat");
+			break;
+		case "stat":
+		case "drop":
+			cli_execute("jillcandle stat");
+			break;
+		case "boss":
+			cli_execute("jillcandle attack");
+			break;
+		default:
+			abort("tried to configure Jill's LED Candle with a non-supported type");
+	}
+
+	return;
+}
