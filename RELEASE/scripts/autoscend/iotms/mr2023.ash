@@ -487,37 +487,57 @@ boolean auto_haveEagle()
 boolean auto_getCitizenZone(string goal)
 {
 	familiar eagle = $familiar[Patriotic Eagle];
-	string activeCitZoneMod = get_property("auto_patEagleGoal");
+	string activeCitZoneMod = get_property("_citizenZoneMods").to_lower_case();
 	if(!auto_haveEagle())
 	{
 		return false;
 	}
-	if(have_effect($effect[Citizen of a Zone]) > 0 && goal == activeCitZoneMod)
+	if(have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal))
 	{
 		return false;
 	}
-	if(goal != activeCitZoneMod && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0)
+	if(!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0)
 	{
 		uneffect($effect[Citizen of a Zone]);
 	}
-	//Get +30% item
-	if(can_adventure($location[The Haunted Library]) && goal == "item")
+	switch(goal)
 	{
-		use_familiar(eagle);
-		set_property("auto_patEagleGoal", "item");
-		return autoAdv($location[The Haunted Library]);
-	}
-	//Get +50% meat
-	if(can_adventure($location[Lair of the Ninja Snowmen]) && goal == "meat")
-	{
-		use_familiar(eagle);
-		return autoAdv($location[Lair of the Ninja Snowmen]);
-	}
-	//Get +100% initiative
-	if(can_adventure($location[The Haunted Kitchen]) && goal == "initiative")
-	{
-		use_familiar(eagle);
-		return autoAdv($location[The Haunted Kitchen]);
+		case  "meat": //Get +50% meat
+			if(can_adventure($location[Lair of the Ninja Snowmen]))
+			{
+				handleFamiliar(eagle);
+				if(autoAdv($location[Lair of the Ninja Snowmen]) && contains_text(activeCitZoneMod, goal))
+				{
+					set_property("auto_patEagleCitizenZone", goal);
+					handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
+					return true;
+				}
+				return false;
+			}
+		case "initiative": //Get +100% initiative. Give the option to add this to a quest later, but currently unused
+			if(can_adventure($location[The Haunted Kitchen]))
+			{
+				handleFamiliar(eagle);
+				if(autoAdv($location[The Haunted Kitchen]) && contains_text(activeCitZoneMod, goal))
+				{
+					set_property("auto_patEagleCitizenZone", goal);
+					handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
+					return true;
+				}
+				return false;
+			}
+		default: //Get +30% item by default
+			if(can_adventure($location[The Haunted Library]))
+			{
+				handleFamiliar(eagle);
+				if(autoAdv($location[The Haunted Library]) && contains_text(activeCitZoneMod, goal))
+				{
+					set_property("auto_patEagleCitizenZone", goal);
+					handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
+					return true;
+				}
+				return false;
+			}
 	}
 	return false;
 }

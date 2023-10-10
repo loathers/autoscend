@@ -659,6 +659,7 @@ boolean L8_trapperNinjaLair()
 		adjustEdHat("myst");
 	}
 	
+	auto_getCitizenZone("meat"); //since Lair is next anyway
 	if(autoAdv($location[Lair of the Ninja Snowmen]))
 	{
 		return true;
