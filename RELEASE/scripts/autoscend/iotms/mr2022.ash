@@ -727,10 +727,8 @@ void auto_checkTrainSet()
 	int two;
 	int three;
 	int four;
-	if(my_level() < 13) //check if we need more stats. There is no check for disregard instant karma because
+	if(my_level() < 11) //check if we need more stats. There is no check for disregard instant karma because
 	//if we do check, we will never double lumber mill, which is more beneficial than continuing to double mainstat.
-	//Do we want the next line's if statement instead because this will still generate so many stats
-	//if(my_level() < 12) //Double mainstat until we reach L12
 	{
 		if(my_primestat() == $stat[Muscle])
 		{
