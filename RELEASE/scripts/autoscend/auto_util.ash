@@ -841,7 +841,7 @@ boolean auto_wantToBanish(monster enemy, location loc)
 	return monstersToBanish[enemy];
 }
 
-boolean auto_wantPhylumBanish(phylum enemyphylum, location loc)
+boolean auto_wantToBanish(phylum enemyphylum, location loc)
 {
 	location locCache = my_location();
 	set_location(loc);
@@ -853,6 +853,11 @@ boolean auto_wantPhylumBanish(phylum enemyphylum, location loc)
 boolean canBanish(monster enemy, location loc)
 {
 	return banisherCombatString(enemy, loc) != "";
+}
+
+boolean canBanish(phylum enemyphylum, location loc)
+{
+	return banisherCombatString(enemyphylum, loc) != "";
 }
 
 boolean adjustForBanish(string combat_string)
@@ -901,7 +906,7 @@ boolean adjustForBanish(string combat_string)
 	}
 	if(combat_string == "skill" + $skill[%fn\, Release the Patriotic Screech!])
 	{
-		return use_familiar($familiar[Patriotic Eagle]);
+		return handleFamiliar($familiar[Patriotic Eagle]);
 	}
 	if(combat_string == "skill " + $skill[Beancannon])
 	{
@@ -923,6 +928,17 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 	{
 		string banish_string = banisherCombatString(enemy, loc);
 		auto_log_info("Adjusting to have banisher available for " + enemy + ": " + banish_string, "blue");
+		return adjustForBanish(banish_string);
+	}
+	return false;
+}
+
+boolean adjustForBanishIfPossible(phylum enemyphylum, location loc)
+{
+	if(canBanish(enemyphylum, loc))
+	{
+		string banish_string = banisherCombatString(enemyphylum, loc);
+		auto_log_info("Adjusting to have banisher available for " + enemyphylum + ": " + banish_string, "blue");
 		return adjustForBanish(banish_string);
 	}
 	return false;

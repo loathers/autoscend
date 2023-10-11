@@ -506,11 +506,14 @@ boolean auto_getCitizenZone(string goal)
 			if(can_adventure($location[Lair of the Ninja Snowmen]))
 			{
 				handleFamiliar(eagle);
-				if(autoAdv($location[Lair of the Ninja Snowmen]) && contains_text(activeCitZoneMod, goal))
+				if(autoAdv($location[Lair of the Ninja Snowmen]))
 				{
-					set_property("auto_patEagleCitizenZone", goal);
-					handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
-					return true;
+					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+					{
+						handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
+						return true;
+					}
+					return false;
 				}
 				return false;
 			}
@@ -518,11 +521,14 @@ boolean auto_getCitizenZone(string goal)
 			if(can_adventure($location[The Haunted Kitchen]))
 			{
 				handleFamiliar(eagle);
-				if(autoAdv($location[The Haunted Kitchen]) && contains_text(activeCitZoneMod, goal))
+				if(autoAdv($location[The Haunted Kitchen])) //need this if statement separate in case we hit a non-combat
 				{
-					set_property("auto_patEagleCitizenZone", goal);
-					handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
-					return true;
+					if(contains_text(activeCitZoneMod, goal))
+					{
+						handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
+						return true;
+					}
+					return false;
 				}
 				return false;
 			}
@@ -530,11 +536,14 @@ boolean auto_getCitizenZone(string goal)
 			if(can_adventure($location[The Haunted Library]))
 			{
 				handleFamiliar(eagle);
-				if(autoAdv($location[The Haunted Library]) && contains_text(activeCitZoneMod, goal))
+				if(autoAdv($location[The Haunted Library])) //need this if statement separate in case we hit a non-combat
 				{
-					set_property("auto_patEagleCitizenZone", goal);
-					handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
-					return true;
+					if(contains_text(activeCitZoneMod, goal))
+					{
+						handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
+						return true;
+					}
+					return false;
 				}
 				return false;
 			}

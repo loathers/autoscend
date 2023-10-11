@@ -479,6 +479,31 @@ string findBanisher(int round, monster enemy, string text)
 	return auto_combatHandler(round, enemy, text);
 }
 
+string banisherCombatString(phylum enemyphylum, location loc, boolean inCombat)
+{
+	if(inAftercore())
+	{
+		return "";
+	}
+
+	if(in_pokefam())
+	{
+		return "";
+	}
+	
+	//Check that we actually want to banish this thing.
+	if(!auto_wantToBanish(enemyphylum, loc))
+		return "";
+
+	if(inCombat)
+		auto_log_info("Finding a banisher to use on " + enemyphylum + " at " + loc, "green");
+
+	if(auto_have_skill($skill[%fn\, Release the Patriotic Screech!]) && !(used contains "Release the Patriotic Screech!"))
+	{
+		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
+	}
+}
+
 string banisherCombatString(monster enemy, location loc, boolean inCombat)
 {
 	if(inAftercore())
@@ -499,9 +524,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 
 	//Check that we actually want to banish this thing.
 	if(!auto_wantToBanish(enemy, loc))
-		return "";
-
-	if(!auto_wantPhylumBanish(enemy.phylum, loc))
 		return "";
 
 	if(inCombat)
@@ -616,10 +638,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
 	}
-	if(auto_have_skill($skill[%fn\, Release the Patriotic Screech!]) && !(used contains "Release the Patriotic Screech!") && auto_wantPhylumBanish(enemy.phylum, loc))
-	{
-		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
-	}
 	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
 	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]) && !(used contains "Bowl a Curveball"))
 	{
@@ -722,6 +740,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	}
 
 	return "";
+}
+
+string banisherCombatString(phylum enemyphylum, location loc)
+{
+	return banisherCombatString(enemyphylum, loc, false);
 }
 
 string banisherCombatString(monster enemy, location loc)
