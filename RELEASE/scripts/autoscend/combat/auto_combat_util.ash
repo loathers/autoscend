@@ -498,7 +498,7 @@ string banisherCombatString(phylum enemyphylum, location loc, boolean inCombat)
 	if(inCombat)
 		auto_log_info("Finding a banisher to use on " + enemyphylum + " at " + loc, "green");
 
-	if(auto_have_skill($skill[%fn\, Release the Patriotic Screech!]) && !(used contains "Release the Patriotic Screech!"))
+	if(auto_have_skill($skill[%fn\, Release the Patriotic Screech!]))
 	{
 		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
 	}
