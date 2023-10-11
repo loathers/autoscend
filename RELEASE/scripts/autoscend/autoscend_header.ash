@@ -1717,7 +1717,7 @@ int doNumberology(string goal, boolean doIt);
 int doNumberology(string goal, boolean doIt, string option);
 boolean auto_have_skill(skill sk);
 boolean have_skills(boolean[skill] array);
-void woods_questStart();
+boolean woods_questStart();
 int howLongBeforeHoloWristDrop();
 boolean hasShieldEquipped();
 boolean careAboutDrops(monster mon);
