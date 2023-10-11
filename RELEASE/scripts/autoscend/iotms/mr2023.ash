@@ -502,7 +502,7 @@ boolean auto_getCitizenZone(string goal)
 	}
 	switch(goal)
 	{
-		case  "meat": //Get +50% meat
+		case "meat": //Get +50% meat
 			if(can_adventure($location[Lair of the Ninja Snowmen]))
 			{
 				handleFamiliar(eagle);
