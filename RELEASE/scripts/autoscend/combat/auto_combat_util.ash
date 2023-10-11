@@ -502,6 +502,8 @@ string banisherCombatString(phylum enemyphylum, location loc, boolean inCombat)
 	{
 		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
 	}
+
+	return "";
 }
 
 string banisherCombatString(monster enemy, location loc, boolean inCombat)
