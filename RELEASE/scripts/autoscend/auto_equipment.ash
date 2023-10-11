@@ -665,8 +665,9 @@ void finalizeMaximize(boolean speculative)
 	}
 	if(my_familiar() == $familiar[Jill-of-All-Trades] && item_amount($item[LED candle]) > 0)
 	{
-		//jill of all trade's fam equip can be tuned to give 50% more +item, +meat, or +stats
-		addBonusToMaximize($item[LED candle], 300);
+		// maximizer uses whatever mode LED candle is in, won't change it
+		// so ensure in correct mode prior to maximizing
+		auto_handleJillOfAllTrades();
 	}
 	if(speculative && auto_haveCrystalBall())
 	{	//when doing simMaximize, in order to know if miniature crystal ball will be allowed in the simulated location, 
