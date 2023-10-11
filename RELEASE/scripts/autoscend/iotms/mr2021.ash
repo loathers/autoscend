@@ -354,6 +354,10 @@ boolean auto_backupTarget()
 			if(!acquiredFantasyRealmToken() && auto_backupUsesLeft() >= (5 - fantasyBanditsFought()))
 				return true;
 			break;
+		case $monster[Green Ops Soldier]:
+			if(get_property("hippiesDefeated") > 399 && !in_koe())
+				return true;
+			break;
 		default: break;
     }
 
