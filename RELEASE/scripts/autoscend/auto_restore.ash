@@ -1978,6 +1978,8 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 		return true;
 	}
 
+	buffMaintain($effect[extra-green]);
+
 	if(my_class() == $class[Pig Skinner] && have_skill($skill[Second Wind]))
 	{
 		return auto_pigSkinnerAcquireHP(0.7 * goal);

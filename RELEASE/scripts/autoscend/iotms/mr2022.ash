@@ -145,6 +145,53 @@ boolean auto_fightLocketMonster(monster mon, boolean speculative)
 
 }
 
+boolean auto_haveGreyGoose()
+{
+	if(auto_have_familiar($familiar[Grey Goose]))
+	{
+		return true;
+	}
+	return false;
+}
+
+int gooseExpectedDrones()
+{
+	if(!auto_haveGreyGoose()) return 0;
+	if(my_familiar() == $familiar[Grey Goose])
+	{
+		set_property("auto_gooseExpectedDrones", familiar_weight($familiar[Grey Goose]) - 5);
+	}
+	return get_property("auto_gooseExpectedDrones").to_int();
+}
+
+boolean dronesOut() //want a function to override the task order if we have drones out so as not to waste them
+{
+	if(!auto_haveGreyGoose()) return false;
+	if(get_property("gooseDronesRemaining").to_int() > 0)
+	{
+		return true;
+	}
+	return false;
+}
+
+void prioritizeGoose() //prioritize Goose only if we still have things to get
+{
+	if(!auto_haveGreyGoose()) return;
+	if(	(internalQuestStatus("questL04Bat") <= 1 && gooseExpectedDrones() < 1) ||
+			((item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && internalQuestStatus("questL11Worship") <= 2) && gooseExpectedDrones() < 1) ||
+			(internalQuestStatus("questL08Trapper") <= 1 && gooseExpectedDrones() < 1) ||
+			(((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15) && gooseExpectedDrones() < 2) ||
+			((needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6)) && gooseExpectedDrones() < 8) ||
+			(internalQuestStatus("questL11Ron") < 5 && gooseExpectedDrones() < 2) ||
+			((get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 5 && gooseExpectedDrones() < 2) ||
+			(((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 9) && gooseExpectedDrones() < 3))
+	{
+		set_property("auto_prioritizeGoose", true);
+		return;
+	}
+	set_property("auto_prioritizeGoose", false);
+}
+
 boolean canUseCleaver() {
 	if (possessEquipment($item[June cleaver]) && can_equip($item[June cleaver]) && auto_is_valid($item[June cleaver])) {
 		return true;
@@ -256,6 +303,9 @@ int getSweat() {
 void sweatpantsPreAdventure() {
 	if (!canUseSweatpants()) {
 		return;
+	}
+	if(in_small()){
+		return; // small can't clean organs
 	}
 
 	if (my_location() == $location[A Mob of Zeppelin Protesters] && equipped_item($slot[pants]) != $item[lynyrdskin breeches]) {
@@ -677,10 +727,8 @@ void auto_checkTrainSet()
 	int two;
 	int three;
 	int four;
-	if(my_level() < 13) //check if we need more stats. There is no check for disregard instant karma because
+	if(my_level() < 11) //check if we need more stats. There is no check for disregard instant karma because
 	//if we do check, we will never double lumber mill, which is more beneficial than continuing to double mainstat.
-	//Do we want the next line's if statement instead because this will still generate so many stats
-	//if(my_level() < 12) //Double mainstat until we reach L12
 	{
 		if(my_primestat() == $stat[Muscle])
 		{
@@ -758,7 +806,7 @@ void auto_checkTrainSet()
 		}
 	}
 	int eight = 13; //monster level
-	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != ""){
+	if((monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != "") || get_property("auto_MLSafetyLimit").to_int() == -1){
 		eight = 9; //cold res, stench dmg
 	}
 	int turnsSinceTSConfigured = min(trainsetPosition - lastTrainsetConfiguration, 40);

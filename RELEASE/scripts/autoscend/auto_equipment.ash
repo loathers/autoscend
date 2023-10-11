@@ -657,7 +657,7 @@ void addBonusToMaximize(item it, int amt)
 
 void finalizeMaximize(boolean speculative)
 {
-	if(auto_hasStillSuit() && pathHasFamiliar() && inebriety_limit() > 0)
+	if(auto_hasStillSuit() && pathHasFamiliar() && inebriety_limit() > 0 && !in_kolhs() && !in_small())
 	{
 		//always enough bonus to beat the 25 default maximizer score of miniature crystal ball's +initiative enchantment
 		//100 to 200 bonus for diminishing returns when drams already high
@@ -1043,8 +1043,14 @@ void equipRollover(boolean silent)
 		to_max += ",switch Trick-or-Treating Tot";
 	if(auto_have_familiar($familiar[Left-Hand Man]))
 		to_max += ",switch Left-Hand Man";
-	if(my_familiar() == $familiar[none] && auto_have_familiar($familiar[Mosquito]))
-		to_max += ",switch Mosquito";
+	if(my_familiar() == $familiar[none])
+	{
+		familiar anyFam = findNonRockFamiliarInTerrarium();
+		if(anyFam != $familiar[none])
+		{
+			to_max += ",switch " + anyFam.to_string();
+		}
+	}
 
 	maximize(to_max, false);
 

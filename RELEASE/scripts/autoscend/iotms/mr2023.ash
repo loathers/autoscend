@@ -45,22 +45,43 @@ boolean wantToThrowGravel(location loc, monster enemy)
 	// prevent overuse after breaking ronin or in casual
 	if(can_interact()) return false;
 
-	// use gravel in battlefield if no breathitin charges
-	if(get_property("breathitinCharges").to_int() == 0 && 
-		(loc == $location[The Battlefield (Frat Uniform)] || loc == $location[The Battlefield (Hippy Uniform)]) &&
-		!($monsters[Green Ops Soldier,C.A.R.N.I.V.O.R.E. Operative,Glass of Orange Juice,Sorority Nurse,
-		Naughty Sorority Nurse,Monty Basingstoke-Pratt\, IV,Next-generation Frat Boy] contains enemy))
+	// don't use gravel if already free
+	if(get_property("breathitinCharges").to_int() > 0 && loc.environment == "outdoor")
+	{
+		return false;
+	}
+
+	// many monsters in these zones with similar names
+	if(loc == $location[The Battlefield (Frat Uniform)] && 
+		(contains_text(enemy.to_string(), "War Hippy")) ||
+		$strings[Bailey's Beetle, Mobile Armored Sweat Lodge] contains enemy)
+	{
+		return true;
+	}
+	if(loc == $location[The Battlefield (Hippy Uniform)] && contains_text(enemy.to_string(), "War Frat"))
 	{
 		return true;
 	}
 
-	// spookyraven zones 
-	if(loc == $location[The Haunted Bathroom]) return true;
-	if(loc == $location[The Haunted Gallery]) return true;
-	if(loc == $location[The Haunted Bedroom]) return true;
-
 	// look for specific monsters in zones where some monsters we do care about
 	static boolean[string] gravelTargets = $strings[
+		// The Haunted Bathroom
+		claw-foot bathtub,
+		malevolent hair clog,
+		toilet papergeist,
+
+		// The Haunted Gallery
+		cubist bull,
+		empty suit of armor,
+		guy with a pitchfork, and his wife,
+
+		// The Haunted Bedroom
+		animated mahogany nightstand,
+		animated ornate nightstand,
+		animated rustic nightstand,
+		elegant animated nightstand,
+		Wardr&ouml;b nightstand,
+		
 		// The Haunted Wine Cellar
 		skeletal sommelier,
 
@@ -70,7 +91,7 @@ boolean wantToThrowGravel(location loc, monster enemy)
 
 		// The Haunted Boiler Room
 		coaltergeist,
-		steam elemental,
+		steam elemental
 	];
 	return gravelTargets contains enemy;
 }
@@ -84,10 +105,10 @@ boolean auto_haveSITCourse()
 void auto_SITCourse()
 {
 	if (!auto_haveSITCourse()) return;
-	//Best choice seems to be insectologist
-	if (!have_skill($skill[insectologist])){
+	//Get cryptobotanist if under level 8 or switch to insectologist if possible
+	if (my_level() < 8 && !have_skill($skill[cryptobotanist]) || (!get_property("_sitCourseCompleted").to_boolean() && my_level() >= 8 && !have_skill($skill[insectologist]))){
 		use(1,$item[S.I.T. Course Completion Certificate]);
-		//auto_run_choice(1484);
+		//auto_run_choice(1494);
 		return;
 	}
 }
@@ -212,10 +233,11 @@ boolean auto_getCinch(int goal)
 		// don't have enough cinch and don't have any free rests left
 		return false;
 	}
-	if(!haveAnyIotmAlternativeRestSiteAvailable() && get_dwelling() == $item[big rock])
+	if(!haveAnyIotmAlternativeRestSiteAvailable() && (get_dwelling() == $item[big rock] && !in_small()))
 	{
 		// don't have anywhere to rest
 		// get dwelling returns big rock when no place to rest in campsite
+		// exception for Small path as you can't use housing in-run so you will always have a big rock.
 		return false;
 	}
 	// use free rests until have enough cinch or out of rests
@@ -288,7 +310,8 @@ int remainingCatalogCredits()
 	}
 	if(!get_property("_2002MrStoreCreditsCollected").to_boolean())
 	{
-		//todo - collect credits
+		// using item collects credits
+		use($item[2002 Mr. Store Catalog]);
 	}
 	return get_property("availableMrStore2002Credits").to_int();
 }
@@ -376,4 +399,78 @@ void auto_useBlackMonolith()
 	}
 	// use monolith
 	visit_url("campground.php?action=monolith");
+}
+
+boolean auto_haveAugustScepter()
+{
+	static item scepter = wrap_item($item[august scepter]);
+	if(auto_is_valid(scepter) && (item_amount(scepter) > 0 || have_equipped(scepter)))
+	{
+		return true;
+	}
+	return false;
+}
+
+void auto_scepterSkills()
+{
+	if(!auto_haveAugustScepter())
+	{
+		return;
+	}
+	//Day 1 skills
+	if(my_daycount() == 1)
+	{
+		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+		}
+		if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
+		}
+		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
+		{
+			if(!is100FamRun())
+			{
+				use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
+			}
+			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+		}
+	}
+	//Day 2+ skills
+	if(my_daycount() >= 2)
+	{
+		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+		}
+		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
+		{
+			if(!is100FamRun())
+			{
+				handleFamiliar("stat"); //get any familiar equipped if not in a 100% run
+			}
+			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+		}
+	}
+}
+
+void auto_lostStomach(boolean force)
+{
+	if(!auto_haveAugustScepter() || in_small())
+	{
+		return;
+	}
+
+	//Cast Roller Coaster Day if forced to and fullness is greater than 0 and it's available to cast
+	if (force && my_fullness() > 0 && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug16Cast").to_boolean())
+	{
+		use_skill($skill[Aug. 16th: Roller Coaster Day!]);
+	}
+
+	//Otherwise leave Roller Coaster Day until near the end of the day and it's available to cast
+	if(fullness_left() == 0 && inebriety_left() == 0 && my_adventures() < 10  && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug16Cast").to_boolean() && !force)
+	{
+		use_skill($skill[Aug. 16th: Roller Coaster Day!]);
+	}
 }

@@ -250,6 +250,32 @@ boolean canChangeToFamiliar(familiar target)
 	return true;
 }
 
+familiar findNonRockFamiliarInTerrarium()
+{
+	static boolean[familiar] blacklistFamiliars = $familiars[pet rock,
+		toothsome rock,
+		bulky buddy box,
+		holiday log,
+		software bug,
+		bad vibe,
+		pet coral,
+		synthetic rock,
+		pixel rock];
+
+	foreach fam in $familiars[]
+	{
+		if(blacklistFamiliars contains fam)
+		{
+			continue;
+		}
+		if(in_terrarium(fam) && auto_have_familiar(fam))
+		{
+			return fam;
+		}
+	}
+	return $familiar[none];
+}
+
 familiar lookupFamiliarDatafile(string type)
 {
 	//This function looks through /data/autoscend_familiars.txt for the matching "type" in order and selects the first match whose conditions are met. Said conditions typically include path exclusions and a check to see if that familiar dropped something today.
@@ -449,7 +475,11 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// The World's Biggest Jerk can send us here so only use +item if we're farming sonars.
-	if ($location[The Batrat and Ratbat Burrow] == place && internalQuestStatus("questL04Bat") < 3) {
+	if ($location[The Batrat and Ratbat Burrow] == place && internalQuestStatus("questL04Bat") < 3 && auto_haveGreyGoose()) {
+		auto_log_info("Bringing the Grey Goose to emit some drones at a bat to get Sonar.");
+		famChoice = $familiar[Grey Goose];
+	}
+	else if ($location[The Batrat and Ratbat Burrow] == place && internalQuestStatus("questL04Bat") < 3) {
 		famChoice = lookupFamiliarDatafile("item");
 	}
 
@@ -468,6 +498,13 @@ boolean autoChooseFamiliar(location place)
 	((get_property("twinPeakProgress").to_int() & 4) == 0 &&
 		item_amount($item[Jar Of Oil]) < 1 && item_amount($item[Bubblin\' Crude]) < 12))  {
 		famChoice = lookupFamiliarDatafile("item");
+	}
+
+	// If we have Grey Goose and we're farming bridge parts and Smut Orc Pervert is coming up, we should use the Goose to dupe the Keepsake box
+	if ($location[The Smut Orc Logging Camp] == place && internalQuestStatus("questL09Topping") < 1 && is_integer(($location[The Smut Orc Logging Camp].turns_spent - 1)/20) && auto_haveGreyGoose())
+	{
+		auto_log_info("Bringing the Grey Goose to emit some drones at smut orc pervert to dupe a Box.");
+		famChoice = $familiar[Grey Goose];
 	}
 
 	// The World's Biggest Jerk can also send us here so only use +item if we're farming bridge parts.
@@ -490,6 +527,11 @@ boolean autoChooseFamiliar(location place)
 		if (!possessOutfit("Frat Warrior Fatigues") || !possessOutfit("War Hippy Fatigues")) {
 			famChoice = lookupFamiliarDatafile("item");
 		}
+	}
+
+	// want to ensure we get small gear. Only requires +100 item drop, fam essentially ensures this
+	if ($locations[Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass] contains place) {
+		famChoice = lookupFamiliarDatafile("item");
 	}
 
 	// places where meat drop is required to help save adventures.
@@ -764,173 +806,4 @@ void preAdvUpdateFamiliar(location place)
 	{
 		mummifyFamiliar();
 	}
-}
-
-boolean checkTerrarium()
-{
-	//do we have an installed terarrium in our camp or a path specific equivalent
-	if(!pathAllowsChangingFamiliar())
-	{
-		return false;
-	}
-	if(in_nuclear() || in_robot())
-	{
-		return true;	//these paths use an alternative form of terrarium
-	}
-	if(get_property("_auto_hasTerrarium").to_boolean())
-	{
-		return true;	//minimize server hits. if we already verified we have a terrarium today there is no way for it to disappear
-	}
-	boolean retval = visit_url("campground.php").contains_text("bigterrarium.gif");		//visit camp to check
-	if(retval)
-	{
-		set_property("_auto_hasTerrarium", true);	//set value to minimize server hits. _ will automatically reset on rollover or ascension
-	}
-	return retval;
-}
-
-void getTerrarium()
-{
-	//install a terrarium in camp if you do not already have one.
-	if(checkTerrarium() ||				//already have one or have equivalent in path.
-	!pathAllowsChangingFamiliar() ||	//not available in path
-	!isGeneralStoreAvailable() ||		//can not buy it
-	!auto_is_valid($item[Familiar-Gro&trade; Terrarium]) ||		//can not use it
-	my_meat() < 500)					//can not afford it
-	{
-		return;	
-	}
-	buyUpTo(1, $item[Familiar-Gro&trade; Terrarium]);
-	use(1, $item[Familiar-Gro&trade; Terrarium]);
-	if(!checkTerrarium())
-	{
-		auto_log_warning("Mysteriously failed to install a Familiar Terrarium in your camp", "red");
-	}
-}
-
-boolean hatchFamiliar(familiar adult)
-{
-	//This functions hatches a familiar named adult.
-	//Returns true if you end up having the hatched familiar. False if you do not.
-	
-	item hatchling = adult.hatchling;
-	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar())
-	{
-		return false;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
-	}
-	if(in_glover())
-	{
-		//have_familiar is inconsistent. it usually returns true if you have a familiar in the terrairum regardless on its usability.
-		//in glover it returns false for unusuable familiars. as such we should test both hatchling and familiar in glover path
-		if(!glover_usable(adult.to_string()) || !glover_usable(hatchling.to_string()))
-		{
-			return false;
-		}
-	}
-	if(in_zombieSlayer())
-	{
-		if(!zombieSlayer_usable(adult))
-		{
-			return false;
-		}
-	}
-	if(!checkTerrarium())
-	{
-		return false;
-	}
-	if(have_familiar(adult))		//do not use auto_have_familiar here. we can have an unusable adult in a path that can hatch the hatchling
-	{
-		return true;		//we already have desired familiar. no point it trying to hatch it a second time
-	}
-	if(item_amount(hatchling) == 0)
-	{
-		return false;		//we need to actually own the hatchling to hatch it
-	}
-	if(!auto_is_valid(hatchling) && !in_bhy())		//is hatchling usable in this path?
-	{
-		//all hatchlings are valid in bhy. easier to include !in_bhy() here instead of modifying auto_is_valid to check familiar hatchlings
-		return false;
-	}
-	
-	auto_log_info("Trying to hatch hatchling item [" +hatchling+ "] into the adult familiar [" +adult+ "]", "blue");
-	visit_url("inv_familiar.php?pwd=&which=3&whichitem=" + hatchling.to_int());
-	
-	if(have_familiar(adult))
-	{
-		auto_log_info("Successfully acquired familiar [" + adult + "]", "blue");
-		return true;
-	}
-	auto_log_info("Failed to convert the familiar hatchling [" + hatchling + "] into the familiar [" + adult + "]", "red");
-	return false;
-}
-
-void hatchList()
-{
-	//this function goes through a list of hatchlings to hatch if available.
-	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar() || in_lol())
-	{
-		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
-	}
-	if(!checkTerrarium())
-	{
-		return;
-	}	
-	if(get_property("questL02Larva") == "finished")
-	{
-		//only try to hatch this after the quest is finished. first copy is given to concil which returns it to you if you need to hatch it
-		hatchFamiliar($familiar[Mosquito]);		//quest item dropped every ascension until hatched
-	}
-	
-	foreach fam in $familiars[
-	Reassembled Blackbird,				//quest item dropped every ascension
-	reconstituted crow,					//quest item dropped in bees hate you
-	Black Cat,							//quest item dropped in bad moon
-	Grue,								//you get one egg every ascension.
-	Wereturtle,							//common drop
-	Adorable Seal Larva,				//nemesis quest: seal clubber
-	Untamed Turtle,						//nemesis quest: turtle tamer
-	Animated Macaroni Duck,				//nemesis quest: pastamancer
-	Pet Cheezling,						//nemesis quest: sauceror
-	Autonomous Disco Ball,				//nemesis quest: disco bandit
-	Mariachi Chihuahua					//nemesis quest: accordion thief
-	]
-	{
-		hatchFamiliar(fam);
-	}
-}
-
-void acquireFamiliars()
-{
-	//this function acquires hatchlings for important or easy to get familiars and then hatches them.
-	//use is_unrestricted instead of auto_is_valid because familiar hatching is not using an item and ignores most restrictions.
-	if(!pathHasFamiliar() || !pathAllowsChangingFamiliar() || in_lol())
-	{
-		return;	//we can not hatch familiars in a path that does not use them. nor properly check the terrarium's contents.
-	}
-	if(!checkTerrarium())
-	{
-		return;
-	}
-
-	//Very cheap and very useful IOTM derivative. MP/HP regen. drops lots of useful food and drink early on
-	if(!have_familiar($familiar[Lil\' Barrel Mimic]) && auto_is_valid($familiar[Lil\' Barrel Mimic]) && item_amount($item[tiny barrel]) == 0 && is_unrestricted($item[tiny barrel]) && canPull($item[tiny barrel]) && auto_is_valid($item[tiny barrel]))
-	{
-		acquireOrPull($item[tiny barrel]);		//mallbuy and pull it if we can
-	}
-	hatchFamiliar($familiar[Lil\' Barrel Mimic]);
-	
-	//stat gains. nonscaling. better at low levels. cheap and easy to acquire in run.
-	if(!have_familiar($familiar[Blood-Faced Volleyball]) && auto_is_valid($familiar[Blood-faced Volleyball]) && item_amount($item[blood-faced volleyball]) == 0 && auto_is_valid($item[seal tooth]) && auto_is_valid($item[volleyball]) && my_meat() > meatReserve() + 1500)
-	{
-		foreach it in $items[volleyball, seal tooth]
-		{
-			if(item_amount(it) == 0) acquireHermitItem(it);
-		}
-		if(item_amount($item[volleyball]) > 0 && item_amount($item[seal tooth]) > 0)
-		{
-			use(1, $item[seal tooth]);
-			use(1, $item[volleyball]);
-		}
-	}
-	hatchFamiliar($familiar[Blood-Faced Volleyball]);
 }

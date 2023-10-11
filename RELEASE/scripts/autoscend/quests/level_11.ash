@@ -169,11 +169,6 @@ boolean[location] shenSnakeLocations(int day, int n_items_returned)
 
 boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 {
-	if (!allowSoftblockShen())
-	{
-		boolean[location] empty;
-		return empty;
-	}
 	if (get_property("shenInitiationDay").to_int() > 0)
 	{
 		int day = get_property("shenInitiationDay").to_int();
@@ -186,11 +181,9 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		boolean[location] zones_to_avoid;
 		if (my_level() < 11)
 		{
-			//if it's day 1, don't count this day's snakes since it's leaving it until day 2
-			int fromThisDay = (my_daycount() == 1) ? 1 : 0;
 			//if level 10, assume shen today or tomorrow, otherwise up to two days from now
 			int beforeThatDay = (my_level() >= 10) ? 2 : 3;
-			for (int day=fromThisDay; day<beforeThatDay; day++)
+			for (int day=0; day<beforeThatDay; day++)
 			{
 				foreach z, _ in shenSnakeLocations(day+my_daycount(), 0)
 				{
@@ -202,8 +195,7 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		else
 		{
 			// if we're already level 11, well either be starting ASAP
-			// or leaving it until day 2 if we're on day 1
-			foreach z, _ in shenSnakeLocations(max(2, my_daycount()), 0)
+			foreach z, _ in shenSnakeLocations(my_daycount(), 0)
 			{
 				zones_to_avoid[z] = true;
 			}
@@ -816,6 +808,11 @@ boolean L11_blackMarket()
 	if (get_property("auto_getBeehive").to_boolean() && my_adventures() < 3) {
 		return false;
 	}
+	if(item_amount($item[Reassembled Blackbird]) > 0 && auto_haveGreyGoose() && !possessEquipment($item[Blackberry Galoshes]) && item_amount($item[Blackberry]) < 2 && !in_darkGyffte()){
+		auto_log_info("Bringing the Grey Goose to emit some drones at a blackberry bush.");
+		handleFamiliar($familiar[Grey Goose]);
+	}
+
 	boolean advSpent = autoAdv($location[The Black Forest]);
 	//For people with autoCraft set to false for some reason
 	if(item_amount($item[Reassembled Blackbird]) == 0 && creatable_amount($item[Reassembled Blackbird]) > 0)
@@ -1356,7 +1353,13 @@ boolean L11_unlockHiddenCity()
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]))
 		{
 			//attempt to summon before using a clover
-			handleFamiliar("item");
+			if(auto_haveGreyGoose()){
+				auto_log_info("Bringing the Grey Goose to emit some drones at a Sheep carving.");
+				handleFamiliar($familiar[Grey Goose]);
+			}
+			else {
+				handleFamiliar("item");
+			}
 			addToMaximize("20 item 400max");
 			if(summonMonster($monster[Baa\'baa\'bu\'ran]))
 			{
@@ -1366,11 +1369,7 @@ boolean L11_unlockHiddenCity()
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && cloversAvailable() > 0) 
 		{
 			//use clover to get 2x Stone Wool
-			cloverUsageInit();
-			boolean retval = autoAdv($location[The Hidden Temple]);
-			if(cloverUsageRestart()) retval = autoAdv($location[The Hidden Temple]);
-			cloverUsageFinish();
-			return retval;
+			return autoLuckyAdv($location[The Hidden Temple]);
 		}
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
@@ -1680,7 +1679,7 @@ boolean L11_hiddenCity()
 
 		boolean elevatorAction = !zone_delay($location[The Hidden Apartment Building])._boolean || auto_haveQueuedForcedNonCombat();
 		
-		boolean canDrinkCursedPunch = canDrink($item[Cursed Punch]) && !get_property("auto_limitConsume").to_boolean() && !in_tcrs();
+		boolean canDrinkCursedPunch = canDrink($item[Cursed Punch]) && !get_property("auto_limitConsume").to_boolean() && !in_tcrs() && !in_small();
 		//todo: in_tcrs check quality and size of cursed punch instead of skipping? if that is possible
 		
 		int cursesNeeded = 3;
@@ -1897,6 +1896,11 @@ boolean L11_hiddenCity()
 		{
 			auto_log_info("Bringing the Camel to spit on a Pygmy Bowler for bowling balls.");
 			handleFamiliar($familiar[Melodramedary]);
+		}
+		if (auto_haveGreyGoose() && get_property("hiddenBowlingAlleyProgress").to_int() < 3)
+		{
+			auto_log_info("Bringing the Grey Goose to emit some drones at a Pygmy Bowler for bowling balls.");
+			handleFamiliar($familiar[Grey Goose]);
 		}
 		if(item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() == 5)
 		{
@@ -2258,6 +2262,7 @@ boolean L11_mauriceSpookyraven()
 		{
 			bat_formBats();
 		}
+		auto_lostStomach(true);
 		if (canSniff($monster[Cabinet of Dr. Limpieza], $location[The Haunted Laundry Room]) && auto_mapTheMonsters())
 		{
 			auto_log_info("Attemping to use Map the Monsters to olfact a Cabinet of Dr. Limpieza.");
@@ -2410,11 +2415,7 @@ boolean L11_redZeppelin()
 			{
 				set_property("choiceAdventure866", 3);
 			}
-			cloverUsageInit();
-			boolean retval = autoAdv(1, $location[A Mob of Zeppelin Protesters]);
-			if(cloverUsageRestart()) retval = autoAdv(1, $location[A Mob of Zeppelin Protesters]);
-			cloverUsageFinish();
-			return retval;
+			return autoLuckyAdv($location[A Mob of Zeppelin Protesters]);
 		}
 	}
 
@@ -2481,6 +2482,10 @@ boolean L11_ronCopperhead()
 			auto_log_info("Bringing the Camel to spit on a Red Butler for glark cables.");
 			handleFamiliar($familiar[Melodramedary]);
 		}
+		if(auto_haveGreyGoose()){
+			auto_log_info("Bringing the Grey Goose to emit some drones at a Red Butler for glark cables.");
+			handleFamiliar($familiar[Grey Goose]);
+		}
 		if(internalQuestStatus("questL11Ron") == 4)
 		{
 			set_property("auto_nextEncounter","Ron \"The Weasel\" Copperhead");
@@ -2512,11 +2517,7 @@ boolean L11_shenStartQuest()
 	{
 		return false;
 	}
-	if (my_daycount() < 2 || !allowSoftblockShen())
-	{
-		// if you're fast enough to open it on day 1, maybe wait until day 2
-		return false;
-	}
+	
 	auto_log_info("Going to see the World's Biggest Jerk about some snakes and stones and stuff.", "blue");
 	if (autoAdv($location[The Copperhead Club]))
 	{
@@ -2757,6 +2758,7 @@ boolean L11_palindome()
 				}
 				// +item is nice to get that food
 				bat_formBats();
+				auto_lostStomach(true);
 				auto_log_info("Off to the grove for some doofy food!", "blue");
 				autoAdv(1, $location[Whitey\'s Grove]);
 			}
@@ -3122,6 +3124,12 @@ boolean L11_unlockEd()
 	if (canSniff($monster[Tomb Rat], $location[The Middle Chamber]) && auto_mapTheMonsters())
 	{
 		auto_log_info("Attemping to use Map the Monsters to olfact a Tomb Rat.");
+	}
+	
+	if(auto_haveGreyGoose() && item_amount($item[Tangle of rat tails]) >= 1)
+	{
+		auto_log_info("Bringing the Grey Goose to emit some drones at some rat kings.");
+		handleFamiliar($familiar[Grey Goose]);
 	}
 	
 	return autoAdv(1, $location[The Middle Chamber]);

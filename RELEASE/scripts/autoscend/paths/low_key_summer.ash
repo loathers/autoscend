@@ -600,13 +600,6 @@ boolean LX_lowkeySummer() {
 	// Make sure to unlock Menagerie if it wasn't done while getting Knob labinet key
 	if (LX_unlockKnobMenagerie()) { return true; }
 
-	// Release the softblock on quests that are waiting for Shen quest.
-	// If anyone ever gets this far in this path I will be both surprised and weirdly impressed.
-	if (my_level() > get_property("auto_shenSkipLastLevel").to_int() && get_property("questL11Shen") != "finished") {
-		auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do.", "red");
-		set_property("auto_shenSkipLastLevel", my_level());
-		return true;
-	}
 	// Make sure to go to war
 	if (L12_lastDitchFlyer()) { return true; }
 

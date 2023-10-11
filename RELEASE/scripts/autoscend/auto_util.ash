@@ -1361,59 +1361,93 @@ boolean isProtonGhost(monster mon)
 	return false;
 }
 
-int cloversAvailable()
+int cloversAvailable(boolean override)
 {
-	//count 11-leaf clovers
-	int retval = 0; 
+	// set override to true to not reserve a clover for the wand of nagamar.
 
-	if(!in_glover())
+	//count 11-leaf clovers
+	int numClovers = 0;
+
+	if (!in_glover())
 	{
-		retval += available_amount($item[11-Leaf Clover]);
+		numClovers += available_amount($item[11-Leaf Clover]);
 		//if none on hand, try to buy from hermit
-		if(retval == 0)
+		if (numClovers == 0)
 		{
 			acquireHermitItem($item[11-Leaf Clover]);
-			retval += item_amount($item[11-Leaf Clover]);
+			numClovers += item_amount($item[11-Leaf Clover]);
 		}
 		//if none at hermit, try to pull one
-		if(retval == 0)
+		if (numClovers == 0)
 		{
 			pullXWhenHaveY($item[11-Leaf Clover], 1, item_amount($item[11-Leaf Clover]));
-			retval += item_amount($item[11-Leaf Clover]);
+			numClovers += item_amount($item[11-Leaf Clover]);
+		}
+		//Get from August Scepter
+		if(auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug2Cast").to_boolean())
+		{
+			numClovers += 1;
 		}
 	}
 
 	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
-	retval += min(available_amount($item[[10883]Astral Energy Drink]), floor(spleen_left() / 5));
+	numClovers += min(available_amount($item[[10883]Astral Energy Drink]), floor(spleen_left() / 5));
 
 	//other known sources which aren't counted here:
 	// Lucky Lindy, Optimal Dog, Pillkeeper
 
-	return retval;
+	if (get_property("auto_wandOfNagamar").to_boolean() && !override && my_daycount() > 1 && in_hardcore())
+	{
+		// in Normal we will just pull the missing pieces. Which is always an N because no one goes to the Valley of Rof L'm Fao
+		numClovers--;
+	}
+
+	return numClovers;
 }
 
-boolean cloverUsageInit()
+int cloversAvailable()
 {
-	if(cloversAvailable() == 0)
+	// overload to not override clover usage by default as this is the general case
+	return cloversAvailable(false);
+}
+
+boolean cloverUsageInit(boolean override)
+{
+	if (cloversAvailable(override) == 0)
 	{
 		abort("Called cloverUsageInit but have no clovers");
 	}
 	//do we already have Lucky!?
-	if(have_effect($effect[Lucky!]) > 0)
+	if (have_effect($effect[Lucky!]) > 0)
 	{
 		return true;
 	}
 
+	//Use August Scepter skill if we can
+	if (auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug2Cast").to_boolean())
+	{
+		use_skill($skill[Aug. 2nd: Find an Eleven-Leaf Clover Day]);
+		if (have_effect($effect[Lucky!]) > 0)
+		{
+			auto_log_info("Clover usage initialized");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after casting Aug. 2nd: Find an Eleven-Leaf Clover Day!");
+		}
+	}
+	
 	//use a clover if we have one in inventory or closet
-	if(item_amount($item[11-Leaf Clover]) < 1)
+	if (item_amount($item[11-Leaf Clover]) < 1)
 	{
 		//try to get one out of closet, catch to avoid an error being thrown
 		catch retrieve_item(1, $item[11-Leaf Clover]);	
 	}
-	if(item_amount($item[11-Leaf Clover]) > 0)
+	if (item_amount($item[11-Leaf Clover]) > 0)
 	{
 		use(1, $item[11-Leaf Clover]);
-		if(have_effect($effect[Lucky!]) > 0)
+		if (have_effect($effect[Lucky!]) > 0)
 		{
 			auto_log_info("Clover usage initialized");
 			return true;
@@ -1425,17 +1459,17 @@ boolean cloverUsageInit()
 	}
 	
 	//use Astral Energy Drinks if we have room
-	if(spleen_left() >= 5)
+	if (spleen_left() >= 5)
 	{
-		if(item_amount($item[[10883]Astral Energy Drink]) < 1)
+		if (item_amount($item[[10883]Astral Energy Drink]) < 1)
 		{
 			//try to get one out of closet
 			retrieve_item(1, $item[[10883]Astral Energy Drink]);		
 		}
-		if(item_amount($item[[10883]Astral Energy Drink]) > 0)
+		if (item_amount($item[[10883]Astral Energy Drink]) > 0)
 		{
 			chew(1, $item[[10883]Astral Energy Drink]);
-			if(have_effect($effect[Lucky!]) > 0)
+			if (have_effect($effect[Lucky!]) > 0)
 			{
 				auto_log_info("Clover usage initialized");
 				return true;
@@ -1449,6 +1483,12 @@ boolean cloverUsageInit()
 
 	abort("We tried to initialize clover usage but was unable to get Lucky!");
 	return false;
+}
+
+boolean cloverUsageInit()
+{
+	// overload to not override clover usage by default as this is the general case
+	return cloverUsageInit(false);
 }
 
 boolean cloverUsageRestart()
@@ -1617,27 +1657,6 @@ boolean inCanadiaSign()
 boolean inGnomeSign()
 {
 	return $strings[Blender, Packrat, Wombat] contains my_sign();
-}
-
-boolean allowSoftblockShen()
-{
-	//Some quests have a softblock on doing them because shen might need them. When we run out of things to do this softblock is released.
-	//Return true means the softblock is active. Return false means the softblock is released.
-	if(get_property("questL11Shen") == "finished")
-	{
-		return false;		//shen quest is over. softblock not needed
-	}
-	
-	//We tell users to disable the shen softblock by setting auto_shenSkipLastLevel to 999.
-	//This is why we want to return < my_level() and not != my_level()
-	return get_property("auto_shenSkipLastLevel").to_int() < my_level();
-}
-
-boolean setSoftblockShen()
-{
-	auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do. Releasing softblock.", "red");
-	set_property("auto_shenSkipLastLevel", my_level());
-	return true;
 }
 
 boolean instakillable(monster mon)
@@ -1930,6 +1949,9 @@ boolean LX_summonMonster()
 		(lumberCount() < 30 || fastenerCount() < 30) && canSummonMonster($monster[smut orc pervert]))
 	{
 		// summon pervert here but handling of L9 quest will open box
+		if(auto_haveGreyGoose()){
+			handleFamiliar($familiar[Grey Goose]);
+		}
 		if(summonMonster($monster[smut orc pervert])) return true;
 	}
 

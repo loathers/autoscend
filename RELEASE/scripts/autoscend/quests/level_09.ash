@@ -395,17 +395,11 @@ boolean L9_aBooPeak()
 	boolean clueCheck = ((clueAmt > 0) || (get_property("auto_aboopending").to_int() != 0));
 	if (get_property("auto_abooclover").to_boolean() && get_property("booPeakProgress").to_int() >= 30 && booCloversOk)
 	{
-		cloverUsageInit();
-		autoAdvBypass(296, $location[A-Boo Peak]);
-		if(cloverUsageRestart())
-		{
-			autoAdvBypass(296, $location[A-Boo Peak]);
-		}
-		if(cloverUsageFinish())
+		if (autoLuckyAdv($location[A-Boo Peak]))
 		{
 			set_property("auto_abooclover", false);
+			return true;
 		}
-		return true;
 	}
 	else if (clueCheck && (get_property("booPeakProgress").to_int() > 2))
 	{
@@ -837,6 +831,10 @@ boolean L9_twinPeak()
 		{
 			return false;
 		}
+	}
+	if(auto_haveGreyGoose()){
+		auto_log_info("Bringing the Grey Goose to emit some drones to get some hedge trimmers.");
+		handleFamiliar($familiar[Grey Goose]);
 	}
 	return autoAdv($location[Twin Peak]);
 }

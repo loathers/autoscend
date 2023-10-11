@@ -1544,16 +1544,6 @@ boolean LM_edTheUndying()
 		return true;
 	}
 
-	if (!have_skill($skill[Even More Elemental Wards])) { 
-		// if we don't have the last Elemental Resistance Upgrade, we still need Ka
-		// Thus we shouldn't block quests that Shen might request as almost all of them are Ka zones.
-		if(allowSoftblockShen()) {
-			auto_log_warning("I was trying to avoid zones that Shen might need, but I still need Ka for upgrades.", "red");
-			set_property("auto_shenSkipLastLevel", my_level());
-			return true;
-		}
-	}
-
 	// Crush the jackass adventurer!
 	if (L13_ed_towerHandler())
 	{

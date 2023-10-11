@@ -1,4 +1,4 @@
-since r27442;	// support replica eagle
+since r27557;	// support small path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -77,6 +77,7 @@ import <autoscend/paths/path_of_the_plumber.ash>
 import <autoscend/paths/picky.ash>
 import <autoscend/paths/pocket_familiars.ash>
 import <autoscend/paths/quantum_terrarium.ash>
+import <autoscend/paths/small.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/way_of_the_surprising_fist.ash>
@@ -198,6 +199,7 @@ void initializeSettings() {
 	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
 	set_property("auto_L8_extremeInstead", false);
+	set_property("auto_L9_smutOrcPervert", false);
 	set_property("auto_haveSourceTerminal", false);
 	set_property("auto_hedge", "fast");
 	set_property("auto_hippyInstead", false);
@@ -218,7 +220,6 @@ void initializeSettings() {
 	set_property("auto_pulls", "");
 
 	// Last level during which we ran out of stuff to do without pre-completing some Shen quests.
-	set_property("auto_shenSkipLastLevel", 0); 
 	remove_property("auto_shenZonesTurnsSpent");
 	remove_property("auto_lastShenTurn");
 	
@@ -278,6 +279,7 @@ void initializeSettings() {
 	zombieSlayer_initializeSettings();
 	fotd_initializeSettings();
 	lol_initializeSettings();
+	small_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -1108,6 +1110,7 @@ boolean dailyEvents()
 	auto_LegacyOfLoathingDailies();
 	auto_buyFrom2002MrStore();
 	auto_useBlackMonolith();
+	auto_scepterSkills();
 	
 	return true;
 }
@@ -1660,7 +1663,7 @@ boolean doTasks()
 	if(my_familiar() == $familiar[Stooper] && pathAllowsChangingFamiliar())
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[Mosquito]);
+		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : findNonRockFamiliarInTerrarium());
 		use_familiar(fam);
 	}
 	if(my_inebriety() > inebriety_limit())
@@ -1762,9 +1765,6 @@ boolean doTasks()
 	auto_latteRefill();
 	auto_buyCrimboCommerceMallItem();
 	houseUpgrade();
-	getTerrarium();			//get a familiar terrarium if you do not have one yet so you can use familiars
-	acquireFamiliars();		//get useful and cheap familiars
-	hatchList();			//hatch familiars that are commonly dropped in run
 
 	//This just closets stuff so G-Lover does not mess with us.
 	if(LM_glover())						return true;
@@ -1844,6 +1844,8 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if(LX_ForceNC())					return true;
+	prioritizeGoose();
+	if(LX_dronesOut())					return true;
 	if(LM_bond())						return true;
 	if(LX_calculateTheUniverse(false))	return true;
 	rockGardenEnd();
@@ -1853,6 +1855,8 @@ boolean doTasks()
 	if(LA_wildfire())					return true;
 	if(LA_robot())						return true;
 	if(auto_autumnatonQuest())			return true;
+	if(auto_smallCampgroundGear())		return true;
+	auto_lostStomach(false);
 	
 	if (process_tasks()) return true;
 
@@ -1967,7 +1971,7 @@ void auto_begin()
 	if(my_familiar() == $familiar[Stooper] && pathAllowsChangingFamiliar())
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[Mosquito]);
+		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : findNonRockFamiliarInTerrarium());
 		use_familiar(fam);
 	}
 
@@ -2003,7 +2007,7 @@ void print_help_text()
 {
 	print_html("Thank you for using autoscend!");
 	print_html("If you need to configure or interrupt the script, choose <b>autoscend</b> from the drop-down \"run script\" menu in your browser.");
-	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues\">on Github</a>");
+	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/loathers/autoscend/issues\">on Github</a>");
 	print_html("A FAQ with common issues (and tips for a great bug report) <a href=\"https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns\">can be found here</a>");
 	print_html("The developers also hang around <a href=\"https://discord.gg/96xZxv3\">on the Ascension Speed Society discord server</a>");
 	print_html("");
@@ -2011,7 +2015,7 @@ void print_help_text()
 
 void sad_times()
 {
-	print_html('autoscend (formerly sl_ascend) is under new management. Soolar (the maintainer of sl_ascend) and Jeparo (the most active contributor) have decided to cease development of sl_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. New developers have taken over maintenance and rebranded sl_ascend to autoscend as per Soolar\'s request. Please be patient with us during this transition period. Please see the readme on the <a href="https://github.com/Loathing-Associates-Scripting-Society/autoscend">github</a> page for more information.');
+	print_html('autoscend (formerly sl_ascend) is under new management. Soolar (the maintainer of sl_ascend) and Jeparo (the most active contributor) have decided to cease development of sl_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. New developers have taken over maintenance and rebranded sl_ascend to autoscend as per Soolar\'s request. Please be patient with us during this transition period. Please see the readme on the <a href="https://github.com/loathers/autoscend">github</a> page for more information.');
 }
 
 void safe_preference_reset_wrapper(int level)

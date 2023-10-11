@@ -25,12 +25,18 @@ void print_footer()
 	}
 	auto_log_info(next_line, "blue");
 	
+	string stat_sign(int s)
+	{
+		if(s >= 0) return "+" +s;
+		else return s;
+	}
+	
 	int bonus_mus = my_buffedstat($stat[muscle]) - my_basestat($stat[muscle]);
 	int bonus_mys = my_buffedstat($stat[mysticality]) - my_basestat($stat[mysticality]);
 	int bonus_mox = my_buffedstat($stat[moxie]) - my_basestat($stat[moxie]);
-	auto_log_info("mus: " +my_basestat($stat[muscle])+ " + " +bonus_mus+
-	". mys: " +my_basestat($stat[mysticality])+ " + " +bonus_mys+
-	". mox: " +my_basestat($stat[moxie])+ " + " +bonus_mox, "blue");
+	auto_log_info("mus: " +my_basestat($stat[muscle])+stat_sign(bonus_mus)+
+	". mys: " +my_basestat($stat[mysticality])+stat_sign(bonus_mys)+
+	". mox: " +my_basestat($stat[moxie])+stat_sign(bonus_mox), "blue");
 	
 	next_line = "";
 	if(pathHasFamiliar())
@@ -96,7 +102,7 @@ void auto_ghost_prep(location place)
 		Smoke Break,				//avatar of sneaky pete
 		Fireball Toss,				//path of the plumber
 		Chill of the Tomb,			//dark gyffte
-		Lavafava,					//avatar of west of loathing
+		Lavafava, Pungent Mung, Beanstorm,			  //avatar of west of loathing
 		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
 		]
 	{
@@ -608,7 +614,7 @@ boolean auto_pre_adventure()
 		boolean purgeML = false;
 
 	boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, The Defiled Cranny];
-	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
+	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp, Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass];
 
 	// Generic Conditions
 	if(inAftercore())
@@ -856,6 +862,10 @@ boolean auto_pre_adventure()
 
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
+	
+	//try to catch infinite loop where we repeatedly try to do the same thing.
+	//works with code found in auto_post_adv.ash
+	set_property("_auto_inf_session_adv", my_session_adv());
 	
 	//to avoid constant flipping on the MCD. change it right before adventuring
 	int mcd_target = get_property("auto_mcd_target").to_int();

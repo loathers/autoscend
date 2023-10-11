@@ -2,6 +2,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 {
 	// stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
 	string retval;
+
+	// Skip if have drones out
+	if(get_property("auto_skipStage2").to_boolean()) return "";
 	
 	//if we want to olfact in stage 4 then we should delay stage 2 until we olfact.
 	//we do not want to olfact now because we should do stage 3 first to stun and/or debuff the enemy first before olfacting.
@@ -24,7 +27,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	//use industrial fire extinguisher zone specific skills
 	string extinguisherSkill = auto_FireExtinguisherCombatString(my_location());
 	if(extinguisherSkill != "" && have_equipped(wrap_item($item[industrial fire extinguisher]))
-	//below is temp workaround for https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues/1011
+	//below is temp workaround for https://github.com/loathers/autoscend/issues/1011
 	&& enemy != $monster[screambat])
 	{
 		handleTracker(enemy, to_skill(substring(extinguisherSkill, 6)), "auto_otherstuff");
@@ -195,7 +198,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		combat_status_add("freeruncheck");
 	}
 
-	if (!combat_status_check("replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
+	if (!combat_status_check("replacercheck") && auto_wantToReplace(enemy, my_location()))
 	{
 		string combatAction = replaceMonsterCombatString(enemy, true);
 		if(combatAction != "")
@@ -211,7 +214,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			else if(index_of(combatAction, "item") == 0)
 			{
-				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
+				if(contains_text(combatAction, ", none"))
+				{
+					int commapos = index_of(combatAction, ", none");
+					handleTracker(enemy, to_item(substring(combatAction, 5, commapos)), "auto_replaces");
+				}
+				else
+				{
+					handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_replaces");
+				}
 			}
 			else
 			{
