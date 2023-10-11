@@ -1192,3 +1192,229 @@ boolean provideMoxie(int amt, boolean doEquips)
 	return provideMoxie(amt, my_location(), doEquips);
 }
 
+float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
+{
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " item, " + (doEquips ? "with" : "without") + " equipment", "blue");
+
+	float alreadyHave = numeric_modifier("Item Drop");
+	float need = amt - alreadyHave;
+
+	if(need > 0)
+	{
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	}
+	else
+	{
+		auto_log_debug("We already have enough!");
+	}
+
+	float delta = 0;
+
+	float result()
+	{
+		return numeric_modifier("Item Drop") + delta;
+	}
+
+	if(doEquips)
+	{
+		//craft IOTM derivative that gives high item bonus
+		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0) && auto_is_valid($item[A Light That Never Goes Out]))
+		{
+			buyUpTo(1, $item[third-hand lantern]);
+			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
+		}
+
+		if(auto_is_valid($item[Broken Champagne Bottle]) && get_property("garbageChampagneCharge").to_int() > 0) {
+			//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
+			januaryToteAcquire($item[Broken Champagne Bottle]);
+		}
+
+		string max = "500item " + (amt + 100) + "max";
+		if(speculative)
+		{
+			simMaximizeWith(loc, max);
+		}
+		else
+		{
+			addToMaximize(max);
+			simMaximize(loc);
+		}
+		delta = simValue("Item Drop") - numeric_modifier("Item Drop");
+		auto_log_debug("With gear we can get to " + result());
+	}
+
+	boolean pass()
+	{
+		return result() >= amt;
+	}
+
+	if(pass())
+		return result();
+
+	//see how much familiar will help
+	if(doEquips && pathHasFamiliar() && pathAllowsChangingFamiliar())
+	{
+		if(!speculative)
+		{
+			handleFamiliar("item");
+		}
+		// fam isn't equipped immediatly even if we aren't speculating
+		// so add bonus from fam regardless of speculation
+		familiar target = lookupFamiliarDatafile("item");
+		if(target != $familiar[none])
+		{
+			int famWeight = familiar_weight(target) + weight_adjustment();
+			delta += numeric_modifier(target, "Item Drop",famWeight,$item[none]);
+		}
+
+		auto_log_debug("With familiar we can get to " + result());
+
+		if(pass())
+			return result();
+	}
+
+	void handleEffect(effect eff)
+	{
+		if(speculative)
+		{
+			delta += numeric_modifier(eff, "Item Drop");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
+	}
+
+	boolean tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(buffMaintain(eff, 0, 1, 1, speculative))
+				handleEffect(eff);
+			if(pass())
+				return true;
+		}
+		return false;
+	}
+
+	if(in_heavyrains())
+	{
+		buffMaintain($effect[Fishy Whiskers]); // HR only
+	}
+
+	// unlimited skills
+	if(tryEffects($effects[
+		Fat Leon\'s Phat Loot Lyric,
+		Singer\'s Faithful Ocelot
+	]))
+		return result();
+
+	if(canAsdonBuff($effect[Driving Observantly]))
+	{
+		if(!speculative)
+			asdonBuff($effect[Driving Observantly]);
+		handleEffect($effect[Driving Observantly]);
+	}
+	if(pass())
+		return result();
+
+	if(!bat_wantHowl(loc) && bat_formBats(speculative))
+	{
+		handleEffect($effect[Bats Form]);
+	}
+	if(pass())
+		return result();
+
+	if(auto_birdModifier("Item Drop") > 0)
+	{
+		if(tryEffects($effects[Blessing of the Bird]))
+			return result();
+	}
+
+	if(auto_favoriteBirdModifier("Item Drop") > 0)
+	{
+		if(tryEffects($effects[Blessing of Your Favorite Bird]))
+			return result();
+	}
+
+	// items
+	if(tryEffects($effects[
+		Joyful Resolve,
+		Fortunate Resolve,
+		Human-Human Hybrid,
+		Unusual Perspective,
+		Eagle Eyes,
+		Heart of Lavender,
+		Five Sticky Fingers
+	]))
+		return result();
+		
+	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
+	{
+		if(!speculative)
+			auto_sourceTerminalEnhance("items");
+		handleEffect($effect[items.enh]);
+		if(pass())
+			return result();
+	}
+
+	//check specific item drop bonus
+	generic_t itemFoodNeed = zone_needItemFood(loc);
+	generic_t itemBoozeNeed = zone_needItemBooze(loc);
+	float itemDropFood = result() + simValue("Food Drop");
+	float itemDropBooze = result() + simValue("Booze Drop");
+	if(itemFoodNeed._boolean && itemDropFood < itemFoodNeed._float)
+	{
+		auto_log_debug("Trying food drop supplements");
+		//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
+		addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
+		simMaximize();
+		itemDropFood = simValue("Item Drop") + simValue("Food Drop");
+	}
+	if(itemBoozeNeed._boolean && itemDropBooze < itemBoozeNeed._float)
+	{
+		auto_log_debug("Trying booze drop supplements");
+		addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
+		simMaximize();
+		itemDropBooze = simValue("Item Drop") + simValue("Booze Drop");
+		//no zone item yet needs both food and booze, bottle of Chateau de Vinegar exception is a cooking ingredient but doesn't use food drop bonus
+	}
+	if(pass())
+		return result();
+	
+
+	if(get_property("auto_dickstab").to_boolean())
+	{
+		if(tryEffects($effects[
+			Wet and Greedy,
+			Frosty
+		]))
+			return result();
+	}
+
+	if(doEquips && amt >= 400)
+	{
+		if(!get_property("_steelyEyedSquintUsed").to_boolean() && buffMaintain($effect[Steely-Eyed Squint], 0, 1, 1, speculative))
+		{
+			if(speculative)
+				delta += delta + numeric_modifier("Item Drop");
+			auto_log_debug("With Steely Eyed Squint we " + (speculative ? "can get to" : "now have") + " " + result());
+		}
+		if(pass())
+			return result();
+	}
+
+	return result();
+}
+
+float provideItem(int amt, boolean doEquips, boolean speculative)
+{
+	return provideItem(amt, my_location(), doEquips, speculative);
+}
+
+boolean provideItem(int amt, location loc, boolean doEquips)
+{
+	return provideItem(amt, loc, doEquips, false) >= amt;
+}
+
+boolean provideItem(int amt, boolean doEquips)
+{
+	return provideItem(amt, my_location(), doEquips);
+}
