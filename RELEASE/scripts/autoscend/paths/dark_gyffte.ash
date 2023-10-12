@@ -413,7 +413,7 @@ int bat_creatable_amount(item desired)
 			}	
 			if(item_amount($item[wad of dough]) == 0)
 			{
-				buyUpTo(1, $item[wad of dough]);
+				auto_buyUpTo(1, $item[wad of dough]);
 			}	
 			return creatable_amount(desired);
 		case $item[blood snowcone]:
@@ -423,7 +423,7 @@ int bat_creatable_amount(item desired)
 			}	
 			if(item_amount($item[plain snowcone]) == 0)
 			{
-				buyUpTo(1, $item[plain snowcone]);
+				auto_buyUpTo(1, $item[plain snowcone]);
 			}
 			return creatable_amount(desired);
 		case $item[blood roll-up]:

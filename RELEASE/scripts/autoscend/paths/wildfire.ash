@@ -189,7 +189,7 @@ boolean LX_wildfire_grease_pump()
 		pull_meat(npc_price($item[pump grease]));
 		if(my_meat() >= npc_price($item[pump grease]))
 		{
-			buyUpTo(1, $item[pump grease]);
+			auto_buyUpTo(1, $item[pump grease]);
 		}
 		else
 		{

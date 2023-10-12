@@ -18,7 +18,7 @@ void makeStartingSmiths()
 
 	if(knoll_available())
 	{
-		buyUpTo(1, $item[maiden wig]);
+		auto_buyUpTo(1, $item[maiden wig]);
 	}
 
 	switch(my_class())
@@ -30,14 +30,14 @@ void makeStartingSmiths()
 		}
 		if(!possessEquipment($item[Vicar\'s Tutu]) && (item_amount($item[Lump of Brituminous Coal]) > 0) && knoll_available())
 		{
-			buy(1, $item[Frilly Skirt]);
+			auto_buyUpTo(1, $item[Frilly Skirt]);
 			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Frilly Skirt]);
 		}
 		break;
 	case $class[Turtle Tamer]:
 		if(!possessEquipment($item[Work is a Four Letter Sword]))
 		{
-			buyUpTo(1, $item[Sword Hilt]);
+			auto_buyUpTo(1, $item[Sword Hilt]);
 			autoCraft("smith", 1, $item[lump of Brituminous coal], $item[sword hilt]);
 		}
 		if(!possessEquipment($item[Ouija Board\, Ouija Board]))

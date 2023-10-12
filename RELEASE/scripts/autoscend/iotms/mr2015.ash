@@ -280,7 +280,7 @@ boolean auto_mayoItems()
 		}
 		if(item_amount(mayo) == 0)
 		{
-			buy(1, mayo);
+			auto_buyUpTo(1, mayo);
 			return true;
 		}
 	}

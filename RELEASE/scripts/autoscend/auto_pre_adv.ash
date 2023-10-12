@@ -284,12 +284,12 @@ boolean auto_pre_adventure()
 		{
 			if (0 == have_effect($effect[Uncucumbered]))
 			{
-				buyUpTo(1, $item[hair spray]);
+				auto_buyUpTo(1, $item[hair spray]);
 				use(1, $item[hair spray]);
 			}
 			if (0 == have_effect($effect[Minerva\'s Zen]))
 			{
-				buyUpTo(1, $item[glittery mascara]);
+				auto_buyUpTo(1, $item[glittery mascara]);
 				use(1, $item[glittery mascara]);
 			}
 		}

@@ -38,7 +38,7 @@ boolean L8_slopeCasual()
 	foreach it in $items[Ninja Carabiner, Ninja Crampons, Ninja Rope,		//ninja climbing gear needed to climb the slope
 	eXtreme scarf, eXtreme mittens, snowboarder pants]						//outfit ensures you can reach 5 cold res needed
 	{
-		if(!buyUpTo(1, it))	//try to buy it or verify we already own it. if fails then do as below
+		if(!auto_buyUpTo(1, it))	//try to buy it or verify we already own it. if fails then do as below
 		{
 			if(my_meat() < mall_price(it))
 			{
