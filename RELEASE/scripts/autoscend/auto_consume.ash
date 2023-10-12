@@ -131,7 +131,7 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 	{
 		if((have_effect($effect[Drunk and Avuncular]) < expectedInebriety) && (item_amount($item[Drunk Uncles Holo-Record]) == 0))
 		{
-			buyUpTo(1, $item[Drunk Uncles Holo-Record]);
+			auto_buyUpTo(1, $item[Drunk Uncles Holo-Record]);
 		}
 		buffMaintain($effect[Drunk and Avuncular], 0, 1, expectedInebriety);
 	}
@@ -324,7 +324,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	{
 		if((have_effect($effect[Record Hunger]) < expectedFullness) && (item_amount($item[The Pigs Holo-Record]) == 0))
 		{
-			buyUpTo(1, $item[The Pigs Holo-Record]);
+			auto_buyUpTo(1, $item[The Pigs Holo-Record]);
 		}
 		buffMaintain($effect[Record Hunger], 0, 1, expectedFullness);
 	}
@@ -334,9 +334,9 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	while(howMany > 0)
 	{
 		buffMaintain($effect[Song of the Glorious Lunch], 10, 1, toEat.fullness);
-		if((auto_get_campground() contains $item[Portable Mayo Clinic]) && (my_meat() > 11000) && (get_property("mayoInMouth") == "") && auto_is_valid($item[Portable Mayo Clinic]))
+		if((auto_get_campground() contains $item[Portable Mayo Clinic]) && (my_meat() - meatReserve() > npc_price($item[Mayoflex])) && (get_property("mayoInMouth") == "") && auto_is_valid($item[Portable Mayo Clinic]))
 		{
-			buyUpTo(1, $item[Mayoflex], 1000);
+			auto_buyUpTo(1, $item[Mayoflex]);
 			use(1, $item[Mayoflex]);
 		}
 		if(item_amount($item[whet stone]) > 0) //use whet stone if we got one from the rock garden
@@ -691,7 +691,7 @@ boolean autoPrepConsume(ConsumeAction action)
 	{
 		auto_log_info("autoPrepConsume: Buying a " + action.it, "blue");
 		action.howToGet = AUTO_OBTAIN_NULL;
-		return buy(1, action.it);
+		return auto_buyUpTo(1, action.it);
 	}
 	else if (action.howToGet == AUTO_OBTAIN_NULL)
 	{

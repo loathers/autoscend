@@ -139,7 +139,7 @@ boolean LX_unlockDesert()
 	if(my_meat() >= (npc_price($item[Desert Bus Pass]) + 1000) && isGeneralStoreAvailable())
 	{
 		auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
-		buyUpTo(1, $item[Desert Bus Pass]);
+		auto_buyUpTo(1, $item[Desert Bus Pass]);
 		if(item_amount($item[Desert Bus Pass]) > 0)
 		{
 			return true;
@@ -173,7 +173,7 @@ boolean LX_desertAlternate()
 	}
 	if((my_meat() >= npc_price($item[Desert Bus Pass])) && isGeneralStoreAvailable())
 	{
-		buyUpTo(1, $item[Desert Bus Pass]);
+		auto_buyUpTo(1, $item[Desert Bus Pass]);
 		if(item_amount($item[Desert Bus Pass]) > 0)
 		{
 			return true;
@@ -199,7 +199,7 @@ boolean LX_islandAccess()
 	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (get_property("lastIslandUnlock").to_int() != my_ascensions()) && (my_meat() >= npc_price($item[dingy planks])) && isGeneralStoreAvailable())
 	{
 		cli_execute("make dinghy plans");
-		buyUpTo(1, $item[dingy planks]);
+		auto_buyUpTo(1, $item[dingy planks]);
 		use(1, $item[dinghy plans]);
 		return true;
 	}
@@ -263,7 +263,7 @@ boolean LX_islandAccess()
 	if((my_meat() >= npc_price($item[dingy planks])) && (item_amount($item[Dinghy Plans]) == 0) && isGeneralStoreAvailable())
 	{
 		cli_execute("make dinghy plans");
-		buyUpTo(1, $item[dingy planks]);
+		auto_buyUpTo(1, $item[dingy planks]);
 		use(1, $item[dinghy plans]);
 		return true;
 	}
@@ -540,11 +540,11 @@ boolean LX_dailyDungeonToken()
 	
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
 	{
-		buyUpTo(1, $item[Eleven-Foot Pole]);
-		buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
+		auto_buyUpTo(1, $item[Eleven-Foot Pole]);
+		auto_buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
 		if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not buy a second one if already equipped
 		{
-			buyUpTo(1, $item[Ring of Detect Boring Doors]);
+			auto_buyUpTo(1, $item[Ring of Detect Boring Doors]);
 		}
 	}
 	
@@ -683,7 +683,7 @@ boolean LX_dolphinKingMap()
 	{
 		if(possessEquipment($item[Snorkel]) || ((my_meat() >= npc_price($item[Snorkel])) && isArmoryAvailable()))
 		{
-			buyUpTo(1, $item[Snorkel]);
+			auto_buyUpTo(1, $item[Snorkel]);
 			item oldHat = equipped_item($slot[hat]);
 			equip($item[Snorkel]);
 			use(1, $item[Dolphin King\'s Map]);

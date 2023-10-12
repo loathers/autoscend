@@ -427,7 +427,7 @@ boolean L9_aBooPeak()
 
 		if(black_market_available() && (item_amount($item[Can of Black Paint]) == 0) && (have_effect($effect[Red Door Syndrome]) == 0) && (my_meat() >= npc_price($item[Can of Black Paint])))
 		{
-			buyUpTo(1, $item[Can of Black Paint]);
+			auto_buyUpTo(1, $item[Can of Black Paint]);
 			coldResist += 2;
 			spookyResist += 2;
 		}

@@ -349,7 +349,7 @@ boolean auto_post_adventure()
 		}
 		else if(isGeneralStoreAvailable() && auto_is_valid($item[Anti-Anti-Antidote]))
 		{
-			buyUpTo(1, $item[Anti-Anti-Antidote], 30);
+			auto_buyUpTo(1, $item[Anti-Anti-Antidote]);
 			use(1, $item[Anti-Anti-Antidote]);
 		}
 	}
