@@ -113,6 +113,44 @@ void auto_SITCourse()
 	}
 }
 
+boolean auto_havePayPhone()
+{
+	static item phone = $item[closed-circuit pay phone];
+	return auto_is_valid(phone) && item_amount(phone) > 0;
+}
+
+location auto_availableBrickRift()
+{
+	boolean[location] riftsWithBricks = $locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)];
+	foreach loc in riftsWithBricks
+	{
+		if(can_adventure(loc)) return loc;
+	}
+	return $location[none];
+}
+
+boolean auto_doPhoneQuest()
+{
+	if(!auto_havePayPhone())
+	{
+		return false;
+	}
+	// only accept and do quest if we can get bricks
+	if(auto_availableBrickRift() == $location[none])
+	{
+		return false;
+	}
+	// already finished phone quest today
+	if(get_property("_shadowAffinityToday").to_boolean() && have_effect($effect[Shadow Affinity]) == 0)
+	{
+		return false;
+	}
+
+	// get quest
+	
+	return false;
+}
+
 boolean auto_haveMonkeyPaw()
 {
 	static item paw = $item[cursed monkey\'s paw];
