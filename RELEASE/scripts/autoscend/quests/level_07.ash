@@ -203,7 +203,7 @@ boolean L7_crypt()
 	if((auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 && 
 		get_workshed() != $item[cold medicine cabinet] && !isAboutToPowerlevel() && 
 		(LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none])) ||
-		(get_workshed() == $item[cold medicine cabinet] && uTurns > 11))
+		(get_workshed() == $item[cold medicine cabinet] && uTurns >= 11))
 	{
 		return false;
 	}

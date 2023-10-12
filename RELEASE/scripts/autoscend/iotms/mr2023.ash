@@ -510,7 +510,7 @@ boolean auto_getCitizenZone(string goal)
 				{
 					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
 					{
-						handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
+						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
 						return true;
 					}
 					return false;
@@ -525,7 +525,7 @@ boolean auto_getCitizenZone(string goal)
 				{
 					if(contains_text(activeCitZoneMod, goal))
 					{
-						handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
+						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
 						return true;
 					}
 					return false;
@@ -540,7 +540,7 @@ boolean auto_getCitizenZone(string goal)
 				{
 					if(contains_text(activeCitZoneMod, goal))
 					{
-						handleTracker("Patriotic Eagle: " + goal, "auto_otherstuff");
+						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
 						return true;
 					}
 					return false;
