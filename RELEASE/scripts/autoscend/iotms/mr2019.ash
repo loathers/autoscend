@@ -614,7 +614,7 @@ boolean auto_spoonReadyToTuneMoon()
 		   (auto_is_valid($familiar[cookbookbat]) && have_familiar($familiar[cookbookbat])))
 		{
 			// we want to get the bugbear outfit before switching away for easy bread access
-			if(!buyUpTo(1, $item[bugbear beanie]) || !buyUpTo(1, $item[bugbear bungguard]))
+			if(!auto_buyUpTo(1, $item[bugbear beanie]) || !auto_buyUpTo(1, $item[bugbear bungguard]))
 			{
 				return false;
 			}
@@ -622,7 +622,7 @@ boolean auto_spoonReadyToTuneMoon()
 		// We want the frilly skirt in LKS
 		if(in_lowkeysummer())
 		{
-			if(!buyUpTo(1, $item[frilly skirt]))
+			if(!auto_buyUpTo(1, $item[frilly skirt]))
 			{
 				return false;
 			}

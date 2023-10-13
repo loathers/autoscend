@@ -345,9 +345,9 @@ boolean L7_crypt()
 		
 		if(my_primestat() == $stat[Muscle])
 		{
-			buyUpTo(1, $item[Ben-Gal&trade; Balm]);
+			auto_buyUpTo(1, $item[Ben-Gal&trade; Balm]);
 			buffMaintain($effect[Go Get \'Em\, Tiger!]);
-			buyUpTo(1, $item[Blood of the Wereseal]);
+			auto_buyUpTo(1, $item[Blood of the Wereseal]);
 			buffMaintain($effect[Temporary Lycanthropy]);
 		}
 		//AoSOL buffs

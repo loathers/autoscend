@@ -878,7 +878,7 @@ boolean L11_forgedDocuments()
 		pages[1] = "shop.php?whichshop=blackmarket&action=fightbmguy";
 		return autoAdvBypass(0, pages, $location[Noob Cave], "");
 	}
-	buyUpTo(1, $item[Forged Identification Documents]);
+	auto_buyUpTo(1, $item[Forged Identification Documents]);
 	if(item_amount($item[Forged Identification Documents]) > 0)
 	{
 		return true;
@@ -1036,7 +1036,7 @@ boolean L11_aridDesert()
 
 			if((item_amount($item[Can of Black Paint]) > 0) || ((my_meat() >= npc_price($item[Can of Black Paint])) && canBuyPaint))
 			{
-				buyUpTo(1, $item[Can of Black Paint]);
+				auto_buyUpTo(1, $item[Can of Black Paint]);
 				auto_log_info("Returning the Can of Black Paint", "blue");
 				auto_visit_gnasir();
 				visit_url("choice.php?whichchoice=805&option=1&pwd=");
@@ -1184,13 +1184,13 @@ boolean L11_aridDesert()
 			}
 		}
 
-		buyUpTo(1, $item[hair spray]);
+		auto_buyUpTo(1, $item[hair spray]);
 		buffMaintain($effect[Butt-Rock Hair]);
 		if(my_primestat() == $stat[Muscle])
 		{
-			buyUpTo(1, $item[Ben-Gal&trade; Balm]);
+			auto_buyUpTo(1, $item[Ben-Gal&trade; Balm]);
 			buffMaintain($effect[Go Get \'Em, Tiger!]);
-			buyUpTo(1, $item[Blood of the Wereseal]);
+			auto_buyUpTo(1, $item[Blood of the Wereseal]);
 			buffMaintain($effect[Temporary Lycanthropy]);
 		}
 
@@ -1787,7 +1787,7 @@ boolean L11_hiddenCity()
 					L11_hiddenTavernUnlock(true);
 					if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
 					{
-						buyUpTo(cursesNeeded, $item[Cursed Punch]);
+						auto_buyUpTo(cursesNeeded, $item[Cursed Punch]);
 						if(item_amount($item[Cursed Punch]) < cursesNeeded)
 						{
 							abort("Could not acquire Cursed Punch, unable to deal with Hidden Apartment Properly");
@@ -1879,10 +1879,10 @@ boolean L11_hiddenCity()
 		{
 			if(item_amount($item[Bowl Of Scorpions]) == 0)
 			{
-				buyUpTo(1, $item[Bowl Of Scorpions]);
+				auto_buyUpTo(1, $item[Bowl Of Scorpions]);
 				if(in_ocrs())
 				{
-					buyUpTo(3, $item[Bowl Of Scorpions]);
+					auto_buyUpTo(3, $item[Bowl Of Scorpions]);
 				}
 			}
 		}
@@ -2379,7 +2379,7 @@ boolean L11_redZeppelin()
 			{
 				if (0 == have_effect($effect[Improprie Tea]))
 				{
-					buyUpTo(1, $item[Ben-Gal&trade; Balm], 25);
+					auto_buyUpTo(1, $item[Ben-Gal&trade; Balm]);
 					use(1, $item[Ben-Gal&trade; Balm]);
 				}
 			}
@@ -2469,7 +2469,7 @@ boolean L11_ronCopperhead()
 			}
 			else if (my_meat() > npc_price($item[Red Zeppelin Ticket]))
 			{
-				buy(1, $item[Red Zeppelin Ticket]);
+				auto_buyUpTo(1, $item[Red Zeppelin Ticket]);
 			}
 		}
 		// For Glark Cables. OPTIMAL!

@@ -199,9 +199,9 @@ void LX_buyStarKeyParts()
 	{
 		return;	//no unrestricted mall access
 	}
-	buyUpTo(1, $item[Star Chart], 1000);
-	buyUpTo(8, $item[Star], 1000);
-	buyUpTo(7, $item[line], 1000);
+	auto_buyUpTo(1, $item[Star Chart]);
+	auto_buyUpTo(8, $item[Star]);
+	auto_buyUpTo(7, $item[line]);
 }
 
 boolean LX_getStarKey()

@@ -975,7 +975,7 @@ boolean L12_filthworms()
 		//craft IOTM derivative that gives high item bonus
 		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
 		{
-			buyUpTo(1, $item[third-hand lantern]);
+			auto_buyUpTo(1, $item[third-hand lantern]);
 			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
 		}
 
@@ -1167,7 +1167,7 @@ boolean L12_gremlins()
 			{
 				return false;
 			}
-			buyUpTo(30, $item[Doc Galaktik\'s Pungent Unguent]);
+			auto_buyUpTo(30, $item[Doc Galaktik\'s Pungent Unguent]);
 		}
 	}
 	else
@@ -1724,7 +1724,7 @@ boolean L12_themtharHills()
 	handleBjornify($familiar[Hobo Monkey]);
 	if((equipped_item($slot[off-hand]) != $item[Half a Purse]) && !possessEquipment($item[Half a Purse]) && (item_amount($item[Lump of Brituminous Coal]) > 0))
 	{
-		buyUpTo(1, $item[Loose Purse Strings]);
+		auto_buyUpTo(1, $item[Loose Purse Strings]);
 		autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Loose purse strings]);
 	}
 
