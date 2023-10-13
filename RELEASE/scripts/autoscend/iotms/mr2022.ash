@@ -1,5 +1,47 @@
 # This is meant for items that have a date of 2022
 
+boolean auto_haveCursedMagnifyingGlass()
+{
+	if (possessEquipment($item[cursed magnifying glass]) && auto_can_equip($item[cursed magnifying glass])) {
+		return true;
+	}
+	return false;
+}
+
+boolean auto_voidMonster()
+{
+	return auto_voidMonster($location[none]);
+}
+
+boolean auto_voidMonster(location loc)
+{
+	// Cursed Magnifying Glass gives a void monster combat every 13 turns. The first 5 are free fights
+	// _voidFreeFights counts up from 0 and stays at 5 once all free fights are completed for the day
+	if (!auto_haveCursedMagnifyingGlass())
+	{
+		return false;
+	}
+
+	// return false if we've fought the 5 free void monsters already today or we're still charging up the counter
+	if (get_property("_voidFreeFights").to_int() >= 5 || get_property("cursedMagnifyingGlassCount").to_int() != 13)
+	{
+		return false;
+	}
+
+	if (loc == $location[none])
+	{
+		return true;
+	}
+
+	if (autoEquip($item[cursed magnifying glass]))
+	{
+		set_property("auto_nextEncounter","void guy");	//which of the 3 is random, but they're all same phylum and free under same conditions
+		return autoAdv(loc);
+	}
+	set_property("auto_nextEncounter","");
+	return false;
+}
+
 boolean auto_haveCosmicBowlingBall()
 {
 	// ensure we not only own one but it's in allowed in path and also in inventory for us to do stuff with.
