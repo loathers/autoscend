@@ -69,35 +69,25 @@ int EightBitScore()
 boolean EightBitRealmHandler()
 {
 	//Spend adventures to get the digital key
+	//Preparing for each zone is handled in auto_pre_adv.ash
 	boolean adv_spent = false;
 
 	string color = get_property("8BitColor");
 	switch(color)
 	{
 		case "black":	
-			provideInitiative(600, $location[Vanya\'s Castle], true);	
-			addToMaximize("200initiative 800max");
 			adv_spent = autoAdv($location[Vanya\'s Castle]);
 			break;
 		case "red":
-			buffMaintain($effect[Polka of Plenty], 30, 1, 1);
-			addToMaximize("200meat drop 550max");
 			if(meat_drop_modifier() < 395){
 				auto_getCitizenZone("meat");
 			}
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
-			buffMaintain($effect[Ghostly Shell], 30, 1, 1);			//+80 DA. 6 MP
-			buffMaintain($effect[Astral Shell], 30, 1, 1);			//+80 DA, 10 MP
-			buffMaintain($effect[Feeling Peaceful], 0, 1, 1);
-			addToMaximize("200DA 600max");
 			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":
-			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
-			buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
-			addToMaximize("200item 500max");
 			if(item_drop_modifier() < 370){
 				auto_getCitizenZone("item");
 			}

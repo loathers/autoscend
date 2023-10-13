@@ -2716,11 +2716,17 @@ boolean have_skills(boolean[skill] array)
 }
 
 //From Bale\'s woods.ash relay script.
-void woods_questStart()
+boolean woods_questStart()
 {
+	if (internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0)
+	{
+		// distant woods access is gated behind level 2 quest & whitey's grove quest.
+		// for some reason mafia doesn't track this any other way
+		return false;
+	}
 	if(available_amount($item[Continuum Transfunctioner]) > 0)
 	{
-		return;
+		return false;
 	}
 	visit_url("place.php?whichplace=woods");
 	visit_url("place.php?whichplace=forestvillage&action=fv_mystic");
@@ -2736,6 +2742,7 @@ void woods_questStart()
 	{
 		visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
 	}
+	return true;
 }
 
 int howLongBeforeHoloWristDrop()
