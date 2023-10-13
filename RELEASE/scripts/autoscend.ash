@@ -1779,16 +1779,6 @@ boolean doTasks()
 	auto_checkTrainSet();
 	prioritizeGoose();
 
-	// TODO: tidy this up into a function somewhere. Can't go in handlePulls though as that's called before we switch workshed to trainset.
-	// worksheds are swapped in LX_setWorkshed() which is called in task order
-	if (get_workshed() == $item[model train set] && canPull($item[smut orc keepsake box]) && lumberCount() < 26 && fastenerCount() < 26)
-	{
-		if (pullXWhenHaveY($item[smut orc keepsake box], 1, 0))
-		{
-			use(1, $item[smut orc keepsake box]);
-		}
-	}
-
 	ocrs_postCombatResolve();
 	beatenUpResolution();
 	lar_safeguard();
