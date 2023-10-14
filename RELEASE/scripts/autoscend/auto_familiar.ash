@@ -283,7 +283,7 @@ familiar lookupFamiliarDatafile(string type)
 	
 	auto_log_debug("lookupFamiliarDatafile is checking for type [" + type + "]");
 	// store what type of fam we are looking for
-	set_property("auto_lastFamiliarLoopupType",type);
+	set_property("auto_lastFamiliarLookupType",type);
 	string [string,int,string] familiars_text;
 	if(!file_to_map("autoscend_familiars.txt", familiars_text))
 	{
@@ -777,7 +777,7 @@ void preAdvUpdateFamiliar(location place)
 			run_choice(-1);
 			set_property("_auto_gnomeArenaVisited", "true");
 		}
-		autoEquip($slot[familiar], $item[gnomish housemaid's kgnee]);
+		autoEquip($slot[familiar], $item[gnomish housemaid\'s kgnee]);
 	}
 
 	if (my_familiar() == $familiar[Baby Bugged Bugbear])
@@ -802,6 +802,13 @@ void preAdvUpdateFamiliar(location place)
 				}
 			}
 		}
+	}
+
+	if(my_familiar() == $familiar[Jill-of-All-Trades] && item_amount($item[LED candle]) > 0)
+	{
+		// maximizer uses whatever mode LED candle is in, won't change it
+		// so ensure in correct mode prior to maximizing
+		auto_handleJillOfAllTrades();
 	}
 	
 	if(auto_checkFamiliarMummery(my_familiar()))

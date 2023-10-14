@@ -663,12 +663,6 @@ void finalizeMaximize(boolean speculative)
 		//100 to 200 bonus for diminishing returns when drams already high
 		addBonusToMaximize($item[tiny stillsuit], (100 + to_int(100*min(1,(10.0 / max(1,auto_expectedStillsuitAdvs()))))));
 	}
-	if(my_familiar() == $familiar[Jill-of-All-Trades] && item_amount($item[LED candle]) > 0)
-	{
-		// maximizer uses whatever mode LED candle is in, won't change it
-		// so ensure in correct mode prior to maximizing
-		auto_handleJillOfAllTrades();
-	}
 	if(speculative && auto_haveCrystalBall())
 	{	//when doing simMaximize, in order to know if miniature crystal ball will be allowed in the simulated location, 
 		//location queue checks that would normally be done by pre_adv before maximizing equipment need to be simulated here too

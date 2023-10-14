@@ -518,7 +518,7 @@ void auto_handleJillOfAllTrades()
 
 	string currentMode = getParsedCandleMode();
 	// want to configure jill to have bonus of whatever fam type we last looked up
-	string desiredCandleMode = get_property("auto_lastFamiliarLoopupType");
+	string desiredCandleMode = get_property("auto_lastFamiliarLookupType");
 
 	auto_log_debug(`Jill current mode: {currentMode} and desired is {desiredCandleMode}`);
 	if(currentMode == desiredCandleMode)
