@@ -7,8 +7,11 @@ Hovering Sombrero	ML:>=120
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
 Crimbo Shrub
 # Volleyballs with a multiplier
+Jill-of-All-Trades	item:LED candle>1
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
+# Fairyeverything
+Jill-of-All-Trades
 # Fairyballs
 Elf Operative
 Optimistic Candle

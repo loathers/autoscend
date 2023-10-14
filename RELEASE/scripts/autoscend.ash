@@ -1,4 +1,4 @@
-since r27557;	// support small path
+since r27637;	// support jill-of-all-trades
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1781,6 +1781,7 @@ boolean doTasks()
 	auto_buyFireworksHat();
 	auto_CMCconsult();
 	auto_checkTrainSet();
+	prioritizeGoose();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
@@ -1844,7 +1845,6 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if(LX_ForceNC())					return true;
-	prioritizeGoose();
 	if(LX_dronesOut())					return true;
 	if(LM_bond())						return true;
 	if(LX_calculateTheUniverse(false))	return true;
