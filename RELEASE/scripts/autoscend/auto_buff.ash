@@ -104,7 +104,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 		{
 			if(!speculative)
 			{
-				buy(numToBuy, source);
+				auto_buyUpTo(numToBuy, source);
 			}
 			else
 			{
@@ -117,7 +117,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 		{
 			if(!speculative)
 			{
-				buy(numToBuy, source, meatAvailableToBuy / numToBuy);
+				auto_buyUpTo(numToBuy, source);
 			}
 			else
 			{

@@ -872,6 +872,10 @@ void auto_CMCconsult()
 		}
 		return notAboutToDoNuns();
 	}
+	if(shouldChewBreathitin() && !isActuallyEd() && !haveSpleenFamiliar() && !can_interact())
+	{
+		pullXWhenHaveY($item[Breathitin&trade;],1,0);
+	}
 	if(item_amount($item[Breathitin&trade;]) > 0 && shouldChewBreathitin() && !can_interact())
 	{
 		autoChew(1,$item[Breathitin&trade;]);

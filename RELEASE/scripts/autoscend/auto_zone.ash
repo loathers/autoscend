@@ -898,6 +898,30 @@ generic_t zone_delay(location loc)
 			value = 40 - get_property("_kolhsAdventures").to_int();		//shared counter of 40 adv between all 4 zones
 		}
 		break;
+	case $location[Vanya\'s Castle]:
+		if (possessEquipment($item[Continuum Transfunctioner]) && (get_property("8BitColor") == "black" || get_property("8BitColor") == ""))
+		{
+			value = 5 - get_property("8BitBonusTurns").to_int();
+		}
+		break;
+	case $location[The Fungus Plains]:
+		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "red")
+		{
+			value = 5 - get_property("8BitBonusTurns").to_int();
+		}
+		break;
+	case $location[Megalo-City]:
+		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "blue")
+		{
+			value = 5 - get_property("8BitBonusTurns").to_int();
+		}
+		break;
+	case $location[Hero\'s Field]:
+		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "green")
+		{
+			value = 5 - get_property("8BitBonusTurns").to_int();
+		}
+		break;
 	default:
 		retval._error = true;
 		break;

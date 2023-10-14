@@ -707,7 +707,7 @@ boolean LX_pirateOutfit() {
 	}
 	if (possessOutfit("Swashbuckling Getup")) {
 		if (possessOutfit("Swashbuckling Getup", true) && item_amount($item[The Big Book Of Pirate Insults]) == 0 && my_meat() > npc_price($item[The Big Book Of Pirate Insults])) {
-			buyUpTo(1, $item[The Big Book Of Pirate Insults]);
+			auto_buyUpTo(1, $item[The Big Book Of Pirate Insults]);
 		}
 		return false;
 	}
@@ -863,7 +863,7 @@ boolean LX_joinPirateCrew() {
 		return false;
 	}
 	if (item_amount($item[The Big Book Of Pirate Insults]) == 0 && my_meat() > npc_price($item[The Big Book Of Pirate Insults])) {
-		buyUpTo(1, $item[The Big Book Of Pirate Insults]);
+		auto_buyUpTo(1, $item[The Big Book Of Pirate Insults]);
 	}
 	if (internalQuestStatus("questM12Pirate") == -1 || internalQuestStatus("questM12Pirate") == 1 || internalQuestStatus("questM12Pirate") == 3) {
 		auto_log_info("Findin' the Cap'n", "blue");
@@ -911,7 +911,7 @@ boolean LX_joinPirateCrew() {
 				if (item_amount($item[hot wing]) > 2 && auto_can_equip($item[frilly skirt])) {
 					if (knoll_available() && my_meat() > npc_price($item[frilly skirt])) {
 						auto_log_info("We have hot wings but no frilly skirt. Lets go shopping!", "blue");
-						buyUpTo(1, $item[frilly skirt]);
+						auto_buyUpTo(1, $item[frilly skirt]);
 						autoForceEquip($item[frilly skirt]);
 						infiltrationReady = true;
 					} else {

@@ -1115,7 +1115,7 @@ boolean L1_ed_island()
 	if((my_turncount() <= 1) && (my_meat() > 10000))
 	{
 		int need = min(4, (my_maxmp() - my_mp()) / 10);
-		buyUpTo(need, $item[Doc Galaktik\'s Invigorating Tonic]);
+		auto_buyUpTo(need, $item[Doc Galaktik\'s Invigorating Tonic]);
 		use(need, $item[Doc Galaktik\'s Invigorating Tonic]);
 		cli_execute("auto_post_adv");
 	}
