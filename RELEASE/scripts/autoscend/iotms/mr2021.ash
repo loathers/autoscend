@@ -355,7 +355,7 @@ boolean auto_backupTarget()
 				return true;
 			break;
 		case $monster[Green Ops Soldier]:
-			if(get_property("hippiesDefeated") > 399 && get_property("hippiesDefeated") < 1000 && !in_koe())
+			if(get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe())
 				return true;
 			break;
 		default: break;
