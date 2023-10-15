@@ -129,6 +129,21 @@ location auto_availableBrickRift()
 	return $location[none];
 }
 
+boolean auto_getPhoneQuest()
+{
+	if(get_property("questRufus") != "unstarted")
+	{
+		// already started quest
+		return true;
+	}
+
+	// get artifact quest
+	// auto_choice_adv handles actually picking it
+	use($item[closed-circuit pay phone]);
+
+	return get_property("questRufus") != "unstarted";
+}
+
 boolean auto_doPhoneQuest()
 {
 	if(!auto_havePayPhone())

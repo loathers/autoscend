@@ -659,6 +659,10 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(2); //Insectologist (S.I.T. Course)
 			}
 			break;
+		case 1497: // Calling Rufus
+			// get artifact quest
+			run_choice(2);
+			break;
 		default:
 			break;
 	}
