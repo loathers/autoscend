@@ -108,7 +108,7 @@ init	3	Happy Medium
 item	0	Steam-Powered Cheerleader	path:KOLHS
 # Fairies with a multiplier
 # 1.5x multiplier fairy
-item	1	Jill-of-All-Trades	item:LED candle>1
+item	1	Jill-of-All-Trades	item:LED candle>0
 # 1.4x multiplier fairy
 item	2	Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
 # 1.3x multiplier fairy
@@ -206,7 +206,7 @@ meat	8	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 meat	9	Blavious Kloop	prop:_kloopDrops<3
 # Leprechauns with a >1 multiplier
 # 1.5x multiplier leprechaun
-meat	10	Jill-of-All-Trades	item:LED candle>1
+meat	10	Jill-of-All-Trades	item:LED candle>0
 #Mutant Cactus Bud	grimdark:0
 meat	11	Hobo Monkey
 #Mutant Cactus Bud	grimdark:1
@@ -321,7 +321,7 @@ stat	4	Hovering Sombrero	ML:>=120
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
 stat	5	Crimbo Shrub
 # Volleyballs with a multiplier
-stat	6	Jill-of-All-Trades	item:LED candle>1
+stat	6	Jill-of-All-Trades	item:LED candle>0
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
 # Fairyeverything
