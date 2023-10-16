@@ -362,9 +362,7 @@ boolean LX_burnDelay()
 	boolean wannaDigitize = isOverdueDigitize();
 	boolean wannaSausage = auto_sausageGoblin();
 	boolean wannaBackup = auto_backupTarget();
-	// Cursed Magnifying Glass gives a void monster combat every 13 turns. The first 5 are free fights
-	// _voidFreeFights counts up from 0 and stays at 5 once all free fights are completed for the day
-	boolean voidMonsterNext = (get_property("_voidFreeFights").to_int() < 5) && (get_property("cursedMagnifyingGlassCount").to_int() == 13);
+	boolean voidMonsterNext = auto_voidMonster();
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -426,12 +424,10 @@ boolean LX_burnDelay()
 		if(voidMonsterNext)
 		{
 			auto_log_info("Burn some delay somewhere (cursed magnifying glass), if we found a place!", "green");
-			set_property("auto_nextEncounter","void guy");	//which of the 3 is random, but they're all same phylum and free under same conditions
-			if(autoAdv(burnZone))
+			if(auto_voidMonster(burnZone))
 			{
 				return true;
 			}
-			set_property("auto_nextEncounter","");
 		}
 	}
 	else if(wannaVote || wannaDigitize || wannaSausage || voidMonsterNext)

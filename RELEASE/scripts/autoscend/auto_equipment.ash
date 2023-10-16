@@ -688,25 +688,21 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("-equip " + wrap_item($item[Kramco Sausage-o-Matic&trade;]).to_string());
 		}
 	}
-	if (possessEquipment($item[Cursed Magnifying Glass]))
+	if (auto_haveCursedMagnifyingGlass())
 	{
 		if (get_property("cursedMagnifyingGlassCount").to_int() == 13)
 		{
-			if(get_property("mappingMonsters").to_boolean() || auto_backupTarget() || (get_property("_voidFreeFights").to_int() >= 5 && !in_hardcore()))
+			if(get_property("mappingMonsters").to_boolean() || auto_backupTarget() || (get_property("_voidFreeFights").to_int() >= 5 && get_property("cursedMagnifyingGlassCount").to_int() >= 13 && !in_hardcore()))
 			{
 				// don't equip for non free fights in softcore? (pending allowed conditions like delay zone && none of the monsters in the zone is a sniff/YR target?)
 				// don't interfere with backups or Map the Monsters
 				addToMaximize("-equip " + $item[Cursed Magnifying Glass].to_string());
 			}
-			else if(get_property("_voidFreeFights").to_int() < 5)
-			{
-				// add bonus if next fight is a free void monster
-				addBonusToMaximize($item[Cursed Magnifying Glass], 1000);
-			}
 		}
-		else if(!nextMonsterIsFree && get_property("_voidFreeFights").to_int() < 5 && solveDelayZone() != $location[none])
+		else if(!nextMonsterIsFree && (get_property("_voidFreeFights").to_int() < 5 || (get_property("_voidFreeFights").to_int() >= 5 && get_property("cursedMagnifyingGlassCount").to_int() < 13)) && solveDelayZone() != $location[none])
 		{
 			// add bonus to charge free fights. charge is added when completing nonfree fights only
+			// also we can pre-charge it for the next day once we have used our 5 free fights.
 			addBonusToMaximize($item[Cursed Magnifying Glass], 200);
 		}
 	}

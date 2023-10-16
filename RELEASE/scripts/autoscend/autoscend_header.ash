@@ -456,6 +456,9 @@ void auto_CMCconsult();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2022.ash
+boolean auto_haveCursedMagnifyingGlass();
+boolean auto_voidMonster();
+boolean auto_voidMonster(location loc);
 boolean auto_haveCosmicBowlingBall();
 string auto_bowlingBallCombatString(location place, boolean speculation);
 boolean auto_haveCombatLoversLocket();
