@@ -17,7 +17,7 @@ Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 Blavious Kloop	prop:_kloopDrops<3
 # Leprechauns with a >1 multiplier
 # 1.5x multiplier leprechaun
-Jill-of-All-Trades	item:LED candle>1
+Jill-of-All-Trades	item:LED candle>0
 #Mutant Cactus Bud	grimdark:0
 Hobo Monkey
 #Mutant Cactus Bud	grimdark:1
