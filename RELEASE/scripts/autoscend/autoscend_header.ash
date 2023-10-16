@@ -1686,6 +1686,7 @@ boolean LX_summonMonster();
 boolean canSummonMonster(monster mon);
 boolean summonMonster(monster mon);
 boolean summonMonster(monster mon, boolean speculative);
+boolean summonedMonsterToday(monster mon);
 boolean handleCopiedMonster(item itm);
 boolean handleCopiedMonster(item itm, string option);
 int maxSealSummons();
