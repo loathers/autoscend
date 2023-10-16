@@ -4,6 +4,8 @@
 # exempt from 10 lbs restriction in KOLHS path
 Steam-Powered Cheerleader	path:KOLHS
 # Fairies with a multiplier
+# 1.5x multiplier fairy
+Jill-of-All-Trades	item:LED candle>0
 # 1.4x multiplier fairy
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
 # 1.3x multiplier fairy
@@ -22,6 +24,8 @@ Reagnimated Gnome	!path:Heavy Rains
 XO Skeleton
 # Fairy that drops bacon with no limit. 1 per combat
 Intergnat
+# Fairyeverything
+Jill-of-All-Trades
 # Fairyballs
 Elf Operative
 Optimistic Candle

@@ -1334,7 +1334,7 @@ boolean ovenHandle()
 
 	if(!get_property("auto_haveoven").to_boolean() && (my_meat() >= (npc_price($item[Dramatic&trade; range]) + 1000)) && isGeneralStoreAvailable())
 	{
-		buyUpTo(1, $item[Dramatic&trade; range]);
+		auto_buyUpTo(1, $item[Dramatic&trade; range]);
 		use(1, $item[Dramatic&trade; range]);
 		set_property("auto_haveoven", true);
 	}
@@ -1991,6 +1991,12 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[Astronomer])) return true;
 	}
 
+	// summon grops to start copy chain. Goal is to copy into delay zones and get war progress at same time. Bonus if we get smoke bombs
+	if(!summonedMonsterToday($monster[Green Ops Soldier]) && get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe())
+	{
+		if(summonMonster($monster[Green Ops Soldier])) return true;
+	}
+
 	// summon additional monsters in heavy rains with rain man when available
 	if(have_skill($skill[Rain Man]) && my_rain() >= 50)
 	{
@@ -2093,6 +2099,13 @@ boolean summonMonster(monster mon, boolean speculative)
 	}
 
 	return false;
+}
+
+boolean summonedMonsterToday(monster mon)
+{
+	string copiedMonsters = get_property("auto_copies");
+	string searchString = "(" + my_daycount() + ":" + mon.to_string();
+	return contains_text(copiedMonsters, searchString);
 }
 
 boolean handleCopiedMonster(item itm)
@@ -2687,11 +2700,17 @@ boolean have_skills(boolean[skill] array)
 }
 
 //From Bale\'s woods.ash relay script.
-void woods_questStart()
+boolean woods_questStart()
 {
+	if (internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0)
+	{
+		// distant woods access is gated behind level 2 quest & whitey's grove quest.
+		// for some reason mafia doesn't track this any other way
+		return false;
+	}
 	if(available_amount($item[Continuum Transfunctioner]) > 0)
 	{
-		return;
+		return false;
 	}
 	visit_url("place.php?whichplace=woods");
 	visit_url("place.php?whichplace=forestvillage&action=fv_mystic");
@@ -2707,6 +2726,7 @@ void woods_questStart()
 	{
 		visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
 	}
+	return true;
 }
 
 int howLongBeforeHoloWristDrop()

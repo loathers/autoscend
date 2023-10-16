@@ -1,5 +1,47 @@
 # This is meant for items that have a date of 2022
 
+boolean auto_haveCursedMagnifyingGlass()
+{
+	if (possessEquipment($item[cursed magnifying glass]) && auto_can_equip($item[cursed magnifying glass])) {
+		return true;
+	}
+	return false;
+}
+
+boolean auto_voidMonster()
+{
+	return auto_voidMonster($location[none]);
+}
+
+boolean auto_voidMonster(location loc)
+{
+	// Cursed Magnifying Glass gives a void monster combat every 13 turns. The first 5 are free fights
+	// _voidFreeFights counts up from 0 and stays at 5 once all free fights are completed for the day
+	if (!auto_haveCursedMagnifyingGlass())
+	{
+		return false;
+	}
+
+	// return false if we've fought the 5 free void monsters already today or we're still charging up the counter
+	if (get_property("_voidFreeFights").to_int() >= 5 || get_property("cursedMagnifyingGlassCount").to_int() != 13)
+	{
+		return false;
+	}
+
+	if (loc == $location[none])
+	{
+		return true;
+	}
+
+	if (autoEquip($item[cursed magnifying glass]))
+	{
+		set_property("auto_nextEncounter","void guy");	//which of the 3 is random, but they're all same phylum and free under same conditions
+		return autoAdv(loc);
+	}
+	set_property("auto_nextEncounter","");
+	return false;
+}
+
 boolean auto_haveCosmicBowlingBall()
 {
 	// ensure we not only own one but it's in allowed in path and also in inventory for us to do stuff with.
@@ -157,11 +199,9 @@ boolean auto_haveGreyGoose()
 int gooseExpectedDrones()
 {
 	if(!auto_haveGreyGoose()) return 0;
-	if(my_familiar() == $familiar[Grey Goose])
-	{
-		set_property("auto_gooseExpectedDrones", familiar_weight($familiar[Grey Goose]) - 5);
-	}
-	return get_property("auto_gooseExpectedDrones").to_int();
+	int gooseWeight = familiar_weight($familiar[Grey Goose]);
+	if(gooseWeight < 5) return 0;
+	return gooseWeight - 5;
 }
 
 boolean dronesOut() //want a function to override the task order if we have drones out so as not to waste them
@@ -181,7 +221,7 @@ void prioritizeGoose() //prioritize Goose only if we still have things to get
 			((item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && internalQuestStatus("questL11Worship") <= 2) && gooseExpectedDrones() < 1) ||
 			(internalQuestStatus("questL08Trapper") <= 1 && gooseExpectedDrones() < 1) ||
 			(((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15) && gooseExpectedDrones() < 2) ||
-			((needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6)) && gooseExpectedDrones() < 8) ||
+			((needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6)) && gooseExpectedDrones() < 4) ||
 			(internalQuestStatus("questL11Ron") < 5 && gooseExpectedDrones() < 2) ||
 			((get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 5 && gooseExpectedDrones() < 2) ||
 			(((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 9) && gooseExpectedDrones() < 3))

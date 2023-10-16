@@ -20,7 +20,7 @@ boolean L4_batCave()
 		{
 			if(item_amount($item[Sonar-In-A-Biscuit]) == 0 && can_interact())
 			{
-				buyUpTo(1, $item[Sonar-In-A-Biscuit], get_property("valueOfAdventure").to_int());
+				auto_buyUpTo(1, $item[Sonar-In-A-Biscuit]);
 			}
 			if(item_amount($item[Sonar-In-A-Biscuit]) > 0)
 			{

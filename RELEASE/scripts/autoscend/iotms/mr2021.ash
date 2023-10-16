@@ -354,6 +354,10 @@ boolean auto_backupTarget()
 			if(!acquiredFantasyRealmToken() && auto_backupUsesLeft() >= (5 - fantasyBanditsFought()))
 				return true;
 			break;
+		case $monster[Green Ops Soldier]:
+			if(get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe())
+				return true;
+			break;
 		default: break;
     }
 
@@ -871,6 +875,10 @@ void auto_CMCconsult()
 			return false;
 		}
 		return notAboutToDoNuns();
+	}
+	if(shouldChewBreathitin() && !isActuallyEd() && !haveSpleenFamiliar() && !can_interact())
+	{
+		pullXWhenHaveY($item[Breathitin&trade;],1,0);
 	}
 	if(item_amount($item[Breathitin&trade;]) > 0 && shouldChewBreathitin() && !can_interact())
 	{

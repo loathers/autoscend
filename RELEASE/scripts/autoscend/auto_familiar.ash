@@ -282,6 +282,8 @@ familiar lookupFamiliarDatafile(string type)
 	//we do not want a fallback here. if no matching familiar is found then do nothing here, a familiar will be automatically set in pre adventure
 	
 	auto_log_debug("lookupFamiliarDatafile is checking for type [" + type + "]");
+	// store what type of fam we are looking for
+	set_property("auto_lastFamiliarLookupType",type);
 	string [string,int,string] familiars_text;
 	if(!file_to_map("autoscend_familiars.txt", familiars_text))
 	{
@@ -461,13 +463,13 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// if we somehow end up in The Valley of Rof L'm Fao might as well try to get N 
-	if ($location[The Valley of Rof L'm Fao] == place && item_amount($item[lowercase N]) == 0 && item_amount($item[ND]) == 0 && item_amount($item[Wand of Nagamar]) == 0 && get_property("auto_wandOfNagamar").to_boolean()) {
+	if ($location[The Valley of Rof L\'m Fao] == place && item_amount($item[lowercase N]) == 0 && item_amount($item[ND]) == 0 && item_amount($item[Wand of Nagamar]) == 0 && get_property("auto_wandOfNagamar").to_boolean()) {
 		famChoice = lookupFamiliarDatafile("item");
 	}
-	// the D is only individually useful in paths that also visit The Valley of Rof L'm Fao for N
+	// the D is only individually useful in paths that also visit The Valley of Rof L\'m Fao for N
 	// this is only in Low Key Summer for now, but can be in other paths if they get support: Journeyman, Grey You
 	if ($location[The Castle in the Clouds in the Sky (Basement)] == place && item_amount($item[heavy D]) == 0 && item_amount($item[ND]) == 0 && item_amount($item[Wand of Nagamar]) == 0 && get_property("auto_wandOfNagamar").to_boolean()) {
-		boolean wantTheD = in_lowkeysummer() && (item_amount($item[lowercase N]) > 0 || $location[The Valley of Rof L'm Fao].turns_spent < 11);	//!possessEquipment($item[Kekekey])
+		boolean wantTheD = in_lowkeysummer() && (item_amount($item[lowercase N]) > 0 || $location[The Valley of Rof L\'m Fao].turns_spent < 11);	//!possessEquipment($item[Kekekey])
 		if(wantTheD)
 		{
 			famChoice = lookupFamiliarDatafile("item");
@@ -775,7 +777,7 @@ void preAdvUpdateFamiliar(location place)
 			run_choice(-1);
 			set_property("_auto_gnomeArenaVisited", "true");
 		}
-		autoEquip($slot[familiar], $item[gnomish housemaid's kgnee]);
+		autoEquip($slot[familiar], $item[gnomish housemaid\'s kgnee]);
 	}
 
 	if (my_familiar() == $familiar[Baby Bugged Bugbear])
@@ -800,6 +802,13 @@ void preAdvUpdateFamiliar(location place)
 				}
 			}
 		}
+	}
+
+	if(my_familiar() == $familiar[Jill-of-All-Trades] && item_amount($item[LED candle]) > 0)
+	{
+		// maximizer uses whatever mode LED candle is in, won't change it
+		// so ensure in correct mode prior to maximizing
+		auto_handleJillOfAllTrades();
 	}
 	
 	if(auto_checkFamiliarMummery(my_familiar()))

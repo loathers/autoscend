@@ -527,3 +527,77 @@ void auto_lostStomach(boolean force)
 		use_skill($skill[Aug. 16th: Roller Coaster Day!]);
 	}
 }
+
+boolean auto_haveJillOfAllTrades()
+{
+	if(auto_have_familiar($familiar[Jill-of-All-Trades]))
+	{
+		return true;
+	}
+	return false;
+}
+
+string getParsedCandleMode()
+{
+	// returns candle mode which matches our familiar categories
+	switch(get_property("ledCandleMode"))
+	{
+		case "disco":
+			return "item";
+		case "ultraviolet":
+			return "meat";
+		case "reading":
+			return "stat";
+		case "red":
+			return "boss";
+		default:
+			return "unknown";
+		
+	}
+}
+
+void auto_handleJillOfAllTrades()
+{
+	if (!auto_haveJillOfAllTrades() || item_amount($item[LED candle]) == 0)
+	{
+		return;
+	}
+
+	// only bother to configure candle if Jill is equiped
+	if(my_familiar() != $familiar[Jill-of-All-Trades])
+	{
+		return;
+	}
+
+	string currentMode = getParsedCandleMode();
+	// want to configure jill to have bonus of whatever fam type we last looked up
+	string desiredCandleMode = get_property("auto_lastFamiliarLookupType");
+
+	auto_log_debug(`Jill current mode: {currentMode} and desired is {desiredCandleMode}`);
+	if(currentMode == desiredCandleMode)
+	{
+		return;
+	}
+
+	switch(desiredCandleMode)
+	{
+		case "item":
+		case "regen":
+			cli_execute("jillcandle item");
+			break;
+		case "meat":
+			cli_execute("jillcandle meat");
+			break;
+		case "stat":
+		case "drop":
+			cli_execute("jillcandle stat");
+			break;
+		case "boss":
+			cli_execute("jillcandle attack");
+			break;
+		default:
+			abort("tried to configure Jill's LED Candle with a non-supported type");
+	}
+
+	return;
+}

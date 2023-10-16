@@ -4,6 +4,8 @@
 #
 # every 2 cookbookbat ingredients generate a size 1 density 7 food. prioritize having enough to craft 1.
 Cookbookbat	item:Vegetable of Jarlsberg<2;item:Yeast of Boris<2;item:St. Sneaky Pete's Whey<2
+# jill will drop her fam equip and a halloween map. Only consider map though
+Jill-of-All-Trades	item:Map to a candy-rich block<1
 # 5 turkey booze drops a day. each is size 1 and density of either 5, 5.5, or 6
 Fist Turkey	prop:_turkeyBooze<5
 # every 10 yellow pixels make a size 2 density 5 food or drink. unlimited drops per day. prioritize having enough to craft 2.
