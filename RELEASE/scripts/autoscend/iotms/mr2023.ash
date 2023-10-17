@@ -197,7 +197,7 @@ boolean auto_doPhoneQuest()
 	if(get_property("questRufus") == "step1")
 	{
 		use($item[closed-circuit pay phone]);
-		if(get_property("questRufus") == "unstarted")
+		if(get_property("questRufus") != "unstarted")
 		{
 			abort("Failed to finish Rufus quest from cursed phone.");
 		}
