@@ -663,10 +663,6 @@ boolean auto_run_choice(int choice, string page)
 			// get artifact quest
 			run_choice(2);
 			break;
-		case 1499: // A Labyrinth of Shadows
-			// get artifact. Mafia has built in support to get the right one
-			run_choice(-1);
-			break;
 		default:
 			break;
 	}

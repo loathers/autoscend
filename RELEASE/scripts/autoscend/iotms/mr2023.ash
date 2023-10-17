@@ -204,6 +204,7 @@ boolean auto_doPhoneQuest()
 		return true;
 	}
 
+	backupSetting("shadowLabyrinthGoal", "browser"); // use mafia's automation handling for the Shadow Rift NC.
 	return autoAdv(auto_availableBrickRift());
 }
 
