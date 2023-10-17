@@ -538,7 +538,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Oiled Skin]:					useItem = $item[Skin Oil];						break;
 	case $effect[Oiled-Up]:						useItem = $item[Pec Oil];						break;
 	case $effect[Oilsphere]:					useSkill = $skill[Oilsphere];					break;
-	case $effect[Offhand Remarkable]:			useSkill = $skill[Aug. 13th: Left\/Off Hander's Day!];break;
+	case $effect[Offhand Remarkable]:			useSkill = $skill[Aug. 13th: Left\/Off Hander\'s Day!];break;
 	case $effect[OMG WTF]:						useItem = $item[Confiscated Cell Phone];		break;
 	case $effect[One Very Clear Eye]:			useItem = $item[Cyclops Eyedrops];				break;
 	case $effect[Orange Crusher]:				useItem = $item[Pulled Orange Taffy];			break;
@@ -670,6 +670,17 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Serendipi Tea]:				useItem = $item[cuppa Serendipi tea];			break;
 	case $effect[Serendipity]:					useSkill =$skill[Aug. 18th: Serendipity Day!];	break;
 	case $effect[Seriously Mutated]:			useItem = $item[Extra-Potent Gremlin Mutagen];	break;
+	case $effect[Shadow Waters]:
+		if(item_amount($item[Rufus\'s shadow lodestone]) > 0)
+		{
+			if(speculative)
+			{
+				return true;
+			}
+			// lodestene will be consumed for a free NC to get this buff
+			autoAdv(auto_availableBrickRift());
+		}
+		break;
 	case $effect[Shells of the Damned]:			useItem = $item[cyan seashell];					break;
 	case $effect[Shield of the Pastalord]:
 		useSkill = $skill[Shield of the Pastalord];
