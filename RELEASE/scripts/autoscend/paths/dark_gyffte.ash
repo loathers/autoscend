@@ -389,7 +389,7 @@ boolean bat_shouldEnsorcel(monster m)
 
 	// until we have a way to tell what we already have as an ensorcelee, just ensorcel goblins
 	// to help avoid getting beaten up...
-	if(m.monster_phylum() == $phylum[goblin] && !isFreeMonster(m) && !bat_haveEnsorcelee()) //stop wasting additional Ensorcel casts once we already have an Ensorcelee
+	if(m.monster_phylum() == $phylum[goblin] && !isFreeMonster(m, my_location()) && !bat_haveEnsorcelee()) //stop wasting additional Ensorcel casts once we already have an Ensorcelee
 		return true;
 
 	//TODO code for getting other types of monster (beasts / bugs presumably) where appropriate.

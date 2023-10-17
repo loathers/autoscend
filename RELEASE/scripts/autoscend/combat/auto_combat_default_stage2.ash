@@ -282,8 +282,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			couldInstaKill = false;
 		}
 	}
+	else if(wantToForceDrop(enemy))
+	{
+		//want drops from this enemy
+		couldInstaKill = false;
+	}
 
-	if(instakillable(enemy) && !isFreeMonster(enemy) && couldInstaKill)
+	if(instakillable(enemy) && !isFreeMonster(enemy, my_location()) && couldInstaKill)
 	{
 		boolean wantFreeKillNowEspecially;
 		

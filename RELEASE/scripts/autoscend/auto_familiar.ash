@@ -445,6 +445,9 @@ boolean autoChooseFamiliar(location place)
 	if (place == $location[The Red Zeppelin] && internalQuestStatus("questL11Ron") < 4)	{
 		famChoice = lookupFamiliarDatafile("item");	//not useful for Ron Copperhead
 	}
+	if (place == auto_availableBrickRift()) {
+		famChoice = lookupFamiliarDatafile("item"); // get more shadow bricks
+	}
 
 	// If we're down to 1 evilness left before the boss in the Nook, it doesn't matter if we get an Evil Eye or not.
 	if ($location[The Defiled Nook] == place && get_property("cyrptNookEvilness").to_int() > 14)

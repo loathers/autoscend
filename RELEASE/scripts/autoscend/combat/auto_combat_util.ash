@@ -740,7 +740,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		else return "";
 	}
 
-	boolean free_monster = (isFreeMonster(target) || (get_property("breathitinCharges").to_int() > 0 && my_location().environment == "outdoor"));
+	boolean free_monster = (isFreeMonster(target, my_location()) || (get_property("breathitinCharges").to_int() > 0 && my_location().environment == "outdoor"));
 	
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
@@ -897,3 +897,69 @@ void combat_status_add(string mark)
 	}
 	set_property("_auto_combatState", st);
 }
+
+boolean wantToForceDrop(monster enemy)
+{
+	//skills that can be used on any combat round, repeatedly until an item is stolen
+	//take into account if a yellow ray has been used. Must have been one that doesn't insta-kill
+	boolean polarVortexAvailable = canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10;
+	boolean mildEvilAvailable = canUse($skill[Perpetrate Mild Evil],false) && get_property("_mildEvilPerpetrated").to_int() < 3;
+
+	boolean forceDrop = false;
+
+	//only force 1 scent gland from each filthworm
+	if(!combat_status_check("yellowray"))
+	{
+		if(enemy == $monster[Larval Filthworm] && item_amount($item[filthworm hatchling scent gland]) < 1)
+		{
+			forceDrop = true;
+		}
+		if(enemy == $monster[Filthworm Drone] && item_amount($item[filthworm drone scent gland]) < 1)
+		{
+			forceDrop = true;
+		}
+		if(enemy == $monster[Filthworm Royal Guard] && item_amount($item[filthworm royal guard scent gland]) < 1)
+		{
+			forceDrop = true;
+		}
+	}
+	
+
+	// polar vortex/mild evil is more likely to pocket an item the higher the drop rate. Unlike XO which has equal chance for all drops
+	// reserve extinguisher 30 charge for filth worms
+	if(auto_fireExtinguisherCharges() > 30 || mildEvilAvailable)
+	{
+		int dropsFromYR = 0;
+		if(combat_status_check("yellowray"))
+		{
+			dropsFromYR = 1;
+		}
+
+		if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
+		{
+			if(hedgeTrimmersNeeded() + dropsFromYR > 0)
+			{
+				forceDrop = true;
+			}
+		}
+
+		// Number of times bowled is 1 less than hiddenBowlingAlleyProgress. Need 5 bowling balls total, 5+1 = 6 needed in this conditional
+		if(enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball]) + dropsFromYR) < 6)
+		{
+			forceDrop = true;
+		}
+
+		if(enemy == $monster[Dairy Goat] && (item_amount($item[Goat Cheese]) + dropsFromYR) < 3)
+		{
+			forceDrop = true;
+		}
+
+		if((item_drops(enemy) contains $item[shadow brick]) && (auto_neededShadowBricks() + dropsFromYR) > 0)
+		{
+			forceDrop = true;
+		}
+	}
+
+	return forceDrop;
+}
+

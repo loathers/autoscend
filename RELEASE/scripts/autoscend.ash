@@ -1853,6 +1853,7 @@ boolean doTasks()
 	if(auto_autumnatonQuest())			return true;
 	if(auto_smallCampgroundGear())		return true;
 	auto_lostStomach(false);
+	if(auto_doPhoneQuest())				return true;
 	
 	if (process_tasks()) return true;
 

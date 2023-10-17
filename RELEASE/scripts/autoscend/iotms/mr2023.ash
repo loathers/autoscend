@@ -41,15 +41,9 @@ boolean wantToThrowGravel(location loc, monster enemy)
 
 	if(item_amount($item[groveling gravel]) == 0) return false;
 	if(!auto_is_valid($item[groveling gravel])) return false;
-	if (isFreeMonster(enemy)) { return false; } // don't use gravel against inherently free fights
+	if (isFreeMonster(enemy, loc)) { return false; } // don't use gravel against inherently free fights
 	// prevent overuse after breaking ronin or in casual
 	if(can_interact()) return false;
-
-	// don't use gravel if already free
-	if(get_property("breathitinCharges").to_int() > 0 && loc.environment == "outdoor")
-	{
-		return false;
-	}
 
 	// many monsters in these zones with similar names
 	if(loc == $location[The Battlefield (Frat Uniform)] && 
@@ -121,6 +115,11 @@ boolean auto_havePayPhone()
 
 location auto_availableBrickRift()
 {
+	if(!auto_havePayPhone())
+	{
+		return $location[none];
+	}
+
 	boolean[location] riftsWithBricks = $locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)];
 	foreach loc in riftsWithBricks
 	{
@@ -129,8 +128,25 @@ location auto_availableBrickRift()
 	return $location[none];
 }
 
+int auto_neededShadowBricks()
+{
+	if(!auto_havePayPhone())
+	{
+		return 0;
+	}
+
+	int currentBricks = item_amount($item[shadow brick]);
+	int bricksUsedToday = get_property("_shadowBricksUsed").to_int();
+	return max(0, 13 - currentBricks - bricksUsedToday);
+}
+
 boolean auto_getPhoneQuest()
 {
+	if(!auto_havePayPhone())
+	{
+		return false;
+	}
+
 	if(get_property("questRufus") != "unstarted")
 	{
 		// already started quest
@@ -156,14 +172,39 @@ boolean auto_doPhoneQuest()
 		return false;
 	}
 	// already finished phone quest today
-	if(get_property("_shadowAffinityToday").to_boolean() && have_effect($effect[Shadow Affinity]) == 0)
+	if(get_property("_shadowAffinityToday").to_boolean() && have_effect($effect[Shadow Affinity]) == 0 && get_property("questRufus") == "unstarted")
+	{
+		return false;
+	}
+	// not high enough level yet. Survive at least 2 hits
+	if(my_maxhp() <= expected_damage($monster[shadow slab]) * 2)
+	{
+		return false;
+	}
+	// don't start quest if fights will already be free... unless we already have shadow affinity
+	if(isFreeMonster($monster[shadow slab], auto_availableBrickRift()) && have_effect($effect[Shadow Affinity]) == 0)
 	{
 		return false;
 	}
 
 	// get quest
-	
-	return false;
+	if(!auto_getPhoneQuest())
+	{
+		abort("Failed to get Rufus quest from cursed phone.");
+	}
+
+	// finish quest
+	if(get_property("questRufus") == "step1")
+	{
+		use($item[closed-circuit pay phone]);
+		if(get_property("questRufus") == "unstarted")
+		{
+			abort("Failed to finish Rufus quest from cursed phone.");
+		}
+		return true;
+	}
+
+	return autoAdv(auto_availableBrickRift());
 }
 
 boolean auto_haveMonkeyPaw()
