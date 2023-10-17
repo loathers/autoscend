@@ -570,6 +570,11 @@ void auto_lostStomach(boolean force)
 	}
 }
 
+boolean auto_haveBofa()
+{
+	return auto_is_valid($skill[just the facts]) && have_skill($skill[just the facts]);
+}
+
 boolean auto_haveJillOfAllTrades()
 {
 	if(auto_have_familiar($familiar[Jill-of-All-Trades]))

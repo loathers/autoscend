@@ -530,6 +530,7 @@ void auto_useBlackMonolith();
 boolean auto_haveAugustScepter();
 void auto_scepterSkills();
 void auto_lostStomach();
+boolean auto_haveBofa();
 boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
 
