@@ -918,7 +918,7 @@ boolean auto_pre_adventure()
 	borisWastedMP();
 	borisTrusty();
 
-	acquireMP(32, 1000);
+	acquireMP(32, 0);
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{

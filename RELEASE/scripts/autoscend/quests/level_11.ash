@@ -1673,7 +1673,7 @@ boolean L11_hiddenCity()
 	if(!in_robot() &&
 	!in_darkGyffte() &&
 	weapon_ghost_dmg < 20 &&				//we can not rely on melee/ranged weapon to kill the ghost
-	!acquireMP(30))							//try getting some MP, relying on a spell to kill them instead. TODO verify we have a spell
+	!acquireMP(30, 0))						//try getting some MP, relying on a spell to kill them instead. TODO verify we have a spell
 	{
 		auto_log_warning("We can not reliably kill Specters in hidden city due to a shortage of MP and elemental weapon dmg. Delaying zone", "red");
 		return false;
