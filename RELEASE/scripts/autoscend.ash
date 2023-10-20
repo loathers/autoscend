@@ -103,6 +103,10 @@ import <autoscend/quests/optional.ash>
 
 void initializeSettings() {
 
+	if (inAftercore()) {
+		return;
+	}
+
 	// called once per ascension on the first launch of the script.
 	// should not handle anything other than intialising properties etc.
 	// all paths that have extra settings should call their path specific
@@ -736,7 +740,6 @@ void initializeDay(int day)
 	boris_initializeDay(day);
 	nuclear_initializeDay(day);
 	pete_initializeDay(day);
-	bond_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	grey_goo_initializeDay(day);
@@ -909,11 +912,6 @@ void initializeDay(int day)
 			{
 				auto_buyUpTo(2, $item[Ben-Gal&trade; Balm]);
 				cli_execute("make 2 louder than bomb");
-			}
-
-			if(get_property("auto_dickstab").to_boolean())
-			{
-				pullXWhenHaveY($item[frost flower], 1, 0);
 			}
 		}
 		if (chateaumantegna_havePainting() && !isActuallyEd())
@@ -1779,6 +1777,16 @@ boolean doTasks()
 	auto_checkTrainSet();
 	prioritizeGoose();
 
+	// TODO: tidy this up into a function somewhere. Can't go in handlePulls though as that's called before we switch workshed to trainset.
+	// worksheds are swapped in LX_setWorkshed() which is called in task order
+	if (get_workshed() == $item[model train set] && canPull($item[smut orc keepsake box]) && lumberCount() < 26 && fastenerCount() < 26)
+	{
+		if (pullXWhenHaveY($item[smut orc keepsake box], 1, 0))
+		{
+			use(1, $item[smut orc keepsake box]);
+		}
+	}
+
 	ocrs_postCombatResolve();
 	beatenUpResolution();
 	lar_safeguard();
@@ -1876,26 +1884,8 @@ void auto_begin()
 		}
 	}
 
-	//This also should set our path too.
-	string page = visit_url("main.php");
-	page = visit_url("api.php?what=status&for=4", false);
-	if(contains_text(page, "Being Picky"))
-	{
-		picky_startAscension();
-	}
-	else if(contains_text(page, "Welcome to the Kingdom, Gelatinous Noob"))
-	{
-		gnoob_startAscension(page);
-	}
-	else if(contains_text(page, "it appears that a stray bat has accidentally flown right through you") || (get_property("lastAdventure") == "Intro: View of a Vampire"))
-	{
-		bat_startAscension();
-	}
-	else if(contains_text(page, "<b>Torpor</b>") && contains_text(page, "Madness of Untold Aeons") && contains_text(page, "Rest for untold Millenia"))
-	{
-		auto_log_info("Torporing, since I think we're already in torpor.", "blue");
-		bat_reallyPickSkills(20);
-	}
+	LX_handleIntroAdventures(); // handle early non-combats in challenge paths.
+	cli_execute("refresh all");
 
 	if(to_string(my_class()) == "Astral Spirit")
 	{
@@ -2045,15 +2035,8 @@ void main()
 	backupSetting("printStackOnAbort", true);
 	print_help_text();
 	sad_times();
-	try
-	{
-		cli_execute("refresh all");
+	if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue? Will default to true in 10 seconds.", 10000, true)){
+		abort("User aborted script after failed migration.");
 	}
-	finally
-	{
-		if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue? Will default to true in 10 seconds.", 10000, true)){
-			abort("User aborted script after failed migration.");
-		}
-		safe_preference_reset_wrapper(3);
-	}
+	safe_preference_reset_wrapper(3);
 }

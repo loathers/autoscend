@@ -1698,27 +1698,19 @@ boolean auto_haveGenieBottleOrPocketWishes()
 	        item_amount($item[Pocket Wish] ) > 0 && auto_is_valid($item[Pocket Wish] ) );
 }
 
-boolean auto_shouldUseWishes()
-{
-	return get_property("auto_useWishes").to_boolean();
-}
-
 int auto_wishesAvailable()
 {
-	int retval = 0;
-	if (auto_shouldUseWishes())
+	int wishes = 0;
+	item bottle = wrap_item($item[Genie Bottle]);
+	if (item_amount(bottle) > 0 && auto_is_valid(bottle))
 	{
-		item bottle = wrap_item($item[Genie Bottle]);
-		if(item_amount(bottle) > 0 && auto_is_valid(bottle))
-		{
-			retval += 3 - get_property("_genieWishesUsed").to_int();
-		}
-		if(auto_is_valid($item[pocket wish]))
-		{
-			retval += item_amount($item[pocket wish]);
-		}
+		wishes += 3 - get_property("_genieWishesUsed").to_int();
 	}
-	return retval;
+	if (auto_is_valid($item[pocket wish]))
+	{
+		wishes += item_amount($item[pocket wish]);
+	}
+	return wishes;
 }
 
 boolean makeGenieWish(string wish)

@@ -193,7 +193,6 @@ void main()
 
 	//generate settings table
 	file_to_map("autoscend_settings.txt", s);
-	boolean dickstab = false;	//used to detect if we just enabled dickstab
 	fields = form_fields();
 	if(count(fields) > 0)
 	{
@@ -231,39 +230,8 @@ void main()
 				writeln("Changing setting " + prop + " to " + newSetting + "<br>");
 				set_property(prop, newSetting);
 			}
-			
-			if(prop == "auto_dickstab")	//used to detect if we just enabled dickstab
-			{
-				if((newSetting != get_property("auto_dickstab")) && (newSetting == "true"))
-				{
-					dickstab = true;
-				}
-			}
 		}
 	}
-
-	if(dickstab)
-	{
-		writeln("auto_dickstab was just set to true<br>");
-		writeln("Your warranty has been declared void.<br>");
-		writeln("Togging incompatible settings. You can re-enabled them here if you so desire. This resetting only takes effect upon setting auto_dickstab to true.<br><br>");
-		if(get_property("auto_hippyInstead").to_boolean())
-		{
-			set_property("auto_hippyInstead", false);
-			writeln("Disabled auto_hippyInstead.<br>");
-		}
-		if(get_property("auto_ignoreFlyer").to_boolean())
-		{
-			set_property("auto_ignoreFlyer", false);
-			writeln("Disabled auto_ignoreFlyer.<br>");
-		}
-		if(!get_property("auto_delayHauntedKitchen").to_boolean())
-		{
-			set_property("auto_delayHauntedKitchen", true);
-			writeln("Enabled auto_delayHauntedKitchen.<br>");
-		}
-	}
-
 
 	writeln("<form action='' method='post'>");
 	writeln("<table><tr><th width=20%>Setting</th><th width=20%>Value</th><th width=60%>Description</th></tr>");

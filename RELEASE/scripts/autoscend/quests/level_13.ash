@@ -223,14 +223,22 @@ boolean LX_getStarKey()
 	
 	LX_buyStarKeyParts();
 
+	// summon Skinflute or Camel's Toe to get both stars and lines. We can copy them into delay zones like the 8-bit realm.
+	int copiesNeeded = max((8 - item_amount($item[star])) / 2, (7 - item_amount($item[line])) / 2);
+	if (needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7 && auto_haveBackupCamera() && auto_backupUsesLeft() >= copiesNeeded)
+	{
+		// in case it matters later, summon only the monster we can naturally encounter in this ascension.
+		if(my_ascensions() % 2 == 1 && canSummonMonster($monster[Skinflute]) && summonMonster($monster[Skinflute])) return true;
+		if(my_ascensions() % 2 == 0 && canSummonMonster($monster[Camel's Toe]) && summonMonster($monster[Camel's Toe])) return true;
+	}
+
 	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;
-	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key") && 
-	item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
+	if (!in_hardcore() && at_tower_door && needStarKey() && item_amount($item[Star Chart]) == 0 && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
 	{
 		pullXWhenHaveY($item[Star Chart], 1, 0);
 	}
 	
-	if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) > 0) && (item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	if (item_amount($item[Richard\'s Star Key]) == 0 && creatable_amount($item[Richard\'s Star Key]) > 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
 	{
 		return create(1, $item[Richard\'s Star Key]);
 	}
@@ -822,7 +830,7 @@ boolean L13_sorceressDoor()
 		return false;
 	}
 
-	if (LX_getDigitalKey() || LX_getStarKey()) {
+	if (LX_getStarKey() || LX_getDigitalKey()) { // should attempt Star Key first as 8-bit zones can be progressed with backups etc.
 		return true;
 	}
 

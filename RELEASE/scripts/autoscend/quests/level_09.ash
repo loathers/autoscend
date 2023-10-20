@@ -888,10 +888,6 @@ boolean L9_oilPeak()
 
 	auto_MaxMLToCap(auto_convertDesiredML(100), true);
 
-	if (isActuallyEd() && get_property("auto_dickstab").to_boolean())
-	{
-		buffMaintain($effect[The Dinsey Look]);
-	}
 	if(monster_level_adjustment() < 50)
 	{
 		buffMaintain($effect[The Dinsey Look]);

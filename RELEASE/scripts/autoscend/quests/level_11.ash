@@ -984,6 +984,15 @@ boolean L11_getUVCompass()
 	return false;
 }
 
+boolean L11_hasUltrahydrated()
+{
+	if (have_effect($effect[Ultrahydrated]) > 0 && internalQuestStatus("questL11Desert") < 1)
+	{
+		return true;
+	}
+	return false;
+}
+
 boolean L11_aridDesert()
 {
 	if(internalQuestStatus("questL11Desert") != 0)
@@ -999,6 +1008,18 @@ boolean L11_aridDesert()
 	if(get_property("desertExploration").to_int() >= 100)
 	{
 		return false;		//done exploring
+	}
+
+	if (auto_haveMaydayContract() && my_daycount() < 2 && have_effect($effect[Ultrahydrated]) == 0)
+	{ // if we can get the survival knife on day 2 and we're on day 1, lets delay until day 2.
+		if (in_small() && $classes[Turtle Tamer, Sauceror] contains my_class())
+		{
+			return false;
+		}
+		if (my_path() == $path[Standard] && my_class() == $class[Pastamancer])
+		{
+			return false;
+		}
 	}
 	
 	if(LX_ornateDowsingRod(true)) return true;		//spend adv trying to get [Ornate Dowsing Rod]. doing_desert_now = true.
@@ -3124,11 +3145,6 @@ boolean L11_unlockEd()
 		if(!bat_wantHowl($location[The Middle Chamber]))
 		{
 			bat_formBats();
-		}
-		if(get_property("auto_dickstab").to_boolean())
-		{
-			buffMaintain($effect[Wet and Greedy]);
-			buffMaintain($effect[Frosty]);
 		}
 		if((item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
 		{

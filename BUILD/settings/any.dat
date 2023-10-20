@@ -1,9 +1,6 @@
-auto_skipNEPOverride	boolean	If true will not use the Neverending Party even if mafia says it is available.
 auto_skipGuzzlrCocktailSet	boolean	If true will not accept and abandon a Platinum Guzzlr quest for the cocktail set.
 auto_mushroomGardenGrowth	integer	Picks the mushroom when growth reaches the given value (or higher). Defaults to 1 to pick every day, capped at 11.
 auto_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? Setting will situationally be ignored such as in Ed where we always delay for Even More Elemental Wards
-auto_dickstab	boolean	Do you want to let the script potentially spend lots of meat just to shave off a few adventures? You probably don't.
-auto_getDinseyGarbageMoney	boolean	Spend a few turns getting the easy FunBucks during a run?
 auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
 auto_powerLevelTimer	integer	Delay in seconds before each time we spend an adv powerleveling. default is 10 sec. lowest valid value is 1.
 auto_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
@@ -12,7 +9,6 @@ auto_teaChoice	string	When using the tea tree, grab this 'tea'. Must use a strin
 auto_floundryChoice	string	Force floundry usage. Must use the item name (Use ; to separate by daycount, leave blank to skip a day).
 auto_extrudeChoice	string	: separated by day, ; separated by order. Use food, booze. Defaults to booze for any empty fields.
 auto_blacklistFamiliar	string	A semi-colon separated string of familiar names that we do not want to use. They still may get used but this will minimize their usage.
-auto_hatchRagamuffinImp	boolean	If set we will acquire and hatch Ragamuffin Imp in postronin. One per account. some people prefer it in the display case so we require opt in.
 auto_doArtistQuest	boolean	If set, we will try to do the artist quest. If the artist is not-accessible, the setting will silently disable.
 auto_ashtonLimit	integer	If set, makes sure you save X of an item before feeding it to the Asdon Martin (ignores Soda Bread).
 auto_limitConsume	boolean	When true will not eat or drink anything automatically.
@@ -39,9 +35,6 @@ auto_considerGalaktik	boolean	When true autoscend may automatically enable galak
 auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
 auto_skipUnlockGuild	boolean	When true, don't unlock the guild.
 auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
-auto_saveMagicalSausage	boolean	When true, don't eat magical sausage, so you can save them up for aftercore.
-auto_useWishes	boolean	When true, use the Genie Bottle to go faster in runs.
-auto_doNotUseCMC	boolean	When true, do not use the Cold Medicine Cabinet to go faster in runs.
 auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after finishing any business in the current sign. If blank or invalid, we won't switch automatically. Can be set to any of the 9 main sign names, or knoll/canadia/gnomad to automatically select the appropriate sign within that zone based on your mainstat. Also some shorthands are allowed in case you forgot which moonsign is which, such as famweight/clover/food/booze. You will be prompted to confirm that you actually do want to change signs automatically once per ascension (although it will automatically assume that you do after 15 seconds of inactivity), so forgetting to change the value in advance should not be a concern.
 auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle. Setting to -1 will cause the lowest possible ML to be equipped, including going negative if possible - this can cause non-optimal gear to be equipped.
 auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)

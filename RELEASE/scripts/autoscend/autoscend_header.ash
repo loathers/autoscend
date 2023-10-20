@@ -71,14 +71,8 @@ boolean auto_floundryAction(item it);
 ########################################################################################################
 //Defined in autoscend/iotms/auto_elementalPlanes.ash
 item[element] getCharterIndexable();
-boolean elementalPlanes_initializeSettings();
 boolean elementalPlanes_access(element ele);
 boolean elementalPlanes_takeJob(element ele);
-boolean dinseylandfill_garbageMoney();
-boolean getDiscoStyle(int choice);
-boolean getDiscoStyle();
-boolean volcano_lavaDogs();
-boolean volcano_bunkerJob();
 
 ########################################################################################################
 //Defined in autoscend/iotms/auto_eudora.ash
@@ -148,7 +142,6 @@ boolean deck_cheat(string cheat);
 boolean deck_useScheme(string action);
 boolean adjustEdHat(string goal);
 boolean resolveSixthDMT();
-boolean LX_dinseylandfillFunbucks();
 void doghouseChoiceHandler(int choice);
 
 ########################################################################################################
@@ -235,7 +228,6 @@ void horseCrazy();
 void horsePale();
 boolean horsePreAdventure();
 boolean auto_haveGenieBottleOrPocketWishes();
-boolean auto_shouldUseWishes();
 int auto_wishesAvailable();
 boolean makeGenieWish(string wish);
 boolean makeGenieWish(effect eff);
@@ -450,7 +442,6 @@ string auto_FireExtinguisherCombatString(location place);
 boolean auto_canExtinguisherBeRefilled();
 boolean auto_haveColdMedCabinet();
 int auto_CMCconsultsLeft();
-boolean auto_shouldUseCMC();
 boolean auto_CMCconsultAvailable();
 void auto_CMCconsult();
 
@@ -470,6 +461,7 @@ boolean auto_haveGreyGoose();
 int gooseExpectedDrones();
 boolean dronesOut();
 void prioritizeGoose();
+boolean auto_haveMaydayContract();
 boolean canUseCleaver();
 void juneCleaverChoiceHandler(int choice);
 boolean canUseSweatpants();
@@ -645,7 +637,6 @@ boolean in_community();
 ########################################################################################################
 //Defined in autoscend/paths/dark_gyffte.ash
 boolean in_darkGyffte();
-void bat_startAscension();
 void bat_initializeSettings();
 boolean bat_wantHowl(location loc);
 boolean bat_formNone();
@@ -769,7 +760,6 @@ item auto_ItemToReplica(item it);
 //Defined in autoscend/paths/license_to_adventure.ash
 boolean in_lta();
 void bond_initializeSettings();
-boolean bond_initializeDay(int day);
 boolean bond_buySkills();
 boolean LM_bond();
 item[int] bondDrinks();
@@ -1070,6 +1060,7 @@ boolean L11_forgedDocuments();
 boolean L11_mcmuffinDiary();
 void auto_visit_gnasir();
 boolean L11_getUVCompass();
+boolean L11_hasUltrahydrated();
 boolean L11_aridDesert();
 boolean L11_unlockHiddenCity();
 void hiddenTempleChoiceHandler(int choice, string page);
@@ -1161,6 +1152,7 @@ boolean L13_towerAscent();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_any.ash
+void LX_handleIntroAdventures();
 boolean LX_bitchinMeatcar_condition();
 boolean LX_bitchinMeatcar();
 boolean LX_unlockDesert();

@@ -26,16 +26,6 @@ void pete_initializeDay(int day)
 
 		if(get_property("auto_day_init").to_int() < 2)
 		{
-
-			if(get_property("auto_dickstab").to_boolean() && chateaumantegna_available())
-			{
-				boolean[item] furniture = chateaumantegna_decorations();
-				if(!furniture[$item[Ceiling Fan]])
-				{
-					chateaumantegna_buyStuff($item[Ceiling Fan]);
-				}
-			}
-
 			if(item_amount($item[gym membership card]) > 0)
 			{
 				use(1, $item[gym membership card]);
