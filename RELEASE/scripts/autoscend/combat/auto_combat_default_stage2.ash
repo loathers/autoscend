@@ -282,8 +282,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			couldInstaKill = false;
 		}
 	}
+	else if(wantToForceDrop(enemy))
+	{
+		//want drops from this enemy
+		couldInstaKill = false;
+	}
 
-	if(instakillable(enemy) && !isFreeMonster(enemy) && couldInstaKill)
+	if(instakillable(enemy) && !isFreeMonster(enemy, my_location()) && couldInstaKill)
 	{
 		boolean wantFreeKillNowEspecially;
 		
@@ -396,12 +401,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 		if(canUse($item[shadow brick]) && (get_property("_shadowBricksUsed").to_int() < 13) && !reserveFreekills)
 		{
-			if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
-			{
-				handleTracker(enemy, $item[shadow brick], "auto_instakill");
-				loopHandlerDelayAll();
-				return useItem($item[shadow brick]);
-			}
+			handleTracker(enemy, $item[shadow brick], "auto_instakill");
+			loopHandlerDelayAll();
+			return useItems($item[shadow brick], $item[none]);
 		}
 
 		if(canUse($skill[Fire the Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean())

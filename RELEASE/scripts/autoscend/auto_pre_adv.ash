@@ -473,6 +473,10 @@ boolean auto_pre_adventure()
 	{
 		autoEquip(exting);
 	}
+	else if(auto_availableBrickRift() == place)
+	{
+		autoEquip(exting); // polar vortex for shadow bricks
+	}
 	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
 	{
 		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 

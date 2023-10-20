@@ -1775,6 +1775,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Earning Interest]);
 	buffMaintain($effect[Bet Your Autumn Dollar]);
 	buffMaintain($effect[Flapper Dancin\']);
+	buffMaintain($effect[shadow waters]);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{

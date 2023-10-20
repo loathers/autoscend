@@ -75,16 +75,22 @@ boolean EightBitRealmHandler()
 	string color = get_property("8BitColor");
 	switch(color)
 	{
-		case "black":	
+		case "black":
+			// limited buff that is helpful for 3 of 4 8-bit zones
+			buffMaintain($effect[shadow waters]);
 			adv_spent = autoAdv($location[Vanya\'s Castle]);
 			break;
 		case "red":
+			// limited buff that is helpful for 3 of 4 8-bit zones
+			buffMaintain($effect[shadow waters]);
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
 			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":
+			// limited buff that is helpful for 3 of 4 8-bit zones
+			buffMaintain($effect[shadow waters]);
 			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;
 		default:

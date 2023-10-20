@@ -360,6 +360,13 @@ generic_t zone_needItem(location loc)
 		value = 50.0;
 		break;
 	// End A Shrunken Adventurer Am I (Small) Locations
+	// Shadow Rifts via cursed payphone or AoSOL path
+	case $location[Shadow Rift (The Ancient Buried Pyramid)]:
+	case $location[Shadow Rift (The Hidden City)]:
+	case $location[Shadow Rift (The Misspelled Cemetary)]:
+		value = 10.0;
+		break;
+	// End Shadow Rifts
 	default:
 		retval._error = true;
 		break;

@@ -1307,6 +1307,12 @@ boolean L11_aridDesert()
 			return autoadv(1, $location[The Arid\, Extra-Dry Desert]);
 		}
 
+		if(auto_haveBofa())
+		{
+			// wait for a monster to give us ultrahydrated
+			return false;
+		}
+
 		if(!autoAdv(1, $location[The Oasis]))
 		{
 			auto_log_warning("Could not visit the Oasis for some reason, desertExploration may be incorrect.", "red");
