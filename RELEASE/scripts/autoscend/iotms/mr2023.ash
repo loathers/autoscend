@@ -109,8 +109,7 @@ void auto_SITCourse()
 
 boolean auto_havePayPhone()
 {
-	static item phone = $item[closed-circuit pay phone];
-	return auto_is_valid(phone) && item_amount(phone) > 0;
+	return auto_is_valid($item[closed-circuit pay phone]) && item_amount($item[closed-circuit pay phone]) > 0;
 }
 
 location auto_availableBrickRift()
