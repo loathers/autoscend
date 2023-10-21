@@ -1,4 +1,5 @@
 LM_zombieSlayer
+woods_questStart
 LX_unlockPirateRealm
 LX_freeCombatsTask
 auto_breakfastCounterVisit
@@ -54,6 +55,5 @@ L5_slayTheGoblinKing
 L4_batCave
 L3_tavern
 setSoftblockDelay	allowSoftblockDelay
-setSoftblockShen	allowSoftblockShen
 L13_towerAscent
 LX_attemptPowerLevel

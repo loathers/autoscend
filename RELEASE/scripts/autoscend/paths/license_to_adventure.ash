@@ -481,7 +481,7 @@ boolean LM_bond()
 			{
 				if(my_meat() > 6000)
 				{
-					buyUpTo(1, $item[Antique Accordion]);
+					auto_buyUpTo(1, $item[Antique Accordion]);
 				}
 			}
 			else if((my_mp() > 60) && (my_level() > 8) && (my_adventures() < 10))

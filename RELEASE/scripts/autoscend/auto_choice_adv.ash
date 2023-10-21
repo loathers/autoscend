@@ -650,7 +650,22 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1494:
-			run_choice(2); //Insectologist (S.I.T. Course)
+			if(my_level() < 8)
+			{
+				run_choice(3); //Cryptobotanist (S.I.T. Course)
+			}
+			else
+			{
+				run_choice(2); //Insectologist (S.I.T. Course)
+			}
+			break;
+		case 1497: // Calling Rufus
+			// get artifact quest
+			run_choice(2);
+			break;
+		case 1500: // Like a Loded Stone
+			// Only come here to get shadow waters buff
+			run_choice(2);
 			break;
 		default:
 			break;

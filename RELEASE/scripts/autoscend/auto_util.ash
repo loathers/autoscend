@@ -982,7 +982,7 @@ boolean canFreeRun(monster enemy, location loc)
 // monsters that we want to run away from before banishing
 string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat)
 {
-	if (isFreeMonster(enemy)) return "";
+	if (isFreeMonster(enemy, loc)) return "";
 
 	// Prefer some specalized free run items before other sources
 	if (!inAftercore())
@@ -1005,7 +1005,7 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 
 string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 {
-	if (isFreeMonster(enemy)) return "";
+	if (isFreeMonster(enemy, my_location())) return "";
 	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
 	if (pre_banish != "") return pre_banish;
 
@@ -1392,7 +1392,7 @@ boolean ovenHandle()
 
 	if(!get_property("auto_haveoven").to_boolean() && (my_meat() >= (npc_price($item[Dramatic&trade; range]) + 1000)) && isGeneralStoreAvailable())
 	{
-		buyUpTo(1, $item[Dramatic&trade; range]);
+		auto_buyUpTo(1, $item[Dramatic&trade; range]);
 		use(1, $item[Dramatic&trade; range]);
 		set_property("auto_haveoven", true);
 	}
@@ -1419,59 +1419,93 @@ boolean isProtonGhost(monster mon)
 	return false;
 }
 
-int cloversAvailable()
+int cloversAvailable(boolean override)
 {
-	//count 11-leaf clovers
-	int retval = 0; 
+	// set override to true to not reserve a clover for the wand of nagamar.
 
-	if(!in_glover())
+	//count 11-leaf clovers
+	int numClovers = 0;
+
+	if (!in_glover())
 	{
-		retval += available_amount($item[11-Leaf Clover]);
+		numClovers += available_amount($item[11-Leaf Clover]);
 		//if none on hand, try to buy from hermit
-		if(retval == 0)
+		if (numClovers == 0)
 		{
 			acquireHermitItem($item[11-Leaf Clover]);
-			retval += item_amount($item[11-Leaf Clover]);
+			numClovers += item_amount($item[11-Leaf Clover]);
 		}
 		//if none at hermit, try to pull one
-		if(retval == 0)
+		if (numClovers == 0)
 		{
 			pullXWhenHaveY($item[11-Leaf Clover], 1, item_amount($item[11-Leaf Clover]));
-			retval += item_amount($item[11-Leaf Clover]);
+			numClovers += item_amount($item[11-Leaf Clover]);
+		}
+		//Get from August Scepter
+		if(auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug2Cast").to_boolean())
+		{
+			numClovers += 1;
 		}
 	}
 
 	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
-	retval += min(available_amount($item[[10883]Astral Energy Drink]), floor(spleen_left() / 5));
+	numClovers += min(available_amount($item[[10883]Astral Energy Drink]), floor(spleen_left() / 5));
 
 	//other known sources which aren't counted here:
 	// Lucky Lindy, Optimal Dog, Pillkeeper
 
-	return retval;
+	if (get_property("auto_wandOfNagamar").to_boolean() && !override && my_daycount() > 1 && in_hardcore())
+	{
+		// in Normal we will just pull the missing pieces. Which is always an N because no one goes to the Valley of Rof L'm Fao
+		numClovers--;
+	}
+
+	return numClovers;
 }
 
-boolean cloverUsageInit()
+int cloversAvailable()
 {
-	if(cloversAvailable() == 0)
+	// overload to not override clover usage by default as this is the general case
+	return cloversAvailable(false);
+}
+
+boolean cloverUsageInit(boolean override)
+{
+	if (cloversAvailable(override) == 0)
 	{
 		abort("Called cloverUsageInit but have no clovers");
 	}
 	//do we already have Lucky!?
-	if(have_effect($effect[Lucky!]) > 0)
+	if (have_effect($effect[Lucky!]) > 0)
 	{
 		return true;
 	}
 
+	//Use August Scepter skill if we can
+	if (auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5 && !get_property("_aug2Cast").to_boolean())
+	{
+		use_skill($skill[Aug. 2nd: Find an Eleven-Leaf Clover Day]);
+		if (have_effect($effect[Lucky!]) > 0)
+		{
+			auto_log_info("Clover usage initialized");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after casting Aug. 2nd: Find an Eleven-Leaf Clover Day!");
+		}
+	}
+	
 	//use a clover if we have one in inventory or closet
-	if(item_amount($item[11-Leaf Clover]) < 1)
+	if (item_amount($item[11-Leaf Clover]) < 1)
 	{
 		//try to get one out of closet, catch to avoid an error being thrown
 		catch retrieve_item(1, $item[11-Leaf Clover]);	
 	}
-	if(item_amount($item[11-Leaf Clover]) > 0)
+	if (item_amount($item[11-Leaf Clover]) > 0)
 	{
 		use(1, $item[11-Leaf Clover]);
-		if(have_effect($effect[Lucky!]) > 0)
+		if (have_effect($effect[Lucky!]) > 0)
 		{
 			auto_log_info("Clover usage initialized");
 			return true;
@@ -1483,17 +1517,17 @@ boolean cloverUsageInit()
 	}
 	
 	//use Astral Energy Drinks if we have room
-	if(spleen_left() >= 5)
+	if (spleen_left() >= 5)
 	{
-		if(item_amount($item[[10883]Astral Energy Drink]) < 1)
+		if (item_amount($item[[10883]Astral Energy Drink]) < 1)
 		{
 			//try to get one out of closet
 			retrieve_item(1, $item[[10883]Astral Energy Drink]);		
 		}
-		if(item_amount($item[[10883]Astral Energy Drink]) > 0)
+		if (item_amount($item[[10883]Astral Energy Drink]) > 0)
 		{
 			chew(1, $item[[10883]Astral Energy Drink]);
-			if(have_effect($effect[Lucky!]) > 0)
+			if (have_effect($effect[Lucky!]) > 0)
 			{
 				auto_log_info("Clover usage initialized");
 				return true;
@@ -1507,6 +1541,12 @@ boolean cloverUsageInit()
 
 	abort("We tried to initialize clover usage but was unable to get Lucky!");
 	return false;
+}
+
+boolean cloverUsageInit()
+{
+	// overload to not override clover usage by default as this is the general case
+	return cloverUsageInit(false);
 }
 
 boolean cloverUsageRestart()
@@ -1677,27 +1717,6 @@ boolean inGnomeSign()
 	return $strings[Blender, Packrat, Wombat] contains my_sign();
 }
 
-boolean allowSoftblockShen()
-{
-	//Some quests have a softblock on doing them because shen might need them. When we run out of things to do this softblock is released.
-	//Return true means the softblock is active. Return false means the softblock is released.
-	if(get_property("questL11Shen") == "finished")
-	{
-		return false;		//shen quest is over. softblock not needed
-	}
-	
-	//We tell users to disable the shen softblock by setting auto_shenSkipLastLevel to 999.
-	//This is why we want to return < my_level() and not != my_level()
-	return get_property("auto_shenSkipLastLevel").to_int() < my_level();
-}
-
-boolean setSoftblockShen()
-{
-	auto_log_warning("I was trying to avoid zones that Shen might need, but I've run out of stuff to do. Releasing softblock.", "red");
-	set_property("auto_shenSkipLastLevel", my_level());
-	return true;
-}
-
 boolean instakillable(monster mon)
 {
 	if(mon.boss)
@@ -1849,6 +1868,11 @@ int freeCrafts()
 
 boolean isFreeMonster(monster mon)
 {
+	return isFreeMonster(mon, $location[none]);
+}
+
+boolean isFreeMonster(monster mon, location loc)
+{
 	if ($monsters[Angry Ghost, Annoyed Snake, Government Bureaucrat, Slime Blob, Terrible Mutant] contains mon && get_property("_voteFreeFights").to_int() < 3)
 	{
 		return true;
@@ -1878,6 +1902,17 @@ boolean isFreeMonster(monster mon)
 	}
 
 	if ($monster[Drunk Pygmy] == mon && item_amount($item[Bowl of Scorpions]) > 0)
+	{
+		return true;
+	}
+
+	if(get_property("breathitinCharges").to_int() > 0 && loc.environment == "outdoor")
+	{
+		return true;
+	}
+
+	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains loc
+		&& have_effect($effect[shadow affinity]) > 0)
 	{
 		return true;
 	}
@@ -1988,6 +2023,9 @@ boolean LX_summonMonster()
 		(lumberCount() < 30 || fastenerCount() < 30) && canSummonMonster($monster[smut orc pervert]))
 	{
 		// summon pervert here but handling of L9 quest will open box
+		if(auto_haveGreyGoose()){
+			handleFamiliar($familiar[Grey Goose]);
+		}
 		if(summonMonster($monster[smut orc pervert])) return true;
 	}
 
@@ -2025,6 +2063,12 @@ boolean LX_summonMonster()
 	if(needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]))
 	{
 		if(summonMonster($monster[Astronomer])) return true;
+	}
+
+	// summon grops to start copy chain. Goal is to copy into delay zones and get war progress at same time. Bonus if we get smoke bombs
+	if(!summonedMonsterToday($monster[Green Ops Soldier]) && get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe())
+	{
+		if(summonMonster($monster[Green Ops Soldier])) return true;
 	}
 
 	// summon additional monsters in heavy rains with rain man when available
@@ -2129,6 +2173,13 @@ boolean summonMonster(monster mon, boolean speculative)
 	}
 
 	return false;
+}
+
+boolean summonedMonsterToday(monster mon)
+{
+	string copiedMonsters = get_property("auto_copies");
+	string searchString = "(" + my_daycount() + ":" + mon.to_string();
+	return contains_text(copiedMonsters, searchString);
 }
 
 boolean handleCopiedMonster(item itm)
@@ -2723,11 +2774,17 @@ boolean have_skills(boolean[skill] array)
 }
 
 //From Bale\'s woods.ash relay script.
-void woods_questStart()
+boolean woods_questStart()
 {
+	if (internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0)
+	{
+		// distant woods access is gated behind level 2 quest & whitey's grove quest.
+		// for some reason mafia doesn't track this any other way
+		return false;
+	}
 	if(available_amount($item[Continuum Transfunctioner]) > 0)
 	{
-		return;
+		return false;
 	}
 	visit_url("place.php?whichplace=woods");
 	visit_url("place.php?whichplace=forestvillage&action=fv_mystic");
@@ -2743,6 +2800,7 @@ void woods_questStart()
 	{
 		visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
 	}
+	return true;
 }
 
 int howLongBeforeHoloWristDrop()

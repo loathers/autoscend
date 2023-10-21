@@ -2,6 +2,9 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 {
 	// stage 5 = kill
 	string retval;
+
+	//Unskip stage 4
+	if(get_property("auto_skipStage4").to_boolean()) set_property("auto_skipStage4", false);
 	
 	// Path = Heavy Rains
 	retval = auto_combatHeavyRainsStage5(round, enemy, text);
@@ -191,7 +194,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				}
 			}
 		}
-
 		break;
 	case $class[Turtle Tamer]:
 		attackMinor = "attack with weapon";
@@ -221,7 +223,20 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			attackMajor = useSkill($skill[Saucestorm], false);
 			costMajor = mp_cost($skill[Saucestorm]);
 		}
-
+		if(enemy.physical_resistance > 80)
+		{
+			foreach sk in $skills[Saucestorm, Saucegeyser]
+			{
+				if(canUse(sk, false))
+				{
+					attackMinor = useSkill(sk, false);
+					attackMajor = useSkill(sk, false);
+					costMinor = mp_cost(sk);
+					costMajor = mp_cost(sk);
+					break;
+				}
+			}
+		}
 		break;
 	case $class[Pastamancer]:
 		if(canUse($skill[Cannelloni Cannon], false))
@@ -312,7 +327,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				return useSkill($skill[Salsaball], false);
 			}
 		}
-		
 		break;
 
 	case $class[Avatar of Boris]:
@@ -458,7 +472,6 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				costMajor = mp_cost($skill[Grill]);
 			}
 		}
-
 		break;
 
 	case $class[Avatar of Sneaky Pete]:
@@ -507,14 +520,20 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Saucestorm]);
 		}
 
-		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
+		if(enemy.physical_resistance > 80)
 		{
-			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMinor = mp_cost($skill[Saucestorm]);
-			costMajor = mp_cost($skill[Saucestorm]);
+			foreach sk in $skills[Saucestorm, Saucegeyser]
+			{
+				if(canUse(sk, false))
+				{
+					attackMinor = useSkill(sk, false);
+					attackMajor = useSkill(sk, false);
+					costMinor = mp_cost(sk);
+					costMajor = mp_cost(sk);
+					break;
+				}
+			}
 		}
-
 		break;
 
 	case $class[Disco Bandit]:
@@ -540,14 +559,20 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMajor = mp_cost($skill[Saucestorm]);
 		}
 
-		if(enemy.physical_resistance > 80 && canUse($skill[Saucestorm], false))
+		if(enemy.physical_resistance > 80)
 		{
-			attackMinor = useSkill($skill[Saucestorm], false);
-			attackMajor = useSkill($skill[Saucestorm], false);
-			costMinor = mp_cost($skill[Saucestorm]);
-			costMajor = mp_cost($skill[Saucestorm]);
+			foreach sk in $skills[Saucestorm, Saucegeyser]
+			{
+				if(canUse(sk, false))
+				{
+					attackMinor = useSkill(sk, false);
+					attackMajor = useSkill(sk, false);
+					costMinor = mp_cost(sk);
+					costMajor = mp_cost(sk);
+					break;
+				}
+			}
 		}
-
 		break;
 
 	case $class[Cow Puncher]:
@@ -592,7 +617,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMinor = mp_cost($skill[Beanstorm]);
 		}
 
-		if(canUse($skill[Fan Hammer], false))
+		if(canUse($skill[Fan Hammer], false) && (enemy.physical_resistance < 80))
 		{
 			attackMajor = useSkill($skill[Fan Hammer], false);
 			attackMinor = useSkill($skill[Fan Hammer], false);
@@ -781,7 +806,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Thousand-Yard Stare]);
 		}
-		if($monsters[Aquagoblin, Lord Soggyraven, Groar] contains enemy && (my_mp() >= costMajor))
+		if($monsters[Aquagoblin, Lord Soggyraven, Groar, The Big Wisniewski, The Man] contains enemy && (my_mp() >= costMajor))
 		{
 			return attackMajor;
 		}
@@ -918,7 +943,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		return attackMajor;
 	}
 
-	if($monsters[Aquagoblin, Lord Soggyraven, Groar] contains enemy && (my_mp() >= costMajor))
+	if($monsters[Aquagoblin, Lord Soggyraven, Groar, The Big Wisniewski, The Man] contains enemy && (my_mp() >= costMajor))
 	{
 		return attackMajor;
 	}

@@ -169,7 +169,7 @@ void gnoob_buySkills()
 	//absorb potted cactus for adventures
 	if(gnoob_absorbsLeft() > 0 && my_adventures() <= 1 + auto_advToReserve() && my_level() >= 12)
 	{
-		buyUpTo(1, $item[Potted Cactus]);
+		auto_buyUpTo(1, $item[Potted Cactus]);
 		if(item_amount($item[Potted Cactus]) > 0)
 		{
 			cli_execute("absorb Potted Cactus");

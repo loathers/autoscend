@@ -21,7 +21,7 @@ void bedtime_still()
 		//tonic water is an excellent MP restorer and also can be used to craft some drinks.
 		if(target == $item[none] && my_meat() > meatReserve() + 100 && isGeneralStoreAvailable())
 		{
-			if(buyUpTo(1, $item[soda water]))
+			if(auto_buyUpTo(1, $item[soda water]))
 			{
 				target = $item[tonic water];
 			}
@@ -315,6 +315,8 @@ void bedtime_pulls_rollover_equip(float desirability)
 			if(!($slots[hat, weapon, off-hand, back, shirt, pants, acc1, familiar] contains sl)) continue;	//exotic slot or not equip
 			if(!possessEquipment(it) && !canPull(it,true)) continue;		//do not have it and can not pull it.
 			if(!auto_can_equip(it)) continue;		//we can not equip it
+			string bonusOnlyForClass = string_modifier(it,"Class");
+			if(bonusOnlyForClass != "" && bonusOnlyForClass != my_class().to_string()) continue;	//can't get benefit of it
 			
 			if($slot[familiar] == sl && !pathHasFamiliar())
 			{
@@ -627,31 +629,31 @@ boolean doBedtime()
 			if((my_daycount() == 1) && (my_level() >= 6) && isHermitAvailable())
 			{
 				cli_execute("make figurine of an ancient seal");
-				buyUpTo(3, $item[seal-blubber candle]);
+				auto_buyUpTo(3, $item[seal-blubber candle]);
 				ensureSealClubs();
 				handleSealAncient();
 				summoned = true;
 			}
 			else if(my_level() >= 9)
 			{
-				buyUpTo(1, $item[figurine of an armored seal]);
-				buyUpTo(10, $item[seal-blubber candle]);
+				auto_buyUpTo(1, $item[figurine of an armored seal]);
+				auto_buyUpTo(10, $item[seal-blubber candle]);
 				ensureSealClubs();
 				handleSealNormal($item[Figurine of an Armored Seal]);
 				summoned = true;
 			}
 			else if(my_level() >= 5)
 			{
-				buyUpTo(1, $item[figurine of a Cute Baby Seal]);
-				buyUpTo(5, $item[seal-blubber candle]);
+				auto_buyUpTo(1, $item[figurine of a Cute Baby Seal]);
+				auto_buyUpTo(5, $item[seal-blubber candle]);
 				ensureSealClubs();
 				handleSealNormal($item[Figurine of a Cute Baby Seal]);
 				summoned = true;
 			}
 			else
 			{
-				buyUpTo(1, $item[figurine of a Wretched-Looking Seal]);
-				buyUpTo(1, $item[seal-blubber candle]);
+				auto_buyUpTo(1, $item[figurine of a Wretched-Looking Seal]);
+				auto_buyUpTo(1, $item[seal-blubber candle]);
 				ensureSealClubs();
 				handleSealNormal($item[Figurine of a Wretched-Looking Seal]);
 				summoned = true;
@@ -832,7 +834,7 @@ boolean doBedtime()
 	{
 		if((item_amount($item[frilly skirt]) < 1) && knoll_available())
 		{
-			buyUpTo(1, $item[frilly skirt]);
+			auto_buyUpTo(1, $item[frilly skirt]);
 		}
 		if(item_amount($item[frilly skirt]) > 0)
 		{
