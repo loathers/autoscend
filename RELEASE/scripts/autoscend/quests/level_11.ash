@@ -1307,7 +1307,7 @@ boolean L11_aridDesert()
 			return autoadv(1, $location[The Arid\, Extra-Dry Desert]);
 		}
 
-		if(auto_haveBofa())
+		if(auto_haveBofa() && !isAboutToPowerlevel())
 		{
 			// wait for a monster to give us ultrahydrated
 			return false;
