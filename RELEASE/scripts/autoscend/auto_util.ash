@@ -636,7 +636,7 @@ float [monster] auto_combat_appearance_rates(location place, boolean queue)
 }
 
 float [monster] auto_combat_appearance_rates(location place)
-{	return auto_combat_appearance_rates(location place, false)
+{	return auto_combat_appearance_rates(place, false)
 }
 
 boolean[string] auto_banishesUsedAt(location loc)
