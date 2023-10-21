@@ -616,6 +616,29 @@ boolean canYellowRay()
 	return canYellowRay($monster[none]);
 }
 
+float [monster] auto_combat_appearance_rates(location place, boolean queue)
+{	//return probability of fighting each monster if the encounter is not a noncombat
+	//appearance_rates includes noncombat chance for $monster[none]
+	float [monster] res_including_noncombat = appearance_rates(place,queue);
+	float [monster] res_excluding_noncombat;
+	
+	float noncombat_frequency = res_including_noncombat[$monster[none]];
+	if(noncombat_frequency == 0) return res_including_noncombat;
+	
+	foreach mob, freq in res_including_noncombat
+	{
+		if(mob != $monster[none])
+		{
+			res_excluding_noncombat[mob] = freq / (100 - noncombat_frequency);
+		}
+	}
+	return res_excluding_noncombat;
+}
+
+float [monster] auto_combat_appearance_rates(location place)
+{	return auto_combat_appearance_rates(location place, false)
+}
+
 boolean[string] auto_banishesUsedAt(location loc)
 {
 	boolean[string] auto_reallyBanishesUsedAt(location loc)
