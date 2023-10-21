@@ -1544,7 +1544,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 		if(metadata.type == "skill")
 		{
 			skill s = to_skill(metadata.name);
-			if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s), meat_reserve, useFreeRests))
+			if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s), 0, useFreeRests))
 			{
 				auto_log_warning("Couldnt acquire enough MP to cast " + s, "red");
 				return false;
@@ -1977,6 +1977,8 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 	{
 		return true;
 	}
+
+	buffMaintain($effect[extra-green]);
 
 	if(my_class() == $class[Pig Skinner] && have_skill($skill[Second Wind]))
 	{

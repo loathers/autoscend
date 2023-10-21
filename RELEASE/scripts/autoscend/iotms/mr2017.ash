@@ -1804,6 +1804,12 @@ boolean canGenieCombat(monster mon)
 	{
 		return false;
 	}
+	// Per wiki page these can't be wished. Didn't bother to add other crypt monsters as we don't summon them
+	// https://kol.coldfront.net/thekolwiki/index.php/Rubbed_it_the_Right_Way
+	if ($monsters[Fantasy Bandit, Ninja Snowman Assassin, Modern Zmobie] contains mon)
+	{
+		return false;
+	}
 	if (failedWishMonsters contains mon)
 	{
 		return false;
@@ -1866,7 +1872,7 @@ boolean makeGeniePocket()
 	int count = item_amount($item[Pocket Wish]);
 
 	string wish = "for more wishes";
-	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=9529", false);
+	string page = visit_url("inv_use.php?pwd=" + my_hash() + "&which=3&whichitem=" + bottle.to_int(), false);
 	page = visit_url("choice.php?pwd=" + my_hash() + "&whichchoice=1267&option=1&wish=" + wish);
 
 	if(count == item_amount($item[Pocket Wish]))

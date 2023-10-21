@@ -6,389 +6,385 @@
 # path name, index, function, condition_function (optional)
 Avatar of Jarlsberg	0	LM_jarlsberg
 Avatar of Jarlsberg	1	LX_freeCombatsTask
-Avatar of Jarlsberg	2	LX_unlockPirateRealm
-Avatar of Jarlsberg	3	auto_breakfastCounterVisit
-Avatar of Jarlsberg	4	chateauPainting
-Avatar of Jarlsberg	5	LX_setWorkshed
-Avatar of Jarlsberg	6	LX_artistQuest
-Avatar of Jarlsberg	7	LX_galaktikSubQuest
-Avatar of Jarlsberg	8	LX_armorySideQuest
-Avatar of Jarlsberg	9	LX_meatsmithSubQuest
-Avatar of Jarlsberg	10	L9_leafletQuest
-Avatar of Jarlsberg	11	L5_findKnob
-Avatar of Jarlsberg	12	L12_sonofaPrefix
-Avatar of Jarlsberg	13	LX_burnDelay
-Avatar of Jarlsberg	14	LX_summonMonster
-Avatar of Jarlsberg	15	LX_dinseylandfillFunbucks
-Avatar of Jarlsberg	16	handleRainDoh
-Avatar of Jarlsberg	17	L11_shenStartQuest
-Avatar of Jarlsberg	18	LX_guildUnlock
-Avatar of Jarlsberg	19	LX_unlockDesert
-Avatar of Jarlsberg	20	LX_lockPicking
-Avatar of Jarlsberg	21	LX_fatLootToken
-Avatar of Jarlsberg	22	L5_getEncryptionKey
-Avatar of Jarlsberg	23	L5_findKnob
-Avatar of Jarlsberg	24	L2_mosquito
-Avatar of Jarlsberg	25	LX_unlockHiddenTemple
-Avatar of Jarlsberg	26	L6_dakotaFanning
-Avatar of Jarlsberg	27	LX_steelOrgan
-Avatar of Jarlsberg	28	L12_islandWar
-Avatar of Jarlsberg	29	LX_spookyravenManorFirstFloor
-Avatar of Jarlsberg	30	L11_blackMarket
-Avatar of Jarlsberg	31	L11_forgedDocuments
-Avatar of Jarlsberg	32	L11_mcmuffinDiary
-Avatar of Jarlsberg	33	L11_getBeehive
-Avatar of Jarlsberg	34	L11_unlockHiddenCity
-Avatar of Jarlsberg	35	L11_hiddenCityZones
-Avatar of Jarlsberg	36	L11_hiddenCity
-Avatar of Jarlsberg	37	LX_spookyravenManorSecondFloor
-Avatar of Jarlsberg	38	L11_mauriceSpookyraven
-Avatar of Jarlsberg	39	L11_talismanOfNam
-Avatar of Jarlsberg	40	L10_plantThatBean
-Avatar of Jarlsberg	41	L10_rainOnThePlains
-Avatar of Jarlsberg	42	L9_chasmBuild
-Avatar of Jarlsberg	43	L9_highLandlord
-Avatar of Jarlsberg	44	L8_trapperQuest
-Avatar of Jarlsberg	45	L6_friarsGetParts
-Avatar of Jarlsberg	46	L7_crypt
-Avatar of Jarlsberg	47	L11_palindome
-Avatar of Jarlsberg	48	L11_aridDesert
-Avatar of Jarlsberg	49	L11_unlockPyramid
-Avatar of Jarlsberg	50	L11_unlockEd
-Avatar of Jarlsberg	51	L11_defeatEd
-Avatar of Jarlsberg	52	L5_slayTheGoblinKing
-Avatar of Jarlsberg	53	L4_batCave
-Avatar of Jarlsberg	54	L3_tavern
-Avatar of Jarlsberg	55	setSoftblockDelay	allowSoftblockDelay
-Avatar of Jarlsberg	56	setSoftblockShen	allowSoftblockShen
+Avatar of Jarlsberg	2	woods_questStart
+Avatar of Jarlsberg	3	LX_unlockPirateRealm
+Avatar of Jarlsberg	4	auto_breakfastCounterVisit
+Avatar of Jarlsberg	5	chateauPainting
+Avatar of Jarlsberg	6	LX_setWorkshed
+Avatar of Jarlsberg	7	LX_artistQuest
+Avatar of Jarlsberg	8	LX_galaktikSubQuest
+Avatar of Jarlsberg	9	LX_armorySideQuest
+Avatar of Jarlsberg	10	LX_meatsmithSubQuest
+Avatar of Jarlsberg	11	L9_leafletQuest
+Avatar of Jarlsberg	12	L5_findKnob
+Avatar of Jarlsberg	13	L12_sonofaPrefix
+Avatar of Jarlsberg	14	LX_burnDelay
+Avatar of Jarlsberg	15	LX_summonMonster
+Avatar of Jarlsberg	16	LX_dinseylandfillFunbucks
+Avatar of Jarlsberg	17	handleRainDoh
+Avatar of Jarlsberg	18	L11_shenStartQuest
+Avatar of Jarlsberg	19	LX_guildUnlock
+Avatar of Jarlsberg	20	LX_unlockDesert
+Avatar of Jarlsberg	21	LX_lockPicking
+Avatar of Jarlsberg	22	LX_fatLootToken
+Avatar of Jarlsberg	23	L5_getEncryptionKey
+Avatar of Jarlsberg	24	L5_findKnob
+Avatar of Jarlsberg	25	L2_mosquito
+Avatar of Jarlsberg	26	LX_unlockHiddenTemple
+Avatar of Jarlsberg	27	L6_dakotaFanning
+Avatar of Jarlsberg	28	LX_steelOrgan
+Avatar of Jarlsberg	29	L12_islandWar
+Avatar of Jarlsberg	30	LX_spookyravenManorFirstFloor
+Avatar of Jarlsberg	31	L11_blackMarket
+Avatar of Jarlsberg	32	L11_forgedDocuments
+Avatar of Jarlsberg	33	L11_mcmuffinDiary
+Avatar of Jarlsberg	34	L11_getBeehive
+Avatar of Jarlsberg	35	L11_unlockHiddenCity
+Avatar of Jarlsberg	36	L11_hiddenCityZones
+Avatar of Jarlsberg	37	L11_hiddenCity
+Avatar of Jarlsberg	38	LX_spookyravenManorSecondFloor
+Avatar of Jarlsberg	39	L11_mauriceSpookyraven
+Avatar of Jarlsberg	40	L11_talismanOfNam
+Avatar of Jarlsberg	41	L10_plantThatBean
+Avatar of Jarlsberg	42	L10_rainOnThePlains
+Avatar of Jarlsberg	43	L9_chasmBuild
+Avatar of Jarlsberg	44	L9_highLandlord
+Avatar of Jarlsberg	45	L8_trapperQuest
+Avatar of Jarlsberg	46	L6_friarsGetParts
+Avatar of Jarlsberg	47	L7_crypt
+Avatar of Jarlsberg	48	L11_palindome
+Avatar of Jarlsberg	49	L11_aridDesert
+Avatar of Jarlsberg	50	L11_unlockPyramid
+Avatar of Jarlsberg	51	L11_unlockEd
+Avatar of Jarlsberg	52	L11_defeatEd
+Avatar of Jarlsberg	53	L5_slayTheGoblinKing
+Avatar of Jarlsberg	54	L4_batCave
+Avatar of Jarlsberg	55	L3_tavern
+Avatar of Jarlsberg	56	setSoftblockDelay	allowSoftblockDelay
 Avatar of Jarlsberg	57	L13_towerAscent
 Avatar of Jarlsberg	58	LX_attemptPowerLevel
 
 Legacy of Loathing	0	LX_freeCombatsTask
-Legacy of Loathing	1	LX_unlockPirateRealm
-Legacy of Loathing	2	catBurglarHeist
-Legacy of Loathing	3	auto_breakfastCounterVisit
-Legacy of Loathing	4	chateauPainting
-Legacy of Loathing	5	LX_setWorkshed
-Legacy of Loathing	6	LX_artistQuest
-Legacy of Loathing	7	LX_galaktikSubQuest
-Legacy of Loathing	8	LX_armorySideQuest
-Legacy of Loathing	9	LX_meatsmithSubQuest
-Legacy of Loathing	10	L9_leafletQuest
-Legacy of Loathing	11	L5_findKnob
-Legacy of Loathing	12	L12_sonofaPrefix
-Legacy of Loathing	13	LX_burnDelay
-Legacy of Loathing	14	LX_summonMonster
-Legacy of Loathing	15	LM_edTheUndying
-Legacy of Loathing	16	LX_bugbearInvasion
-Legacy of Loathing	17	LX_lowkeySummer
-Legacy of Loathing	18	resolveSixthDMT
-Legacy of Loathing	19	LX_dinseylandfillFunbucks
-Legacy of Loathing	20	L12_flyerFinish
-Legacy of Loathing	21	L12_getOutfit
-Legacy of Loathing	22	L12_startWar
-Legacy of Loathing	23	LX_loggingHatchet
-Legacy of Loathing	24	LX_guildUnlock
-Legacy of Loathing	25	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
-Legacy of Loathing	26	LX_unlockDesert
-Legacy of Loathing	27	handleRainDoh
-Legacy of Loathing	28	LX_spookyravenManorFirstFloor
-Legacy of Loathing	29	L6_friarsGetParts	LX_steelOrgan_condition_slow
-Legacy of Loathing	30	LX_steelOrgan	LX_steelOrgan_condition_slow
+Legacy of Loathing	1	woods_questStart
+Legacy of Loathing	2	LX_unlockPirateRealm
+Legacy of Loathing	3	catBurglarHeist
+Legacy of Loathing	4	auto_breakfastCounterVisit
+Legacy of Loathing	5	chateauPainting
+Legacy of Loathing	6	LX_setWorkshed
+Legacy of Loathing	7	LX_artistQuest
+Legacy of Loathing	8	LX_galaktikSubQuest
+Legacy of Loathing	9	LX_armorySideQuest
+Legacy of Loathing	10	LX_meatsmithSubQuest
+Legacy of Loathing	11	L9_leafletQuest
+Legacy of Loathing	12	L5_findKnob
+Legacy of Loathing	13	L12_sonofaPrefix
+Legacy of Loathing	14	LX_burnDelay
+Legacy of Loathing	15	LX_summonMonster
+Legacy of Loathing	16	LM_edTheUndying
+Legacy of Loathing	17	LX_bugbearInvasion
+Legacy of Loathing	18	LX_lowkeySummer
+Legacy of Loathing	19	resolveSixthDMT
+Legacy of Loathing	20	LX_dinseylandfillFunbucks
+Legacy of Loathing	21	L12_flyerFinish
+Legacy of Loathing	22	L12_getOutfit
+Legacy of Loathing	23	L12_startWar
+Legacy of Loathing	24	LX_loggingHatchet
+Legacy of Loathing	25	LX_guildUnlock
+Legacy of Loathing	26	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+Legacy of Loathing	27	LX_unlockDesert
+Legacy of Loathing	28	handleRainDoh
+Legacy of Loathing	29	LX_spookyravenManorFirstFloor
+Legacy of Loathing	30	L6_friarsGetParts	LX_steelOrgan_condition_slow
+Legacy of Loathing	31	LX_steelOrgan	LX_steelOrgan_condition_slow
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	31	L4_batCave
-Legacy of Loathing	32	L2_mosquito
-Legacy of Loathing	33	LX_unlockHiddenTemple
-Legacy of Loathing	34	L6_dakotaFanning
-Legacy of Loathing	35	LX_lockPicking
-Legacy of Loathing	36	LX_fatLootToken
+Legacy of Loathing	32	L4_batCave
+Legacy of Loathing	33	L2_mosquito
+Legacy of Loathing	34	LX_unlockHiddenTemple
+Legacy of Loathing	35	L6_dakotaFanning
+Legacy of Loathing	36	LX_lockPicking
+Legacy of Loathing	37	LX_fatLootToken
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	37	L5_slayTheGoblinKing
+Legacy of Loathing	38	L5_slayTheGoblinKing
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	38	L8_trapperQuest
+Legacy of Loathing	39	L8_trapperQuest
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	39	L7_crypt
-Legacy of Loathing	40	LX_islandAccess
-Legacy of Loathing	41	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
-Legacy of Loathing	42	LX_spookyravenManorSecondFloor
-Legacy of Loathing	43	L3_tavern
-Legacy of Loathing	44	L6_friarsGetParts
-Legacy of Loathing	45	LX_steelOrgan	in_hardcore
-Legacy of Loathing	46	fancyOilPainting
-Legacy of Loathing	47	LX_steelOrgan
-Legacy of Loathing	48	L10_plantThatBean
-Legacy of Loathing	49	L12_preOutfit
-Legacy of Loathing	50	L10_airship
-Legacy of Loathing	51	L10_basement
-Legacy of Loathing	52	L10_ground
-Legacy of Loathing	53	L11_blackMarket
-Legacy of Loathing	54	L11_forgedDocuments
-Legacy of Loathing	55	L11_mcmuffinDiary
-Legacy of Loathing	56	L10_topFloor
-Legacy of Loathing	57	L10_holeInTheSkyUnlock
-Legacy of Loathing	58	L9_chasmBuild
-Legacy of Loathing	59	L9_highLandlord
-Legacy of Loathing	60	L12_flyerBackup
-Legacy of Loathing	61	Lsc_flyerSeals
+Legacy of Loathing	40	L7_crypt
+Legacy of Loathing	41	LX_islandAccess
+Legacy of Loathing	42	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
+Legacy of Loathing	43	LX_spookyravenManorSecondFloor
+Legacy of Loathing	44	L3_tavern
+Legacy of Loathing	45	L6_friarsGetParts
+Legacy of Loathing	46	LX_steelOrgan	in_hardcore
+Legacy of Loathing	47	fancyOilPainting
+Legacy of Loathing	48	LX_steelOrgan
+Legacy of Loathing	49	L10_plantThatBean
+Legacy of Loathing	50	L12_preOutfit
+Legacy of Loathing	51	L10_airship
+Legacy of Loathing	52	L10_basement
+Legacy of Loathing	53	L10_ground
+Legacy of Loathing	54	L11_blackMarket
+Legacy of Loathing	55	L11_forgedDocuments
+Legacy of Loathing	56	L11_mcmuffinDiary
+Legacy of Loathing	57	L10_topFloor
+Legacy of Loathing	58	L10_holeInTheSkyUnlock
+Legacy of Loathing	59	L9_chasmBuild
+Legacy of Loathing	60	L9_highLandlord
+Legacy of Loathing	61	L12_flyerBackup
+Legacy of Loathing	62	Lsc_flyerSeals
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	62	L11_mauriceSpookyraven
-Legacy of Loathing	63	L11_unlockHiddenCity
-Legacy of Loathing	64	L11_hiddenCityZones
-Legacy of Loathing	65	LX_ornateDowsingRod
-Legacy of Loathing	66	L11_aridDesert
+Legacy of Loathing	63	L11_mauriceSpookyraven
+Legacy of Loathing	64	L11_unlockHiddenCity
+Legacy of Loathing	65	L11_hiddenCityZones
+Legacy of Loathing	66	LX_ornateDowsingRod
+Legacy of Loathing	67	L11_aridDesert
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	67	L11_hiddenCity
-Legacy of Loathing	68	L11_talismanOfNam
+Legacy of Loathing	68	L11_hiddenCity
+Legacy of Loathing	69	L11_talismanOfNam
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	69	L11_palindome
-Legacy of Loathing	70	L11_unlockPyramid
-Legacy of Loathing	71	L11_unlockEd
-Legacy of Loathing	72	L11_defeatEd
-Legacy of Loathing	73	L12_gremlins
-Legacy of Loathing	74	L12_sonofaFinish
-Legacy of Loathing	75	L12_sonofaBeach
-Legacy of Loathing	76	L12_filthworms
-Legacy of Loathing	77	L12_orchardFinalize
-Legacy of Loathing	78	L12_themtharHills
-Legacy of Loathing	79	L12_farm
-Legacy of Loathing	80	L11_getBeehive
+Legacy of Loathing	70	L11_palindome
+Legacy of Loathing	71	L11_unlockPyramid
+Legacy of Loathing	72	L11_unlockEd
+Legacy of Loathing	73	L11_defeatEd
+Legacy of Loathing	74	L12_gremlins
+Legacy of Loathing	75	L12_sonofaFinish
+Legacy of Loathing	76	L12_sonofaBeach
+Legacy of Loathing	77	L12_filthworms
+Legacy of Loathing	78	L12_orchardFinalize
+Legacy of Loathing	79	L12_themtharHills
+Legacy of Loathing	80	L12_farm
+Legacy of Loathing	81	L11_getBeehive
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	81	L12_finalizeWar
-Legacy of Loathing	82	L12_clearBattlefield
-Legacy of Loathing	83	LX_koeInvaderHandler
-Legacy of Loathing	84	setSoftblockDelay	allowSoftblockDelay
-Legacy of Loathing	85	setSoftblockShen	allowSoftblockShen
-Legacy of Loathing	86	LX_getDigitalKey
-Legacy of Loathing	87	LX_getStarKey
-Legacy of Loathing	88	L12_lastDitchFlyer
-Legacy of Loathing	89	LX_bugbearInvasionFinale
-Legacy of Loathing	90	L13_towerNSContests
-Legacy of Loathing	91	L13_towerNSHedge
-Legacy of Loathing	92	L13_sorceressDoor
-Legacy of Loathing	93	L13_towerNSTower
-Legacy of Loathing	94	L13_towerNSNagamar
-Legacy of Loathing	95	L13_towerNSFinal
-Legacy of Loathing	96	LX_attemptPowerLevel
+Legacy of Loathing	82	L12_finalizeWar
+Legacy of Loathing	83	L12_clearBattlefield
+Legacy of Loathing	84	LX_koeInvaderHandler
+Legacy of Loathing	85	setSoftblockDelay	allowSoftblockDelay
+Legacy of Loathing	86	L12_lastDitchFlyer
+Legacy of Loathing	87	LX_bugbearInvasionFinale
+Legacy of Loathing	88	L13_towerNSContests
+Legacy of Loathing	89	L13_towerNSHedge
+Legacy of Loathing	90	L13_sorceressDoor
+Legacy of Loathing	91	L13_towerNSTower
+Legacy of Loathing	92	L13_towerNSNagamar
+Legacy of Loathing	93	L13_towerNSFinal
+Legacy of Loathing	94	LX_attemptPowerLevel
 
 Quantum Terrarium	0	LX_freeCombatsTask
-Quantum Terrarium	1	LX_unlockPirateRealm
-Quantum Terrarium	2	catBurglarHeist
-Quantum Terrarium	3	auto_breakfastCounterVisit
-Quantum Terrarium	4	chateauPainting
-Quantum Terrarium	5	LX_setWorkshed
-Quantum Terrarium	6	LX_artistQuest
-Quantum Terrarium	7	LX_galaktikSubQuest
-Quantum Terrarium	8	LX_armorySideQuest
-Quantum Terrarium	9	LX_meatsmithSubQuest
-Quantum Terrarium	10	L9_leafletQuest
-Quantum Terrarium	11	L5_findKnob
-Quantum Terrarium	12	L12_sonofaPrefix
-Quantum Terrarium	13	LX_burnDelay
-Quantum Terrarium	14	LX_summonMonster
-Quantum Terrarium	15	resolveSixthDMT
-Quantum Terrarium	16	LX_dinseylandfillFunbucks
-Quantum Terrarium	17	handleRainDoh
-Quantum Terrarium	18	LX_quantumTerrarium
-Quantum Terrarium	19	fancyOilPainting
-Quantum Terrarium	20	LX_ornateDowsingRod
-Quantum Terrarium	21	L11_shenStartQuest
-Quantum Terrarium	22	LX_guildUnlock
-Quantum Terrarium	23	LX_unlockDesert
-Quantum Terrarium	24	LX_lockPicking
-Quantum Terrarium	25	LX_fatLootToken
-Quantum Terrarium	26	L5_getEncryptionKey
-Quantum Terrarium	27	L5_findKnob
-Quantum Terrarium	28	L2_mosquito
-Quantum Terrarium	29	LX_unlockHiddenTemple
-Quantum Terrarium	30	L6_dakotaFanning
-Quantum Terrarium	31	LX_steelOrgan
-Quantum Terrarium	32	L12_islandWar
-Quantum Terrarium	33	LX_spookyravenManorFirstFloor
-Quantum Terrarium	34	L11_blackMarket
-Quantum Terrarium	35	L11_forgedDocuments
-Quantum Terrarium	36	L11_mcmuffinDiary
-Quantum Terrarium	37	L11_getBeehive
-Quantum Terrarium	38	L11_unlockHiddenCity
-Quantum Terrarium	39	L11_hiddenCityZones
-Quantum Terrarium	40	L11_hiddenCity
-Quantum Terrarium	41	LX_spookyravenManorSecondFloor
-Quantum Terrarium	42	L11_mauriceSpookyraven
-Quantum Terrarium	43	L11_talismanOfNam
-Quantum Terrarium	44	L10_plantThatBean
-Quantum Terrarium	45	L10_rainOnThePlains
-Quantum Terrarium	46	L9_chasmBuild
-Quantum Terrarium	47	L9_highLandlord
-Quantum Terrarium	48	L8_trapperQuest
-Quantum Terrarium	49	L6_friarsGetParts
-Quantum Terrarium	50	L7_crypt
-Quantum Terrarium	51	L11_palindome
-Quantum Terrarium	52	L11_aridDesert
-Quantum Terrarium	53	L11_unlockPyramid
-Quantum Terrarium	54	L11_unlockEd
-Quantum Terrarium	55	L11_defeatEd
-Quantum Terrarium	56	L5_slayTheGoblinKing
-Quantum Terrarium	57	L4_batCave
-Quantum Terrarium	58	L3_tavern
-Quantum Terrarium	59	setSoftblockDelay	allowSoftblockDelay
-Quantum Terrarium	60	setSoftblockShen	allowSoftblockShen
+Quantum Terrarium	1	woods_questStart
+Quantum Terrarium	2	LX_unlockPirateRealm
+Quantum Terrarium	3	catBurglarHeist
+Quantum Terrarium	4	auto_breakfastCounterVisit
+Quantum Terrarium	5	chateauPainting
+Quantum Terrarium	6	LX_setWorkshed
+Quantum Terrarium	7	LX_artistQuest
+Quantum Terrarium	8	LX_galaktikSubQuest
+Quantum Terrarium	9	LX_armorySideQuest
+Quantum Terrarium	10	LX_meatsmithSubQuest
+Quantum Terrarium	11	L9_leafletQuest
+Quantum Terrarium	12	L5_findKnob
+Quantum Terrarium	13	L12_sonofaPrefix
+Quantum Terrarium	14	LX_burnDelay
+Quantum Terrarium	15	LX_summonMonster
+Quantum Terrarium	16	resolveSixthDMT
+Quantum Terrarium	17	LX_dinseylandfillFunbucks
+Quantum Terrarium	18	handleRainDoh
+Quantum Terrarium	19	LX_quantumTerrarium
+Quantum Terrarium	20	fancyOilPainting
+Quantum Terrarium	21	LX_ornateDowsingRod
+Quantum Terrarium	22	L11_shenStartQuest
+Quantum Terrarium	23	LX_guildUnlock
+Quantum Terrarium	24	LX_unlockDesert
+Quantum Terrarium	25	LX_lockPicking
+Quantum Terrarium	26	LX_fatLootToken
+Quantum Terrarium	27	L5_getEncryptionKey
+Quantum Terrarium	28	L5_findKnob
+Quantum Terrarium	29	L2_mosquito
+Quantum Terrarium	30	LX_unlockHiddenTemple
+Quantum Terrarium	31	L6_dakotaFanning
+Quantum Terrarium	32	LX_steelOrgan
+Quantum Terrarium	33	L12_islandWar
+Quantum Terrarium	34	LX_spookyravenManorFirstFloor
+Quantum Terrarium	35	L11_blackMarket
+Quantum Terrarium	36	L11_forgedDocuments
+Quantum Terrarium	37	L11_mcmuffinDiary
+Quantum Terrarium	38	L11_getBeehive
+Quantum Terrarium	39	L11_unlockHiddenCity
+Quantum Terrarium	40	L11_hiddenCityZones
+Quantum Terrarium	41	L11_hiddenCity
+Quantum Terrarium	42	LX_spookyravenManorSecondFloor
+Quantum Terrarium	43	L11_mauriceSpookyraven
+Quantum Terrarium	44	L11_talismanOfNam
+Quantum Terrarium	45	L10_plantThatBean
+Quantum Terrarium	46	L10_rainOnThePlains
+Quantum Terrarium	47	L9_chasmBuild
+Quantum Terrarium	48	L9_highLandlord
+Quantum Terrarium	49	L8_trapperQuest
+Quantum Terrarium	50	L6_friarsGetParts
+Quantum Terrarium	51	L7_crypt
+Quantum Terrarium	52	L11_palindome
+Quantum Terrarium	53	L11_aridDesert
+Quantum Terrarium	54	L11_unlockPyramid
+Quantum Terrarium	55	L11_unlockEd
+Quantum Terrarium	56	L11_defeatEd
+Quantum Terrarium	57	L5_slayTheGoblinKing
+Quantum Terrarium	58	L4_batCave
+Quantum Terrarium	59	L3_tavern
+Quantum Terrarium	60	setSoftblockDelay	allowSoftblockDelay
 Quantum Terrarium	61	L13_towerAscent
 Quantum Terrarium	62	LX_attemptPowerLevel
 
 Zombie Slayer	0	LM_zombieSlayer
-Zombie Slayer	1	LX_unlockPirateRealm
-Zombie Slayer	2	LX_freeCombatsTask
-Zombie Slayer	3	auto_breakfastCounterVisit
-Zombie Slayer	4	chateauPainting
-Zombie Slayer	5	LX_setWorkshed
-Zombie Slayer	6	LX_artistQuest
-Zombie Slayer	7	LX_galaktikSubQuest
-Zombie Slayer	8	LX_armorySideQuest
-Zombie Slayer	9	LX_meatsmithSubQuest
-Zombie Slayer	10	L9_leafletQuest
-Zombie Slayer	11	L5_findKnob
-Zombie Slayer	12	L12_sonofaPrefix
-Zombie Slayer	13	LX_burnDelay
-Zombie Slayer	14	LX_summonMonster
-Zombie Slayer	15	LX_dinseylandfillFunbucks
-Zombie Slayer	16	handleRainDoh
-Zombie Slayer	17	L11_shenStartQuest
-Zombie Slayer	18	LX_guildUnlock
-Zombie Slayer	19	LX_unlockDesert
-Zombie Slayer	20	LX_lockPicking
-Zombie Slayer	21	LX_fatLootToken
-Zombie Slayer	22	L5_getEncryptionKey
-Zombie Slayer	23	L5_findKnob
-Zombie Slayer	24	L2_mosquito
-Zombie Slayer	25	LX_unlockHiddenTemple
-Zombie Slayer	26	L6_dakotaFanning
-Zombie Slayer	27	LX_steelOrgan
-Zombie Slayer	28	L12_islandWar
-Zombie Slayer	29	LX_spookyravenManorFirstFloor
-Zombie Slayer	30	L11_blackMarket
-Zombie Slayer	31	L11_forgedDocuments
-Zombie Slayer	32	L11_mcmuffinDiary
-Zombie Slayer	33	L11_getBeehive
-Zombie Slayer	34	L11_unlockHiddenCity
-Zombie Slayer	35	L11_hiddenCityZones
-Zombie Slayer	36	L11_hiddenCity
-Zombie Slayer	37	LX_spookyravenManorSecondFloor
-Zombie Slayer	38	L11_mauriceSpookyraven
-Zombie Slayer	39	L11_talismanOfNam
-Zombie Slayer	40	L10_plantThatBean
-Zombie Slayer	41	L10_rainOnThePlains
-Zombie Slayer	42	L9_chasmBuild
-Zombie Slayer	43	L9_highLandlord
-Zombie Slayer	44	L8_trapperQuest
-Zombie Slayer	45	L6_friarsGetParts
-Zombie Slayer	46	L7_crypt
-Zombie Slayer	47	L11_palindome
-Zombie Slayer	48	L11_aridDesert
-Zombie Slayer	49	L11_unlockPyramid
-Zombie Slayer	50	L11_unlockEd
-Zombie Slayer	51	L11_defeatEd
-Zombie Slayer	52	L5_slayTheGoblinKing
-Zombie Slayer	53	L4_batCave
-Zombie Slayer	54	L3_tavern
-Zombie Slayer	55	setSoftblockDelay	allowSoftblockDelay
-Zombie Slayer	56	setSoftblockShen	allowSoftblockShen
+Zombie Slayer	1	woods_questStart
+Zombie Slayer	2	LX_unlockPirateRealm
+Zombie Slayer	3	LX_freeCombatsTask
+Zombie Slayer	4	auto_breakfastCounterVisit
+Zombie Slayer	5	chateauPainting
+Zombie Slayer	6	LX_setWorkshed
+Zombie Slayer	7	LX_artistQuest
+Zombie Slayer	8	LX_galaktikSubQuest
+Zombie Slayer	9	LX_armorySideQuest
+Zombie Slayer	10	LX_meatsmithSubQuest
+Zombie Slayer	11	L9_leafletQuest
+Zombie Slayer	12	L5_findKnob
+Zombie Slayer	13	L12_sonofaPrefix
+Zombie Slayer	14	LX_burnDelay
+Zombie Slayer	15	LX_summonMonster
+Zombie Slayer	16	LX_dinseylandfillFunbucks
+Zombie Slayer	17	handleRainDoh
+Zombie Slayer	18	L11_shenStartQuest
+Zombie Slayer	19	LX_guildUnlock
+Zombie Slayer	20	LX_unlockDesert
+Zombie Slayer	21	LX_lockPicking
+Zombie Slayer	22	LX_fatLootToken
+Zombie Slayer	23	L5_getEncryptionKey
+Zombie Slayer	24	L5_findKnob
+Zombie Slayer	25	L2_mosquito
+Zombie Slayer	26	LX_unlockHiddenTemple
+Zombie Slayer	27	L6_dakotaFanning
+Zombie Slayer	28	LX_steelOrgan
+Zombie Slayer	29	L12_islandWar
+Zombie Slayer	30	LX_spookyravenManorFirstFloor
+Zombie Slayer	31	L11_blackMarket
+Zombie Slayer	32	L11_forgedDocuments
+Zombie Slayer	33	L11_mcmuffinDiary
+Zombie Slayer	34	L11_getBeehive
+Zombie Slayer	35	L11_unlockHiddenCity
+Zombie Slayer	36	L11_hiddenCityZones
+Zombie Slayer	37	L11_hiddenCity
+Zombie Slayer	38	LX_spookyravenManorSecondFloor
+Zombie Slayer	39	L11_mauriceSpookyraven
+Zombie Slayer	40	L11_talismanOfNam
+Zombie Slayer	41	L10_plantThatBean
+Zombie Slayer	42	L10_rainOnThePlains
+Zombie Slayer	43	L9_chasmBuild
+Zombie Slayer	44	L9_highLandlord
+Zombie Slayer	45	L8_trapperQuest
+Zombie Slayer	46	L6_friarsGetParts
+Zombie Slayer	47	L7_crypt
+Zombie Slayer	48	L11_palindome
+Zombie Slayer	49	L11_aridDesert
+Zombie Slayer	50	L11_unlockPyramid
+Zombie Slayer	51	L11_unlockEd
+Zombie Slayer	52	L11_defeatEd
+Zombie Slayer	53	L5_slayTheGoblinKing
+Zombie Slayer	54	L4_batCave
+Zombie Slayer	55	L3_tavern
+Zombie Slayer	56	setSoftblockDelay	allowSoftblockDelay
 Zombie Slayer	57	L13_towerAscent
 Zombie Slayer	58	LX_attemptPowerLevel
 
 default	0	LX_freeCombatsTask
-default	1	LX_unlockPirateRealm
-default	2	catBurglarHeist
-default	3	auto_breakfastCounterVisit
-default	4	chateauPainting
-default	5	LX_setWorkshed
-default	6	LX_artistQuest
-default	7	LX_galaktikSubQuest
-default	8	LX_armorySideQuest
-default	9	LX_meatsmithSubQuest
-default	10	L9_leafletQuest
-default	11	L5_findKnob
-default	12	L12_sonofaPrefix
-default	13	LX_burnDelay
-default	14	LX_summonMonster
-default	15	LM_edTheUndying
-default	16	LX_bugbearInvasion
-default	17	LX_lowkeySummer
-default	18	resolveSixthDMT
-default	19	LX_dinseylandfillFunbucks
-default	20	L12_flyerFinish
-default	21	L12_getOutfit
-default	22	L12_startWar
-default	23	LX_loggingHatchet
-default	24	LX_guildUnlock
-default	25	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
-default	26	LX_unlockDesert
-default	27	handleRainDoh
-default	28	LX_spookyravenManorFirstFloor
-default	29	L6_friarsGetParts	LX_steelOrgan_condition_slow
-default	30	LX_steelOrgan	LX_steelOrgan_condition_slow
-default	31	L4_batCave
-default	32	L2_mosquito
-default	33	LX_unlockHiddenTemple
-default	34	L6_dakotaFanning
-default	35	LX_lockPicking
-default	36	LX_fatLootToken
-default	37	L5_slayTheGoblinKing
-default	38	LX_islandAccess
-default	39	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
-default	40	LX_spookyravenManorSecondFloor
-default	41	L3_tavern
-default	42	L6_friarsGetParts
-default	43	LX_steelOrgan	in_hardcore
-default	44	L7_crypt
-default	45	fancyOilPainting
-default	46	L8_trapperQuest
-default	47	LX_steelOrgan
-default	48	L10_plantThatBean
-default	49	L12_preOutfit
-default	50	L10_airship
-default	51	L10_basement
-default	52	L10_ground
-default	53	L11_blackMarket
-default	54	L11_forgedDocuments
-default	55	L11_mcmuffinDiary
-default	56	L10_topFloor
-default	57	L10_holeInTheSkyUnlock
-default	58	L9_chasmBuild
-default	59	L9_highLandlord
-default	60	L12_flyerBackup
-default	61	Lsc_flyerSeals
-default	62	L11_mauriceSpookyraven
-default	63	L11_unlockHiddenCity
-default	64	L11_hiddenCityZones
-default	65	LX_ornateDowsingRod
-default	66	L11_aridDesert
-default	67	L11_hiddenCity
-default	68	L11_talismanOfNam
-default	69	L11_palindome
-default	70	L11_unlockPyramid
-default	71	L11_unlockEd
-default	72	L11_defeatEd
-default	73	L12_gremlins
-default	74	L12_sonofaFinish
-default	75	L12_sonofaBeach
-default	76	L12_filthworms
-default	77	L12_orchardFinalize
-default	78	L12_themtharHills
-default	79	L12_farm
-default	80	L11_getBeehive
-default	81	L12_finalizeWar
-default	82	L12_clearBattlefield
-default	83	LX_koeInvaderHandler
-default	84	setSoftblockDelay	allowSoftblockDelay
-default	85	setSoftblockShen	allowSoftblockShen
-default	86	LX_getDigitalKey
-default	87	LX_getStarKey
-default	88	L12_lastDitchFlyer
-default	89	LX_bugbearInvasionFinale
-default	90	L13_towerNSContests
-default	91	L13_towerNSHedge
-default	92	L13_sorceressDoor
-default	93	L13_towerNSTower
-default	94	L13_towerNSNagamar
-default	95	L13_towerNSFinal
-default	96	LX_attemptPowerLevel
+default	1	woods_questStart
+default	2	LX_unlockPirateRealm
+default	3	catBurglarHeist
+default	4	auto_breakfastCounterVisit
+default	5	chateauPainting
+default	6	LX_setWorkshed
+default	7	LX_artistQuest
+default	8	LX_galaktikSubQuest
+default	9	LX_armorySideQuest
+default	10	LX_meatsmithSubQuest
+default	11	L9_leafletQuest
+default	12	L5_findKnob
+default	13	L12_sonofaPrefix
+default	14	LX_burnDelay
+default	15	LX_summonMonster
+default	16	LM_edTheUndying
+default	17	LX_bugbearInvasion
+default	18	LX_lowkeySummer
+default	19	resolveSixthDMT
+default	20	LX_dinseylandfillFunbucks
+default	21	L12_flyerFinish
+default	22	L12_getOutfit
+default	23	L12_startWar
+default	24	LX_loggingHatchet
+default	25	LX_guildUnlock
+default	26	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+default	27	LX_unlockDesert
+default	28	handleRainDoh
+default	29	LX_spookyravenManorFirstFloor
+default	30	L6_friarsGetParts	LX_steelOrgan_condition_slow
+default	31	LX_steelOrgan	LX_steelOrgan_condition_slow
+default	32	L4_batCave
+default	33	L2_mosquito
+default	34	LX_unlockHiddenTemple
+default	35	L6_dakotaFanning
+default	36	LX_lockPicking
+default	37	LX_fatLootToken
+default	38	L5_slayTheGoblinKing
+default	39	LX_islandAccess
+default	40	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
+default	41	LX_spookyravenManorSecondFloor
+default	42	L3_tavern
+default	43	L6_friarsGetParts
+default	44	LX_steelOrgan	in_hardcore
+default	45	L7_crypt
+default	46	fancyOilPainting
+default	47	L8_trapperQuest
+default	48	LX_steelOrgan
+default	49	L10_plantThatBean
+default	50	L12_preOutfit
+default	51	L10_airship
+default	52	L10_basement
+default	53	L10_ground
+default	54	L11_blackMarket
+default	55	L11_forgedDocuments
+default	56	L11_mcmuffinDiary
+default	57	L10_topFloor
+default	58	L10_holeInTheSkyUnlock
+default	59	L9_chasmBuild
+default	60	L9_highLandlord
+default	61	L12_flyerBackup
+default	62	Lsc_flyerSeals
+default	63	L11_mauriceSpookyraven
+default	64	L11_unlockHiddenCity
+default	65	L11_hiddenCityZones
+default	66	LX_ornateDowsingRod
+default	67	L11_aridDesert
+default	68	L11_hiddenCity
+default	69	L11_talismanOfNam
+default	70	L11_palindome
+default	71	L11_unlockPyramid
+default	72	L11_unlockEd
+default	73	L11_defeatEd
+default	74	L12_gremlins
+default	75	L12_sonofaFinish
+default	76	L12_sonofaBeach
+default	77	L12_filthworms
+default	78	L12_orchardFinalize
+default	79	L12_themtharHills
+default	80	L12_farm
+default	81	L11_getBeehive
+default	82	L12_finalizeWar
+default	83	L12_clearBattlefield
+default	84	LX_koeInvaderHandler
+default	85	setSoftblockDelay	allowSoftblockDelay
+default	86	L12_lastDitchFlyer
+default	87	LX_bugbearInvasionFinale
+default	88	L13_towerNSContests
+default	89	L13_towerNSHedge
+default	90	L13_sorceressDoor
+default	91	L13_towerNSTower
+default	92	L13_towerNSNagamar
+default	93	L13_towerNSFinal
+default	94	LX_attemptPowerLevel
 

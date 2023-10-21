@@ -1,5 +1,47 @@
 # This is meant for items that have a date of 2022
 
+boolean auto_haveCursedMagnifyingGlass()
+{
+	if (possessEquipment($item[cursed magnifying glass]) && auto_can_equip($item[cursed magnifying glass])) {
+		return true;
+	}
+	return false;
+}
+
+boolean auto_voidMonster()
+{
+	return auto_voidMonster($location[none]);
+}
+
+boolean auto_voidMonster(location loc)
+{
+	// Cursed Magnifying Glass gives a void monster combat every 13 turns. The first 5 are free fights
+	// _voidFreeFights counts up from 0 and stays at 5 once all free fights are completed for the day
+	if (!auto_haveCursedMagnifyingGlass())
+	{
+		return false;
+	}
+
+	// return false if we've fought the 5 free void monsters already today or we're still charging up the counter
+	if (get_property("_voidFreeFights").to_int() >= 5 || get_property("cursedMagnifyingGlassCount").to_int() != 13)
+	{
+		return false;
+	}
+
+	if (loc == $location[none])
+	{
+		return true;
+	}
+
+	if (autoEquip($item[cursed magnifying glass]))
+	{
+		set_property("auto_nextEncounter","void guy");	//which of the 3 is random, but they're all same phylum and free under same conditions
+		return autoAdv(loc);
+	}
+	set_property("auto_nextEncounter","");
+	return false;
+}
+
 boolean auto_haveCosmicBowlingBall()
 {
 	// ensure we not only own one but it's in allowed in path and also in inventory for us to do stuff with.
@@ -145,6 +187,51 @@ boolean auto_fightLocketMonster(monster mon, boolean speculative)
 
 }
 
+boolean auto_haveGreyGoose()
+{
+	if(auto_have_familiar($familiar[Grey Goose]))
+	{
+		return true;
+	}
+	return false;
+}
+
+int gooseExpectedDrones()
+{
+	if(!auto_haveGreyGoose()) return 0;
+	int gooseWeight = familiar_weight($familiar[Grey Goose]);
+	if(gooseWeight < 5) return 0;
+	return gooseWeight - 5;
+}
+
+boolean dronesOut() //want a function to override the task order if we have drones out so as not to waste them
+{
+	if(!auto_haveGreyGoose()) return false;
+	if(get_property("gooseDronesRemaining").to_int() > 0)
+	{
+		return true;
+	}
+	return false;
+}
+
+void prioritizeGoose() //prioritize Goose only if we still have things to get
+{
+	if(!auto_haveGreyGoose()) return;
+	if(	(internalQuestStatus("questL04Bat") <= 1 && gooseExpectedDrones() < 1) ||
+			((item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && internalQuestStatus("questL11Worship") <= 2) && gooseExpectedDrones() < 1) ||
+			(internalQuestStatus("questL08Trapper") <= 1 && gooseExpectedDrones() < 1) ||
+			(((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15) && gooseExpectedDrones() < 2) ||
+			((needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6)) && gooseExpectedDrones() < 4) ||
+			(internalQuestStatus("questL11Ron") < 5 && gooseExpectedDrones() < 2) ||
+			((get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 5 && gooseExpectedDrones() < 2) ||
+			(((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 9) && gooseExpectedDrones() < 3))
+	{
+		set_property("auto_prioritizeGoose", true);
+		return;
+	}
+	set_property("auto_prioritizeGoose", false);
+}
+
 boolean canUseCleaver() {
 	if (possessEquipment($item[June cleaver]) && can_equip($item[June cleaver]) && auto_is_valid($item[June cleaver])) {
 		return true;
@@ -256,6 +343,9 @@ int getSweat() {
 void sweatpantsPreAdventure() {
 	if (!canUseSweatpants()) {
 		return;
+	}
+	if(in_small()){
+		return; // small can't clean organs
 	}
 
 	if (my_location() == $location[A Mob of Zeppelin Protesters] && equipped_item($slot[pants]) != $item[lynyrdskin breeches]) {
@@ -677,10 +767,8 @@ void auto_checkTrainSet()
 	int two;
 	int three;
 	int four;
-	if(my_level() < 13) //check if we need more stats. There is no check for disregard instant karma because
+	if(my_level() < 11) //check if we need more stats. There is no check for disregard instant karma because
 	//if we do check, we will never double lumber mill, which is more beneficial than continuing to double mainstat.
-	//Do we want the next line's if statement instead because this will still generate so many stats
-	//if(my_level() < 12) //Double mainstat until we reach L12
 	{
 		if(my_primestat() == $stat[Muscle])
 		{
@@ -758,7 +846,7 @@ void auto_checkTrainSet()
 		}
 	}
 	int eight = 13; //monster level
-	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != ""){
+	if((monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != "") || get_property("auto_MLSafetyLimit").to_int() == -1){
 		eight = 9; //cold res, stench dmg
 	}
 	int turnsSinceTSConfigured = min(trainsetPosition - lastTrainsetConfiguration, 40);

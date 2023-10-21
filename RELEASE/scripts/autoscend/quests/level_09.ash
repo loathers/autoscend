@@ -162,7 +162,7 @@ void prepareForSmutOrcs()
 		// so let's not waste time and console spam when we're a class or path that can't do any of this.
 		boolean useSpellsInOrcCamp = false;
 		
-		acquireMP(32, 1000);	//pre_adv will always do this later, but waiting for it may fail checks of ability to cast spells here
+		acquireMP(32, 0);	//pre_adv will always do this later, but waiting for it may fail checks of ability to cast spells here
 		if(setFlavour($element[cold]) && canUse($skill[Stuffed Mortar Shell]))
 		{
 			useSpellsInOrcCamp = true;
@@ -394,17 +394,11 @@ boolean L9_aBooPeak()
 	boolean clueCheck = ((clueAmt > 0) || (get_property("auto_aboopending").to_int() != 0));
 	if (get_property("auto_abooclover").to_boolean() && get_property("booPeakProgress").to_int() >= 30 && booCloversOk)
 	{
-		cloverUsageInit();
-		autoAdvBypass(296, $location[A-Boo Peak]);
-		if(cloverUsageRestart())
-		{
-			autoAdvBypass(296, $location[A-Boo Peak]);
-		}
-		if(cloverUsageFinish())
+		if (autoLuckyAdv($location[A-Boo Peak]))
 		{
 			set_property("auto_abooclover", false);
+			return true;
 		}
-		return true;
 	}
 	else if (clueCheck && (get_property("booPeakProgress").to_int() > 2))
 	{
@@ -433,7 +427,7 @@ boolean L9_aBooPeak()
 
 		if(black_market_available() && (item_amount($item[Can of Black Paint]) == 0) && (have_effect($effect[Red Door Syndrome]) == 0) && (my_meat() >= npc_price($item[Can of Black Paint])))
 		{
-			buyUpTo(1, $item[Can of Black Paint]);
+			auto_buyUpTo(1, $item[Can of Black Paint]);
 			coldResist += 2;
 			spookyResist += 2;
 		}
@@ -835,6 +829,10 @@ boolean L9_twinPeak()
 		{
 			return false;
 		}
+	}
+	if(auto_haveGreyGoose()){
+		auto_log_info("Bringing the Grey Goose to emit some drones to get some hedge trimmers.");
+		handleFamiliar($familiar[Grey Goose]);
 	}
 	return autoAdv($location[Twin Peak]);
 }

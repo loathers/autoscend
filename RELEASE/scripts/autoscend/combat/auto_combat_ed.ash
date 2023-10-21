@@ -375,7 +375,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		combat_status_add("banishercheck");
 	}
 
-	if (!combat_status_check("replacercheck") && canReplace(enemy) && auto_wantToReplace(enemy, my_location()))
+	if (!combat_status_check("replacercheck") && auto_wantToReplace(enemy, my_location()))
 	{
 		string combatAction = replaceMonsterCombatString(enemy, true);
 		if(combatAction != "")
@@ -689,7 +689,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return 	auto_bowlingBallCombatString(my_location(), false);
 	}
 	
-	if(instakillable(enemy) && !isFreeMonster(enemy) && doInstaKill)
+	if(instakillable(enemy) && !isFreeMonster(enemy,my_location()) && doInstaKill)
 	{
 		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0))
 		{

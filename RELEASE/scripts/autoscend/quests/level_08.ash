@@ -273,10 +273,16 @@ boolean L8_getGoatCheese()
 	{
 		auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
 	}
+	if(auto_haveGreyGoose() && item_amount($item[Goat Cheese]) >= 2){
+		auto_log_info("Bringing the Grey Goose to emit some drones at a Dairy Goat for cheese, Gromit.");
+		handleFamiliar($familiar[Grey Goose]);
+	}
 	if(canSniff($monster[Dairy Goat], $location[The Goatlet]) && auto_mapTheMonsters())
 	{
 		auto_log_info("Attemping to use Map the Monsters to olfact a Dairy Goat.");
 	}
+	auto_lostStomach(true);
+	
 	boolean retval = autoAdv($location[The Goatlet]);
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 	return retval;
@@ -321,21 +327,8 @@ boolean L8_getMineOres()
 	}
 	
 	// try to clover for the ore
-	int numCloversKeep = 0;
-	if(get_property("auto_wandOfNagamar").to_boolean())
+	if (autoLuckyAdv($location[Itznotyerzitz Mine]))
 	{
-		numCloversKeep = 1;
-		if(isAboutToPowerlevel())
-		{
-			numCloversKeep = 0;
-		}
-	}
-	if(cloversAvailable() > numCloversKeep)
-	{
-		cloverUsageInit();
-		autoAdvBypass(270, $location[Itznotyerzitz Mine]);
-		if(cloverUsageRestart()) autoAdvBypass(270, $location[Itznotyerzitz Mine]);
-		cloverUsageFinish();
 		return true;
 	}
 
@@ -681,6 +674,11 @@ boolean L8_trapperGroar()
 	{
 		return false; // peak not yet unlocked or we are done with groar
 	}
+	if(get_property("_auto_skip_L8_trapperGroar").to_boolean())
+	{
+		auto_log_warning("Skipping L8_trapperGroar() today as per _auto_skip_L8_trapperGroar");
+		return false;
+	}
 	
 	// error catching for if we are actually on step5 and mafia did not notice.
 	if(item_amount($item[Groar\'s Fur]) > 0 || item_amount($item[Winged Yeti Fur]) > 0 || item_amount($item[Cursed Blanket]) > 0)
@@ -724,14 +722,40 @@ boolean L8_trapperGroar()
 	}
 	if(retval && initial_adv == my_session_adv())
 	{
-		// if mafia tracking failed to advance quest then it will get stuck in an inf loop of trying to adv in [Mist-shrouded Peak]
-		// which becomes an invalid zone after groar dies. being replaced with the new zone called [The Icy Peak]
+		//several inf loops can occur here
+		auto_log_debug("Adventured without spending an adv in [Mist-shrouded Peak]. Checking for problems", "blue");
+		
 		int initial_step = internalQuestStatus("questL08Trapper");
-		auto_log_debug("Adventured without spending adv in [Mist-shrouded Peak]. checking quest status", "blue");
+		string initial_s = get_property("questL08Trapper");
 		cli_execute("refresh quests");
-		if(initial_step == internalQuestStatus("questL08Trapper"))
+		int current_step = internalQuestStatus("questL08Trapper");
+		string current_s = get_property("questL08Trapper");
+		boolean track_error = initial_step != current_step;
+		
+		if(track_error)		//quest tracking was wrong and fixed.
 		{
-			auto_log_warning("questL08Trapper value was incorrect. This has been fixed", "blue");
+			if(current_step > 4)	//boss is actually dead now
+			{
+				// if boss is dead [Mist-shrouded Peak] becomes [The Icy Peak].
+				// common tracking issue which casue inf loop. already fixed by the quest refresh.
+				auto_log_warning("questL08Trapper value was incorrect. Boss is already dead. This has been fixed to prevent inf loop", "blue");
+			}
+			else auto_log_warning("questL08Trapper value was incorrect. This has been fixed", "blue");
+		}
+		else auto_log_debug("questL08Trapper value was correct despite oddity with adv spent");
+
+		if(current_step == 3 || current_step == 4)
+		{
+			// boss is still alive yet no adv was spent. most likely scenario is that our cold res was too low. maybe free combat?
+			if(get_property("_auto_inf_counter").to_int() > 5)
+			{
+				print("We are stuck trying to adventure in [Mist-shrouded Peak] and failing repeatedly","red");
+				print("Probably a problem with cold res. Please report this issue.","red");
+				print("Finish the peak yourself then run autoscend again","red");
+				print("If you wish to have autoscend ignore this and go do other stuff then enter in gCLI:","red");
+				print("set _auto_skip_L8_trapperGroar = true","red");
+				abort();
+			}
 		}
 	}
 	return retval;

@@ -139,7 +139,7 @@ boolean LX_unlockDesert()
 	if(my_meat() >= (npc_price($item[Desert Bus Pass]) + 1000) && isGeneralStoreAvailable())
 	{
 		auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
-		buyUpTo(1, $item[Desert Bus Pass]);
+		auto_buyUpTo(1, $item[Desert Bus Pass]);
 		if(item_amount($item[Desert Bus Pass]) > 0)
 		{
 			return true;
@@ -173,7 +173,7 @@ boolean LX_desertAlternate()
 	}
 	if((my_meat() >= npc_price($item[Desert Bus Pass])) && isGeneralStoreAvailable())
 	{
-		buyUpTo(1, $item[Desert Bus Pass]);
+		auto_buyUpTo(1, $item[Desert Bus Pass]);
 		if(item_amount($item[Desert Bus Pass]) > 0)
 		{
 			return true;
@@ -199,7 +199,7 @@ boolean LX_islandAccess()
 	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (get_property("lastIslandUnlock").to_int() != my_ascensions()) && (my_meat() >= npc_price($item[dingy planks])) && isGeneralStoreAvailable())
 	{
 		cli_execute("make dinghy plans");
-		buyUpTo(1, $item[dingy planks]);
+		auto_buyUpTo(1, $item[dingy planks]);
 		use(1, $item[dinghy plans]);
 		return true;
 	}
@@ -263,7 +263,7 @@ boolean LX_islandAccess()
 	if((my_meat() >= npc_price($item[dingy planks])) && (item_amount($item[Dinghy Plans]) == 0) && isGeneralStoreAvailable())
 	{
 		cli_execute("make dinghy plans");
-		buyUpTo(1, $item[dingy planks]);
+		auto_buyUpTo(1, $item[dingy planks]);
 		use(1, $item[dinghy plans]);
 		return true;
 	}
@@ -540,11 +540,11 @@ boolean LX_dailyDungeonToken()
 	
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
 	{
-		buyUpTo(1, $item[Eleven-Foot Pole]);
-		buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
+		auto_buyUpTo(1, $item[Eleven-Foot Pole]);
+		auto_buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
 		if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not buy a second one if already equipped
 		{
-			buyUpTo(1, $item[Ring of Detect Boring Doors]);
+			auto_buyUpTo(1, $item[Ring of Detect Boring Doors]);
 		}
 	}
 	
@@ -683,7 +683,7 @@ boolean LX_dolphinKingMap()
 	{
 		if(possessEquipment($item[Snorkel]) || ((my_meat() >= npc_price($item[Snorkel])) && isArmoryAvailable()))
 		{
-			buyUpTo(1, $item[Snorkel]);
+			auto_buyUpTo(1, $item[Snorkel]);
 			item oldHat = equipped_item($slot[hat]);
 			equip($item[Snorkel]);
 			use(1, $item[Dolphin King\'s Map]);
@@ -890,4 +890,94 @@ boolean LX_ForceNC()
 			auto_log_warning("Attempted to force NC in unexpected location: " + desiredNCLocation);
 			return false;
 	}
+}
+
+boolean LX_dronesOut()
+{
+	if(!dronesOut())
+	{
+		return false;
+	}
+	boolean canExtingo = true;
+	if(auto_fireExtinguisherCharges() <= 30 || !canUse($skill[Fire Extinguisher: Polar Vortex], false))
+	{
+		canExtingo = false;
+	}
+	auto_log_info("Have drones out so re-routing to not waste");
+
+	//where to go to. Not handling Smut Orc Keepsake, Blackberry Bush due to adventuring conditions required. If they happen to show up, they are handled in auto_combat
+	if(needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6) && zone_isAvailable($location[The Hole In The Sky]))
+	{
+		auto_log_info("Going to HiTS");
+		if(get_property("auto_priorLocation").to_location() != $location[The Hole In The Sky])
+		{
+			set_property("auto_skipStage2", true);
+			set_property("auto_skipStage4", true);
+		}
+		return autoAdv($location[The Hole In The Sky]); //Stars and Lines
+	}
+	if (get_property("middleChamberUnlock").to_boolean() && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && item_amount($item[Tangle of rat tails]) >= 1 && zone_isAvailable($location[The Middle Chamber]))
+	{
+		auto_log_info("Going to Middle Chamber");
+		if(get_property("auto_priorLocation").to_location() != $location[The Middle Chamber])
+		{
+			set_property("auto_skipStage4", true);  //don't set skipStage2 because rat king
+		}
+		return autoAdv($location[The Middle Chamber]); //Tomb ratchets
+	}
+	if((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15 && zone_isAvailable($location[Twin Peak]))
+	{
+		auto_log_info("Going to Twin Peak");
+		if(get_property("auto_priorLocation").to_location() != $location[Twin Peak])
+		{
+			set_property("auto_skipStage2", true);
+			set_property("auto_skipStage4", true);
+		}
+		return autoAdv($location[Twin Peak]); //Hedge trimmers
+	}
+	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5 && zone_isAvailable($location[The Red Zeppelin]))
+	{
+		auto_log_info("Going to the Red Zeppelin");
+		if(get_property("auto_priorLocation").to_location() != $location[The Red Zeppelin])
+		{
+			set_property("auto_skipStage4", true); //don't set skipStage2 because glark cables
+		}
+		return autoAdv($location[The Red Zeppelin]); //Glark cables
+	}
+	if(canExtingo = false && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 6 && zone_isAvailable($location[The Hidden Bowling Alley]))
+	{
+		auto_log_info("Going to the Hidden Bowling Alley");
+		if(get_property("auto_priorLocation").to_location() != $location[The Hidden Bowling Alley])
+		{
+			set_property("auto_skipStage2", true);
+			set_property("auto_skipStage4", true);
+		}
+		return autoAdv($location[The Hidden Bowling Alley]); //Bowling balls
+	}
+	if(internalQuestStatus("questL04Bat") <= 1 && zone_isAvailable($location[The Batrat and Ratbat Burrow]))
+	{
+		auto_log_info("Going to the Batrat and Ratbat Burrow");
+		if(get_property("auto_priorLocation").to_location() != $location[The Batrat and Ratbat Burrow])
+		{
+			set_property("auto_skipStage2", true);
+			set_property("auto_skipStage4", true);
+		}
+		return autoAdv($location[The Batrat and Ratbat Burrow]); //Sonar-in-a-Biscuit
+	}
+	if(internalQuestStatus("questL08Trapper") == 1 && zone_isAvailable($location[The Goatlet]))
+	{
+		auto_log_info("Going to the Goatlet");
+		if(get_property("auto_priorLocation").to_location() != $location[The Goatlet])
+		{
+			set_property("auto_skipStage2", true);
+			set_property("auto_skipStage4", true);
+		}
+		return autoAdv($location[The Goatlet]); //Goat cheese
+	}
+	if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]) && internalQuestStatus("questL11Worship") < 3 && my_level() >= 11)
+	{
+		auto_log_info("Summoning Baa baa buran");
+		return summonMonster($monster[Baa\'baa\'bu\'ran]); //Stone wool
+	}
+	return false;
 }

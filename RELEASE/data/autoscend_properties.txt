@@ -227,3 +227,5 @@
 224	auto_wishes
 225	auto_restoreUseBloodBond
 226	auto_aosolLastSkill
+227 auto_skipStage2
+228 auto_skipStage4
