@@ -3320,7 +3320,7 @@ boolean auto_wantToSniff(monster enemy, location loc)
 	location locCache = my_location();
 	set_location(loc);
 	boolean [monster] toSniff = auto_getMonsters("sniff");
-	if(toSniff[enemy] && appearance_rates(loc)[enemy] < 100)
+	if(toSniff[enemy] && auto_combat_appearance_rates(loc)[enemy] < 100)
 	{
 		set_location(locCache);
 		return true;
