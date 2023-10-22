@@ -62,7 +62,7 @@ boolean drinkSpeakeasyDrink(item drink);
 boolean drinkSpeakeasyDrink(string drink);
 boolean zataraAvailable();
 boolean zataraSeaside(string who);
-boolean zataraClanmate(string who);
+boolean zataraClanmate();
 boolean eatFancyDog(string dog);
 boolean auto_floundryUse();
 boolean auto_floundryAction();

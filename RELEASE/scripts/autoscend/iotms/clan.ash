@@ -397,9 +397,8 @@ boolean zataraSeaside(string who)
 	return true;
 }
 
-boolean zataraClanmate(string who)
+boolean zataraClanmate()
 {
-	# who is ignored.
 	if(item_amount($item[Clan VIP Lounge Key]) == 0)
 	{
 		return false;

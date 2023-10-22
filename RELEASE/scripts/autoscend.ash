@@ -1115,7 +1115,7 @@ boolean dailyEvents()
 		use_skill(1, $skill[That\'s Not a Knife]);
 	}
 
-	while(zataraClanmate(""));
+	while(zataraClanmate());
 
 	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[genie bottle]) && auto_is_valid($item[pocket wish]) && !in_glover())
 	{
