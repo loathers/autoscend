@@ -455,6 +455,12 @@ boolean zataraClanmate(string who)
 		player = get_player_id(consultOverrideName).to_int();
 	}
 
+	if (!is_online(name))
+	{
+		// consult will not return in reasonable timeframe
+		return false;
+	}
+
 	boolean needWait = true;
 
 	while(attempts < 5)
