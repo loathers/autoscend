@@ -943,7 +943,8 @@ void auto_CMCconsult()
 		bestOption = 5;
 		consumableBought = $item[Fleshazole&trade;];
 	}
-	else if (auto_CMCconsultsLeft() > 2 && !can_interact() && !in_small())
+	else if (auto_CMCconsultsLeft() > 2 && !can_interact() && !in_small() && !in_kolhs())
+
 	{
 		//reserve the last 2 consults for something more valuable than booze/food
 		//consume logic will drink/eat later
