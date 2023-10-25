@@ -234,7 +234,8 @@ void prioritizeGoose() //prioritize Goose only if we still have things to get
 
 boolean auto_haveMaydayContract()
 {
-	if (get_property("hasMaydayContract").to_boolean() && auto_is_valid($item[survival knife]))
+	if (get_property("hasMaydayContract").to_boolean() && auto_is_valid($item[gaffer's tape]))
+	// use a potion to check mayday is allowed as auto_is_valid can return false for equipment & consumables in certain paths
 	{
 		return true;
 	}
