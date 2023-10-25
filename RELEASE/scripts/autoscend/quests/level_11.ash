@@ -1010,8 +1010,11 @@ boolean L11_aridDesert()
 		return false;		//done exploring
 	}
 
-	if (auto_haveMaydayContract() && my_daycount() < 2 && have_effect($effect[Ultrahydrated]) == 0)
-	{ // if we can get the survival knife on day 2 and we're on day 1, lets delay until day 2.
+	if (auto_haveMaydayContract() && my_daycount() < 2 && !isAboutToPowerlevel() && auto_is_valid($item[survival knife]))
+	{ // if we can get (and use) the survival knife on day 2 and we're on day 1, lets delay until day 2
+		// unless we have absolutely nothing else to do.
+		// hardcode the paths & classes we know will get the survival knife on day 2 until mafia
+		// exposes functions to either allow us to calculate seeds ourselves or just tell us what we will get.
 		if (in_small() && $classes[Turtle Tamer, Sauceror] contains my_class())
 		{
 			return false;
