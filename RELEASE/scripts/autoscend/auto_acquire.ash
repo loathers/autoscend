@@ -799,6 +799,15 @@ int handlePulls(int day)
 		}
 	}
 
+	// do this regardless of day if we still need to complete the bridge.
+	if (canPull($item[smut orc keepsake box]) && lumberCount() < 26 && fastenerCount() < 26)
+	{
+		if (pullXWhenHaveY($item[smut orc keepsake box], 1, 0))
+		{
+			use(1, $item[smut orc keepsake box]);
+		}
+	}
+
 	return pulls_remaining();
 }
 

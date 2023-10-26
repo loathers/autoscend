@@ -358,6 +358,11 @@ boolean auto_backupTarget()
 			if(get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe())
 				return true;
 			break;
+		case $monster[Skinflute]:
+		case $monster[Camel's Toe]:
+			if (needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
+				return true;
+			break;
 		default: break;
     }
 
@@ -807,21 +812,13 @@ int auto_CMCconsultsLeft()
 	return 5 - consultsUsed;
 }
 
-boolean auto_shouldUseCMC()
-{
-	return !get_property("auto_doNotUseCMC").to_boolean();
-}
-
 boolean auto_CMCconsultAvailable()
 {
 	if(auto_CMCconsultsLeft() == 0)
 	{
 		return false;
 	}
-	if(!auto_shouldUseCMC())
-	{
-		return false;
-	}
+
 	int nextConsult = get_property("_nextColdMedicineConsult").to_int();
 	//prior to first use each day, prop value is 0
 	if(nextConsult == 0)
@@ -923,14 +920,17 @@ void auto_CMCconsult()
 		bestOption = 5;
 		consumableBought = $item[Breathitin&trade;];
 	}
-	else if(contains_text(page, "Homebodyl") && freeCrafts() < 5)
+	else if (!(auto_is_valid($familiar[cookbookbat]) && have_familiar($familiar[cookbookbat]) && knoll_available()) && contains_text(page, "Homebodyl") && freeCrafts() < 5)
 	{
+		// don't need free crafts if we have the Cookbookbat in knoll signs.
+		// Cookbookbat gives us 5 free cooks every day & we only use free crafting on cooking in knoll signs
 		auto_log_info("Buying Homebodyl pill from CMC", "blue");
 		bestOption = 5;
 		consumableBought = $item[Homebodyl&trade;];
 	}
-	else if(contains_text(page, "ice crown"))
+	else if ((!in_small() || in_hardcore()) && contains_text(page, "ice crown"))
 	{
+		// don't need the ice crown in Normal Small as we pull hats.
 		auto_log_info("Buying ice crown from CMC", "blue");
 		bestOption = 1;
 	}
@@ -940,7 +940,8 @@ void auto_CMCconsult()
 		bestOption = 5;
 		consumableBought = $item[Fleshazole&trade;];
 	}
-	else if(auto_CMCconsultsLeft() > 2 && !can_interact())
+	else if (auto_CMCconsultsLeft() > 2 && !can_interact() && !in_small() && !in_kolhs())
+
 	{
 		//reserve the last 2 consults for something more valuable than booze/food
 		//consume logic will drink/eat later

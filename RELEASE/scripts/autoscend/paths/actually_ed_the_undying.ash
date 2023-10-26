@@ -101,15 +101,6 @@ void ed_initializeDay(int day)
 
 		if(get_property("auto_day_init").to_int() < 2)
 		{
-			if(get_property("auto_dickstab").to_boolean() && chateaumantegna_available())
-			{
-				boolean[item] furniture = chateaumantegna_decorations();
-				if(!furniture[$item[Ceiling Fan]])
-				{
-					chateaumantegna_buyStuff($item[Ceiling Fan]);
-				}
-			}
-
 			if(item_amount($item[gym membership card]) > 0)
 			{
 				use(1, $item[gym membership card]);
@@ -494,65 +485,46 @@ boolean ed_buySkills()
 		while(imbuePoints > 0)
 		{
 			servant tryImbue = $servant[none];
-
-			if(get_property("auto_dickstab").to_boolean())
+			if(have_servant($servant[Priest]) && ($servant[Priest].experience < 81))
 			{
-				if(have_servant($servant[Priest]) && ($servant[Priest].experience < 81))
-				{
-					tryImbue = $servant[Priest];
-				}
-				else if(have_servant($servant[Scribe]) && ($servant[Scribe].experience < 441))
-				{
-					tryImbue = $servant[Scribe];
-				}
-				else if(have_servant($servant[Maid]) && ($servant[Maid].experience < 441) && (my_level() >= 12))
-				{
-					tryImbue = $servant[Maid];
-				}
+				tryImbue = $servant[Priest];
+			}
+			else if(have_servant($servant[Cat]) && ($servant[Cat].experience < 199))
+			{
+				tryImbue = $servant[Cat];
+			}
+			else if(have_servant($servant[Maid]) && ($servant[Maid].experience < 199))
+			{
+				tryImbue = $servant[Maid];
+			}
+			else if(have_servant($servant[Belly-Dancer]) && ($servant[Belly-Dancer].experience < 341))
+			{
+				tryImbue = $servant[Belly-Dancer];
+			}
+			else if(have_servant($servant[Scribe]) && ($servant[Scribe].experience < 99))
+			{
+				tryImbue = $servant[Scribe];
+			}
+			else if(have_servant($servant[Maid]) && ($servant[Maid].experience < 441) && (my_level() >= 12))
+			{
+				tryImbue = $servant[Maid];
+			}
+			else if(have_servant($servant[Cat]) && ($servant[Cat].experience < 441) && (my_level() >= 12))
+			{
+				tryImbue = $servant[Cat];
+			}
+			else if(have_servant($servant[Scribe]) && ($servant[Scribe].experience < 441) && (my_level() >= 12))
+			{
+				tryImbue = $servant[Scribe];
 			}
 			else
 			{
-				if(have_servant($servant[Priest]) && ($servant[Priest].experience < 81))
+				if((my_level() >= 9) && (my_level() <= 12))
 				{
-					tryImbue = $servant[Priest];
-				}
-				else if(have_servant($servant[Cat]) && ($servant[Cat].experience < 199))
-				{
-					tryImbue = $servant[Cat];
-				}
-				else if(have_servant($servant[Maid]) && ($servant[Maid].experience < 199))
-				{
-					tryImbue = $servant[Maid];
-				}
-				else if(have_servant($servant[Belly-Dancer]) && ($servant[Belly-Dancer].experience < 341))
-				{
-					tryImbue = $servant[Belly-Dancer];
-				}
-				else if(have_servant($servant[Scribe]) && ($servant[Scribe].experience < 99))
-				{
-					tryImbue = $servant[Scribe];
-				}
-				else if(have_servant($servant[Maid]) && ($servant[Maid].experience < 441) && (my_level() >= 12))
-				{
-					tryImbue = $servant[Maid];
-				}
-				else if(have_servant($servant[Cat]) && ($servant[Cat].experience < 441) && (my_level() >= 12))
-				{
-					tryImbue = $servant[Cat];
-				}
-				else if(have_servant($servant[Scribe]) && ($servant[Scribe].experience < 441) && (my_level() >= 12))
-				{
-					tryImbue = $servant[Scribe];
-				}
-				else
-				{
-					if((my_level() >= 9) && (my_level() <= 12))
+					// got scribe early. Imbue to level 21 for passive stat gain
+					if(have_servant($servant[Scribe]) && ($servant[Scribe].experience < 441))
 					{
-						// got scribe early. Imbue to level 21 for passive stat gain
-						if(have_servant($servant[Scribe]) && ($servant[Scribe].experience < 441))
-						{
-							tryImbue = $servant[Scribe];
-						}
+						tryImbue = $servant[Scribe];
 					}
 				}
 			}
@@ -1068,13 +1040,6 @@ boolean L1_ed_island()
 	}
 
 	skill blocker = $skill[Still Another Extra Spleen];
-	if(get_property("auto_dickstab").to_boolean())
-	{
-		if(turns_played() > 22)
-		{
-			return false;
-		}
-	}
 
 	if((my_level() >= 10) || ((my_level() >= 8) && have_skill(blocker)))
 	{

@@ -1,5 +1,74 @@
 // This file should contain functions for adventuring which are not related to any of the council quests nor any "optional" quests.
 
+void LX_handleIntroAdventures()
+{
+	// This function simply handles the "intro" adventures many challenge paths have upon a new ascension.
+	// Handling these in this manner allows us to sidestep potential mafia issues related to parsing of status
+	if (handling_choice())
+	{
+		int choice = last_choice();
+
+		if (995 == choice)
+		{
+			// 995 is "Being Picky", intro for Picky (Winter 2014 challenge path).
+			picky_startAscension();
+		}
+
+		if (1023 == choice)
+		{
+			// 1023 is "Like a Bat Into Hell" where Actually Ed enters the Underworld when losing combat
+			// It is conceivable that we could be stuck in this when the script is (re)started if we lost the previous combat.
+			edUnderworldChoiceHandler(choice);
+		}
+
+		if (1230 == choice)
+		{
+			// 1230 is "Welcome to the Kingdom, Gelatinous Noob", intro for Gelatinous Noob (Spring 2017 challenge path).
+			// TODO: This should be refactored to use the choiceAdventureScript instead of this terrible hack.
+			string page = visit_url("main.php");
+			page = visit_url("api.php?what=status&for=4", false);
+			gnoob_startAscension(page);
+		}
+
+		if (1342 == choice)
+		{
+			// 1342 is "Torpor", the non-combat Vampyre ends up in when losing combat or resting at campground.
+			// It is conceivable that we could be stuck in this when the script is (re)started if we lost the previous combat.
+			auto_log_info("Torporing, since I think we're already in torpor.", "blue");
+			bat_reallyPickSkills(20);
+		}
+
+		if (1343 == choice)
+		{
+			// 1343 is "Intro: View of a Vampire", intro for Dark Gyffte (Spring 2019 challenge path).
+			run_choice(1);
+			bat_reallyPickSkills(20);
+		}
+
+		if ($ints[1495] contains choice) {
+			// 1495 is "Into the Shadows", intro for Avatar of Shadows Over Loathing (Spring 2023 challenge path).
+			// These intros have "meaningful" choices with respect to the run so we don't want to handle them automatically and will intentionally abort here.
+			abort("You are stuck in an intro adventure which requires you to choose a path. I suggest you do so before trying to run autoscend and you may have better results.");
+		}
+
+		if ($ints[1046, 1405, 1416, 1419, 1446, 1450, 1464, 1480, 1503, 1507] contains choice)
+		{
+			// 1046 is "Actually Ed the Undying", intro for Actually Ed the Undying (Spring 2015 challenge path).
+			// 1405 is "Let's, uh, go!", intro for Path of the Plumber (Spring 2020 challenge path).
+			// 1416 is "Low-Key Summer", intro for Low-Key Summer (Summer 2020 challenge path).
+			// 1419 is "Grey Sky Morning", intro for Grey Goo (Fall 2020 challenge path).
+			// 1446 is "You, Robot", intro for You, Robot (Spring 2021 challenge path).
+			// 1450 is "Wildfire!", intro for Wildfire (Fall 2021 challenge path).
+			// 1464 is "Your Friend Goo", intro for Grey You (Spring 2022 challenge path).
+			// 1480 is "Fall of the Dinosaurs", intro for Fall of the Dinosaurs (Fall 2022 challenge path).
+			// 1503 is "Starting Your Legacy", intro for Legacy of Loathing (Summer 2023 challenge path).
+			// 1507 is "Jumbled in the Bungle", intro for A Shrunken Adventurer am I (Fall 2023 challenge path).
+			// yes they really phoned some of the titles of these in.
+			run_choice(1);
+		}
+	}
+}
+
 boolean LX_bitchinMeatcar_condition()
 {
 	return knoll_available() && get_property("auto_spoonconfirmed").to_int() == my_ascensions();

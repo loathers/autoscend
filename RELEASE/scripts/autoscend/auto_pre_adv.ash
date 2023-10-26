@@ -413,8 +413,9 @@ boolean auto_pre_adventure()
 	{
 		foreach mon,rate in appearance_rates(place)
 		{
-			if (rate > 0 && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon))
+			if (rate > 0 && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon) && place != $location[Noob Cave])
 			{
+				// We use Noob Cave as the placeholder location for zoneless encounters so lets not equip it when we're not actually going there.
 				auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from ' + place + ", so we're bringing it along.", "blue");
 				autoEquip($item[combat lover\'s locket]);
 				break;

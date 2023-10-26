@@ -149,7 +149,7 @@ boolean LX_unlockThinknerdWarehouse(boolean spend_resources)
 	getShirtWhenHaveNone($item[bat-ass leather jacket]);		//77 mus req
 
 	//wish for a shirt
-	if(spend_resources && auto_wishesAvailable() > 0 && auto_shouldUseWishes() && item_amount($item[blessed rustproof +2 gray dragon scale mail]) == 0)
+	if(spend_resources && auto_wishesAvailable() > 0 && item_amount($item[blessed rustproof +2 gray dragon scale mail]) == 0)
 	{
 		makeGenieWish("for a blessed rustproof +2 gray dragon scale mail");
 		target_shirt = $item[blessed rustproof +2 gray dragon scale mail];
@@ -403,7 +403,6 @@ boolean LX_guildUnlock()
 	{
 		return false;	//muscle classes cannot unlock guild in grey goo
 	}
-	auto_log_info("Let's unlock the guild.", "green");
 
 	string pref;
 	location loc = $location[None];
@@ -446,7 +445,9 @@ boolean LX_guildUnlock()
 			return false;
 		}
 
-		autoAdv(1, loc);
+		auto_log_info("Let's unlock the guild.", "green");
+
+		autoAdv(loc);
 		if (internalQuestStatus(pref) == 1)
 		{
 			visit_url("guild.php?place=challenge");

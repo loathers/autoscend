@@ -25,8 +25,8 @@ elephant (meatcar?) topiary animal	!familiar:Melodramedary;!sniffed:bearpig topi
 spider (duck?) topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:bearpig topiary animal
 Serialbus	item:bus pass<4
 CH Imp	item:imp air<4
-Camel Toe	!sniffed:Skinflute
-Skinflute	!sniffed:Camel Toe
+Camel's Toe	!sniffed:Skinflute
+Skinflute	!sniffed:Camel's Toe
 Red Butler	prop:_glarkCableUses<5;item:glark cable<5
 # Unlocking Knob Menagerie
 Knob Goblin Very Mad Scientist	loc:Cobb's Knob Laboratory;item:Cobb's Knob Menagerie key<1;turnsspent:Cobb's Knob Laboratory>7

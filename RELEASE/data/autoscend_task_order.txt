@@ -4,6 +4,102 @@
 # Task ordering. Functions must be: boolean func()
 # If path name does not exist in data file, 'default' will be used
 # path name, index, function, condition_function (optional)
+A Shrunken Adventurer am I	0	LX_freeCombatsTask
+A Shrunken Adventurer am I	1	woods_questStart
+A Shrunken Adventurer am I	2	LX_unlockPirateRealm
+A Shrunken Adventurer am I	3	catBurglarHeist
+A Shrunken Adventurer am I	4	auto_breakfastCounterVisit
+A Shrunken Adventurer am I	5	chateauPainting
+A Shrunken Adventurer am I	6	LX_setWorkshed
+A Shrunken Adventurer am I	7	LX_artistQuest
+A Shrunken Adventurer am I	8	LX_galaktikSubQuest
+A Shrunken Adventurer am I	9	LX_armorySideQuest
+A Shrunken Adventurer am I	10	LX_meatsmithSubQuest
+A Shrunken Adventurer am I	11	L9_leafletQuest
+A Shrunken Adventurer am I	12	L5_findKnob
+A Shrunken Adventurer am I	13	L12_sonofaPrefix
+A Shrunken Adventurer am I	14	LX_burnDelay
+A Shrunken Adventurer am I	15	LX_summonMonster
+A Shrunken Adventurer am I	16	LM_edTheUndying
+A Shrunken Adventurer am I	17	LX_bugbearInvasion
+A Shrunken Adventurer am I	18	LX_lowkeySummer
+A Shrunken Adventurer am I	19	resolveSixthDMT
+A Shrunken Adventurer am I	20	L11_aridDesert	L11_hasUltrahydrated
+A Shrunken Adventurer am I	21	L12_flyerFinish
+A Shrunken Adventurer am I	22	L12_getOutfit
+A Shrunken Adventurer am I	23	L12_startWar
+A Shrunken Adventurer am I	24	LX_loggingHatchet
+A Shrunken Adventurer am I	25	LX_guildUnlock
+A Shrunken Adventurer am I	26	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+A Shrunken Adventurer am I	27	LX_unlockDesert
+A Shrunken Adventurer am I	28	handleRainDoh
+A Shrunken Adventurer am I	29	LX_spookyravenManorFirstFloor
+A Shrunken Adventurer am I	30	L6_friarsGetParts	LX_steelOrgan_condition_slow
+A Shrunken Adventurer am I	31	LX_steelOrgan	LX_steelOrgan_condition_slow
+A Shrunken Adventurer am I	32	L4_batCave
+A Shrunken Adventurer am I	33	L2_mosquito
+A Shrunken Adventurer am I	34	LX_unlockHiddenTemple
+A Shrunken Adventurer am I	35	L6_dakotaFanning
+A Shrunken Adventurer am I	36	LX_lockPicking
+A Shrunken Adventurer am I	37	LX_fatLootToken
+A Shrunken Adventurer am I	38	L5_slayTheGoblinKing
+A Shrunken Adventurer am I	39	LX_islandAccess
+A Shrunken Adventurer am I	40	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
+A Shrunken Adventurer am I	41	LX_spookyravenManorSecondFloor
+A Shrunken Adventurer am I	42	L3_tavern
+A Shrunken Adventurer am I	43	L6_friarsGetParts
+A Shrunken Adventurer am I	44	LX_steelOrgan	in_hardcore
+A Shrunken Adventurer am I	45	L7_crypt
+A Shrunken Adventurer am I	46	fancyOilPainting
+A Shrunken Adventurer am I	47	L8_trapperQuest
+A Shrunken Adventurer am I	48	LX_steelOrgan
+A Shrunken Adventurer am I	49	L10_plantThatBean
+A Shrunken Adventurer am I	50	L12_preOutfit
+A Shrunken Adventurer am I	51	L10_airship
+A Shrunken Adventurer am I	52	L10_basement
+A Shrunken Adventurer am I	53	L10_ground
+A Shrunken Adventurer am I	54	L11_blackMarket
+A Shrunken Adventurer am I	55	L11_forgedDocuments
+A Shrunken Adventurer am I	56	L11_mcmuffinDiary
+A Shrunken Adventurer am I	57	L10_topFloor
+A Shrunken Adventurer am I	58	L10_holeInTheSkyUnlock
+A Shrunken Adventurer am I	59	L9_chasmBuild
+A Shrunken Adventurer am I	60	L9_highLandlord
+A Shrunken Adventurer am I	61	L12_flyerBackup
+A Shrunken Adventurer am I	62	Lsc_flyerSeals
+A Shrunken Adventurer am I	63	L11_mauriceSpookyraven
+A Shrunken Adventurer am I	64	L11_unlockHiddenCity
+A Shrunken Adventurer am I	65	L11_hiddenCityZones
+A Shrunken Adventurer am I	66	LX_ornateDowsingRod
+A Shrunken Adventurer am I	67	L11_aridDesert
+A Shrunken Adventurer am I	68	L11_hiddenCity
+A Shrunken Adventurer am I	69	L11_talismanOfNam
+A Shrunken Adventurer am I	70	L11_palindome
+A Shrunken Adventurer am I	71	L11_unlockPyramid
+A Shrunken Adventurer am I	72	L11_unlockEd
+A Shrunken Adventurer am I	73	L11_defeatEd
+A Shrunken Adventurer am I	74	L12_gremlins
+A Shrunken Adventurer am I	75	L12_sonofaFinish
+A Shrunken Adventurer am I	76	L12_sonofaBeach
+A Shrunken Adventurer am I	77	L12_filthworms
+A Shrunken Adventurer am I	78	L12_orchardFinalize
+A Shrunken Adventurer am I	79	L12_themtharHills
+A Shrunken Adventurer am I	80	L12_farm
+A Shrunken Adventurer am I	81	L11_getBeehive
+A Shrunken Adventurer am I	82	L12_finalizeWar
+A Shrunken Adventurer am I	83	L12_clearBattlefield
+A Shrunken Adventurer am I	84	LX_koeInvaderHandler
+A Shrunken Adventurer am I	85	setSoftblockDelay	allowSoftblockDelay
+A Shrunken Adventurer am I	86	L12_lastDitchFlyer
+A Shrunken Adventurer am I	87	LX_bugbearInvasionFinale
+A Shrunken Adventurer am I	88	L13_towerNSContests
+A Shrunken Adventurer am I	89	L13_towerNSHedge
+A Shrunken Adventurer am I	90	L13_sorceressDoor
+A Shrunken Adventurer am I	91	L13_towerNSTower
+A Shrunken Adventurer am I	92	L13_towerNSNagamar
+A Shrunken Adventurer am I	93	L13_towerNSFinal
+A Shrunken Adventurer am I	94	LX_attemptPowerLevel
+
 Avatar of Jarlsberg	0	LM_jarlsberg
 Avatar of Jarlsberg	1	LX_freeCombatsTask
 Avatar of Jarlsberg	2	woods_questStart
@@ -20,7 +116,7 @@ Avatar of Jarlsberg	12	L5_findKnob
 Avatar of Jarlsberg	13	L12_sonofaPrefix
 Avatar of Jarlsberg	14	LX_burnDelay
 Avatar of Jarlsberg	15	LX_summonMonster
-Avatar of Jarlsberg	16	LX_dinseylandfillFunbucks
+Avatar of Jarlsberg	16	L11_aridDesert	L11_hasUltrahydrated
 Avatar of Jarlsberg	17	handleRainDoh
 Avatar of Jarlsberg	18	L11_shenStartQuest
 Avatar of Jarlsberg	19	LX_guildUnlock
@@ -84,7 +180,7 @@ Legacy of Loathing	16	LM_edTheUndying
 Legacy of Loathing	17	LX_bugbearInvasion
 Legacy of Loathing	18	LX_lowkeySummer
 Legacy of Loathing	19	resolveSixthDMT
-Legacy of Loathing	20	LX_dinseylandfillFunbucks
+Legacy of Loathing	20	L11_aridDesert	L11_hasUltrahydrated
 Legacy of Loathing	21	L12_flyerFinish
 Legacy of Loathing	22	L12_getOutfit
 Legacy of Loathing	23	L12_startWar
@@ -185,7 +281,7 @@ Quantum Terrarium	13	L12_sonofaPrefix
 Quantum Terrarium	14	LX_burnDelay
 Quantum Terrarium	15	LX_summonMonster
 Quantum Terrarium	16	resolveSixthDMT
-Quantum Terrarium	17	LX_dinseylandfillFunbucks
+Quantum Terrarium	17	L11_aridDesert	L11_hasUltrahydrated
 Quantum Terrarium	18	handleRainDoh
 Quantum Terrarium	19	LX_quantumTerrarium
 Quantum Terrarium	20	fancyOilPainting
@@ -248,7 +344,7 @@ Zombie Slayer	12	L5_findKnob
 Zombie Slayer	13	L12_sonofaPrefix
 Zombie Slayer	14	LX_burnDelay
 Zombie Slayer	15	LX_summonMonster
-Zombie Slayer	16	LX_dinseylandfillFunbucks
+Zombie Slayer	16	L11_aridDesert	L11_hasUltrahydrated
 Zombie Slayer	17	handleRainDoh
 Zombie Slayer	18	L11_shenStartQuest
 Zombie Slayer	19	LX_guildUnlock
@@ -312,7 +408,7 @@ default	16	LM_edTheUndying
 default	17	LX_bugbearInvasion
 default	18	LX_lowkeySummer
 default	19	resolveSixthDMT
-default	20	LX_dinseylandfillFunbucks
+default	20	L11_aridDesert	L11_hasUltrahydrated
 default	21	L12_flyerFinish
 default	22	L12_getOutfit
 default	23	L12_startWar

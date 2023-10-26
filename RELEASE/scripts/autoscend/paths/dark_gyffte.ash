@@ -3,14 +3,6 @@ boolean in_darkGyffte()
 	return my_path() == $path[Dark Gyffte];
 }
 
-void bat_startAscension()
-{
-	if(in_darkGyffte())
-	{
-		visit_url("choice.php?whichchoice=1343&option=1");
-		bat_reallyPickSkills(20);
-	}
-}
 void bat_initializeSettings()
 {
 	if(in_darkGyffte())
