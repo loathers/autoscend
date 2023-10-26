@@ -706,8 +706,6 @@ boolean LM_gnoob();
 ########################################################################################################
 //Defined in autoscend/paths/grey_goo.ash
 boolean in_ggoo();
-void grey_goo_initializeSettings();
-void grey_goo_initializeDay(int day);
 boolean LA_grey_goo_tasks();
 
 ########################################################################################################
@@ -1175,7 +1173,6 @@ boolean LX_dronesOut();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash
-boolean LX_artistQuest();
 boolean LX_unlockThinknerdWarehouse(boolean spend_resources);
 boolean LX_melvignShirt();
 boolean LX_steelOrgan_condition_slow();
@@ -1183,14 +1180,12 @@ boolean LX_steelOrgan();
 boolean LX_guildUnlock();
 boolean startArmorySubQuest();
 boolean finishArmorySideQuest();
-boolean LX_armorySideQuest();
 void considerGalaktikSubQuest();
 boolean startGalaktikSubQuest();
 boolean finishGalaktikSubQuest();
 boolean LX_galaktikSubQuest();
 boolean startMeatsmithSubQuest();
 boolean finishMeatsmithSubQuest();
-boolean LX_meatsmithSubQuest();
 boolean LX_doingPirates();
 boolean LX_pirateOutfit();
 void piratesCoveChoiceHandler(int choice);
