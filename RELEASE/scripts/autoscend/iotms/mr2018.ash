@@ -773,11 +773,6 @@ boolean neverendingPartyAvailable()
 		// Can't adventure if the quest is complete for the day.
 		return false;
 	}
-	if (get_property("auto_skipNEPOverride").to_boolean())
-	{
-		// if the user says don't use it, don't use it.
-		return false;
-	}
 	return true;
 }
 

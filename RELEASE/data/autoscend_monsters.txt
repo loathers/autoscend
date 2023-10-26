@@ -121,8 +121,8 @@ sniff	23	elephant (meatcar?) topiary animal	!familiar:Melodramedary;!sniffed:bea
 sniff	24	spider (duck?) topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:bearpig topiary animal
 sniff	25	Serialbus	item:bus pass<4
 sniff	26	CH Imp	item:imp air<4
-sniff	27	Camel Toe	!sniffed:Skinflute
-sniff	28	Skinflute	!sniffed:Camel Toe
+sniff	27	Camel's Toe	!sniffed:Skinflute
+sniff	28	Skinflute	!sniffed:Camel's Toe
 sniff	29	Red Butler	prop:_glarkCableUses<5;item:glark cable<5
 # Unlocking Knob Menagerie
 sniff	30	Knob Goblin Very Mad Scientist	loc:Cobb's Knob Laboratory;item:Cobb's Knob Menagerie key<1;turnsspent:Cobb's Knob Laboratory>7

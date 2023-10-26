@@ -1185,15 +1185,6 @@ boolean doBedtime()
 	elementalPlanes_takeJob($element[stench]);
 	elementalPlanes_takeJob($element[cold]);
 
-	if((get_property("auto_dickstab").to_boolean()) && chateaumantegna_available() && (my_daycount() == 1))
-	{
-		boolean[item] furniture = chateaumantegna_decorations();
-		if(!furniture[$item[Artificial Skylight]])
-		{
-			chateaumantegna_buyStuff($item[Artificial Skylight]);
-		}
-	}
-
 	auto_beachUseFreeCombs();
 	auto_drinkNightcap();
 	equipRollover(false);

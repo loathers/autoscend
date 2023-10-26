@@ -2002,7 +2002,8 @@ boolean LX_summonMonster()
 	}
 
 	// summon astronomer if only missing star chart for star key
-	if(needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]))
+	// only in Hardcore or if we have no pulls remaining as we can just pull a star chart in Normal
+	if (needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]) && (in_hardcore() || pulls_remaining() < 1))
 	{
 		if(summonMonster($monster[Astronomer])) return true;
 	}
@@ -2100,18 +2101,15 @@ boolean summonMonster(monster mon, boolean speculative)
 		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via cargo shorts", "blue");
 		return true;
 	}
-	if(auto_shouldUseWishes())
+	if(speculative && canGenieCombat(mon))
 	{
-		if(speculative && canGenieCombat(mon))
-		{
-			auto_log_debug("Can summon " + mon + " via wishing", "blue");
-			return true;
-		}
-		else if(!speculative && makeGenieCombat(mon))
-		{
-			auto_log_debug("Did summon " + mon + " via wishing", "blue");
-			return true;
-		}
+		auto_log_debug("Can summon " + mon + " via wishing", "blue");
+		return true;
+	}
+	else if(!speculative && makeGenieCombat(mon))
+	{
+		auto_log_debug("Did summon " + mon + " via wishing", "blue");
+		return true;
 	}
 
 	return false;
@@ -4756,7 +4754,7 @@ boolean auto_wishForEffect(effect wish)
 		if (auto_makeMonkeyPawWish(wish)) { return true; }
 	}
 	// If we're allowed to use the genie bottle, do that.
-	if(auto_shouldUseWishes() && auto_haveGenieBottleOrPocketWishes())
+	if (auto_haveGenieBottleOrPocketWishes())
 	{
 		if(makeGenieWish(wish)) { return true; }
 	}

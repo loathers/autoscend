@@ -37,11 +37,6 @@ boolean auto_sausageBlocked()
 		return true;
 	}
 	
-	if (get_property("auto_saveMagicalSausage").to_boolean())
-	{
-		return true;
-	}
-	
 	if (auto_sausageLeftToday() <= 0)
 	{
 		return true;

@@ -966,10 +966,6 @@ boolean L12_filthworms()
 		asdonBuff($effect[Driving Observantly]);
 		bat_formBats();
 
-		if(get_property("auto_dickstab").to_boolean())
-		{
-			buffMaintain($effect[Wet and Greedy]);
-		}
 		buffMaintain($effect[Frosty]);
 		
 		//craft IOTM derivative that gives high item bonus

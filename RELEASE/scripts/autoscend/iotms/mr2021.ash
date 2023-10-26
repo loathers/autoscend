@@ -358,6 +358,11 @@ boolean auto_backupTarget()
 			if(get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe())
 				return true;
 			break;
+		case $monster[Skinflute]:
+		case $monster[Camel's Toe]:
+			if (needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
+				return true;
+			break;
 		default: break;
     }
 
@@ -807,21 +812,13 @@ int auto_CMCconsultsLeft()
 	return 5 - consultsUsed;
 }
 
-boolean auto_shouldUseCMC()
-{
-	return !get_property("auto_doNotUseCMC").to_boolean();
-}
-
 boolean auto_CMCconsultAvailable()
 {
 	if(auto_CMCconsultsLeft() == 0)
 	{
 		return false;
 	}
-	if(!auto_shouldUseCMC())
-	{
-		return false;
-	}
+
 	int nextConsult = get_property("_nextColdMedicineConsult").to_int();
 	//prior to first use each day, prop value is 0
 	if(nextConsult == 0)
