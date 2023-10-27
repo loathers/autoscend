@@ -629,6 +629,9 @@ void auto_handleJillOfAllTrades()
 	{
 		case "item":
 		case "regen":
+		case "init":
+		case "gremlin":
+		case "yellowray":
 			cli_execute("jillcandle item");
 			break;
 		case "meat":
