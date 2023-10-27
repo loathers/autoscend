@@ -1,4 +1,4 @@
-since r27637;	// support jill-of-all-trades
+since r27660;	// Fix Jill LED candle modifiers to be on candle, not Jill.
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
