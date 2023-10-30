@@ -162,7 +162,7 @@ void prepareForSmutOrcs()
 		// so let's not waste time and console spam when we're a class or path that can't do any of this.
 		boolean useSpellsInOrcCamp = false;
 		
-		acquireMP(32, 1000);	//pre_adv will always do this later, but waiting for it may fail checks of ability to cast spells here
+		acquireMP(32, 0);	//pre_adv will always do this later, but waiting for it may fail checks of ability to cast spells here
 		if(setFlavour($element[cold]) && canUse($skill[Stuffed Mortar Shell]))
 		{
 			useSpellsInOrcCamp = true;
@@ -888,10 +888,6 @@ boolean L9_oilPeak()
 
 	auto_MaxMLToCap(auto_convertDesiredML(100), true);
 
-	if (isActuallyEd() && get_property("auto_dickstab").to_boolean())
-	{
-		buffMaintain($effect[The Dinsey Look]);
-	}
 	if(monster_level_adjustment() < 50)
 	{
 		buffMaintain($effect[The Dinsey Look]);

@@ -51,6 +51,7 @@ string replaceMonsterCombatString();
 float turns_to_kill(float dmg);
 boolean combat_status_check(string mark);
 void combat_status_add(string mark);
+boolean wantToForceDrop(monster enemy);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash

@@ -413,8 +413,9 @@ boolean auto_pre_adventure()
 	{
 		foreach mon,rate in appearance_rates(place)
 		{
-			if (rate > 0 && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon))
+			if (rate > 0 && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon) && place != $location[Noob Cave])
 			{
+				// We use Noob Cave as the placeholder location for zoneless encounters so lets not equip it when we're not actually going there.
 				auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from ' + place + ", so we're bringing it along.", "blue");
 				autoEquip($item[combat lover\'s locket]);
 				break;
@@ -472,6 +473,10 @@ boolean auto_pre_adventure()
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
 		autoEquip(exting);
+	}
+	else if(auto_availableBrickRift() == place)
+	{
+		autoEquip(exting); // polar vortex for shadow bricks
 	}
 	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
 	{
@@ -914,7 +919,7 @@ boolean auto_pre_adventure()
 	borisWastedMP();
 	borisTrusty();
 
-	acquireMP(32, 1000);
+	acquireMP(32, 0);
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{

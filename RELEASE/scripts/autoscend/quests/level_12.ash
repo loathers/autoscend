@@ -966,10 +966,6 @@ boolean L12_filthworms()
 		asdonBuff($effect[Driving Observantly]);
 		bat_formBats();
 
-		if(get_property("auto_dickstab").to_boolean())
-		{
-			buffMaintain($effect[Wet and Greedy]);
-		}
 		buffMaintain($effect[Frosty]);
 		
 		//craft IOTM derivative that gives high item bonus
@@ -1775,6 +1771,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Earning Interest]);
 	buffMaintain($effect[Bet Your Autumn Dollar]);
 	buffMaintain($effect[Flapper Dancin\']);
+	buffMaintain($effect[shadow waters]);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{

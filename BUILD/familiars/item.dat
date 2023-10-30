@@ -5,7 +5,7 @@
 Steam-Powered Cheerleader	path:KOLHS
 # Fairies with a multiplier
 # 1.5x multiplier fairy
-Jill-of-All-Trades	item:LED candle>1
+Jill-of-All-Trades	item:LED candle>0
 # 1.4x multiplier fairy
 Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
 # 1.3x multiplier fairy

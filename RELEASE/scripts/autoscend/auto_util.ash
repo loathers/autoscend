@@ -953,7 +953,7 @@ boolean canFreeRun(monster enemy, location loc)
 // monsters that we want to run away from before banishing
 string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat)
 {
-	if (isFreeMonster(enemy)) return "";
+	if (isFreeMonster(enemy, loc)) return "";
 
 	// Prefer some specalized free run items before other sources
 	if (!inAftercore())
@@ -976,7 +976,7 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 
 string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 {
-	if (isFreeMonster(enemy)) return "";
+	if (isFreeMonster(enemy, my_location())) return "";
 	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
 	if (pre_banish != "") return pre_banish;
 
@@ -1839,6 +1839,11 @@ int freeCrafts()
 
 boolean isFreeMonster(monster mon)
 {
+	return isFreeMonster(mon, $location[none]);
+}
+
+boolean isFreeMonster(monster mon, location loc)
+{
 	if ($monsters[Angry Ghost, Annoyed Snake, Government Bureaucrat, Slime Blob, Terrible Mutant] contains mon && get_property("_voteFreeFights").to_int() < 3)
 	{
 		return true;
@@ -1868,6 +1873,17 @@ boolean isFreeMonster(monster mon)
 	}
 
 	if ($monster[Drunk Pygmy] == mon && item_amount($item[Bowl of Scorpions]) > 0)
+	{
+		return true;
+	}
+
+	if(get_property("breathitinCharges").to_int() > 0 && loc.environment == "outdoor")
+	{
+		return true;
+	}
+
+	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains loc
+		&& have_effect($effect[shadow affinity]) > 0)
 	{
 		return true;
 	}
@@ -2015,9 +2031,16 @@ boolean LX_summonMonster()
 	}
 
 	// summon astronomer if only missing star chart for star key
-	if(needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]))
+	// only in Hardcore or if we have no pulls remaining as we can just pull a star chart in Normal
+	if (needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]) && (in_hardcore() || pulls_remaining() < 1))
 	{
 		if(summonMonster($monster[Astronomer])) return true;
+	}
+
+	// summon grops to start copy chain. Goal is to copy into delay zones and get war progress at same time. Bonus if we get smoke bombs
+	if(!summonedMonsterToday($monster[Green Ops Soldier]) && get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe())
+	{
+		if(summonMonster($monster[Green Ops Soldier])) return true;
 	}
 
 	// summon additional monsters in heavy rains with rain man when available
@@ -2107,21 +2130,25 @@ boolean summonMonster(monster mon, boolean speculative)
 		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via cargo shorts", "blue");
 		return true;
 	}
-	if(auto_shouldUseWishes())
+	if(speculative && canGenieCombat(mon))
 	{
-		if(speculative && canGenieCombat(mon))
-		{
-			auto_log_debug("Can summon " + mon + " via wishing", "blue");
-			return true;
-		}
-		else if(!speculative && makeGenieCombat(mon))
-		{
-			auto_log_debug("Did summon " + mon + " via wishing", "blue");
-			return true;
-		}
+		auto_log_debug("Can summon " + mon + " via wishing", "blue");
+		return true;
+	}
+	else if(!speculative && makeGenieCombat(mon))
+	{
+		auto_log_debug("Did summon " + mon + " via wishing", "blue");
+		return true;
 	}
 
 	return false;
+}
+
+boolean summonedMonsterToday(monster mon)
+{
+	string copiedMonsters = get_property("auto_copies");
+	string searchString = "(" + my_daycount() + ":" + mon.to_string();
+	return contains_text(copiedMonsters, searchString);
 }
 
 boolean handleCopiedMonster(item itm)
@@ -4777,7 +4804,7 @@ boolean auto_wishForEffect(effect wish)
 		if (auto_makeMonkeyPawWish(wish)) { return true; }
 	}
 	// If we're allowed to use the genie bottle, do that.
-	if(auto_shouldUseWishes() && auto_haveGenieBottleOrPocketWishes())
+	if (auto_haveGenieBottleOrPocketWishes())
 	{
 		if(makeGenieWish(wish)) { return true; }
 	}

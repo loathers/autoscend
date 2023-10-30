@@ -297,6 +297,13 @@ void auto_settingsDelete()
 	remove_property("cloverProtectActive"); //obsolete with change to Lucky! adventures
 	remove_property("auto_edCombatHandler");	//ed can use the same tracking preference as all other paths
 	remove_property("auto_combatHandler");		//replaced with _auto_combatState
+	remove_property("auto_skipNEPOverride"); // unnecessary. Resources on hand should be used to progress quests.
+	remove_property("auto_dickstab"); // Just no.
+	remove_property("auto_getDinseyGarbageMoney"); // irrelevant in-run.
+	remove_property("auto_hatchRagamuffinImp"); // remnant which should've been removed along with the code.
+	remove_property("auto_saveMagicalSausage"); // unnecessary. Resources on hand should be used to progress quests.
+	remove_property("auto_useWishes"); // unnecessary. Resources on hand should be used to progress quests.
+	remove_property("auto_doNotUseCMC"); // unnecessary. Predates 2023 ascension workshed changes & as above resources on hand should be used to progress quests.
 }
 
 void defaultConfig(string prop, string val)

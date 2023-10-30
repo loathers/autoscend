@@ -445,6 +445,9 @@ boolean autoChooseFamiliar(location place)
 	if (place == $location[The Red Zeppelin] && internalQuestStatus("questL11Ron") < 4)	{
 		famChoice = lookupFamiliarDatafile("item");	//not useful for Ron Copperhead
 	}
+	if (place == auto_availableBrickRift()) {
+		famChoice = lookupFamiliarDatafile("item"); // get more shadow bricks
+	}
 
 	// If we're down to 1 evilness left before the boss in the Nook, it doesn't matter if we get an Evil Eye or not.
 	if ($location[The Defiled Nook] == place && get_property("cyrptNookEvilness").to_int() > 14)
@@ -804,11 +807,12 @@ void preAdvUpdateFamiliar(location place)
 		}
 	}
 
-	if(my_familiar() == $familiar[Jill-of-All-Trades] && item_amount($item[LED candle]) > 0)
+	if (my_familiar() == $familiar[Jill-of-All-Trades] && possessEquipment($item[LED candle]))
 	{
 		// maximizer uses whatever mode LED candle is in, won't change it
 		// so ensure in correct mode prior to maximizing
 		auto_handleJillOfAllTrades();
+		autoEquip($item[LED Candle]); // force maximizer to equip it when we have it.
 	}
 	
 	if(auto_checkFamiliarMummery(my_familiar()))

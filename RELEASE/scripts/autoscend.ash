@@ -103,6 +103,10 @@ import <autoscend/quests/optional.ash>
 
 void initializeSettings() {
 
+	if (inAftercore()) {
+		return;
+	}
+
 	// called once per ascension on the first launch of the script.
 	// should not handle anything other than intialising properties etc.
 	// all paths that have extra settings should call their path specific
@@ -362,9 +366,7 @@ boolean LX_burnDelay()
 	boolean wannaDigitize = isOverdueDigitize();
 	boolean wannaSausage = auto_sausageGoblin();
 	boolean wannaBackup = auto_backupTarget();
-	// Cursed Magnifying Glass gives a void monster combat every 13 turns. The first 5 are free fights
-	// _voidFreeFights counts up from 0 and stays at 5 once all free fights are completed for the day
-	boolean voidMonsterNext = (get_property("_voidFreeFights").to_int() < 5) && (get_property("cursedMagnifyingGlassCount").to_int() == 13);
+	boolean voidMonsterNext = auto_voidMonster();
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -426,12 +428,10 @@ boolean LX_burnDelay()
 		if(voidMonsterNext)
 		{
 			auto_log_info("Burn some delay somewhere (cursed magnifying glass), if we found a place!", "green");
-			set_property("auto_nextEncounter","void guy");	//which of the 3 is random, but they're all same phylum and free under same conditions
-			if(autoAdv(burnZone))
+			if(auto_voidMonster(burnZone))
 			{
 				return true;
 			}
-			set_property("auto_nextEncounter","");
 		}
 	}
 	else if(wannaVote || wannaDigitize || wannaSausage || voidMonsterNext)
@@ -740,7 +740,6 @@ void initializeDay(int day)
 	boris_initializeDay(day);
 	nuclear_initializeDay(day);
 	pete_initializeDay(day);
-	bond_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	grey_goo_initializeDay(day);
@@ -913,11 +912,6 @@ void initializeDay(int day)
 			{
 				auto_buyUpTo(2, $item[Ben-Gal&trade; Balm]);
 				cli_execute("make 2 louder than bomb");
-			}
-
-			if(get_property("auto_dickstab").to_boolean())
-			{
-				pullXWhenHaveY($item[frost flower], 1, 0);
 			}
 		}
 		if (chateaumantegna_havePainting() && !isActuallyEd())
@@ -1782,7 +1776,7 @@ boolean doTasks()
 	auto_CMCconsult();
 	auto_checkTrainSet();
 	prioritizeGoose();
-
+	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
 	lar_safeguard();
@@ -1857,6 +1851,7 @@ boolean doTasks()
 	if(auto_autumnatonQuest())			return true;
 	if(auto_smallCampgroundGear())		return true;
 	auto_lostStomach(false);
+	if(auto_doPhoneQuest())				return true;
 	
 	if (process_tasks()) return true;
 
@@ -1879,26 +1874,8 @@ void auto_begin()
 		}
 	}
 
-	//This also should set our path too.
-	string page = visit_url("main.php");
-	page = visit_url("api.php?what=status&for=4", false);
-	if(contains_text(page, "Being Picky"))
-	{
-		picky_startAscension();
-	}
-	else if(contains_text(page, "Welcome to the Kingdom, Gelatinous Noob"))
-	{
-		gnoob_startAscension(page);
-	}
-	else if(contains_text(page, "it appears that a stray bat has accidentally flown right through you") || (get_property("lastAdventure") == "Intro: View of a Vampire"))
-	{
-		bat_startAscension();
-	}
-	else if(contains_text(page, "<b>Torpor</b>") && contains_text(page, "Madness of Untold Aeons") && contains_text(page, "Rest for untold Millenia"))
-	{
-		auto_log_info("Torporing, since I think we're already in torpor.", "blue");
-		bat_reallyPickSkills(20);
-	}
+	LX_handleIntroAdventures(); // handle early non-combats in challenge paths.
+	cli_execute("refresh all");
 
 	if(to_string(my_class()) == "Astral Spirit")
 	{
@@ -2048,15 +2025,8 @@ void main()
 	backupSetting("printStackOnAbort", true);
 	print_help_text();
 	sad_times();
-	try
-	{
-		cli_execute("refresh all");
+	if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue? Will default to true in 10 seconds.", 10000, true)){
+		abort("User aborted script after failed migration.");
 	}
-	finally
-	{
-		if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue? Will default to true in 10 seconds.", 10000, true)){
-			abort("User aborted script after failed migration.");
-		}
-		safe_preference_reset_wrapper(3);
-	}
+	safe_preference_reset_wrapper(3);
 }
