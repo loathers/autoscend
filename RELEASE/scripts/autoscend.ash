@@ -228,7 +228,6 @@ void initializeSettings() {
 
 	set_property("auto_sniffs", "");
 	set_property("auto_stopMinutesToRollover", "5");
-	set_property("auto_waitingArrowAlcove", "50");
 	set_property("auto_wandOfNagamar", true);
 	set_property("auto_wineracksencountered", 0);
 	set_property("auto_wishes", "");

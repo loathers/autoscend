@@ -292,7 +292,11 @@ void auto_enableBackupCameraReverser()
 
 int auto_backupUsesLeft()
 {
-	return 11 + (in_robot() ? 5 : 0) - get_property("_backUpUses").to_int();
+	if (auto_haveBackupCamera()) 
+	{
+		return 11 + (in_robot() ? 5 : 0) - get_property("_backUpUses").to_int();
+	}
+	return 0;
 }
 
 boolean auto_backupTarget()

@@ -10,7 +10,6 @@ auto_powerLevelLastLevel	string	Last Level that we had nothing to do.
 auto_powerLevelAdvCount	string	Adventures count of times we had nothing to do.
 auto_powerLevelLastAttempted	string	Last adventure that we did nothing on.
 auto_skipNuns	boolean	Skip nuns quest this ascension?
-auto_waitingArrowAlcove	integer	If we arrowed a modern zmobie, this tells us when to return to the Alcove (cyrptAlcoveEvilness value).
 auto_100familiar	string	If a familiar type, do not allow familiar switching (for 100% runs). Otherwise, can be none or blank.
 auto_beatenUpCount	integer	How many times were we beaten up this ascension. Affects ML and whether we try to heal or abort when we get beaten up.
 auto_doneInitialize	integer	Indicates last ascension that we initialized with the script.

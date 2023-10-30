@@ -309,6 +309,8 @@ void auto_settingsDelete()
 	remove_property("auto_cookie"); // old & unused since the semirare & clover revamp.
 	remove_property("auto_doArmory"); // irrelevant in-run.
 	remove_property("auto_doMeatsmith"); // irrelevant in-run.
+	remove_property("auto_waitingArrowAlcove"); // easier methods of handling this. Mafia has tracking properties for 10+ year old IotMs.
+	remove_property("auto_combatHandlerFingernailClippers"); // irrelevant in-run.
 }
 
 void defaultConfig(string prop, string val)
