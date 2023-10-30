@@ -699,7 +699,7 @@ void finalizeMaximize(boolean speculative)
 				addToMaximize("-equip " + $item[Cursed Magnifying Glass].to_string());
 			}
 		}
-		else if(!nextMonsterIsFree && (get_property("_voidFreeFights").to_int() < 5 || (get_property("_voidFreeFights").to_int() >= 5 && get_property("cursedMagnifyingGlassCount").to_int() < 13)) && solveDelayZone() != $location[none])
+		else if (!nextMonsterIsFree && get_property("cursedMagnifyingGlassCount").to_int() < 13 && solveDelayZone() != $location[none])
 		{
 			// add bonus to charge free fights. charge is added when completing nonfree fights only
 			// also we can pre-charge it for the next day once we have used our 5 free fights.

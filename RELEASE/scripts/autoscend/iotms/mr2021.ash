@@ -322,9 +322,10 @@ boolean auto_backupTarget()
 	}
 
 	// determine if we want to backup
-	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && my_level() >= 12 && !auto_hasAutumnaton();
-	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean();
-	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > (14 + cyrptEvilBonus()) && my_level() >= 6;
+	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && internalQuestStatus("questL12War") == 1 && !auto_hasAutumnaton() && !in_koe();
+	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && internalQuestStatus("questL08Trapper") < 3 && !get_property("auto_L8_extremeInstead").to_boolean();
+	int habitatZombieEvil = (auto_habitatMonster() == $monster[modern zmobie] ? (auto_habitatFightsLeft() * (5 + cyrptEvilBonus())) : 0);
+	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > (14 + cyrptEvilBonus() + habitatZombieEvil) && internalQuestStatus("questL08Trapper") == 0;
 
 	switch (get_property("lastCopyableMonster").to_monster()) {
 		case $monster[lobsterfrogman]:
@@ -351,7 +352,7 @@ boolean auto_backupTarget()
 				return true;
 			break;
 		case $monster[fantasy bandit]:
-			if(!acquiredFantasyRealmToken() && auto_backupUsesLeft() >= (5 - fantasyBanditsFought()))
+			if(!acquiredFantasyRealmToken() && auto_backupUsesLeft() >= (5 - fantasyBanditsFought()) && auto_habitatMonster() != $monster[fantasy bandit])
 				return true;
 			break;
 		case $monster[Green Ops Soldier]:
@@ -366,6 +367,23 @@ boolean auto_backupTarget()
 		default: break;
     }
 
+	return false;
+}
+
+boolean auto_backupToYourLastEnemy(location loc)
+{
+	// can't backup if we don't have the camera or no charges left or no valid target/location
+	if (!auto_haveBackupCamera() || auto_backupUsesLeft() == 0 || !auto_backupTarget() || loc == $location[none])
+	{
+		return false;
+	}
+
+	if (autoEquip($slot[acc3], $item[backup camera]))
+	{
+		set_property("auto_nextEncounter", get_property("lastCopyableMonster"));
+		return autoAdv(loc);
+	}
+	set_property("auto_nextEncounter","");
 	return false;
 }
 

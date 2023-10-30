@@ -3185,15 +3185,21 @@ boolean haveCampgroundMaid()
 	return false;
 }
 
-location solveDelayZone()
+location solveDelayZone(boolean skipOutdoorZones)
 {
 	int[location] delayableZones = zone_delayable();
-	int amt = count(delayableZones);
 	location burnZone = $location[none];
-	if (count(delayableZones) != 0) {
+	if (count(delayableZones) > 0)
+	{
 		// find the delayable zone with the lowest delay left.
-		foreach loc, delay in delayableZones {
-			if (burnZone == $location[none] || delay < delayableZones[burnZone]) {
+		foreach loc, delay in delayableZones
+		{
+			if (skipOutdoorZones && loc.environment == "outdoor")
+			{
+				continue;
+			}
+			if (burnZone == $location[none] || delay < delayableZones[burnZone])
+			{
 				burnZone = loc;
 			}
 			if (loc == $location[The Spooky Forest] && delay == delayableZones[burnZone])
@@ -3204,7 +3210,7 @@ location solveDelayZone()
 		}
 	}
 
-	if(burnZone != $location[none])
+	if (burnZone != $location[none])
 	{
 		return burnZone;
 	}
@@ -3212,7 +3218,7 @@ location solveDelayZone()
 	// These are locations that aren't 1:1 turn savings, but can still be useful
 
 	// Shorten the time before finding Gnasir, so that we can start acquiring desert pages sooner
-	if(zone_isAvailable($location[The Arid\, Extra-Dry Desert]) && $location[The Arid\, Extra-Dry Desert].turns_spent >= 1 && $location[The Arid\, Extra-Dry Desert].turns_spent < 10)
+	if (zone_isAvailable($location[The Arid\, Extra-Dry Desert]) && $location[The Arid\, Extra-Dry Desert].turns_spent >= 1 && $location[The Arid\, Extra-Dry Desert].turns_spent < 10)
 	{
 		burnZone = $location[The Arid\, Extra-Dry Desert];
 	}
@@ -3221,17 +3227,22 @@ location solveDelayZone()
 	// There's some opportunity to be clever here, but this is probably good enough.
 	// If we didn't check turns_spent we'd have to be careful to equip the war outfit,
 	// just in case the noncombat shows up.
-	if(in_koe() && $location[The Exploaded Battlefield].turns_spent < 5)
+	if (in_koe() && $location[The Exploaded Battlefield].turns_spent < 5)
 	{
 		burnZone = $location[The Exploaded Battlefield];
 	}
 
-	if(in_lowkeysummer())
+	if (in_lowkeysummer())
 	{
 		burnZone = lowkey_nextAvailableKeyDelayLocation();
 	}
 
 	return burnZone;
+}
+
+location solveDelayZone()
+{
+	return solveDelayZone(false);
 }
 
 boolean allowSoftblockDelay()

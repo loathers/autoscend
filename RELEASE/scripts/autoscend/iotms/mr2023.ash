@@ -453,12 +453,14 @@ void auto_buyFrom2002MrStore()
 		use(itemConsidering);
 	}
 	// giant black monlith. Mostly useful at low level for stats
-	itemConsidering = $item[giant black monolith];
-	if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
-	{
-		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
-		use(itemConsidering);
-		visit_url("campground.php?action=monolith");
+	if (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) {
+		itemConsidering = $item[giant black monolith];
+		if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
+		{
+			buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+			use(itemConsidering);
+			visit_url("campground.php?action=monolith");
+		}
 	}
 	// crimbo cookie. Should we expand to buy more or use in more paths beyond HC LoL?
 	itemConsidering = $item[Crimbo cookie sheet];
@@ -572,6 +574,97 @@ void auto_lostStomach(boolean force)
 boolean auto_haveBofa()
 {
 	return auto_is_valid($skill[just the facts]) && have_skill($skill[just the facts]);
+}
+
+boolean auto_canHabitat()
+{
+	if (!auto_haveBofa())
+	{
+		return false;
+	}
+	if (get_property("_monsterHabitatsRecalled").to_int() >= 3)
+	{
+		// no charges left
+		return false;
+	}
+	if (get_property("_monsterHabitatsFightsLeft").to_int() > 0)
+	{
+		// already habitating something but we may not need all 5 of them in certain situations
+		switch (get_property("_monsterHabitatsMonster").to_monster())
+		{
+			case $monster[fantasy bandit]:
+				return (fantasyBanditsFought() < 5);
+			case $monster[modern zmobie]:
+				return get_property("cyrptAlcoveEvilness").to_int() > 13;
+			default:
+				break;
+		}
+	}
+	return true;
+}
+
+boolean auto_habitatTarget(monster target)
+{
+	if (!auto_canHabitat()) {
+		return false;
+	}
+	if (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() > 0)
+	{
+		// already habitating this monster
+		return false;
+	}
+	switch (target)
+	{
+		case $monster[fantasy bandit]:
+			// only worth it if we need all 5.
+			return (fantasyBanditsFought() == 0);
+		case $monster[modern zmobie]:
+		 	// only worth it if we need 30 or more evilness reduced.
+			return (get_property("cyrptAlcoveEvilness").to_int() > 42);
+		default:
+			break;
+	}
+	return false;
+}
+
+int auto_habitatFightsLeft()
+{
+	return get_property("_monsterHabitatsFightsLeft").to_int();
+}
+
+monster auto_habitatMonster()
+{
+	if (get_property("_monsterHabitatsFightsLeft").to_int() > 0)
+	{
+		return get_property("_monsterHabitatsMonster").to_monster();
+	}
+	return $monster[none];
+}
+
+boolean auto_canCircadianRhythm()
+{
+	if (!auto_haveBofa())
+	{
+		return false;
+	}
+	if (get_property("_circadianRhythmsRecalled").to_boolean())
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean auto_circadianRhythmTarget(monster target)
+{
+	if (!auto_canCircadianRhythm())
+	{
+		return false;
+	}
+	if (!($monsters[shadow bat, shadow cow, shadow devil, shadow guy, shadow hexagon, shadow orb, shadow prism, shadow slab, shadow snake, shadow spider, shadow stalk, shadow tree] contains target))
+	{
+		return false;
+	}
+	return true;
 }
 
 boolean auto_haveJillOfAllTrades()

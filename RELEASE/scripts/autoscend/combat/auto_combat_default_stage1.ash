@@ -209,9 +209,21 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 	}
 
+	if (auto_canCircadianRhythm() && auto_circadianRhythmTarget(enemy) && canUse($skill[Recall Facts: %phylum Circadian Rhythms]))
+	{
+		handleTracker($skill[Recall Facts: %phylum Circadian Rhythms], enemy.phylum, "auto_otherstuff");
+		return useSkill($skill[Recall Facts: %phylum Circadian Rhythms]);
+	}
+
+	if (auto_canHabitat() && auto_habitatTarget(enemy) && canUse($skill[Recall Facts: Monster Habitats]))
+	{
+		handleTracker($skill[Recall Facts: Monster Habitats], enemy, "auto_copies");
+		return useSkill($skill[Recall Facts: Monster Habitats]);
+	}
+
 	if(auto_backupTarget() && enemy != get_property("lastCopyableMonster").to_monster() && canUse($skill[Back-Up to your Last Enemy]))
 	{
-		handleTracker(enemy, $skill[Back-Up to your Last Enemy], "auto_replaces");
+		handleTracker($skill[Back-Up to your Last Enemy], enemy, "auto_replaces");
 		handleTracker(get_property("lastCopyableMonster").to_monster(), $skill[Back-Up to your Last Enemy], "auto_copies");
 		return useSkill($skill[Back-Up to your Last Enemy]);	
 	}

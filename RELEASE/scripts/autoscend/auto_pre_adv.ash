@@ -327,7 +327,7 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
+	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && place == solveDelayZone());
 	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
 	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
@@ -458,11 +458,6 @@ boolean auto_pre_adventure()
 			auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our Latte from ' + place + ", so we're bringing it along.", "blue");
 			autoEquip($item[latte lovers member\'s mug]);
 		}
-	}
-
-	if(auto_backupTarget())
-	{
-		autoEquip($slot[acc3], $item[backup camera]);
 	}
 
 	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())

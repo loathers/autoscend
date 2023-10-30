@@ -357,12 +357,11 @@ boolean auto_unreservedAdvRemaining()
 
 boolean LX_burnDelay()
 {
-	location burnZone = solveDelayZone();
-	boolean wannaVote = auto_voteMonster(true);
-	boolean wannaDigitize = isOverdueDigitize();
-	boolean wannaSausage = auto_sausageGoblin();
-	boolean wannaBackup = auto_backupTarget();
-	boolean voidMonsterNext = auto_voidMonster();
+	boolean voteMonsterAvailable = auto_voteMonster(true);
+	boolean digitizeMonsterNext = isOverdueDigitize();
+	boolean sausageGoblinAvailable = auto_sausageGoblin();
+	boolean backupTargetAvailable = auto_backupTarget();
+	boolean voidMonsterAvailable = auto_voidMonster();
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -373,83 +372,116 @@ boolean LX_burnDelay()
 		if(predictedScalerHP > 15)
 		{
 			auto_log_info("Want to burn delay with scaling wanderers, but we can't deal scaling damage yet and it would be too strong :(");
-			wannaVote = false;
-			wannaSausage = false;
+			voteMonsterAvailable = false;
+			sausageGoblinAvailable = false;
 			addToMaximize("-equip Kramco Sausage O-Matic");
 			addToMaximize("-equip &quot;I Voted!&quot; sticker");
 		}
 	}
 
-	if(burnZone != $location[none])
+	// See the encounter priority flowcharts available at https://i.imgur.com/sdVH4SPh.jpg
+	// and https://github.com/loathers/encounter/blob/main/heirarchy.mermaid if adding handling for more stuff
+
+	if (voteMonsterAvailable && !backupTargetAvailable)
 	{
-		if(wannaVote)
+		// Voting monsters are inherently free (the ones we fight anyway).
+		// don't fight them if we're going to backup because they will overwrite the monster we want to backup
+		location voterZone = solveDelayZone(get_property("breathitinCharges").to_int() > 0);
+		if (voterZone != $location[none])
 		{
-			auto_log_info("Burn some delay somewhere (voting), if we found a place!", "green");
+			auto_log_info(`Fighting a free {get_property("_voteMonster")} in {voterZone.to_string()} to burn delay!`, "green");
 			set_property("auto_nextEncounter",get_property("_voteMonster"));
-			if(auto_voteMonster(true, burnZone, ""))
+			if (auto_voteMonster(true, voterZone))
 			{
 				return true;
 			}
 			set_property("auto_nextEncounter","");
-		}
-		if(wannaDigitize)
-		{
-			auto_log_info("Burn some delay somewhere (digitize), if we found a place!", "green");
-			set_property("auto_nextEncounter",get_property("_sourceTerminalDigitizeMonster"));
-			if(autoAdv(burnZone))
-			{
-				return true;
-			}
-			set_property("auto_nextEncounter","");
-		}
-		if(wannaSausage)
-		{
-			auto_log_info("Burn some delay somewhere (sausage goblin), if we found a place!", "green");
-			//"auto_nextEncounter" property is set by auto_sausageGoblin when it adventures with the equipment
-			if(auto_sausageGoblin(burnZone, ""))
-			{
-				return true;
-			}
-		}
-		if(wannaBackup)
-		{
-			auto_log_info("Burn some delay somewhere (backup camera), if we found a place!", "green");
-			set_property("auto_nextEncounter",get_property("lastCopyableMonster"));
-			if(autoAdv(burnZone))
-			{
-				return true;
-			}
-			set_property("auto_nextEncounter","");
-		}
-		if(voidMonsterNext)
-		{
-			auto_log_info("Burn some delay somewhere (cursed magnifying glass), if we found a place!", "green");
-			if(auto_voidMonster(burnZone))
-			{
-				return true;
-			}
 		}
 	}
-	else if(wannaVote || wannaDigitize || wannaSausage || voidMonsterNext)
+
+	if (digitizeMonsterNext)
 	{
-		if(wannaVote) auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
-		if(wannaDigitize) auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
-		if(wannaSausage) auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
-		if(voidMonsterNext) auto_log_warning("Cursed Magnifying Glass's void monster is next but couldn't find a zone to burn delay", "red");
-	}
-	else if(wannaBackup)
-	{
-		auto_log_info("Couldn't find zone to burn delay. Using back-up camera at Noob Cave", "green");
-		set_property("auto_nextEncounter",get_property("lastCopyableMonster"));
-		if(autoAdv($location[noob cave]))
+		// Digitize Wanderers will happen regardless so prioritize handling them.
+		// hopefully they don't overwrite something we want to backup.
+		location digitizeZone = solveDelayZone(isFreeMonster(get_property("_sourceTerminalDigitizeMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0);
+		if (digitizeZone == $location[none])
+		{
+			// if the monster is inherently free and we have Breathitin charges, fight it in the Noob Cave since we can't avoid it
+			// and we likely want to fight it. Noob Cave is available from turn 0 & is not outdoors so Breathitin won't trigger.
+			digitizeZone = $location[Noob Cave];
+		}
+		auto_log_info(`Fighting a {get_property("_sourceTerminalDigitizeMonster")} in {digitizeZone.to_string()} to burn delay!`, "green");
+		set_property("auto_nextEncounter",get_property("_sourceTerminalDigitizeMonster"));
+		if (autoAdv(digitizeZone))
 		{
 			return true;
 		}
 		set_property("auto_nextEncounter","");
 	}
+
+	if (backupTargetAvailable)
+	{
+		location backupZone = solveDelayZone(isFreeMonster(get_property("lastCopyableMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0);
+		if (backupZone == $location[none])
+		{
+			// if the monster is inherently free and we have Breathitin charges, fight it in the Noob Cave since we can't avoid it
+			// and we likely want to fight it. Noob Cave is available from turn 0 & is not outdoors so Breathitin won't trigger.
+			backupZone = $location[Noob Cave];
+		}
+
+		auto_log_info(`Fighting a {get_property("lastCopyableMonster")} in {backupZone.to_string()} to burn delay!`, "green");
+		if (auto_backupToYourLastEnemy(backupZone))
+		{
+			return true;
+		}
+	}
+
+	if (sausageGoblinAvailable)
+	{
+		// Sausage Goblins are inherently free
+		location goblinZone = solveDelayZone(get_property("breathitinCharges").to_int() > 0);
+		if (goblinZone != $location[none])
+		{
+			auto_log_info(`Fighting a Sausage Goblin in {goblinZone.to_string()} to burn delay!`, "green");
+			if (auto_sausageGoblin(goblinZone, ""))
+			{
+				return true;
+			}
+		}
+	}
+
+	if (voidMonsterAvailable)
+	{
+		// Void monsters are inherently free (the ones we fight anyway).
+		location voidZone = solveDelayZone(get_property("breathitinCharges").to_int() > 0);
+		if (voidZone != $location[none])
+		{
+			auto_log_info(`Fighting a Void monster in {voidZone.to_string()} to burn delay!`, "green");
+			if (auto_voidMonster(voidZone))
+			{
+				return true;
+			}
+		}
+	}
+	
+	if (voteMonsterAvailable)
+	{
+		auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
+	}
+	if(digitizeMonsterNext) 
+	{
+		auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
+	}
+	if (sausageGoblinAvailable)
+	{
+		auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
+	}
+	if (voidMonsterAvailable)
+	{
+		auto_log_warning("Cursed Magnifying Glass's void monster is next but couldn't find a zone to burn delay", "red");
+	}
 	return false;
 }
-
 
 boolean LX_calculateTheUniverse(boolean speculative)
 {
