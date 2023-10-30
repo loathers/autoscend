@@ -304,6 +304,11 @@ void auto_settingsDelete()
 	remove_property("auto_saveMagicalSausage"); // unnecessary. Resources on hand should be used to progress quests.
 	remove_property("auto_useWishes"); // unnecessary. Resources on hand should be used to progress quests.
 	remove_property("auto_doNotUseCMC"); // unnecessary. Predates 2023 ascension workshed changes & as above resources on hand should be used to progress quests.
+	remove_property("auto_doArtistQuest"); // irrelevant in-run.
+	remove_property("auto_noSleepingDog"); // old & unused since consumption was rewritten 3-4 years ago.
+	remove_property("auto_cookie"); // old & unused since the semirare & clover revamp.
+	remove_property("auto_doArmory"); // irrelevant in-run.
+	remove_property("auto_doMeatsmith"); // irrelevant in-run.
 }
 
 void defaultConfig(string prop, string val)

@@ -90,7 +90,6 @@
 89	auto_day1_skills
 90	auto_allowSharingData
 91	auto_backup_
-92	auto_cookie
 93	auto_gremlins
 94	auto_haveoven
 95	auto_hideAdultery
@@ -123,7 +122,6 @@
 124	auto_saveMargarita
 125	auto_pauseForWitchess
 126	auto_saveVintage
-127	auto_noSleepingDog
 128	auto_saveSausage
 129	auto_diag_round
 130	auto_stayInRun

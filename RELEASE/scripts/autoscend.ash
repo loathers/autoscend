@@ -1,4 +1,4 @@
-since r27637;	// support jill-of-all-trades
+since r27660;	// Fix Jill LED candle modifiers to be on candle, not Jill.
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -173,7 +173,6 @@ void initializeSettings() {
 	set_property("auto_chasmBusted", true);
 	set_property("auto_chewed", "");
 	set_property("auto_clanstuff", "0");
-	set_property("auto_cookie", -1);
 	set_property("auto_copies", "");
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);
@@ -199,8 +198,6 @@ void initializeSettings() {
 	set_property("auto_grimstoneOrnateDowsingRod", true);
 	set_property("auto_haveoven", false);
 	set_property("auto_doGalaktik", get_property("auto_doGalaktik_initialize"));
-	set_property("auto_doArmory", false);
-	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
 	set_property("auto_L8_extremeInstead", false);
 	set_property("auto_L9_smutOrcPervert", false);
@@ -275,7 +272,6 @@ void initializeSettings() {
 	plumber_initializeSettings();
 	lowkey_initializeSettings();
 	bhy_initializeSettings();
-	grey_goo_initializeSettings();
 	qt_initializeSettings();
 	jarlsberg_initializeSettings();
 	robot_initializeSettings();
@@ -742,7 +738,6 @@ void initializeDay(int day)
 	pete_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
-	grey_goo_initializeDay(day);
 	jarlsberg_initializeDay(day);
 
 	// Bulk cache mall prices
