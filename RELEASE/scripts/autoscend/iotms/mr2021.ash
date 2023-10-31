@@ -329,7 +329,7 @@ boolean auto_backupTarget()
 	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && internalQuestStatus("questL12War") == 1 && !auto_hasAutumnaton() && !in_koe();
 	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && internalQuestStatus("questL08Trapper") < 3 && !get_property("auto_L8_extremeInstead").to_boolean();
 	int habitatZombieEvil = (auto_habitatMonster() == $monster[modern zmobie] ? (auto_habitatFightsLeft() * (5 + cyrptEvilBonus())) : 0);
-	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > (14 + cyrptEvilBonus() + habitatZombieEvil) && internalQuestStatus("questL08Trapper") == 0;
+	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > (14 + cyrptEvilBonus() + habitatZombieEvil) && internalQuestStatus("questL07Cyrptic") == 0;
 
 	switch (get_property("lastCopyableMonster").to_monster()) {
 		case $monster[lobsterfrogman]:
