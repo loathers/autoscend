@@ -1317,19 +1317,6 @@ boolean prepare_food_xp_multi();
 void consumeStuff();
 
 ########################################################################################################
-//Defined in autoscend/auto_settings.ash
-boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);
-void cleanup_property(string target);
-void auto_rename_property(string oldprop, string newprop);
-void boolFix(string p);
-void auto_settingsUpgrade();
-void auto_settingsFix();
-void auto_settingsDelete();
-void defaultConfig(string prop, string val);
-void auto_settingsDefaults();
-void auto_settings();
-
-########################################################################################################
 //Defined in autoscend/auto_craft.ash
 boolean is_foldable(item target);
 int foldable_amount(item target);
@@ -1467,6 +1454,13 @@ int[int] intList();
 item[int] itemList();
 
 ########################################################################################################
+//Defined in autoscend/autoscend_migration.ash
+string autoscend_current_version();
+string autoscend_previous_version();
+boolean autoscend_needs_update();
+boolean autoscend_migrate();
+
+########################################################################################################
 //Defined in autoscend/auto_monsterparts.ash
 boolean hasArm(monster enemy);
 boolean hasHead(monster enemy);
@@ -1558,11 +1552,26 @@ int freeRestsRemaining();
 boolean uneffect(effect toRemove);
 
 ########################################################################################################
-//Defined in autoscend/autoscend_migration.ash
-string autoscend_current_version();
-string autoscend_previous_version();
-boolean autoscend_needs_update();
-boolean autoscend_migrate();
+//Defined in autoscend/auto_routing.ash
+location solveDelayZone(boolean skipOutdoorZones);
+location solveDelayZone();
+boolean setSoftblockDelay();
+boolean allowSoftblockDelay();
+boolean setSoftblockDelay();
+boolean canBurnDelay(location loc);
+
+########################################################################################################
+//Defined in autoscend/auto_settings.ash
+boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);
+void cleanup_property(string target);
+void auto_rename_property(string oldprop, string newprop);
+void boolFix(string p);
+void auto_settingsUpgrade();
+void auto_settingsFix();
+void auto_settingsDelete();
+void defaultConfig(string prop, string val);
+void auto_settingsDefaults();
+void auto_settings();
 
 ########################################################################################################
 //Defined in autoscend/auto_zlib.ash
@@ -1608,22 +1617,16 @@ boolean organsFull();
 boolean backupSetting(string setting, string newValue);
 boolean restoreAllSettings();
 boolean restoreSetting(string setting);
-location provideAdvPHPZone();
 boolean loopHandler(string turnSetting, string counterSetting, string abortMessage, int threshold);
 boolean loopHandler(string turnSetting, string counterSetting, int threshold);
 boolean loopHandlerDelay(string counterSetting);
 boolean loopHandlerDelay(string counterSetting, int threshold);
 boolean loopHandlerDelayAll();
 string reverse(string s);
-boolean setAdvPHPFlag();
-boolean isOverdueArrow();
-boolean isExpectingArrow();
 int[monster] banishedMonsters();
 boolean isBanished(monster enemy);
-boolean is_avatar_potion(item it);
 int autoCraft(string mode, int count, item item1, item item2);
 int internalQuestStatus(string prop);
-int estimatedTurnsLeft();
 boolean canYellowRay(monster target);
 boolean canYellowRay();
 boolean[string] auto_banishesUsedAt(location loc);
@@ -1646,7 +1649,6 @@ boolean adjustForReplaceIfPossible();
 boolean canSniff(monster enemy, location loc);
 boolean adjustForSniffingIfPossible(monster target);
 boolean adjustForSniffingIfPossible();
-string statCard();
 boolean hasTorso();
 boolean isGuildClass();
 float elemental_resist_value(int resistance);
@@ -1654,7 +1656,6 @@ int elemental_resist(element goal);
 skill preferredLibram();
 boolean lastAdventureSpecialNC();
 effect whatStatSmile();
-item whatHiMein();
 boolean ovenHandle();
 boolean isGhost(monster mon);
 boolean isProtonGhost(monster mon);
@@ -1683,7 +1684,6 @@ float MLDamageToMonsterMultiplier();
 int freeCrafts();
 boolean isFreeMonster(monster mon);
 boolean isFreeMonster(monster mon, location loc);
-boolean declineTrades();
 boolean auto_deleteMail(kmailObject msg);
 boolean LX_summonMonster();
 boolean canSummonMonster(monster mon);
@@ -1711,12 +1711,8 @@ boolean handleSealElement(element flavor);
 boolean handleSealElement(element flavor, string option);
 boolean handleBarrelFullOfBarrels(boolean daily);
 boolean use_barrels();
-boolean forceEquip(slot sl, item it);
 boolean auto_autosell(int quantity, item toSell);
 string runChoice(string page_text);
-boolean set_property_ifempty(string setting, string change);
-boolean restore_property(string setting, string source);
-boolean clear_property_if(string setting, string cond);
 int doNumberology(string goal);
 int doNumberology(string goal, string option);
 int doNumberology(string goal, boolean doIt);
@@ -1724,21 +1720,13 @@ int doNumberology(string goal, boolean doIt, string option);
 boolean auto_have_skill(skill sk);
 boolean have_skills(boolean[skill] array);
 boolean woods_questStart();
-int howLongBeforeHoloWristDrop();
 boolean hasShieldEquipped();
 boolean careAboutDrops(monster mon);
 float effectiveDropChance(item it, float baseDropRate);
 boolean[effect] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
-boolean acquireTransfunctioner();
 int [item] auto_get_campground();
-location solveDelayZone(boolean skipOutdoorZones);
-location solveDelayZone();
-boolean setSoftblockDelay();
-boolean allowSoftblockDelay();
-boolean setSoftblockDelay();
-boolean canBurnDelay(location loc);
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);
 boolean auto_is_valid(skill sk);
@@ -1778,7 +1766,6 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();
 boolean auto_haveQueuedForcedNonCombat();
-boolean is_superlikely(string encounterName);
 int auto_predictAccordionTurns();
 boolean hasTTBlessing();
 void effectAblativeArmor(boolean passive_dmg_allowed);
