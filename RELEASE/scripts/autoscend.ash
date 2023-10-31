@@ -24,6 +24,7 @@ import <autoscend/auto_monsterparts.ash>
 import <autoscend/auto_powerlevel.ash>
 import <autoscend/auto_providers.ash>
 import <autoscend/auto_restore.ash>
+import <autoscend/auto_routing.ash>
 import <autoscend/auto_settings.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_zlib.ash>
