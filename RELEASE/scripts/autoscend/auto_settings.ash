@@ -311,6 +311,7 @@ void auto_settingsDelete()
 	remove_property("auto_doMeatsmith"); // irrelevant in-run.
 	remove_property("auto_waitingArrowAlcove"); // easier methods of handling this. Mafia has tracking properties for 10+ year old IotMs.
 	remove_property("auto_combatHandlerFingernailClippers"); // irrelevant in-run.
+	remove_property("auto_delayHauntedKitchen"); // We shouldn't need to rely on the user to tell us how to play because users are often terrible at the game.
 }
 
 void defaultConfig(string prop, string val)

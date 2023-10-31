@@ -324,8 +324,7 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 }
 
 boolean LX_unlockHauntedBilliardsRoom() {
-	//auto_delayHauntedKitchen is a user configurable default state for delaying kitchen until we have 9 hot and 9 stench res.
-	return LX_unlockHauntedBilliardsRoom(get_property("auto_delayHauntedKitchen").to_boolean());
+	return LX_unlockHauntedBilliardsRoom(true);
 }
 
 boolean LX_unlockHauntedLibrary()
