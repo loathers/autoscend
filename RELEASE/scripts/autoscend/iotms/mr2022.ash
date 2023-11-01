@@ -547,17 +547,11 @@ boolean auto_hasAutumnaton()
 	return get_property("hasAutumnaton").to_boolean() && auto_is_valid($item[autumn-aton]) && !in_pokefam();
 }
 
-// only valid when autumnaton is not current out on a quest
+// only valid when autumnaton is not currently out on a quest
 boolean auto_autumnatonCanAdv(location canAdventureInloc)
 {
 	if(!auto_hasAutumnaton())
 	{
-		return false;
-	}
-
-	if(canAdventureInloc.turns_spent == 0 && !($locations[Noob Cave, The Haunted Pantry, The Sleazy Back Alley] contains canAdventureInloc))
-	{
-		//zones have turn spent requirement except initial three
 		return false;
 	}
 
@@ -697,6 +691,16 @@ boolean auto_autumnatonQuest()
 			return L9_twinPeak();
 		}
 		if(auto_sendAutumnaton(targetLocation)) return false;
+	}
+
+	// acquire more shadow bricks
+	if(auto_neededShadowBricks() > 0)
+	{
+		string ingress = get_property("shadowRiftIngress");
+		if($strings[cemetery, hiddencity, pyramid] contains ingress)
+		{
+			if(auto_sendAutumnaton($location[Shadow Rift])) return false;
+		}
 	}
 
 	return false;
