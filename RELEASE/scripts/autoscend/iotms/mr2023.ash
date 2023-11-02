@@ -675,6 +675,10 @@ boolean auto_getCitizenZone(string goal)
 	if(!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0)
 	{
 		uneffect($effect[Citizen of a Zone]);
+		if(have_effect($effect[Citizen of a Zone]) > 0)
+		{
+			return false;
+		}
 	}
 	switch(goal)
 	{
