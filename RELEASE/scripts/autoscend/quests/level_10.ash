@@ -169,7 +169,9 @@ boolean L10_basement()
 		}
 	}
 
-	auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Basement)]);
+	boolean NCForced = auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Basement)]);
+	// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+	if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
 	if(!autoEquip($item[Amulet of Extreme Plot Significance]))
 	{
 		if(!autoEquip($item[unbreakable umbrella]))
@@ -239,7 +241,9 @@ boolean L10_topFloor()
 		pullXWhenHaveY($item[Mohawk wig], 1, 0);
 	}
 
-	auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Top Floor)]);
+	boolean NCForced = auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Top Floor)]);
+	// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+	if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
 	autoEquip($item[Mohawk wig]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 
@@ -368,7 +372,9 @@ boolean L10_holeInTheSkyUnlock()
 	auto_log_info("Castle (Top Floor) - Opening the Hole in the Sky.", "blue");
 	
 	// set location "wrong" so that LX_ForceNC can properly direct back to this function (L10_holeInTheSkyUnlock)
-	auto_forceNextNoncombat($location[The Hole in the Sky]);
+	boolean NCForced = auto_forceNextNoncombat($location[The Hole in the Sky]);
+	// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+	if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
 
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 

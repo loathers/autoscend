@@ -413,7 +413,9 @@ boolean LX_unlockHauntedLibrary()
 	if (internalQuestStatus("questM20Necklace") == 2)
 	{
 		// only force after we get the pool cue NC.
-		auto_forceNextNoncombat($location[The Haunted Billiards Room]);
+		boolean NCForced = auto_forceNextNoncombat($location[The Haunted Billiards Room]);
+		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
 	}
 	auto_log_info("It's billiards time!", "blue");
 	return autoAdv($location[The Haunted Billiards Room]);
@@ -672,7 +674,9 @@ boolean LX_getLadySpookyravensPowderPuff() {
 	auto_sourceTerminalEducate($skill[Extract], $skill[Portscan]);
 
 	if (!zone_delay($location[The Haunted Bathroom])._boolean) {
-		auto_forceNextNoncombat($location[The Haunted Bathroom]);
+		boolean NCForced = auto_forceNextNoncombat($location[The Haunted Bathroom]);
+		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
 	}
 	if (autoAdv($location[The Haunted Bathroom])) {
 		return true;
@@ -839,7 +843,9 @@ boolean L11_getBeehive()
 
 	auto_log_info("Must find a beehive!", "blue");
 
-	auto_forceNextNoncombat($location[The Black Forest]);
+	boolean NCForced = auto_forceNextNoncombat($location[The Black Forest]);
+	// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+	if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
 	boolean advSpent = autoAdv($location[The Black Forest]);
 	if(item_amount($item[beehive]) > 0)
 	{
@@ -1778,6 +1784,8 @@ boolean L11_hiddenCity()
 			if(shouldForceElevatorAction)
 			{
 				elevatorAction = auto_forceNextNoncombat($location[The Hidden Apartment Building]);
+				// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+				if(!elevatorAction && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
 			}
 		}
 
@@ -1853,6 +1861,11 @@ boolean L11_hiddenCity()
 			if(auto_forceNextNoncombat($location[The Hidden Office Building]))	//how many delay turns should this save to be considered?
 			{
 				workingHoliday = true;
+			}
+			else if(my_daycount() == 1 && !isAboutToPowerlevel())
+			{
+				// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+				return false;
 			}
 		}
 
