@@ -32,7 +32,7 @@ location solveDelayZone(boolean skipOutdoorZones)
 	// These are locations that aren't 1:1 turn savings, but can still be useful
 
 	// Shorten the time before finding Gnasir, so that we can start acquiring desert pages sooner
-	if (zone_isAvailable($location[The Arid\, Extra-Dry Desert]) && $location[The Arid\, Extra-Dry Desert].turns_spent >= 1 && $location[The Arid\, Extra-Dry Desert].turns_spent < 10)
+	if (!skipOutdoorZones && zone_isAvailable($location[The Arid\, Extra-Dry Desert]) && $location[The Arid\, Extra-Dry Desert].turns_spent >= 1 && $location[The Arid\, Extra-Dry Desert].turns_spent < 10)
 	{
 		burnZone = $location[The Arid\, Extra-Dry Desert];
 	}
