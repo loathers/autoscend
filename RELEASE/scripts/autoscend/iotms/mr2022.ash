@@ -242,9 +242,23 @@ boolean auto_haveMaydayContract()
 	return false;
 }
 
-boolean canUseCleaver() {
+boolean auto_canUseJuneCleaver() {
 	if (possessEquipment($item[June cleaver]) && can_equip($item[June cleaver]) && auto_is_valid($item[June cleaver])) {
 		return true;
+	}
+	return false;
+}
+
+boolean auto_juneCleaverAdventure()
+{
+	if (!auto_canUseJuneCleaver() || get_property("_juneCleaverFightsLeft").to_int() != 0)
+	{
+		return false;
+	}
+
+	if (autoEquip($slot[weapon], $item[June cleaver]))
+	{
+		return autoAdv($location[The Dire Warren]);
 	}
 	return false;
 }

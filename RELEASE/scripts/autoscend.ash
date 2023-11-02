@@ -1,4 +1,4 @@
-since r27660;	// Fix Jill LED candle modifiers to be on candle, not Jill.
+since r27669;	// fix: jill bonuses
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1865,6 +1865,7 @@ boolean doTasks()
 
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
+	if (auto_juneCleaverAdventure()) { return true; }
 	if(LX_ForceNC())					return true;
 	if(LX_dronesOut())					return true;
 	if(LM_bond())						return true;

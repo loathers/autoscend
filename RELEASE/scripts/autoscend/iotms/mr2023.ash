@@ -213,13 +213,22 @@ boolean auto_haveMonkeyPaw()
 	return auto_is_valid(paw) && (item_amount(paw) > 0 || have_equipped(paw));
 }
 
+int auto_monkeyPawWishesLeft()
+{
+	if (auto_haveMonkeyPaw())
+	{
+		return 5 - get_property("_monkeyPawWishesUsed").to_int();
+	}
+	return 0;
+}
+
 boolean auto_makeMonkeyPawWish(effect wish)
 {
 	if (!auto_haveMonkeyPaw()) {
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
-	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+	if (auto_monkeyPawWishesLeft() < 1) {
 		auto_log_info("Out of monkey paw wishes, skipping "+to_string(wish));
 		return false;
 	}
@@ -236,7 +245,7 @@ boolean auto_makeMonkeyPawWish(item wish)
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
-	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+	if (auto_monkeyPawWishesLeft() < 1) {
 		auto_log_info("Out of monkey paw wishes, skipping "+to_string(wish));
 		return false;
 	}
@@ -253,7 +262,7 @@ boolean auto_makeMonkeyPawWish(string wish)
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
-	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+	if (auto_monkeyPawWishesLeft() < 1) {
 		auto_log_info("Out of monkey paw wishes, skipping "+wish);
 		return false;
 	}

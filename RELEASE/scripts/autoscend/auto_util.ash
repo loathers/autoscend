@@ -1776,7 +1776,7 @@ boolean LX_summonMonster()
 	}
 
 	// summon grops to start copy chain. Goal is to copy into delay zones and get war progress at same time. Bonus if we get smoke bombs
-	if(!summonedMonsterToday($monster[Green Ops Soldier]) && get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe())
+	if(!summonedMonsterToday($monster[Green Ops Soldier]) && get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe() && auto_backupUsesLeft() > 0)
 	{
 		if(summonMonster($monster[Green Ops Soldier])) return true;
 	}

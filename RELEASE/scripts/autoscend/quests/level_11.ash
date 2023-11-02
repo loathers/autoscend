@@ -381,6 +381,21 @@ boolean LX_unlockHauntedLibrary()
 		}
 	}
 	
+	if (in_small() && my_inebriety() < inebriety_limit() && my_level() > 10)
+	{
+		// in small we should have astral pilsners assuming the user knows what they are doing
+		// so just drink one if we can get the max adventures out of it
+		ConsumeAction bestDrinkAction = auto_findBestConsumeAction("drink");
+		if (bestDrinkAction.it == $item[astral pilsner])
+		{
+			auto_autoConsumeOne(bestDrinkAction);
+		}
+		else
+		{
+			auto_log_info("You didn't take astral pilsners or you're somehow on day 4 of Small. Make better life choices.");
+		}
+	}
+
 	//inebrity handling. do not care if: auto succeed or can't drink or ran out of things to do.
 	boolean wildfire_check = !(in_wildfire() && in_hardcore());		//hardcore wildfire ignore inebriety limits
 	if(expectPool < 18 && can_drink() && !isAboutToPowerlevel() && wildfire_check)
@@ -1054,6 +1069,11 @@ boolean L11_aridDesert()
 
 	if(get_property("auto_gnasirUnlocked").to_boolean())
 	{
+		if (LX_spookyravenManorFirstFloor())
+		{ // make sure we've actually done the Haunted Library before we want to hand in a killing jar
+			return true;
+		}
+
 		if((get_property("gnasirProgress").to_int() & 2) != 2)
 		{
 			boolean canBuyPaint = true;
@@ -2063,6 +2083,12 @@ boolean L11_hiddenCityZones()
 	}
 
 	L11_hiddenTavernUnlock();
+
+	if (get_property("breathitinCharges").to_int() > 0)
+	{
+		// Shrines & Ziggurat are outdoor zones with free combats. Let's not waste Breathitin charges.
+		return false;
+	}
 
 	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam();
 	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && (in_hardcore() || in_lol());

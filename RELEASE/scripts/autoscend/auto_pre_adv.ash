@@ -921,7 +921,29 @@ boolean auto_pre_adventure()
 	borisWastedMP();
 	borisTrusty();
 
-	acquireMP(32, 0);
+	int mpNeeded = 32; // enough for 5 casts of Saucestorm. Usually this should be fine for most combats
+	switch (my_class())
+	{
+		// expand this for other cases where we need more MP for combat.
+		// ideally we could ask the combat function to tell us how much MP it will need for an example encounter in the zone we are going to.
+		case $class[Disco Bandit]:
+			if ($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains place)
+			{
+				// DB aborts in the Shadow Rifts because it runs out of MP trying to use Saucestorm against physically immune monsters when it has Extingo equipped.
+				foreach sk in $skills[Disco Dance of Doom, Disco Dance II: Electric Boogaloo, Disco Dance 3: Back in the Habit]
+				{
+					// yes it casts all 3 of those first then tries to repeat Saucestorm. On 32 or so MP.
+					if (auto_have_skill(sk))
+					{
+						mpNeeded += mp_cost(sk);
+					}
+				}
+			}
+			break;
+		default;
+			break;
+	}
+	acquireMP(mpNeeded, 0);
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{

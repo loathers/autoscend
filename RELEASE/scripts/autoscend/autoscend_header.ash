@@ -462,7 +462,8 @@ int gooseExpectedDrones();
 boolean dronesOut();
 void prioritizeGoose();
 boolean auto_haveMaydayContract();
-boolean canUseCleaver();
+boolean auto_canUseJuneCleaver();
+boolean auto_juneCleaverAdventure();
 void juneCleaverChoiceHandler(int choice);
 boolean canUseSweatpants();
 int getSweat();
@@ -504,6 +505,7 @@ boolean auto_havePayPhone();
 boolean auto_getPhoneQuest();
 boolean auto_doPhoneQuest();
 boolean auto_haveMonkeyPaw();
+int auto_monkeyPawWishesLeft();
 boolean auto_makeMonkeyPawWish(effect wish);
 boolean auto_makeMonkeyPawWish(item wish);
 boolean auto_makeMonkeyPawWish(string wish);
@@ -1559,6 +1561,10 @@ boolean setSoftblockDelay();
 boolean allowSoftblockDelay();
 boolean setSoftblockDelay();
 boolean canBurnDelay(location loc);
+boolean allowSoftblockUndergroundAdvs();
+boolean setSoftblockUndergroundAdvs();
+boolean auto_reserveUndergroundAdventures();
+boolean LX_goingUnderground();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash

@@ -757,7 +757,7 @@ void finalizeMaximize(boolean speculative)
 		}
 	}
 	
-	if (canUseCleaver()) {
+	if (auto_canUseJuneCleaver()) {
 		if (get_property("_juneCleaverFightsLeft").to_int() < my_adventures() * 1.1 || (fullness_limit() == 0 && inebriety_limit() == 0) || consumptionProgress() < 1) {
 			addBonusToMaximize($item[June cleaver], 200); // We want to ramp this up and the NCs are nice as well
 		}
