@@ -940,7 +940,7 @@ boolean auto_pre_adventure()
 				}
 			}
 			break;
-		default;
+		default:
 			break;
 	}
 	acquireMP(mpNeeded, 0);
