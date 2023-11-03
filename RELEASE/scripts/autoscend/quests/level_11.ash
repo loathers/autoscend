@@ -430,7 +430,11 @@ boolean LX_unlockHauntedLibrary()
 		// only force after we get the pool cue NC.
 		boolean NCForced = auto_forceNextNoncombat($location[The Haunted Billiards Room]);
 		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel())
+		{
+			resetMaximize();	//cancel equipping pool cue
+			return false;
+		}
 	}
 	auto_log_info("It's billiards time!", "blue");
 	return autoAdv($location[The Haunted Billiards Room]);
