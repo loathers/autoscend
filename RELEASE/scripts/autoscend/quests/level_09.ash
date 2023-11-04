@@ -126,6 +126,7 @@ int fastenerCount()
 	base = base + item_amount($item[Thick Caulk]);
 	base = base + item_amount($item[Long Hard Screw]);
 	base = base + item_amount($item[Messy Butt Joint]);
+	base = base + 5 * item_amount($item[Smut Orc Keepsake Box]);
 
 	return base;
 }
@@ -136,6 +137,7 @@ int lumberCount()
 	base = base + item_amount($item[Morningwood Plank]);
 	base = base + item_amount($item[Raging Hardwood Plank]);
 	base = base + item_amount($item[Weirdwood Plank]);
+	base = base + 5 * item_amount($item[Smut Orc Keepsake Box]);
 
 	return base;
 }
