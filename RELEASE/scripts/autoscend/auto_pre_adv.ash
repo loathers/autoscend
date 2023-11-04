@@ -1,5 +1,7 @@
 import<autoscend.ash>
 
+void low_mp_handler(); //Calculates MP to acquire at low max mp levels
+
 void print_footer()
 {
 	auto_log_info("[" +my_class()+ "] @ path of [" +my_path().name+ "]", "blue");
@@ -108,7 +110,9 @@ void auto_ghost_prep(location place)
 	{
 		if(auto_have_skill(sk))
 		{
-			acquireMP(32, 1000);		//make sure we actually have the MP to cast spells
+			if(my_maxmp() >= 32)
+				acquireMP(32, 0);		//make sure we actually have the MP to cast spells
+			else low_mp_handler();
 		}
 		if(canUse(sk)) return;	//we can kill them with a spell
 	}
@@ -920,6 +924,11 @@ boolean auto_pre_adventure()
 	borisTrusty();
 
 	acquireMP(32, 0);
+	
+	if(my_maxmp() < 32)
+	{
+		low_mp_handler();
+	}
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{
@@ -959,6 +968,15 @@ boolean auto_pre_adventure()
 
 	print_footer();
 	return true;
+}
+
+//At low max MP, important to keep MP near max, since every saucestorm (etc.) counts
+void low_mp_handler()
+{
+	auto_log_debug("Low max MP detected.", "red");
+	int MIN_USEFUL_MP = 6; //Saucestorm
+	int TARGET_MP = my_maxmp() - (my_maxmp() % MIN_USEFUL_MP);
+	acquireMP(TARGET_MP, 0);
 }
 
 void main()
