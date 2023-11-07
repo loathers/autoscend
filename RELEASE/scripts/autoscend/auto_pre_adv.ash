@@ -1,6 +1,14 @@
 import<autoscend.ash>
 
-void low_mp_handler(); //Calculates MP to acquire at low max mp levels
+//Calculates MP to acquire at low max mp levels
+//At low max MP, important to keep MP near max, since every saucestorm (etc.) counts
+void low_mp_handler()
+{
+	auto_log_debug("Low max MP detected.", "red");
+	int MIN_USEFUL_MP = 6; //Saucestorm
+	int TARGET_MP = my_maxmp() - (my_maxmp() % MIN_USEFUL_MP);
+	acquireMP(TARGET_MP, 0);
+}
 
 void print_footer()
 {
@@ -968,15 +976,6 @@ boolean auto_pre_adventure()
 
 	print_footer();
 	return true;
-}
-
-//At low max MP, important to keep MP near max, since every saucestorm (etc.) counts
-void low_mp_handler()
-{
-	auto_log_debug("Low max MP detected.", "red");
-	int MIN_USEFUL_MP = 6; //Saucestorm
-	int TARGET_MP = my_maxmp() - (my_maxmp() % MIN_USEFUL_MP);
-	acquireMP(TARGET_MP, 0);
 }
 
 void main()
