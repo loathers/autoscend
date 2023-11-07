@@ -623,10 +623,12 @@ void initializeDay(int day)
 
 	invalidateRestoreOptionCache();
 
-	set_property("auto_powerLevelLastLevel", "0");
-	set_property("auto_delayLastLevel", "0");
-	set_property("auto_cmcConsultLastLevel", "0");
-	set_property("auto_breathitinLastLevel", "0");
+	if (get_property("auto_day_init").to_int() < day) {
+		set_property("auto_powerLevelLastLevel", "0");
+		set_property("auto_delayLastLevel", "0");
+		set_property("auto_cmcConsultLastLevel", "0");
+		set_property("auto_breathitinLastLevel", "0");
+	}
 
 	if(!possessEquipment($item[Your Cowboy Boots]) && get_property("telegraphOfficeAvailable").to_boolean() && is_unrestricted($item[LT&T Telegraph Office Deed]))
 	{
