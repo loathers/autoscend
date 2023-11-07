@@ -2088,12 +2088,6 @@ boolean L11_hiddenCityZones()
 
 	L11_hiddenTavernUnlock();
 
-	if (get_property("breathitinCharges").to_int() > 0)
-	{
-		// Shrines & Ziggurat are outdoor zones with free combats. Let's not waste Breathitin charges.
-		return false;
-	}
-
 	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam();
 	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && (in_hardcore() || in_lol());
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
@@ -2103,6 +2097,12 @@ boolean L11_hiddenCityZones()
 			auto_changeSnapperPhylum($phylum[dude]);
 		}
 		return autoAdv($location[The Hidden Park]);
+	}
+
+	if (get_property("breathitinCharges").to_int() > 0)
+	{
+		// Shrines & Ziggurat are outdoor zones with free combats. Let's not waste Breathitin charges.
+		return false;
 	}
 
 	if (get_property("hiddenApartmentProgress").to_int() == 0) {
@@ -2308,6 +2308,11 @@ boolean L11_mauriceSpookyraven()
 	if(get_property("spookyravenRecipeUsed") != "with_glasses")
 	{
 		abort("Did not read Mortar Recipe with the Spookyraven glasses. We can't proceed.");
+	}
+
+	if (auto_reserveUndergroundAdventures())
+	{
+		return false;
 	}
 
 	if (item_amount($item[bottle of Chateau de Vinegar]) == 0 && !possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
@@ -3128,6 +3133,10 @@ boolean L11_unlockEd()
 	if (isActuallyEd())
 	{
 		return true;
+	}
+	if (auto_reserveUndergroundAdventures())
+	{
+		return false;
 	}
 
 	if (internalQuestStatus("questL03Rat") < 2)

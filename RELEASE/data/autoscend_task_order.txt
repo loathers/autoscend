@@ -34,14 +34,14 @@ A Shrunken Adventurer am I	18	LX_lockPicking
 A Shrunken Adventurer am I	19	LX_fatLootToken
 #	Get the Steel Organ if the user wants it (needs L6 quest complete)
 A Shrunken Adventurer am I	20	LX_steelOrgan
-#	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
-A Shrunken Adventurer am I	21	L12_islandWar
 # open up delay zones.
-A Shrunken Adventurer am I	22	LX_spookyravenManorFirstFloor
+A Shrunken Adventurer am I	21	LX_spookyravenManorFirstFloor
 # open up zones where we want to force non-combats.
 # Open up underground zones so they are available for Breathitin.
-A Shrunken Adventurer am I	23	L5_getEncryptionKey
-A Shrunken Adventurer am I	24	L5_findKnob
+A Shrunken Adventurer am I	22	L5_getEncryptionKey
+A Shrunken Adventurer am I	23	L5_findKnob
+#	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
+A Shrunken Adventurer am I	24	L12_islandWar
 # Start the macguffin quest
 A Shrunken Adventurer am I	25	L11_blackMarket
 A Shrunken Adventurer am I	26	L11_forgedDocuments

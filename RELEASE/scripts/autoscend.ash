@@ -1,4 +1,4 @@
-since r27669;	// fix: jill bonuses
+since r27678;	// fix: identify burning leaves in small
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -216,17 +216,11 @@ void initializeSettings() {
 	set_property("auto_paranoia_counter", 0);
 	set_property("auto_parkaSpikesDeployed", false);
 	set_property("auto_priorCharpaneMode", "0");
-	set_property("auto_powerLevelLastLevel", "0");
 	set_property("auto_powerLevelAdvCount", "0");
 	set_property("auto_powerLevelLastAttempted", "0");
 	set_property("auto_pulls", "");
-
-	// Last level during which we ran out of stuff to do without pre-completing some Shen quests.
 	remove_property("auto_shenZonesTurnsSpent");
 	remove_property("auto_lastShenTurn");
-	
-	set_property("auto_delayLastLevel", 0);
-
 	set_property("auto_sniffs", "");
 	set_property("auto_stopMinutesToRollover", "5");
 	set_property("auto_wandOfNagamar", true);
@@ -250,6 +244,7 @@ void initializeSettings() {
 	remove_property("auto_hccsNoConcludeDay");
 	remove_property("auto_saveSausage");
 	remove_property("auto_saveVintage");
+	set_property("auto_dontUseCookBookBat", false);
 	beehiveConsider();
 
 	eudora_initializeSettings();
@@ -627,6 +622,11 @@ void initializeDay(int day)
 	}
 
 	invalidateRestoreOptionCache();
+
+	set_property("auto_powerLevelLastLevel", "0");
+	set_property("auto_delayLastLevel", "0");
+	set_property("auto_cmcConsultLastLevel", "0");
+	set_property("auto_breathitinLastLevel", "0");
 
 	if(!possessEquipment($item[Your Cowboy Boots]) && get_property("telegraphOfficeAvailable").to_boolean() && is_unrestricted($item[LT&T Telegraph Office Deed]))
 	{
@@ -1581,6 +1581,7 @@ void resetState() {
 	set_property("choiceAdventure1387", -1); // using the force non-combat
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
 	set_property("auto_nextEncounter", ""); // monster that was expected last turn
+	set_property("auto_habitatMonster", ""); // monster we want to cast Recall Facts: Monster Habitats
 
 	if(doNotBuffFamiliar100Run())		//some familiars are always bad
 	{
@@ -1866,6 +1867,7 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if (auto_juneCleaverAdventure()) { return true; }
+	if (auto_burnLeaves()) { return true; }
 	if(LX_ForceNC())					return true;
 	if(LX_dronesOut())					return true;
 	if(LM_bond())						return true;
@@ -1940,7 +1942,6 @@ void auto_begin()
 	{
 		backupSetting("spadingScript", "excavator.ash");
 	}
-
 	backupSetting("hpAutoRecovery", -0.05);
 	backupSetting("hpAutoRecoveryTarget", -0.05);
 	backupSetting("mpAutoRecovery", -0.05);
@@ -1948,18 +1949,11 @@ void auto_begin()
 	backupSetting("manaBurningTrigger", -0.05);
 	backupSetting("manaBurningThreshold", -0.05);
 	backupSetting("autoAbortThreshold", -0.05);
-
 	backupSetting("currentMood", "apathetic");
-
 	backupSetting("logPreferenceChange", "true");
 	backupSetting("logPreferenceChangeFilter", "maximizerMRUList,testudinalTeachings,auto_maximize_current");
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
 
-	string userForbidden = get_property("forbiddenStores");
-	if (!userForbidden.contains_text("3408540")) {
-		backupSetting("forbiddenStores", userForbidden + ",3408540"); // forbid Dance Police
-	}
-	
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))
 	{

@@ -533,6 +533,8 @@ boolean auto_canCircadianRhythm();
 boolean auto_circadianRhythmTarget(monster target);
 boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
+boolean auto_haveBurningLeaves();
+boolean auto_burnLeaves();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1565,6 +1567,10 @@ boolean allowSoftblockUndergroundAdvs();
 boolean setSoftblockUndergroundAdvs();
 boolean auto_reserveUndergroundAdventures();
 boolean LX_goingUnderground();
+boolean allowSoftblockOutdoorAdvs();
+boolean setSoftblockOutdoorAdvs();
+boolean auto_reserveOutdoorAdventures();
+boolean auto_useBreathitinCharges();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
@@ -1707,7 +1713,6 @@ boolean auto_change_mcd(int mcd);
 boolean auto_change_mcd(int mcd, boolean immediately);
 boolean evokeEldritchHorror(string option);
 boolean evokeEldritchHorror();
-boolean fightScienceTentacle(string option);
 boolean fightScienceTentacle();
 boolean handleSealNormal(item it);
 boolean handleSealNormal(item it, string option);

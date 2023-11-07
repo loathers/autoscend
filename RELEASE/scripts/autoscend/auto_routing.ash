@@ -109,24 +109,24 @@ boolean setSoftblockUndergroundAdvs()
 	return true;
 }
 
+int[string] getLastCombatEnvironmentCounts(int offset)
+{
+	// mafia has no char type. string will have to do.
+	int[string] counts = {"i" : 0, "o" : 0, "u" : 0, "x" : 0, "?" : 0};
+	string[int] environments = split_string(substring(get_property("lastCombatEnvironments"), max(offset, 0), 20), "");
+	// property is always 20 characters long. Uses a queue (FIFO).
+	// lastCombatEnvironments = xxxxxxxxxxxxxxxxxxxx
+	// i = indoor, o = outdoor, u = underground, x = underwater, ? = unknown/none
+	foreach _, env in environments
+	{
+		counts[env]++;
+	}
+	return counts;
+}
+
 boolean auto_reserveUndergroundAdventures()
 {
 	// this function should return true when we *don't* want to spend adventures in underground zones.
-
-	int[string] getLastCombatEnvironmentCounts(int offset)
-	{
-		// mafia has no char type. string will have to do.
-		int[string] counts = {"i" : 0, "o" : 0, "u" : 0, "x" : 0, "?" : 0};
-		string[int] environments = split_string(substring(get_property("lastCombatEnvironments"), max(offset, 0), 20), "");
-		// property is always 20 characters long. Uses a queue (FIFO).
-		// lastCombatEnvironments = xxxxxxxxxxxxxxxxxxxx
-		// i = indoor, o = outdoor, u = underground, x = underwater, ? = unknown/none
-		foreach _, env in environments
-		{
-			counts[env]++;
-		}
-		return counts;
-	}
 
 	if (!allowSoftblockUndergroundAdvs() || (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() == 0 && my_daycount() > 1) || !auto_is_valid($item[cold medicine cabinet]))
 	{
@@ -139,7 +139,7 @@ boolean auto_reserveUndergroundAdventures()
 		// Don't have the CMC installed yet but we can still switch today and want to switch to it so save underground zones until then.
 		return true;
 	}
-	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0)
+	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0 && my_daycount() < 3)
 	{
 		int turns_until_next_consult = get_property("_nextColdMedicineConsult").to_int() - total_turns_played();
 		int[string] envs = getLastCombatEnvironmentCounts(turns_until_next_consult);
@@ -157,19 +157,90 @@ boolean auto_reserveUndergroundAdventures()
 
 boolean LX_goingUnderground()
 {
-	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0 && get_property("_nextColdMedicineConsult").to_int() - total_turns_played() < 12)
+	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0)
 	{
-		if (LX_fatLootToken() || L4_batCave() || L10_basement() || L12_filthworms() || L11_mauriceSpookyraven() || L11_unlockEd() || L7_crypt() || L5_haremOutfit())
+		if (get_property("_nextColdMedicineConsult").to_int() - total_turns_played() < 12)
 		{
-			// quests with adventures in underground zones in some sort of priority order here.
-			return true;
+			// we have a CMC consult coming up in 11 turns or less
+			if (L4_batCave() || L10_basement() || L12_filthworms() || L11_mauriceSpookyraven() || L11_unlockEd() || L7_crypt() || L5_haremOutfit())
+			{
+				// quests with adventures in underground zones in some sort of priority order here.
+				return true;
+			}
+		}
+		else
+		{
+			// 12 or more turns until the next CMC consult
+			if (getLastCombatEnvironmentCounts(9)["u"] > 0)
+			{
+				// some of the last 11 adventures were underground, lets try to "push" the CMC counter & preserve our underground combats
+				// while burning down the counter until the next consult by spending adventures in non-adventure.php locations.
+				if (LX_fatLootToken() || L11_defeatEd() || L8_trapperGroar() || L3_tavern())
+				{
+					return true;
+				}
+			}
 		}
 	}
 	return false;
 }
 
+boolean allowSoftblockOutdoorAdvs()
+{
+	return get_property("auto_breathitinLastLevel").to_int() < my_level();
+}
+
+boolean setSoftblockOutdoorAdvs()
+{
+	auto_log_warning("I was trying to avoid outdoor zones, but I've run out of stuff to do. Releasing softblock.", "red");
+	set_property("auto_breathitinLastLevel", my_level());
+	return true;
+}
+
 boolean auto_reserveOutdoorAdventures()
 {
 	// this function should return true when we *don't* want to spend adventures in outdoor zones.
+	if (!allowSoftblockOutdoorAdvs() || (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() == 0 && my_daycount() > 1) || !auto_is_valid($item[cold medicine cabinet]) || get_property("breathitinCharges").to_int() > 0)
+	{
+		// softblock has been released or we have no more Breathitins to collect (or we have Breathitin charges to use).
+		return false;
+	}
+	if (get_workshed() != $item[cold medicine cabinet] && auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 &&
+	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
+	{
+		// Don't have the CMC installed yet but we can still switch today and want to switch to it so save outdoor zones until then.
+		return true;
+	}
+	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0 && my_daycount() < 3) {
+		// have the CMC installed and still have consults left to grab on day 1
+		return true;
+	}
+	return false;
+}
+
+boolean auto_useBreathitinCharges()
+{
+	if (get_property("breathitinCharges").to_int() > 0)
+	{
+		if (LX_unlockHiddenTemple() || L11_hiddenCityZones() || L5_getEncryptionKey() || L10_airship() || L9_chasmBuild() || L9_highLandlord() || L6_friarsGetParts())
+		{
+			// quests with adventures in outdoor zones in some sort of priority order here.
+			// LX_unlockHiddenTemple unlocks the Hidden Temple by adventuring in the Spooky Forest. High priority as Hidden City has a lot of delay
+			// L11_hiddenCityZones is where we adventure in the Hidden Park which is a needed step to unlock the Hidden City zones.
+			// L5_getEncryptionKey unlocks Cobb's Knob (underground zones) by adventuring in Outskirts. It's a delay zone by it has 10 delay so we will adventure here at some point.
+			// L10_airship unlocks Castle Basement (underground zone)
+			// L9_chasmBuild builds the bridge over the Orc Chasm which unlocks the peaks (also outdoor zones)
+			// the rest just finish quests so there's no urgency on getting them done.
+			return true;
+		}
+	}
+	else
+	{
+		if (L11_hiddenCityZones())
+		{
+			// Should do these ASAP when we don't have Breathitin to open up the rest of the Hidden City.
+			return true;
+		}
+	}
 	return false;
 }

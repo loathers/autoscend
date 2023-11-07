@@ -28,14 +28,14 @@ LX_lockPicking
 LX_fatLootToken
 #	Get the Steel Organ if the user wants it (needs L6 quest complete)
 LX_steelOrgan
-#	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
-L12_islandWar
 # open up delay zones.
 LX_spookyravenManorFirstFloor
 # open up zones where we want to force non-combats.
 # Open up underground zones so they are available for Breathitin.
 L5_getEncryptionKey
 L5_findKnob
+#	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
+L12_islandWar
 # Start the macguffin quest
 L11_blackMarket
 L11_forgedDocuments

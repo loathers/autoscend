@@ -72,6 +72,16 @@ boolean L10_airship()
 		visit_url("place.php?whichplace=beanstalk");	
 	}
 
+	if (auto_canHabitat() && get_property("breathitinCharges").to_int() < 1)
+	{
+		// save turns in the airship with inherently free combats.
+		set_property("auto_habitatMonster", $monster[eldritch tentacle].to_string());
+		if (fightScienceTentacle())
+		{
+			return true;
+		}
+	}
+
 	if(handleFamiliar($familiar[Red-Nosed Snapper]))
 	{
 		auto_changeSnapperPhylum($phylum[dude]);

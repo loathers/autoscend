@@ -2115,7 +2115,7 @@ boolean evokeEldritchHorror()
 	return evokeEldritchHorror("");
 }
 
-boolean fightScienceTentacle(string option)
+boolean fightScienceTentacle()
 {
 	if(get_property("_eldritchTentacleFought").to_boolean())
 	{
@@ -2152,15 +2152,8 @@ boolean fightScienceTentacle(string option)
 	string[int] pages;
 	pages[0] = "place.php?whichplace=forestvillage&action=fv_scientist";
 	pages[1] = "choice.php?whichchoice=1201&pwd=&option=1";
-	return autoAdvBypass(0, pages, $location[Noob Cave], option);
-
+	return autoAdvBypass(0, pages, $location[Noob Cave], "");
 }
-
-boolean fightScienceTentacle()
-{
-	return fightScienceTentacle("");
-}
-
 
 boolean handleSealNormal(item it)
 {

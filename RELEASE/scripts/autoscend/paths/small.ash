@@ -42,6 +42,13 @@ void small_initializeSettings()
 			set_property("auto_disregardInstantKarma", "false");
 		}
 	}
+	else
+	{
+		if (auto_have_familiar($familiar[Cookbookbat]))
+		{
+			set_property("auto_dontUseCookBookBat", true); // don't need the CBB in Normal.
+		}
+	}
 }
 
 void auto_SmallPulls()

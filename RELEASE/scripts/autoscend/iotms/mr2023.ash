@@ -387,7 +387,7 @@ boolean shouldCinchoConfetti()
 		return false;
 	}
 	// use all free rests before using confetti. May get enough cinch to fiesta exit
-	if(haveFreeRestAvailable())
+	if(haveFreeRestAvailable() || true) // TODO
 	{
 		return false;
 	}
@@ -606,7 +606,7 @@ boolean auto_canHabitat()
 			case $monster[modern zmobie]:
 				return get_property("cyrptAlcoveEvilness").to_int() > 13;
 			default:
-				break;
+				return false;
 		}
 	}
 	return true;
@@ -630,8 +630,10 @@ boolean auto_habitatTarget(monster target)
 		case $monster[modern zmobie]:
 		 	// only worth it if we need 30 or more evilness reduced.
 			return (get_property("cyrptAlcoveEvilness").to_int() > 42);
+		case $monster[eldritch tentacle]:
+			return (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() > 0));
 		default:
-			break;
+			return (get_property("auto_habitatMonster").to_monster() == target);
 	}
 	return false;
 }
@@ -751,4 +753,41 @@ void auto_handleJillOfAllTrades()
 	}
 
 	return;
+}
+
+boolean auto_haveBurningLeaves()
+{
+	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];
+}
+
+boolean auto_burnLeaves()
+{
+	if (!auto_haveBurningLeaves())
+	{
+		return false;
+	}
+	if (available_amount($item[rake]) < 1)
+	{
+		// visit the pile of burning leaves to grab the rakes
+		visit_url("campground.php?preaction=leaves");
+	}
+	if (item_amount($item[inflammable leaf]) > 73 && !(get_campground() contains $item[forest canopy bed]) && get_dwelling() != $item[big rock] && auto_haveCincho())
+	{
+		// get and use  the forest canopy bed if we don't have one already and have a Cincho as it is +5 free rests
+		if (create(1, $item[forest canopy bed]))
+		{
+			return use(1, $item[forest canopy bed]);
+		}
+		return false;
+	}
+	if (get_campground() contains $item[forest canopy bed] && item_amount($item[inflammable leaf]) > 49 && have_effect($effect[Resined]) == 0)
+	{
+		// Get the Resined effect if we don't have it as it is net positive for leaves.
+		if (create(1, $item[distilled resin]))
+		{
+			return use(1, $item[distilled resin]);
+		}
+		return false;
+	}
+	return false;
 }
