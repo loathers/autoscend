@@ -20,6 +20,7 @@ L11_shenStartQuest
 LX_goingUnderground
 # Forcing Non-combats to progress quests.
 # Burn Breathitin charges
+auto_useBreathitinCharges
 # Guild access.
 LX_guildUnlock
 #	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
