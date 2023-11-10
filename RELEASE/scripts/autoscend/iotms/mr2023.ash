@@ -387,7 +387,7 @@ boolean shouldCinchoConfetti()
 		return false;
 	}
 	// use all free rests before using confetti. May get enough cinch to fiesta exit
-	if(haveFreeRestAvailable() || true) // TODO
+	if (haveFreeRestAvailable() || numeric_modifier("Free Rests") < auto_potentialMaxFreeRests())
 	{
 		return false;
 	}
@@ -631,7 +631,7 @@ boolean auto_habitatTarget(monster target)
 		 	// only worth it if we need 30 or more evilness reduced.
 			return (get_property("cyrptAlcoveEvilness").to_int() > 42);
 		case $monster[eldritch tentacle]:
-			return (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() > 0));
+			return (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0));
 		default:
 			return (get_property("auto_habitatMonster").to_monster() == target);
 	}
@@ -702,7 +702,6 @@ string getParsedCandleMode()
 			return "boss";
 		default:
 			return "unknown";
-		
 	}
 }
 
@@ -773,7 +772,7 @@ boolean auto_burnLeaves()
 	}
 	if (item_amount($item[inflammable leaf]) > 73 && !(get_campground() contains $item[forest canopy bed]) && get_dwelling() != $item[big rock] && auto_haveCincho())
 	{
-		// get and use  the forest canopy bed if we don't have one already and have a Cincho as it is +5 free rests
+		// get and use the forest canopy bed if we don't have one already and have a Cincho as it is +5 free rests
 		if (create(1, $item[forest canopy bed]))
 		{
 			return use(1, $item[forest canopy bed]);

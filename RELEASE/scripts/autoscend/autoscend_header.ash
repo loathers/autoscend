@@ -1553,6 +1553,7 @@ boolean haveAnyIotmAlternativeRestSiteAvailable();
 boolean doFreeRest();
 boolean haveFreeRestAvailable();
 int freeRestsRemaining();
+int auto_potentialMaxFreeRests();
 boolean uneffect(effect toRemove);
 
 ########################################################################################################

@@ -143,6 +143,11 @@ boolean L10_basement()
 		return false;
 	}
 
+	if (auto_reserveUndergroundAdventures())
+	{
+		return false;
+	}
+
 	auto_log_info("Castle (Basement) - Unlocking Ground Floor.", "blue");
 
 	if(!in_hardcore())

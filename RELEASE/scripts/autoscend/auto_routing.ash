@@ -136,6 +136,7 @@ boolean auto_reserveUndergroundAdventures()
 	if (get_workshed() != $item[cold medicine cabinet] && auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 &&
 	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
 	{
+		auto_log_debug("Reserving underground adventures as we will be switching to the CMC.");
 		// Don't have the CMC installed yet but we can still switch today and want to switch to it so save underground zones until then.
 		return true;
 	}
@@ -145,6 +146,7 @@ boolean auto_reserveUndergroundAdventures()
 		int[string] envs = getLastCombatEnvironmentCounts(turns_until_next_consult);
 		if (turns_until_next_consult < 12 && envs["u"] > 10)
 		{
+			auto_log_debug("Reserving underground adventures as we can still get more Breathitins today.");
 			// have the CMC installed & still have consults to use today.
 			// we only need 11 underground adventures in the queue for Breathitin to show up.
 			// auto_CMCconsult() will (should) grab a Breathitin as soon as it's available
@@ -161,6 +163,7 @@ boolean LX_goingUnderground()
 	{
 		if (get_property("_nextColdMedicineConsult").to_int() - total_turns_played() < 12)
 		{
+			auto_log_debug("Have a CMC consult coming up in 11 or fewer adventures. Calling a quest function with underground zones.");
 			// we have a CMC consult coming up in 11 turns or less
 			if (L4_batCave() || L10_basement() || L12_filthworms() || L11_mauriceSpookyraven() || L11_unlockEd() || L7_crypt() || L5_haremOutfit())
 			{
@@ -173,6 +176,7 @@ boolean LX_goingUnderground()
 			// 12 or more turns until the next CMC consult
 			if (getLastCombatEnvironmentCounts(9)["u"] > 0)
 			{
+				auto_log_debug("Have a CMC consult coming up in 12 or more adventures. Calling a quest function with zoneless encounters.");
 				// some of the last 11 adventures were underground, lets try to "push" the CMC counter & preserve our underground combats
 				// while burning down the counter until the next consult by spending adventures in non-adventure.php locations.
 				if (LX_fatLootToken() || L11_defeatEd() || L8_trapperGroar() || L3_tavern())
@@ -208,10 +212,12 @@ boolean auto_reserveOutdoorAdventures()
 	if (get_workshed() != $item[cold medicine cabinet] && auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 &&
 	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
 	{
+		auto_log_debug("Reserving outdoor adventures as we will be switching to the CMC.");
 		// Don't have the CMC installed yet but we can still switch today and want to switch to it so save outdoor zones until then.
 		return true;
 	}
 	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0 && my_daycount() < 3) {
+		auto_log_debug("Reserving outdoor adventures as we can still get more Breathitins today.");
 		// have the CMC installed and still have consults left to grab on day 1
 		return true;
 	}
@@ -222,6 +228,7 @@ boolean auto_useBreathitinCharges()
 {
 	if (get_property("breathitinCharges").to_int() > 0)
 	{
+		auto_log_debug("Have Breathitin Charges to burn. Calling a quest function with outdoor zones.");
 		if (LX_unlockHiddenTemple() || L11_hiddenCityZones() || L5_getEncryptionKey() || L10_airship() || L9_chasmBuild() || L9_highLandlord() || L6_friarsGetParts())
 		{
 			// quests with adventures in outdoor zones in some sort of priority order here.
