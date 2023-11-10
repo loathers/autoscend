@@ -217,6 +217,13 @@ boolean auto_pre_adventure()
 		uneffect($effect[Scarysauce]);
 		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
+	
+	if(my_class() == $class[Pastamancer] && my_thrall() == $thrall[Vampieroghi] && place == $location[The Hidden Apartment Building]
+		&& auto_have_skill($skill[Dismiss Pasta Thrall]))
+	{
+		// vampieroghi can dispell the shaman curse, preventing us from making quest progress
+		use_skill($skill[Dismiss Pasta Thrall]);
+	}
 
 	if(place == $location[The Smut Orc Logging Camp])
 	{
