@@ -307,15 +307,16 @@ boolean L9_chasmBuild()
 	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
 
 	auto_log_info("Chasm time", "blue");
-	
-	// make sure our progress count is correct before we do anything.
-	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
 	// use any keepsake boxes we have
-	if(item_amount($item[Smut Orc Keepsake Box]) > 0 && auto_is_valid($item[Smut Orc Keepsake Box]))
+	item keepsakeBox = $item[Smut Orc Keepsake Box];
+	if(item_amount(keepsakeBox) > 0 && auto_is_valid(keepsakeBox))
 	{
-		use(1, $item[Smut Orc Keepsake Box]);
+		use(item_amount(keepsakeBox), keepsakeBox);
 	}
+
+	// make sure our progress count is correct before we do anything.
+	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
 	// finish chasm if we can
 	if(get_property("chasmBridgeProgress").to_int() >= 30)
