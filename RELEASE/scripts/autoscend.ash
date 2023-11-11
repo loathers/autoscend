@@ -1771,6 +1771,7 @@ boolean doTasks()
 
 	basicAdjustML();
 
+	finishBuildingSmutOrcBridge();
 	councilMaintenance();
 	auto_buySkills();		// formerly picky_buyskills() now moved here
 	awol_buySkills();

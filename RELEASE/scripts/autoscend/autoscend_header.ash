@@ -1019,6 +1019,7 @@ boolean L9_leafletQuest();
 void L9_chasmMaximizeForNoncombat();
 int fastenerCount();
 int lumberCount();
+boolean finishBuildingSmutOrcBridge();
 void prepareForSmutOrcs();
 boolean L9_chasmBuild();
 boolean L9_aBooPeak();
