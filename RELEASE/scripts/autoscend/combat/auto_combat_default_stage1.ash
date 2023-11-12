@@ -210,6 +210,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	}
 
 	monster backedUpMonster = get_property("lastCopyableMonster").to_monster();
+	// reserve last adv for end of day free fights
 	boolean reserveAdvsForFreeFights = my_adventures() < 2 && !isFreeMonster(backedUpMonster);
 	if(auto_backupTarget() && enemy != backedUpMonster && canUse($skill[Back-Up to your Last Enemy])
 		&& !reserveAdvsForFreeFights)
