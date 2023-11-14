@@ -697,7 +697,8 @@ boolean L9_twinPeak()
 		return false;
 	}
 
-	if(hedgeTrimmersNeeded() > 0 && auto_autumnatonCanAdv($location[Twin Peak]) && !isAboutToPowerlevel() && $location[Twin Peak].turns_spent > 0)
+	if(hedgeTrimmersNeeded() > 0 && auto_autumnatonCanAdv($location[Twin Peak]) && !isAboutToPowerlevel() && 
+		($location[Twin Peak].turns_spent > 0 || get_property("twinPeakProgress").to_int() > 0)) // using trimmers doesn't increment turns_spent, so look at quest status also
 	{
 		// delay zone to allow autumnaton to grab rusty hedge trimmers
 		// unless we have ran out of other stuff to do
@@ -809,6 +810,12 @@ boolean L9_twinPeak()
 		return false;
 	}
 	auto_log_info("Twin Peak", "blue");
+
+	if(item_amount($item[Rusty Hedge Trimmers]) == 0 && $location[Twin Peak].turns_spent == 0)
+	{
+		// wish for trimmer so we can later send fallbot for the rest
+		auto_makeMonkeyPawWish($item[Rusty Hedge Trimmers]);
+	}
 
 	int starting_trimmers = item_amount($item[Rusty Hedge Trimmers]);
 	if(starting_trimmers > 0)
