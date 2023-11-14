@@ -463,7 +463,7 @@ boolean LX_burnDelay()
 	{
 		auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
 	}
-	if(digitizeMonsterNext) 
+	if (digitizeMonsterNext) 
 	{
 		auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
 	}
@@ -623,7 +623,8 @@ void initializeDay(int day)
 
 	invalidateRestoreOptionCache();
 
-	if (get_property("auto_day_init").to_int() < day) {
+	if (get_property("auto_day_init").to_int() < day)
+	{
 		set_property("auto_powerLevelLastLevel", "0");
 		set_property("auto_delayLastLevel", "0");
 		set_property("auto_cmcConsultLastLevel", "0");

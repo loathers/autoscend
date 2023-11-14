@@ -251,7 +251,7 @@ boolean auto_canUseJuneCleaver() {
 
 boolean auto_juneCleaverAdventure()
 {
-	if (!auto_canUseJuneCleaver() || get_property("_juneCleaverFightsLeft").to_int() != 0)
+	if (!auto_canUseJuneCleaver() || get_property("_juneCleaverFightsLeft").to_int() > 0)
 	{
 		return false;
 	}

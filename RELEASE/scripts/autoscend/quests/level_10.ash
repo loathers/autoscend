@@ -80,6 +80,10 @@ boolean L10_airship()
 		{
 			return true;
 		}
+		else
+		{
+			set_property("auto_habitatMonster", "");
+		}
 	}
 
 	if(handleFamiliar($familiar[Red-Nosed Snapper]))
