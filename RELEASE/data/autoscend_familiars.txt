@@ -316,12 +316,12 @@ regen	32	Mosquito
 stat	0	Galloping Grill	ML:>=120
 stat	1	Baby Sandworm	ML:>=120
 stat	2	God Lobster	ML:>=120;item:God Lobster's Ring>0
-stat	3	Patriotic Eagle	ML:>=120
-stat	4	Hovering Sombrero	ML:>=120
+# Volleyball or sombrero (whichever is best) with a multiplier
+stat	3	Jill-of-All-Trades	item:LED candle>0
+stat	4	Patriotic Eagle	ML:>=120
+stat	5	Hovering Sombrero	ML:>=120
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
-stat	5	Crimbo Shrub
-# Volleyballs with a multiplier
-stat	6	Jill-of-All-Trades	item:LED candle>0
+stat	6	Crimbo Shrub
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
 # Fairyeverything
