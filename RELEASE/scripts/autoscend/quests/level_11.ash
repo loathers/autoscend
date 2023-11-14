@@ -2105,6 +2105,12 @@ boolean L11_hiddenCityZones()
 		return false;
 	}
 
+	if (auto_habitatFightsLeft() > 0)
+	{
+		// Don't waste habitat wanderers clearing dense liana's
+		return false;
+	}
+
 	if (get_property("hiddenApartmentProgress").to_int() == 0) {
 		if (canUseMachete && !equipMachete()) {
 			return false;
