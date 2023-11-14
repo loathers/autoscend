@@ -730,6 +730,10 @@ boolean adjustForBanish(string combat_string)
 		}
 		return false;
 	}
+	if(combat_string == "skill " + $skill[Monkey Slap])
+	{
+		return autoEquip($item[cursed monkey\'s paw]);
+	}
 	return true;
 }
 
@@ -903,7 +907,7 @@ boolean adjustForYellowRay(string combat_string)
 	{
 		auto_configureParka("acid");
 	}
-	if(combat_string == ("skill " + $skill[Unleash the Devil's Kiss]))
+	if(combat_string == ("skill " + $skill[Unleash the Devil\'s Kiss]))
 	{
 		auto_configureRetrocape("heck", "kiss");
 	}
@@ -991,6 +995,10 @@ boolean canSniff(monster enemy, location loc)
 boolean adjustForSniffingIfPossible(monster target)
 {
 	skill sniffer = getSniffer(target, false);
+	if(sniffer == $skill[Monkey Point])
+	{
+		return autoEquip($item[cursed monkey\'s paw]);
+	}
 	if(sniffer != $skill[none])
 	{
 		return acquireMP(sniffer.mp_cost());
@@ -3194,6 +3202,8 @@ boolean auto_check_conditions(string conds)
 				if(in_darkGyffte() && get_property("auto_bat_soulmonster").to_monster() == check_sniffed)
 					return true;
 				if(get_property("_gallapagosMonster").to_monster() == check_sniffed)
+					return true;
+				if(get_property("monkeyPointMonster").to_monster() == check_sniffed)
 					return true;
 				if(get_property("_latteMonster").to_monster() == check_sniffed)
 					return true;
