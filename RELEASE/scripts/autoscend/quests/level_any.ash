@@ -544,7 +544,7 @@ boolean LX_fatLootToken()
 		// at NS tower door and still need hero keys
 
 		// summon and copy fantasy realm bandit. Allows for getting fantasy realm token without having FR available
-		if(!acquiredFantasyRealmToken() && auto_haveBackupCamera() && auto_backupUsesLeft() >= (4 - fantasyBanditsFought()) && canSummonMonster($monster[fantasy bandit]))
+		if(!acquiredFantasyRealmToken() && ((auto_haveBackupCamera() && auto_backupUsesLeft() >= (4 - fantasyBanditsFought())) || auto_canHabitat()) && canSummonMonster($monster[fantasy bandit]))
 		{
 			return summonMonster($monster[fantasy bandit]);
 		}

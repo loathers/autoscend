@@ -60,6 +60,11 @@ boolean L4_batCave()
 	
 	if(batStatus >= 3)
 	{
+		if (auto_reserveUndergroundAdventures() && !in_lol())
+		{
+			return false;
+		}
+
 		buffMaintain($effect[Polka of Plenty], 15, 1, 1);
 		//AoSOL buffs
 		if(in_aosol())

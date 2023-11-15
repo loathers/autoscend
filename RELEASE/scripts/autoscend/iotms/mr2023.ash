@@ -213,13 +213,22 @@ boolean auto_haveMonkeyPaw()
 	return auto_is_valid(paw) && (item_amount(paw) > 0 || have_equipped(paw));
 }
 
+int auto_monkeyPawWishesLeft()
+{
+	if (auto_haveMonkeyPaw())
+	{
+		return 5 - get_property("_monkeyPawWishesUsed").to_int();
+	}
+	return 0;
+}
+
 boolean auto_makeMonkeyPawWish(effect wish)
 {
 	if (!auto_haveMonkeyPaw()) {
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
-	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+	if (auto_monkeyPawWishesLeft() < 1) {
 		auto_log_info("Out of monkey paw wishes, skipping "+to_string(wish));
 		return false;
 	}
@@ -236,7 +245,7 @@ boolean auto_makeMonkeyPawWish(item wish)
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
-	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+	if (auto_monkeyPawWishesLeft() < 1) {
 		auto_log_info("Out of monkey paw wishes, skipping "+to_string(wish));
 		return false;
 	}
@@ -253,7 +262,7 @@ boolean auto_makeMonkeyPawWish(string wish)
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
-	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+	if (auto_monkeyPawWishesLeft() < 1) {
 		auto_log_info("Out of monkey paw wishes, skipping "+wish);
 		return false;
 	}
@@ -378,7 +387,7 @@ boolean shouldCinchoConfetti()
 		return false;
 	}
 	// use all free rests before using confetti. May get enough cinch to fiesta exit
-	if(haveFreeRestAvailable())
+	if (haveFreeRestAvailable() || numeric_modifier("Free Rests") < auto_potentialMaxFreeRests())
 	{
 		return false;
 	}
@@ -453,12 +462,14 @@ void auto_buyFrom2002MrStore()
 		use(itemConsidering);
 	}
 	// giant black monlith. Mostly useful at low level for stats
-	itemConsidering = $item[giant black monolith];
-	if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
-	{
-		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
-		use(itemConsidering);
-		visit_url("campground.php?action=monolith");
+	if (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) {
+		itemConsidering = $item[giant black monolith];
+		if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
+		{
+			buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+			use(itemConsidering);
+			visit_url("campground.php?action=monolith");
+		}
 	}
 	// crimbo cookie. Should we expand to buy more or use in more paths beyond HC LoL?
 	itemConsidering = $item[Crimbo cookie sheet];
@@ -574,6 +585,99 @@ boolean auto_haveBofa()
 	return auto_is_valid($skill[just the facts]) && have_skill($skill[just the facts]);
 }
 
+boolean auto_canHabitat()
+{
+	if (!auto_haveBofa())
+	{
+		return false;
+	}
+	if (get_property("_monsterHabitatsRecalled").to_int() >= 3)
+	{
+		// no charges left
+		return false;
+	}
+	if (get_property("_monsterHabitatsFightsLeft").to_int() > 0)
+	{
+		// already habitating something but we may not need all 5 of them in certain situations
+		switch (get_property("_monsterHabitatsMonster").to_monster())
+		{
+			case $monster[fantasy bandit]:
+				return (fantasyBanditsFought() < 5);
+			case $monster[modern zmobie]:
+				return get_property("cyrptAlcoveEvilness").to_int() > 13;
+			default:
+				return false;
+		}
+	}
+	return true;
+}
+
+boolean auto_habitatTarget(monster target)
+{
+	if (!auto_canHabitat()) {
+		return false;
+	}
+	if (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() > 0)
+	{
+		// already habitating this monster
+		return false;
+	}
+	switch (target)
+	{
+		case $monster[fantasy bandit]:
+			// only worth it if we need all 5.
+			return (fantasyBanditsFought() == 0);
+		case $monster[modern zmobie]:
+		 	// only worth it if we need 30 or more evilness reduced.
+			return (get_property("cyrptAlcoveEvilness").to_int() > 42);
+		case $monster[eldritch tentacle]:
+			return (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0));
+		default:
+			return (get_property("auto_habitatMonster").to_monster() == target);
+	}
+	return false;
+}
+
+int auto_habitatFightsLeft()
+{
+	return get_property("_monsterHabitatsFightsLeft").to_int();
+}
+
+monster auto_habitatMonster()
+{
+	if (get_property("_monsterHabitatsFightsLeft").to_int() > 0)
+	{
+		return get_property("_monsterHabitatsMonster").to_monster();
+	}
+	return $monster[none];
+}
+
+boolean auto_canCircadianRhythm()
+{
+	if (!auto_haveBofa())
+	{
+		return false;
+	}
+	if (get_property("_circadianRhythmsRecalled").to_boolean())
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean auto_circadianRhythmTarget(monster target)
+{
+	if (!auto_canCircadianRhythm())
+	{
+		return false;
+	}
+	if (!($monsters[shadow bat, shadow cow, shadow devil, shadow guy, shadow hexagon, shadow orb, shadow prism, shadow slab, shadow snake, shadow spider, shadow stalk, shadow tree] contains target))
+	{
+		return false;
+	}
+	return true;
+}
+
 boolean auto_haveJillOfAllTrades()
 {
 	if(auto_have_familiar($familiar[Jill-of-All-Trades]))
@@ -598,7 +702,6 @@ string getParsedCandleMode()
 			return "boss";
 		default:
 			return "unknown";
-		
 	}
 }
 
@@ -649,4 +752,41 @@ void auto_handleJillOfAllTrades()
 	}
 
 	return;
+}
+
+boolean auto_haveBurningLeaves()
+{
+	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];
+}
+
+boolean auto_burnLeaves()
+{
+	if (!auto_haveBurningLeaves())
+	{
+		return false;
+	}
+	if (available_amount($item[rake]) < 1)
+	{
+		// visit the pile of burning leaves to grab the rakes
+		visit_url("campground.php?preaction=leaves");
+	}
+	if (item_amount($item[inflammable leaf]) > 73 && !(get_campground() contains $item[forest canopy bed]) && get_dwelling() != $item[big rock] && auto_haveCincho())
+	{
+		// get and use the forest canopy bed if we don't have one already and have a Cincho as it is +5 free rests
+		if (create(1, $item[forest canopy bed]))
+		{
+			return use(1, $item[forest canopy bed]);
+		}
+		return false;
+	}
+	if (get_campground() contains $item[forest canopy bed] && item_amount($item[inflammable leaf]) > 49 && have_effect($effect[Resined]) == 0)
+	{
+		// Get the Resined effect if we don't have it as it is net positive for leaves.
+		if (create(1, $item[distilled resin]))
+		{
+			return use(1, $item[distilled resin]);
+		}
+		return false;
+	}
+	return false;
 }
