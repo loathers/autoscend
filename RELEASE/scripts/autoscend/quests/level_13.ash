@@ -234,8 +234,8 @@ boolean LX_getStarKey()
 	if (needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7 && auto_haveBackupCamera() && auto_backupUsesLeft() >= copiesNeeded)
 	{
 		// in case it matters later, summon only the monster we can naturally encounter in this ascension.
-		if(my_ascensions() % 2 == 1 && canSummonMonster($monster[Skinflute]) && summonMonster($monster[Skinflute])) return true;
-		if(my_ascensions() % 2 == 0 && canSummonMonster($monster[Camel's Toe]) && summonMonster($monster[Camel's Toe])) return true;
+		if(my_ascensions() % 2 == 1 && !summonedMonsterToday($monster[Skinflute]) && canSummonMonster($monster[Skinflute]) && summonMonster($monster[Skinflute])) return true;
+		if(my_ascensions() % 2 == 0 && !summonedMonsterToday($monster[Camel's Toe]) && canSummonMonster($monster[Camel's Toe]) && summonMonster($monster[Camel's Toe])) return true;
 	}
 
 	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;

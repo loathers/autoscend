@@ -11,82 +11,82 @@ L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
 LX_summonMonster
-LM_edTheUndying
-LX_bugbearInvasion
-LX_lowkeySummer
-resolveSixthDMT
+# make sure we don't waste turns of Ultrahydrated doing something else.
 L11_aridDesert	L11_hasUltrahydrated
-L12_flyerFinish
-L12_getOutfit
-L12_startWar
-LX_loggingHatchet
+# Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
+L11_shenStartQuest
+# Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
+# Underground Adventuring for CMC/Breathitin.
+LX_goingUnderground
+# Forcing Non-combats to progress quests.
+# Burn Breathitin charges
+auto_useBreathitinCharges
+# Guild access.
 LX_guildUnlock
-LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+#	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
 LX_unlockDesert
-handleRainDoh
-LX_spookyravenManorFirstFloor
-L6_friarsGetParts	LX_steelOrgan_condition_slow
-LX_steelOrgan	LX_steelOrgan_condition_slow
-L4_batCave
-L2_mosquito
-LX_unlockHiddenTemple
-L6_dakotaFanning
 LX_lockPicking
 LX_fatLootToken
-L5_slayTheGoblinKing
-LX_islandAccess
-L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
-LX_spookyravenManorSecondFloor
-L3_tavern
-L6_friarsGetParts
-LX_steelOrgan	in_hardcore
-L7_crypt
-fancyOilPainting
-L8_trapperQuest
+#	Get the Steel Organ if the user wants it (needs L6 quest complete)
 LX_steelOrgan
-L10_plantThatBean
-L12_preOutfit
-L10_airship
-L10_basement
-L10_ground
+# open up delay zones.
+LX_spookyravenManorFirstFloor
+# open up zones where we want to force non-combats.
+# Open up underground zones so they are available for Breathitin.
+L5_getEncryptionKey
+L5_findKnob
+#	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
+L12_islandWar
+# Start the macguffin quest
 L11_blackMarket
 L11_forgedDocuments
 L11_mcmuffinDiary
-L10_topFloor
-L10_holeInTheSkyUnlock
+L11_getBeehive
+# open the hidden city up (delay zones)
+L2_mosquito
+LX_unlockHiddenTemple
+L6_dakotaFanning
+L11_unlockHiddenCity
+# Murder pygmies for the ancient amulet.
+L11_hiddenCityZones
+L11_hiddenCity
+# Dance with lady spookyraven so we can go murder her undead husband and take the Eye of Ed
+LX_spookyravenManorSecondFloor
+L11_mauriceSpookyraven
+# Lay the smack down on those Jerk Copperhead twins
+L11_talismanOfNam
+# Open up the top of the beanstalk.
+L10_plantThatBean
+# Clean up the plains
+L10_rainOnThePlains
+# Get Black Angus his pizza
 L9_chasmBuild
 L9_highLandlord
-L12_flyerBackup
-Lsc_flyerSeals
-L11_mauriceSpookyraven
-L11_unlockHiddenCity
-L11_hiddenCityZones
-LX_ornateDowsingRod
-L11_aridDesert
-L11_hiddenCity
-L11_talismanOfNam
+#  Kill Groar because *we* are the monsters.
+L8_trapperQuest
+# Kill the undead? Is this an oxymoron?
+L7_crypt
+# Cleanse the taint.
+L6_friarsGetParts
+# Finish the other Macguffin zones so we can beat Ed to death repeatedly and waste all his Ka coins.
 L11_palindome
+L11_aridDesert
 L11_unlockPyramid
 L11_unlockEd
 L11_defeatEd
-L12_gremlins
-L12_sonofaFinish
-L12_sonofaBeach
-L12_filthworms
-L12_orchardFinalize
-L12_themtharHills
-L12_farm
-L11_getBeehive
-L12_finalizeWar
-L12_clearBattlefield
-LX_koeInvaderHandler
+#	Finish off the Goblin King.
+L5_slayTheGoblinKing
+# Show the Boss bat who's boss.
+L4_batCave
+# Fix that dripping tap.
+L3_tavern
+# Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
+L2_mosquito
+# release the softblock on delay burning
 setSoftblockDelay	allowSoftblockDelay
-L12_lastDitchFlyer
-LX_bugbearInvasionFinale
-L13_towerNSContests
-L13_towerNSHedge
-L13_sorceressDoor
-L13_towerNSTower
-L13_towerNSNagamar
-L13_towerNSFinal
+# release the softblock on Underground Adventures
+setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
+# "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
+L13_towerAscent
+# if all else fails, powerlevel like there's no tomorrow.
 LX_attemptPowerLevel

@@ -25,7 +25,7 @@ boss	7	Mosquito
 # First we grab up to small amount of various specific drops.
 #
 # every 2 cookbookbat ingredients generate a size 1 density 7 food. prioritize having enough to craft 1.
-drop	0	Cookbookbat	item:Vegetable of Jarlsberg<2;item:Yeast of Boris<2;item:St. Sneaky Pete's Whey<2
+drop	0	Cookbookbat	item:Vegetable of Jarlsberg<2;item:Yeast of Boris<2;item:St. Sneaky Pete's Whey<2;!prop_boolean:auto_dontUseCookBookBat
 # jill will drop her fam equip and a halloween map. Only consider map though
 drop	1	Jill-of-All-Trades	item:Map to a candy-rich block<1
 # 5 turkey booze drops a day. each is size 1 and density of either 5, 5.5, or 6
@@ -58,9 +58,9 @@ drop	13	Melodramedary	prop:camelSpit<100
 drop	14	Intergnat	item:BACON<150
 #
 # Generate extra cookbookbat ingredients to make sure we have enough stock on hand for higher-tier foods
-drop	15	Cookbookbat	item:Vegetable of Jarlsberg<4
-drop	16	Cookbookbat	item:Yeast of Boris<4
-drop	17	Cookbookbat	item:St. Sneaky Pete's Whey<4
+drop	15	Cookbookbat	item:Vegetable of Jarlsberg<4;!prop_boolean:auto_dontUseCookBookBat
+drop	16	Cookbookbat	item:Yeast of Boris<4;!prop_boolean:auto_dontUseCookBookBat
+drop	17	Cookbookbat	item:St. Sneaky Pete's Whey<4;!prop_boolean:auto_dontUseCookBookBat
 # Below this lines drops are not needed more of for the run and are just grabbing for profit.
 # Most are useful in limited amounts which we already grab via boolean autoChooseFamiliar(location place)
 #
@@ -85,7 +85,7 @@ drop	28	Green Pixie	prop:_absintheDrops<5
 # Hot ashes can make a potion that gives +15 ML for 15 adv. drop limit 5/day
 drop	29	Galloping Grill	prop:_hotAshesDrops<5
 # If all else fails, keep generating CBB ingredients
-drop	30	Cookbookbat
+drop	30	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
 
 # We want to delevel, but don't want to deal damage
 gremlins	0	Nosy Nose
@@ -316,12 +316,12 @@ regen	32	Mosquito
 stat	0	Galloping Grill	ML:>=120
 stat	1	Baby Sandworm	ML:>=120
 stat	2	God Lobster	ML:>=120;item:God Lobster's Ring>0
-stat	3	Patriotic Eagle	ML:>=120
-stat	4	Hovering Sombrero	ML:>=120
+# Volleyball or sombrero (whichever is best) with a multiplier
+stat	3	Jill-of-All-Trades	item:LED candle>0
+stat	4	Patriotic Eagle	ML:>=120
+stat	5	Hovering Sombrero	ML:>=120
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
-stat	5	Crimbo Shrub
-# Volleyballs with a multiplier
-stat	6	Jill-of-All-Trades	item:LED candle>0
+stat	6	Crimbo Shrub
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
 # Fairyeverything

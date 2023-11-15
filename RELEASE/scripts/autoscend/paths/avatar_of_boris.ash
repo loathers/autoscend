@@ -86,7 +86,6 @@ void boris_initializeDay(int day)
 			while(acquireHermitItem($item[11-Leaf Clover]));
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
-			pullXWhenHaveY(whatHiMein(), 1, 0);
 		}
 	}
 	else if(day == 3)

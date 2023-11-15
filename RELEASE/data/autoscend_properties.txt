@@ -129,7 +129,6 @@
 132	auto_modernzmobiecount
 133	auto_combatHP
 134	auto_combatHandlerThunderBird
-135	auto_combatHandlerFingernailClippers
 136	auto_combatDirective
 137	auto_useTatter
 138	auto_useCleesh
@@ -203,11 +202,9 @@
 207	auto_getBeehive
 208	auto_holeinthesky
 209	auto_choice1119
-210	auto_waitingArrowAlcove
 211	auto_getSteelOrgan
 212	auto_newbieOverride
 213	auto_dakotaFanning
-214	auto_delayHauntedKitchen
 215	auto_prehippy
 216	auto_boopeak
 217	auto_aboocount
