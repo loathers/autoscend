@@ -224,7 +224,7 @@ boolean auto_reserveOutdoorAdventures()
 	return false;
 }
 
-boolean auto_useBreathitinCharges()
+boolean LX_useBreathitinCharges()
 {
 	if (get_property("breathitinCharges").to_int() > 0)
 	{

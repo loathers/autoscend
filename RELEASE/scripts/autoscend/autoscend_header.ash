@@ -1572,7 +1572,7 @@ boolean LX_goingUnderground();
 boolean allowSoftblockOutdoorAdvs();
 boolean setSoftblockOutdoorAdvs();
 boolean auto_reserveOutdoorAdventures();
-boolean auto_useBreathitinCharges();
+boolean LX_useBreathitinCharges();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
