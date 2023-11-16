@@ -2157,6 +2157,24 @@ int freeRestsRemaining(){
 	return max(0, total_free_rests() - get_property("timesRested").to_int());
 }
 
+int auto_potentialMaxFreeRests()
+{
+	// return the number of free rests we could potentially have if we get all the stuff that gives them from IotMs.
+	// we can get the count of "intrinsic" free rests e.g perm'd skills & rests you get just from having something available in run
+	int potential = numeric_modifier("Free Rests");
+
+	if (auto_canUseJuneCleaver() && !possessEquipment($item[mother's necklace]))
+	{
+		potential += 5;
+	}
+	if (auto_haveBurningLeaves() && !(get_campground() contains $item[forest canopy bed]))
+	{
+		potential += 5;
+	}
+	// add more old stuff here. I only care about what is in 2023 Standard right now.
+	return potential;
+}
+
 boolean haveAnyIotmAlternativeRestSiteAvailable(){
 	return chateaumantegna_available() || auto_campawayAvailable();
 }

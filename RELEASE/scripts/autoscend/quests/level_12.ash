@@ -1428,7 +1428,7 @@ boolean L12_sonofaPrefix()
 				}
 				if(auto_voteMonster() && !auto_voteMonster(true))
 				{
-					auto_voteMonster(false, $location[Sonofa Beach], "");
+					auto_voteMonster(false, $location[Sonofa Beach]);
 					return true;
 				}
 				else if(auto_sausageGoblin() && !auto_haveVotingBooth())

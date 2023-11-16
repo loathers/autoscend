@@ -339,7 +339,7 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
+	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && place == solveDelayZone());
 	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
 	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
@@ -470,11 +470,6 @@ boolean auto_pre_adventure()
 			auto_log_info('We want to get the "' + auto_latteDropName(place) + '" ingredient for our Latte from ' + place + ", so we're bringing it along.", "blue");
 			autoEquip($item[latte lovers member\'s mug]);
 		}
-	}
-
-	if(auto_backupTarget())
-	{
-		autoEquip($slot[acc3], $item[backup camera]);
 	}
 
 	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
@@ -938,9 +933,33 @@ boolean auto_pre_adventure()
 	borisWastedMP();
 	borisTrusty();
 
-	acquireMP(32, 0);
-	
-	if(my_maxmp() < 32)
+	int mpNeeded = 32; // enough for 5 casts of Saucestorm. Usually this should be fine for most combats
+	switch (my_class())
+	{
+		// expand this for other cases where we need more MP for combat.
+		// ideally we could ask the combat function to tell us how much MP it will need for an example encounter in the zone we are going to.
+		case $class[Disco Bandit]:
+			if ($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains place)
+			{
+				// DB aborts in the Shadow Rifts because it runs out of MP trying to use Saucestorm against physically immune monsters when it has Extingo equipped.
+				foreach sk in $skills[Disco Dance of Doom, Disco Dance II: Electric Boogaloo, Disco Dance 3: Back in the Habit]
+				{
+					// yes it casts all 3 of those first then tries to repeat Saucestorm. On 32 or so MP.
+					if (auto_have_skill(sk))
+					{
+						mpNeeded += mp_cost(sk);
+					}
+				}
+			}
+			break;
+		default:
+			break;
+	}
+	acquireMP(mpNeeded, 0);
+                       
+  //acquireMP won't do anything if the maxMP isn't big enough,
+  //so we'll use this to ensure we have MP in low max scenarios
+  if(my_maxmp() < mpNeeded)
 	{
 		low_mp_handler();
 	}

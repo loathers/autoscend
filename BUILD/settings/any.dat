@@ -1,6 +1,5 @@
 auto_skipGuzzlrCocktailSet	boolean	If true will not accept and abandon a Platinum Guzzlr quest for the cocktail set.
 auto_mushroomGardenGrowth	integer	Picks the mushroom when growth reaches the given value (or higher). Defaults to 1 to pick every day, capped at 11.
-auto_delayHauntedKitchen	boolean	Should we delay the Haunted Kitchen until we have 9 resist? Setting will situationally be ignored such as in Ed where we always delay for Even More Elemental Wards
 auto_delayTimer	integer	Sets the delay before each action, default is 1 second(s). It is not recommended to reduce this below 1.
 auto_powerLevelTimer	integer	Delay in seconds before each time we spend an adv powerleveling. default is 10 sec. lowest valid value is 1.
 auto_stayInRun	boolean	If true, we stop when the King can be freed but do not free the King. Paths with a choice at liberation time will always stayInRun regardless of this setting.
