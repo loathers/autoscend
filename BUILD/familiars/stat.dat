@@ -2,12 +2,12 @@
 Galloping Grill	ML:>=120
 Baby Sandworm	ML:>=120
 God Lobster	ML:>=120;item:God Lobster's Ring>0
+# Volleyball or sombrero (whichever is best) with a multiplier
+Jill-of-All-Trades	item:LED candle>0
 Patriotic Eagle	ML:>=120
 Hovering Sombrero	ML:>=120
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
 Crimbo Shrub
-# Volleyballs with a multiplier
-Jill-of-All-Trades	item:LED candle>0
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
 # Fairyeverything

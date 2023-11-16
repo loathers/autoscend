@@ -209,6 +209,18 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 	}
 
+	if (auto_canCircadianRhythm() && auto_circadianRhythmTarget(enemy) && canUse($skill[Recall Facts: %phylum Circadian Rhythms]))
+	{
+		handleTracker($skill[Recall Facts: %phylum Circadian Rhythms], enemy.phylum, "auto_otherstuff");
+		return useSkill($skill[Recall Facts: %phylum Circadian Rhythms]);
+	}
+
+	if (auto_canHabitat() && auto_habitatTarget(enemy) && canUse($skill[Recall Facts: Monster Habitats]))
+	{
+		handleTracker($skill[Recall Facts: Monster Habitats], enemy, "auto_copies");
+		return useSkill($skill[Recall Facts: Monster Habitats]);
+	}
+
 	monster backedUpMonster = get_property("lastCopyableMonster").to_monster();
 	// reserve last adv for end of day free fights
 	boolean reserveAdvsForFreeFights = my_adventures() < 2 && !isFreeMonster(backedUpMonster);

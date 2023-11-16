@@ -287,6 +287,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		//want drops from this enemy
 		couldInstaKill = false;
 	}
+	else if($monsters[dirty thieving brigand] contains enemy)
+	{
+		//want meat drops. Free fights cap meat drop to 1k
+		couldInstaKill = false;
+	}
 
 	if(instakillable(enemy) && !isFreeMonster(enemy, my_location()) && couldInstaKill)
 	{

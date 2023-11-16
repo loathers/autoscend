@@ -166,35 +166,10 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	{
 		if($monsters[Lobsterfrogman, Modern Zmobie, Ninja Snowman Assassin] contains enemy)
 		{
-			if(enemy == $monster[modern zmobie])
-			{
-				set_property("auto_waitingArrowAlcove", get_property("cyrptAlcoveEvilness").to_int() - 20);
-			}
 			return useSkill(wink_skill);
 		}
 	}
 	
-	//[Conspiracy Island] iotm specific. clip the fingernails of [One of Doctor Weirdeaux's creations]
-	int fingernailClippersLeft = get_property("auto_combatHandlerFingernailClippers").to_int();
-	if(fingernailClippersLeft > 0)
-	{
-		fingernailClippersLeft = fingernailClippersLeft - 1;
-		if(fingernailClippersLeft == 0)
-		{
-			markAsUsed($item[military-grade fingernail clippers]);
-		}
-		set_property("auto_combatHandlerFingernailClippers", "" + fingernailClippersLeft);
-		return "item " + $item[military-grade fingernail clippers];
-	}
-
-	if((item_amount($item[military-grade fingernail clippers]) > 0)  && (enemy == $monster[one of Doctor Weirdeaux\'s creations]))
-	{
-		if(!haveUsed($item[military-grade fingernail clippers]))
-		{
-			fingernailClippersLeft = 3;
-			set_property("auto_combatHandlerFingernailClippers", "3");
-		}
-	}
 	
 	//insults are used as part of the pirates quest
 	if(canUse($item[The Big Book of Pirate Insults]) && (numPirateInsults() < 8) && (internalQuestStatus("questM12Pirate") < 5))

@@ -218,6 +218,9 @@ boolean isSniffed(monster enemy, skill sk)
 		case $skill[Gallapagosian Mating Call]:
 			retval = contains_text(get_property("_gallapagosMonster"), enemy);
 			break;
+		case $skill[Monkey Point]:
+			retval = contains_text(get_property("monkeyPointMonster"), enemy);
+			break;
 		case $skill[Get a Good Whiff of This Guy]:
 			retval = contains_text(get_property("nosyNoseMonster"), enemy) && my_familiar() == $familiar[Nosy Nose];
 			break;
@@ -236,7 +239,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Offer Latte to Opponent, Motif]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -271,6 +274,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	if(canUse($skill[Gallapagosian Mating Call], true , inCombat) && !isSniffed(enemy, $skill[Gallapagosian Mating Call]))
 	{
 		return $skill[Gallapagosian Mating Call];
+	}
+	if(canUse($skill[Monkey Point], true , inCombat) && !isSniffed(enemy, $skill[Monkey Point]))
+	{
+		return $skill[Monkey Point];
 	}
 	if(my_familiar() == $familiar[Nosy Nose] && canUse($skill[Get a Good Whiff of This Guy]) && !isSniffed(enemy,$skill[Get a Good Whiff of This Guy]))
 	{
@@ -656,6 +663,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if(auto_have_skill($skill[Snokebomb]) && auto_is_valid($skill[Snokebomb]) && (get_property("_snokebombUsed").to_int() < 3) && ((my_mp() - 20) >= mp_cost($skill[Snokebomb])) && (!(used contains "snokebomb")))
 	{
 		return "skill " + $skill[Snokebomb];
+	}
+
+	if((inCombat ? auto_have_skill($skill[Monkey Slap]) : possessEquipment($item[cursed monkey\'s paw])) && auto_is_valid($skill[Monkey Slap]) && !(used contains "Monkey Slap"))
+	{
+		return "skill " + $skill[Monkey Slap];
 	}
 	
 	//[Nanorhino] familiar specific banish. fairly low priority as it consumes 40 to 50 adv worth of a decent buff.

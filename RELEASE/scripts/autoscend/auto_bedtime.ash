@@ -1202,7 +1202,7 @@ boolean doBedtime()
 	if (auto_haveMonkeyPaw())
 	{
 		boolean success = true;
-		while (get_property("_monkeyPawWishesUsed").to_int() < 5 && success)
+		while (auto_monkeyPawWishesLeft() > 0 && success)
 		{
 			success = auto_makeMonkeyPawWish(effect_to_wish);
 		}
