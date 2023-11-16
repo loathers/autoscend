@@ -93,6 +93,11 @@ boolean autoDrink(int howMany, item toDrink)
 
 boolean autoDrink(int howMany, item toDrink, boolean silent)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	if((toDrink == $item[none]) || (howMany <= 0))
 	{
 		return false;
@@ -229,6 +234,11 @@ string cafeDrinkName(int id)
 
 boolean autoDrinkCafe(int howmany, int id)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	// Note that caller is responsible for calling Ode to Booze,
 	// since we might be in TCRS and not know how many adventures
 	// we'll get from the drink.
@@ -249,6 +259,11 @@ boolean autoDrinkCafe(int howmany, int id)
 
 boolean autoEatCafe(int howmany, int id)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	if(!canadia_available()) return false;
 
 	equipStatgainIncreasersFor(id.to_item());
@@ -301,6 +316,11 @@ boolean autoEat(int howMany, item toEat)
 
 boolean autoEat(int howMany, item toEat, boolean silent)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	if((toEat == $item[none]) || (howMany <= 0))
 	{
 		return false;
@@ -371,8 +391,6 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	}
 	return retval;
 }
-
-
 
 boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 {
@@ -702,6 +720,11 @@ boolean autoPrepConsume(ConsumeAction action)
 
 boolean autoConsume(ConsumeAction action)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	if (action.howToGet != AUTO_OBTAIN_NULL)
 	{
 		abort("ConsumeAction not prepped: " + to_debug_string(action));
@@ -1634,6 +1657,11 @@ ConsumeAction auto_findBestConsumeAction()
 
 boolean auto_autoConsumeOne(ConsumeAction action)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	if (action.it == $item[none] && action.cafeId == 0)
 	{
 		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
