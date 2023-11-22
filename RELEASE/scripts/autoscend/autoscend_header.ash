@@ -523,6 +523,7 @@ void auto_buyFrom2002MrStore();
 void auto_useBlackMonolith();
 boolean auto_haveAugustScepter();
 void auto_scepterSkills();
+void auto_scepterRollover();
 void auto_lostStomach();
 boolean auto_haveBofa();
 boolean auto_canHabitat();

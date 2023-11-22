@@ -522,41 +522,35 @@ void auto_scepterSkills()
 	{
 		return;
 	}
-	//Day 1 skills
-	if(my_daycount() == 1)
+	
+	if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
 	{
-		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
-		}
-		if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
-		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
-		{
-			if(!is100FamRun())
-			{
-				use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
-			}
-			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
-		}
+		use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
 	}
-	//Day 2+ skills
-	if(my_daycount() >= 2)
+	if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
 	{
-		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		if(!is100FamRun())
 		{
-			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+			use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
 		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
-		{
-			if(!is100FamRun())
-			{
-				use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
-			}
-			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
-		}
+		use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+	}
+}
+
+void auto_scepterRollover()
+{
+	if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
+	}
+	if(canUse($skill[Aug. 27th: Just Because Day!]) && !get_property("_aug27Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 27th: Just Because Day!]); //3 random buffs
+	}
+	if(canUse($skill[Aug. 13th: Left\/Off Hander\'s Day!]) && !get_property("_aug13Cast").to_boolean() &&
+	get_property("_augSkillsCast").to_int()< 5 && numeric_modifier(equipped_item($slot[offhand]),"Adventures") > 0)
+	{
+		use_skill($skill[Aug. 13th: Left\/Off Hander\'s Day!]); //3 random buffs
 	}
 }
 
