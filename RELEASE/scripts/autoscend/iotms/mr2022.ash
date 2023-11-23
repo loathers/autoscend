@@ -251,7 +251,7 @@ boolean auto_canUseJuneCleaver() {
 
 boolean auto_juneCleaverAdventure()
 {
-	if (!auto_canUseJuneCleaver() || get_property("_juneCleaverFightsLeft").to_int() > 0)
+	if (!auto_canUseJuneCleaver() || get_property("_juneCleaverFightsLeft").to_int() > 0 || !zone_isAvailable($location[The Dire Warren]))
 	{
 		return false;
 	}
@@ -672,7 +672,8 @@ boolean auto_autumnatonQuest()
 	if(auto_autumnatonCheckForUpgrade("leftarm1") &&
 	 auto_autumnatonCheckForUpgrade("rightarm1") &&
 	 item_amount($item[barrel of gunpowder]) < 5 && 
-	 get_property("sidequestLighthouseCompleted") == "none")
+	 get_property("sidequestLighthouseCompleted") == "none" &&
+	 !in_koe())
 	{
 		location targetLocation = $location[Sonofa Beach];
 		if(!auto_autumnatonCanAdv(targetLocation) && zone_available(targetLocation))

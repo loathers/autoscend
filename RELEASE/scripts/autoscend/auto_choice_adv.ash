@@ -414,7 +414,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(6); // skip
 			break;
 		case 888: // Take a Look, it's in a Book! (Rise) (The Haunted Library)
-			run_choice(4); // skip
+			run_choice(5); // skip
 			break;
 		case 889: // Take a Look, it's in a Book! (Fall) (The Haunted Library)
 			if(item_amount($item[dictionary]) == 0 && get_property("auto_getDictionary").to_boolean())
@@ -624,18 +624,18 @@ boolean auto_run_choice(int choice, string page)
 		case 1436: // Billiards Room Options (Cartography)
 			cartographyChoiceHandler(choice);
 			break;
-		case 1467:
-		case 1468:
-		case 1469:
-		case 1470:
-		case 1471:
-		case 1472:
-		case 1473:
-		case 1474:
-		case 1475:
+		case 1467: // Poetic Justice (Cleaver)
+		case 1468: // Aunts not Ants (Cleaver)
+		case 1469: // Beware of Aligator (Cleaver)
+		case 1470: // Teacher's Pet (Cleaver)
+		case 1471: // Lost and Found (Cleaver)
+		case 1472: // Summer Days (Cleaver)
+		case 1473: // Bath Time (Cleaver)
+		case 1474: // Delicious Sprouts (Cleaver)
+		case 1475: // Hypnotic Master (Cleaver)
 			juneCleaverChoiceHandler(choice);
 			break;
-		case 1491:  //Strange Stalagmite(s) (Strange stalagmite from Rock Garden)
+		case 1491: // Strange Stalagmite(s) (Rock Garden)
 			if(my_primestat() == $stat[Muscle])
 			{
 				run_choice(1); // muscle stats
@@ -649,23 +649,21 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(3); // moxie stats
 			}
 			break;
-		case 1494:
+		case 1494: // Examine S.I.T. Course Certificate (S.I.T Course)
 			if(my_level() < 8)
 			{
-				run_choice(3); //Cryptobotanist (S.I.T. Course)
+				run_choice(3); // Cryptobotanist (S.I.T. Course)
 			}
 			else
 			{
-				run_choice(2); //Insectologist (S.I.T. Course)
+				run_choice(2); // Insectologist (S.I.T. Course)
 			}
 			break;
 		case 1497: // Calling Rufus
-			// get artifact quest
-			run_choice(2);
+			run_choice(2); // get artifact quest
 			break;
 		case 1500: // Like a Loded Stone
-			// Only come here to get shadow waters buff
-			run_choice(2);
+			run_choice(2); // only come here to get shadow waters buff
 			break;
 		default:
 			break;
