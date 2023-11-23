@@ -251,14 +251,21 @@ boolean auto_canUseJuneCleaver() {
 
 boolean auto_juneCleaverAdventure()
 {
-	if (!auto_canUseJuneCleaver() || get_property("_juneCleaverFightsLeft").to_int() > 0 || !zone_isAvailable($location[The Dire Warren]))
+	if (!auto_canUseJuneCleaver() || get_property("_juneCleaverFightsLeft").to_int() > 0)
 	{
 		return false;
 	}
 
 	if (autoEquip($slot[weapon], $item[June cleaver]))
 	{
-		return autoAdv($location[The Dire Warren]);
+		if (in_koe())
+		{
+			autoAdv($location[Cobb's Knob Treasury]); // arbitrarily picked always accessible location
+		}
+		else
+		{
+			autoAdv($location[The Dire Warren]);
+		}
 	}
 	return false;
 }
