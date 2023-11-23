@@ -867,7 +867,7 @@ boolean doBedtime()
 
 	heavyrains_doBedtime();
 
-	while(my_daycount() == 1 && item_amount($item[resolution: be more adventurous]) > 0 && get_property("_resolutionAdv").to_int() < 10 && !can_interact())
+	while(my_daycount() == 1 && !in_bhy() && item_amount($item[resolution: be more adventurous]) > 0 && get_property("_resolutionAdv").to_int() < 10 && !can_interact())
 	{
 		use(1, $item[resolution: be more adventurous]);
 	}
