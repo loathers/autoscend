@@ -341,7 +341,7 @@ boolean LX_islandAccess()
 
 boolean startHippyBoatmanSubQuest()
 {
-	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted")
+	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted" && !in_koe())
 	{
 		string temp = visit_url("place.php?whichplace=woods&action=woods_smokesignals");
 		temp = visit_url("choice.php?pwd=&whichchoice=798&option=1");
