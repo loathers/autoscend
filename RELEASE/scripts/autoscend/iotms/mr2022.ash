@@ -261,7 +261,7 @@ boolean auto_juneCleaverAdventure()
 		location cleaverLoc = $location[The Dire Warren];
 		if (in_koe())
 		{
-			cleaverLoc = $location[Cobb's Knob Treasury]); // arbitrarily picked always accessible location
+			cleaverLoc = $location[Cobb's Knob Treasury]; // arbitrarily picked always accessible location
 		}
 		return autoAdv(cleaverLoc);
 	}
