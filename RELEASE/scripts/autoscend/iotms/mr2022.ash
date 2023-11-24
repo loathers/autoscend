@@ -263,7 +263,7 @@ boolean auto_juneCleaverAdventure()
 		{
 			cleaverLoc = $location[Cobb's Knob Treasury]); // arbitrarily picked always accessible location
 		}
-		autoAdv(cleaverLoc);
+		return autoAdv(cleaverLoc);
 	}
 	return false;
 }
