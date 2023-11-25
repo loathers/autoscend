@@ -332,7 +332,7 @@ void auto_settingsDefaults()
 	defaultConfig("auto_paranoia", "-1");
 	defaultConfig("auto_inv_paranoia", "false");
 	defaultConfig("auto_save_adv_override", "-1");
-	defaultConfig("auto_log_level", "2");
+	defaultConfig("auto_log_level", "3");
 	defaultConfig("auto_log_level_restore", "0");
 	defaultConfig("auto_bedtime_pulls_skip", "false");
 	defaultConfig("auto_bedtime_pulls_pvp_multi", "0.3");
