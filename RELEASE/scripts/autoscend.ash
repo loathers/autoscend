@@ -245,6 +245,7 @@ void initializeSettings() {
 	remove_property("auto_saveSausage");
 	remove_property("auto_saveVintage");
 	set_property("auto_dontUseCookBookBat", false);
+	set_property("auto_log_level", 3);
 	beehiveConsider();
 
 	eudora_initializeSettings();
