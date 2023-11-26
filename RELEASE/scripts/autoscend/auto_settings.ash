@@ -161,6 +161,14 @@ void auto_settingsUpgrade()
 				break;
 		}
 	}
+
+	//this supports the default logging level change from info(2) to debug(3)
+	//default only effects new users, this migrates current users to the new default level of logging
+	if(!property_exists("logLevelDefaultChangedToDebug"))
+	{
+		set_property("auto_log_level", 3);
+		set_property("logLevelDefaultChangedToDebug",true);
+	}
 }
 
 void auto_settingsFix()
