@@ -2052,12 +2052,12 @@ void main(string... input)
 	backupSetting("printStackOnAbort", true);
 
 	// parse input
-    if(count(input) > 0 && input[0] == "sim")
-    {
-        // display useful items/skills/perms/etc and if the user has them
-        printSim();
+	if(count(input) > 0 && input[0] == "sim")
+	{
+		// display useful items/skills/perms/etc and if the user has them
+		printSim();
 		return;
-    }
+	}
 
 	print_help_text();
 	sad_times();
