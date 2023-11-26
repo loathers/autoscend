@@ -58,12 +58,18 @@ void printSimSuggested()
 		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Need 5x for war sidequest");
 		mon = $monster[Astronomer];
 		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Helpful for star key");
+		mon = $monster[Skinflute];
+		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Helpful for star key");
+		mon = $monster[Camel\'s Toe];
+		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Helpful for star key");
 		mon = $monster[War Frat Mobile Grill Unit];
 		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Frat warrior war start outfit");
 		mon = $monster[War Hippy Airborne Commander];
 		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "War hippy war start outfit");
 		mon = $monster[Baa\'baa\'bu\'ran];
 		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "3x Stone Wool for L12 quest");
+		mon = $monster[Green Ops Soldier];
+		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Get war progress even when copied into other zones, plus smoke bombs");
 	}
 
 	// if we have cookbookbat, make sure we have all its recipes
