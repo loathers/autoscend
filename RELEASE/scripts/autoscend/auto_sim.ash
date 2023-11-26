@@ -11,6 +11,7 @@ void printSim()
 void PrintSimRequired()
 {
 	print("Required Things:");
+	
 	skill sk = $skill[Saucestorm];
 	formattedSimPrint(have_skill(sk), sk.to_string(), "Critical for autoscend combat");
 	sk = $skill[Itchy Curse Finger];
