@@ -1588,6 +1588,14 @@ void auto_settingsDefaults();
 void auto_settings();
 
 ########################################################################################################
+//Defined in autoscend/auto_sim.ash
+void printSim();
+void PrintSimRequired();
+void printSimSuggested();
+void printSimMarginal();
+void formattedSimPrint(boolean have, string name, string description);
+
+########################################################################################################
 //Defined in autoscend/auto_zlib.ash
 void auto_process_kmail(string functionname);
 
