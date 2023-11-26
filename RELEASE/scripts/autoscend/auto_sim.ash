@@ -5,7 +5,7 @@ void printSim()
 	printSimSuggested();
 	printSimMarginal();
 	print();
-	print("Note: Recommended to run in aftercore to properly detetct everything");
+	print("Note: Recommended to run in aftercore to properly detect everything");
 }
 
 void PrintSimRequired()
