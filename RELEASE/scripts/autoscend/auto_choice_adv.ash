@@ -278,6 +278,7 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 604: // Welcome to the Great Overlook Lodge (Twin Peak Part 1)
 		case 605: // Welcome to the Great Overlook Lodge (Twin Peak Part 2)
+		case 606: // Lost in the Great Overlook
 		case 607: // Room 237 (Lost in the Great Overlook Lodge)
 		case 608: // Go Check It Out! (Lost in the Great Overlook Lodge)
 		case 609: // There's Always Music In the Air (Lost in the Great Overlook Lodge)
