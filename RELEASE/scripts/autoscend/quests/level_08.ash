@@ -461,7 +461,7 @@ boolean L8_trapperExtreme()
 	if (auto_haveCCSC() && (possessEquipment($item[eXtreme mittens]) || possessEquipment($item[snowboarder pants])))
 	{
 		auto_log_info("Maybe get some extra cold weather gear and a lucky pill with your Candy Cane Sword Cane");
-		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]);; //Duffel on the Double gives 2 mittens and pants + lucky-ish pill
+		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]); //Duffel on the Double gives 2 mittens and pants + lucky-ish pill
 	}
 	
 	// try to get extreme points
