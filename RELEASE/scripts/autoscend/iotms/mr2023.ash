@@ -790,3 +790,12 @@ boolean auto_burnLeaves()
 	}
 	return false;
 }
+
+boolean auto_haveCCSC()
+{
+	if(auto_is_valid($item[Candy Cane Sword Cane]) && (item_amount($item[Candy Cane Sword Cane]) > 0 || have_equipped($item[Candy Cane Sword Cane])))
+	{
+		return true;
+	}
+	return false;
+}

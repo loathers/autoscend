@@ -60,7 +60,14 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(4); // skip
 			break;
 		case 109: // Dumpster Diving (The Sleazy Back Alley)
-			run_choice(1); // fight a drunken half-orc hobo
+			if(options contains 4)
+			{
+				run_choice(4); // 11-leaf clover with candy cane sword cane equipped
+			}
+			else
+			{
+				run_choice(1); // fight a drunken half-orc hobo
+			}
 			break;
 		case 110: // The Entertainer (The Sleazy Back Alley)
 			run_choice(4); // skip
@@ -97,10 +104,24 @@ boolean auto_run_choice(int choice, string page)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
 		case 139: // Bait and Switch (The Hippy Camp (Verge of War))
-			run_choice(3); // fight a War Hippy (space) cadet for outfit pieces
+			if(options contains 4)
+			{
+				run_choice(4); // use your candy cane sword cane to skip to the war start
+			}
+			else
+			{
+				run_choice(3); // fight a War Hippy (space) cadet for outfit pieces
+			}
 			break;
 		case 140: // The Thin Tie-Dyed Line (The Hippy Camp (Verge of War))
-			run_choice(3); // fight a War Hippy drill sergeant for outfit pieces
+			if(options contains 4)
+			{
+				run_choice(4); // use your candy cane sword cane to skip to the war start
+			}
+			else
+			{
+				run_choice(3); // fight a War Hippy drill sergeant for outfit pieces
+			}
 			break;
 		case 141: // Blockin' Out the Scenery (The Hippy Camp (Verge of War) wearing Frat Boy Ensemble)
 			run_choice(1); // get 50 mysticality
@@ -357,7 +378,11 @@ boolean auto_run_choice(int choice, string page)
 			hiddenCityChoiceHandler(choice);
 			break;
 		case 793: // The Shore, Inc. Travel Agency. doing a vacation
-			if(my_primestat() == $stat[Muscle])
+			if(have_equipped($item[Candy Cane Sword Cane]))
+			{
+				run_choice(5); // 2 Shore scrips, all stats, +wdmg
+			}
+			else if(my_primestat() == $stat[Muscle])
 			{
 				run_choice(1); // muscle stats
 			}

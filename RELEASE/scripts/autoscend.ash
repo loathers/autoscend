@@ -611,6 +611,11 @@ boolean LX_doVacation()
 		plumber_equipTool($stat[moxie]);
 		equipMaximizedGear();
 	}
+	if (auto_haveCCSC())
+	{
+		auto_log_info("Get 2 scrips with your Candy Cane Sword Cane");
+		autoEquip($item[Candy Cane Sword Cane]);
+	}
 
 	return autoAdv(1, $location[The Shore\, Inc. Travel Agency]);
 }

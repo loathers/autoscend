@@ -457,6 +457,12 @@ boolean L8_trapperExtreme()
 		auto_log_warning("I can not wear the eXtreme Gear, I'm just not awesome enough :(", "red");
 		return false;
 	}
+
+	if (auto_haveCCSC() && (possessEquipment($item[eXtreme mittens]) || possessEquipment($item[snowboarder pants])))
+	{
+		auto_log_info("Maybe get some extra cold weather gear and a lucky pill with your Candy Cane Sword Cane");
+		autoEquip($item[Candy Cane Sword Cane]); //Duffel on the Double gives 2 mittens and pants + lucky-ish pill
+	}
 	
 	// try to get extreme points
 	auto_log_info("Penguin Tony Hawk time. Extreme!! SSX Tricky!!", "blue");
@@ -522,7 +528,11 @@ void theeXtremeSlopeChoiceHandler(int choice)
 	}
 	else if(choice == 575) // Duffel on the Double
 	{
-		if(!possessOutfit("eXtreme Cold-Weather Gear"))
+		if (have_equipped($item[Candy Cane Sword Cane]))
+		{
+			run_choice(5); // get mittens and pants and lucky pill
+		}
+		else if(!possessOutfit("eXtreme Cold-Weather Gear"))
 		{
 			run_choice(1); // get an outfit piece
 		}

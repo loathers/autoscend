@@ -718,7 +718,14 @@ void blackForestChoiceHandler(int choice)
 {
 	if(choice == 923) // All Over the Map (The Black Forest)
 	{
-		run_choice(1); // go to You Found Your Thrill (#924)
+		if(have_equipped($item[Candy Cane Sword Cane]) && (available_choice_options() contains 5))
+		{
+			run_choice(5); // +8 exploration
+		}
+		else
+		{
+			run_choice(1); // go to You Found Your Thrill (#924)
+		}
 	}
 	else if(choice == 924)
 	{
@@ -825,6 +832,11 @@ boolean L11_blackMarket()
 	}
 
 	autoEquip($slot[acc3], $item[Blackberry Galoshes]);
+	if(auto_haveCCSC())
+	{
+		auto_log_info("Quick explore with your Candy Cane Sword Cane");
+		autoEquip($item[Candy Cane Sword Cane]);
+	}
 
 	//If we want the Beehive, and don\'t have enough adventures, this is dangerous.
 	if (get_property("auto_getBeehive").to_boolean() && my_adventures() < 3) {
@@ -1645,7 +1657,14 @@ void hiddenCityChoiceHandler(int choice)
 	}
 	else if(choice == 788) // Life is Like a Cherry of Bowls (The Hidden Bowling Alley)
 	{
-		run_choice(1); // bowl for stats 4 times then fight the spirit on 5th occurrence
+		if(have_equipped($item[Candy Cane Sword Cane]) && (available_choice_options() contains 2))
+		{
+			run_choice(2); // bowl for stats 4 times then fight the spirit on 5th occurrence
+		}
+		else
+		{
+			run_choice(1); // bowl for stats 4 times then fight the spirit on 5th occurrence
+		}
 	}
 	else if(choice == 789) // Where Does The Lone Ranger Take His Garbagester? (The Hidden Park)
 	{
@@ -1967,6 +1986,11 @@ boolean L11_hiddenCity()
 		{
 			auto_log_info("Bringing the Grey Goose to emit some drones at a Pygmy Bowler for bowling balls.");
 			handleFamiliar($familiar[Grey Goose]);
+		}
+		if(auto_haveCCSC())
+		{
+			auto_log_info("Slicing pins with your Candy Cane Sword Cane");
+			autoEquip($item[Candy Cane Sword Cane]);
 		}
 		if(item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() == 5)
 		{
@@ -2400,7 +2424,14 @@ boolean L11_redZeppelin()
 	// TODO: create lynyrd skin items
 
 	set_property("choiceAdventure856", 1);
-	set_property("choiceAdventure857", 1);
+	if(auto_haveCCSC())
+	{
+		set_property("choiceAdventure857", 2);
+	}
+	else
+	{
+		set_property("choiceAdventure857", 1);
+	}
 	set_property("choiceAdventure858", 1);
 	buffMaintain($effect[Greasy Peasy]);
 	buffMaintain($effect[Musky]);
@@ -2468,6 +2499,10 @@ boolean L11_redZeppelin()
 		}
 		float fire_protestors = item_amount($item[Flamin\' Whatshisname]) > 0 ? 10 : 3;
 		float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
+		if(auto_haveCCSC())
+		{
+			sleaze_amount = sleaze_amount * 2;
+		}
 		float sleaze_protestors = square_root(sleaze_amount);
 		float lynyrd_protestors = have_effect($effect[Musky]) > 0 ? 6 : 3;
 		foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
@@ -2492,6 +2527,11 @@ boolean L11_redZeppelin()
 			}
 			else if(best_protestors == sleaze_protestors)
 			{
+				if(auto_haveCCSC())
+				{
+					auto_log_info("Double the protestors scared away with your Candy Cane Sword Cane");
+					autoEquip($item[Candy Cane Sword Cane]); //double the protestors scared away
+				}
 				set_property("choiceAdventure866", 2);
 			}
 			else if (best_protestors == fire_protestors)
@@ -2504,6 +2544,12 @@ boolean L11_redZeppelin()
 
 	if (handleFamiliar($familiar[Red-Nosed Snapper])) {
 		auto_changeSnapperPhylum($phylum[dude]);
+	}
+
+	if(auto_haveCCSC())
+	{
+		auto_log_info("Double the protestors sleazed away with your Candy Cane Sword Cane");
+		autoEquip($item[Candy Cane Sword Cane]); //double the protestors scared away from Bench Warrant
 	}
 
 	int lastProtest = get_property("zeppelinProtestors").to_int();
@@ -2640,6 +2686,11 @@ boolean L11_shenCopperhead()
 	{
 		if (item_amount($item[Crappy Waiter Disguise]) > 0 && have_effect($effect[Crappily Disguised as a Waiter]) == 0 && !in_tcrs())
 		{
+			if(auto_haveCCSC() && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0))
+			{
+				auto_log_info("Priceless diamond and cut gong with your Candy Cane Sword Cane");
+				autoEquip($item[Candy Cane Sword Cane]); // get a priceless diamond and cut the gong!
+			}
 			use(1, $item[Crappy Waiter Disguise]);
 
 			// default to getting unnamed cocktails to turn into Flamin' Whatsisnames.
@@ -2651,6 +2702,10 @@ boolean L11_shenCopperhead()
 					// got priceless diamond or zeppelin ticket (or we are rich) so lets burn the place down (and make Flamin' Whatsisnames)
 					behindtheStacheOption = 3;
 				}
+			}
+			else if (have_equipped($item[Candy Cane Sword Cane]) && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0))
+			{
+				behindtheStacheOption = 5;
 			}
 			else
 			{

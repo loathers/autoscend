@@ -796,6 +796,13 @@ boolean L12_startWar()
 
 	// wear the appropriate war outfit based on auto_hippyInstead
 	equipWarOutfit();
+	
+	// equip your CCSC 
+	if(auto_haveCCSC())
+	{
+		auto_log_info("Maybe skip an NC with your Candy Cane Sword Cane");
+		autoEquip($item[Candy Cane Sword Cane]);
+	}
 
 	// start the war when siding with frat boys
 	if(!get_property("auto_hippyInstead").to_boolean())

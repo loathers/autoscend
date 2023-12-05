@@ -656,6 +656,12 @@ boolean LX_dailyDungeonToken()
 			return false;
 		}
 	}
+
+	if(auto_haveCCSC())
+	{
+		auto_log_info("Jump over the trap with your Candy Cane Sword Cane");
+		autoEquip($item[Candy Cane Sword Cane]);
+	}
 	
 	if(ed_DelayNC_DailyDungeon())
 	{
@@ -692,7 +698,11 @@ void dailyDungeonChoiceHandler(int choice, string[int] options)
 			break;
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
 		case 691: // Second Chest (Daily Dungeon 10th room)
-			if(options contains 2)
+			if(options contains 4)
+			{
+				run_choice(4); // Get a fat loot token with your Candy Cane Sword Cane
+			}
+			else if(options contains 2)
 			{
 				run_choice(2);	// skip 3 rooms using ring of Detect Boring Doors
 			} 
@@ -730,10 +740,14 @@ void dailyDungeonChoiceHandler(int choice, string[int] options)
 			else abort("I made an error and tried to adventure in the daily dungeon when I have no means of handling [I Wanna Be a Door]");
 			break;
 		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
-			if(options contains 2)
+			if(options contains 4)
+			{
+				run_choice(4); // use Candy cane sword cane to skip and get stats
+			}
+			else if(options contains 2)
 			{
 				run_choice(2);	// use eleven-foot pole to skip
-			} 
+			}
 			else
 			{
 				run_choice(1);	// take damage to progress
