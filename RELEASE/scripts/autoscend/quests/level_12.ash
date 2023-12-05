@@ -801,7 +801,7 @@ boolean L12_startWar()
 	if(auto_haveCCSC())
 	{
 		auto_log_info("Maybe skip an NC with your Candy Cane Sword Cane");
-		autoEquip($item[Candy Cane Sword Cane]);
+		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]);
 	}
 
 	// start the war when siding with frat boys

@@ -721,6 +721,7 @@ void blackForestChoiceHandler(int choice)
 		if(have_equipped($item[Candy Cane Sword Cane]) && (available_choice_options() contains 5))
 		{
 			run_choice(5); // +8 exploration
+			run_choice(1); // go to You Found Your Thrill (#924)
 		}
 		else
 		{
@@ -835,7 +836,7 @@ boolean L11_blackMarket()
 	if(auto_haveCCSC())
 	{
 		auto_log_info("Quick explore with your Candy Cane Sword Cane");
-		autoEquip($item[Candy Cane Sword Cane]);
+		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]);
 	}
 
 	//If we want the Beehive, and don\'t have enough adventures, this is dangerous.
@@ -1660,6 +1661,7 @@ void hiddenCityChoiceHandler(int choice)
 		if(have_equipped($item[Candy Cane Sword Cane]) && (available_choice_options() contains 2))
 		{
 			run_choice(2); // bowl for stats 4 times then fight the spirit on 5th occurrence
+			run_choice(1); // bowl for stats 4 times then fight the spirit on 5th occurrence
 		}
 		else
 		{
@@ -1986,11 +1988,6 @@ boolean L11_hiddenCity()
 		{
 			auto_log_info("Bringing the Grey Goose to emit some drones at a Pygmy Bowler for bowling balls.");
 			handleFamiliar($familiar[Grey Goose]);
-		}
-		if(auto_haveCCSC())
-		{
-			auto_log_info("Slicing pins with your Candy Cane Sword Cane");
-			autoEquip($item[Candy Cane Sword Cane]);
 		}
 		if(item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() == 5)
 		{
@@ -2530,7 +2527,7 @@ boolean L11_redZeppelin()
 				if(auto_haveCCSC())
 				{
 					auto_log_info("Double the protestors scared away with your Candy Cane Sword Cane");
-					autoEquip($item[Candy Cane Sword Cane]); //double the protestors scared away
+					autoEquip($slot[weapon], $item[Candy Cane Sword Cane]); //double the protestors scared away
 				}
 				set_property("choiceAdventure866", 2);
 			}
@@ -2549,7 +2546,7 @@ boolean L11_redZeppelin()
 	if(auto_haveCCSC())
 	{
 		auto_log_info("Double the protestors sleazed away with your Candy Cane Sword Cane");
-		autoEquip($item[Candy Cane Sword Cane]); //double the protestors scared away from Bench Warrant
+		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]); //double the protestors scared away from Bench Warrant
 	}
 
 	int lastProtest = get_property("zeppelinProtestors").to_int();
@@ -2689,7 +2686,7 @@ boolean L11_shenCopperhead()
 			if(auto_haveCCSC() && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0))
 			{
 				auto_log_info("Priceless diamond and cut gong with your Candy Cane Sword Cane");
-				autoEquip($item[Candy Cane Sword Cane]); // get a priceless diamond and cut the gong!
+				autoEquip($slot[weapon], $item[Candy Cane Sword Cane]); // get a priceless diamond and cut the gong!
 			}
 			use(1, $item[Crappy Waiter Disguise]);
 

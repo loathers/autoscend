@@ -305,7 +305,7 @@ boolean L7_crypt()
 		}
 
 		autoEquip($item[Gravy Boat]);
-		autoEquip($item[Candy Cane Sword Cane]); // -11 evil, 50 substat option on Death Rattlin'
+		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]); // -11 evil, 50 substat option on Death Rattlin'
 		knockOffCapePrep();
 
 		if(auto_is_valid($effect[Emotional Vaccine]))

@@ -660,7 +660,7 @@ boolean LX_dailyDungeonToken()
 	if(auto_haveCCSC())
 	{
 		auto_log_info("Jump over the trap with your Candy Cane Sword Cane");
-		autoEquip($item[Candy Cane Sword Cane]);
+		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]);
 	}
 	
 	if(ed_DelayNC_DailyDungeon())
@@ -701,6 +701,14 @@ void dailyDungeonChoiceHandler(int choice, string[int] options)
 			if(options contains 4)
 			{
 				run_choice(4); // Get a fat loot token with your Candy Cane Sword Cane
+				if(options contains 2)
+				{
+					run_choice(2);	// skip 3 rooms using ring of Detect Boring Doors
+				} 
+				else
+				{
+					run_choice(3);	// skip 1 room
+				}
 			}
 			else if(options contains 2)
 			{
