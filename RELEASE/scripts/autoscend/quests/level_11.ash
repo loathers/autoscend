@@ -1574,7 +1574,7 @@ void hiddenCityChoiceHandler(int choice)
 		}
 		else if(have_equipped($item[Candy Cane Sword Cane]) && (available_choice_options() contains 4))
 		{
-			run_choice(4)
+			run_choice(4);
 			if(have_effect($effect[Thrice-Cursed]) > 0)
 			{
 				run_choice(1); // fight the spirit
