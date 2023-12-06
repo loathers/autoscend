@@ -1572,6 +1572,18 @@ void hiddenCityChoiceHandler(int choice)
 		{
 			run_choice(3); // relocate lawyers to park
 		}
+		else if(have_equipped($item[Candy Cane Sword Cane]) && (available_choice_options() contains 4))
+		{
+			run_choice(4)
+			if(have_effect($effect[Thrice-Cursed]) > 0)
+			{
+				run_choice(1); // fight the spirit
+			}
+			else
+			{
+				run_choice(2); // get cursed
+			}
+		}
 		else
 		{
 			run_choice(2); // get cursed

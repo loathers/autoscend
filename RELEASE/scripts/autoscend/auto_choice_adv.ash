@@ -130,10 +130,24 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(3); // starts the war. skips adventure if already started.
 			break;
 		case 143: // Catching Some Zetas (Orcish Frat House (Verge of War))
-			run_choice(3); // fight a War Pledge for outfit pieces
+			if(options contains 4)
+			{
+				run_choice(4); // use your candy cane sword cane to skip to the war start
+			}
+			else
+			{
+				run_choice(3); // fight a War Pledge for outfit pieces
+			}
 			break;
 		case 144: // One Less Room Than In That Movie (Orcish Frat House (Verge of War))
-			run_choice(3); // fight a Frat Warrior drill sergeant for outfit pieces
+			if(options contains 4)
+			{
+				run_choice(4); // use your candy cane sword cane to skip to the war start
+			}
+			else
+			{
+				run_choice(3); // fight a Frat Warrior drill sergeant for outfit pieces
+			}
 			break;
 		case 145: // Fratacombs (Orcish Frat House (Verge of War) wearing Filthy Hippy Disguise)
 			run_choice(1); // get 50 muscle
