@@ -1625,12 +1625,18 @@ void hiddenCityChoiceHandler(int choice)
 	}
 	else if(choice == 785) // Air Apparent (An Overgrown Shrine (Northeast))
 	{
+		
 		if(get_property("hiddenOfficeProgress").to_int() == 0)
 		{
 			run_choice(1); // unlock the Hidden Office Building
 		}
 		else if(item_amount($item[crackling stone sphere]) > 0)
 		{
+			if (available_choice_options() contains 4)
+			{
+				run_choice(4); // get free meat
+				run_choice(2); // get the stone triangle
+			}
 			run_choice(2); // get the stone triangle
 		}
 		else
