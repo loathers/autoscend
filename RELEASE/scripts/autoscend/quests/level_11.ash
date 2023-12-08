@@ -1809,7 +1809,7 @@ boolean L11_hiddenCity()
 			//should we try to force the noncombat?
 			boolean shouldForceElevatorAction = false;
 			
-			if(have_effect($effect[Thrice-Cursed]) > 0)
+			if((have_effect($effect[Thrice-Cursed]) > 0) || (have_effect($effect[Twice-Cursed]) > 0 && auto_haveCCSC()))
 			{
 				shouldForceElevatorAction = true;
 			}

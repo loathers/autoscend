@@ -808,6 +808,22 @@ boolean auto_handleCCSC()
 	}
 	location place = my_location();
 	
+	/* Where/Why We Want Only Certain Locations
+	 The Sleazy Back Alley - 11-leaf clover (only visit if we are a moxie class unlocking guild, but still potentially useful)
+	 The Daily Dungeon - Eleven-foot pole replacement. +1 Fat Loot Token
+	 The Shore, Inc. Travel Agency - 2 Scrips and all stats
+	 The Defiled Cranny - -11 evilness
+	 The eXtreme Slope - If we can't do ninja snowmen for some reason, gives us 2 pieces of equipment in one NC
+	 The Penultimate Fantasy Airship - Get an umbrella for basement, metallic A for wand, SGEEA, and Fantasy Chest for even more items
+	 The Black Forest - +8 exploration
+	 The Copperhead Club - Gives us a priceless diamond, saving 4950-5000 meat
+	 The Hidden Apartment Building - +1 cursed level, Doesn't leave NC
+	 The Hidden Bowling Alley - 1 less bowling ball needed
+	 An Overgrown Shrine (Northeast) - Free Meat
+	 A Mob of Zeppelin Protesters - Double Sleaze Protestors
+	 Wartime Frat House/Camp - Skip non-useful NC to go to war start NC
+	 */
+
 	if((place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5)
 	   || (place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0)
 	   || (place == $location[The eXtreme Slope] && (!possessEquipment($item[eXtreme scarf]) && !possessEquipment($item[snowboarder pants])))
