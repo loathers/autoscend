@@ -407,12 +407,6 @@ boolean LX_guildUnlock()
 
 		auto_log_info("Let's unlock the guild.", "green");
 
-		if (loc == $location[The Sleazy Back Alley] && auto_haveCCSC())
-		{
-			auto_log_info("Get an 11-leaf clover if you hit the right NC in Sleazy Back Alley with a Candy Cane Sword Cane");
-			autoEquip($slot[weapon], $item[Candy Cane Sword Cane]); // maybe get an 11-leaf clover in the Sleazy Back Alley
-		}
-
 		autoAdv(loc);
 		if (internalQuestStatus(pref) == 1)
 		{

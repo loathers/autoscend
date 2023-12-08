@@ -231,6 +231,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			return useSkill($skill[Curse Of Weaksauce]);
 		}
 
+		// delevel and 75% less HP if you have a candy cane sword cane
+		if(canUse($skill[Surprisingly Sweet Slash]))
+		{
+			return useSkill($skill[Surprisingly Sweet Slash]);
+		}
+
 		//delevel if you have a loofah lei
 		if(canUse($skill[loofah lei lasso]))
 		{

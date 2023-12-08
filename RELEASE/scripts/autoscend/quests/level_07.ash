@@ -53,7 +53,7 @@ void cyrptChoiceHandler(int choice)
 			}
 			run_choice(5); // if meets thresholds, skip to farm more dieting pills in DG
 		}
-		else if(have_equipped($item[Candy Cane Sword Cane]) && (available_choice_options() contains 5))
+		else if(available_choice_options() contains 5)
 		{
 			run_choice(5); // -11 evil, +50 each substat with Candy Cane Sword Cane
 		}
@@ -305,7 +305,6 @@ boolean L7_crypt()
 		}
 
 		autoEquip($item[Gravy Boat]);
-		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]); // -11 evil, 50 substat option on Death Rattlin'
 		knockOffCapePrep();
 
 		if(auto_is_valid($effect[Emotional Vaccine]))

@@ -852,6 +852,7 @@ boolean auto_pre_adventure()
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	auto_handleParka(); //same as retrocape above
+	auto_handleCCSC(); //same as retrocape and parka above
 	cli_execute("checkpoint clear");
 
 	//before guaranteed non combats that give stats, overrule maximized equipment to increase stat gains
@@ -859,11 +860,6 @@ boolean auto_pre_adventure()
 	{
 		equipStatgainIncreasers();
 		plumber_forceEquipTool();
-		if (auto_haveCCSC())
-		{
-			auto_log_info("Get 2 scrips with your Candy Cane Sword Cane");
-			autoEquip($slot[weapon], $item[Candy Cane Sword Cane]);
-		}
 	}
 	else if(place == $location[The Haunted Ballroom] && internalQuestStatus("questM21Dance") == 3)
 	{
@@ -872,13 +868,8 @@ boolean auto_pre_adventure()
 	}
 	else if(place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0)
 	{
-		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat
+		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat or all stats
 		plumber_forceEquipTool();
-		if (auto_haveCCSC())
-		{
-			auto_log_info("Get 2 scrips with your Candy Cane Sword Cane and all stats");
-			autoEquip($slot[weapon], $item[Candy Cane Sword Cane]);
-		}
 	}
 
 	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {

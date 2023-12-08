@@ -718,7 +718,7 @@ void blackForestChoiceHandler(int choice)
 {
 	if(choice == 923) // All Over the Map (The Black Forest)
 	{
-		if(have_equipped($item[Candy Cane Sword Cane]) && (available_choice_options() contains 5))
+		if(available_choice_options() contains 5) // only available with Candy Cane Sword Cane equipped
 		{
 			run_choice(5); // +8 exploration
 			run_choice(1); // go to You Found Your Thrill (#924)
@@ -833,11 +833,6 @@ boolean L11_blackMarket()
 	}
 
 	autoEquip($slot[acc3], $item[Blackberry Galoshes]);
-	if(auto_haveCCSC())
-	{
-		auto_log_info("Quick explore with your Candy Cane Sword Cane");
-		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]);
-	}
 
 	//If we want the Beehive, and don\'t have enough adventures, this is dangerous.
 	if (get_property("auto_getBeehive").to_boolean() && my_adventures() < 3) {
@@ -1572,7 +1567,7 @@ void hiddenCityChoiceHandler(int choice)
 		{
 			run_choice(3); // relocate lawyers to park
 		}
-		else if(have_equipped($item[Candy Cane Sword Cane]) && (available_choice_options() contains 4))
+		else if(available_choice_options() contains 4 && have_effect($effect[Thrice-Cursed]) == 0) // Use CCSC to get Cursed +1
 		{
 			run_choice(4);
 			if(have_effect($effect[Thrice-Cursed]) > 0)
@@ -1676,7 +1671,7 @@ void hiddenCityChoiceHandler(int choice)
 	}
 	else if(choice == 788) // Life is Like a Cherry of Bowls (The Hidden Bowling Alley)
 	{
-		if(have_equipped($item[Candy Cane Sword Cane]) && (available_choice_options() contains 2))
+		if(available_choice_options() contains 2)
 		{
 			run_choice(2); // bowl for stats 4 times then fight the spirit on 5th occurrence
 			run_choice(1); // bowl for stats 4 times then fight the spirit on 5th occurrence
@@ -1788,6 +1783,10 @@ boolean L11_hiddenCity()
 		if(have_effect($effect[Twice-Cursed]) > 0)
 		{
 			cursesNeeded = 1;
+		}
+		if(auto_haveCCSC())
+		{
+			cursesNeeded -= 1;
 		}
 		
 		//able to drink, enough liver?
@@ -2542,11 +2541,6 @@ boolean L11_redZeppelin()
 			}
 			else if(best_protestors == sleaze_protestors)
 			{
-				if(auto_haveCCSC())
-				{
-					auto_log_info("Double the protestors scared away with your Candy Cane Sword Cane");
-					autoEquip($slot[weapon], $item[Candy Cane Sword Cane]); //double the protestors scared away
-				}
 				set_property("choiceAdventure866", 2);
 			}
 			else if (best_protestors == fire_protestors)
@@ -2559,12 +2553,6 @@ boolean L11_redZeppelin()
 
 	if (handleFamiliar($familiar[Red-Nosed Snapper])) {
 		auto_changeSnapperPhylum($phylum[dude]);
-	}
-
-	if(auto_haveCCSC())
-	{
-		auto_log_info("Double the protestors sleazed away with your Candy Cane Sword Cane");
-		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]); //double the protestors scared away from Bench Warrant
 	}
 
 	int lastProtest = get_property("zeppelinProtestors").to_int();
@@ -2701,11 +2689,6 @@ boolean L11_shenCopperhead()
 	{
 		if (item_amount($item[Crappy Waiter Disguise]) > 0 && have_effect($effect[Crappily Disguised as a Waiter]) == 0 && !in_tcrs())
 		{
-			if(auto_haveCCSC() && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0))
-			{
-				auto_log_info("Priceless diamond and cut gong with your Candy Cane Sword Cane");
-				autoEquip($slot[weapon], $item[Candy Cane Sword Cane]); // get a priceless diamond and cut the gong!
-			}
 			use(1, $item[Crappy Waiter Disguise]);
 
 			// default to getting unnamed cocktails to turn into Flamin' Whatsisnames.

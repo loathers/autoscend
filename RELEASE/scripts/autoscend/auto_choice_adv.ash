@@ -188,6 +188,10 @@ boolean auto_run_choice(int choice, string page)
 			{
 				run_choice(4); // get the model airship
 			}
+			else if (options contains 5)
+			{
+				run_choice(5); // get titanium umbrella, metallic A, SGEEA and a penultimate fantasy chest
+			}
 			else
 			{
 				run_choice(1); // fight an opponent
@@ -392,7 +396,7 @@ boolean auto_run_choice(int choice, string page)
 			hiddenCityChoiceHandler(choice);
 			break;
 		case 793: // The Shore, Inc. Travel Agency. doing a vacation
-			if(have_equipped($item[Candy Cane Sword Cane]))
+			if(options contains 5)
 			{
 				run_choice(5); // 2 Shore scrips, all stats, +wdmg
 			}

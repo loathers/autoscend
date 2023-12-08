@@ -656,12 +656,6 @@ boolean LX_dailyDungeonToken()
 			return false;
 		}
 	}
-
-	if(auto_haveCCSC())
-	{
-		auto_log_info("Jump over the trap with your Candy Cane Sword Cane");
-		autoEquip($slot[weapon], $item[Candy Cane Sword Cane]);
-	}
 	
 	if(ed_DelayNC_DailyDungeon())
 	{

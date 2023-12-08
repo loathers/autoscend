@@ -536,6 +536,7 @@ void auto_handleJillOfAllTrades();
 boolean auto_haveBurningLeaves();
 boolean auto_burnLeaves();
 boolean auto_haveCCSC();
+boolean auto_handleCCSC();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
