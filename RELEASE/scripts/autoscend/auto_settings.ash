@@ -161,6 +161,14 @@ void auto_settingsUpgrade()
 				break;
 		}
 	}
+
+	//this supports the default logging level change from info(2) to debug(3)
+	//default only effects new users, this migrates current users to the new default level of logging
+	if(!property_exists("logLevelDefaultChangedToDebug"))
+	{
+		set_property("auto_log_level", 3);
+		set_property("logLevelDefaultChangedToDebug",true);
+	}
 }
 
 void auto_settingsFix()
@@ -332,7 +340,7 @@ void auto_settingsDefaults()
 	defaultConfig("auto_paranoia", "-1");
 	defaultConfig("auto_inv_paranoia", "false");
 	defaultConfig("auto_save_adv_override", "-1");
-	defaultConfig("auto_log_level", "2");
+	defaultConfig("auto_log_level", "3");
 	defaultConfig("auto_log_level_restore", "0");
 	defaultConfig("auto_bedtime_pulls_skip", "false");
 	defaultConfig("auto_bedtime_pulls_pvp_multi", "0.3");
