@@ -824,21 +824,19 @@ boolean auto_handleCCSC()
 	 Wartime Frat House/Camp - Skip non-useful NC to go to war start NC
 	 */
 
-	if((place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5)
-	   || (place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0)
+	if((place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5 && !get_property("candyCaneSwordBowlingAlley").to_boolean())
+	   || (place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0 && !get_property("candyCaneSwordShore").to_boolean())
 	   || (place == $location[The eXtreme Slope] && (!possessEquipment($item[eXtreme scarf]) && !possessEquipment($item[snowboarder pants])))
-	   || (place == $location[The Copperhead Club] && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0))
+	   || (place == $location[The Copperhead Club] && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0) && !get_property("candyCaneSwordCopperheadClub").to_boolean())
+	   || (place == $location[The Defiled Cranny] && !get_property("candyCaneSwordDefiledCranny").to_boolean())
+	   || (place == $location[The Black Forest] && !get_property("candyCaneSwordBlackForest").to_boolean())
+	   || (place == $location[The Hidden Apartment Building] && !get_property("candyCaneSwordApartmentBuilding").to_boolean())
+	   || (place == $location[An Overgrown Shrine (Northeast)] && !get_property("_candyCaneSwordOvergrownShrine").to_boolean())
+	   || (place == $location[The Overgrown Lot] && !get_property("_candyCaneSwordOvergrownLot").to_boolean())
 	   || (place == $location[The Penultimate Fantasy Airship] && (!possessEquipment($item[Amulet of Extreme Plot Significance]) || !possessEquipment($item[unbreakable umbrella]) || !possessEquipment($item[Titanium Assault Umbrella])))
-	   || ($locations[The Sleazy Back Alley, The Defiled Cranny, The Black Forest, The Hidden Apartment Building, A Mob of Zeppelin Protesters, Wartime Frat House, Wartime Hippy Camp, The Daily Dungeon]) contains place)
+	   || ($locations[The Sleazy Back Alley, A Mob of Zeppelin Protesters, Wartime Frat House, Wartime Hippy Camp, The Daily Dungeon]) contains place)
 	{
-		if(equipped_item($slot[weapon]) == $item[June Cleaver])
-		{
-			equip($slot[off-hand], $item[Candy Cane Sword Cane]);
-		}
-		else
-		{
-			equip($item[Candy Cane Sword Cane]);
-		}
+		return true;
 	}
-	return have_equipped($item[Candy Cane Sword Cane]);
+	return false;
 }

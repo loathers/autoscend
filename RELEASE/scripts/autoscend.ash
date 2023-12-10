@@ -1,4 +1,4 @@
-since r27678;	// fix: identify burning leaves in small
+since r27722;	// fix: identify burning leaves in small
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

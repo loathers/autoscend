@@ -716,10 +716,6 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("+equip " + toEquip);
 		}
 	}
-	if(auto_wantToEquipPowerfulGlove())
-	{
-		addBonusToMaximize($item[Powerful Glove], 1000); // pixels
-	}
 	
 	if(pathHasFamiliar())
 	{
@@ -767,6 +763,11 @@ void finalizeMaximize(boolean speculative)
 		if (getSweat() < 90) {
 			addBonusToMaximize($item[designer sweatpants], 200);
 		}
+	}
+
+	if(auto_handleCCSC())
+	{
+		addBonusToMaximize($item[Candy Cane Sword Cane], 1000); // we really want the CCSC if we can use it in a zone for a choice
 	}
 
 	if(!in_plumber() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
