@@ -765,18 +765,6 @@ void finalizeMaximize(boolean speculative)
 		}
 	}
 
-	if(auto_haveCCSC())
-	{
-		if(auto_handleCCSC())
-		{
-			addBonusToMaximize($item[Candy Cane Sword Cane], 1000); // we really want the CCSC if we can use it in a zone for a choice
-		}
-		else
-		{
-			addBonusToMaximize($item[Candy Cane Sword Cane], 100); // still really good but it needs to ramp up before we want it over Cleaver (2023 meta)
-		}
-	}
-
 	if(!in_plumber() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
 		if (my_class() == $class[Seal Clubber] && in_glover())
