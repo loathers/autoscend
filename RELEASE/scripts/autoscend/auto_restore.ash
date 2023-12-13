@@ -1619,6 +1619,8 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 			}
 			print("Aborting due to restore failure... you can override this setting for today by entering in gCLI:" ,"blue");
 			print("set _auto_ignoreRestoreFailureToday = true" ,"blue");
+			print("You can override this setting forever by entering in gCLI:" ,"blue");
+			print("set auto_ignoreRestoreFailure = true" ,"blue");
 			abort();
 		}
 

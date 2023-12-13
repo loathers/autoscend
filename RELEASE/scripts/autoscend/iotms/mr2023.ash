@@ -864,3 +864,53 @@ boolean auto_burnLeaves()
 	}
 	return false;
 }
+
+boolean auto_haveCCSC()
+{
+	if(auto_is_valid($item[Candy Cane Sword Cane]) && available_amount($item[Candy Cane Sword Cane]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_handleCCSC()
+{
+	if(!auto_haveCCSC())
+	{
+		return false;
+	}
+	location place = my_location();
+	
+	/* Where/Why We Want Only Certain Locations
+	 The Sleazy Back Alley - 11-leaf clover (only visit if we are a moxie class unlocking guild, but still potentially useful)
+	 The Daily Dungeon - Eleven-foot pole replacement. +1 Fat Loot Token
+	 The Shore, Inc. Travel Agency - 2 Scrips and all stats
+	 The Defiled Cranny - -11 evilness
+	 The eXtreme Slope - If we can't do ninja snowmen for some reason, gives us 2 pieces of equipment in one NC
+	 The Penultimate Fantasy Airship - Get an umbrella for basement, metallic A for wand, SGEEA, and Fantasy Chest for even more items
+	 The Black Forest - +8 exploration
+	 The Copperhead Club - Gives us a priceless diamond, saving 4950-5000 meat
+	 The Hidden Apartment Building - +1 cursed level, Doesn't leave NC
+	 The Hidden Bowling Alley - 1 less bowling ball needed
+	 An Overgrown Shrine (Northeast) - Free Meat
+	 A Mob of Zeppelin Protesters - Double Sleaze Protestors
+	 Wartime Frat House/Camp - Skip non-useful NC to go to war start NC
+	 */
+
+	if((place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5 && !get_property("candyCaneSwordBowlingAlley").to_boolean())
+	   || (place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0 && !get_property("candyCaneSwordShore").to_boolean())
+	   || (place == $location[The eXtreme Slope] && (!possessEquipment($item[eXtreme scarf]) && !possessEquipment($item[snowboarder pants])))
+	   || (place == $location[The Copperhead Club] && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0) && !get_property("candyCaneSwordCopperheadClub").to_boolean())
+	   || (place == $location[The Defiled Cranny] && !get_property("candyCaneSwordDefiledCranny").to_boolean())
+	   || (place == $location[The Black Forest] && !get_property("candyCaneSwordBlackForest").to_boolean())
+	   || (place == $location[The Hidden Apartment Building] && !get_property("candyCaneSwordApartmentBuilding").to_boolean())
+	   || (place == $location[An Overgrown Shrine (Northeast)] && !get_property("_candyCaneSwordOvergrownShrine").to_boolean())
+	   || (place == $location[The Overgrown Lot] && !get_property("_candyCaneSwordOvergrownLot").to_boolean())
+	   || (place == $location[The Penultimate Fantasy Airship] && (!possessEquipment($item[Amulet of Extreme Plot Significance]) || !possessEquipment($item[unbreakable umbrella]) || !possessEquipment($item[Titanium Assault Umbrella])))
+	   || ($locations[The Sleazy Back Alley, A Mob of Zeppelin Protesters, Wartime Frat House, Wartime Hippy Camp, The Daily Dungeon]) contains place)
+	{
+		return true;
+	}
+	return false;
+}

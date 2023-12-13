@@ -2471,10 +2471,14 @@ boolean have_skills(boolean[skill] array)
 //From Bale\'s woods.ash relay script.
 boolean woods_questStart()
 {
-	if (internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0)
+	if(internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0)
 	{
 		// distant woods access is gated behind level 2 quest & whitey's grove quest.
 		// for some reason mafia doesn't track this any other way
+		return false;
+	}
+	if(in_koe()) // no access to woods or forest village in KoE
+	{
 		return false;
 	}
 	if(available_amount($item[Continuum Transfunctioner]) > 0)

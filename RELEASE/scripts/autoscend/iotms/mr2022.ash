@@ -258,7 +258,12 @@ boolean auto_juneCleaverAdventure()
 
 	if (autoEquip($slot[weapon], $item[June cleaver]))
 	{
-		return autoAdv($location[The Dire Warren]);
+		location cleaverLoc = $location[The Dire Warren];
+		if (in_koe())
+		{
+			cleaverLoc = $location[Cobb's Knob Treasury]; // arbitrarily picked always accessible location
+		}
+		return autoAdv(cleaverLoc);
 	}
 	return false;
 }
@@ -672,7 +677,8 @@ boolean auto_autumnatonQuest()
 	if(auto_autumnatonCheckForUpgrade("leftarm1") &&
 	 auto_autumnatonCheckForUpgrade("rightarm1") &&
 	 item_amount($item[barrel of gunpowder]) < 5 && 
-	 get_property("sidequestLighthouseCompleted") == "none")
+	 get_property("sidequestLighthouseCompleted") == "none" &&
+	 !in_koe())
 	{
 		location targetLocation = $location[Sonofa Beach];
 		if(!auto_autumnatonCanAdv(targetLocation) && zone_available(targetLocation))

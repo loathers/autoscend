@@ -1,5 +1,15 @@
 import<autoscend.ash>
 
+//Calculates MP to acquire at low max mp levels
+//At low max MP, important to keep MP near max, since every saucestorm (etc.) counts
+void low_mp_handler()
+{
+	auto_log_debug("Low max MP detected.", "red");
+	int MIN_USEFUL_MP = 6; //Saucestorm
+	int TARGET_MP = my_maxmp() - (my_maxmp() % MIN_USEFUL_MP);
+	acquireMP(TARGET_MP, 0);
+}
+
 void print_footer()
 {
 	auto_log_info("[" +my_class()+ "] @ path of [" +my_path().name+ "]", "blue");
@@ -108,7 +118,9 @@ void auto_ghost_prep(location place)
 	{
 		if(auto_have_skill(sk))
 		{
-			acquireMP(32, 1000);		//make sure we actually have the MP to cast spells
+			if(my_maxmp() >= 32)
+				acquireMP(32, 0);		//make sure we actually have the MP to cast spells
+			else low_mp_handler();
 		}
 		if(canUse(sk)) return;	//we can kill them with a spell
 	}
@@ -840,6 +852,10 @@ boolean auto_pre_adventure()
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	auto_handleParka(); //same as retrocape above
+	if(auto_handleCCSC() && !have_equipped($item[Candy Cane Sword Cane]))
+	{
+		autoForceEquip($item[Candy Cane Sword Cane]); // Force the candy cane sword cane if June cleaver has been buffed beyond the 1000 bonus boost
+	}
 	cli_execute("checkpoint clear");
 
 	//before guaranteed non combats that give stats, overrule maximized equipment to increase stat gains
@@ -855,7 +871,7 @@ boolean auto_pre_adventure()
 	}
 	else if(place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0)
 	{
-		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat
+		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat or all stats
 		plumber_forceEquipTool();
 	}
 
@@ -944,6 +960,13 @@ boolean auto_pre_adventure()
 			break;
 	}
 	acquireMP(mpNeeded, 0);
+                       
+  //acquireMP won't do anything if the maxMP isn't big enough,
+  //so we'll use this to ensure we have MP in low max scenarios
+  if(my_maxmp() < mpNeeded)
+	{
+		low_mp_handler();
+	}
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{

@@ -719,7 +719,15 @@ void blackForestChoiceHandler(int choice)
 {
 	if(choice == 923) // All Over the Map (The Black Forest)
 	{
-		run_choice(1); // go to You Found Your Thrill (#924)
+		if(available_choice_options() contains 5) // only available with Candy Cane Sword Cane equipped
+		{
+			run_choice(5); // +8 exploration
+			run_choice(1); // go to You Found Your Thrill (#924)
+		}
+		else
+		{
+			run_choice(1); // go to You Found Your Thrill (#924)
+		}
 	}
 	else if(choice == 924)
 	{
@@ -1560,6 +1568,18 @@ void hiddenCityChoiceHandler(int choice)
 		{
 			run_choice(3); // relocate lawyers to park
 		}
+		else if(available_choice_options() contains 4 && have_effect($effect[Thrice-Cursed]) == 0) // Use CCSC to get Cursed +1
+		{
+			run_choice(4);
+			if(have_effect($effect[Thrice-Cursed]) > 0)
+			{
+				run_choice(1); // fight the spirit
+			}
+			else
+			{
+				run_choice(2); // get cursed
+			}
+		}
 		else
 		{
 			run_choice(2); // get cursed
@@ -1601,12 +1621,18 @@ void hiddenCityChoiceHandler(int choice)
 	}
 	else if(choice == 785) // Air Apparent (An Overgrown Shrine (Northeast))
 	{
+		
 		if(get_property("hiddenOfficeProgress").to_int() == 0)
 		{
 			run_choice(1); // unlock the Hidden Office Building
 		}
 		else if(item_amount($item[crackling stone sphere]) > 0)
 		{
+			if (available_choice_options() contains 4)
+			{
+				run_choice(4); // get free meat
+				run_choice(2); // get the stone triangle
+			}
 			run_choice(2); // get the stone triangle
 		}
 		else
@@ -1646,7 +1672,15 @@ void hiddenCityChoiceHandler(int choice)
 	}
 	else if(choice == 788) // Life is Like a Cherry of Bowls (The Hidden Bowling Alley)
 	{
-		run_choice(1); // bowl for stats 4 times then fight the spirit on 5th occurrence
+		if(available_choice_options() contains 2)
+		{
+			run_choice(2); // bowl for stats 4 times then fight the spirit on 5th occurrence
+			run_choice(1); // bowl for stats 4 times then fight the spirit on 5th occurrence
+		}
+		else
+		{
+			run_choice(1); // bowl for stats 4 times then fight the spirit on 5th occurrence
+		}
 	}
 	else if(choice == 789) // Where Does The Lone Ranger Take His Garbagester? (The Hidden Park)
 	{
@@ -1751,6 +1785,10 @@ boolean L11_hiddenCity()
 		{
 			cursesNeeded = 1;
 		}
+		if(auto_haveCCSC())
+		{
+			cursesNeeded -= 1;
+		}
 		
 		//able to drink, enough liver?
 		if(canDrinkCursedPunch)
@@ -1772,7 +1810,7 @@ boolean L11_hiddenCity()
 			//should we try to force the noncombat?
 			boolean shouldForceElevatorAction = false;
 			
-			if(have_effect($effect[Thrice-Cursed]) > 0)
+			if((have_effect($effect[Thrice-Cursed]) > 0) || (have_effect($effect[Twice-Cursed]) > 0 && auto_haveCCSC()))
 			{
 				shouldForceElevatorAction = true;
 			}
@@ -2401,7 +2439,14 @@ boolean L11_redZeppelin()
 	// TODO: create lynyrd skin items
 
 	set_property("choiceAdventure856", 1);
-	set_property("choiceAdventure857", 1);
+	if(auto_haveCCSC())
+	{
+		set_property("choiceAdventure857", 2);
+	}
+	else
+	{
+		set_property("choiceAdventure857", 1);
+	}
 	set_property("choiceAdventure858", 1);
 	buffMaintain($effect[Greasy Peasy]);
 	buffMaintain($effect[Musky]);
@@ -2469,6 +2514,10 @@ boolean L11_redZeppelin()
 		}
 		float fire_protestors = item_amount($item[Flamin\' Whatshisname]) > 0 ? 10 : 3;
 		float sleaze_amount = numeric_modifier("sleaze damage") + numeric_modifier("sleaze spell damage");
+		if(auto_haveCCSC())
+		{
+			sleaze_amount = sleaze_amount * 2;
+		}
 		float sleaze_protestors = square_root(sleaze_amount);
 		float lynyrd_protestors = have_effect($effect[Musky]) > 0 ? 6 : 3;
 		foreach it in $items[lynyrdskin cap, lynyrdskin tunic, lynyrdskin breeches]
@@ -2652,6 +2701,10 @@ boolean L11_shenCopperhead()
 					// got priceless diamond or zeppelin ticket (or we are rich) so lets burn the place down (and make Flamin' Whatsisnames)
 					behindtheStacheOption = 3;
 				}
+			}
+			else if (have_equipped($item[Candy Cane Sword Cane]) && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0))
+			{
+				behindtheStacheOption = 5;
 			}
 			else
 			{

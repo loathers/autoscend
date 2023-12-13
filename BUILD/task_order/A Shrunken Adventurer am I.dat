@@ -16,11 +16,11 @@ L11_aridDesert	L11_hasUltrahydrated
 # Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
 L11_shenStartQuest
 # Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
+finishBuildingSmutOrcBridge
 # Underground Adventuring for CMC/Breathitin.
 LX_goingUnderground
-# Forcing Non-combats to progress quests.
 # Burn Breathitin charges
-auto_useBreathitinCharges
+LX_useBreathitinCharges
 # Guild access.
 LX_guildUnlock
 #	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
