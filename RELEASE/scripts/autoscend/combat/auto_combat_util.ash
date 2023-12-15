@@ -459,6 +459,29 @@ string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string
 	return "abort";	//must have a return
 }
 
+string findPhylumBanisher(int round, monster enemy, string text)
+{
+	string banishAction = banisherCombatString(enemy.phylum, my_location(), true);
+	if(banishAction != "")
+	{
+		auto_log_info("Looking at banishAction: " + banishAction, "green");
+		if(index_of(banishAction, "skill") == 0)
+		{
+			handleTracker(enemy.phylum, to_skill(substring(banishAction, 6)), "auto_banishes");
+		}
+		else if(index_of(banishAction, "item") == 0)
+		{
+			handleTracker(enemy.phylum, to_item(substring(banishAction, 5)), "auto_banishes");
+		}
+		else
+		{
+			auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
+		}
+		return banishAction;
+	}
+	return auto_combatHandler(round, enemy, text);
+}
+
 string findBanisher(int round, monster enemy, string text)
 {
 	string banishAction = banisherCombatString(enemy, my_location(), true);
@@ -505,7 +528,7 @@ string banisherCombatString(phylum enemyphylum, location loc, boolean inCombat)
 	if(inCombat)
 		auto_log_info("Finding a banisher to use on " + enemyphylum + " at " + loc, "green");
 
-	if(auto_have_skill($skill[%fn\, Release the Patriotic Screech!]))
+	if(auto_is_valid($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0 || get_property("screechCombats").to_int() >= 11))
 	{
 		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
 	}

@@ -163,8 +163,33 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		combat_status_add("banishercheck");
 	}
 
-	// Free run from monsters we want to banish but are unable to
-	if(!combat_status_check("freeruncheck") && auto_wantToBanish(enemy, my_location()))
+	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy.phylum, my_location()))
+	{
+		string banishAction = banisherCombatString(enemy.phylum, my_location(), true);
+		if(banishAction != "")
+		{
+			auto_log_info("Looking at banishAction: " + banishAction, "green");
+			combat_status_add("banisher");
+			if(index_of(banishAction, "skill") == 0)
+			{
+				handleTracker(enemy.phylum, to_skill(substring(banishAction, 6)), "auto_banishes");
+			}
+			else if(index_of(banishAction, "item") == 0)
+			{
+				handleTracker(enemy.phylum, to_item(substring(banishAction, 5)), "auto_banishes");
+			}
+			else
+			{
+				auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
+			}
+			return banishAction;
+		}
+		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
+		combat_status_add("banishercheck");
+	}
+
+	// Free run from monsters we want to banish/phylumbanish but are unable to
+	if(!combat_status_check("freeruncheck") && (auto_wantToBanish(enemy, my_location()) || auto_wantToBanish(enemy.phylum, my_location())))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")

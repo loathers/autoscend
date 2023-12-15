@@ -606,10 +606,18 @@ boolean LX_dailyDungeonToken()
 	{
 		return false;	//can switch to cubeling so wait until we have all the tool drops before doing daily dungeon
 	}
+	boolean needPole = true;
+	if(auto_haveCCSC())
+	{
+		needPole = false;
+	}
 	
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
 	{
-		auto_buyUpTo(1, $item[Eleven-Foot Pole]);
+		if(needPole)
+		{
+			auto_buyUpTo(1, $item[Eleven-Foot Pole]);
+		}
 		auto_buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
 		if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not buy a second one if already equipped
 		{
@@ -618,7 +626,10 @@ boolean LX_dailyDungeonToken()
 	}
 	
 	//if you can not use the cubeling then pull the missing tools if possible
-	pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
+	if(needPole)
+	{
+		pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
+	}
 	if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not pull a second one if already equipped
 	{
 		pullXWhenHaveY($item[Ring of Detect Boring Doors], 1, 0);

@@ -548,9 +548,9 @@ void auto_scepterRollover()
 		use_skill($skill[Aug. 27th: Just Because Day!]); //3 random buffs
 	}
 	if(canUse($skill[Aug. 13th: Left\/Off Hander\'s Day!]) && !get_property("_aug13Cast").to_boolean() &&
-	get_property("_augSkillsCast").to_int()< 5 && numeric_modifier(equipped_item($slot[offhand]),"Adventures") > 0)
+	get_property("_augSkillsCast").to_int()< 5 && numeric_modifier(equipped_item($slot[off-hand]),"Adventures") > 0)
 	{
-		use_skill($skill[Aug. 13th: Left\/Off Hander\'s Day!]); //3 random buffs
+		use_skill($skill[Aug. 13th: Left\/Off Hander\'s Day!]); //bump up the off-hand
 	}
 }
 
