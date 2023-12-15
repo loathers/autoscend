@@ -461,17 +461,17 @@ string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string
 
 string findPhylumBanisher(int round, monster enemy, string text)
 {
-	string banishAction = banisherCombatString(enemy.phylum, my_location(), true);
+	string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
 	if(banishAction != "")
 	{
 		auto_log_info("Looking at banishAction: " + banishAction, "green");
 		if(index_of(banishAction, "skill") == 0)
 		{
-			handleTracker(enemy.phylum, to_skill(substring(banishAction, 6)), "auto_banishes");
+			handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
 		}
 		else if(index_of(banishAction, "item") == 0)
 		{
-			handleTracker(enemy.phylum, to_item(substring(banishAction, 5)), "auto_banishes");
+			handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
 		}
 		else
 		{
@@ -670,6 +670,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
 	}
+	
 	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
 	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]) && !(used contains "Bowl a Curveball"))
 	{

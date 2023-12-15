@@ -62,7 +62,7 @@ boolean auto_allowCrystalBall(monster predicted_monster, location loc)
 	//if already forced by something else, no need to handle your ball
 	//pre_adv, or simulatePreAdvForCrystalBall, handles this as it already tracks burningDelay and forced encounters
 	
-	if(is_banished(predicted_monster) || auto_wantToReplace(predicted_monster,loc) || auto_wantToBanish(predicted_monster,loc) || auto_wantToBanish(predicted_monster.phylum, loc))
+	if(is_banished(predicted_monster) || auto_wantToReplace(predicted_monster,loc) || auto_wantToBanish(predicted_monster,loc) || auto_wantToBanish(monster_phylum(predicted_monster), loc))
 	{
 		// next prediction is unwanted, do not allow
 		return false;
