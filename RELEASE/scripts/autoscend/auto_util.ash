@@ -735,7 +735,7 @@ boolean adjustForBanish(string combat_string)
 	}
 	if(combat_string == "skill" + $skill[%fn\, Release the Patriotic Screech!])
 	{
-		return handleFamiliar($familiar[Patriotic Eagle]);
+		return use_familiar($familiar[Patriotic Eagle]);
 	}
 	if(combat_string == "skill " + $skill[Beancannon])
 	{
