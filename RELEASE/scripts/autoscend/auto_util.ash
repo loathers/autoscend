@@ -3329,8 +3329,8 @@ boolean [phylum] auto_getPhylum(string category)
 {
 	boolean [phylum] res;
 	string [string,int,string] phylum_text;
-	if(!file_to_map("autoscend_phylum.txt", phylum_text))
-		auto_log_error("Could not load autoscend_phylum.txt. This is bad!");
+	if(!file_to_map("autoscend_phylums.txt", phylum_text))
+		auto_log_error("Could not load autoscend_phylums.txt. This is bad!");
 	foreach i,name,conds in phylum_text[category]
 	{
 		phylum thisPhylum = name.to_phylum();
