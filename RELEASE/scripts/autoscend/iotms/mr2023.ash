@@ -760,7 +760,7 @@ boolean auto_haveEagle()
 boolean auto_getCitizenZone(string goal)
 {
 	familiar eagle = $familiar[Patriotic Eagle];
-	visitUrl("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944");
+	visit_url("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944");
 	string activeCitZoneMod = get_property("_citizenZoneMods").to_lower_case();
 	if(!auto_haveEagle())
 	{
