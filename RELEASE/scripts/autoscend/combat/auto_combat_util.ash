@@ -528,7 +528,7 @@ string banisherCombatString(phylum enemyphylum, location loc, boolean inCombat)
 	if(inCombat)
 		auto_log_info("Finding a banisher to use on " + enemyphylum + " at " + loc, "green");
 
-	if(canChangeToFamiliar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0 || get_property("screechCombats").to_int() >= 11))
+	if(auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0))
 	{
 		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
 	}
