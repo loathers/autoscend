@@ -397,7 +397,7 @@ boolean auto_pre_adventure()
 			if(auto_wantToBanish(monster_phylum(mon), place))
 			{
 				// attempt to prepare for banishing, but if we can not try free running
-				boolean canBanish = adjustForBanishIfPossible(mon.phylum, place);
+				boolean canBanish = adjustForBanishIfPossible(monster_phylum(mon), place);
 				if(!canBanish)
 				{
 					adjustForFreeRunIfPossible(mon,place);
