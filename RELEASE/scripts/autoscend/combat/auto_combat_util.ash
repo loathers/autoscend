@@ -255,6 +255,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Transcendent Olfaction];
 	}
+	if(canUse($skill[%fn, fire a Red, White and Blue Blast], true, inCombat) && !have_effect($effect[Everything Looks Red, White and Blue]))
+	{
+		return $skill[%fn, fire a Red, White and Blue Blast];
+	}
 	if(canUse($skill[Make Friends], true , inCombat) && my_audience() >= 20 && !isSniffed(enemy, $skill[Make Friends]))
 	{
 		return $skill[Make Friends];		//avatar of sneaky pete specific skill
