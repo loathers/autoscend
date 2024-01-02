@@ -255,7 +255,7 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Transcendent Olfaction];
 	}
-	if(canUse($skill[%fn, fire a Red, White and Blue Blast], true, inCombat) && !have_effect($effect[Everything Looks Red, White and Blue]))
+	if(canUse($skill[%fn, fire a Red, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0))
 	{
 		return $skill[%fn, fire a Red, White and Blue Blast];
 	}
