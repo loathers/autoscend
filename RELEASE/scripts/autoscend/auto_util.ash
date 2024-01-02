@@ -1028,6 +1028,10 @@ boolean adjustForSniffingIfPossible(monster target)
 	{
 		return autoEquip($item[cursed monkey\'s paw]);
 	}
+	if(sniffer == $skill[%fn, fire a Red, White and Blue Blast])
+	{
+		handleFamiliar($familiar[Patriotic Eagle]);
+	}
 	if(sniffer != $skill[none])
 	{
 		return acquireMP(sniffer.mp_cost());
