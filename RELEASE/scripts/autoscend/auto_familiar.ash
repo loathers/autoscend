@@ -420,6 +420,12 @@ boolean autoChooseFamiliar(location place)
 		}
 	}
 
+	//Force the Patriotic Eagle if we used a banish recently and can't use one until we burn 11 combats with the Eagle
+	if(auto_haveEagle() && get_property("screechCombats").to_int() > 0)
+	{
+		famChoice = $familiar[Patriotic Eagle];
+	}
+
 	// Gremlins have special familiar handling.
 	if ($locations[Next to that Barrel with Something Burning in it, Out By that Rusted-Out Car, Over Where the Old Tires Are, Near an Abandoned Refrigerator] contains place) {
 		famChoice = lookupFamiliarDatafile("gremlins");
