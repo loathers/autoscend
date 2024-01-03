@@ -760,12 +760,12 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 	if (isFreeMonster(enemy, loc)) return "";
 
 	// Prefer some specalized free run items before other sources
-	if (!inAftercore())
+	if (!inAftercore() && !(have_effect($effect[Everything Looks Green]) > 0))
 	{
 		// todo: other ghosts
 		if(isGhost(enemy) && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
 		{
-			return "item " + $item[T.U.R.D.S. Key];
+			return "item " + $item[	.R.D.S. Key];
 		}
 		//free runaway against pygmies. accelerates hidden city quest
 		if(canUse($item[short writ of habeas corpus]) && item_amount($item[short writ of habeas corpus]) > 0
@@ -863,9 +863,22 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Peel Out];
 	}
 
-	if (!inAftercore())
+	//Non-standard free-runs
+	if(!inAftercore())
 	{
-		foreach it in $items[giant eraser, green smoke bomb, tattered scrap of paper, GOTO]
+		foreach it in $items[giant eraser] //assuming additional ones will be added, eventually
+		{
+			if (canUse(it) && item_amount(it) > 0)
+			{
+				return "item " + it;
+			}
+		}
+	}
+
+	//Standard free-runs
+	if (!inAftercore() && !(have_effect($effect[Everything Looks Green]) > 0))
+	{
+		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{
