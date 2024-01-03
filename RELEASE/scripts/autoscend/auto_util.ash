@@ -765,7 +765,7 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 		// todo: other ghosts
 		if(isGhost(enemy) && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
 		{
-			return "item " + $item[	.R.D.S. Key];
+			return "item " + $item[T.U.R.D.S. Key];
 		}
 		//free runaway against pygmies. accelerates hidden city quest
 		if(canUse($item[short writ of habeas corpus]) && item_amount($item[short writ of habeas corpus]) > 0
