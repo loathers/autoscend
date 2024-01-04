@@ -14,6 +14,9 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	// Path = The Source
 	retval = auto_combatZombieSlayerStage4(round, enemy, text);
 	if(retval != "") return retval;
+
+	// Skip if have drones out
+	if(get_property("auto_skipStage4").to_boolean()) return "";
 	
 	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
 	if(auto_wantToSniff(enemy, my_location()))
@@ -163,35 +166,10 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	{
 		if($monsters[Lobsterfrogman, Modern Zmobie, Ninja Snowman Assassin] contains enemy)
 		{
-			if(enemy == $monster[modern zmobie])
-			{
-				set_property("auto_waitingArrowAlcove", get_property("cyrptAlcoveEvilness").to_int() - 20);
-			}
 			return useSkill(wink_skill);
 		}
 	}
 	
-	//[Conspiracy Island] iotm specific. clip the fingernails of [One of Doctor Weirdeaux's creations]
-	int fingernailClippersLeft = get_property("auto_combatHandlerFingernailClippers").to_int();
-	if(fingernailClippersLeft > 0)
-	{
-		fingernailClippersLeft = fingernailClippersLeft - 1;
-		if(fingernailClippersLeft == 0)
-		{
-			markAsUsed($item[military-grade fingernail clippers]);
-		}
-		set_property("auto_combatHandlerFingernailClippers", "" + fingernailClippersLeft);
-		return "item " + $item[military-grade fingernail clippers];
-	}
-
-	if((item_amount($item[military-grade fingernail clippers]) > 0)  && (enemy == $monster[one of Doctor Weirdeaux\'s creations]))
-	{
-		if(!haveUsed($item[military-grade fingernail clippers]))
-		{
-			fingernailClippersLeft = 3;
-			set_property("auto_combatHandlerFingernailClippers", "3");
-		}
-	}
 	
 	//insults are used as part of the pirates quest
 	if(canUse($item[The Big Book of Pirate Insults]) && (numPirateInsults() < 8) && (internalQuestStatus("questM12Pirate") < 5))
@@ -350,16 +328,14 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 
 	// use red rocket from Clan VIP Lounge to get 5x stats from next food item consumed. Does not stagger on use
-	// consumeStuff fills liver first up to 10 or 15 before eating, pending if billiards room if completed. Gives confidence that we will eat within 100 turns.
-	boolean billiards_check = my_inebriety() >= 10 || !can_drink() || hasSpookyravenLibraryKey();
-	if(canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0 && canSurvive(5.0) && my_adventures() < 100 && billiards_check)
+	if(fullness_left() > 0 && canUse($item[red rocket]) && have_effect($effect[Everything Looks Red]) <= 0 && have_effect($effect[Ready to Eat]) <= 0 && canSurvive(5.0) && my_adventures() < 100)
 	{
 		if(in_plumber())
 		{
 			return useItem($item[red rocket]);
 		}
 		//use if next food is large in size. Currently autoConsume doesn't analyze stat gain, which would be better
-		//disabled until fix: https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues/1053
+		//disabled until fix: https://github.com/loathers/autoscend/issues/1053
 		//item simulationOutput = auto_autoConsumeOneSimulation("eat");
 		//if (simulationOutput != $item[none] && simulationOutput.fullness > 3)
 		//{

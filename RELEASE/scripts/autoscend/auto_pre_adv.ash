@@ -1,5 +1,15 @@
 import<autoscend.ash>
 
+//Calculates MP to acquire at low max mp levels
+//At low max MP, important to keep MP near max, since every saucestorm (etc.) counts
+void low_mp_handler()
+{
+	auto_log_debug("Low max MP detected.", "red");
+	int MIN_USEFUL_MP = 6; //Saucestorm
+	int TARGET_MP = my_maxmp() - (my_maxmp() % MIN_USEFUL_MP);
+	acquireMP(TARGET_MP, 0);
+}
+
 void print_footer()
 {
 	auto_log_info("[" +my_class()+ "] @ path of [" +my_path().name+ "]", "blue");
@@ -25,12 +35,18 @@ void print_footer()
 	}
 	auto_log_info(next_line, "blue");
 	
+	string stat_sign(int s)
+	{
+		if(s >= 0) return "+" +s;
+		else return s;
+	}
+	
 	int bonus_mus = my_buffedstat($stat[muscle]) - my_basestat($stat[muscle]);
 	int bonus_mys = my_buffedstat($stat[mysticality]) - my_basestat($stat[mysticality]);
 	int bonus_mox = my_buffedstat($stat[moxie]) - my_basestat($stat[moxie]);
-	auto_log_info("mus: " +my_basestat($stat[muscle])+ " + " +bonus_mus+
-	". mys: " +my_basestat($stat[mysticality])+ " + " +bonus_mys+
-	". mox: " +my_basestat($stat[moxie])+ " + " +bonus_mox, "blue");
+	auto_log_info("mus: " +my_basestat($stat[muscle])+stat_sign(bonus_mus)+
+	". mys: " +my_basestat($stat[mysticality])+stat_sign(bonus_mys)+
+	". mox: " +my_basestat($stat[moxie])+stat_sign(bonus_mox), "blue");
 	
 	next_line = "";
 	if(pathHasFamiliar())
@@ -96,13 +112,15 @@ void auto_ghost_prep(location place)
 		Smoke Break,				//avatar of sneaky pete
 		Fireball Toss,				//path of the plumber
 		Chill of the Tomb,			//dark gyffte
-		Lavafava,					//avatar of west of loathing
+		Lavafava, Pungent Mung, Beanstorm,			  //avatar of west of loathing
 		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
 		]
 	{
 		if(auto_have_skill(sk))
 		{
-			acquireMP(32, 1000);		//make sure we actually have the MP to cast spells
+			if(my_maxmp() >= 32)
+				acquireMP(32, 0);		//make sure we actually have the MP to cast spells
+			else low_mp_handler();
 		}
 		if(canUse(sk)) return;	//we can kill them with a spell
 	}
@@ -211,10 +229,41 @@ boolean auto_pre_adventure()
 		uneffect($effect[Scarysauce]);
 		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
+	
+	if(my_class() == $class[Pastamancer] && my_thrall() == $thrall[Vampieroghi] && place == $location[The Hidden Apartment Building]
+		&& auto_have_skill($skill[Dismiss Pasta Thrall]))
+	{
+		// vampieroghi can dispell the shaman curse, preventing us from making quest progress
+		use_skill($skill[Dismiss Pasta Thrall]);
+	}
 
 	if(place == $location[The Smut Orc Logging Camp])
 	{
 		prepareForSmutOrcs();
+	}
+
+	if(place == $location[Vanya\'s Castle])
+	{
+		provideInitiative(600, $location[Vanya\'s Castle], true);	
+		addToMaximize("200initiative 800max");
+	}
+	if(place == $location[The Fungus Plains])
+	{
+		buffMaintain($effect[Polka of Plenty], 30, 1, 1);
+		addToMaximize("200meat drop 550max");
+	}
+	if(place == $location[Megalo-City])
+	{
+		buffMaintain($effect[Ghostly Shell], 30, 1, 1);			//+80 DA. 6 MP
+		buffMaintain($effect[Astral Shell], 30, 1, 1);			//+80 DA, 10 MP
+		buffMaintain($effect[Feeling Peaceful], 0, 1, 1);
+		addToMaximize("200DA 600max");
+	}
+	if(place == $location[Hero\'s Field])
+	{
+		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
+		buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
+		addToMaximize("200item 500max");
 	}
 
 	boolean junkyardML;
@@ -278,19 +327,19 @@ boolean auto_pre_adventure()
 		{
 			if (0 == have_effect($effect[Uncucumbered]))
 			{
-				buyUpTo(1, $item[hair spray]);
+				auto_buyUpTo(1, $item[hair spray]);
 				use(1, $item[hair spray]);
 			}
 			if (0 == have_effect($effect[Minerva\'s Zen]))
 			{
-				buyUpTo(1, $item[glittery mascara]);
+				auto_buyUpTo(1, $item[glittery mascara]);
 				use(1, $item[glittery mascara]);
 			}
 		}
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
+	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && place == solveDelayZone());
 	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
 	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
@@ -383,8 +432,9 @@ boolean auto_pre_adventure()
 	{
 		foreach mon,rate in appearance_rates(place)
 		{
-			if (rate > 0 && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon))
+			if (rate > 0 && mon.id > 0 && mon.copyable && !mon.boss && !auto_monsterInLocket(mon) && place != $location[Noob Cave])
 			{
+				// We use Noob Cave as the placeholder location for zoneless encounters so lets not equip it when we're not actually going there.
 				auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from ' + place + ", so we're bringing it along.", "blue");
 				autoEquip($item[combat lover\'s locket]);
 				break;
@@ -422,11 +472,6 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	if(auto_backupTarget())
-	{
-		autoEquip($slot[acc3], $item[backup camera]);
-	}
-
 	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		autoForceEquip(wrap_item($item[jurassic parka])); //equips parka and forbids maximizer tampering with shirt slot
@@ -442,6 +487,10 @@ boolean auto_pre_adventure()
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
 		autoEquip(exting);
+	}
+	else if(auto_availableBrickRift() == place)
+	{
+		autoEquip(exting); // polar vortex for shadow bricks
 	}
 	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
 	{
@@ -662,7 +711,7 @@ boolean auto_pre_adventure()
 		boolean purgeML = false;
 
 	boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, The Defiled Cranny];
-	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp];
+	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp, Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass];
 
 	// Generic Conditions
 	if(inAftercore())
@@ -803,6 +852,10 @@ boolean auto_pre_adventure()
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	auto_handleParka(); //same as retrocape above
+	if(auto_handleCCSC() && !have_equipped($item[Candy Cane Sword Cane]))
+	{
+		autoForceEquip($item[Candy Cane Sword Cane]); // Force the candy cane sword cane if June cleaver has been buffed beyond the 1000 bonus boost
+	}
 	cli_execute("checkpoint clear");
 
 	//before guaranteed non combats that give stats, overrule maximized equipment to increase stat gains
@@ -818,7 +871,7 @@ boolean auto_pre_adventure()
 	}
 	else if(place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0)
 	{
-		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat
+		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat or all stats
 		plumber_forceEquipTool();
 	}
 
@@ -884,7 +937,36 @@ boolean auto_pre_adventure()
 	borisWastedMP();
 	borisTrusty();
 
-	acquireMP(32, 1000);
+	int mpNeeded = 32; // enough for 5 casts of Saucestorm. Usually this should be fine for most combats
+	switch (my_class())
+	{
+		// expand this for other cases where we need more MP for combat.
+		// ideally we could ask the combat function to tell us how much MP it will need for an example encounter in the zone we are going to.
+		case $class[Disco Bandit]:
+			if ($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains place)
+			{
+				// DB aborts in the Shadow Rifts because it runs out of MP trying to use Saucestorm against physically immune monsters when it has Extingo equipped.
+				foreach sk in $skills[Disco Dance of Doom, Disco Dance II: Electric Boogaloo, Disco Dance 3: Back in the Habit]
+				{
+					// yes it casts all 3 of those first then tries to repeat Saucestorm. On 32 or so MP.
+					if (auto_have_skill(sk))
+					{
+						mpNeeded += mp_cost(sk);
+					}
+				}
+			}
+			break;
+		default:
+			break;
+	}
+	acquireMP(mpNeeded, 0);
+                       
+  //acquireMP won't do anything if the maxMP isn't big enough,
+  //so we'll use this to ensure we have MP in low max scenarios
+  if(my_maxmp() < mpNeeded)
+	{
+		low_mp_handler();
+	}
 
 	if(in_hardcore() && (my_class() == $class[Sauceror]) && (my_mp() < 32))
 	{
@@ -910,6 +992,10 @@ boolean auto_pre_adventure()
 
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
+	
+	//try to catch infinite loop where we repeatedly try to do the same thing.
+	//works with code found in auto_post_adv.ash
+	set_property("_auto_inf_session_adv", my_session_adv());
 	
 	//to avoid constant flipping on the MCD. change it right before adventuring
 	int mcd_target = get_property("auto_mcd_target").to_int();

@@ -280,7 +280,7 @@ boolean auto_mayoItems()
 		}
 		if(item_amount(mayo) == 0)
 		{
-			buy(1, mayo);
+			auto_buyUpTo(1, mayo);
 			return true;
 		}
 	}
@@ -1028,39 +1028,6 @@ boolean resolveSixthDMT()
 
 	handleFamiliar($familiar[Machine Elf]);
 	return autoAdv($location[The Deep Machine Tunnels]);
-}
-
-boolean LX_dinseylandfillFunbucks()
-{
-	if(!get_property("auto_getDinseyGarbageMoney").to_boolean())
-	{
-		return false;
-	}
-	if(!elementalPlanes_access($element[stench]))
-	{
-		return false;
-	}
-	if((my_adventures() == 0) || (my_level() < 6))
-	{
-		return false;
-	}
-	if(item_amount($item[Bag of Park Garbage]) > 0 && !can_interact())
-	{
-		return dinseylandfill_garbageMoney();
-	}
-	// Abort if we've already gotten our easy funbucks.
-	// If we don't do this, we get stuck in a loop of getting garbage, using it, and doing BARF more.
-	if(get_property("_dinseyGarbageDisposed").to_boolean()){
-		return false;
-	}
-	if((my_daycount() >= 3) && (my_adventures() > 5))
-	{
-		# We do this after the item check since we may have an extra bag and we should turn that in.
-		return false;
-	}
-	buffMaintain($effect[How to Scam Tourists]);
-	autoAdv(1, $location[Barf Mountain]);
-	return true;
 }
 
 void doghouseChoiceHandler(int choice)

@@ -1,4 +1,4 @@
-since r27442;	// support replica eagle
+since r27772;	// feat: everything looks green color + noremove 
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -24,7 +24,9 @@ import <autoscend/auto_monsterparts.ash>
 import <autoscend/auto_powerlevel.ash>
 import <autoscend/auto_providers.ash>
 import <autoscend/auto_restore.ash>
+import <autoscend/auto_routing.ash>
 import <autoscend/auto_settings.ash>
+import <autoscend/auto_sim.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_zlib.ash>
 import <autoscend/auto_zone.ash>
@@ -77,6 +79,7 @@ import <autoscend/paths/path_of_the_plumber.ash>
 import <autoscend/paths/picky.ash>
 import <autoscend/paths/pocket_familiars.ash>
 import <autoscend/paths/quantum_terrarium.ash>
+import <autoscend/paths/small.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/way_of_the_surprising_fist.ash>
@@ -101,6 +104,10 @@ import <autoscend/quests/level_any.ash>
 import <autoscend/quests/optional.ash>
 
 void initializeSettings() {
+
+	if (inAftercore()) {
+		return;
+	}
 
 	// called once per ascension on the first launch of the script.
 	// should not handle anything other than intialising properties etc.
@@ -168,7 +175,6 @@ void initializeSettings() {
 	set_property("auto_chasmBusted", true);
 	set_property("auto_chewed", "");
 	set_property("auto_clanstuff", "0");
-	set_property("auto_cookie", -1);
 	set_property("auto_copies", "");
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);
@@ -194,10 +200,9 @@ void initializeSettings() {
 	set_property("auto_grimstoneOrnateDowsingRod", true);
 	set_property("auto_haveoven", false);
 	set_property("auto_doGalaktik", get_property("auto_doGalaktik_initialize"));
-	set_property("auto_doArmory", false);
-	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
 	set_property("auto_L8_extremeInstead", false);
+	set_property("auto_L9_smutOrcPervert", false);
 	set_property("auto_haveSourceTerminal", false);
 	set_property("auto_hedge", "fast");
 	set_property("auto_hippyInstead", false);
@@ -212,21 +217,13 @@ void initializeSettings() {
 	set_property("auto_paranoia_counter", 0);
 	set_property("auto_parkaSpikesDeployed", false);
 	set_property("auto_priorCharpaneMode", "0");
-	set_property("auto_powerLevelLastLevel", "0");
 	set_property("auto_powerLevelAdvCount", "0");
 	set_property("auto_powerLevelLastAttempted", "0");
 	set_property("auto_pulls", "");
-
-	// Last level during which we ran out of stuff to do without pre-completing some Shen quests.
-	set_property("auto_shenSkipLastLevel", 0); 
 	remove_property("auto_shenZonesTurnsSpent");
 	remove_property("auto_lastShenTurn");
-	
-	set_property("auto_delayLastLevel", 0);
-
 	set_property("auto_sniffs", "");
 	set_property("auto_stopMinutesToRollover", "5");
-	set_property("auto_waitingArrowAlcove", "50");
 	set_property("auto_wandOfNagamar", true);
 	set_property("auto_wineracksencountered", 0);
 	set_property("auto_wishes", "");
@@ -248,6 +245,7 @@ void initializeSettings() {
 	remove_property("auto_hccsNoConcludeDay");
 	remove_property("auto_saveSausage");
 	remove_property("auto_saveVintage");
+	set_property("auto_dontUseCookBookBat", false);
 	beehiveConsider();
 
 	eudora_initializeSettings();
@@ -270,7 +268,6 @@ void initializeSettings() {
 	plumber_initializeSettings();
 	lowkey_initializeSettings();
 	bhy_initializeSettings();
-	grey_goo_initializeSettings();
 	qt_initializeSettings();
 	jarlsberg_initializeSettings();
 	robot_initializeSettings();
@@ -278,6 +275,7 @@ void initializeSettings() {
 	zombieSlayer_initializeSettings();
 	fotd_initializeSettings();
 	lol_initializeSettings();
+	small_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -355,14 +353,11 @@ boolean auto_unreservedAdvRemaining()
 
 boolean LX_burnDelay()
 {
-	location burnZone = solveDelayZone();
-	boolean wannaVote = auto_voteMonster(true);
-	boolean wannaDigitize = isOverdueDigitize();
-	boolean wannaSausage = auto_sausageGoblin();
-	boolean wannaBackup = auto_backupTarget();
-	// Cursed Magnifying Glass gives a void monster combat every 13 turns. The first 5 are free fights
-	// _voidFreeFights counts up from 0 and stays at 5 once all free fights are completed for the day
-	boolean voidMonsterNext = (get_property("_voidFreeFights").to_int() < 5) && (get_property("cursedMagnifyingGlassCount").to_int() == 13);
+	boolean voteMonsterAvailable = auto_voteMonster(true);
+	boolean digitizeMonsterNext = isOverdueDigitize();
+	boolean sausageGoblinAvailable = auto_sausageGoblin();
+	boolean backupTargetAvailable = auto_backupTarget();
+	boolean voidMonsterAvailable = auto_voidMonster();
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -373,85 +368,116 @@ boolean LX_burnDelay()
 		if(predictedScalerHP > 15)
 		{
 			auto_log_info("Want to burn delay with scaling wanderers, but we can't deal scaling damage yet and it would be too strong :(");
-			wannaVote = false;
-			wannaSausage = false;
+			voteMonsterAvailable = false;
+			sausageGoblinAvailable = false;
 			addToMaximize("-equip Kramco Sausage O-Matic");
 			addToMaximize("-equip &quot;I Voted!&quot; sticker");
 		}
 	}
 
-	if(burnZone != $location[none])
+	// See the encounter priority flowcharts available at https://i.imgur.com/sdVH4SPh.jpg
+	// and https://github.com/loathers/encounter/blob/main/heirarchy.mermaid if adding handling for more stuff
+
+	if (voteMonsterAvailable && !backupTargetAvailable)
 	{
-		if(wannaVote)
+		// Voting monsters are inherently free (the ones we fight anyway).
+		// don't fight them if we're going to backup because they will overwrite the monster we want to backup
+		location voterZone = solveDelayZone(get_property("breathitinCharges").to_int() > 0);
+		if (voterZone != $location[none])
 		{
-			auto_log_info("Burn some delay somewhere (voting), if we found a place!", "green");
+			auto_log_info(`Fighting a free {get_property("_voteMonster")} in {voterZone.to_string()} to burn delay!`, "green");
 			set_property("auto_nextEncounter",get_property("_voteMonster"));
-			if(auto_voteMonster(true, burnZone, ""))
-			{
-				return true;
-			}
-			set_property("auto_nextEncounter","");
-		}
-		if(wannaDigitize)
-		{
-			auto_log_info("Burn some delay somewhere (digitize), if we found a place!", "green");
-			set_property("auto_nextEncounter",get_property("_sourceTerminalDigitizeMonster"));
-			if(autoAdv(burnZone))
-			{
-				return true;
-			}
-			set_property("auto_nextEncounter","");
-		}
-		if(wannaSausage)
-		{
-			auto_log_info("Burn some delay somewhere (sausage goblin), if we found a place!", "green");
-			//"auto_nextEncounter" property is set by auto_sausageGoblin when it adventures with the equipment
-			if(auto_sausageGoblin(burnZone, ""))
-			{
-				return true;
-			}
-		}
-		if(wannaBackup)
-		{
-			auto_log_info("Burn some delay somewhere (backup camera), if we found a place!", "green");
-			set_property("auto_nextEncounter",get_property("lastCopyableMonster"));
-			if(autoAdv(burnZone))
-			{
-				return true;
-			}
-			set_property("auto_nextEncounter","");
-		}
-		if(voidMonsterNext)
-		{
-			auto_log_info("Burn some delay somewhere (cursed magnifying glass), if we found a place!", "green");
-			set_property("auto_nextEncounter","void guy");	//which of the 3 is random, but they're all same phylum and free under same conditions
-			if(autoAdv(burnZone))
+			if (auto_voteMonster(true, voterZone))
 			{
 				return true;
 			}
 			set_property("auto_nextEncounter","");
 		}
 	}
-	else if(wannaVote || wannaDigitize || wannaSausage || voidMonsterNext)
+
+	if (digitizeMonsterNext)
 	{
-		if(wannaVote) auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
-		if(wannaDigitize) auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
-		if(wannaSausage) auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
-		if(voidMonsterNext) auto_log_warning("Cursed Magnifying Glass's void monster is next but couldn't find a zone to burn delay", "red");
-	}
-	else if(wannaBackup)
-	{
-		auto_log_info("Couldn't find zone to burn delay. Using back-up camera at Noob Cave", "green");
-		set_property("auto_nextEncounter",get_property("lastCopyableMonster"));
-		if(autoAdv($location[noob cave]))
+		// Digitize Wanderers will happen regardless so prioritize handling them.
+		// hopefully they don't overwrite something we want to backup.
+		location digitizeZone = solveDelayZone(isFreeMonster(get_property("_sourceTerminalDigitizeMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0);
+		if (digitizeZone == $location[none])
+		{
+			// if the monster is inherently free and we have Breathitin charges, fight it in the Noob Cave since we can't avoid it
+			// and we likely want to fight it. Noob Cave is available from turn 0 & is not outdoors so Breathitin won't trigger.
+			digitizeZone = $location[Noob Cave];
+		}
+		auto_log_info(`Fighting a {get_property("_sourceTerminalDigitizeMonster")} in {digitizeZone.to_string()} to burn delay!`, "green");
+		set_property("auto_nextEncounter",get_property("_sourceTerminalDigitizeMonster"));
+		if (autoAdv(digitizeZone))
 		{
 			return true;
 		}
 		set_property("auto_nextEncounter","");
 	}
+
+	if (backupTargetAvailable)
+	{
+		location backupZone = solveDelayZone(isFreeMonster(get_property("lastCopyableMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0);
+		if (backupZone == $location[none])
+		{
+			// if the monster is inherently free and we have Breathitin charges, fight it in the Noob Cave since we can't avoid it
+			// and we likely want to fight it. Noob Cave is available from turn 0 & is not outdoors so Breathitin won't trigger.
+			backupZone = $location[Noob Cave];
+		}
+
+		auto_log_info(`Fighting a {get_property("lastCopyableMonster")} in {backupZone.to_string()} to burn delay!`, "green");
+		if (auto_backupToYourLastEnemy(backupZone))
+		{
+			return true;
+		}
+	}
+
+	if (sausageGoblinAvailable)
+	{
+		// Sausage Goblins are inherently free
+		location goblinZone = solveDelayZone(get_property("breathitinCharges").to_int() > 0);
+		if (goblinZone != $location[none])
+		{
+			auto_log_info(`Fighting a Sausage Goblin in {goblinZone.to_string()} to burn delay!`, "green");
+			if (auto_sausageGoblin(goblinZone, ""))
+			{
+				return true;
+			}
+		}
+	}
+
+	if (voidMonsterAvailable)
+	{
+		// Void monsters are inherently free (the ones we fight anyway).
+		location voidZone = solveDelayZone(get_property("breathitinCharges").to_int() > 0);
+		if (voidZone != $location[none])
+		{
+			auto_log_info(`Fighting a Void monster in {voidZone.to_string()} to burn delay!`, "green");
+			if (auto_voidMonster(voidZone))
+			{
+				return true;
+			}
+		}
+	}
+	
+	if (voteMonsterAvailable)
+	{
+		auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
+	}
+	if (digitizeMonsterNext) 
+	{
+		auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
+	}
+	if (sausageGoblinAvailable)
+	{
+		auto_log_warning("Had overdue sausage but couldn't find a zone to burn delay", "red");
+	}
+	if (voidMonsterAvailable)
+	{
+		auto_log_warning("Cursed Magnifying Glass's void monster is next but couldn't find a zone to burn delay", "red");
+	}
 	return false;
 }
-
 
 boolean LX_calculateTheUniverse(boolean speculative)
 {
@@ -598,6 +624,14 @@ void initializeDay(int day)
 
 	invalidateRestoreOptionCache();
 
+	if (get_property("auto_day_init").to_int() < day)
+	{
+		set_property("auto_powerLevelLastLevel", "0");
+		set_property("auto_delayLastLevel", "0");
+		set_property("auto_cmcConsultLastLevel", "0");
+		set_property("auto_breathitinLastLevel", "0");
+	}
+
 	if(!possessEquipment($item[Your Cowboy Boots]) && get_property("telegraphOfficeAvailable").to_boolean() && is_unrestricted($item[LT&T Telegraph Office Deed]))
 	{
 		#string temp = visit_url("desc_item.php?whichitem=529185925");
@@ -738,10 +772,8 @@ void initializeDay(int day)
 	boris_initializeDay(day);
 	nuclear_initializeDay(day);
 	pete_initializeDay(day);
-	bond_initializeDay(day);
 	glover_initializeDay(day);
 	bat_initializeDay(day);
-	grey_goo_initializeDay(day);
 	jarlsberg_initializeDay(day);
 
 	// Bulk cache mall prices
@@ -813,12 +845,12 @@ void initializeDay(int day)
 					//Try to get Antique Accordion early if we possibly can.
 					if(isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && !in_glover())
 					{
-						buyUpTo(1, $item[Antique Accordion]);
+						auto_buyUpTo(1, $item[Antique Accordion]);
 					}
 					// Removed "else". In some situations when mafia or supporting scripts are behaving wonky we may completely fail to get an accordion
 					if((isArmoryAvailable()) && (item_amount($item[Antique Accordion]) == 0))
 					{
-						buyUpTo(1, $item[Toy Accordion]);
+						auto_buyUpTo(1, $item[Toy Accordion]);
 					}
 				}
 				acquireTotem();
@@ -893,13 +925,13 @@ void initializeDay(int day)
 			while(acquireHermitItem($item[11-Leaf Clover]));
 			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_predictAccordionTurns() < 10) && !(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber() || !in_glover()))
 			{
-				buyUpTo(1, $item[Antique Accordion]);
+				auto_buyUpTo(1, $item[Antique Accordion]);
 			}
 			if(is_boris())
 			{
 				if((item_amount($item[Clancy\'s Crumhorn]) == 0) && (minstrel_instrument() != $item[Clancy\'s Crumhorn]))
 				{
-					buyUpTo(1, $item[Clancy\'s Crumhorn]);
+					auto_buyUpTo(1, $item[Clancy\'s Crumhorn]);
 				}
 			}
 			if(auto_have_skill($skill[Summon Smithsness]) && (my_mp() > (3 * mp_cost($skill[Summon Smithsness]))))
@@ -909,13 +941,8 @@ void initializeDay(int day)
 
 			if(item_amount($item[handful of smithereens]) >= 2)
 			{
-				buyUpTo(2, $item[Ben-Gal&trade; Balm], 25);
+				auto_buyUpTo(2, $item[Ben-Gal&trade; Balm]);
 				cli_execute("make 2 louder than bomb");
-			}
-
-			if(get_property("auto_dickstab").to_boolean())
-			{
-				pullXWhenHaveY($item[frost flower], 1, 0);
 			}
 		}
 		if (chateaumantegna_havePainting() && !isActuallyEd())
@@ -1089,7 +1116,7 @@ boolean dailyEvents()
 		use_skill(1, $skill[That\'s Not a Knife]);
 	}
 
-	while(zataraClanmate(""));
+	while(zataraClanmate());
 
 	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[genie bottle]) && auto_is_valid($item[pocket wish]) && !in_glover())
 	{
@@ -1108,6 +1135,7 @@ boolean dailyEvents()
 	auto_LegacyOfLoathingDailies();
 	auto_buyFrom2002MrStore();
 	auto_useBlackMonolith();
+	auto_scepterSkills();
 	
 	return true;
 }
@@ -1172,7 +1200,7 @@ boolean Lsc_flyerSeals()
 		{
 			if((item_amount($item[imbued seal-blubber candle]) == 0) && guild_store_available())
 			{
-				buyUpTo(1, $item[seal-blubber candle]);
+				auto_buyUpTo(1, $item[seal-blubber candle]);
 				cli_execute("make imbued seal-blubber candle");
 			}
 			if(item_amount($item[Imbued Seal-Blubber Candle]) > 0)
@@ -1184,8 +1212,8 @@ boolean Lsc_flyerSeals()
 		}
 		else if(guild_store_available() && isHermitAvailable())
 		{
-			buyUpTo(1, $item[figurine of an armored seal]);
-			buyUpTo(10, $item[seal-blubber candle]);
+			auto_buyUpTo(1, $item[figurine of an armored seal]);
+			auto_buyUpTo(10, $item[seal-blubber candle]);
 			if((item_amount($item[Figurine of an Armored Seal]) > 0) && (item_amount($item[Seal-Blubber Candle]) >= 10))
 			{
 				handleSealNormal($item[Figurine of an Armored Seal]);
@@ -1196,7 +1224,7 @@ boolean Lsc_flyerSeals()
 		{
 			if((item_amount($item[Tenderizing Hammer]) == 0) && ((my_meat() >= (npc_price($item[Tenderizing Hammer]) * 2)) && (npc_price($item[Tenderizing Hammer]) != 0)))
 			{
-				buyUpTo(1, $item[Tenderizing Hammer]);
+				auto_buyUpTo(1, $item[Tenderizing Hammer]);
 			}
 			if(item_amount($item[Tenderizing Hammer]) > 0)
 			{
@@ -1557,6 +1585,7 @@ void resetState() {
 	set_property("choiceAdventure1387", -1); // using the force non-combat
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
 	set_property("auto_nextEncounter", ""); // monster that was expected last turn
+	set_property("auto_habitatMonster", ""); // monster we want to cast Recall Facts: Monster Habitats
 
 	if(doNotBuffFamiliar100Run())		//some familiars are always bad
 	{
@@ -1641,11 +1670,6 @@ boolean doTasks()
 {
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
 
-	if(in_community())
-	{
-		abort("Community Service is no longer supported.");
-	}
-
 	auto_settingsFix();		//check and correct invalid configuration inputs made by users
 	if(!auto_unreservedAdvRemaining())
 	{
@@ -1660,7 +1684,7 @@ boolean doTasks()
 	if(my_familiar() == $familiar[Stooper] && pathAllowsChangingFamiliar())
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[Mosquito]);
+		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : findNonRockFamiliarInTerrarium());
 		use_familiar(fam);
 	}
 	if(my_inebriety() > inebriety_limit())
@@ -1744,6 +1768,7 @@ boolean doTasks()
 
 	basicAdjustML();
 
+	finishBuildingSmutOrcBridge();
 	councilMaintenance();
 	auto_buySkills();		// formerly picky_buyskills() now moved here
 	awol_buySkills();
@@ -1762,9 +1787,6 @@ boolean doTasks()
 	auto_latteRefill();
 	auto_buyCrimboCommerceMallItem();
 	houseUpgrade();
-	getTerrarium();			//get a familiar terrarium if you do not have one yet so you can use familiars
-	acquireFamiliars();		//get useful and cheap familiars
-	hatchList();			//hatch familiars that are commonly dropped in run
 
 	//This just closets stuff so G-Lover does not mess with us.
 	if(LM_glover())						return true;
@@ -1781,7 +1803,8 @@ boolean doTasks()
 	auto_buyFireworksHat();
 	auto_CMCconsult();
 	auto_checkTrainSet();
-
+	prioritizeGoose();
+	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
 	lar_safeguard();
@@ -1843,7 +1866,10 @@ boolean doTasks()
 
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
+	if (auto_juneCleaverAdventure()) { return true; }
+	if (auto_burnLeaves()) { return true; }
 	if(LX_ForceNC())					return true;
+	if(LX_dronesOut())					return true;
 	if(LM_bond())						return true;
 	if(LX_calculateTheUniverse(false))	return true;
 	rockGardenEnd();
@@ -1853,6 +1879,9 @@ boolean doTasks()
 	if(LA_wildfire())					return true;
 	if(LA_robot())						return true;
 	if(auto_autumnatonQuest())			return true;
+	if(auto_smallCampgroundGear())		return true;
+	auto_lostStomach(false);
+	if(auto_doPhoneQuest())				return true;
 	
 	if (process_tasks()) return true;
 
@@ -1875,26 +1904,13 @@ void auto_begin()
 		}
 	}
 
-	//This also should set our path too.
-	string page = visit_url("main.php");
-	page = visit_url("api.php?what=status&for=4", false);
-	if(contains_text(page, "Being Picky"))
+	if(in_community())
 	{
-		picky_startAscension();
+		abort("Community Service is no longer supported.");
 	}
-	else if(contains_text(page, "Welcome to the Kingdom, Gelatinous Noob"))
-	{
-		gnoob_startAscension(page);
-	}
-	else if(contains_text(page, "it appears that a stray bat has accidentally flown right through you") || (get_property("lastAdventure") == "Intro: View of a Vampire"))
-	{
-		bat_startAscension();
-	}
-	else if(contains_text(page, "<b>Torpor</b>") && contains_text(page, "Madness of Untold Aeons") && contains_text(page, "Rest for untold Millenia"))
-	{
-		auto_log_info("Torporing, since I think we're already in torpor.", "blue");
-		bat_reallyPickSkills(20);
-	}
+
+	LX_handleIntroAdventures(); // handle early non-combats in challenge paths.
+	cli_execute("refresh all");
 
 	if(to_string(my_class()) == "Astral Spirit")
 	{
@@ -1931,7 +1947,6 @@ void auto_begin()
 	{
 		backupSetting("spadingScript", "excavator.ash");
 	}
-
 	backupSetting("hpAutoRecovery", -0.05);
 	backupSetting("hpAutoRecoveryTarget", -0.05);
 	backupSetting("mpAutoRecovery", -0.05);
@@ -1939,18 +1954,11 @@ void auto_begin()
 	backupSetting("manaBurningTrigger", -0.05);
 	backupSetting("manaBurningThreshold", -0.05);
 	backupSetting("autoAbortThreshold", -0.05);
-
 	backupSetting("currentMood", "apathetic");
-
 	backupSetting("logPreferenceChange", "true");
 	backupSetting("logPreferenceChangeFilter", "maximizerMRUList,testudinalTeachings,auto_maximize_current");
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
 
-	string userForbidden = get_property("forbiddenStores");
-	if (!userForbidden.contains_text("3408540")) {
-		backupSetting("forbiddenStores", userForbidden + ",3408540"); // forbid Dance Police
-	}
-	
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))
 	{
@@ -1967,7 +1975,7 @@ void auto_begin()
 	if(my_familiar() == $familiar[Stooper] && pathAllowsChangingFamiliar())
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[Mosquito]);
+		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : findNonRockFamiliarInTerrarium());
 		use_familiar(fam);
 	}
 
@@ -2003,7 +2011,7 @@ void print_help_text()
 {
 	print_html("Thank you for using autoscend!");
 	print_html("If you need to configure or interrupt the script, choose <b>autoscend</b> from the drop-down \"run script\" menu in your browser.");
-	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues\">on Github</a>");
+	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/loathers/autoscend/issues\">on Github</a>");
 	print_html("A FAQ with common issues (and tips for a great bug report) <a href=\"https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns\">can be found here</a>");
 	print_html("The developers also hang around <a href=\"https://discord.gg/96xZxv3\">on the Ascension Speed Society discord server</a>");
 	print_html("");
@@ -2011,7 +2019,7 @@ void print_help_text()
 
 void sad_times()
 {
-	print_html('autoscend (formerly sl_ascend) is under new management. Soolar (the maintainer of sl_ascend) and Jeparo (the most active contributor) have decided to cease development of sl_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. New developers have taken over maintenance and rebranded sl_ascend to autoscend as per Soolar\'s request. Please be patient with us during this transition period. Please see the readme on the <a href="https://github.com/Loathing-Associates-Scripting-Society/autoscend">github</a> page for more information.');
+	print_html('autoscend (formerly sl_ascend) is under new management. Soolar (the maintainer of sl_ascend) and Jeparo (the most active contributor) have decided to cease development of sl_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. New developers have taken over maintenance and rebranded sl_ascend to autoscend as per Soolar\'s request. Please be patient with us during this transition period. Please see the readme on the <a href="https://github.com/loathers/autoscend">github</a> page for more information.');
 }
 
 void safe_preference_reset_wrapper(int level)
@@ -2039,20 +2047,22 @@ void safe_preference_reset_wrapper(int level)
 	}
 }
 
-void main()
+void main(string... input)
 {
 	backupSetting("printStackOnAbort", true);
+
+	// parse input
+	if(count(input) > 0 && input[0] == "sim")
+	{
+		// display useful items/skills/perms/etc and if the user has them
+		printSim();
+		return;
+	}
+
 	print_help_text();
 	sad_times();
-	try
-	{
-		cli_execute("refresh all");
+	if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue? Will default to true in 10 seconds.", 10000, true)){
+		abort("User aborted script after failed migration.");
 	}
-	finally
-	{
-		if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue? Will default to true in 10 seconds.", 10000, true)){
-			abort("User aborted script after failed migration.");
-		}
-		safe_preference_reset_wrapper(3);
-	}
+	safe_preference_reset_wrapper(3);
 }

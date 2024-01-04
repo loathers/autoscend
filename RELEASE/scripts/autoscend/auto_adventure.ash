@@ -60,6 +60,28 @@ boolean autoAdv(location loc, string option)
 	return autoAdv(1, loc, option);
 }
 
+boolean autoLuckyAdv(location loc, boolean override)
+{
+	boolean gotLucky = false;
+	if (cloversAvailable(override) > 0)
+	{
+		cloverUsageInit(override);
+		gotLucky = autoAdv(loc);
+		if (cloverUsageRestart()) 
+		{
+			gotLucky = autoAdv(loc);
+		}
+		cloverUsageFinish();
+	}
+	return gotLucky;
+}
+
+boolean autoLuckyAdv(location loc)
+{
+	// overload to not override clover usage by default as this is the general case
+	return autoLuckyAdv(loc, false);
+}
+
 
 // autoAdvBypass is used to automate adventuring *once* in non-adventure.php zones
 // it will (should?) handle the complete adventure from start to finish regardless of

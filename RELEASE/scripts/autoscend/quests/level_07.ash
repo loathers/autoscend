@@ -53,6 +53,10 @@ void cyrptChoiceHandler(int choice)
 			}
 			run_choice(5); // if meets thresholds, skip to farm more dieting pills in DG
 		}
+		else if(available_choice_options() contains 5)
+		{
+			run_choice(5); // -11 evil, +50 each substat with Candy Cane Sword Cane
+		}
 		else
 		{
 			run_choice(4); // fight swarm of ghuol whelps
@@ -94,62 +98,92 @@ int cyrptEvilBonus()
 	return cyrptEvilBonus(false);
 }
 
-boolean L7_crypt()
+void useNightmareFuelIfPossible()
 {
-	if(internalQuestStatus("questL07Cyrptic") != 0)
+	// chews this when there are no guaranteed uses for spleen 
+	if((spleen_left() > 0) && (item_amount($item[Nightmare Fuel]) > 0) && !isActuallyEd() && 
+	!(auto_havePillKeeper() && spleen_left() >= 3) && 
+	(spleen_left() > 4*min(auto_spleenFamiliarAdvItemsPossessed(),floor(spleen_left()/4)))) // only uses space than can't be filled with adv item
+	{
+		autoChew(1, $item[Nightmare Fuel]);
+	}
+}
+
+void knockOffCapePrep()
+{
+	if(auto_configureRetrocape("vampire", "kill"))
+	{
+		if(have_effect($effect[Iron Palms]) > 0 && auto_have_skill($skill[Iron Palm Technique]))
+		{
+			//slay the dead needs the sword to count as a sword and not as a club
+			use_skill(1, $skill[Iron Palm Technique]);
+		}
+		auto_forceEquipSword();
+	}
+}
+
+boolean L7_defiledAlcove()
+{
+	if (internalQuestStatus("questL07Cyrptic") != 0 || get_property("cyrptAlcoveEvilness").to_int() == 0)
 	{
 		return false;
 	}
-	if(item_amount($item[chest of the bonerdagon]) == 1)
+
+	if (get_property("cyrptAlcoveEvilness").to_int() > 13 && auto_habitatMonster() == $monster[modern zmobie])
+	{
+		if (auto_backupUsesLeft() > 0)
+		{
+			// do something else if we have modern zmobie Habitants & can backup. Don't need to adventure in this zone.
+			return false;
+		}
+		if (get_property("cyrptAlcoveEvilness").to_int() <= (13 + (auto_habitatFightsLeft() * (cyrptEvilBonus() + 5))))
+		{
+			// we have enough Habitants to get to 13 or less evilness. Don't need to adventure in this zone.
+			return false;
+		}
+	}
+
+	if (isActuallyEd() && (!have_skill($skill[More Legs]) || (expected_damage($monster[modern zmobie]) + 15) < my_maxhp()))
+	{
+		// Ed needs to be able to survive long enough to do stuff in combat vs a modern zmobie.
+		return false;
+	}
+
+	int evilBonus = cyrptEvilBonus();
+
+	if (get_property("cyrptAlcoveEvilness").to_int() > (14 + evilBonus))
+	{
+		provideInitiative(850, $location[The Defiled Alcove], true);
+		addToMaximize("100initiative 850max");
+	}
+
+	autoEquip($item[Gravy Boat]);
+	knockOffCapePrep();
+
+	if (get_property("cyrptAlcoveEvilness").to_int() >= (16 + evilBonus))
+	{
+		useNightmareFuelIfPossible();
+	}
+
+	auto_log_info("The Alcove! (" + initiative_modifier() + ")", "blue");
+	if(get_property("cyrptAlcoveEvilness").to_int() <= 13)
+	{
+		set_property("auto_nextEncounter","conjoined zmombie");
+	}
+	return autoAdv($location[The Defiled Alcove]);
+}
+
+boolean L7_crypt()
+{
+	if (internalQuestStatus("questL07Cyrptic") != 0)
+	{
+		return false;
+	}
+	if (item_amount($item[chest of the bonerdagon]) == 1)
 	{
 		equipStatgainIncreasers();
 		use(1, $item[chest of the bonerdagon]);
 		return false;
-	}
-
-	oldPeoplePlantStuff();
-
-	if(my_mp() > 60)
-	{
-		handleBjornify($familiar[Grimstone Golem]);
-	}
-
-	buffMaintain($effect[Browbeaten]);
-	buffMaintain($effect[Rosewater Mark]);
-
-	boolean edAlcove = true;
-	if(isActuallyEd())
-	{
-		edAlcove = (have_skill($skill[More Legs]) && (expected_damage($monster[modern zmobie]) + 15) < my_maxhp());
-	}
-
-	if((get_property("romanticTarget") != $monster[modern zmobie]) && (get_property("auto_waitingArrowAlcove").to_int() < 50))
-	{
-		set_property("auto_waitingArrowAlcove", 50);
-	}
-
-	void useNightmareFuelIfPossible()
-	{
-		// chews this when there are no guaranteed uses for spleen 
-		if((spleen_left() > 0) && (item_amount($item[Nightmare Fuel]) > 0) && !isActuallyEd() && 
-		!(auto_havePillKeeper() && spleen_left() >= 3) && 
-		(spleen_left() > 4*min(auto_spleenFamiliarAdvItemsPossessed(),floor(spleen_left()/4)))) // only uses space than can't be filled with adv item
-		{
-			autoChew(1, $item[Nightmare Fuel]);
-		}
-	}
-
-	void knockOffCapePrep()
-	{
-		if(auto_configureRetrocape("vampire", "kill"))
-		{
-			if(have_effect($effect[Iron Palms]) > 0 && auto_have_skill($skill[Iron Palm Technique]))
-			{
-				//slay the dead needs the sword to count as a sword and not as a club
-				use_skill(1, $skill[Iron Palm Technique]);
-			}
-			auto_forceEquipSword();
-		}
 	}
 
 	// make sure quest status is correct before we attempt to adventure.
@@ -158,43 +192,16 @@ boolean L7_crypt()
 
 	int evilBonus = cyrptEvilBonus();
 
-	if((get_property("cyrptAlcoveEvilness").to_int() > 0) && ((get_property("cyrptAlcoveEvilness").to_int() <= get_property("auto_waitingArrowAlcove").to_int()) || (get_property("cyrptAlcoveEvilness").to_int() <= 13)) && edAlcove && lar_repeat($location[The Defiled Alcove]))
+	if (L7_defiledAlcove())
 	{
-
-		if((get_property("_badlyRomanticArrows").to_int() == 0) && auto_have_familiar($familiar[Reanimated Reanimator]) && (my_daycount() == 1))
-		{
-			handleFamiliar($familiar[Reanimated Reanimator]);
-		}
-
-		if(get_property("cyrptAlcoveEvilness").to_int() > (14 + evilBonus))
-		{
-			provideInitiative(850, $location[The Defiled Alcove], true);
-			addToMaximize("100initiative 850max");
-		}
-
-		autoEquip($item[Gravy Boat]);
-		knockOffCapePrep();
-
-		if(get_property("cyrptAlcoveEvilness").to_int() >= (17 + evilBonus))
-		{
-			useNightmareFuelIfPossible();
-		}
-
-		auto_log_info("The Alcove! (" + initiative_modifier() + ")", "blue");
-		if(get_property("cyrptAlcoveEvilness").to_int() <= 13)
-		{
-			set_property("auto_nextEncounter","conjoined zmombie");
-		}
-		return autoAdv($location[The Defiled Alcove]);
+		return true;
 	}
 
 	// delay remaining crypt zones for cold medicine cabinet usage unless we have run out of other stuff to do
 	// crypt is underground so it will generate breathitins, 5 turns free outside
 	// allow adventuring in Alcove (above) since many backup charges get used for modern zmobies
 	// not delaying better distributes these charges across days
-	if(auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 && 
-		get_workshed() != $item[cold medicine cabinet] && !isAboutToPowerlevel() && 
-		(LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
+	if (auto_reserveUndergroundAdventures())
 	{
 		return false;
 	}
@@ -254,7 +261,7 @@ boolean L7_crypt()
 			handleFamiliar($familiar[Space Jellyfish]);
 		}
 		else if(auto_have_familiar($familiar[Nosy Nose]) && auto_is_valid($skill[Get a Good Whiff of This Guy]) && 
-		appearance_rates($location[The Defiled Niche])[$monster[dirty old lihc]] < 100)
+		auto_combat_appearance_rates($location[The Defiled Niche])[$monster[dirty old lihc]] < 100)
 		{
 			boolean nosyOldLihcs;
 			if(get_property("cyrptNicheEvilness").to_int() > (17 + 2*evilBonus))
@@ -336,9 +343,9 @@ boolean L7_crypt()
 		
 		if(my_primestat() == $stat[Muscle])
 		{
-			buyUpTo(1, $item[Ben-Gal&trade; Balm]);
+			auto_buyUpTo(1, $item[Ben-Gal&trade; Balm]);
 			buffMaintain($effect[Go Get \'Em\, Tiger!]);
-			buyUpTo(1, $item[Blood of the Wereseal]);
+			auto_buyUpTo(1, $item[Blood of the Wereseal]);
 			buffMaintain($effect[Temporary Lycanthropy]);
 		}
 		//AoSOL buffs
@@ -346,6 +353,9 @@ boolean L7_crypt()
 		{
 			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
 			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+			if(auto_haveGreyGoose()){
+				handleFamiliar($familiar[Grey Goose]);
+			}
 		}
 
 		acquireHP();

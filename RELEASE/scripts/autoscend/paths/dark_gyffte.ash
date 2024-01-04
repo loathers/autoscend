@@ -3,14 +3,6 @@ boolean in_darkGyffte()
 	return my_path() == $path[Dark Gyffte];
 }
 
-void bat_startAscension()
-{
-	if(in_darkGyffte())
-	{
-		visit_url("choice.php?whichchoice=1343&option=1");
-		bat_reallyPickSkills(20);
-	}
-}
 void bat_initializeSettings()
 {
 	if(in_darkGyffte())
@@ -389,7 +381,7 @@ boolean bat_shouldEnsorcel(monster m)
 
 	// until we have a way to tell what we already have as an ensorcelee, just ensorcel goblins
 	// to help avoid getting beaten up...
-	if(m.monster_phylum() == $phylum[goblin] && !isFreeMonster(m) && !bat_haveEnsorcelee()) //stop wasting additional Ensorcel casts once we already have an Ensorcelee
+	if(m.monster_phylum() == $phylum[goblin] && !isFreeMonster(m, my_location()) && !bat_haveEnsorcelee()) //stop wasting additional Ensorcel casts once we already have an Ensorcelee
 		return true;
 
 	//TODO code for getting other types of monster (beasts / bugs presumably) where appropriate.
@@ -413,7 +405,7 @@ int bat_creatable_amount(item desired)
 			}	
 			if(item_amount($item[wad of dough]) == 0)
 			{
-				buyUpTo(1, $item[wad of dough]);
+				auto_buyUpTo(1, $item[wad of dough]);
 			}	
 			return creatable_amount(desired);
 		case $item[blood snowcone]:
@@ -423,7 +415,7 @@ int bat_creatable_amount(item desired)
 			}	
 			if(item_amount($item[plain snowcone]) == 0)
 			{
-				buyUpTo(1, $item[plain snowcone]);
+				auto_buyUpTo(1, $item[plain snowcone]);
 			}
 			return creatable_amount(desired);
 		case $item[blood roll-up]:

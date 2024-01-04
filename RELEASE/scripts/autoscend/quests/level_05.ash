@@ -129,15 +129,15 @@ boolean L5_goblinKing()
 
 	if(my_primestat() == $stat[Muscle])
 	{
-		buyUpTo(1, $item[Ben-Gal&trade; Balm]);
+		auto_buyUpTo(1, $item[Ben-Gal&trade; Balm]);
 		buffMaintain($effect[Go Get \'Em\, Tiger!]);
 	}
-	buyUpTo(1, $item[Hair Spray]);
+	auto_buyUpTo(1, $item[Hair Spray]);
 	buffMaintain($effect[Butt-Rock Hair]);
 
 	if((my_class() == $class[Seal Clubber]) || (my_class() == $class[Turtle Tamer]))
 	{
-		buyUpTo(1, $item[Blood of the Wereseal]);
+		auto_buyUpTo(1, $item[Blood of the Wereseal]);
 		buffMaintain($effect[Temporary Lycanthropy]);
 	}
 	//AoSOL buffs

@@ -93,6 +93,11 @@ boolean autoDrink(int howMany, item toDrink)
 
 boolean autoDrink(int howMany, item toDrink, boolean silent)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	if((toDrink == $item[none]) || (howMany <= 0))
 	{
 		return false;
@@ -131,7 +136,7 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 	{
 		if((have_effect($effect[Drunk and Avuncular]) < expectedInebriety) && (item_amount($item[Drunk Uncles Holo-Record]) == 0))
 		{
-			buyUpTo(1, $item[Drunk Uncles Holo-Record]);
+			auto_buyUpTo(1, $item[Drunk Uncles Holo-Record]);
 		}
 		buffMaintain($effect[Drunk and Avuncular], 0, 1, expectedInebriety);
 	}
@@ -229,6 +234,11 @@ string cafeDrinkName(int id)
 
 boolean autoDrinkCafe(int howmany, int id)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	// Note that caller is responsible for calling Ode to Booze,
 	// since we might be in TCRS and not know how many adventures
 	// we'll get from the drink.
@@ -249,6 +259,11 @@ boolean autoDrinkCafe(int howmany, int id)
 
 boolean autoEatCafe(int howmany, int id)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	if(!canadia_available()) return false;
 
 	equipStatgainIncreasersFor(id.to_item());
@@ -301,6 +316,11 @@ boolean autoEat(int howMany, item toEat)
 
 boolean autoEat(int howMany, item toEat, boolean silent)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	if((toEat == $item[none]) || (howMany <= 0))
 	{
 		return false;
@@ -324,7 +344,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	{
 		if((have_effect($effect[Record Hunger]) < expectedFullness) && (item_amount($item[The Pigs Holo-Record]) == 0))
 		{
-			buyUpTo(1, $item[The Pigs Holo-Record]);
+			auto_buyUpTo(1, $item[The Pigs Holo-Record]);
 		}
 		buffMaintain($effect[Record Hunger], 0, 1, expectedFullness);
 	}
@@ -334,9 +354,9 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	while(howMany > 0)
 	{
 		buffMaintain($effect[Song of the Glorious Lunch], 10, 1, toEat.fullness);
-		if((auto_get_campground() contains $item[Portable Mayo Clinic]) && (my_meat() > 11000) && (get_property("mayoInMouth") == "") && auto_is_valid($item[Portable Mayo Clinic]))
+		if((auto_get_campground() contains $item[Portable Mayo Clinic]) && (my_meat() - meatReserve() > npc_price($item[Mayoflex])) && (get_property("mayoInMouth") == "") && auto_is_valid($item[Portable Mayo Clinic]))
 		{
-			buyUpTo(1, $item[Mayoflex], 1000);
+			auto_buyUpTo(1, $item[Mayoflex]);
 			use(1, $item[Mayoflex]);
 		}
 		if(item_amount($item[whet stone]) > 0) //use whet stone if we got one from the rock garden
@@ -371,8 +391,6 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	}
 	return retval;
 }
-
-
 
 boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv)
 {
@@ -475,8 +493,14 @@ boolean canDrink(item toDrink, boolean checkValidity)
 			return false;
 		}
 	}
+	if(in_small() && toDrink.inebriety > 1)
+	{
+		// liver size of 1 in small path
+		return false;
+	}
 
-	if(my_level() < toDrink.levelreq)
+	// small path ignores consumable level requirements
+	if(my_level() < toDrink.levelreq && !in_small())
 	{
 		return false;
 	}
@@ -525,8 +549,14 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return ($items[crappy brain, decent brain, good brain, boss brain, hunter brain, brains casserole, fricasseed brains, steel lasagna] contains toEat);
 	}
+	if(in_small() && toEat.fullness > 2)
+	{
+		// stomach size of 2 in small path
+		return false;
+	}
 
-	if(my_level() < toEat.levelreq)
+	// small path ignores consumable level requirements
+	if(my_level() < toEat.levelreq && !in_small())
 	{
 		return false;
 	}
@@ -551,7 +581,7 @@ boolean canChew(item toChew)
 	{
 		return false;
 	}
-	if(my_level() < toChew.levelreq)
+	if(my_level() < toChew.levelreq && !in_small())
 	{
 		return false;
 	}
@@ -679,7 +709,7 @@ boolean autoPrepConsume(ConsumeAction action)
 	{
 		auto_log_info("autoPrepConsume: Buying a " + action.it, "blue");
 		action.howToGet = AUTO_OBTAIN_NULL;
-		return buy(1, action.it);
+		return auto_buyUpTo(1, action.it);
 	}
 	else if (action.howToGet == AUTO_OBTAIN_NULL)
 	{
@@ -690,6 +720,11 @@ boolean autoPrepConsume(ConsumeAction action)
 
 boolean autoConsume(ConsumeAction action)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	if (action.howToGet != AUTO_OBTAIN_NULL)
 	{
 		abort("ConsumeAction not prepped: " + to_debug_string(action));
@@ -787,9 +822,24 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean[item] blacklist;
 	boolean[item] craftable_blacklist;
 
-	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead, Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
+	foreach it in $items[Cursed Punch, Unidentified Drink, FantasyRealm turkey leg, FantasyRealm mead, waffle]
 	{
 		blacklist[it] = true;
+	}
+	if(!in_small())
+	{
+		foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
+		{
+			blacklist[it] = true;
+		}
+	}
+	if(in_small())
+	{
+		// these items don't get 10x advs and stats in small like most consumables
+		foreach it in $items[blueberry muffin, bran muffin, chocolate chip muffin, Spaghetti Breakfast]
+		{
+			blacklist[it] = true;
+		}
 	}
 	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !possessEquipment($item[Mega Gem]) && !isActuallyEd())
 	{
@@ -879,6 +929,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			if(!value_allowed)	continue;
 			if((it == $item[astral pilsner] || it == $item[Cold One] || it == $item[astral hot dog]) && my_level() < 11) continue;
 			if((it == $item[Spaghetti Breakfast]) && (my_level() < 11 || my_fullness() > 0 || get_property("_spaghettiBreakfastEaten").to_boolean())) continue;
+			if(it == $item[Pizza of Legend] && get_property("pizzaOfLegendEaten").to_boolean()) continue;
+			if(it == $item[Calzone of Legend] && get_property("calzoneOfLegendEaten").to_boolean()) continue;
+			if(it == $item[Deep Dish of Legend] && get_property("deepDishOfLegendEaten").to_boolean()) continue;
 
 			int howmany = (it.inebriety > 0) ? 1 : 0;	//can consider a drink action past inebriety limit. but not food past fullness limit
 			howmany += organLeft()/organCost(it);
@@ -907,7 +960,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
 			}
 			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
-			if (is_tradeable(it) && !isSpeakeasyDrink(it) && canPull(it))
+			if (!isSpeakeasyDrink(it) && canPull(it))
 			{
 				if(!can_interact())
 				{
@@ -1075,8 +1128,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		{
 			int n = count(actions);
 			actions[n] = MakeConsumeAction(it);
-			if (obtain_mode == AUTO_OBTAIN_PULL)
+			if (obtain_mode == AUTO_OBTAIN_PULL && !in_small())
 			{
+				// don't penalize pulls in small as want best options to utilize limited organs
 				actions[n].desirability -= 5.0;
 				float user_desirability = get_property("auto_consumePullDesirability").to_float();
 				if (user_desirability > 0.0)
@@ -1160,7 +1214,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	}
 
 	// Add still suit if we are looking to drink
-	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit() && !in_kolhs())
+	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit() && !in_kolhs() && !in_small())
 	{
 		int size = 1;
 		float adv = auto_expectedStillsuitAdvs().to_float();
@@ -1603,6 +1657,11 @@ ConsumeAction auto_findBestConsumeAction()
 
 boolean auto_autoConsumeOne(ConsumeAction action)
 {
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
 	if (action.it == $item[none] && action.cafeId == 0)
 	{
 		auto_log_info("auto_autoConsumeOne: Nothing found to consume", "blue");
@@ -2033,7 +2092,7 @@ void consumeStuff()
 		if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 
 		&& pathAllowsChangingFamiliar()) //check path allows changing of familiars
 		{
-			use_familiar($familiar[Mosquito]);
+			use_familiar(findNonRockFamiliarInTerrarium());
 		}
 
 		ConsumeAction bestAction = auto_findBestConsumeAction();

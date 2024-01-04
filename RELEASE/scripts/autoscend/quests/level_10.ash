@@ -72,6 +72,20 @@ boolean L10_airship()
 		visit_url("place.php?whichplace=beanstalk");	
 	}
 
+	if (auto_canHabitat() && get_property("breathitinCharges").to_int() < 1)
+	{
+		// save turns in the airship with inherently free combats.
+		set_property("auto_habitatMonster", $monster[eldritch tentacle].to_string());
+		if (fightScienceTentacle())
+		{
+			return true;
+		}
+		else
+		{
+			set_property("auto_habitatMonster", "");
+		}
+	}
+
 	if(handleFamiliar($familiar[Red-Nosed Snapper]))
 	{
 		auto_changeSnapperPhylum($phylum[dude]);
@@ -133,6 +147,11 @@ boolean L10_basement()
 		return false;
 	}
 
+	if (auto_reserveUndergroundAdventures())
+	{
+		return false;
+	}
+
 	auto_log_info("Castle (Basement) - Unlocking Ground Floor.", "blue");
 
 	if(!in_hardcore())
@@ -155,10 +174,10 @@ boolean L10_basement()
 
 	if(my_primestat() == $stat[Muscle])
 	{
-		buyUpTo(1, $item[Ben-Gal&trade; Balm]);
+		auto_buyUpTo(1, $item[Ben-Gal&trade; Balm]);
 		buffMaintain($effect[Go Get \'Em\, Tiger!]);
 	}
-	buyUpTo(1, $item[Hair Spray]);
+	auto_buyUpTo(1, $item[Hair Spray]);
 	buffMaintain($effect[Butt-Rock Hair]);
 	
 	if(in_gnoob() && auto_have_familiar($familiar[Robortender]))
@@ -169,7 +188,9 @@ boolean L10_basement()
 		}
 	}
 
-	auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Basement)]);
+	boolean NCForced = auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Basement)]);
+	// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+	if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
 	if(!autoEquip($item[Amulet of Extreme Plot Significance]))
 	{
 		if(!autoEquip($item[unbreakable umbrella]))
@@ -239,7 +260,9 @@ boolean L10_topFloor()
 		pullXWhenHaveY($item[Mohawk wig], 1, 0);
 	}
 
-	auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Top Floor)]);
+	boolean NCForced = auto_forceNextNoncombat($location[The Castle in the Clouds in the Sky (Top Floor)]);
+	// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+	if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
 	autoEquip($item[Mohawk wig]);
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 
@@ -368,7 +391,9 @@ boolean L10_holeInTheSkyUnlock()
 	auto_log_info("Castle (Top Floor) - Opening the Hole in the Sky.", "blue");
 	
 	// set location "wrong" so that LX_ForceNC can properly direct back to this function (L10_holeInTheSkyUnlock)
-	auto_forceNextNoncombat($location[The Hole in the Sky]);
+	boolean NCForced = auto_forceNextNoncombat($location[The Hole in the Sky]);
+	// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+	if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
 
 	autoAdv(1, $location[The Castle in the Clouds in the Sky (Top Floor)]);
 

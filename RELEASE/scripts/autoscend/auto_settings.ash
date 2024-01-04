@@ -161,6 +161,14 @@ void auto_settingsUpgrade()
 				break;
 		}
 	}
+
+	//this supports the default logging level change from info(2) to debug(3)
+	//default only effects new users, this migrates current users to the new default level of logging
+	if(!property_exists("logLevelDefaultChangedToDebug"))
+	{
+		set_property("auto_log_level", 3);
+		set_property("logLevelDefaultChangedToDebug",true);
+	}
 }
 
 void auto_settingsFix()
@@ -297,6 +305,21 @@ void auto_settingsDelete()
 	remove_property("cloverProtectActive"); //obsolete with change to Lucky! adventures
 	remove_property("auto_edCombatHandler");	//ed can use the same tracking preference as all other paths
 	remove_property("auto_combatHandler");		//replaced with _auto_combatState
+	remove_property("auto_skipNEPOverride"); // unnecessary. Resources on hand should be used to progress quests.
+	remove_property("auto_dickstab"); // Just no.
+	remove_property("auto_getDinseyGarbageMoney"); // irrelevant in-run.
+	remove_property("auto_hatchRagamuffinImp"); // remnant which should've been removed along with the code.
+	remove_property("auto_saveMagicalSausage"); // unnecessary. Resources on hand should be used to progress quests.
+	remove_property("auto_useWishes"); // unnecessary. Resources on hand should be used to progress quests.
+	remove_property("auto_doNotUseCMC"); // unnecessary. Predates 2023 ascension workshed changes & as above resources on hand should be used to progress quests.
+	remove_property("auto_doArtistQuest"); // irrelevant in-run.
+	remove_property("auto_noSleepingDog"); // old & unused since consumption was rewritten 3-4 years ago.
+	remove_property("auto_cookie"); // old & unused since the semirare & clover revamp.
+	remove_property("auto_doArmory"); // irrelevant in-run.
+	remove_property("auto_doMeatsmith"); // irrelevant in-run.
+	remove_property("auto_waitingArrowAlcove"); // easier methods of handling this. Mafia has tracking properties for 10+ year old IotMs.
+	remove_property("auto_combatHandlerFingernailClippers"); // irrelevant in-run.
+	remove_property("auto_delayHauntedKitchen"); // We shouldn't need to rely on the user to tell us how to play because users are often terrible at the game.
 }
 
 void defaultConfig(string prop, string val)
@@ -317,7 +340,7 @@ void auto_settingsDefaults()
 	defaultConfig("auto_paranoia", "-1");
 	defaultConfig("auto_inv_paranoia", "false");
 	defaultConfig("auto_save_adv_override", "-1");
-	defaultConfig("auto_log_level", "2");
+	defaultConfig("auto_log_level", "3");
 	defaultConfig("auto_log_level_restore", "0");
 	defaultConfig("auto_bedtime_pulls_skip", "false");
 	defaultConfig("auto_bedtime_pulls_pvp_multi", "0.3");

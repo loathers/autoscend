@@ -65,7 +65,7 @@ void heavyrains_initializeDay(int day)
 
 			if(item_amount($item[miniature life preserver]) == 0)
 			{
-				buyUpTo(1, $item[miniature life preserver]);
+				auto_buyUpTo(1, $item[miniature life preserver]);
 			}
 			set_property("auto_day1_skills", "finished");
 			visit_url("main.php");
@@ -445,7 +445,7 @@ boolean L13_heavyrains_towerFinal()
 	
 	//Rain King strips all equipment other than weapon and offhand.
 	//Stripped equipment can only provide you with -ML which is applied before the stripping
-	buyUpTo(3, $item[water wings for babies]);
+	auto_buyUpTo(3, $item[water wings for babies]);
 	maximize("-ml, -weapon, -offhand", false);
 	
 	//Fight!

@@ -20,7 +20,12 @@ boolean L4_batCave()
 		{
 			if(item_amount($item[Sonar-In-A-Biscuit]) == 0 && can_interact())
 			{
-				buyUpTo(1, $item[Sonar-In-A-Biscuit], get_property("valueOfAdventure").to_int());
+				auto_buyUpTo(1, $item[Sonar-In-A-Biscuit]);
+			}
+			if(item_amount($item[Sonar-In-A-Biscuit]) == 0)
+			{
+				// attempt to monkey wish for sonars
+				auto_makeMonkeyPawWish($item[Sonar-In-A-Biscuit]);
 			}
 			if(item_amount($item[Sonar-In-A-Biscuit]) > 0)
 			{
@@ -55,12 +60,20 @@ boolean L4_batCave()
 	
 	if(batStatus >= 3)
 	{
+		if (auto_reserveUndergroundAdventures() && !in_lol())
+		{
+			return false;
+		}
+
 		buffMaintain($effect[Polka of Plenty], 15, 1, 1);
 		//AoSOL buffs
 		if(in_aosol())
 		{
 			buffMaintain($effect[Queso Fustulento], 10, 1, 10);
 			buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+			if(auto_haveGreyGoose() && $location[The Boss Bat\'s Lair].turns_spent >=4){
+				handleFamiliar($familiar[Grey Goose]);
+			}
 		}
 		bat_formWolf();
 		addToMaximize("10meat");
@@ -91,6 +104,9 @@ boolean L4_batCave()
 			auto_log_debug("Delaying Batrat Burrow in case of Shen.");
 			return false;
 		}
+		if(auto_haveGreyGoose()){
+			handleFamiliar($familiar[Grey Goose]);
+		}
 		autoAdv($location[The Batrat and Ratbat Burrow]);
 		return true;
 	}
@@ -103,6 +119,9 @@ boolean L4_batCave()
 			return false;
 		}
 		bat_formBats();
+		if(auto_haveGreyGoose()){
+			handleFamiliar($familiar[Grey Goose]);
+		}
 		autoAdv($location[The Batrat and Ratbat Burrow]);
 		return true;
 	}
@@ -117,5 +136,8 @@ boolean L4_batCave()
 	}
 
 	bat_formBats();
+	if(auto_haveGreyGoose()){
+		handleFamiliar($familiar[Grey Goose]);
+	}
 	return autoAdv($location[Guano Junction]);
 }

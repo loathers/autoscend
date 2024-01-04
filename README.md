@@ -23,7 +23,7 @@ This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareA
 
 Run this command in the graphical CLI:
 ```
-git checkout https://github.com/Loathing-Associates-Scripting-Society/autoscend.git
+git checkout loathers/autoscend
 ```
 Will require [a recent build of KoLMafia](http://builds.kolmafia.us/job/Kolmafia/lastSuccessfulBuild/).
 

@@ -11,10 +11,6 @@ L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
 LX_summonMonster
-# path handling which should be in it's own task order but pre-dates task order functionality (tech debt FTW).
-LM_edTheUndying
-LX_bugbearInvasion
-LX_lowkeySummer
 # make sure we don't waste turns of Ultrahydrated doing something else.
 L11_aridDesert	L11_hasUltrahydrated
 # Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.

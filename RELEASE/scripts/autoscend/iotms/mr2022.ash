@@ -1,5 +1,47 @@
 # This is meant for items that have a date of 2022
 
+boolean auto_haveCursedMagnifyingGlass()
+{
+	if (possessEquipment($item[cursed magnifying glass]) && auto_can_equip($item[cursed magnifying glass])) {
+		return true;
+	}
+	return false;
+}
+
+boolean auto_voidMonster()
+{
+	return auto_voidMonster($location[none]);
+}
+
+boolean auto_voidMonster(location loc)
+{
+	// Cursed Magnifying Glass gives a void monster combat every 13 turns. The first 5 are free fights
+	// _voidFreeFights counts up from 0 and stays at 5 once all free fights are completed for the day
+	if (!auto_haveCursedMagnifyingGlass())
+	{
+		return false;
+	}
+
+	// return false if we've fought the 5 free void monsters already today or we're still charging up the counter
+	if (get_property("_voidFreeFights").to_int() >= 5 || get_property("cursedMagnifyingGlassCount").to_int() != 13)
+	{
+		return false;
+	}
+
+	if (loc == $location[none])
+	{
+		return true;
+	}
+
+	if (autoEquip($item[cursed magnifying glass]))
+	{
+		set_property("auto_nextEncounter","void guy");	//which of the 3 is random, but they're all same phylum and free under same conditions
+		return autoAdv(loc);
+	}
+	set_property("auto_nextEncounter","");
+	return false;
+}
+
 boolean auto_haveCosmicBowlingBall()
 {
 	// ensure we not only own one but it's in allowed in path and also in inventory for us to do stuff with.
@@ -145,9 +187,83 @@ boolean auto_fightLocketMonster(monster mon, boolean speculative)
 
 }
 
-boolean canUseCleaver() {
+boolean auto_haveGreyGoose()
+{
+	if(auto_have_familiar($familiar[Grey Goose]))
+	{
+		return true;
+	}
+	return false;
+}
+
+int gooseExpectedDrones()
+{
+	if(!auto_haveGreyGoose()) return 0;
+	int gooseWeight = familiar_weight($familiar[Grey Goose]);
+	if(gooseWeight < 5) return 0;
+	return gooseWeight - 5;
+}
+
+boolean dronesOut() //want a function to override the task order if we have drones out so as not to waste them
+{
+	if(!auto_haveGreyGoose()) return false;
+	if(get_property("gooseDronesRemaining").to_int() > 0)
+	{
+		return true;
+	}
+	return false;
+}
+
+void prioritizeGoose() //prioritize Goose only if we still have things to get
+{
+	if(!auto_haveGreyGoose()) return;
+	if(	(internalQuestStatus("questL04Bat") <= 1 && gooseExpectedDrones() < 1) ||
+			((item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && internalQuestStatus("questL11Worship") <= 2) && gooseExpectedDrones() < 1) ||
+			(internalQuestStatus("questL08Trapper") <= 1 && gooseExpectedDrones() < 1) ||
+			(((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15) && gooseExpectedDrones() < 2) ||
+			((needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6)) && gooseExpectedDrones() < 4) ||
+			(internalQuestStatus("questL11Ron") < 5 && gooseExpectedDrones() < 2) ||
+			((get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 5 && gooseExpectedDrones() < 2) ||
+			(((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 9) && gooseExpectedDrones() < 3))
+	{
+		set_property("auto_prioritizeGoose", true);
+		return;
+	}
+	set_property("auto_prioritizeGoose", false);
+}
+
+boolean auto_haveMaydayContract()
+{
+	if (get_property("hasMaydayContract").to_boolean() && auto_is_valid($item[gaffer's tape]))
+	// use a potion to check mayday is allowed as auto_is_valid can return false for equipment & consumables in certain paths
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_canUseJuneCleaver() {
 	if (possessEquipment($item[June cleaver]) && can_equip($item[June cleaver]) && auto_is_valid($item[June cleaver])) {
 		return true;
+	}
+	return false;
+}
+
+boolean auto_juneCleaverAdventure()
+{
+	if (!auto_canUseJuneCleaver() || get_property("_juneCleaverFightsLeft").to_int() > 0)
+	{
+		return false;
+	}
+
+	if (autoEquip($slot[weapon], $item[June cleaver]))
+	{
+		location cleaverLoc = $location[The Dire Warren];
+		if (in_koe())
+		{
+			cleaverLoc = $location[Cobb's Knob Treasury]; // arbitrarily picked always accessible location
+		}
+		return autoAdv(cleaverLoc);
 	}
 	return false;
 }
@@ -217,7 +333,8 @@ void juneCleaverChoiceHandler(int choice)
 			break;			
 		case 1474: // Delicious Sprouts
 			if (can_eat() && my_level() < 13 && 
-			have_fireworks_shop() && auto_is_valid($item[red rocket]) &&
+			have_fireworks_shop() && auto_is_valid($item[red rocket]) && 
+			!in_darkGyffte() && !is_jarlsberg() && !in_tcrs() && //paths that can eat but can't eat guilty sprouts/won't get the stats from it anyway
 			auto_is_valid($item[guilty sprout]) && item_amount($item[guilty sprout]) == 0)
 				run_choice(2); // guilty sprout is level 8+ good size 1 food but it gives big stats, would want to use a red rocket
 			if (my_primestat() == $stat[mysticality] && (my_level() < 13 || disregardInstantKarma())) {
@@ -256,6 +373,9 @@ int getSweat() {
 void sweatpantsPreAdventure() {
 	if (!canUseSweatpants()) {
 		return;
+	}
+	if(in_small()){
+		return; // small can't clean organs
 	}
 
 	if (my_location() == $location[A Mob of Zeppelin Protesters] && equipped_item($slot[pants]) != $item[lynyrdskin breeches]) {
@@ -447,17 +567,11 @@ boolean auto_hasAutumnaton()
 	return get_property("hasAutumnaton").to_boolean() && auto_is_valid($item[autumn-aton]) && !in_pokefam();
 }
 
-// only valid when autumnaton is not current out on a quest
+// only valid when autumnaton is not currently out on a quest
 boolean auto_autumnatonCanAdv(location canAdventureInloc)
 {
 	if(!auto_hasAutumnaton())
 	{
-		return false;
-	}
-
-	if(canAdventureInloc.turns_spent == 0 && !($locations[Noob Cave, The Haunted Pantry, The Sleazy Back Alley] contains canAdventureInloc))
-	{
-		//zones have turn spent requirement except initial three
 		return false;
 	}
 
@@ -564,7 +678,8 @@ boolean auto_autumnatonQuest()
 	if(auto_autumnatonCheckForUpgrade("leftarm1") &&
 	 auto_autumnatonCheckForUpgrade("rightarm1") &&
 	 item_amount($item[barrel of gunpowder]) < 5 && 
-	 get_property("sidequestLighthouseCompleted") == "none")
+	 get_property("sidequestLighthouseCompleted") == "none" &&
+	 !in_koe())
 	{
 		location targetLocation = $location[Sonofa Beach];
 		if(!auto_autumnatonCanAdv(targetLocation) && zone_available(targetLocation))
@@ -597,6 +712,16 @@ boolean auto_autumnatonQuest()
 			return L9_twinPeak();
 		}
 		if(auto_sendAutumnaton(targetLocation)) return false;
+	}
+
+	// acquire more shadow bricks
+	if(auto_neededShadowBricks() > 0)
+	{
+		string ingress = get_property("shadowRiftIngress");
+		if($strings[cemetery, hiddencity, pyramid] contains ingress)
+		{
+			if(auto_sendAutumnaton($location[Shadow Rift])) return false;
+		}
 	}
 
 	return false;
@@ -677,10 +802,8 @@ void auto_checkTrainSet()
 	int two;
 	int three;
 	int four;
-	if(my_level() < 13) //check if we need more stats. There is no check for disregard instant karma because
+	if(my_level() < 11) //check if we need more stats. There is no check for disregard instant karma because
 	//if we do check, we will never double lumber mill, which is more beneficial than continuing to double mainstat.
-	//Do we want the next line's if statement instead because this will still generate so many stats
-	//if(my_level() < 12) //Double mainstat until we reach L12
 	{
 		if(my_primestat() == $stat[Muscle])
 		{
@@ -758,7 +881,7 @@ void auto_checkTrainSet()
 		}
 	}
 	int eight = 13; //monster level
-	if(monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != ""){
+	if((monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != "") || get_property("auto_MLSafetyLimit").to_int() == -1){
 		eight = 9; //cold res, stench dmg
 	}
 	int turnsSinceTSConfigured = min(trainsetPosition - lastTrainsetConfiguration, 40);

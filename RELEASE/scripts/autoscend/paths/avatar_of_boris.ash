@@ -53,7 +53,6 @@ void boris_initializeSettings()
 		auto_log_info("Initializing Avatar of Boris settings", "blue");
 		set_property("auto_borisSkills", -1);
 		set_property("auto_wandOfNagamar", false);
-		set_property("auto_doArmory", true);
 
 		# Mafia r16876 does not see the Boris Helms in storage and will not pull them.
 		# We have to force the issue.
@@ -75,16 +74,6 @@ void boris_initializeDay(int day)
 
 		if(get_property("auto_day_init").to_int() < 2)
 		{
-
-			if(get_property("auto_dickstab").to_boolean() && chateaumantegna_available())
-			{
-				boolean[item] furniture = chateaumantegna_decorations();
-				if(!furniture[$item[Ceiling Fan]])
-				{
-					chateaumantegna_buyStuff($item[Ceiling Fan]);
-				}
-			}
-
 			if(item_amount($item[gym membership card]) > 0)
 			{
 				use(1, $item[gym membership card]);
@@ -97,7 +86,6 @@ void boris_initializeDay(int day)
 			while(acquireHermitItem($item[11-Leaf Clover]));
 			pullXWhenHaveY($item[hand in glove], 1, 0);
 			pullXWhenHaveY($item[blackberry galoshes], 1, 0);
-			pullXWhenHaveY(whatHiMein(), 1, 0);
 		}
 	}
 	else if(day == 3)

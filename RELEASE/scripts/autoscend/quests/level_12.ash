@@ -317,6 +317,10 @@ WarPlan auto_bestWarPlan()
 	{
 		considerNuns = false;
 	}
+	if(get_property("auto_ignoreFlyer").to_boolean())
+	{
+		considerArena = false;
+	}
 	
 	// Calculate the adventure cost of doing each sidequest.
 	int advCostArena = 0;		//Arena actual cost is 0 adventures... unless you mess it up. TODO: check if messed up.
@@ -545,6 +549,11 @@ boolean warAdventure()
 
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
+		//Commented out until Green smoke bomb support is added
+		if(auto_warEnemiesRemaining() <= 600 && auto_haveGreyGoose()){
+			auto_log_info("Bringing the Grey Goose to emit some drones at a GrOPs hopefully.");
+			handleFamiliar($familiar[Grey Goose]);
+		}
 		if(!autoAdv(1, $location[The Battlefield (Frat Uniform)]))
 		{
 			set_property("hippiesDefeated", get_property("hippiesDefeated").to_int() + 1);
@@ -618,7 +627,7 @@ boolean L12_getOutfit()
 	}
 	// if you reached this point you are either in hardcore or are in softcore but ran out of pulls
 	// if really in softcore and out of pulls then returning false here lets you skip it until tomorrow
-	if(!in_hardcore())
+	if(!in_hardcore() && !in_lol())
 	{
 		return false;
 	}
@@ -654,7 +663,7 @@ boolean L12_preOutfit()
 	}
 	
 	// in softcore you will pull the war outfit, no need to get pre outfit
-	if(!in_hardcore())
+	if(!in_hardcore() && !in_lol())
 	{
 		return false;
 	}
@@ -787,7 +796,7 @@ boolean L12_startWar()
 
 	// wear the appropriate war outfit based on auto_hippyInstead
 	equipWarOutfit();
-
+	
 	// start the war when siding with frat boys
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
@@ -957,16 +966,12 @@ boolean L12_filthworms()
 		asdonBuff($effect[Driving Observantly]);
 		bat_formBats();
 
-		if(get_property("auto_dickstab").to_boolean())
-		{
-			buffMaintain($effect[Wet and Greedy]);
-		}
 		buffMaintain($effect[Frosty]);
 		
 		//craft IOTM derivative that gives high item bonus
 		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
 		{
-			buyUpTo(1, $item[third-hand lantern]);
+			auto_buyUpTo(1, $item[third-hand lantern]);
 			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
 		}
 
@@ -1158,7 +1163,7 @@ boolean L12_gremlins()
 			{
 				return false;
 			}
-			buyUpTo(30, $item[Doc Galaktik\'s Pungent Unguent]);
+			auto_buyUpTo(30, $item[Doc Galaktik\'s Pungent Unguent]);
 		}
 	}
 	else
@@ -1423,7 +1428,7 @@ boolean L12_sonofaPrefix()
 				}
 				if(auto_voteMonster() && !auto_voteMonster(true))
 				{
-					auto_voteMonster(false, $location[Sonofa Beach], "");
+					auto_voteMonster(false, $location[Sonofa Beach]);
 					return true;
 				}
 				else if(auto_sausageGoblin() && !auto_haveVotingBooth())
@@ -1715,7 +1720,7 @@ boolean L12_themtharHills()
 	handleBjornify($familiar[Hobo Monkey]);
 	if((equipped_item($slot[off-hand]) != $item[Half a Purse]) && !possessEquipment($item[Half a Purse]) && (item_amount($item[Lump of Brituminous Coal]) > 0))
 	{
-		buyUpTo(1, $item[Loose Purse Strings]);
+		auto_buyUpTo(1, $item[Loose Purse Strings]);
 		autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Loose purse strings]);
 	}
 
@@ -1766,6 +1771,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Earning Interest]);
 	buffMaintain($effect[Bet Your Autumn Dollar]);
 	buffMaintain($effect[Flapper Dancin\']);
+	buffMaintain($effect[shadow waters]);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{
@@ -1864,11 +1870,7 @@ boolean L12_themtharHills()
 	if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]) && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
 	{
 		//use clover to get inhaler
-		cloverUsageInit();
-		boolean retval = autoAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
-		if(cloverUsageRestart()) retval = autoAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
-		cloverUsageFinish();
-		return retval;
+		return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
 	}
 
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
@@ -1888,6 +1890,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Heart of Pink]);
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	buffMaintain($effect[Good Things Are Coming, You Can Smell It]);
+	buffMaintain($effect[Incredibly Well Lit]);
 	bat_formWolf();
 	if(auto_is_valid($effect[Meet the Meat]))
 	{

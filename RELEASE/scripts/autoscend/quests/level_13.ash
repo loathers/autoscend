@@ -69,32 +69,28 @@ int EightBitScore()
 boolean EightBitRealmHandler()
 {
 	//Spend adventures to get the digital key
+	//Preparing for each zone is handled in auto_pre_adv.ash
 	boolean adv_spent = false;
 
 	string color = get_property("8BitColor");
 	switch(color)
 	{
-		case "black":	
-			provideInitiative(600, $location[Vanya\'s Castle], true);	
-			addToMaximize("200initiative 800max");
+		case "black":
+			// limited buff that is helpful for 3 of 4 8-bit zones
+			buffMaintain($effect[shadow waters]);
 			adv_spent = autoAdv($location[Vanya\'s Castle]);
 			break;
 		case "red":
-			buffMaintain($effect[Polka of Plenty], 30, 1, 1);
-			addToMaximize("200meat drop 550max");
+			// limited buff that is helpful for 3 of 4 8-bit zones
+			buffMaintain($effect[shadow waters]);
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
-			buffMaintain($effect[Ghostly Shell], 30, 1, 1);			//+80 DA. 6 MP
-			buffMaintain($effect[Astral Shell], 30, 1, 1);			//+80 DA, 10 MP
-			buffMaintain($effect[Feeling Peaceful], 0, 1, 1);
-			addToMaximize("200DA 600max");
 			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":
-			buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
-			buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
-			addToMaximize("200item 500max");
+			// limited buff that is helpful for 3 of 4 8-bit zones
+			buffMaintain($effect[shadow waters]);
 			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;
 		default:
@@ -193,9 +189,9 @@ void LX_buyStarKeyParts()
 	{
 		return;	//no unrestricted mall access
 	}
-	buyUpTo(1, $item[Star Chart], 1000);
-	buyUpTo(8, $item[Star], 1000);
-	buyUpTo(7, $item[line], 1000);
+	auto_buyUpTo(1, $item[Star Chart]);
+	auto_buyUpTo(8, $item[Star]);
+	auto_buyUpTo(7, $item[line]);
 }
 
 boolean LX_getStarKey()
@@ -227,14 +223,22 @@ boolean LX_getStarKey()
 	
 	LX_buyStarKeyParts();
 
+	// summon Skinflute or Camel's Toe to get both stars and lines. We can copy them into delay zones like the 8-bit realm.
+	int copiesNeeded = max((8 - item_amount($item[star])) / 2, (7 - item_amount($item[line])) / 2);
+	if (needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7 && auto_haveBackupCamera() && auto_backupUsesLeft() >= copiesNeeded)
+	{
+		// in case it matters later, summon only the monster we can naturally encounter in this ascension.
+		if(my_ascensions() % 2 == 1 && !summonedMonsterToday($monster[Skinflute]) && canSummonMonster($monster[Skinflute]) && summonMonster($monster[Skinflute])) return true;
+		if(my_ascensions() % 2 == 0 && !summonedMonsterToday($monster[Camel's Toe]) && canSummonMonster($monster[Camel's Toe]) && summonMonster($monster[Camel's Toe])) return true;
+	}
+
 	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;
-	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key") && 
-	item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
+	if (!in_hardcore() && at_tower_door && needStarKey() && item_amount($item[Star Chart]) == 0 && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
 	{
 		pullXWhenHaveY($item[Star Chart], 1, 0);
 	}
 	
-	if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) > 0) && (item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	if (item_amount($item[Richard\'s Star Key]) == 0 && creatable_amount($item[Richard\'s Star Key]) > 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
 	{
 		return create(1, $item[Richard\'s Star Key]);
 	}
@@ -262,6 +266,10 @@ boolean LX_getStarKey()
 		{
 			set_property("choiceAdventure1221", 2 + (my_ascensions() % 2));
 		}
+	}
+	if(auto_haveGreyGoose()){
+		auto_log_info("Bringing the Grey Goose to emit some drones at some Constellations.");
+		handleFamiliar($familiar[Grey Goose]);
 	}
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
@@ -469,6 +477,11 @@ boolean L13_towerNSContests()
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Ten out of Ten]);
 				}
+
+				if(in_small() && crowd2Insufficient() && have_effect($effect[Piratastic])==0)
+				{
+					auto_wishForEffect($effect[Piratastic]);
+				}
 				break;
 			case $stat[muscle]:
 				autoMaximize("muscle -equip snow suit", 1500, 0, false);
@@ -476,6 +489,11 @@ boolean L13_towerNSContests()
 				if(have_effect($effect[Muddled]) == 0 && auto_is_valid($effect[Muddled]))
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Muddled]);
+				}
+
+				if(in_small() && crowd2Insufficient() && have_effect($effect[\'Roids of the Rhinoceros])==0)
+				{
+					auto_wishForEffect($effect[\'Roids of the Rhinoceros]);
 				}
 				break;
 			case $stat[mysticality]:
@@ -485,12 +503,17 @@ boolean L13_towerNSContests()
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Uncucumbered]);
 				}
+
+				if(in_small() && crowd2Insufficient() && have_effect($effect[Happy Trails])==0)
+				{
+					auto_wishForEffect($effect[Happy Trails]);
+				}
 				break;
 			}
 			
-			if(crowd2Insufficient())
+			if(crowd2Insufficient() && !in_small())
 			{
-				if (have_effect($effect[New and Improved])==0)
+				if (have_effect($effect[New and Improved])==0 && !in_small())
 				{
 					auto_wishForEffect($effect[New and Improved]);
 				}
@@ -807,7 +830,7 @@ boolean L13_sorceressDoor()
 		return false;
 	}
 
-	if (LX_getDigitalKey() || LX_getStarKey()) {
+	if (LX_getStarKey() || LX_getDigitalKey()) { // should attempt Star Key first as 8-bit zones can be progressed with backups etc.
 		return true;
 	}
 
@@ -1419,6 +1442,7 @@ boolean L13_towerNSTower()
 		buffMaintain($effect[Big Meat Big Prizes]);
 		buffMaintain($effect[Patent Avarice]);
 		buffMaintain($effect[Flapper Dancin\']);
+		buffMaintain($effect[Incredibly Well Lit]);
 		bat_formWolf();
 		if(auto_birdModifier("Meat Drop") > 0)
 		{
@@ -1736,6 +1760,22 @@ boolean L13_towerNSFinal()
 		}
 	}
 
+	// restore ML Safety Limit if this run changed it
+	if(property_exists("auto_MLSafetyLimitBackup"))
+	{
+		string MLSafetyLimitBackup = get_property("auto_MLSafetyLimitBackup");
+		if(MLSafetyLimitBackup == "empty") set_property("auto_MLSafetyLimit","");
+		else set_property("auto_MLSafetyLimit", MLSafetyLimitBackup);
+		remove_property("auto_MLSafetyLimitBackup");
+	}
+	// restore disregard karma if this run changed it
+	if(property_exists("auto_disregardInstantKarmaBackup"))
+	{
+		set_property("auto_disregardInstantKarma",get_property("auto_disregardInstantKarmaBackup"));
+		remove_property("auto_disregardInstantKarmaBackup");
+	}
+
+
 	if(get_property("auto_stayInRun").to_boolean())
 	{
 		abort("User wanted to stay in run (auto_stayInRun), we are done.");
@@ -1835,13 +1875,8 @@ boolean L13_towerNSNagamar()
 		return autoAdv($location[The VERY Unquiet Garves]);
 	}
 	
-	if(cloversAvailable() > 0)
-	{
-		cloverUsageInit();
-		autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
-		if(cloverUsageRestart()) autoAdv($location[The Castle in the Clouds in the Sky (Basement)]);
-		cloverUsageFinish();
-		if(creatable_amount($item[Wand Of Nagamar]) > 0)
+	if (autoLuckyAdv($location[The Castle in the Clouds in the Sky (Basement)], true)) {
+		if (creatable_amount($item[Wand Of Nagamar]) > 0)
 		{
 			return create(1, $item[Wand Of Nagamar]);
 		}

@@ -1,45 +1,5 @@
 // All prototypes for this code described in autoscend_header.ash
 
-boolean LX_artistQuest()
-{
-	if((get_property("auto_doArtistQuest").to_boolean()) && (get_property("questM02Artist") != "finished"))
-	{
-		if(get_property("questM02Artist") == "unstarted")
-		{
-			visit_url("place.php?whichplace=town_wrong&action=townwrong_artist_noquest");
-			visit_url("place.php?whichplace=town_wrong&action=townwrong_artist_noquest&getquest=1");
-			visit_url("place.php?whichplace=town_wrong&action=townwrong_artist_quest");
-		}
-		if(get_property("questM02Artist") == "started")
-		{
-			if(item_amount($item[Pretentious Paintbrush]) == 0)
-			{
-				autoAdv($location[The Outskirts of Cobb\'s Knob]);
-			}
-			else if(item_amount($item[Pretentious Palette]) == 0)
-			{
-				autoAdv($location[The Haunted Pantry]);
-			}
-			else if(item_amount($item[Pail of Pretentious Paint]) == 0)
-			{
-				autoAdv($location[The Sleazy Back Alley]);
-			}
-			else
-			{
-				visit_url("place.php?whichplace=town_wrong&action=townwrong_artist_quest");
-			}
-			return true;
-		}
-		else
-		{
-			auto_log_warning("Failed starting artist quest, rejecting completely.", "red");
-			set_property("auto_doArtistQuest", false);
-			return false;
-		}
-	}
-	return false;
-}
-
 boolean LX_unlockThinknerdWarehouse(boolean spend_resources)
 {
 	//unlocks [The Thinknerd Warehouse], returns true if successful or adv is spent
@@ -149,7 +109,7 @@ boolean LX_unlockThinknerdWarehouse(boolean spend_resources)
 	getShirtWhenHaveNone($item[bat-ass leather jacket]);		//77 mus req
 
 	//wish for a shirt
-	if(spend_resources && auto_wishesAvailable() > 0 && auto_shouldUseWishes() && item_amount($item[blessed rustproof +2 gray dragon scale mail]) == 0)
+	if(spend_resources && auto_wishesAvailable() > 0 && item_amount($item[blessed rustproof +2 gray dragon scale mail]) == 0)
 	{
 		makeGenieWish("for a blessed rustproof +2 gray dragon scale mail");
 		target_shirt = $item[blessed rustproof +2 gray dragon scale mail];
@@ -403,7 +363,6 @@ boolean LX_guildUnlock()
 	{
 		return false;	//muscle classes cannot unlock guild in grey goo
 	}
-	auto_log_info("Let's unlock the guild.", "green");
 
 	string pref;
 	location loc = $location[None];
@@ -446,7 +405,9 @@ boolean LX_guildUnlock()
 			return false;
 		}
 
-		autoAdv(1, loc);
+		auto_log_info("Let's unlock the guild.", "green");
+
+		autoAdv(loc);
 		if (internalQuestStatus(pref) == 1)
 		{
 			visit_url("guild.php?place=challenge");
@@ -493,26 +454,6 @@ boolean finishArmorySideQuest()
 	return internalQuestStatus("questM25Armorer") > 4;
 }
 
-boolean LX_armorySideQuest()
-{
-	//do the quest [Lending a Hand (and a Foot)] and unlock [madeline's baking supply] store
-	//step2 = need to kill the cake lord
-	//step3 = killed the cake lord
-	//step4 = clicked through the mandatory noncombat pages after the cake lord was killed
-	startArmorySubQuest();							//always start the quest to unlock the zone. costs no adv
-	if(finishArmorySideQuest()) return true;		//always finish the quest if possible. unlocks a shop.
-
-	if(!get_property("auto_doArmory").to_boolean())		//post setting indicating we should do this quest this ascension
-	{
-		return false;
-	}	
-	if(internalQuestStatus("questM25Armorer") > -1 && internalQuestStatus("questM25Armorer") < 4)
-	{
-		return autoAdv($location[Madness Bakery]);
-	}
-	return false;
-}
-
 boolean startMeatsmithSubQuest()
 {
 	if(in_koe())
@@ -552,24 +493,6 @@ boolean finishMeatsmithSubQuest()
 		return true;
 	}
 	return false;
-}
-
-boolean LX_meatsmithSubQuest()
-{
-	//do meatsmith optional subquest.
-	if(startMeatsmithSubQuest()) return true;		//always start the quest if available
-	if(finishMeatsmithSubQuest()) return true;		//always turn the quest in if possible
-	
-	if(internalQuestStatus("questM23Meatsmith") != 0)
-	{
-		return false;	
-	}
-	if(!get_property("auto_doMeatsmith").to_boolean())
-	{
-		return false;		//by default we do not want to do this quest.
-	}
-	
-	return autoAdv($location[The Skeleton Store]);
 }
 
 void considerGalaktikSubQuest()
@@ -664,7 +587,6 @@ boolean finishGalaktikSubQuest()
 boolean LX_galaktikSubQuest()
 {
 	//do doc galaktik optional subquest.
-	if(startGalaktikSubQuest()) return true;	//always start the quest if available
 	if(finishGalaktikSubQuest()) return true;	//always turn the quest in if possible
 	considerGalaktikSubQuest();					//if allowed will automatically enable the quest in some cases
 	
@@ -677,10 +599,10 @@ boolean LX_galaktikSubQuest()
 	{
 		return false;		//by default we do not want to do this quest.
 	}
-	
+	if(startGalaktikSubQuest()) return true;	//always start the quest if available
+
 	return autoAdv($location[The Overgrown Lot]);
 }
-
 
 boolean LX_doingPirates() {
 	return in_lowkeysummer(); //we are only doing pirates in that path now
@@ -707,7 +629,7 @@ boolean LX_pirateOutfit() {
 	}
 	if (possessOutfit("Swashbuckling Getup")) {
 		if (possessOutfit("Swashbuckling Getup", true) && item_amount($item[The Big Book Of Pirate Insults]) == 0 && my_meat() > npc_price($item[The Big Book Of Pirate Insults])) {
-			buyUpTo(1, $item[The Big Book Of Pirate Insults]);
+			auto_buyUpTo(1, $item[The Big Book Of Pirate Insults]);
 		}
 		return false;
 	}
@@ -863,7 +785,7 @@ boolean LX_joinPirateCrew() {
 		return false;
 	}
 	if (item_amount($item[The Big Book Of Pirate Insults]) == 0 && my_meat() > npc_price($item[The Big Book Of Pirate Insults])) {
-		buyUpTo(1, $item[The Big Book Of Pirate Insults]);
+		auto_buyUpTo(1, $item[The Big Book Of Pirate Insults]);
 	}
 	if (internalQuestStatus("questM12Pirate") == -1 || internalQuestStatus("questM12Pirate") == 1 || internalQuestStatus("questM12Pirate") == 3) {
 		auto_log_info("Findin' the Cap'n", "blue");
@@ -911,7 +833,7 @@ boolean LX_joinPirateCrew() {
 				if (item_amount($item[hot wing]) > 2 && auto_can_equip($item[frilly skirt])) {
 					if (knoll_available() && my_meat() > npc_price($item[frilly skirt])) {
 						auto_log_info("We have hot wings but no frilly skirt. Lets go shopping!", "blue");
-						buyUpTo(1, $item[frilly skirt]);
+						auto_buyUpTo(1, $item[frilly skirt]);
 						autoForceEquip($item[frilly skirt]);
 						infiltrationReady = true;
 					} else {
@@ -1096,23 +1018,23 @@ boolean LX_unlockKnobMenagerie()
 	return autoAdv(1, $location[Cobb\'s Knob Laboratory]);
 }
 
-item[class] epicWeapons;
-epicWeapons[$class[Seal Clubber]] = $item[Hammer of Smiting];
-epicWeapons[$class[Turtle Tamer]] = $item[Chelonian Morningstar];
-epicWeapons[$class[Pastamancer]] = $item[Greek Pasta Spoon of Peril];
-epicWeapons[$class[Sauceror]] = $item[17-alarm Saucepan];
-epicWeapons[$class[Disco Bandit]] = $item[Shagadelic Disco Banjo];
-epicWeapons[$class[Accordion Thief]] = $item[Squeezebox of the Ages];
-// usage: item epicWeapon = epicWeapons[my_class()];
+static item[class] epicWeapons = {
+	$class[Seal Clubber] : $item[Hammer of Smiting],
+	$class[Turtle Tamer] : $item[Chelonian Morningstar],
+	$class[Pastamancer] : $item[Greek Pasta Spoon of Peril],
+	$class[Sauceror] : $item[17-alarm Saucepan],
+	$class[Disco Bandit] : $item[Shagadelic Disco Banjo],
+	$class[Accordion Thief] : $item[Squeezebox of the Ages]
+}; // usage: item epicWeapon = epicWeapons[my_class()];
 
-item[class] starterWeapons;
-starterWeapons[$class[Seal Clubber]] = $item[seal-clubbing club];
-starterWeapons[$class[Turtle Tamer]] = $item[turtle totem];
-starterWeapons[$class[Pastamancer]] = $item[pasta spoon];
-starterWeapons[$class[Sauceror]] = $item[saucepan];
-starterWeapons[$class[Disco Bandit]] = $item[disco ball];
-starterWeapons[$class[Accordion Thief]] = $item[stolen accordion];
-// usage: item starterWeapon = starterWeapons[my_class()];
+static item[class] starterWeapons = {
+	$class[Seal Clubber] : $item[seal-clubbing club],
+	$class[Turtle Tamer] : $item[turtle totem],
+	$class[Pastamancer] : $item[pasta spoon],
+	$class[Sauceror] : $item[saucepan],
+	$class[Disco Bandit] : $item[disco ball],
+	$class[Accordion Thief] : $item[stolen accordion]
+}; // usage: item starterWeapon = starterWeapons[my_class()];
 
 boolean tomb_already_found()
 {

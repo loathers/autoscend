@@ -126,6 +126,7 @@ int fastenerCount()
 	base = base + item_amount($item[Thick Caulk]);
 	base = base + item_amount($item[Long Hard Screw]);
 	base = base + item_amount($item[Messy Butt Joint]);
+	base = base + 5 * item_amount($item[Smut Orc Keepsake Box]);
 
 	return base;
 }
@@ -136,9 +137,38 @@ int lumberCount()
 	base = base + item_amount($item[Morningwood Plank]);
 	base = base + item_amount($item[Raging Hardwood Plank]);
 	base = base + item_amount($item[Weirdwood Plank]);
+	base = base + 5 * item_amount($item[Smut Orc Keepsake Box]);
 
 	return base;
 }
+
+boolean finishBuildingSmutOrcBridge()
+{
+	if (internalQuestStatus("questL09Topping") != 0 || get_property("chasmBridgeProgress").to_int() >= 30)
+	{
+		return false;
+	}
+
+	// use any keepsake boxes we have
+	item keepsakeBox = $item[Smut Orc Keepsake Box];
+	if(item_amount(keepsakeBox) > 0 && auto_is_valid(keepsakeBox))
+	{
+		use(item_amount(keepsakeBox), keepsakeBox);
+	}
+
+	// make sure our progress count is correct before we do anything.
+	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
+
+	// finish chasm if we can
+	if(get_property("chasmBridgeProgress").to_int() >= 30)
+	{
+		visit_url("place.php?whichplace=highlands&action=highlands_dude");
+		return true;
+	}
+
+	return false;
+}
+
 
 void prepareForSmutOrcs()
 {
@@ -162,7 +192,7 @@ void prepareForSmutOrcs()
 		// so let's not waste time and console spam when we're a class or path that can't do any of this.
 		boolean useSpellsInOrcCamp = false;
 		
-		acquireMP(32, 1000);	//pre_adv will always do this later, but waiting for it may fail checks of ability to cast spells here
+		acquireMP(32, 0);	//pre_adv will always do this later, but waiting for it may fail checks of ability to cast spells here
 		if(setFlavour($element[cold]) && canUse($skill[Stuffed Mortar Shell]))
 		{
 			useSpellsInOrcCamp = true;
@@ -285,6 +315,11 @@ boolean L9_chasmBuild()
 		return false;
 	}
 
+	if(finishBuildingSmutOrcBridge())
+	{
+		return true;
+	}
+
 	if (shenShouldDelayZone($location[The Smut Orc Logging Camp]))
 	{
 		auto_log_debug("Delaying Logging Camp in case of Shen.");
@@ -305,22 +340,6 @@ boolean L9_chasmBuild()
 	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
 
 	auto_log_info("Chasm time", "blue");
-	
-	// make sure our progress count is correct before we do anything.
-	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
-
-	// use any keepsake boxes we have
-	if(item_amount($item[Smut Orc Keepsake Box]) > 0 && auto_is_valid($item[Smut Orc Keepsake Box]))
-	{
-		use(1, $item[Smut Orc Keepsake Box]);
-	}
-
-	// finish chasm if we can
-	if(get_property("chasmBridgeProgress").to_int() >= 30)
-	{
-		visit_url("place.php?whichplace=highlands&action=highlands_dude");
-		return true;
-	}
 
 	// prepareForSmutOrcs() called in pre-adv
 	autoAdv(1, $location[The Smut Orc Logging Camp]);
@@ -394,17 +413,11 @@ boolean L9_aBooPeak()
 	boolean clueCheck = ((clueAmt > 0) || (get_property("auto_aboopending").to_int() != 0));
 	if (get_property("auto_abooclover").to_boolean() && get_property("booPeakProgress").to_int() >= 30 && booCloversOk)
 	{
-		cloverUsageInit();
-		autoAdvBypass(296, $location[A-Boo Peak]);
-		if(cloverUsageRestart())
-		{
-			autoAdvBypass(296, $location[A-Boo Peak]);
-		}
-		if(cloverUsageFinish())
+		if (autoLuckyAdv($location[A-Boo Peak]))
 		{
 			set_property("auto_abooclover", false);
+			return true;
 		}
-		return true;
 	}
 	else if (clueCheck && (get_property("booPeakProgress").to_int() > 2))
 	{
@@ -433,7 +446,7 @@ boolean L9_aBooPeak()
 
 		if(black_market_available() && (item_amount($item[Can of Black Paint]) == 0) && (have_effect($effect[Red Door Syndrome]) == 0) && (my_meat() >= npc_price($item[Can of Black Paint])))
 		{
-			buyUpTo(1, $item[Can of Black Paint]);
+			auto_buyUpTo(1, $item[Can of Black Paint]);
 			coldResist += 2;
 			spookyResist += 2;
 		}
@@ -684,7 +697,8 @@ boolean L9_twinPeak()
 		return false;
 	}
 
-	if(hedgeTrimmersNeeded() > 0 && auto_autumnatonCanAdv($location[Twin Peak]) && !isAboutToPowerlevel() && $location[Twin Peak].turns_spent > 0)
+	if(hedgeTrimmersNeeded() > 0 && auto_autumnatonCanAdv($location[Twin Peak]) && !isAboutToPowerlevel() && 
+		($location[Twin Peak].turns_spent > 0 || get_property("twinPeakProgress").to_int() > 0)) // using trimmers doesn't increment turns_spent, so look at quest status also
 	{
 		// delay zone to allow autumnaton to grab rusty hedge trimmers
 		// unless we have ran out of other stuff to do
@@ -797,6 +811,12 @@ boolean L9_twinPeak()
 	}
 	auto_log_info("Twin Peak", "blue");
 
+	if(item_amount($item[Rusty Hedge Trimmers]) == 0 && $location[Twin Peak].turns_spent == 0)
+	{
+		// wish for trimmer so we can later send fallbot for the rest
+		auto_makeMonkeyPawWish($item[Rusty Hedge Trimmers]);
+	}
+
 	int starting_trimmers = item_amount($item[Rusty Hedge Trimmers]);
 	if(starting_trimmers > 0)
 	{
@@ -835,6 +855,10 @@ boolean L9_twinPeak()
 		{
 			return false;
 		}
+	}
+	if(auto_haveGreyGoose()){
+		auto_log_info("Bringing the Grey Goose to emit some drones to get some hedge trimmers.");
+		handleFamiliar($familiar[Grey Goose]);
 	}
 	return autoAdv($location[Twin Peak]);
 }
@@ -890,10 +914,6 @@ boolean L9_oilPeak()
 
 	auto_MaxMLToCap(auto_convertDesiredML(100), true);
 
-	if (isActuallyEd() && get_property("auto_dickstab").to_boolean())
-	{
-		buffMaintain($effect[The Dinsey Look]);
-	}
 	if(monster_level_adjustment() < 50)
 	{
 		buffMaintain($effect[The Dinsey Look]);

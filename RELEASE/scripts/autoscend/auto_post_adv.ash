@@ -349,7 +349,7 @@ boolean auto_post_adventure()
 		}
 		else if(isGeneralStoreAvailable() && auto_is_valid($item[Anti-Anti-Antidote]))
 		{
-			buyUpTo(1, $item[Anti-Anti-Antidote], 30);
+			auto_buyUpTo(1, $item[Anti-Anti-Antidote]);
 			use(1, $item[Anti-Anti-Antidote]);
 		}
 	}
@@ -1072,6 +1072,38 @@ boolean auto_post_adventure()
 
 	remove_property("auto_combatDirective");
 	remove_property("auto_digitizeDirective");
+	
+	//try to catch infinite loop where we repeatedly try to do the same thing.
+	//works with code found in auto_pre_adv.ash
+	if(my_session_adv() == get_property("_auto_inf_session_adv").to_int())
+	{
+		auto_log_debug("auto_post_adv.ash detected that no adventure was spent since last auto_pre_adv.ash");
+		
+		//count how many times in a row we went with no adv spent
+		set_property("_auto_inf_counter", get_property("_auto_inf_counter").to_int()+1);
+		
+		//if last monster changed it means we are doing free combats
+		if(get_property("_auto_inf_last_monster").to_monster() != last_monster())
+		{
+			remove_property("_auto_inf_counter");		//reset counter
+		}
+		set_property("_auto_inf_last_monster", last_monster());
+		
+		if(get_property("_auto_inf_counter").to_int() >= 30)
+		{
+			auto_log_error("no adventure was spent " +get_property("_auto_inf_counter")+ " times in a row which suggests we are stuck in an infinite loop. Stopping autoscend");
+			remove_property("_auto_inf_counter");
+			set_property("auto_interrupt", true);
+		}
+		else if(get_property("_auto_inf_counter").to_int() > 10)
+		{
+			auto_log_warning("no adventure was spent " +get_property("_auto_inf_counter")+ " times in a row");
+		}
+	}
+	else		//clear values
+	{
+		remove_property("_auto_inf_counter");
+	}
 	
 	auto_log_info("Post Adventure done, beep.", "purple");
 	return true;

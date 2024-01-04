@@ -1,13 +1,11 @@
 LX_freeCombatsTask
+woods_questStart
 LX_unlockPirateRealm
 catBurglarHeist
 auto_breakfastCounterVisit
 chateauPainting
 LX_setWorkshed
-LX_artistQuest
 LX_galaktikSubQuest
-LX_armorySideQuest
-LX_meatsmithSubQuest
 L9_leafletQuest
 L5_findKnob
 L12_sonofaPrefix
@@ -17,7 +15,7 @@ LM_edTheUndying
 LX_bugbearInvasion
 LX_lowkeySummer
 resolveSixthDMT
-LX_dinseylandfillFunbucks
+L11_aridDesert	L11_hasUltrahydrated
 L12_flyerFinish
 L12_getOutfit
 L12_startWar
@@ -91,9 +89,7 @@ L12_finalizeWar
 L12_clearBattlefield
 LX_koeInvaderHandler
 setSoftblockDelay	allowSoftblockDelay
-setSoftblockShen	allowSoftblockShen
-LX_getDigitalKey
-LX_getStarKey
+setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 L12_lastDitchFlyer
 LX_bugbearInvasionFinale
 L13_towerNSContests

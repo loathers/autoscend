@@ -194,7 +194,32 @@ boolean pullXWhenHaveYCasual(item it, int howMany, int whenHave)
 	{
 		return false;
 	}
-	return buy_item(it, howMany, get_property("autoBuyPriceLimit").to_int());
+	if(inAftercore())
+	{
+		take_storage(storage_amount(it), it);
+	}
+	int maxprice = get_property("autoBuyPriceLimit").to_int();
+	while((item_amount(it) < howMany) && (auto_mall_price(it) < maxprice))
+	{
+		if(auto_mall_price(it) > my_meat())
+		{
+			abort("Don't have enough meat to restock, big sad");
+		}
+		if(buy(1, it, maxprice) == 0)
+		{
+			auto_log_info("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
+			return false;
+		}
+	}
+	if(item_amount(it) < howMany)
+	{
+		if(auto_mall_price(it) >= maxprice)
+		{
+			auto_log_info("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
+		}
+		return false;
+	}
+	return true;
 }
 
 boolean pullXWhenHaveY(item it, int howMany, int whenHave)
@@ -327,45 +352,10 @@ boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condi
 		return false;
 	}
 
-	return buyUpTo(howMany, toMaintain);
+	return auto_buyUpTo(howMany, toMaintain);
 }
 
-boolean buy_item(item it, int quantity, int maxprice)
-{
-	take_closet(closet_amount(it), it);
-	if(inAftercore())
-	{
-		take_storage(storage_amount(it), it);
-	}
-	while((item_amount(it) < quantity) && (auto_mall_price(it) < maxprice))
-	{
-		if(auto_mall_price(it) > my_meat())
-		{
-			abort("Don't have enough meat to restock, big sad");
-		}
-		if(buy(1, it, maxprice) == 0)
-		{
-			auto_log_info("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
-			return false;
-		}
-	}
-	if(item_amount(it) < quantity)
-	{
-		if(auto_mall_price(it) >= maxprice)
-		{
-			auto_log_info("Price of " + it + " exceeded expected mall price of " + maxprice + ".", "blue");
-		}
-		return false;
-	}
-	return true;
-}
-
-boolean buyUpTo(int num, item it)
-{
-	return buyUpTo(num, it, 20000);
-}
-
-boolean buyUpTo(int num, item it, int maxprice)
+boolean auto_buyUpTo(int num, item it)
 {
 	if(item_amount(it) >= num)
 	{
@@ -381,6 +371,7 @@ boolean buyUpTo(int num, item it, int maxprice)
 	}
 
 	int missing = num - item_amount(it);
+	int maxprice = get_property("autoBuyPriceLimit").to_int();
 	if(can_interact() && shop_amount(it) > 0 && mall_price(it) < maxprice)	//prefer to buy from yourself
 	{
 		take_shop(min(missing, shop_amount(it)), it);
@@ -391,7 +382,7 @@ boolean buyUpTo(int num, item it, int maxprice)
 		buy(missing, it, maxprice);
 		if(item_amount(it) < num)
 		{
-			auto_log_warning("Could not buyUpTo(" + num + ") of " + it + ". Maxprice: " + maxprice, "red");
+			auto_log_warning("Could not auto_buyUpTo(" + num + ") of " + it + ". Maxprice: " + maxprice, "red");
 		}
 	}
 	return (item_amount(it) >= num);
@@ -432,7 +423,7 @@ boolean acquireGumItem(item it)
 	auto_log_info("Gum acquisition of: " + it, "green");
 	while((have == item_amount(it)) && (my_meat() >= npc_price($item[Chewing Gum on a String])))
 	{
-		buyUpTo(1, $item[Chewing Gum on a String]);
+		auto_buyUpTo(1, $item[Chewing Gum on a String]);
 		use(1, $item[Chewing Gum on a String]);
 	}
 
@@ -500,7 +491,7 @@ boolean acquireHermitItem(item it)
 	}
 	if((item_amount($item[Hermit Permit]) == 0) && (my_meat() >= npc_price($item[Hermit Permit])))
 	{
-		buyUpTo(1, $item[Hermit Permit]);
+		auto_buyUpTo(1, $item[Hermit Permit]);
 	}
 	if(item_amount($item[Hermit Permit]) == 0)
 	{
@@ -512,6 +503,9 @@ boolean acquireHermitItem(item it)
 	}
 	if((it == $item[Figurine of an Ancient Seal]) && (my_class() != $class[Seal Clubber]))
 	{
+		return false;
+	}
+	if (it == $item[11-leaf clover] && get_property("_cloversPurchased") >= 3) {
 		return false;
 	}
 	if(!isGeneralStoreAvailable())
@@ -531,7 +525,7 @@ boolean acquireHermitItem(item it)
 		}
 		else
 		{
-			buyUpTo(1, $item[Chewing Gum on a String]);
+			auto_buyUpTo(1, $item[Chewing Gum on a String]);
 			use(1, $item[Chewing Gum on a String]);
 		}
 	}
@@ -617,6 +611,9 @@ int handlePulls(int day)
 			auto_log_info("I assume you've handled your pulls yourself... who knows.");
 			return 0;
 		}
+
+		// pulls for small path
+		auto_SmallPulls();
 
 		if((storage_amount($item[etched hourglass]) > 0) && auto_is_valid($item[etched hourglass]))
 		{
@@ -773,19 +770,9 @@ int handlePulls(int day)
 			}
 		}
 
-		if(get_property("auto_dickstab").to_boolean())
-		{
-			pullXWhenHaveY($item[Shore Inc. Ship Trip Scrip], 3, 0);
-		}
-
 		if(auto_is_valid($item[Infinite BACON Machine]))
 		{
 			pullXWhenHaveY($item[Infinite BACON Machine], 1, 0);
-		}
-
-		if(is_unrestricted($item[Bastille Battalion control rig]))
-		{
-			string temp = visit_url("storage.php?action=pull&whichitem1=" + to_int($item[Bastille Battalion Control Rig]) + "&howmany1=1&pwd");
 		}
 
 		if(!in_pokefam() && auto_is_valid($item[Replica Bat-oomerang]))
@@ -809,6 +796,15 @@ int handlePulls(int day)
 		if((closet_amount($item[Fake Washboard]) == 1) && get_property("barrelShrineUnlocked").to_boolean())
 		{
 			take_closet(1, $item[Fake Washboard]);
+		}
+	}
+
+	// do this regardless of day if we still need to complete the bridge.
+	if (canPull($item[smut orc keepsake box]) && lumberCount() < 26 && fastenerCount() < 26)
+	{
+		if (pullXWhenHaveY($item[smut orc keepsake box], 1, 0))
+		{
+			use(1, $item[smut orc keepsake box]);
 		}
 	}
 
@@ -863,7 +859,7 @@ boolean LX_craftAcquireItems()
 
 	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && auto_is_valid($item[Detuned Radio]))
 	{
-		buyUpTo(1, $item[Detuned Radio]);
+		auto_buyUpTo(1, $item[Detuned Radio]);
 		auto_setMCDToCap();
 	}
 
@@ -890,7 +886,7 @@ boolean LX_craftAcquireItems()
 
 		if(buyAntiqueAccordion)
 		{
-			buyUpTo(1, $item[Antique Accordion]);
+			auto_buyUpTo(1, $item[Antique Accordion]);
 		}
 	}
 
@@ -922,12 +918,12 @@ boolean LX_craftAcquireItems()
 	}
 	if((get_power(equipped_item($slot[pants])) < 70) && !possessEquipment($item[Demonskin Trousers]) && (my_meat() >= npc_price($item[Pants Kit])) && (item_amount($item[Demon Skin]) > 0) && (item_amount($item[Tenderizing Hammer]) > 0) && knoll_available())
 	{
-		buyUpTo(1, $item[Pants Kit]);
+		auto_buyUpTo(1, $item[Pants Kit]);
 		autoCraft("smith", 1, $item[Pants Kit], $item[Demon Skin]);
 	}
 	if(!possessEquipment($item[Tighty Whiteys]) && (my_meat() >= npc_price($item[Pants Kit])) && (item_amount($item[White Snake Skin]) > 0) && (item_amount($item[Tenderizing Hammer]) > 0) && knoll_available())
 	{
-		buyUpTo(1, $item[Pants Kit]);
+		auto_buyUpTo(1, $item[Pants Kit]);
 		autoCraft("smith", 1, $item[Pants Kit], $item[White Snake Skin]);
 	}
 

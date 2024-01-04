@@ -2,6 +2,9 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 {
 	// stage 3 = debuff: delevel, stun, curse, damage over time
 	string retval;
+
+	//Unskip stage 2
+	if(get_property("auto_skipStage2").to_boolean()) set_property("auto_skipStage2", false);
 	
 	// Path = Heavy Rains
 	retval = auto_combatHeavyRainsStage3(round, enemy, text);
@@ -31,6 +34,101 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	if(canUse($skill[Tunnel Downwards]) && (have_effect($effect[Shape of...Mole!]) > 0) && (my_location() == $location[Mt. Molehill]))
 	{
 		return useSkill($skill[Tunnel Downwards]);
+	}
+	
+	//iotm skill that duplicates dropped items
+	//prioritize grey goose over xo and extinguisher because the drones last multiple fights until they are consumed 
+	if(canUse($skill[Emit Matter Duplicating Drones]) && my_familiar() == $familiar[Grey Goose])
+	{
+		boolean emitDrones = false;
+		boolean canExtingo = true;
+		if(auto_fireExtinguisherCharges() <= 30 || !canUse($skill[Fire Extinguisher: Polar Vortex], false))
+		{
+			canExtingo = false;
+		}
+		boolean drones = gooseExpectedDrones() >= 1; //only want to try if we expect any number of drones.
+
+		//dupe a sonar-in-a-biscuit if we're lucky, only want to try it if we need more than 1 biscuit
+		if((item_drops(enemy) contains $item[sonar-in-a-biscuit]) && (count(item_drops(enemy)) <= 2) && (internalQuestStatus("questL04Bat") <= 1) && drones)
+		{
+			emitDrones = true;
+		}
+		
+		//dupe stone wool
+		if((item_drops(enemy) contains $item[stone wool]) && item_amount($item[stone wool]) < 2 && drones)
+		{
+			emitDrones = true;
+		}
+
+		//dupe goat cheese
+		if(enemy == $monster[Dairy goat] && canExtingo = false && item_amount($item[Goat Cheese]) < 3 && drones)
+		{
+			emitDrones = true;
+		}
+
+		//dupe Smut Orc Keepsake
+		if(enemy == $monster[Smut orc pervert] && auto_autumnatonQuestingIn() != $location[The Smut Orc Logging Camp] && my_location() == $location[The Smut Orc Logging Camp] && drones)
+		{
+			emitDrones = true;
+		}
+		
+		//dupe some hedge trimmers if we're lucky
+		if(canExtingo = false && ($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy) && auto_autumnatonQuestingIn() != $location[Twin Peak] && hedgeTrimmersNeeded() > 1 && drones)
+		{
+			emitDrones = true;
+		}
+		
+		//dupe some stars/lines
+		if(my_location() == $location[The Hole in the Sky] && item_drops(enemy) contains $item[star] && item_drops(enemy) contains $item[line] && needStarKey() && (item_amount($item[star]) < 8 && item_amount($item[line]) < 7) && drones)
+		{
+			emitDrones = true;
+		}
+
+		//dupe some blackberries
+		if(enemy == $monster[Blackberry bush] && drones)
+		{
+			emitDrones = true;
+		}
+
+		//dupe some glark cables
+		if(enemy == $monster[Red butler] && drones)
+		{
+			emitDrones = true;
+		}
+		
+		//dupe some bowling balls if we can't use an Industrial Fire Extinguisher
+		if(canExtingo = false && (enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 6) && drones)
+		{
+			emitDrones = true;
+		}
+
+		//dupe tomb ratchets if we're lucky
+		if((enemy == $monster[Tomb rat king]) && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && drones)
+		{
+			emitDrones = true;
+		}
+
+		//dupe Cursed Dragon Wishbone and Cursed Bat Paw if in AoSOL
+		if(($monsters[two-headed shadow bat, shadowboner shadowdagon] contains enemy) && drones)
+		{
+			emitDrones = true;
+		}
+		
+		//dupe GROPs
+		if(enemy == $monster[Green Ops Soldier] && drones){
+			emitDrones = true;
+		}
+
+		if(dronesOut()) //If we have drones out, let's not use the skill again
+		{
+			emitDrones = false;
+		}
+
+		if(emitDrones)
+		{
+			handleTracker(enemy, $skill[Emit Matter Duplicating Drones], "auto_otherstuff");
+			return useSkill($skill[Emit Matter Duplicating Drones]);			
+		}
 	}
 	
 	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
@@ -69,68 +167,23 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 	}
 
-	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
-	//prioritize XO over extinguisher since extinguisher has other uses
-	//take into account if a yellow ray has been used. Must have been one that doesn't insta-kill
-	if(canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10)
+	if(wantToForceDrop(enemy))
 	{
-		boolean forceDrop = false;
-		//only force 1 scent gland from each filthworm
-		if(!combat_status_check("yellowray"))
+		boolean polarVortexAvailable = canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10;
+		boolean mildEvilAvailable = canUse($skill[Perpetrate Mild Evil],false) && get_property("_mildEvilPerpetrated").to_int() < 3;
+		// mild evil only can pick pocket. Use it before fire extinguisher
+		if(mildEvilAvailable)
 		{
-			if(enemy == $monster[Larval Filthworm] && item_amount($item[filthworm hatchling scent gland]) < 1)
-			{
-				forceDrop = true;
-			}
-			if(enemy == $monster[Filthworm Drone] && item_amount($item[filthworm drone scent gland]) < 1)
-			{
-				forceDrop = true;
-			}
-			if(enemy == $monster[Filthworm Royal Guard] && item_amount($item[filthworm royal guard scent gland]) < 1)
-			{
-				forceDrop = true;
-			}
+			handleTracker(enemy, $skill[Perpetrate Mild Evil], "auto_otherstuff");
+			return useSkill($skill[Perpetrate Mild Evil]);	
 		}
-		
-
-		// polar vortex is more likely to pocket an item the higher the drop rate. Unlike XO which has equal chance for all drops
-		// reserve 30 charge for filth worms
-		if(auto_fireExtinguisherCharges() > 30)
-		{
-			int dropsFromYR = 0;
-			if(combat_status_check("yellowray"))
-			{
-				dropsFromYR = 1;
-			}
-
-			if($monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal] contains enemy)
-			{
-				if(hedgeTrimmersNeeded() + dropsFromYR > 0)
-				{
-					forceDrop = true;
-				}
-			}
-
-			// Number of times bowled is 1 less than hiddenBowlingAlleyProgress. Need 5 bowling balls total, 5+1 = 6 needed in this conditional
-			if(enemy == $monster[Pygmy bowler] && (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball]) + dropsFromYR) < 6)
-			{
-				forceDrop = true;
-			}
-
-			if(enemy == $monster[Dairy Goat] && (item_amount($item[Goat Cheese]) + dropsFromYR) < 3)
-			{
-				forceDrop = true;
-			}	
-		}
-				
-
-		if(forceDrop)
+		if(polarVortexAvailable)
 		{
 			handleTracker(enemy, $skill[Fire Extinguisher: Polar Vortex], "auto_otherstuff");
 			return useSkill($skill[Fire Extinguisher: Polar Vortex]);	
 		}
 	}
-	
+
 	//delevel ~3% per combat round for rest of combat.
 	//if sauceror and you kill enemy with a spell you regain up to 50MP. this is the primary source of MP for a sauceror.
 	//with itchy curse finger skill it will also stagger on the turn it is cast
@@ -176,6 +229,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		if(canUse($skill[Curse of Weaksauce]) && have_skill($skill[Itchy Curse Finger]) && (my_mp() >= 60) && doWeaksauce)
 		{
 			return useSkill($skill[Curse Of Weaksauce]);
+		}
+
+		// delevel and 75% less HP if you have a candy cane sword cane
+		if(canUse($skill[Surprisingly Sweet Slash]))
+		{
+			return useSkill($skill[Surprisingly Sweet Slash]);
 		}
 
 		//delevel if you have a loofah lei

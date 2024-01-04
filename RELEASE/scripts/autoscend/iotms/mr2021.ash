@@ -84,7 +84,7 @@ boolean auto_forceHandleCrystalBall(location loc)
 		if((auto_wantToSniff(predicted_monster,loc) || 	//sniff targets are wanted monsters TODO it's not exhaustive, neither is careAboutDrops()
 		isSniffed(predicted_monster) ||	//ball will likely be forbidden before getting to last monster, but last wanted one isn't sniff target
 		$monsters[Monstrous Boiler, beanbat] contains predicted_monster)	//some wanted monsters are not sniff targets
-		&& appearance_rates(loc,false)[predicted_monster] < 100)		//other monsters possible
+		&& auto_combat_appearance_rates(loc,false)[predicted_monster] < 100)		//other monsters possible
 		{
 			shouldForceEquip = true;	// should not waste the prediction entered in queue
 		}
@@ -292,7 +292,11 @@ void auto_enableBackupCameraReverser()
 
 int auto_backupUsesLeft()
 {
-	return 11 + (in_robot() ? 5 : 0) - get_property("_backUpUses").to_int();
+	if (auto_haveBackupCamera()) 
+	{
+		return 11 + (in_robot() ? 5 : 0) - get_property("_backUpUses").to_int();
+	}
+	return 0;
 }
 
 boolean auto_backupTarget()
@@ -321,10 +325,17 @@ boolean auto_backupTarget()
 		return false;
 	}
 
+	// don't backup into oliver's (it won't be free and will waste a free fight and currently also mess up tracking)
+	if (get_property("nextAdventure").to_location() == $location[An Unusually Quiet Barroom Brawl])
+	{
+		return false;
+	}
+
 	// determine if we want to backup
-	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && my_level() >= 12 && !auto_hasAutumnaton();
-	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean();
-	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > (14 + cyrptEvilBonus()) && my_level() >= 6;
+	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && internalQuestStatus("questL12War") == 1 && !auto_hasAutumnaton() && !in_koe();
+	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && internalQuestStatus("questL08Trapper") < 3 && !get_property("auto_L8_extremeInstead").to_boolean();
+	int habitatZombieEvil = (auto_habitatMonster() == $monster[modern zmobie] ? (auto_habitatFightsLeft() * (5 + cyrptEvilBonus())) : 0);
+	boolean wantBackupZmobie = get_property("cyrptAlcoveEvilness").to_int() > (14 + cyrptEvilBonus() + habitatZombieEvil) && internalQuestStatus("questL07Cyrptic") == 0;
 
 	switch (get_property("lastCopyableMonster").to_monster()) {
 		case $monster[lobsterfrogman]:
@@ -351,12 +362,38 @@ boolean auto_backupTarget()
 				return true;
 			break;
 		case $monster[fantasy bandit]:
-			if(!acquiredFantasyRealmToken() && auto_backupUsesLeft() >= (5 - fantasyBanditsFought()))
+			if(!acquiredFantasyRealmToken() && auto_backupUsesLeft() >= (5 - fantasyBanditsFought()) && auto_habitatMonster() != $monster[fantasy bandit])
+				return true;
+			break;
+		case $monster[Green Ops Soldier]:
+			if(get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe())
+				return true;
+			break;
+		case $monster[Skinflute]:
+		case $monster[Camel's Toe]:
+			if (needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
 				return true;
 			break;
 		default: break;
     }
 
+	return false;
+}
+
+boolean auto_backupToYourLastEnemy(location loc)
+{
+	// can't backup if we don't have the camera or no charges left or no valid target/location
+	if (!auto_haveBackupCamera() || auto_backupUsesLeft() == 0 || !auto_backupTarget() || loc == $location[none])
+	{
+		return false;
+	}
+
+	if (autoEquip($slot[acc3], $item[backup camera]))
+	{
+		set_property("auto_nextEncounter", get_property("lastCopyableMonster"));
+		return autoAdv(loc);
+	}
+	set_property("auto_nextEncounter","");
 	return false;
 }
 
@@ -763,12 +800,12 @@ string auto_FireExtinguisherCombatString(location place)
 		return "skill " + $skill[Fire Extinguisher: Zone Specific];
 	}
 
-	if(place == $location[The Smut Orc Logging Camp] && !get_property("fireExtinguisherChasmUsed").to_boolean() && get_property("chasmBridgeProgress").to_int() < 30)
+	if(place == $location[The Smut Orc Logging Camp] && !get_property("fireExtinguisherChasmUsed").to_boolean() && get_property("chasmBridgeProgress").to_int() < 30 && !auto_hasAutumnaton())
 	{
 		return "skill " + $skill[Fire Extinguisher: Zone Specific];
 	}
 
-	if(place == $location[The Arid\, Extra-Dry Desert] && $location[The Arid\, Extra-Dry Desert].turns_spent > 0 && !get_property("fireExtinguisherDesertUsed").to_boolean())
+	if(place == $location[The Arid\, Extra-Dry Desert] && $location[The Arid\, Extra-Dry Desert].turns_spent > 0 && !get_property("fireExtinguisherDesertUsed").to_boolean() && !auto_haveBofa())
 	{
 		return "skill " + $skill[Fire Extinguisher: Zone Specific];
 	}
@@ -803,21 +840,13 @@ int auto_CMCconsultsLeft()
 	return 5 - consultsUsed;
 }
 
-boolean auto_shouldUseCMC()
-{
-	return !get_property("auto_doNotUseCMC").to_boolean();
-}
-
 boolean auto_CMCconsultAvailable()
 {
 	if(auto_CMCconsultsLeft() == 0)
 	{
 		return false;
 	}
-	if(!auto_shouldUseCMC())
-	{
-		return false;
-	}
+
 	int nextConsult = get_property("_nextColdMedicineConsult").to_int();
 	//prior to first use each day, prop value is 0
 	if(nextConsult == 0)
@@ -872,6 +901,10 @@ void auto_CMCconsult()
 		}
 		return notAboutToDoNuns();
 	}
+	if(shouldChewBreathitin() && !isActuallyEd() && !haveSpleenFamiliar() && !can_interact())
+	{
+		pullXWhenHaveY($item[Breathitin&trade;],1,0);
+	}
 	if(item_amount($item[Breathitin&trade;]) > 0 && shouldChewBreathitin() && !can_interact())
 	{
 		autoChew(1,$item[Breathitin&trade;]);
@@ -915,14 +948,17 @@ void auto_CMCconsult()
 		bestOption = 5;
 		consumableBought = $item[Breathitin&trade;];
 	}
-	else if(contains_text(page, "Homebodyl") && freeCrafts() < 5)
+	else if (!(auto_is_valid($familiar[cookbookbat]) && have_familiar($familiar[cookbookbat]) && knoll_available()) && contains_text(page, "Homebodyl") && freeCrafts() < 5)
 	{
+		// don't need free crafts if we have the Cookbookbat in knoll signs.
+		// Cookbookbat gives us 5 free cooks every day & we only use free crafting on cooking in knoll signs
 		auto_log_info("Buying Homebodyl pill from CMC", "blue");
 		bestOption = 5;
 		consumableBought = $item[Homebodyl&trade;];
 	}
-	else if(contains_text(page, "ice crown"))
+	else if ((!in_small() || in_hardcore()) && contains_text(page, "ice crown"))
 	{
+		// don't need the ice crown in Normal Small as we pull hats.
 		auto_log_info("Buying ice crown from CMC", "blue");
 		bestOption = 1;
 	}
@@ -932,7 +968,8 @@ void auto_CMCconsult()
 		bestOption = 5;
 		consumableBought = $item[Fleshazole&trade;];
 	}
-	else if(auto_CMCconsultsLeft() > 2 && !can_interact())
+	else if (auto_CMCconsultsLeft() > 2 && !can_interact() && !in_small() && !in_kolhs())
+
 	{
 		//reserve the last 2 consults for something more valuable than booze/food
 		//consume logic will drink/eat later
