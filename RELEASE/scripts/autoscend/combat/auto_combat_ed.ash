@@ -588,7 +588,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	{
 		if($monsters[Bubblemint Twins, Bunch of Drunken Rats, Coaltergeist, Creepy Ginger Twin, Demoninja, Drunk Goat, Drunken Rat, Fallen Archfiend, Hellion, Knob Goblin Elite Guard, L imp, Mismatched Twins, Sabre-Toothed Goat, W imp] contains enemy)
 		{
-			return useItem($item[Tattered Scrap Of Paper], false);
+			return useItem($item[Tattered Scrap Of Paper]);
 		}
 	}
 
