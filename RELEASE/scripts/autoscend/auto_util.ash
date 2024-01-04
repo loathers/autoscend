@@ -783,18 +783,18 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 	if (isFreeMonster(enemy, loc)) return "";
 
 	// Prefer some specalized free run items before other sources
-	if (!inAftercore())
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
 	{
 		// todo: other ghosts
 		if(isGhost(enemy) && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
 		{
-			return "item " + $item[T.U.R.D.S. Key];
+			return useItem($item[T.U.R.D.S. Key]);
 		}
 		//free runaway against pygmies. accelerates hidden city quest
 		if(canUse($item[short writ of habeas corpus]) && item_amount($item[short writ of habeas corpus]) > 0
 			&& $monsters[Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse] contains enemy)
 		{
-			return "item " + $item[Short Writ Of Habeas Corpus];
+			return useItem($item[Short Writ Of Habeas Corpus]);
 		}
 	}
 
@@ -886,13 +886,26 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Peel Out];
 	}
 
-	if (!inAftercore())
+	//Non-standard free-runs
+	if(!inAftercore())
 	{
-		foreach it in $items[giant eraser, green smoke bomb, tattered scrap of paper, GOTO]
+		foreach it in $items[giant eraser] //assuming additional ones will be added, eventually
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{
-				return "item " + it;
+				return useItem(it);
+			}
+		}
+	}
+
+	//Standard free-runs
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
+	{
+		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
+		{
+			if (canUse(it) && item_amount(it) > 0)
+			{
+				return useItem(it);
 			}
 		}
 	}
@@ -2465,10 +2478,14 @@ boolean have_skills(boolean[skill] array)
 //From Bale\'s woods.ash relay script.
 boolean woods_questStart()
 {
-	if (internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0)
+	if(internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0)
 	{
 		// distant woods access is gated behind level 2 quest & whitey's grove quest.
 		// for some reason mafia doesn't track this any other way
+		return false;
+	}
+	if(in_koe()) // no access to woods or forest village in KoE
+	{
 		return false;
 	}
 	if(available_amount($item[Continuum Transfunctioner]) > 0)

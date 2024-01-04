@@ -50,7 +50,7 @@ boolean L6_friarsGetParts()
 		auto_log_info("Getting Dodecagram", "blue");
 		boolean NCForced = auto_forceNextNoncombat($location[The Dark Neck of the Woods]);
 		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel() && !get_property("auto_getSteelOrgan").to_boolean()) return false;
 		return autoAdv($location[The Dark Neck of the Woods]);
 	}
 	if(item_amount($item[eldritch butterknife]) == 0)
@@ -58,7 +58,7 @@ boolean L6_friarsGetParts()
 		auto_log_info("Getting Eldritch Butterknife", "blue");
 		boolean NCForced = auto_forceNextNoncombat($location[The Dark Elbow of the Woods]);
 		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel() && !get_property("auto_getSteelOrgan").to_boolean()) return false;
 		return autoAdv($location[The Dark Elbow of the Woods]);
 	}
 	if(item_amount($item[box of birthday candles]) == 0)
@@ -72,7 +72,7 @@ boolean L6_friarsGetParts()
 		auto_log_info("Getting Box of Birthday Candles", "blue");
 		boolean NCForced = auto_forceNextNoncombat($location[The Dark Heart of the Woods]);
 		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel() && !get_property("auto_getSteelOrgan").to_boolean()) return false;
 		return autoAdv($location[The Dark Heart of the Woods]);
 	}
 

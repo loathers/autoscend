@@ -796,7 +796,7 @@ boolean L12_startWar()
 
 	// wear the appropriate war outfit based on auto_hippyInstead
 	equipWarOutfit();
-
+	
 	// start the war when siding with frat boys
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{

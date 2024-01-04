@@ -1,4 +1,4 @@
-since r27678;	// fix: identify burning leaves in small
+since r27772;	// feat: everything looks green color + noremove 
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -26,6 +26,7 @@ import <autoscend/auto_providers.ash>
 import <autoscend/auto_restore.ash>
 import <autoscend/auto_routing.ash>
 import <autoscend/auto_settings.ash>
+import <autoscend/auto_sim.ash>
 import <autoscend/auto_util.ash>
 import <autoscend/auto_zlib.ash>
 import <autoscend/auto_zone.ash>
@@ -1115,7 +1116,7 @@ boolean dailyEvents()
 		use_skill(1, $skill[That\'s Not a Knife]);
 	}
 
-	while(zataraClanmate(""));
+	while(zataraClanmate());
 
 	if(item_amount($item[Genie Bottle]) > 0 && auto_is_valid($item[genie bottle]) && auto_is_valid($item[pocket wish]) && !in_glover())
 	{
@@ -1669,11 +1670,6 @@ boolean doTasks()
 {
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
 
-	if(in_community())
-	{
-		abort("Community Service is no longer supported.");
-	}
-
 	auto_settingsFix();		//check and correct invalid configuration inputs made by users
 	if(!auto_unreservedAdvRemaining())
 	{
@@ -1908,6 +1904,11 @@ void auto_begin()
 		}
 	}
 
+	if(in_community())
+	{
+		abort("Community Service is no longer supported.");
+	}
+
 	LX_handleIntroAdventures(); // handle early non-combats in challenge paths.
 	cli_execute("refresh all");
 
@@ -2046,9 +2047,18 @@ void safe_preference_reset_wrapper(int level)
 	}
 }
 
-void main()
+void main(string... input)
 {
 	backupSetting("printStackOnAbort", true);
+
+	// parse input
+	if(count(input) > 0 && input[0] == "sim")
+	{
+		// display useful items/skills/perms/etc and if the user has them
+		printSim();
+		return;
+	}
+
 	print_help_text();
 	sad_times();
 	if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue? Will default to true in 10 seconds.", 10000, true)){

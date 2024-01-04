@@ -258,7 +258,12 @@ boolean auto_juneCleaverAdventure()
 
 	if (autoEquip($slot[weapon], $item[June cleaver]))
 	{
-		return autoAdv($location[The Dire Warren]);
+		location cleaverLoc = $location[The Dire Warren];
+		if (in_koe())
+		{
+			cleaverLoc = $location[Cobb's Knob Treasury]; // arbitrarily picked always accessible location
+		}
+		return autoAdv(cleaverLoc);
 	}
 	return false;
 }
@@ -328,7 +333,8 @@ void juneCleaverChoiceHandler(int choice)
 			break;			
 		case 1474: // Delicious Sprouts
 			if (can_eat() && my_level() < 13 && 
-			have_fireworks_shop() && auto_is_valid($item[red rocket]) &&
+			have_fireworks_shop() && auto_is_valid($item[red rocket]) && 
+			!in_darkGyffte() && !is_jarlsberg() && !in_tcrs() && //paths that can eat but can't eat guilty sprouts/won't get the stats from it anyway
 			auto_is_valid($item[guilty sprout]) && item_amount($item[guilty sprout]) == 0)
 				run_choice(2); // guilty sprout is level 8+ good size 1 food but it gives big stats, would want to use a red rocket
 			if (my_primestat() == $stat[mysticality] && (my_level() < 13 || disregardInstantKarma())) {
@@ -672,7 +678,8 @@ boolean auto_autumnatonQuest()
 	if(auto_autumnatonCheckForUpgrade("leftarm1") &&
 	 auto_autumnatonCheckForUpgrade("rightarm1") &&
 	 item_amount($item[barrel of gunpowder]) < 5 && 
-	 get_property("sidequestLighthouseCompleted") == "none")
+	 get_property("sidequestLighthouseCompleted") == "none" &&
+	 !in_koe())
 	{
 		location targetLocation = $location[Sonofa Beach];
 		if(!auto_autumnatonCanAdv(targetLocation) && zone_available(targetLocation))

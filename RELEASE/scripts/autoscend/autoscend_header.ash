@@ -62,7 +62,7 @@ boolean drinkSpeakeasyDrink(item drink);
 boolean drinkSpeakeasyDrink(string drink);
 boolean zataraAvailable();
 boolean zataraSeaside(string who);
-boolean zataraClanmate(string who);
+boolean zataraClanmate();
 boolean eatFancyDog(string dog);
 boolean auto_floundryUse();
 boolean auto_floundryAction();
@@ -535,6 +535,8 @@ boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
 boolean auto_haveBurningLeaves();
 boolean auto_burnLeaves();
+boolean auto_haveCCSC();
+boolean auto_handleCCSC();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1586,6 +1588,14 @@ void auto_settingsDelete();
 void defaultConfig(string prop, string val);
 void auto_settingsDefaults();
 void auto_settings();
+
+########################################################################################################
+//Defined in autoscend/auto_sim.ash
+void printSim();
+void PrintSimRequired();
+void printSimSuggested();
+void printSimMarginal();
+void formattedSimPrint(boolean have, string name, string description);
 
 ########################################################################################################
 //Defined in autoscend/auto_zlib.ash

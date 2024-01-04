@@ -267,7 +267,7 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Perceive Soul];
 	}
-	if(canUse($skill[Motif], true , inCombat) && !isSniffed(enemy, $skill[Motif]) && !(have_effect($effect[Everything Looks Blue]) > 0))
+	if(canUse($skill[Motif], true , inCombat) && !isSniffed(enemy, $skill[Motif]) && (have_effect($effect[Everything Looks Blue]) == 0))
 	{
 		return $skill[Motif];
 	}

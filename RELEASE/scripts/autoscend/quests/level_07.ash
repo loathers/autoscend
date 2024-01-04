@@ -53,6 +53,10 @@ void cyrptChoiceHandler(int choice)
 			}
 			run_choice(5); // if meets thresholds, skip to farm more dieting pills in DG
 		}
+		else if(available_choice_options() contains 5)
+		{
+			run_choice(5); // -11 evil, +50 each substat with Candy Cane Sword Cane
+		}
 		else
 		{
 			run_choice(4); // fight swarm of ghuol whelps

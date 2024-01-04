@@ -221,10 +221,14 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		return useSkill($skill[Recall Facts: Monster Habitats]);
 	}
 
-	if(auto_backupTarget() && enemy != get_property("lastCopyableMonster").to_monster() && canUse($skill[Back-Up to your Last Enemy]))
+	monster backedUpMonster = get_property("lastCopyableMonster").to_monster();
+	// reserve last 2 advs for end of day free fights
+	boolean reserveAdvsForFreeFights = my_adventures() < 3 && !isFreeMonster(backedUpMonster);
+	if(auto_backupTarget() && enemy != backedUpMonster && canUse($skill[Back-Up to your Last Enemy])
+		&& !reserveAdvsForFreeFights)
 	{
-		handleTracker($skill[Back-Up to your Last Enemy], enemy, "auto_replaces");
-		handleTracker(get_property("lastCopyableMonster").to_monster(), $skill[Back-Up to your Last Enemy], "auto_copies");
+		handleTracker(enemy, $skill[Back-Up to your Last Enemy], "auto_replaces");
+		handleTracker(backedUpMonster, $skill[Back-Up to your Last Enemy], "auto_copies");
 		return useSkill($skill[Back-Up to your Last Enemy]);	
 	}
 
