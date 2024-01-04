@@ -325,6 +325,12 @@ boolean auto_backupTarget()
 		return false;
 	}
 
+	// don't backup into oliver's (it won't be free and will waste a free fight and currently also mess up tracking)
+	if (get_property("nextAdventure").to_location() == $location[An Unusually Quiet Barroom Brawl])
+	{
+		return false;
+	}
+
 	// determine if we want to backup
 	boolean wantBackupLFM = item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && internalQuestStatus("questL12War") == 1 && !auto_hasAutumnaton() && !in_koe();
 	boolean wantBackupNSA = (item_amount($item[ninja rope]) < 1 || item_amount($item[ninja carabiner]) < 1 || item_amount($item[ninja crampons]) < 1) && internalQuestStatus("questL08Trapper") < 3 && !get_property("auto_L8_extremeInstead").to_boolean();
