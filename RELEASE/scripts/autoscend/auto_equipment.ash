@@ -716,10 +716,6 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("+equip " + toEquip);
 		}
 	}
-	if(auto_wantToEquipPowerfulGlove())
-	{
-		addBonusToMaximize($item[Powerful Glove], 1000); // pixels
-	}
 	
 	if(pathHasFamiliar())
 	{
