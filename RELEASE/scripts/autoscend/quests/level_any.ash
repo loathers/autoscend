@@ -139,7 +139,7 @@ boolean LX_bitchinMeatcar()
 		}
 	}
 	if (item_amount($item[Tires]) > 0 && enginePartsMissing >= 4 && 
-	appearance_rates($location[The Degrassi Knoll Garage])[$monster[Gnollish Gearhead]] < 77.0)
+	auto_combat_appearance_rates($location[The Degrassi Knoll Garage])[$monster[Gnollish Gearhead]] < 77.0)
 	{
 		//all parts of the engine are missing and would take a while to acquire from lootboxes at normal appearance rates
 		if (pullXWhenHaveY($item[meat engine],1,0))

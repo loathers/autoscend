@@ -1653,6 +1653,8 @@ int autoCraft(string mode, int count, item item1, item item2);
 int internalQuestStatus(string prop);
 boolean canYellowRay(monster target);
 boolean canYellowRay();
+float[monster] auto_combat_appearance_rates(location place, boolean queue);
+float[monster] auto_combat_appearance_rates(location place);
 boolean[string] auto_banishesUsedAt(location loc);
 boolean auto_wantToBanish(monster enemy, location loc);
 boolean canBanish(monster enemy, location loc);
