@@ -882,7 +882,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{
-				return useItems(it);
+				return useItem(it);
 			}
 		}
 	}
