@@ -185,7 +185,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			else if(index_of(freeRunAction, "item") == 0)
 			{
-				int commapos = index_of(combatAction, ", none");
+				int commapos = index_of(freeRunAction, ", none");
 				handleTracker(enemy, to_item(substring(freeRunAction, 5, commapos)), "auto_freeruns");
 			}
 			else
