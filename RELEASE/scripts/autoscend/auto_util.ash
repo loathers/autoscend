@@ -760,7 +760,7 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 	if (isFreeMonster(enemy, loc)) return "";
 
 	// Prefer some specalized free run items before other sources
-	if (!inAftercore() && !(have_effect($effect[Everything Looks Green]) > 0))
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
 	{
 		// todo: other ghosts
 		if(isGhost(enemy) && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
@@ -876,7 +876,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	}
 
 	//Standard free-runs
-	if (!inAftercore() && !(have_effect($effect[Everything Looks Green]) > 0))
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) = 0)
 	{
 		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
 		{
