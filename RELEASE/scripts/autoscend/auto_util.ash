@@ -876,7 +876,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	}
 
 	//Standard free-runs
-	if (!inAftercore() && have_effect($effect[Everything Looks Green]) = 0)
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
 	{
 		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
 		{
