@@ -765,13 +765,13 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 		// todo: other ghosts
 		if(isGhost(enemy) && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
 		{
-			return useItem($item[T.U.R.D.S. Key]);
+			return useItems($item[T.U.R.D.S. Key], $item[none]);
 		}
 		//free runaway against pygmies. accelerates hidden city quest
 		if(canUse($item[short writ of habeas corpus]) && item_amount($item[short writ of habeas corpus]) > 0
 			&& $monsters[Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse] contains enemy)
 		{
-			return useItem($item[Short Writ Of Habeas Corpus]);
+			return useItems($item[Short Writ Of Habeas Corpus], $item[none]);
 		}
 	}
 
@@ -870,7 +870,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{
-				return useItem(it);
+				return useItems(it, $item[none]);
 			}
 		}
 	}
@@ -882,7 +882,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{
-				return useItem(it);
+				return useItems(it, $item[none]);
 			}
 		}
 	}
