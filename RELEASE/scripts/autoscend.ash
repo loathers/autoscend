@@ -1,4 +1,4 @@
-since r27722;	// feat: preferences candy cane options  
+since r27772;	// feat: everything looks green color + noremove 
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
