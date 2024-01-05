@@ -616,6 +616,29 @@ boolean canYellowRay()
 	return canYellowRay($monster[none]);
 }
 
+float [monster] auto_combat_appearance_rates(location place, boolean queue)
+{	//return probability of fighting each monster if the encounter is not a noncombat
+	//appearance_rates includes noncombat chance for $monster[none]
+	float [monster] res_including_noncombat = appearance_rates(place,queue);
+	float [monster] res_excluding_noncombat;
+	
+	float noncombat_frequency = res_including_noncombat[$monster[none]];
+	if(noncombat_frequency == 0 || noncombat_frequency >= 100) return res_including_noncombat;
+	
+	foreach mob, freq in res_including_noncombat
+	{
+		if(mob != $monster[none])
+		{
+			res_excluding_noncombat[mob] = freq / (100 - noncombat_frequency);
+		}
+	}
+	return res_excluding_noncombat;
+}
+
+float [monster] auto_combat_appearance_rates(location place)
+{	return auto_combat_appearance_rates(place, false);
+}
+
 boolean[string] auto_banishesUsedAt(location loc)
 {
 	boolean[string] auto_reallyBanishesUsedAt(location loc)
@@ -789,18 +812,18 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 	if (isFreeMonster(enemy, loc)) return "";
 
 	// Prefer some specalized free run items before other sources
-	if (!inAftercore())
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
 	{
 		// todo: other ghosts
 		if(isGhost(enemy) && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
 		{
-			return "item " + $item[T.U.R.D.S. Key];
+			return useItem($item[T.U.R.D.S. Key]);
 		}
 		//free runaway against pygmies. accelerates hidden city quest
 		if(canUse($item[short writ of habeas corpus]) && item_amount($item[short writ of habeas corpus]) > 0
 			&& $monsters[Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse] contains enemy)
 		{
-			return "item " + $item[Short Writ Of Habeas Corpus];
+			return useItem($item[Short Writ Of Habeas Corpus]);
 		}
 	}
 
@@ -892,13 +915,26 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Peel Out];
 	}
 
-	if (!inAftercore())
+	//Non-standard free-runs
+	if(!inAftercore())
 	{
-		foreach it in $items[giant eraser, green smoke bomb, tattered scrap of paper, GOTO]
+		foreach it in $items[giant eraser] //assuming additional ones will be added, eventually
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{
-				return "item " + it;
+				return useItem(it);
+			}
+		}
+	}
+
+	//Standard free-runs
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
+	{
+		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
+		{
+			if (canUse(it) && item_amount(it) > 0)
+			{
+				return useItem(it);
 			}
 		}
 	}
@@ -3355,7 +3391,7 @@ boolean auto_wantToSniff(monster enemy, location loc)
 	location locCache = my_location();
 	set_location(loc);
 	boolean [monster] toSniff = auto_getMonsters("sniff");
-	if(toSniff[enemy] && appearance_rates(loc)[enemy] < 100)
+	if(toSniff[enemy] && auto_combat_appearance_rates(loc)[enemy] < 100)
 	{
 		set_location(locCache);
 		return true;

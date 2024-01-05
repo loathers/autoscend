@@ -1,4 +1,4 @@
-since r27722;	// feat: preferences candy cane options  
+since r27772;	// feat: everything looks green color + noremove 
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1670,11 +1670,6 @@ boolean doTasks()
 {
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
 
-	if(in_community())
-	{
-		abort("Community Service is no longer supported.");
-	}
-
 	auto_settingsFix();		//check and correct invalid configuration inputs made by users
 	if(!auto_unreservedAdvRemaining())
 	{
@@ -1907,6 +1902,11 @@ void auto_begin()
 		{
 			auto_log_warning("Okay, but the warranty is off.", "red");
 		}
+	}
+
+	if(in_community())
+	{
+		abort("Community Service is no longer supported.");
 	}
 
 	LX_handleIntroAdventures(); // handle early non-combats in challenge paths.
