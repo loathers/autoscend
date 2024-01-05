@@ -200,6 +200,7 @@ boolean auto_pre_adventure()
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " +place, "green");
 	
+	auto_forceEagle(); // force Patriotic Eagle if we have a >0 combats until we can screech again
 	preAdvUpdateFamiliar(place);
 	ed_handleAdventureServant(place);
 
