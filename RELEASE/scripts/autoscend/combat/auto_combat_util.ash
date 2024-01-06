@@ -242,7 +242,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, %fn, fire a Red, White and Blue Blast, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
+	foreach sk in $skills[Transcendent Olfaction, %fn\, fire a Red\, White and Blue Blast, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
