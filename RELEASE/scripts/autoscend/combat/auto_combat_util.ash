@@ -206,6 +206,9 @@ boolean isSniffed(monster enemy, skill sk)
 		case $skill[Transcendent Olfaction]:
 			retval = contains_text(get_property("olfactedMonster"), enemy);
 			break;
+		case $skill[%fn, fire a Red, White and Blue Blast]:
+			retval = contains_text(get_property("rwbMonster"), enemy);
+			break;
 		case $skill[Make Friends]:
 			retval = contains_text(get_property("makeFriendsMonster"), enemy);
 			break;
@@ -239,7 +242,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
+	foreach sk in $skills[Transcendent Olfaction, %fn, fire a Red, White and Blue Blast, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -255,7 +258,7 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Transcendent Olfaction];
 	}
-	if(canUse($skill[%fn, fire a Red, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0))
+	if(canUse($skill[%fn, fire a Red, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
 	{
 		return $skill[%fn, fire a Red, White and Blue Blast];
 	}
