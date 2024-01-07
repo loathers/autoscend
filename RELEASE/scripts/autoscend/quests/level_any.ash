@@ -814,7 +814,7 @@ item LX_getDesiredWorkshed(){
 			return $item[cold medicine cabinet];
 		case "asdon martin keyfob":
 		case "asdon":
-			return $item[Asdon Martin keyfob];
+			return $item[Asdon Martin keyfob (on ring)];
 		case "diabolic pizza cube":
 		case "pizza":
 			return $item[diabolic pizza cube]; //unless support is added, don't want to use this
@@ -879,9 +879,9 @@ boolean LX_setWorkshed(){
 				auto_log_info("Installed your model train set");
 				return true;
 			}
-			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
+			if ((auto_is_valid($item[Asdon Martin keyfob (on ring)])) && (item_amount($item[Asdon Martin keyfob (on ring)]) > 0))
 			{
-				use(1, $item[Asdon Martin keyfob]);
+				use(1, $item[Asdon Martin keyfob (on ring)]);
 				auto_log_info("Installed your Asdon Martin keyfob");
 				return true;
 			}
@@ -909,9 +909,9 @@ boolean LX_setWorkshed(){
 		//once we have enough fasteners and only if we are currently using the model train set
 		if((fastenerCount() >= 30 && lumberCount() >= 30) && existingShed == $item[model train set])
 		{
-			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
+			if ((auto_is_valid($item[Asdon Martin keyfob (on ring)])) && (item_amount($item[Asdon Martin keyfob (on ring)]) > 0))
 			{
-				use(1, $item[Asdon Martin keyfob]);
+				use(1, $item[Asdon Martin keyfob (on ring)]);
 				auto_log_info("Changed your workshed to Asdon Martin keyfob");
 				return true;
 			}
