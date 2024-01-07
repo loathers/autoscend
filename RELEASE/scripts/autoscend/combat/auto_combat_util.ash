@@ -173,7 +173,7 @@ string useItem(item it, boolean mark)
 	if(mark)
 		markAsUsed(it);
 	if(auto_have_skill($skill[Ambidextrous Funkslinging]))
-		return "item " + it + ", nothing";	//don't double use
+		return "item " + it + ", none";	//don't double use
 	return "item " + it;
 }
 
