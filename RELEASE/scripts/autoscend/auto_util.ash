@@ -1719,7 +1719,7 @@ boolean auto_deleteMail(kmailObject msg)
 			return true;
 		}
 	}
-	if((msg.fromid == 3038166) && (contains_text(msg.message, "completed your relationship fortune test")) && get_property("auto_hideAdultery").to_boolean())
+	if((msg.fromid == 3690803) && (contains_text(msg.message, "completed your relationship fortune test")) && get_property("auto_hideAdultery").to_boolean())
 	{
 		return true;
 	}
