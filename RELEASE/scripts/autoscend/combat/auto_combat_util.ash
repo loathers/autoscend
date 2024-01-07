@@ -665,7 +665,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Snokebomb];
 	}
 
-	if((inCombat ? auto_have_skill($skill[Monkey Slap]) : possessEquipment($item[cursed monkey\'s paw])) && auto_is_valid($skill[Monkey Slap]) && !(used contains "Monkey Slap"))
+	if((inCombat ? auto_have_skill($skill[Monkey Slap]) : possessEquipment($item[cursed monkey\'s paw])) && auto_is_valid($skill[Monkey Slap]) && get_property("_monkeyPawWishesUsed").to_int() == 0 && !(used contains "Monkey Slap"))
 	{
 		return "skill " + $skill[Monkey Slap];
 	}
