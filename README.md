@@ -90,7 +90,7 @@ Thanks to the following people for their contributions via pull requests:
 
 soolar (IGN: Soolar the Second (#2463557))
 
-Rinn (IGN: Epicgamer (#37195))
+Rinn (IGN: Rinnith (#37195))
 
 jaspercb (IGN: Jeparo (#2246666))
 
