@@ -1230,11 +1230,11 @@ boolean asdonBuff(string goal)
 
 boolean canAsdonBuff(effect goal)
 {
-	if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(!(auto_get_campground() contains $item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Asdon Martin Keyfob]))
+	if(!is_unrestricted($item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
@@ -1307,11 +1307,11 @@ boolean asdonAutoFeed(int goal)
 	{
 		return false;
 	}
-	if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(!(auto_get_campground() contains $item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Asdon Martin Keyfob]))
+	if(!is_unrestricted($item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
@@ -1450,11 +1450,11 @@ boolean asdonAutoFeed(int goal)
 
 boolean asdonFeed(item it, int qty)
 {
-	if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(!(auto_get_campground() contains $item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Asdon Martin Keyfob]))
+	if(!is_unrestricted($item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
@@ -1478,7 +1478,7 @@ boolean asdonFeed(item it)
 
 boolean asdonCanMissile()
 {
-	return (auto_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean();
+	return (auto_get_campground() contains $item[Asdon Martin keyfob (on ring)]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean();
 }
 
 boolean isHorseryAvailable() {
