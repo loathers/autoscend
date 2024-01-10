@@ -151,7 +151,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			else if(index_of(banishAction, "item") == 0)
 			{
-				handleTracker(enemy, to_item(substring(banishAction, 5)), "auto_banishes");
+				if(contains_text(banishAction, ", none"))
+				{
+					int commapos = index_of(banishAction, ", none");
+					handleTracker(enemy, to_item(substring(banishAction, 5, commapos)), "auto_banishes");
+				}
+				else
+				{
+					handleTracker(enemy, to_item(substring(banishAction, 5)), "auto_banishes");
+				}
 			}
 			else
 			{
