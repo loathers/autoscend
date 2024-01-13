@@ -840,3 +840,24 @@ boolean auto_handleCCSC()
 	}
 	return false;
 }
+
+void auto_useWardrobe()
+{
+	if(!auto_is_valid($item[wardrobe-o-matic]))
+	{
+		return;
+	}
+	// wait for level 10 to get an upgraded wardrobe
+	if(my_level() < 10)
+	{
+		return;
+	}
+	// check one of the 3 prefs which get set when wardrobe is used each day
+	if(get_property("_futuristicHatModifier") != "")
+	{
+		return;
+	}
+	// only need to use it so we get the hat, shirt, fam equip
+	// let maximizer handle if any of it is worth equipping
+	use($item[wardrobe-o-matic]);
+}

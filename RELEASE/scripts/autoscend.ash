@@ -1804,6 +1804,7 @@ boolean doTasks()
 	auto_CMCconsult();
 	auto_checkTrainSet();
 	prioritizeGoose();
+	auto_useWardrobe();
 	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
