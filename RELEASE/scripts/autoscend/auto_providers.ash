@@ -530,6 +530,16 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 			return result();
 	}
 
+	if(doEquips && auto_haveCCSC() && have_effect($effect[Peppermint Rush]) == 0 && !get_property("_candyCaneSwordLyle").to_boolean()) {
+		if (!speculative) {
+			equip($item[candy cane sword cane]);
+			string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
+		}
+		handleEffect($effect[Peppermint Rush]);
+		if(pass())
+			return result();
+	}
+
 	if(doEquips && amt >= 400)
 	{
 		if(!get_property("_bowleggedSwaggerUsed").to_boolean() && buffMaintain($effect[Bow-Legged Swagger], 0, 1, 1, speculative))
