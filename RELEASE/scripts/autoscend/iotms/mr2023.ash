@@ -857,8 +857,8 @@ void auto_useWardrobe()
 	{
 		return;
 	}
-	// close to upgraded equipment at level 15, let's wait
-	if(my_level() == 14)
+	// wait for level 15 if close and not at NS tower
+	if(my_level() == 14 && internalQuestStatus("questL13Final") < 0)
 	{
 		return;
 	}
