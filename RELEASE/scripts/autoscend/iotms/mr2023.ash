@@ -847,13 +847,18 @@ void auto_useWardrobe()
 	{
 		return;
 	}
-	// wait for level 10 to get an upgraded wardrobe
-	if(my_level() < 10)
+	// check one of the 3 prefs which get set when wardrobe is used each day
+	if(get_property("_futuristicHatModifier") != "")
 	{
 		return;
 	}
-	// check one of the 3 prefs which get set when wardrobe is used each day
-	if(get_property("_futuristicHatModifier") != "")
+	// wait for level 5 to get an upgraded wardrobe
+	if(my_level() < 5)
+	{
+		return;
+	}
+	// close to upgraded equipment at level 15, let's wait
+	if(my_level() == 14)
 	{
 		return;
 	}
