@@ -3282,6 +3282,8 @@ boolean auto_check_conditions(string conds)
 					return true;
 				if(get_property("motifMonster").to_monster() == check_sniffed)
 					return true;
+				if(get_property("rwbMonster").to_monster() == check_sniffed)
+					return true;
 				return false;
 			// data: Doesn't matter, but put something so I don't have to support dataless conditions
 			// True when you expect a protonic ghost report

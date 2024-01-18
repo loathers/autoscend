@@ -2831,6 +2831,11 @@ boolean L11_palindome()
 		return false;
 	}
 
+	if (get_property("banishedPhyla").to_phylum() == $phylum[dude] && get_property("screechCombats").to_int() > 0)
+	{
+		return false; //can't unscreech-banish dudes until screechCombats = 0. If new phylum banishers come out, this should be updated.
+	}
+
 	int total = 0;
 	total = total + item_amount($item[Photograph Of A Red Nugget]);
 	total = total + item_amount($item[Photograph Of An Ostrich Egg]);
