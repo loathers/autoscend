@@ -884,6 +884,24 @@ void equipMaximizedGear()
 {
 	finalizeMaximize();
 	maximize(get_property("auto_maximize_current"), 2500, 0, false);
+	// below code is to help diagnose, debug and workaround the intermittent issue where the maximizer fails to equip anything in hand slots
+	// if this is confirmed as fixed by mafia devs, remove the below code.
+	if (equipped_item($slot[weapon]) == $item[none] && my_path() != $path[Way of the Surprising Fist]) {
+		auto_log_error("NO WEAPON EQUIPPED. REPORT THIS IN DISCORD AND INCLUDE YOUR SESSION LOG!");
+		addToMaximize("2 dump"); // maximizer will dump a bunch of stuff to the session log with this
+		maximize(get_property("auto_maximize_current"), 2500, 0, false);
+		if (equipped_item($slot[weapon]) == $item[none]) {
+			foreach it in get_inventory() {
+				if (it.to_slot() == $slot[weapon]) {
+					if (equip(it)) {
+						break;
+					}
+				}
+			}
+			removeFromMaximize("2 dump");
+			maximize(get_property("auto_maximize_current"), 2500, 0, false);
+		}
+	}
 }
 
 void equipOverrides()
