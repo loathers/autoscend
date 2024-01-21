@@ -587,11 +587,14 @@ boolean L13_towerNSContests()
 				if(crowd3Insufficient()) buffMaintain($effect[Spooky Weapon]);
 				// at this point, an example list of songs is phat loot / polka / celerity / madrigal
 				if(crowd3Insufficient()) {
-					shrugAT($effect[Dirge of Dreadfulness (Remastered)]);
+					// specify normal effect to avoid failing the skill check
+					shrugAT($effect[Dirge of Dreadfulness]);
 					buffMaintain($effect[Dirge of Dreadfulness (Remastered)]);
 				}
-				// if we were to shrugAT here with only three songs, we could get rid of the remastered dirge
-				if(crowd3Insufficient()) buffMaintain($effect[Dirge of Dreadfulness], 10, 1, 1);
+				if(crowd3Insufficient()) {
+					shrugAT($effect[Dirge of Dreadfulness]);
+					buffMaintain($effect[Dirge of Dreadfulness], 10, 1, 1);
+				}
 				if(crowd3Insufficient()) buffMaintain($effect[Intimidating Mien], 15, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Snarl of Three Timberwolves]);
 				if(crowd3Insufficient()) buffMaintain($effect[Snarl of the Timberwolf], 10, 1, 1);
