@@ -2755,6 +2755,8 @@ boolean[effect] ATSongList()
 		Inigo\'s Incantation of Inspiration,
 		The Ballad of Richie Thingfinder,
 		Chorale of Companionship,
+		// under normal circumstances we should never get this, but if we do we want to keep it
+		Dirge of Dreadfulness (Remastered),
 		Ode to Booze,
 		Ur-Kel\'s Aria of Annoyance,
 		Carlweather\'s Cantata of Confrontation,
@@ -2768,7 +2770,6 @@ boolean[effect] ATSongList()
 		Prelude of Precision,
 		Elron\'s Explosive Etude,
 		Benetton\'s Medley of Diversity,
-		Dirge of Dreadfulness (Remastered),
 		Dirge of Dreadfulness,
 		Stevedave\'s Shanty of Superiority,
 		Brawnee\'s Anthem of Absorption,
