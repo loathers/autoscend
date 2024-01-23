@@ -1,9 +1,9 @@
 dude	loc:The Black Forest
 dude	loc:Twin Peak
 dude	loc:The Red Zeppelin;sniffed:Red Butler;item:Glark Cable>2
-dude	loc:Whitey's Grove
+dude	loc:Whitey's Grove;prop:questL11Palindome!=step4
 beast	loc:The Hidden Park
-beast	loc:Inside the Palindome
+beast	loc:Inside the Palindome;prop:questL11Palindome!=step4
 beast	loc:The Penultimate Fantasy Airship
 undead	loc:The Haunted Library
 undead	loc:The Haunted Wine Cellar
