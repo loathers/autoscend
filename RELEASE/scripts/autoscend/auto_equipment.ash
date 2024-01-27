@@ -897,14 +897,14 @@ void equipMaximizedGear()
 			}
 		}
 		if (equippableWeapon != $item[none]) {
-			auto_log_error("NO WEAPON EQUIPPED. REPORT THIS IN DISCORD AND INCLUDE YOUR SESSION LOG!");
+			auto_log_error("It looks like the maximizer didn't equip any weapons for you. Lets dump some debugging info to help the KolMafia devs look into this.");
 			addToMaximize("2 dump"); // maximizer will dump a bunch of stuff to the session log with this
 			maximize(get_property("auto_maximize_current"), 2500, 0, false);
 			removeFromMaximize("2 dump");
 			if (equipped_item($slot[weapon]) == $item[none]) {
 				// workaround. equip a weapon & re-running maximizer appears to fix the issue.
 				equip(equippableWeapon);
-				maximize(get_property("auto_maximize_current"), 2500, 0, false);
+				abort("NO WEAPON WAS EQUIPPED BY THE MAXIMIZER. REPORT THIS IN DISCORD AND INCLUDE YOUR SESSION LOG! YOU CAN RE-RUN AUTOSCEND AND IT SHOULD RUN OK (possibly).");
 			}
 		}
 	}
