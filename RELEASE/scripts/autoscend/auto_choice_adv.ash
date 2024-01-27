@@ -317,7 +317,37 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 604: // Welcome to the Great Overlook Lodge (Twin Peak Part 1)
 		case 605: // Welcome to the Great Overlook Lodge (Twin Peak Part 2)
+			run_choice(1); // always advance to next option via choice 1
+			break;
 		case 606: // Lost in the Great Overlook
+			if(in_bhy())
+			{
+				// we can't make an oil jar to solve the quest, just adventure until the hotel is burned down
+				run_choice(6); // and flee the music NC
+			}
+			// do init if we can
+			if(options contains 4)
+			{
+				run_choice(4);
+			}
+			// do oil jar if we can
+			if(options contains 3)
+			{
+				run_choice(3);
+			}
+			// do pantry search if we can
+			if(options contains 2)
+			{
+				run_choice(2);
+			}
+			// do stench test if we can
+			if(options contains 1)
+			{
+				run_choice(1);
+			}
+			// getting this NC without being able to pick a choice is not ideal
+			auto_log_warning("Got the Twin Peak NC (Lost in the Great Overlook) without able to complete any of the tasks :(");
+			break;
 		case 607: // Room 237 (Lost in the Great Overlook Lodge)
 		case 608: // Go Check It Out! (Lost in the Great Overlook Lodge)
 		case 609: // There's Always Music In the Air (Lost in the Great Overlook Lodge)
