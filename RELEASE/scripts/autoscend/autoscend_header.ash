@@ -537,6 +537,7 @@ boolean auto_haveBurningLeaves();
 boolean auto_burnLeaves();
 boolean auto_haveCCSC();
 boolean auto_handleCCSC();
+void auto_useWardrobe();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
