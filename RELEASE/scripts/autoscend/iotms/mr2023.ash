@@ -847,6 +847,10 @@ void auto_useWardrobe()
 	{
 		return;
 	}
+	if(item_amount($item[wardrobe-o-matic]) == 0)
+	{
+		return;
+	}
 	// check one of the 3 prefs which get set when wardrobe is used each day
 	if(get_property("_futuristicHatModifier") != "")
 	{
