@@ -195,7 +195,7 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		else
 		{
 			// if we're already level 11, well either be starting ASAP
-			foreach z, _ in shenSnakeLocations(1, 0)
+			foreach z, _ in shenSnakeLocations(my_daycount(), 0)
 			{
 				zones_to_avoid[z] = true;
 			}
