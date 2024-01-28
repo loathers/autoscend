@@ -195,10 +195,15 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		else
 		{
 			// if we're already level 11, well either be starting ASAP
-			foreach z, _ in shenSnakeLocations(my_daycount(), 0)
+			foreach z, _ in shenSnakeLocations(1, 0)
 			{
 				zones_to_avoid[z] = true;
 			}
+		}
+		// if ran out of stuff to do and need to get enchanted bean for L10 quest, don't delay for bat snake
+		if(internalQuestStatus("questL10Garbage") == 0 && get_property("auto_delayLastLevel").to_int() == 10 && item_amount($item[enchanted bean]) == 0)
+		{
+			zones_to_avoid[$location[The Batrat and Ratbat Burrow]] = false;
 		}
 		return zones_to_avoid;
 	}
@@ -206,7 +211,7 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 
 boolean shenShouldDelayZone(location loc)
 {
-	return shenZonesToAvoidBecauseMaybeSnake() contains loc;
+	return shenZonesToAvoidBecauseMaybeSnake()[loc];
 }
 
 int[location] getShenZonesTurnsSpent()
