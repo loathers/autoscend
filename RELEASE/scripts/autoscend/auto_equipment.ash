@@ -904,7 +904,8 @@ void equipMaximizedGear()
 			if (equipped_item($slot[weapon]) == $item[none]) {
 				// workaround. equip a weapon & re-running maximizer appears to fix the issue.
 				equip(equippableWeapon);
-				abort("NO WEAPON WAS EQUIPPED BY THE MAXIMIZER. REPORT THIS IN DISCORD AND INCLUDE YOUR SESSION LOG! YOU CAN RE-RUN AUTOSCEND AND IT SHOULD RUN OK (possibly).");
+				maximize(get_property("auto_maximize_current"), 2500, 0, false);
+				auto_log_error("No weapon was equipped by the maximizer. If you want to report this to the mafia devs at kolmafia.us include your session log. We have attempted a work around.");
 			}
 		}
 	}
