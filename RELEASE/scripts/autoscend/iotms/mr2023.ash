@@ -351,9 +351,18 @@ boolean auto_getCinch(int goal)
 			// can't rest if we have full mp and hp
 			return false;
 		}
+		int cinchBeforeRest = auto_currentCinch();
 		if(!doFreeRest())
 		{
-			abort("Failed to rest to charge cincho");
+			int cinchAfterRest = auto_currentCinch();
+			if(cinchAfterRest > cinchBeforeRest)
+			{
+				auto_log_debug("doFreeRest() returns false, but we still recovered cinch", "purple");
+			}
+			else
+			{
+				abort("Failed to rest to charge cincho");
+			}
 		}
 	}
 
