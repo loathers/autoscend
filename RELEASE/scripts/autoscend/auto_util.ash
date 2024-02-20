@@ -794,7 +794,7 @@ boolean adjustForBanishIfPossible(phylum enemyphylum, location loc)
 	if(canBanish(enemyphylum, loc))
 	{
 		string banish_string = banisherCombatString(enemyphylum, loc);
-		auto_log_info("Adjusting to have banisher available for " + enemyphylum + ": " + banish_string, "blue");
+		auto_log_info("Adjusting to have phylum banisher available for " + enemyphylum + ": " + banish_string, "blue");
 		return adjustForBanish(banish_string);
 	}
 	return false;

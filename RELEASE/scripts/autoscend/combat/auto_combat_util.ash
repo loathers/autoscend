@@ -516,7 +516,7 @@ string findBanisher(int round, monster enemy, string text)
 	return auto_combatHandler(round, enemy, text);
 }
 
-string banisherCombatString(phylum enemyphylum, location loc, boolean inCombat)
+string banisherCombatString(phylum enemyPhylum, location loc, boolean inCombat)
 {
 	if(inAftercore())
 	{
@@ -529,11 +529,11 @@ string banisherCombatString(phylum enemyphylum, location loc, boolean inCombat)
 	}
 	
 	//Check that we actually want to banish this thing.
-	if(!auto_wantToBanish(enemyphylum, loc))
+	if(!auto_wantToBanish(enemyPhylum, loc))
 		return "";
 
 	if(inCombat)
-		auto_log_info("Finding a banisher to use on " + enemyphylum + " at " + loc, "green");
+		auto_log_info("Finding a phylum banisher to use on " + enemyPhylum + " at " + loc, "green");
 
 	if(auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0))
 	{
@@ -677,7 +677,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
 	}
-	
 	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
 	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]) && !(used contains "Bowl a Curveball"))
 	{
@@ -787,9 +786,9 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	return "";
 }
 
-string banisherCombatString(phylum enemyphylum, location loc)
+string banisherCombatString(phylum enemyPhylum, location loc)
 {
-	return banisherCombatString(enemyphylum, loc, false);
+	return banisherCombatString(enemyPhylum, loc, false);
 }
 
 string banisherCombatString(monster enemy, location loc)

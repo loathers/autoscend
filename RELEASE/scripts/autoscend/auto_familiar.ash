@@ -419,6 +419,8 @@ boolean autoChooseFamiliar(location place)
 			}
 		}
 	}
+	
+	auto_forceEagle(); // force Patriotic Eagle if we have a >0 combats until we can screech again
 
 	// Gremlins have special familiar handling.
 	if ($locations[Next to that Barrel with Something Burning in it, Out By that Rusted-Out Car, Over Where the Old Tires Are, Near an Abandoned Refrigerator] contains place) {
@@ -703,8 +705,6 @@ void preAdvUpdateFamiliar(location place)
 	{
 		handleFamiliar(get_property("auto_100familiar").to_familiar());			//do not break 100 familiar runs
 	}
-	
-	auto_forceEagle(); // force Patriotic Eagle if we have a >0 combats until we can screech again
 
 	//familiar requirement to adventure in a zone, override everything else.
 	if(place == $location[The Deep Machine Tunnels])

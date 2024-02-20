@@ -94,9 +94,9 @@ boolean EightBitRealmHandler()
 		case "green":
 			// limited buff that is helpful for 3 of 4 8-bit zones
 			buffMaintain($effect[shadow waters]);
-			if(item_drop_modifier() < 370){
+			/*if(item_drop_modifier() < 370){
 				auto_getCitizenZone("item");
-			}
+			}*/
 			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;
 		default:

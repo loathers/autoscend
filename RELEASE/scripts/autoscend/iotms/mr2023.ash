@@ -543,14 +543,14 @@ void auto_scepterRollover()
 	{
 		use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
 	}
-	if(canUse($skill[Aug. 27th: Just Because Day!]) && !get_property("_aug27Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
-	{
-		use_skill($skill[Aug. 27th: Just Because Day!]); //3 random buffs
-	}
 	if(canUse($skill[Aug. 13th: Left\/Off Hander\'s Day!]) && !get_property("_aug13Cast").to_boolean() &&
 	get_property("_augSkillsCast").to_int()< 5 && numeric_modifier(equipped_item($slot[off-hand]),"Adventures") > 0)
 	{
 		use_skill($skill[Aug. 13th: Left\/Off Hander\'s Day!]); //bump up the off-hand
+	}
+	if(canUse($skill[Aug. 27th: Just Because Day!]) && !get_property("_aug27Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 27th: Just Because Day!]); //3 random buffs
 	}
 }
 
@@ -760,12 +760,13 @@ boolean auto_haveEagle()
 boolean auto_getCitizenZone(string goal)
 {
 	familiar eagle = $familiar[Patriotic Eagle];
-	visit_url("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944");
-	string activeCitZoneMod = get_property("_citizenZoneMods").to_lower_case();
 	if(!auto_haveEagle())
 	{
 		return false;
 	}
+	visit_url("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944"); // visit url to refresh mafia's Citizen of a Zone effects
+	string activeCitZoneMod = get_property("_citizenZoneMods").to_lower_case();
+	
 	if((have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal)) || (!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) == 0 && have_effect($effect[Citizen of a Zone]) > 0))
 	{
 		return false;
@@ -775,6 +776,7 @@ boolean auto_getCitizenZone(string goal)
 		uneffect($effect[Citizen of a Zone]);
 		if(have_effect($effect[Citizen of a Zone]) > 0)
 		{
+			auto_log_debug("Tried to remove Citizen of a Zone but couldn't");
 			return false;
 		}
 	}
