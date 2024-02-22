@@ -223,6 +223,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		enemy_la = 151;
 	}
 
+	// dark gyffte boss is stagger immune
+	if(enemy == $monster[%alucard%])
+	{
+		enemy_la = 151;
+	}
+
 	#Default behaviors:
 	if(enemy_la <= 150)		//enemy has not been rendered immune to staggering from monster level
 	{
