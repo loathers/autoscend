@@ -760,6 +760,10 @@ boolean auto_haveEagle()
 boolean auto_getCitizenZone(string goal)
 {
 	familiar eagle = $familiar[Patriotic Eagle];
+	boolean[location] meatZones = $locations[The Battlefield (Frat Uniform), The Oasis, The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement), Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
+	boolean[location] itemZones = $locations[A Massive Ziggurat, The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine, The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
+	boolean[location] initZones = $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, An Overgrown Shrine (Northeast), Oil Peak, Cobb's Knob Kitchens, The VERY Unquiet Garves, The Haunted Kitchen];
+	boolean[location] mpZones = $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp, Megalo-City];
 	if(!auto_haveEagle())
 	{
 		return false;
@@ -783,61 +787,149 @@ boolean auto_getCitizenZone(string goal)
 	switch(goal)
 	{
 		case "meat": //Get +50% meat
-			if(can_adventure($location[Lair of the Ninja Snowmen]))
+			foreach loc in meatZones
 			{
-				handleFamiliar(eagle);
-				if(autoAdv($location[Lair of the Ninja Snowmen]))
+				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
 				{
-					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
 					{
-						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-						return true;
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
 					}
 					return false;
 				}
-				return false;
+				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else return false;
 			}
 		case "initiative": //Get +100% initiative. Give the option to add this to a quest later, but currently unused
-			if(can_adventure($location[The Haunted Kitchen]))
+			foreach loc in initZones
 			{
-				handleFamiliar(eagle);
-				if(autoAdv($location[The Haunted Kitchen])) //need this if statement separate in case we hit a non-combat
+				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
 				{
-					if(contains_text(activeCitZoneMod, goal))
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
 					{
-						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-						return true;
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
 					}
 					return false;
 				}
-				return false;
+				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else return false;
+			}
+		case "mp":
+			foreach loc in mpZones
+			{
+				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else return false;
 			}
 		default: //Get +30% item by default
-			if(can_adventure($location[The Haunted Library]))
+			foreach loc in itemZones
 			{
-				handleFamiliar(eagle);
-				if(autoAdv($location[The Haunted Library])) //need this if statement separate in case we hit a non-combat
+				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
 				{
-					if(contains_text(activeCitZoneMod, goal))
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
 					{
-						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-						return true;
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
 					}
 					return false;
 				}
-				return false;
+				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else return false;
 			}
 	}
 	return false;
 }
 
-void auto_forceEagle()
+familiar auto_forceEagle()
 {
 	//Force the Patriotic Eagle if we used a banish recently and can't use one until we burn 11 combats with the Eagle
 	if(auto_haveEagle() && get_property("screechCombats").to_int() > 0)
 	{
-		handleFamiliar($familiar[Patriotic Eagle]);
+		return $familiar[Patriotic Eagle];
 	}
+	return $familiar[none];
 }
 
 boolean auto_haveBurningLeaves()

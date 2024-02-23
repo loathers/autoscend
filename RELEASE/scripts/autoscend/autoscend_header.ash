@@ -534,7 +534,7 @@ boolean auto_canCircadianRhythm();
 boolean auto_circadianRhythmTarget(monster target);
 boolean auto_haveEagle();
 boolean auto_getCitizenZone(string goal);
-void auto_forceEagle();
+familiar auto_forceEagle();
 boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
 boolean auto_haveBurningLeaves();
