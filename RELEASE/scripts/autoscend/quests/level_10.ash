@@ -15,6 +15,11 @@ boolean L10_plantThatBean()
 	}
 	if(item_amount($item[Enchanted Bean]) > 0)
 	{
+		if(auto_haveSpringShoes())
+		{
+			// shoes gives stats when planting bean, but must be equipped
+			equip($item[Spring Shoes]);
+		}
 		visit_url("place.php?whichplace=plains&action=garbage_grounds");
 		return true;
 	}

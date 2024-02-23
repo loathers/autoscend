@@ -115,7 +115,8 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		Celestial Saltiness,
 		Simply Irresistible,
 		Crunching Leaves,
-		Romantically Roused
+		Romantically Roused,
+		Crunchy Steps
 	])) {
 		return result();
 	}
@@ -272,7 +273,8 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Ink Cloud,
 		Cloak of Shadows,
 		Chocolatesphere,
-		Disquiet Riot
+		Disquiet Riot,
+		Ultra-Soft Steps
 	])) {
 		return result();
 	}
