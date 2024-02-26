@@ -252,7 +252,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	}
 
 	//[Patriotic Eagle] familiar skill that gives a useful buff
-	if ($locations[The Haunted Library, The Haunted Laundry Room, Whitey\'s Grove, Lair of the Ninja Snowmen, The Hidden Hospital, The Haunted Bathroom, The Oasis, The Haunted Kitchen, Oil Peak] contains my_location() && canUse($skill[%fn\, let\'s pledge allegiance to a Zone]))
+	if (canUse($skill[%fn\, let\'s pledge allegiance to a Zone]))
 	{
 		return useSkill($skill[%fn\, let\'s pledge allegiance to a Zone], true);
 	}

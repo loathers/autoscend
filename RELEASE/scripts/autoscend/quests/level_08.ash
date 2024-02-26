@@ -663,7 +663,11 @@ boolean L8_trapperNinjaLair()
 		adjustEdHat("myst");
 	}
 	
-	auto_getCitizenZone("meat"); //since Lair is next anyway
+	if(my_location() == $location[Lair of the Ninja Snowmen]) //after we visit the Lair once should try to get the meat buff here
+	{
+		auto_getCitizenZone("meat"); //since we are in the Lair anyway
+	}
+
 	if(autoAdv($location[Lair of the Ninja Snowmen]))
 	{
 		return true;

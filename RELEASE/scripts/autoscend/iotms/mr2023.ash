@@ -757,7 +757,7 @@ boolean auto_haveEagle()
 	return false;
 }
 
-string activeCitZoneMod()
+string activeCitZoneMod() // get the active Citizen of a Zone mods, if any
 {
 	if(!auto_haveEagle() || have_effect($effect[Citizen of a Zone]) = 0)
 	{
@@ -785,9 +785,17 @@ boolean auto_getCitizenZone(string goal)
 	
 	if((have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal)) || (!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) == 0 && have_effect($effect[Citizen of a Zone]) > 0))
 	{
-		return false;
+		if(have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal))
+		{
+			auto_log_info("No need to remove Citizen of a Zone");
+		}
+		else
+		{
+			auto_log_info("Can't remove Citizen of a Zone");
+		}
+		return false; //if we have the desired Citizen of a Zone effects or we can't remove it
 	}
-	if(!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0)
+	if(!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0) //try to remove Citizen of a Zone
 	{
 		uneffect($effect[Citizen of a Zone]);
 		if(have_effect($effect[Citizen of a Zone]) > 0)

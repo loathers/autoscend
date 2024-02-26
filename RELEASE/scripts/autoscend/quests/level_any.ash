@@ -609,7 +609,7 @@ boolean LX_dailyDungeonToken()
 	boolean needPole = true;
 	if(auto_haveCCSC())
 	{
-		needPole = false;
+		needPole = false; // candy cane sword cane can act as an eleven-foot pole so don't buy if we already have it
 	}
 	
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
