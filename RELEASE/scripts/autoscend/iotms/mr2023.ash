@@ -757,19 +757,31 @@ boolean auto_haveEagle()
 	return false;
 }
 
+string activeCitZoneMod()
+{
+	if(!auto_haveEagle() || have_effect($effect[Citizen of a Zone]) = 0)
+	{
+		return "none";
+	}
+	visit_url("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944"); // visit url to refresh Mafia's _citizenZoneMods preference
+	return get_property("_citizenZoneMods").to_lower_case();
+}
+
 boolean auto_getCitizenZone(string goal)
 {
 	familiar eagle = $familiar[Patriotic Eagle];
-	boolean[location] meatZones = $locations[The Battlefield (Frat Uniform), The Oasis, The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement), Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
-	boolean[location] itemZones = $locations[A Massive Ziggurat, The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine, The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
-	boolean[location] initZones = $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, An Overgrown Shrine (Northeast), Oil Peak, Cobb's Knob Kitchens, The VERY Unquiet Garves, The Haunted Kitchen];
-	boolean[location] mpZones = $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp, Megalo-City];
-	if(!auto_haveEagle())
-	{
-		return false;
-	}
-	visit_url("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944"); // visit url to refresh mafia's Citizen of a Zone effects
-	string activeCitZoneMod = get_property("_citizenZoneMods").to_lower_case();
+	//zones are approximately organized by autoscend level quest structure
+	boolean[location] meatZones = $locations[The Battlefield (Frat Uniform), The Oasis, The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
+	Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
+	boolean[location] itemZones = $locations[A Massive Ziggurat, The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
+	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
+	boolean[location] initZones = $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, An Overgrown Shrine (Northeast),
+	Oil Peak, Cobb's Knob Kitchens, The VERY Unquiet Garves, The Haunted Kitchen];
+	//mp zones are organized by 20-30 mp regen then 10-15 mp regen and then approximately autoscend level quest structure
+	boolean[location] mpZones = $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp,
+	Megalo-City, Shadow Rift, Vanya's Castle, The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,
+	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
+	string activeCitZoneMod = activeCitZoneMod();
 	
 	if((have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal)) || (!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) == 0 && have_effect($effect[Citizen of a Zone]) > 0))
 	{
@@ -852,7 +864,7 @@ boolean auto_getCitizenZone(string goal)
 				}
 				else return false;
 			}
-		case "mp":
+		case "mp": //Get 20-30 mp regen or 10-15 mp regen. Currently only gets 10-15 mp regen in The Spooky Forest
 			foreach loc in mpZones
 			{
 				if(loc == my_location()) // don't bother checking if we can adventure since we are already there

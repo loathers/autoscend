@@ -533,6 +533,7 @@ monster auto_habitatMonster();
 boolean auto_canCircadianRhythm();
 boolean auto_circadianRhythmTarget(monster target);
 boolean auto_haveEagle();
+string activeCitZoneMod();
 boolean auto_getCitizenZone(string goal);
 familiar auto_forceEagle();
 boolean auto_haveJillOfAllTrades();
