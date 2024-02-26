@@ -1654,6 +1654,8 @@ boolean loopHandlerDelayAll();
 string reverse(string s);
 int[monster] banishedMonsters();
 boolean isBanished(monster enemy);
+int[phylum] banishedPhyla();
+boolean isBanishedPhyla(phylum monsterPhylum);
 int autoCraft(string mode, int count, item item1, item item2);
 int internalQuestStatus(string prop);
 boolean canYellowRay(monster target);

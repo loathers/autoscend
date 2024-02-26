@@ -500,6 +500,31 @@ boolean isBanished(monster enemy)
 	return (banishedMonsters() contains enemy);
 }
 
+int[phylum] banishedPhyla()
+{
+	int[phylum] retval;
+	string[int] data = split_string(get_property("banishedPhyla"), ":");
+
+	if(get_property("banishedPhyla") == "")
+	{
+		return retval;
+	}
+
+	int i=0;
+	while(i<count(data))
+	{
+		retval[to_phylum(data[i])] = to_int(data[i+2]);
+		i += 3;
+	}
+
+	return retval;
+}
+
+boolean isBanishedPhyla(phylum monsterPhylum)
+{
+	return (banishedPhyla() contains monsterPhylum);
+}
+
 int autoCraft(string mode, int count, item item1, item item2)
 {
 	if((mode == "combine") && !knoll_available())
