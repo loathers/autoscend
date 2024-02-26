@@ -1226,6 +1226,10 @@ boolean doBedtime()
 
 	boolean canChangeToStooper()
 	{
+		if (in_small()) // In smol, the stooper can be equipped, but does not modify the liver size
+		{
+			return false;
+		}
 		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
 		pathAllowsChangingFamiliar() &&		//some paths forbid familiar or dont allow changing it but mafia still indicates you have the familiar
 		my_familiar() != $familiar[Stooper])
