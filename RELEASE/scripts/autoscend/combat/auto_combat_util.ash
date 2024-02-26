@@ -539,6 +539,12 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		Breathe Out: per hot jelly usage
 	*/
 
+	//Spring Kick is at the top because it is not turn ending. If a replacer is used the replaced monster can then have unspeakable things done to it (like another banish)
+	if((inCombat ? auto_have_skill($skill[Spring Kick]) : possessEquipment($item[spring shoes])) && auto_is_valid($skill[Spring Kick]) && !(used contains "Spring Kick"))
+	{
+		return "skill " + $skill[Spring Kick];
+	}
+
 	if(auto_have_skill($skill[Peel Out]) && pete_peelOutRemaining() > 0 && get_property("peteMotorbikeMuffler") == "Extra-Smelly Muffler" && !(used contains "Peel Out"))
 	{
 		return "skill " + $skill[Peel Out];
@@ -619,10 +625,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if((inCombat ? auto_have_skill($skill[Show Your Boring Familiar Pictures]) : possessEquipment($item[familiar scrapbook])) && auto_is_valid($skill[Show Your Boring Familiar Pictures]) && (get_property("scrapbookCharges").to_int() >= 200 || (get_property("scrapbookCharges").to_int() >= 100 && my_level() >= 13)) && !(used contains "Show Your Boring Familiar Pictures"))
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
-	}
-	if((inCombat ? auto_have_skill($skill[Spring Kick]) : possessEquipment($item[spring shoes])) && auto_is_valid($skill[Spring Kick]) && !(used contains "Spring Kick"))
-	{
-		return "skill " + $skill[Spring Kick];
 	}
 
 	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
