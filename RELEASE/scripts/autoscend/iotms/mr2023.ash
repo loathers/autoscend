@@ -759,12 +759,13 @@ boolean auto_haveEagle()
 
 string activeCitZoneMod() // get the active Citizen of a Zone mods, if any
 {
-	if(!auto_haveEagle() || have_effect($effect[Citizen of a Zone]) = 0)
+	if(!auto_haveEagle() || have_effect($effect[Citizen of a Zone]) == 0)
 	{
 		return "none";
 	}
 	visit_url("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944"); // visit url to refresh Mafia's _citizenZoneMods preference
-	return get_property("_citizenZoneMods").to_lower_case();
+	string activeCitZoneMod = get_property("_citizenZoneMods").to_lower_case();
+	return activeCitZoneMod;
 }
 
 boolean auto_getCitizenZone(string goal)
