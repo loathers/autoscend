@@ -684,7 +684,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	}
 
 	// use cosmic bowling ball iotm
-	if(auto_bowlingBallCombatString(my_location(), true) != "")
+	if(auto_bowlingBallCombatString(my_location(), true) != "" && !enemy.boss)
 	{
 		return 	auto_bowlingBallCombatString(my_location(), false);
 	}
