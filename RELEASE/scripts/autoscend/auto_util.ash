@@ -734,6 +734,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[familiar scrapbook]);
 	}
+	if(combat_string == "skill " + $skill[Spring Kick])
+	{
+		return autoEquip($item[spring shoes]);
+	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
 		return autoEquip($slot[weapon], wrap_item($item[Fourth of May cosplay saber]));
@@ -884,6 +888,12 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	if (canUse($skill[Peel Out]) && pete_peelOutRemaining() > 0)
 	{
 		return "skill " + $skill[Peel Out];
+	}
+
+	if (auto_haveSpringShoes() && have_effect($effect[Everything Looks Green]) == 0)
+	{
+		autoEquip($item[spring shoes]);
+		return "skill" + $skill[Spring Away];
 	}
 
 	//Non-standard free-runs
