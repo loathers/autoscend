@@ -121,6 +121,10 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 		{
 			visit_url("guild.php?action=buyskill&skillid=6", true);
 		}
+		if((my_level() >= 5) && (my_meat() >= 4000) && !have_skill($skill[Bind Vermincelli]))
+		{
+			visit_url("guild.php?action=buyskill&skillid=29", true);
+		}
 		if((my_level() >= 9) && (my_meat() >= 12500) && !have_skill($skill[Spirit of Ravioli]))
 		{
 			visit_url("guild.php?action=buyskill&skillid=14", true);
@@ -132,6 +136,10 @@ boolean auto_buySkills()  // This handles skill acquisition for general paths
 		if((my_level() >= 12) && (my_meat() >= 25000) && !have_skill($skill[Cannelloni Cocoon]))
 		{
 			visit_url("guild.php?action=buyskill&skillid=12", true);
+		}
+		if((my_level() >= 15) && (my_meat() >= 32500) && !have_skill($skill[Bind Spice Ghost]))
+		{
+			visit_url("guild.php?action=buyskill&skillid=39", true);
 		}
 		break;
 	case $class[Sauceror]:
