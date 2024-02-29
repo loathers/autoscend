@@ -15,6 +15,12 @@ boolean L10_plantThatBean()
 	}
 	if(item_amount($item[Enchanted Bean]) > 0)
 	{
+		static item springShoes = $item[spring shoes];
+		if (equipped_amount(springShoes, true) < 0 && item_amount(springShoes) > 0)
+		{
+			equip($item[spring shoes]);
+		}
+
 		visit_url("place.php?whichplace=plains&action=garbage_grounds");
 		return true;
 	}

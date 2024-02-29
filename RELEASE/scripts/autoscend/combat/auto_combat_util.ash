@@ -524,6 +524,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		Asdon Martin: Spring-Loaded Front Bumper: no limit
 		Curse of Vacation: no limit? No turn limit?
 		Walk Away Explosion: no limit, turn limited irrelavant.
+		Spring Kick: no limit, no turn limit
 
 		Howl of the Alpha: no limit, no turn limit, can banish up to 3 monsters simultaneously
 
@@ -668,6 +669,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if((inCombat ? auto_have_skill($skill[Monkey Slap]) : possessEquipment($item[cursed monkey\'s paw])) && auto_is_valid($skill[Monkey Slap]) && get_property("_monkeyPawWishesUsed").to_int() == 0 && !(used contains "Monkey Slap"))
 	{
 		return "skill " + $skill[Monkey Slap];
+	}
+
+	if((inCombat ? auto_have_skill($skill[Spring Kick]) : possessEquipment($item[spring shoes])) && auto_is_valid($skill[Spring Kick]) && have_equipped($item[spring shoes]) && (!(used contains "Spring Kick")))
+	{
+		return "skill " + $skill[Spring Kick];
 	}
 	
 	//[Nanorhino] familiar specific banish. fairly low priority as it consumes 40 to 50 adv worth of a decent buff.

@@ -115,7 +115,8 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		Celestial Saltiness,
 		Simply Irresistible,
 		Crunching Leaves,
-		Romantically Roused
+		Romantically Roused,
+		Crunchy Steps
 	])) {
 		return result();
 	}
@@ -301,7 +302,8 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Inky Camouflage,	
 		Celestial Camouflage,
 		Feeling Lonely,
-		Feeling Sneaky
+		Feeling Sneaky,
+		Ultra-Soft Steps
 	])) {
 		return result();
 	}

@@ -287,6 +287,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 			useSkill = $skill[Curiosity of Br\'er Tarrypin];
 		}																						break;
 	case $effect[Crunching Leaves]:				useItem = $item[Autumn Leaf];					break;	
+	case $effect[Crunchy Steps]:				useItem = $item[crunchy brush];					break;	
 	case $effect[Dance of the Sugar Fairy]:		useItem = $item[Sugar Fairy];					break;
 	case $effect[Destructive Resolve]:			useItem = $item[Resolution: Be Feistier];		break;
 	case $effect[Dexteri Tea]:					useItem = $item[cuppa Dexteri tea];				break;
@@ -820,6 +821,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
+	case $effect[Ultra-Soft Steps]:				useItem = $item[ultra-soft ferns];				break;
 	case $effect[Unmuffled]:
 		if(get_property("peteMotorbikeMuffler") == "Extra-Loud Muffler")
 		{
