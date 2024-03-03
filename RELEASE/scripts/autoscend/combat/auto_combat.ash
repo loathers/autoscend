@@ -105,7 +105,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	if(in_pokefam())
 	{
-		if(svn_exists("Ezandora-Helix-Fossil-branches-Release") || git_exists("Ezandora-Helix-Fossil-Release"))
+		if(git_exists("Ezandora-Helix-Fossil"))
 		{
 		auto_log_info("Combat via Ezandora:", "green");
 		boolean ignore = cli_execute("Pocket Familiars");

@@ -539,6 +539,12 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		Breathe Out: per hot jelly usage
 	*/
 
+	//Spring Kick is at the top because it is not turn ending. If a replacer is used the replaced monster can then have unspeakable things done to it (like another banish)
+	if((inCombat ? auto_have_skill($skill[Spring Kick]) : possessEquipment($item[spring shoes])) && auto_is_valid($skill[Spring Kick]) && !(used contains "Spring Kick"))
+	{
+		return "skill " + $skill[Spring Kick];
+	}
+
 	if(auto_have_skill($skill[Peel Out]) && pete_peelOutRemaining() > 0 && get_property("peteMotorbikeMuffler") == "Extra-Smelly Muffler" && !(used contains "Peel Out"))
 	{
 		return "skill " + $skill[Peel Out];
@@ -632,9 +638,9 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Feel Hatred];
 	}
 	
-	if(auto_have_skill($skill[Punt]) && (my_mp() > mp_cost($skill[Punt])) && !(used contains "Punt"))
+	if(auto_have_skill($skill[[28021]Punt]) && (my_mp() > mp_cost($skill[[28021]Punt])) && !(used contains "Punt"))
 	{
-		return "skill " + $skill[Punt];
+		return "skill " + $skill[[28021]Punt];
 	}
 
 	item saber = wrap_item($item[Fourth of May cosplay saber]);

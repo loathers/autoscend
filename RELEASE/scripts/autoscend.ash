@@ -1,4 +1,4 @@
-since r27772;	// feat: everything looks green color + noremove 
+since r27832;	// Spring Kick banish management
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -48,6 +48,7 @@ import <autoscend/iotms/mr2020.ash>
 import <autoscend/iotms/mr2021.ash>
 import <autoscend/iotms/mr2022.ash>
 import <autoscend/iotms/mr2023.ash>
+import <autoscend/iotms/mr2024.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
