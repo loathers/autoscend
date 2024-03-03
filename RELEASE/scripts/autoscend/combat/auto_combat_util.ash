@@ -638,9 +638,9 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Feel Hatred];
 	}
 	
-	if(auto_have_skill($skill[Punt]) && (my_mp() > mp_cost($skill[Punt])) && !(used contains "Punt"))
+	if(auto_have_skill($skill[[28021]Punt]) && (my_mp() > mp_cost($skill[[28021]Punt])) && !(used contains "Punt"))
 	{
-		return "skill " + $skill[Punt];
+		return "skill " + $skill[[28021]Punt];
 	}
 
 	item saber = wrap_item($item[Fourth of May cosplay saber]);
