@@ -2201,7 +2201,7 @@ boolean doFreeRest(){
 		} else if (get_dwelling() == $item[Newbiesport&trade; tent])
 		{
 			mpToBurn = 10 - restorableMp;
-		} else if (get_dwelling() == $item[big rock]) // just the ground
+		} else // assume resting on the ground
 		{
 			mpToBurn = 5 - restorableMp;
 		}
