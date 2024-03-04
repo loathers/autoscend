@@ -811,6 +811,34 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
 	if (pre_banish != "") return pre_banish;
 
+	//Standard free-runs
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
+	{
+		if(auto_haveSpringShoes() && auto_is_valid($skill[Spring Away]))
+		{
+			if(!inCombat)
+			{
+				autoEquip($item[spring shoes]);
+				return "skill " + $skill[Spring Away];
+			}
+			else
+			{
+				if(canUse($skill[Spring Away]))
+				{
+					return "skill " + $skill[Spring Away];
+				}
+			}
+		}
+
+		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
+		{
+			if (canUse(it) && item_amount(it) > 0)
+			{
+				return useItem(it);
+			}
+		}
+	}
+
 	if(canChangeToFamiliar($familiar[Frumious Bandersnatch]))
 	{
 		// TODO add fam weight buffing
@@ -890,28 +918,10 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Peel Out];
 	}
 
-	if (auto_haveSpringShoes() && have_effect($effect[Everything Looks Green]) == 0)
-	{
-		autoEquip($item[spring shoes]);
-		return "skill" + $skill[Spring Away];
-	}
-
 	//Non-standard free-runs
 	if(!inAftercore())
 	{
 		foreach it in $items[giant eraser] //assuming additional ones will be added, eventually
-		{
-			if (canUse(it) && item_amount(it) > 0)
-			{
-				return useItem(it);
-			}
-		}
-	}
-
-	//Standard free-runs
-	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
-	{
-		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{
