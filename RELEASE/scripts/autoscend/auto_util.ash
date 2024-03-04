@@ -814,16 +814,16 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	//Standard free-runs
 	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
 	{
-		if(auto_haveSpringShoes())
+		if(auto_haveSpringShoes() && auto_is_valid($skill[Spring Away]))
 		{
 			if(!inCombat)
 			{
 				autoEquip($item[spring shoes]);
-				return "runaway item " + $item[spring shoes];
+				return "skill " + $skill[Spring Away];
 			}
 			else
 			{
-				if(have_equipped($item[spring shoes]))
+				if(canUse($skill[Spring Away]))
 				{
 					return "skill " + $skill[Spring Away];
 				}
