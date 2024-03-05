@@ -545,6 +545,10 @@ boolean auto_handleCCSC();
 void auto_useWardrobe();
 
 ########################################################################################################
+//Defined in autoscend/iotms/mr2024.ash
+boolean auto_haveSpringShoes();
+
+########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
 boolean isActuallyEd();
 int ed_spleen_limit();
