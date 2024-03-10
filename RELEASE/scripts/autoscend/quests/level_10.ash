@@ -15,6 +15,10 @@ boolean L10_plantThatBean()
 	}
 	if(item_amount($item[Enchanted Bean]) > 0)
 	{
+		if(auto_haveSpringShoes())
+		{
+			equip($slot[acc3], $item[spring shoes]); //free stats
+		}
 		visit_url("place.php?whichplace=plains&action=garbage_grounds");
 		return true;
 	}

@@ -734,6 +734,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[familiar scrapbook]);
 	}
+	if(combat_string == "skill " + $skill[Spring Kick])
+	{
+		return autoEquip($item[spring shoes]);
+	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
 		return autoEquip($slot[weapon], wrap_item($item[Fourth of May cosplay saber]));
@@ -806,6 +810,34 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	if (isFreeMonster(enemy, my_location())) return "";
 	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
 	if (pre_banish != "") return pre_banish;
+
+	//Standard free-runs
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
+	{
+		if(auto_haveSpringShoes() && auto_is_valid($skill[Spring Away]))
+		{
+			if(!inCombat)
+			{
+				autoEquip($item[spring shoes]);
+				return "skill " + $skill[Spring Away];
+			}
+			else
+			{
+				if(canUse($skill[Spring Away]))
+				{
+					return "skill " + $skill[Spring Away];
+				}
+			}
+		}
+
+		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
+		{
+			if (canUse(it) && item_amount(it) > 0)
+			{
+				return useItem(it);
+			}
+		}
+	}
 
 	if(canChangeToFamiliar($familiar[Frumious Bandersnatch]))
 	{
@@ -890,18 +922,6 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	if(!inAftercore())
 	{
 		foreach it in $items[giant eraser] //assuming additional ones will be added, eventually
-		{
-			if (canUse(it) && item_amount(it) > 0)
-			{
-				return useItem(it);
-			}
-		}
-	}
-
-	//Standard free-runs
-	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
-	{
-		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{

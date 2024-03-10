@@ -69,7 +69,7 @@ boolean aosol_buySkills()
 				auto_log_info("Skill points found: " + skillPoints);
 				while(skillPoints > 0)
 				{
-					if(!have_skill($skill[Punt])) //Banish for the day
+					if(!have_skill($skill[[28021]Punt])) //Banish for the day
 					{
 						page = visit_url("choice.php?pwd&option=1&whichchoice=1495&use=points&whichsk=21", true);
 					}
@@ -217,7 +217,7 @@ boolean aosol_buySkills()
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=11", true);
 				set_property("auto_aosolLastSkill", 10);
 			}
-			if(!have_skill($skill[Punt]) && my_level()>=11 && my_meat()>1100 + meatReserve()) //Banish for the day
+			if(!have_skill($skill[[28021]Punt]) && my_level()>=11 && my_meat()>1100 + meatReserve()) //Banish for the day
 			{
 				page = visit_url("choice.php?pwd&whichchoice=1495&option=1&whichsk=21", true);
 				set_property("auto_aosolLastSkill", 100);
