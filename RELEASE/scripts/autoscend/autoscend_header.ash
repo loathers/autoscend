@@ -542,6 +542,9 @@ void auto_useWardrobe();
 ########################################################################################################
 //Defined in autoscend/iotms/mr2024.ash
 boolean auto_haveSpringShoes();
+boolean auto_haveDarts();
+void dartChoiceHandler(int choice, string[int] options);
+skill dartSkill();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

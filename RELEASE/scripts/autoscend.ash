@@ -1,4 +1,4 @@
-since r27832;	// Spring Kick banish management
+since r27854;	// feat: store everfull dart perks
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

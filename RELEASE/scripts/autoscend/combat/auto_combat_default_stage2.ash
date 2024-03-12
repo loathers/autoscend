@@ -362,6 +362,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[lightning strike]);
 		}
 
+		if(canUse($skill[Darts: Aim for the Bullseye]) && have_effect($effect[Everything Looks Red]) == 0 && (wantFreeKillNowEspecially || !reserveFreekills))
+		{
+			handleTracker(enemy, $skill[Darts: Aim for the Bullseye], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[Darts: Aim for the Bullseye]);
+		}
 		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
 		{
 			if((wantFreeKillNowEspecially || my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
