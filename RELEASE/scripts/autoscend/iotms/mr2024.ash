@@ -61,21 +61,21 @@ skill dartSkill()
 	while (m.find())
 		out[m.group(2)] = m.group(1).to_skill();
 
-	foreach sk in out
+	foreach skst, sk in out
 	{
-		if(contains_text(sk, "Bullseye")) //Free-kill that wasn't taken care of in stage2
+		if(contains_text(skst, "Bullseye")) //Free-kill that wasn't taken care of in stage2
 		{
 			return sk;
 		}
-		else if(contains_text(sk, "butt")) //More items
+		else if(contains_text(skst, "butt")) //More items
 		{
 			return sk;
 		}
-		else if(contains_text(sk, "torso")) //More meat
+		else if(contains_text(skst, "torso") || contains_text(skst, "pseudopod")) //More meat
 		{
 			return sk;
 		}
 		else return to_skill(7513); // Darts: throw at %part1;
 	}
-	return to_skill(7513); // Darts: throw at %part1;
+	return $skill[none]; // If there aren't any darts available return the none skill
 }

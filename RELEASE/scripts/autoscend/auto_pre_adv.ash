@@ -559,7 +559,7 @@ boolean auto_pre_adventure()
 		autoEquip($slot[acc3], DOCTOR_BAG);
 	}
 
-	item dartHolster = $item[Everful Dart Holster];
+	item dartHolster = $item[Everfull Dart Holster];
 	if(auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0)
 	{
 		auto_log_info("We don't have ELR so let's hit a bullseye");
