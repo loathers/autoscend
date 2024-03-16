@@ -317,19 +317,9 @@ boolean auto_nextRestOverCinch()
 
 boolean auto_getCinch(int goal)
 {
-	boolean atMaxMpHp()
-	{
-		return my_mp() == my_maxmp() && my_hp() == my_maxhp();
-	}
-
 	if(auto_currentCinch() >= goal)
 	{
 		return true;
-	}
-	if(atMaxMpHp())
-	{
-		// can't rest if we have full mp and hp
-		return false;
 	}
 	if(!haveFreeRestAvailable())
 	{
@@ -346,11 +336,6 @@ boolean auto_getCinch(int goal)
 	// use free rests until have enough cinch or out of rests
 	while(auto_currentCinch() < goal && haveFreeRestAvailable())
 	{
-		if(atMaxMpHp())
-		{
-			// can't rest if we have full mp and hp
-			return false;
-		}
 		if(!doFreeRest())
 		{
 			abort("Failed to rest to charge cincho");
