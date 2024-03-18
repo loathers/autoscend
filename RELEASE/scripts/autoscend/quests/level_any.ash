@@ -1010,7 +1010,7 @@ boolean LX_dronesOut()
 		}
 		return autoAdv($location[The Middle Chamber]); //Tomb ratchets
 	}
-	if((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && hedgeTrimmersNeeded() > 0 && zone_isAvailable($location[Twin Peak]))
+	if((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && hedgeTrimmersNeeded() > 1 && zone_isAvailable($location[Twin Peak]) && prepareForTwinPeak(true))
 	{
 		auto_log_info("Going to Twin Peak");
 		if(get_property("auto_priorLocation").to_location() != $location[Twin Peak])

@@ -685,6 +685,85 @@ int hedgeTrimmersNeeded()
 	return neededTrimmers;
 }
 
+// returns true if can successfully do one of the tasks at the great overlook lodge NC (606)
+boolean prepareForTwinPeak(boolean speculative)
+{
+	int progress = get_property("twinPeakProgress").to_int();
+	boolean needStench = ((progress & 1) == 0);
+	boolean needFood = ((progress & 2) == 0);
+	boolean needJar = ((progress & 4) == 0);
+	boolean needInit = (progress == 7);
+
+	if(needInit)
+	{
+		if(provideInitiative(40, $location[Twin Peak], true, speculative) >= 40)
+		{
+			return true;
+		}
+		else
+		{
+			//init test shows up last. if we can't do it there is no point in checking rest of function.
+			return false;
+		}
+	}
+
+	if(needJar && item_amount($item[Jar of Oil]) >= 1)
+	{
+		return true;
+	}
+
+	if(needFood)
+	{
+		float food_drop = item_drop_modifier() + numeric_modifier("Food Drop");
+		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight"), equipped_item($slot[familiar]));
+		
+		if(my_servant() == $servant[Cat])
+		{
+			food_drop -= numeric_modifier($familiar[Baby Gravy Fairy], "Item Drop", $servant[Cat].level, $item[none]);
+		}
+		if((food_drop < 50) && (food_drop >= 20) && have_effect($effect[Brother Flying Burrito\'s Blessing]) == 0)
+		{
+			if(friars_available() && (!get_property("friarsBlessingReceived").to_boolean()) && !speculative)
+			{
+				cli_execute("friars food");
+			}
+			if(have_effect($effect[Brother Flying Burrito\'s Blessing]) > 0)
+			{
+				food_drop = food_drop + 30;
+			}
+		}
+		if((food_drop < 50.0) && (item_amount($item[Eagle Feather]) > 0) && (have_effect($effect[Eagle Eyes]) == 0) && auto_is_valid($item[Eagle Feather]))
+		{
+			if(!speculative) use(1, $item[Eagle Feather]);
+			food_drop = food_drop + 20;
+		}
+		if((food_drop < 50.0) && (item_amount($item[resolution: be happier]) > 0) && (have_effect($effect[Joyful Resolve]) == 0) && auto_is_valid($item[resolution: be happier]))
+		{
+			if(!speculative) buffMaintain($effect[Joyful Resolve]);
+			food_drop = food_drop + 15;
+		}
+		if(food_drop >= 50.0)
+		{
+			return true;
+		}
+	}
+
+	if(needStench)
+	{
+		int [element] resGoal;
+		resGoal[$element[stench]] = 4;
+		// check if we can get enough stench res before we start applying anything
+		int [element] resPossible = provideResistances(resGoal, $location[Twin Peak], true, true);
+		if(resPossible[$element[stench]] >= 4)
+		{
+			if(!speculative) provideResistances(resGoal, $location[Twin Peak], true);
+			return true;
+		}
+	}
+
+	return false;
+}
+
 boolean L9_twinPeak()
 {
 	if (internalQuestStatus("questL09Topping") < 2 || internalQuestStatus("questL09Topping") > 3)
@@ -721,94 +800,15 @@ boolean L9_twinPeak()
 	if(in_bhy())
 	{
 		// we can't make an oil jar to solve the quest, just adventure until the hotel is burned down
-		set_property("choiceAdventure606", "6"); // and flee the music NC
 		return autoAdv($location[Twin Peak]);
 	}
 
-	int progress = get_property("twinPeakProgress").to_int();
-	boolean needStench = ((progress & 1) == 0);
-	boolean needFood = ((progress & 2) == 0);
-	boolean needJar = ((progress & 4) == 0);
-	boolean needInit = (progress == 7);
-
-	boolean attempt = false;
-	if(!attempt && needInit)
+	if(!prepareForTwinPeak(true))
 	{
-		if(provideInitiative(40, $location[Twin Peak], true))
-		{
-			set_property("choiceAdventure606", "4");
-			attempt = true;
-		}
-		else
-		{
-			return false;			//init test shows up last. if we can't do it there is no point in checking rest of function.
-		}
-	}
-
-	if(!attempt && needJar)
-	{
-		if(item_amount($item[Jar of Oil]) == 1)
-		{
-			set_property("choiceAdventure606", "3");
-			attempt = true;
-		}
-	}
-
-	if(!attempt && needFood)
-	{
-		float food_drop = item_drop_modifier() + numeric_modifier("Food Drop");
-		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight"), equipped_item($slot[familiar]));
-		
-		if(my_servant() == $servant[Cat])
-		{
-			food_drop -= numeric_modifier($familiar[Baby Gravy Fairy], "Item Drop", $servant[Cat].level, $item[none]);
-		}
-		if((food_drop < 50) && (food_drop >= 20) && have_effect($effect[Brother Flying Burrito\'s Blessing]) == 0)
-		{
-			if(friars_available() && (!get_property("friarsBlessingReceived").to_boolean()))
-			{
-				cli_execute("friars food");
-			}
-			if(have_effect($effect[Brother Flying Burrito\'s Blessing]) > 0)
-			{
-				food_drop = food_drop + 30;
-			}
-		}
-		if((food_drop < 50.0) && (item_amount($item[Eagle Feather]) > 0) && (have_effect($effect[Eagle Eyes]) == 0))
-		{
-			use(1, $item[Eagle Feather]);
-			food_drop = food_drop + 20;
-		}
-		if((food_drop < 50.0) && (item_amount($item[resolution: be happier]) > 0) && (have_effect($effect[Joyful Resolve]) == 0))
-		{
-			buffMaintain($effect[Joyful Resolve]);
-			food_drop = food_drop + 15;
-		}
-		if(food_drop >= 50.0)
-		{
-			set_property("choiceAdventure606", "2");
-			attempt = true;
-		}
-	}
-
-	if(!attempt && needStench)
-	{
-		int [element] resGoal;
-		resGoal[$element[stench]] = 4;
-		// check if we can get enough stench res before we start applying anything
-		int [element] resPossible = provideResistances(resGoal, $location[Twin Peak], true, true);
-		if(resPossible[$element[stench]] >= 4)
-		{
-			provideResistances(resGoal, $location[Twin Peak], true);
-			set_property("choiceAdventure606", "1");
-			attempt = true;
-		}
-	}
-
-	if(!attempt)
-	{
+		auto_log_debug("Can't complete any task at the Great Overlook Lodge. Will come back to Twin Peak later");
 		return false;
 	}
+
 	auto_log_info("Twin Peak", "blue");
 
 	if(item_amount($item[Rusty Hedge Trimmers]) == 0 && $location[Twin Peak].turns_spent == 0)
