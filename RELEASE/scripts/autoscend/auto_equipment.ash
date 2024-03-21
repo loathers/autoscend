@@ -884,6 +884,31 @@ void equipMaximizedGear()
 {
 	finalizeMaximize();
 	maximize(get_property("auto_maximize_current"), 2500, 0, false);
+	// below code is to help diagnose, debug and workaround the intermittent issue where the maximizer fails to equip anything in hand slots
+	// if this is confirmed as fixed by mafia devs, remove the below code.
+	if (equipped_item($slot[weapon]) == $item[none] && my_path() != $path[Way of the Surprising Fist]) {
+		// do we actually have a weapon we can equip?
+		item equippableWeapon = $item[none];
+		foreach it in get_inventory() {
+			if (it.to_slot() == $slot[weapon] && can_equip(it)) {
+				// found a weapon and we should be able to equip it.
+				equippableWeapon = it;
+				break;
+			}
+		}
+		if (equippableWeapon != $item[none]) {
+			auto_log_error("It looks like the maximizer didn't equip any weapons for you. Lets dump some debugging info to help the KolMafia devs look into this.");
+			addToMaximize("2 dump"); // maximizer will dump a bunch of stuff to the session log with this
+			maximize(get_property("auto_maximize_current"), 2500, 0, false);
+			removeFromMaximize("2 dump");
+			if (equipped_item($slot[weapon]) == $item[none]) {
+				// workaround. equip a weapon & re-running maximizer appears to fix the issue.
+				equip(equippableWeapon);
+				maximize(get_property("auto_maximize_current"), 2500, 0, false);
+				auto_log_error("No weapon was equipped by the maximizer. If you want to report this to the mafia devs at kolmafia.us include your session log. We have attempted a work around.");
+			}
+		}
+	}
 }
 
 void equipOverrides()

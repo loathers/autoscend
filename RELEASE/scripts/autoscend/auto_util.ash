@@ -616,6 +616,29 @@ boolean canYellowRay()
 	return canYellowRay($monster[none]);
 }
 
+float [monster] auto_combat_appearance_rates(location place, boolean queue)
+{	//return probability of fighting each monster if the encounter is not a noncombat
+	//appearance_rates includes noncombat chance for $monster[none]
+	float [monster] res_including_noncombat = appearance_rates(place,queue);
+	float [monster] res_excluding_noncombat;
+	
+	float noncombat_frequency = res_including_noncombat[$monster[none]];
+	if(noncombat_frequency == 0 || noncombat_frequency >= 100) return res_including_noncombat;
+	
+	foreach mob, freq in res_including_noncombat
+	{
+		if(mob != $monster[none])
+		{
+			res_excluding_noncombat[mob] = freq / (100 - noncombat_frequency);
+		}
+	}
+	return res_excluding_noncombat;
+}
+
+float [monster] auto_combat_appearance_rates(location place)
+{	return auto_combat_appearance_rates(place, false);
+}
+
 boolean[string] auto_banishesUsedAt(location loc)
 {
 	boolean[string] auto_reallyBanishesUsedAt(location loc)
@@ -711,6 +734,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[familiar scrapbook]);
 	}
+	if(combat_string == "skill " + $skill[Spring Kick])
+	{
+		return autoEquip($item[spring shoes]);
+	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
 		return autoEquip($slot[weapon], wrap_item($item[Fourth of May cosplay saber]));
@@ -783,6 +810,34 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	if (isFreeMonster(enemy, my_location())) return "";
 	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
 	if (pre_banish != "") return pre_banish;
+
+	//Standard free-runs
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
+	{
+		if(auto_haveSpringShoes() && auto_is_valid($skill[Spring Away]))
+		{
+			if(!inCombat)
+			{
+				autoEquip($item[spring shoes]);
+				return "skill " + $skill[Spring Away];
+			}
+			else
+			{
+				if(canUse($skill[Spring Away]))
+				{
+					return "skill " + $skill[Spring Away];
+				}
+			}
+		}
+
+		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
+		{
+			if (canUse(it) && item_amount(it) > 0)
+			{
+				return useItem(it);
+			}
+		}
+	}
 
 	if(canChangeToFamiliar($familiar[Frumious Bandersnatch]))
 	{
@@ -867,18 +922,6 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	if(!inAftercore())
 	{
 		foreach it in $items[giant eraser] //assuming additional ones will be added, eventually
-		{
-			if (canUse(it) && item_amount(it) > 0)
-			{
-				return useItem(it);
-			}
-		}
-	}
-
-	//Standard free-runs
-	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
-	{
-		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{
@@ -1696,7 +1739,7 @@ boolean auto_deleteMail(kmailObject msg)
 			return true;
 		}
 	}
-	if((msg.fromid == 3038166) && (contains_text(msg.message, "completed your relationship fortune test")) && get_property("auto_hideAdultery").to_boolean())
+	if((msg.fromid == 3690803) && (contains_text(msg.message, "completed your relationship fortune test")) && get_property("auto_hideAdultery").to_boolean())
 	{
 		return true;
 	}
@@ -2699,6 +2742,8 @@ boolean[effect] ATSongList()
 		Inigo\'s Incantation of Inspiration,
 		The Ballad of Richie Thingfinder,
 		Chorale of Companionship,
+		// under normal circumstances we should never get this, but if we do we want to keep it
+		Dirge of Dreadfulness (Remastered),
 		Ode to Booze,
 		Ur-Kel\'s Aria of Annoyance,
 		Carlweather\'s Cantata of Confrontation,
@@ -2712,7 +2757,6 @@ boolean[effect] ATSongList()
 		Prelude of Precision,
 		Elron\'s Explosive Etude,
 		Benetton\'s Medley of Diversity,
-		Dirge of Dreadfulness (Remastered),
 		Dirge of Dreadfulness,
 		Stevedave\'s Shanty of Superiority,
 		Brawnee\'s Anthem of Absorption,
@@ -3314,7 +3358,7 @@ boolean auto_wantToSniff(monster enemy, location loc)
 	location locCache = my_location();
 	set_location(loc);
 	boolean [monster] toSniff = auto_getMonsters("sniff");
-	if(toSniff[enemy] && appearance_rates(loc)[enemy] < 100)
+	if(toSniff[enemy] && auto_combat_appearance_rates(loc)[enemy] < 100)
 	{
 		set_location(locCache);
 		return true;

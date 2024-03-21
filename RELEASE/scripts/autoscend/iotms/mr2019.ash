@@ -605,7 +605,7 @@ boolean auto_spoonReadyToTuneMoon()
 			// we want to get the meatcar via the knoll store
 			return false;
 		}
-		if((auto_get_campground() contains $item[Asdon Martin Keyfob]) && is_unrestricted($item[Asdon Martin Keyfob]) ||
+		if((auto_get_campground() contains $item[Asdon Martin keyfob (on ring)]) && is_unrestricted($item[Asdon Martin keyfob (on ring)]) ||
 		   (auto_is_valid($familiar[cookbookbat]) && have_familiar($familiar[cookbookbat])))
 		{
 			// we want to get the bugbear outfit before switching away for easy bread access

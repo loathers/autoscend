@@ -428,7 +428,7 @@ boolean zataraClanmate()
 #	set_property("_clanFortuneConsultUses", get_property("_clanFortuneConsultUses").to_int() + 1);
 
 	int attempts = 0;
-	int player = 3038166;
+	int player = 3690803;
 	string consultOverrideName = get_property("auto_consultChoice");
 	string name = get_player_name(player);
 	if (consultOverrideName != "")

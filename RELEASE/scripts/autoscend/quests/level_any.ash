@@ -139,7 +139,7 @@ boolean LX_bitchinMeatcar()
 		}
 	}
 	if (item_amount($item[Tires]) > 0 && enginePartsMissing >= 4 && 
-	appearance_rates($location[The Degrassi Knoll Garage])[$monster[Gnollish Gearhead]] < 77.0)
+	auto_combat_appearance_rates($location[The Degrassi Knoll Garage])[$monster[Gnollish Gearhead]] < 77.0)
 	{
 		//all parts of the engine are missing and would take a while to acquire from lootboxes at normal appearance rates
 		if (pullXWhenHaveY($item[meat engine],1,0))
@@ -814,7 +814,7 @@ item LX_getDesiredWorkshed(){
 			return $item[cold medicine cabinet];
 		case "asdon martin keyfob":
 		case "asdon":
-			return $item[Asdon Martin keyfob];
+			return $item[Asdon Martin keyfob (on ring)];
 		case "diabolic pizza cube":
 		case "pizza":
 			return $item[diabolic pizza cube]; //unless support is added, don't want to use this
@@ -879,9 +879,9 @@ boolean LX_setWorkshed(){
 				auto_log_info("Installed your model train set");
 				return true;
 			}
-			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
+			if ((auto_is_valid($item[Asdon Martin keyfob (on ring)])) && (item_amount($item[Asdon Martin keyfob (on ring)]) > 0))
 			{
-				use(1, $item[Asdon Martin keyfob]);
+				use(1, $item[Asdon Martin keyfob (on ring)]);
 				auto_log_info("Installed your Asdon Martin keyfob");
 				return true;
 			}
@@ -909,9 +909,9 @@ boolean LX_setWorkshed(){
 		//once we have enough fasteners and only if we are currently using the model train set
 		if((fastenerCount() >= 30 && lumberCount() >= 30) && existingShed == $item[model train set])
 		{
-			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
+			if ((auto_is_valid($item[Asdon Martin keyfob (on ring)])) && (item_amount($item[Asdon Martin keyfob (on ring)]) > 0))
 			{
-				use(1, $item[Asdon Martin keyfob]);
+				use(1, $item[Asdon Martin keyfob (on ring)]);
 				auto_log_info("Changed your workshed to Asdon Martin keyfob");
 				return true;
 			}
@@ -1010,7 +1010,7 @@ boolean LX_dronesOut()
 		}
 		return autoAdv($location[The Middle Chamber]); //Tomb ratchets
 	}
-	if((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15 && zone_isAvailable($location[Twin Peak]))
+	if((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && hedgeTrimmersNeeded() > 0 && zone_isAvailable($location[Twin Peak]))
 	{
 		auto_log_info("Going to Twin Peak");
 		if(get_property("auto_priorLocation").to_location() != $location[Twin Peak])

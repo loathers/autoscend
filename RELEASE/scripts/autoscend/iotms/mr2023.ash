@@ -317,19 +317,9 @@ boolean auto_nextRestOverCinch()
 
 boolean auto_getCinch(int goal)
 {
-	boolean atMaxMpHp()
-	{
-		return my_mp() == my_maxmp() && my_hp() == my_maxhp();
-	}
-
 	if(auto_currentCinch() >= goal)
 	{
 		return true;
-	}
-	if(atMaxMpHp())
-	{
-		// can't rest if we have full mp and hp
-		return false;
 	}
 	if(!haveFreeRestAvailable())
 	{
@@ -346,11 +336,6 @@ boolean auto_getCinch(int goal)
 	// use free rests until have enough cinch or out of rests
 	while(auto_currentCinch() < goal && haveFreeRestAvailable())
 	{
-		if(atMaxMpHp())
-		{
-			// can't rest if we have full mp and hp
-			return false;
-		}
 		if(!doFreeRest())
 		{
 			abort("Failed to rest to charge cincho");
@@ -839,4 +824,34 @@ boolean auto_handleCCSC()
 		return true;
 	}
 	return false;
+}
+
+void auto_useWardrobe()
+{
+	if(!auto_is_valid($item[wardrobe-o-matic]))
+	{
+		return;
+	}
+	if(item_amount($item[wardrobe-o-matic]) == 0)
+	{
+		return;
+	}
+	// check one of the 3 prefs which get set when wardrobe is used each day
+	if(get_property("_futuristicHatModifier") != "")
+	{
+		return;
+	}
+	// wait for level 5 to get an upgraded wardrobe
+	if(my_level() < 5)
+	{
+		return;
+	}
+	// wait for level 15 if close and not at NS tower
+	if(my_level() == 14 && internalQuestStatus("questL13Final") < 0)
+	{
+		return;
+	}
+	// only need to use it so we get the hat, shirt, fam equip
+	// let maximizer handle if any of it is worth equipping
+	use($item[wardrobe-o-matic]);
 }
