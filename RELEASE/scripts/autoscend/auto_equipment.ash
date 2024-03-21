@@ -398,6 +398,11 @@ void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip
 			maximizerStatement += "1handed,";		//ignore incompatible weapons
 		}
 	}
+	if(in_bhy())
+	{
+		// can't use garbage tote and wad of used tape gives +MP
+		maximizerStatement += "-equip wad of used tape";
+	}
 	if(!maximize(maximizerStatement,true))
 	{
 		if(!alwaysEquip)
