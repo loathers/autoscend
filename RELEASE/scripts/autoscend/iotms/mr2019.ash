@@ -223,7 +223,16 @@ boolean auto_sausageEatEmUp(int maxToEat)
 	{
 		auto_log_info("We're gonna slurp up some sausage, let's make sure we have enough max mp", "blue");
 		cli_execute("checkpoint");
-		maximize("mp,-tie", false);
+		if(in_bhy())
+		{
+			// can't use january's garbage tote, but that won't prevent
+			// the maximizer from suggesting we fold a wad of used tape.
+			maximize("mp,-equip wad of used tape,-tie", false);
+		}
+		else
+		{
+			maximize("mp,-tie", false);
+		}
 	}
 	// I could optimize this a little more by eating more sausage at once if you have enough max mp...
 	// but meh.
