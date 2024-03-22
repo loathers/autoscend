@@ -3347,7 +3347,17 @@ boolean L11_defeatEd()
 	auto_log_info("Time to waste all of Ed's Ka Coins :(", "blue");
 
 	set_property("auto_nextEncounter","Ed the Undying");
-	autoAdv($location[The Lower Chambers]);
+	if(in_bhy())
+	{
+		maximize("beeosity,-tie", false);
+		set_property("auto_disableAdventureHandling", true);
+		autoAdvBypass("place.php?whichplace=pyramid&action=pyramid_state1a", $location[The Lower Chambers]);
+		set_property("auto_disableAdventureHandling", false);
+	}
+	else
+	{
+		autoAdv($location[The Lower Chambers]);
+	}
 	if(in_pokefam() || in_koe())
 	{
 		cli_execute("refresh inv");
