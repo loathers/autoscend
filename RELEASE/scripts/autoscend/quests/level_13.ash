@@ -468,11 +468,15 @@ boolean L13_towerNSContests()
 			int [stat] statGoal;
 			statGoal[crowd_stat] = 600;
 			provideStats(statGoal, $location[Noob Cave], true);
+			string maximize_string = crowd_stat + ", -equip snow suit";
+			if(in_bhy())
+			{
+				maximize_string += ", -equip wad of used tape";
+			}
+			autoMaximize(maximize_string, 1500, 0, false);
 			switch(crowd_stat)
 			{
 			case $stat[moxie]:
-				autoMaximize("moxie -equip snow suit", 1500, 0, false);
-
 				if(have_effect($effect[Ten out of Ten]) == 0 && auto_is_valid($effect[Ten out of Ten]))
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Ten out of Ten]);
@@ -484,8 +488,6 @@ boolean L13_towerNSContests()
 				}
 				break;
 			case $stat[muscle]:
-				autoMaximize("muscle -equip snow suit", 1500, 0, false);
-
 				if(have_effect($effect[Muddled]) == 0 && auto_is_valid($effect[Muddled]))
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Muddled]);
@@ -497,8 +499,6 @@ boolean L13_towerNSContests()
 				}
 				break;
 			case $stat[mysticality]:
-				autoMaximize("myst -equip snow suit", 1500, 0, false);
-
 				if(have_effect($effect[Uncucumbered]) == 0 && auto_is_valid($effect[Uncucumbered]))
 				{
 					if(crowd2Insufficient()) fightClubSpa($effect[Uncucumbered]);
