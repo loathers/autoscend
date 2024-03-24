@@ -1822,7 +1822,7 @@ boolean makeGenieCombat(monster mon, string option)
 	string[int] pages;
 	item bottle = wrap_item($item[Genie Bottle]);
 	int wish_provider = bottle.to_int();
-	if (item_amount($item[pocket wish]) > 0)
+	if (item_amount($item[pocket wish]) > 0 && auto_is_valid($item[pocket wish]))
 	{
 		wish_provider = $item[pocket wish].to_int();
 	}
