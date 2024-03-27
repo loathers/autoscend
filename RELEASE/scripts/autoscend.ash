@@ -1,4 +1,4 @@
-since r27854;	// feat: store everfull dart perks
+since r27858;	// Parse dart skill -> target
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

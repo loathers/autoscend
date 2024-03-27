@@ -157,7 +157,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	}
 
 	//Everfull Dart Holder
-	if(get_property("dartsThrown").to_int() < 2 && have_equipped($item[Everfull Dart Holster]))
+	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0)
 	{
 		return useSkill(dartSkill());
 	}
