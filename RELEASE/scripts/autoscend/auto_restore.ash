@@ -2188,8 +2188,36 @@ boolean haveAnyIotmAlternativeRestSiteAvailable(){
  */
 boolean doFreeRest(){
 	if(haveFreeRestAvailable()){
+
+		// burn MP if possible prior to resting
+		int restorableMp = my_maxmp() - my_mp();
+		int mpToBurn = 0;
+		if (chateaumantegna_available() || auto_campawayAvailable()) // will restore at least 100 MP
+		{
+			mpToBurn = 100 - restorableMp;
+		} else if (get_dwelling() == $item[Frobozz Real-Estate Company Instant House (TM)])
+		{
+			mpToBurn = 40 - restorableMp;
+		} else if (get_dwelling() == $item[Newbiesport&trade; tent])
+		{
+			mpToBurn = 10 - restorableMp;
+		} else // assume resting on the ground
+		{
+			mpToBurn = 5 - restorableMp;
+		}
+
+		if (mpToBurn > 0)
+		{
+			cli_execute("burn " + mpToBurn);
+		}
+
+		// resting and success check
+		int hpMp_before = my_hp() + my_mp();
 		int rest_count = get_property("timesRested").to_int();
-		return doRest() > rest_count;
+		boolean result = doRest() > rest_count;
+		int hpMp_after = my_hp() + my_mp();
+		boolean success = (hpMp_after > hpMp_before) || result;
+		return success;
 	}
 	return false;
 }
