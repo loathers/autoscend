@@ -52,7 +52,7 @@ int dartBullseyeChance()
 	perks = split_string(get_property("everfullDartPerks").to_string(), ",");
 	foreach perk in perks
 	{
-		if (contains_text("25%"))
+		if (contains_text(perk, "25%"))
 		{
 			chance += 25;
 		}
