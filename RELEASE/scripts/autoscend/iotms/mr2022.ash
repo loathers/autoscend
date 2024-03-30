@@ -741,7 +741,8 @@ boolean auto_autumnatonQuest()
 
 boolean auto_hasSpeakEasy()
 {
-	return auto_is_valid($item[deed to Oliver\'s Place]) && get_property("ownsSpeakeasy").to_boolean();
+	// We aren't interested in using the deed, if it's unrestricted we should be able to reach the speakeasy
+	return is_unrestricted($item[deed to Oliver\'s Place]) && get_property("ownsSpeakeasy").to_boolean();
 }
 
 int auto_remainingSpeakeasyFreeFights()
