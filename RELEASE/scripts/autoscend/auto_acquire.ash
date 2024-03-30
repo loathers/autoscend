@@ -70,7 +70,10 @@ boolean canPull(item it, boolean historical)
 	{
 		return false;
 	}
-	
+	if (!auto_is_valid(it))
+	{
+		return false;
+	}
 	if(storage_amount(it) > 0)
 	{
 		return true;	//we have it in storage so we can pull it
@@ -79,12 +82,6 @@ boolean canPull(item it, boolean historical)
 	{
 		return false;	//we do not have it in storage and we can not trade for it. gifts currently not handled
 	}
-
-	if (!auto_is_valid(it))
-	{
-		return false;
-	}
-
 	int meat = my_storage_meat();
 	if(can_interact())
 	{
