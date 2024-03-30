@@ -400,7 +400,7 @@ float npcStoreDiscountMulti()
 	{
 		retval -= 0.05;
 	}
-	else if(possessEquipment($item[designer sweatpants] && auto_is_valid($item[designer sweatpants])))
+	else if(possessEquipment($item[designer sweatpants]) && auto_is_valid($item[designer sweatpants]))
 	{
 		retval -= 0.05;
 	}
