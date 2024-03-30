@@ -48,19 +48,6 @@ boolean glover_usable(string it)
 	{
 		return true;
 	}
-	item checkItem = it.to_item();
-	if(checkItem != $item[none] && $items[SpinMaster&trade; lathe, // it works since there's no "use" link
-	&quot;I voted!&quot; sticker, // free fights still work for I voted! sticker
-	ninja Carabiner, ninja Crampons, ninja Rope,
-	eXtreme scarf, snowboarder pants, eXtreme mittens, linoleum ore, chrome ore, asbestos ore,
-	loadstone, amulet of extreme plot significance, titanium assault umbrella, antique machete,
-	half-size scalpel, head mirror, wet stew, UV-resistant compass, Talisman o' Namsilat, Unstable Fulminate,
-	Orcish baseball cap, Orcish frat-paddle, filthy knitted dread sack, filthy corduroys,
-	beer helmet, distressed denim pants, reinforced beaded headband, bullet-proof corduroys] contains checkItem)
-	{
-		// these are all used for quest furthering porpoises so they still "work" even though they don't contain G's
-		return true;
-	}
 	return false;
 }
 
@@ -75,6 +62,48 @@ boolean glover_usable(effect eff)
 		return true;	//explicit exceptions that work in glover despite not having G in the name
 	}
 	return glover_usable(eff.to_string());
+}
+
+boolean glover_usable(skill sk)
+{
+	if(!in_glover())
+	{
+		return true;
+	}
+	
+	// Some of these have g in their name, but are included so it's clearer that all bookshelf skills are allowed
+	if($skills[summon snowcones, summon stickers, summon sugar sheets, summon clip art, summon rad libs,
+	summon smithsness, summon candy heart, summon party favor, summon love song, summon BRICKOs, summon dice,
+	summon resolutions, summon taffy, summon hilarious objects, summon tasteful items, summon trading cards,
+	summon geeky gifts, summon confiscated things] contains sk)
+	{
+		return true;
+	}
+
+	return glover_usable(sk.to_string());
+}
+
+boolean glover_usable(item it)
+{
+	if(!in_glover())
+	{
+		return true;
+	}
+
+	if(it != $item[none] && $items[SpinMaster&trade; lathe, // it works since there's no "use" link
+	miniature crystal ball, // has a "ponder" link instead of "use" which still works
+	tiny stillsuit, // has a "distill" link that still works
+	&quot;I voted!&quot; sticker, // free fights still work for I voted! sticker
+	ninja Carabiner, ninja Crampons, ninja Rope,
+	eXtreme scarf, snowboarder pants, eXtreme mittens, linoleum ore, chrome ore, asbestos ore,
+	loadstone, amulet of extreme plot significance, titanium assault umbrella, antique machete,
+	half-size scalpel, head mirror, wet stew, UV-resistant compass, Talisman o' Namsilat, Unstable Fulminate,
+	Orcish baseball cap, Orcish frat-paddle, filthy knitted dread sack, filthy corduroys,
+	beer helmet, distressed denim pants, reinforced beaded headband, bullet-proof corduroys] contains checkItem)
+	{
+		// these are all used for quest furthering porpoises so they still "work" even though they don't contain G's
+		return true;
+	}
 }
 
 boolean LM_glover()

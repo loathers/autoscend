@@ -707,6 +707,8 @@ void glover_initializeDay(int day);
 void glover_initializeSettings();
 boolean glover_usable(string it);
 boolean glover_usable(effect eff);
+boolean glover_usable(skill sk);
+boolean glover_usable(item it);
 boolean LM_glover();
 
 ########################################################################################################
