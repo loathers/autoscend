@@ -1199,7 +1199,7 @@ boolean doBedtime()
 			effect_to_wish = $effect[One Very Clear Eye];
 		}
 	}
-	if (auto_haveMonkeyPaw())
+	if (auto_canMonkeyPawWish())
 	{
 		boolean success = true;
 		while (auto_monkeyPawWishesLeft() > 0 && success)
