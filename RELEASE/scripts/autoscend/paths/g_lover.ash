@@ -22,15 +22,13 @@ void glover_initializeSettings()
 		set_property("gnasirProgress", get_property("gnasirProgress").to_int() | 16);
 
 		//Buy Crude Oil Congealer and um... A-Boo Glues.
-		if((item_amount($item[Crude Oil Congealer]) == 0) && (item_amount($item[G]) > 0))
+		if((item_amount($item[Crude Oil Congealer]) == 0) && (item_amount($item[G]) >= 3))
 		{
-			cli_execute("make " + $item[Crude Oil Congealer]);
+			buy($coinmaster[G-mart], 1, $item[Crude Oil Congealer]);
 		}
-		while((item_amount($item[A-Boo Glue]) < 3) && (item_amount($item[G]) > 0))
-		{
-			cli_execute("make " + $item[A-Boo Glue]);
-		}
-
+		int gluesNeeded = 4 - $item_amount($item[A-Boo Glue]),
+		int gluesToBuy = min(gluesNeeded, item_amount($item[G]));
+		buy($coinmaster[G-mart], gluesToBuy, $item[A-Boo Glue]);
 	}
 }
 
