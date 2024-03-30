@@ -453,6 +453,7 @@ boolean auto_voidMonster(location loc);
 boolean auto_haveCosmicBowlingBall();
 string auto_bowlingBallCombatString(location place, boolean speculation);
 boolean auto_haveCombatLoversLocket();
+boolean auto_canReminisceWithLocket();
 int auto_CombatLoversLocketCharges();
 boolean auto_haveReminiscedMonster(monster mon);
 boolean auto_monsterInLocket(monster mon);

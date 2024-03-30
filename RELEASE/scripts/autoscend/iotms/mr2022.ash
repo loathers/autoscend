@@ -108,10 +108,22 @@ boolean auto_haveCombatLoversLocket()
 	return possessEquipment($item[combat lover\'s locket]) && auto_is_valid($item[combat lover\'s locket]);
 }
 
+boolean auto_canReminisceWithLocket()
+{
+	// G-Lover's enforcement is tied to the "use" query parameter, but the locket
+	// has it's own special "reminisce" parameter, so G-Lover doesn't stop using
+	// it to summon monsters. Because you still can't get the effects from wearing it,
+	// and some callers of auto_haveCombatLoversLocket proceed to equip it, this needs
+	// a separate function. We don't want to wear the locket to tune it's enchantments
+	// in G-Lover, but it might be possible to add monsters to it still?
+	return possessEquipment($item[combat lover\'s locket] &&
+	(auto_is_valid($item[combat lover\'s locket]) || in_glover());
+}
+
 int auto_CombatLoversLocketCharges()
 {
 	// can fight up to 3 unique monsters by reminiscing with the locket
-	if (!auto_haveCombatLoversLocket())
+	if (!auto_canReminisceWithLocket())
 	{
 		return 0;
 	}

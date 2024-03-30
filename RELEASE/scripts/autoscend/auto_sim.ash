@@ -47,7 +47,7 @@ void printSimSuggested()
 	formattedSimPrint(maxedPoolSkill, "Pool Shark", "Lucky! adv which permanently increases your pool skill. It is possible for Mafia to not realize you have maxed this. If you are confident you have, enter the following in the CLI: `set poolSharkCount=25`");
 
 	// if we have combat locket, check if we have used monsters in there
-	if(auto_haveCombatLoversLocket())
+	if(auto_canReminisceWithLocket())
 	{
 		monster mon = $monster[Fantasy Bandit];
 		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Fighting 5x in a day will get you a fat loot token");
