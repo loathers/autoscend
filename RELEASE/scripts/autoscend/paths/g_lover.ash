@@ -26,7 +26,7 @@ void glover_initializeSettings()
 		{
 			buy($coinmaster[G-mart], 1, $item[Crude Oil Congealer]);
 		}
-		int gluesNeeded = 4 - $item_amount($item[A-Boo Glue]);
+		int gluesNeeded = 4 - item_amount($item[A-Boo Glue]);
 		int gluesToBuy = min(gluesNeeded, item_amount($item[G]));
 		buy($coinmaster[G-mart], gluesToBuy, $item[A-Boo Glue]);
 	}
@@ -72,7 +72,7 @@ boolean glover_usable(skill sk)
 	// Some of these have g in their name, but are included so it's clearer that all bookshelf skills are allowed
 	if($skills[summon snowcones, summon stickers, summon sugar sheets, summon clip art, summon rad libs,
 	summon smithsness, summon candy heart, summon party favor, summon love song, summon BRICKOs, summon dice,
-	summon resolutions, summon taffy, summon hilarious objects, summon tasteful items, summon trading cards,
+	summon resolutions, summon taffy, summon hilarious objects, summon tasteful items, summon alice\'s army cards,
 	summon geeky gifts, summon confiscated things] contains sk)
 	{
 		return true;
