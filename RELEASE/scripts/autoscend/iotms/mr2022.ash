@@ -81,7 +81,7 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 	}
 
 	// determine if we want more item or meat bonus
-	if(canUse($skill[Bowl Straight Up]))
+	if(auto_is_valid($effect[cosmic ball in the air]) && canUse($skill[Bowl Straight Up]))
 	{
 		// increase item bonus if not item capped in current zone
 		generic_t itemNeed = zone_needItem(place);
