@@ -13,6 +13,7 @@ import <autoscend/combat/auto_combat_dark_gyffte.ash>				//path = dark gyffte
 import <autoscend/combat/auto_combat_disguises_delimit.ash>			//path = disguises delimit
 import <autoscend/combat/auto_combat_ed.ash>						//path = actually ed the undying
 import <autoscend/combat/auto_combat_gelatinous_noob.ash>			//path = gelatinous noob
+import <autoscend/combat/auto_combat_glover.ash>					//path = g-lover
 import <autoscend/combat/auto_combat_kingdom_of_exploathing.ash>	//path = kingdom of exploathing
 import <autoscend/combat/auto_combat_license_to_adventure.ash>		//path = license to adventure
 import <autoscend/combat/auto_combat_ocrs.ash>						//path = one crazy random summer

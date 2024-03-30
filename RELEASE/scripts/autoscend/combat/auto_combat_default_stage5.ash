@@ -21,6 +21,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	// Path = gelatinous noob
 	retval = auto_combatGelatinousNoobStage5(round, enemy, text);
 	if(retval != "") return retval;
+
+	// Path = g-lover
+	retval = auto_combatGloverStage5(round, enemy, text);
+	if(retval != "") return retval;
 	
 	// Path = you, robot
 	retval = auto_combat_robot_stage5(round, enemy, text);

@@ -120,6 +120,10 @@ string auto_combatLicenseToAdventureStage4(int round, monster enemy, string text
 string auto_combatGelatinousNoobStage5(int round, monster enemy, string text);
 
 #####################################################
+//defined in /autoscend/combat/auto_combat_glover.ash
+string auto_combatGloverStage5(int round, monster enemy, string text);
+
+#####################################################
 //defined in /autoscend/combat/auto_combat_heavy_rains.ash
 string auto_combatHeavyRainsStage1(int round, monster enemy, string text);
 string auto_combatHeavyRainsStage3(int round, monster enemy, string text);
