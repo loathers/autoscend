@@ -116,7 +116,7 @@ boolean auto_canReminisceWithLocket()
 	// and some callers of auto_haveCombatLoversLocket proceed to equip it, this needs
 	// a separate function. We don't want to wear the locket to tune it's enchantments
 	// in G-Lover, but it might be possible to add monsters to it still?
-	return possessEquipment($item[combat lover\'s locket] &&
+	return possessEquipment($item[combat lover\'s locket]) &&
 	(auto_is_valid($item[combat lover\'s locket]) || in_glover());
 }
 
