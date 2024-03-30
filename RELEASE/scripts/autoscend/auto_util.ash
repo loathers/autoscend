@@ -4391,8 +4391,13 @@ int meatReserve()
 
 boolean auto_wishForEffect(effect wish)
 {
+	// Don't wish for useless effects in paths like G-Lover
+	if(!auto_is_valid(wish))
+	{
+		return false;
+	}
 	// First try to use the monkey paw
-	if (auto_haveMonkeyPaw()) {
+	if (auto_canMonkeyPawWish()) {
 		if (auto_makeMonkeyPawWish(wish)) { return true; }
 	}
 	// If we're allowed to use the genie bottle, do that.

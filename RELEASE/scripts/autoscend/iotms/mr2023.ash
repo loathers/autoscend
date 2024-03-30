@@ -210,12 +210,18 @@ boolean auto_doPhoneQuest()
 boolean auto_haveMonkeyPaw()
 {
 	static item paw = $item[cursed monkey\'s paw];
-	return auto_is_valid(paw) && (item_amount(paw) > 0 || have_equipped(paw));
+	return auto_is_valid(paw) && possessEquipment(paw);
+}
+
+boolean auto_canMonkeyPawWish()
+{
+	static item paw = $item[cursed monkey\'s paw];
+	return (auto_is_valid(paw) || in_glover()) && possessEquipment(paw);
 }
 
 int auto_monkeyPawWishesLeft()
 {
-	if (auto_haveMonkeyPaw())
+	if (auto_canMonkeyPawWish())
 	{
 		return 5 - get_property("_monkeyPawWishesUsed").to_int();
 	}
@@ -224,7 +230,7 @@ int auto_monkeyPawWishesLeft()
 
 boolean auto_makeMonkeyPawWish(effect wish)
 {
-	if (!auto_haveMonkeyPaw()) {
+	if (!auto_canMonkeyPawWish()) {
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
@@ -241,7 +247,7 @@ boolean auto_makeMonkeyPawWish(effect wish)
 
 boolean auto_makeMonkeyPawWish(item wish)
 {
-	if (!auto_haveMonkeyPaw()) {
+	if (!auto_canMonkeyPawWish()) {
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
@@ -258,7 +264,7 @@ boolean auto_makeMonkeyPawWish(item wish)
 
 boolean auto_makeMonkeyPawWish(string wish)
 {
-	if (!auto_haveMonkeyPaw()) {
+	if (!auto_canMonkeyPawWish()) {
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}

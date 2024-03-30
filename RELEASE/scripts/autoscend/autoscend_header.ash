@@ -505,6 +505,7 @@ boolean auto_havePayPhone();
 boolean auto_getPhoneQuest();
 boolean auto_doPhoneQuest();
 boolean auto_haveMonkeyPaw();
+boolean auto_canMonkeyPawWish();
 int auto_monkeyPawWishesLeft();
 boolean auto_makeMonkeyPawWish(effect wish);
 boolean auto_makeMonkeyPawWish(item wish);
