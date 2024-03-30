@@ -144,7 +144,7 @@ int lumberCount()
 	// Name has a b in it and doesn't have a g
 	if(!in_bhy() && !in_glover())
 	{
-	base = base + 5 * item_amount($item[Smut Orc Keepsake Box]);
+		base = base + 5 * item_amount($item[Smut Orc Keepsake Box]);
 	}
 
 	return base;
