@@ -26,7 +26,7 @@ void glover_initializeSettings()
 		{
 			buy($coinmaster[G-mart], 1, $item[Crude Oil Congealer]);
 		}
-		int gluesNeeded = 4 - $item_amount($item[A-Boo Glue]),
+		int gluesNeeded = 4 - $item_amount($item[A-Boo Glue]);
 		int gluesToBuy = min(gluesNeeded, item_amount($item[G]));
 		buy($coinmaster[G-mart], gluesToBuy, $item[A-Boo Glue]);
 	}
