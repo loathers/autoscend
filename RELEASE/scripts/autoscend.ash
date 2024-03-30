@@ -1795,6 +1795,7 @@ boolean doTasks()
 	if(LM_bhy())						return true;
 
 	tophatMaker();
+	auto_checkTrainSet();
 	deck_useScheme("");
 	autosellCrap();
 	asdonAutoFeed();
@@ -1803,7 +1804,6 @@ boolean doTasks()
 	auto_chapeau();
 	auto_buyFireworksHat();
 	auto_CMCconsult();
-	auto_checkTrainSet();
 	prioritizeGoose();
 	auto_useWardrobe();
 	
