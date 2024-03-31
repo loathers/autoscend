@@ -1433,19 +1433,19 @@ int speculative_pool_skill()
 	{
 		expectPool += 3;
 	}
-	if(have_effect($effect[Chalked Weapon]) > 0)
+	if(auto_is_valid($effect[Chalked Weapon]) && have_effect($effect[Chalked Weapon]) > 0)
 	{
 		expectPool += 5;
 	}
-	if(have_effect($effect[Influence of Sphere]) > 0)
+	if(auto_is_valid($effect[Influence of Sphere]) && have_effect($effect[Influence of Sphere]) > 0)
 	{
 		expectPool += 5;
 	}
-	if(have_effect($effect[Video... Games?]) > 0)
+	if(auto_is_valid($effect[Video... Games?]) && have_effect($effect[Video... Games?]) > 0)
 	{
 		expectPool += 5;
 	}
-	if(have_effect($effect[Swimming with Sharks]) > 0)
+	if(auto_is_valid($effect[Swimming with Sharks]) && have_effect($effect[Swimming with Sharks]) > 0)
 	{
 		expectPool += 3;
 	}

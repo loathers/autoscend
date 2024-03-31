@@ -362,6 +362,14 @@ boolean LX_unlockHauntedLibrary()
 	{
 		auto_log_info("I don't need to equip a cue to beat this ghostie.", "blue");
 	}
+	else if(in_glover()) // can't use pool cues or benefit from most of the pool effects
+	{
+		if(possessEquipment($item[government-issued eyeshade]))
+		{
+			autoEquip($item[government-issued eyeshade]);
+			expectPool += 5;
+		}
+	}
 	else
 	{
 		if(possessEquipment(staffOfFats))
