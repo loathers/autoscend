@@ -214,7 +214,7 @@ void auto_burnPowerfulGloveCharges()
 boolean auto_canFightPiranhaPlant()
 {
 	int numMushroomFights = (in_plumber() ? 5 : 1);
-	if (auto_is_valid($item[packet of mushroom spores]) &&
+	if (is_unrestricted($item[packet of mushroom spores]) &&
 			get_campground() contains $item[packet of mushroom spores] &&
 			get_property("_mushroomGardenFights").to_int() < numMushroomFights)
 	{
@@ -225,7 +225,7 @@ boolean auto_canFightPiranhaPlant()
 
 boolean auto_canTendMushroomGarden()
 {
-	if (auto_is_valid($item[packet of mushroom spores]) &&
+	if (is_unrestricted($item[packet of mushroom spores]) &&
 			get_campground() contains $item[packet of mushroom spores] &&
 			!get_property("_mushroomGardenVisited").to_boolean())
 	{
