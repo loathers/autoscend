@@ -1127,7 +1127,7 @@ skill preferredLibram()
 boolean useLibramSkill(skill sk)
 {
 	string libram = "";
-	switch sk 
+	switch(sk)
 	{
 		case $skill[summon candy heart]:	libram = "summoncandyheart";	break;
 		case $skill[summon party favor]:	libram = "summonpartyfavor";	break;
@@ -1168,7 +1168,7 @@ boolean useTomeSkill(int times, skill sk)
 	}
 
 	string tome = "";
-	switch sk 
+	switch(sk)
 	{
 		case $skill[summon rad libs]:		tome = "summonradlibs";		break;
 		case $skill[summon sugar sheets]:	tome = "summonsugarsheets";	break;
