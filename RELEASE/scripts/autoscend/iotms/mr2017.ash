@@ -1792,7 +1792,7 @@ boolean canGenieCombat(monster mon)
 		return false;  // cannot fight if no adv remaining
 	}
 	string attr = mon.attributes.to_lower_case();
-	if (attr.contains_text("nocopy") || attr.contains_text("boss"))
+	if (attr.contains_text("nowish") || attr.contains_text("nocopy") || attr.contains_text("boss"))
 	{
 		return false;
 	}
