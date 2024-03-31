@@ -1158,6 +1158,10 @@ boolean useLibramSkill(skill sk)
 boolean useTomeSkill(int times, skill sk)
 {
 	int summons = get_property("tomeSummons").to_int();
+	if(summons == 3)
+	{
+		return false;
+	}
 	if((summons + times) > 3)
 	{
 		return false;
