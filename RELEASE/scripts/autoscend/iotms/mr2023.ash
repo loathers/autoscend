@@ -234,6 +234,10 @@ boolean auto_makeMonkeyPawWish(effect wish)
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
+	if (!auto_is_valid(wish)) {
+		auto_log_info("Requested monkey paw wish is not valid for some reason, skippin "+to_string(wish));
+		return false;
+	}
 	if (auto_monkeyPawWishesLeft() < 1) {
 		auto_log_info("Out of monkey paw wishes, skipping "+to_string(wish));
 		return false;
@@ -249,6 +253,10 @@ boolean auto_makeMonkeyPawWish(item wish)
 {
 	if (!auto_canMonkeyPawWish()) {
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
+		return false;
+	}
+	if (!auto_is_valid(wish)) {
+		auto_log_info("Requested monkey paw wish is not valid for some reason, skippin "+to_string(wish));
 		return false;
 	}
 	if (auto_monkeyPawWishesLeft() < 1) {
