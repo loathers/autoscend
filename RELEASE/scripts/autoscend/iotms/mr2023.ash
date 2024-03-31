@@ -3,7 +3,7 @@
 boolean auto_haveRockGarden()
 {
 	static item rockGarden = $item[Packet Of Rock Seeds];
-	return auto_is_valid(rockGarden) && auto_get_campground() contains rockGarden;
+	return is_unrestricted(rockGarden) && auto_get_campground() contains rockGarden;
 }
 
 void rockGardenEnd() //broke these out so they aren't handled at the start of everyday but ASAP after numberology
