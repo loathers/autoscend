@@ -803,7 +803,7 @@ boolean doBedtime()
 			doFreeRest();
 			while(my_mp() > mp_cost(libram))
 			{
-				use_skill(1, libram);
+				useLibramSkill(libram);
 			}
 		}
 	}
