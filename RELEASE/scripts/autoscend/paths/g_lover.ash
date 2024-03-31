@@ -123,7 +123,7 @@ void auto_gloverPulls()
 	{
 		if(storage_amount($item[government-issued eyeshade]) > 0)
 		{
-			pullXWhenHaveY($item[government-issued eyeshade]);
+			pullXWhenHaveY($item[government-issued eyeshade], 1, 0);
 		}
 	}
 }
