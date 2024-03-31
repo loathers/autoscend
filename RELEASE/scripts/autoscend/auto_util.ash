@@ -1124,6 +1124,82 @@ skill preferredLibram()
 	return $skill[none];
 }
 
+boolean useLibramSkill(skill sk)
+{
+	string libram = "";
+	switch sk 
+	{
+		case $skill[summon candy heart]:	libram = "summoncandyheart";	break;
+		case $skill[summon party favor]:	libram = "summonpartyfavor";	break;
+		case $skill[summon love song]:		libram = "summonlovesongs";		break;
+		case $skill[summon BRICKOs]:		libram = "summonbrickos";		break;
+		case $skill[summon dice]:			libram = "summongygax";			break;
+		case $skill[summon resolutions]:	libram = "summonresolutions";	break;
+		case $skill[summon taffy]: 			libram = "summontaffy";			break;
+		default:							return false;
+	}
+
+	int summons = get_property("libramSummons").to_int();
+	auto_log_debug("Attempting to cast " + sk + " like a normal skill");
+	use_skill(1, sk);
+	if(summons == get_property("libramSummons").to_int())
+	{
+		auto_log_debug("Failed as a normal skill, attempting to cast " + sk + " from my mystical bookshelf");
+		visit_url("campground.php?preaction=" + libram + "&quantity=1");
+		if(summons == get_property("libramSummons").to_int())
+		{
+			auto_log_warning("Failed to cast " + sk);
+			return false;
+		}
+	}
+	return true;
+}
+
+boolean useTomeSkill(int times, skill sk)
+{
+	int summons = get_property("tomeSummons").to_int();
+	if((summons + times) > 3)
+	{
+		return false;
+	}
+	if(times < 1)
+	{
+		return false;
+	}
+
+	string tome = "";
+	switch sk 
+	{
+		case $skill[summon rad libs]:		tome = "summonradlibs";		break;
+		case $skill[summon sugar sheets]:	tome = "summonsugarsheets";	break;
+		case $skill[summon smithsness]:		tome = "summonsmithsness";	break;
+		case $skill[summon stickers]:		tome = "summonstickers";	break; // not sure about this one
+		// case $skill[summon clip art]:	tome = "summonclipartparts";	break;   // requires the number of the images and mapping from desired item to set of 3 images
+		default:
+			auto_log_warning("Unable to cast unknown or unsupported tome skill " + sk);							
+			return false;
+	}
+
+	auto_log_debug("Attempting to cast " + sk + " like a normal skill " + times + " times");
+	use_skill(times, sk);
+	if(get_property("tomeSummons").to_int() == summons)
+	{
+		auto_log_debug("Failed to cast " + sk + " as a skill, attempting again via mystical bookshelf");
+		visit_url("campground.php?preaction=" + tome + "&quantity=" + times);
+		if(get_property("tomeSummons").to_int() != summons + times)
+		{
+			auto_log_warning("Failed to cast " + sk);
+			return false;
+		}
+	}
+	int summoned = get_property("tomeSummons").to_int() - summons;
+	if(summoned != times)
+	{
+		auto_log_debug("Cast " + sk + " successfully " + (summoned - summons) + " times");
+		return false;
+	}
+	return true;
+}
 
 boolean lastAdventureSpecialNC()
 {

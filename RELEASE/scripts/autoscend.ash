@@ -937,7 +937,7 @@ void initializeDay(int day)
 			}
 			if(auto_have_skill($skill[Summon Smithsness]) && (my_mp() > (3 * mp_cost($skill[Summon Smithsness]))))
 			{
-				use_skill(3, $skill[Summon Smithsness]);
+				useTomeSkill(3, $skill[Summon Smithsness]);
 			}
 
 			if(item_amount($item[handful of smithereens]) >= 2)

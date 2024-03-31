@@ -458,7 +458,7 @@ boolean auto_post_adventure()
 
 	if(auto_have_skill($skill[Summon Smithsness]) && (my_mp() > 20))
 	{
-		use_skill(1, $skill[Summon Smithsness]);
+		useTomeSkill($skill[Summon Smithsness]);
 	}
 
 	//everyone wants more initiative
@@ -495,7 +495,7 @@ boolean auto_post_adventure()
 		// TODO: 'Get Big' is a pretty good skill
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 25))
 		{
-			use_skill(1, libram);
+			useLibramSkill(libram);
 		}
 
 		foreach sk in toCast
@@ -556,7 +556,7 @@ boolean auto_post_adventure()
 
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 32))
 		{
-			use_skill(1, libram);
+			useLibramSkill(libram);
 		}
 
 		foreach sk in toCast
@@ -631,7 +631,7 @@ boolean auto_post_adventure()
 
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 40))
 		{
-			use_skill(1, libram);
+			useLibramSkill(libram);
 		}
 
 #		buffMaintain($effect[Prayer of Seshat], 5, 1, 10);
@@ -666,7 +666,7 @@ boolean auto_post_adventure()
 
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 80))
 		{
-			use_skill(1, libram);
+			useLibramSkill(libram);
 		}
 
 		if(my_mp() > 80)
@@ -746,7 +746,7 @@ boolean auto_post_adventure()
 			try
 			{
 				#if(use_skill(1, libram)) {}
-				temp = use_skill(1, libram);
+				temp = useLibramSkill(libram);
 			}
 			finally
 			{
@@ -854,7 +854,7 @@ boolean auto_post_adventure()
 
 		if((libram != $skill[none]) && ((my_mp() - mp_cost(libram)) > 80))
 		{
-			use_skill(1, libram);
+			useLibramSkill(libram);
 		}
 
 		if(my_mp() > 80)

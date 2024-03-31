@@ -1689,6 +1689,8 @@ boolean isGuildClass();
 float elemental_resist_value(int resistance);
 int elemental_resist(element goal);
 skill preferredLibram();
+boolean useLibramSkill();
+boolean useTomeSkill();
 boolean lastAdventureSpecialNC();
 effect whatStatSmile();
 boolean ovenHandle();
