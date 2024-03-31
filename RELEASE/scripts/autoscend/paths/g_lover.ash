@@ -102,7 +102,7 @@ boolean glover_usable(item it)
 		// these are all used for quest furthering porpoises so they still "work" even though they don't contain G's
 		return true;
 	}
-	return false;
+	return glover_usable(it.to_string());
 }
 
 boolean LM_glover()
