@@ -532,7 +532,9 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 			return result();
 	}
 
-	if(doEquips && auto_haveCCSC() && have_effect($effect[Peppermint Rush]) == 0 && !get_property("_candyCaneSwordLyle").to_boolean()) {
+	// We can use the CCSC for noncom choices in G-Lover, but won't benefit from the +init
+	if(doEquips && auto_haveCCSC() && have_effect($effect[Peppermint Rush]) == 0 &&
+	auto_is_valid($effect[Peppermint Rush]) && !get_property("_candyCaneSwordLyle").to_boolean()) {
 		if (!speculative) {
 			equip($item[candy cane sword cane]);
 			string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
