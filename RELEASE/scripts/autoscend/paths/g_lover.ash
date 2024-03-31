@@ -69,7 +69,8 @@ boolean glover_usable(skill sk)
 		return true;
 	}
 	
-	// Some of these have g in their name, but are included so it's clearer that all bookshelf skills are allowed
+	// Some of these have g in their name, but are included so it's clearer that all bookshelf skills are allowed.
+	// They only work when cast from the bookshelf itself, unless they have a g in their name already
 	if($skills[summon snowcones, summon stickers, summon sugar sheets, summon clip art, summon rad libs,
 	summon smithsness, summon candy heart, summon party favor, summon love song, summon BRICKOs, summon dice,
 	summon resolutions, summon taffy, summon hilarious objects, summon tasteful items, summon alice\'s army cards,
@@ -92,6 +93,7 @@ boolean glover_usable(item it)
 	miniature crystal ball, // has a "ponder" link instead of "use" which still works
 	tiny stillsuit, // has a "distill" link that still works
 	&quot;I voted!&quot; sticker, // free fights still work for I voted! sticker
+	survival knife, // still works for some reason
 	ninja Carabiner, ninja Crampons, ninja Rope,
 	eXtreme scarf, snowboarder pants, eXtreme mittens, linoleum ore, chrome ore, asbestos ore,
 	loadstone, amulet of extreme plot significance, titanium assault umbrella, antique machete,
