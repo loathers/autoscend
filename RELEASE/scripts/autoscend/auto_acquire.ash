@@ -765,6 +765,7 @@ int handlePulls(int day)
 			boolean famStatEq = possessEquipment($item[fuzzy polar bear ears]) || possessEquipment($item[miniature goose mask]) || possessEquipment($item[tiny glowing red nose]);
 			
 			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) &&
+			!possessEquipment($item[august scepter]) && // Gold Medal from race your mouse day
 			!famStatEq && auto_is_valid($item[Filthy Child Leash]))
 			{
 				pullXWhenHaveY($item[Filthy Child Leash], 1, 0);
