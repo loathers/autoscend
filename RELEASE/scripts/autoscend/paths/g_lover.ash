@@ -105,6 +105,27 @@ boolean glover_usable(item it)
 	return glover_usable(it.to_string());
 }
 
+void auto_gloverPulls()
+{
+	if(!in_glover()) return;
+
+	for it in $items[sewing kit, gravy boat, stuffing fluffer]
+	{
+		if(storage_amount(it) > 0)
+		{
+			pullXWhenHaveY(it, 1, 0);
+		}
+	}
+
+	if(get_property("poolSharkCount") < 9)
+	{
+		if(storage_amount($item[government-issued eyeshade]) > 0)
+		{
+			pullXWhenHaveY($item[government-issued eyeshade]);
+		}
+	}
+}
+
 boolean LM_glover()
 {
 	if(!in_glover())

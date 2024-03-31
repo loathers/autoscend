@@ -616,6 +616,9 @@ int handlePulls(int day)
 		// pulls for small path
 		auto_SmallPulls();
 
+		// pull for g-lover path
+		auto_gloverPulls();
+
 		if((storage_amount($item[etched hourglass]) > 0) && auto_is_valid($item[etched hourglass]))
 		{
 			pullXWhenHaveY($item[etched hourglass], 1, 0);
