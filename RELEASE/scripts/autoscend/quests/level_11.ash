@@ -1779,7 +1779,7 @@ boolean L11_hiddenCity()
 		return false;
 	}	
 
-	if (zone_available($location[The Hidden Apartment Building]) && have_effect($effect[Ancient Fortitude]) == 0)
+	if (internalQuestStatus("questL11Curses") < 2 && have_effect($effect[Ancient Fortitude]) == 0)
 	{
 		auto_log_info("The idden [sic] apartment!", "blue");
 
@@ -1916,7 +1916,7 @@ boolean L11_hiddenCity()
 		}
 	}
 
-	if (zone_available($location[The Hidden Office Building]) && (my_adventures() + $location[The Hidden Office Building].turns_spent) >= 11)
+	if (internalQuestStatus("questL11Business") < 2 && (my_adventures() + $location[The Hidden Office Building].turns_spent) >= 11)
 	{
 		auto_log_info("The idden [sic] office!", "blue");
 
@@ -1987,7 +1987,7 @@ boolean L11_hiddenCity()
 		return autoAdv($location[The Hidden Office Building]);
 	}
 
-	if (zone_available($location[The Hidden Bowling Alley]))
+	if (internalQuestStatus("questL11Spare") < 2)
 	{
 		auto_log_info("The idden [sic] bowling alley!", "blue");
 		L11_hiddenTavernUnlock(true);
@@ -2026,7 +2026,7 @@ boolean L11_hiddenCity()
 		return autoAdv($location[The Hidden Bowling Alley]);
 	}
 
-	if (zone_available($location[The Hidden Hospital]))
+	if (internalQuestStatus("questL11Doctor") < 2)
 	{
 		if(item_amount($item[Dripping Stone Sphere]) > 0)
 		{
