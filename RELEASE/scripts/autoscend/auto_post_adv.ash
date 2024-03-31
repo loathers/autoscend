@@ -458,7 +458,7 @@ boolean auto_post_adventure()
 
 	if(auto_have_skill($skill[Summon Smithsness]) && (my_mp() > 20))
 	{
-		useTomeSkill($skill[Summon Smithsness]);
+		useTomeSkill(1, $skill[Summon Smithsness]);
 	}
 
 	//everyone wants more initiative
