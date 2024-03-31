@@ -23,10 +23,14 @@ string auto_combatGloverStage5(int round, monster enemy, string text)
         return useSkill($skill[Lunging Thrust-Smack], false);
     }
 
-    skill cheesestorm = $skill[K&auml;seso&szlig;esturm];
+    // the skill is Käsesoßesturm which is G-Lover's saucestorm
+    // the ß gets sent as "&szlig;" so the skill can be used
+    skill cheesestorm = to_skill(4023);
     if(canUse(cheesestorm, false) && monster_element(enemy) != $element[stench])
     {
-        return useSkill(cheesestorm, false);
+        // only way to write this without breaking macro submission, since otherwise
+        // the macro will have a ; in it which is treated as a linebreak in a combat macro
+        return "skill 4023";
     }
 
     // Saucegeyser is expensive so we only want to cast it once.
