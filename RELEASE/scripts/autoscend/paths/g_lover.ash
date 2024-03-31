@@ -111,7 +111,7 @@ void auto_gloverPulls()
 {
 	if(!in_glover()) return;
 
-	for it in $items[sewing kit, gravy boat, stuffing fluffer]
+	foreach it in $items[sewing kit, gravy boat, stuffing fluffer]
 	{
 		if(storage_amount(it) > 0)
 		{
