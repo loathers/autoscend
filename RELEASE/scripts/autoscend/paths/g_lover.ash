@@ -95,7 +95,7 @@ boolean glover_usable(item it)
 	&quot;I voted!&quot; sticker, // free fights still work for I voted! sticker
 	survival knife, // still works for some reason
 	candy cane sword cane, // still able to use it to add extra non-com options and save a lot of turns
-	ninja Carabiner, ninja Crampons, ninja Rope,
+	ninja Carabiner, ninja Crampons, ninja Rope, continuum transfunctioner,
 	eXtreme scarf, snowboarder pants, eXtreme mittens, linoleum ore, chrome ore, asbestos ore,
 	loadstone, amulet of extreme plot significance, titanium assault umbrella, antique machete,
 	half-size scalpel, head mirror, wet stew, UV-resistant compass, Talisman o' Namsilat, Unstable Fulminate,
