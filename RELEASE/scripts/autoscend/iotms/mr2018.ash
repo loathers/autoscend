@@ -385,7 +385,12 @@ boolean songboomSetting(int option)
 
 	int boomsLeft = 0;
 	string page = visit_url("inv_use.php?pwd=&which=3&whichitem=9919");
-	matcher boomMatcher = create_matcher("You grab your boombox and select the soundtrack for your life,  which you can do <b>(?:-?)(\\d+)", page);
+
+	// Find the number of songs left by matching the number in the "X more times" sentence. Overly flexible to prevent April Fools word salad breakage.
+	// \\b(\\d+)\\b matches a whole number (\\d+) that's surrounded by word boundaries (\\b), e.g. a space
+	// [^.]* matches any characters except a period (.), any number of times (*), capturing everything up to the end of the sentence
+	// \\. matches the literal ending period to only check the top boombox sentence
+	matcher boomMatcher = create_matcher("\\b(\\d+)\\b[^.]*\\.", page);
 	if(boomMatcher.find())
 	{
 		boomsLeft = to_int(boomMatcher.group(1));
