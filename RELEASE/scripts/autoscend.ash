@@ -1947,7 +1947,7 @@ void auto_begin()
 	backupSetting("counterScript", "");
 	if (!get_property("auto_disableExcavator").to_boolean())
 	{
-		backupSetting("spadingScript", "excavator.ash");
+		backupSetting("spadingScript", "excavator.js");
 	}
 	backupSetting("hpAutoRecovery", -0.05);
 	backupSetting("hpAutoRecoveryTarget", -0.05);
