@@ -48,7 +48,7 @@ void dartChoiceHandler(int choice, string[int] options)
 int dartBullseyeChance()
 {
 	string[int] perks;
-	int chance = 25;
+	int chance = 25; // base bullseye chance is 25%
 	perks = split_string(get_property("everfullDartPerks").to_string(), ",");
 	foreach perk in perks
 	{
@@ -62,52 +62,17 @@ int dartBullseyeChance()
 
 skill dartSkill()
 {
-	//from c2t
-	/*skill[string] c2t_parts(string page) {
-		skill[string] out;
-		matcher m = create_matcher('<option\\s+value="(\\d+)"\\s+picurl="nicedart"\\s*>Darts:\\s+Throw\\s+at\\s+([^\\(]+)\\s+\\(',page);
-		while (m.find())
-			out[m.group(2)] = m.group(1).to_skill();
-		return out;
-	}*/
-	/*skill[string] out;
-	string page = visit_url('fight.php');
-	matcher m = create_matcher('<option\\s+value="(\\d+)"\\s+picurl="nicedart"\\s*>Darts:\\s+Throw\\s+at\\s+([^\\(]+)\\s+\\(',page);
-	while (m.find())
-		out[m.group(2)] = m.group(1).to_skill();
-
-	foreach skst, sk in out
-	{
-		if(contains_text(skst, "Bullseye")) //Free-kill that wasn't taken care of in stage2
-		{
-			return sk;
-		}
-		else if(contains_text(skst, "butt")) //More items
-		{
-			return sk;
-		}
-		else if(contains_text(skst, "torso") || contains_text(skst, "pseudopod")) //More meat
-		{
-			return sk;
-		}
-		else return to_skill(7513); // Darts: throw at %part1;
-	}
-	return $skill[none]; // If there aren't any darts available return the none skill*/
 	string[int] curDartboard;
 	curDartboard = split_string(get_property("_currentDartboard").to_string(), ",");
 	foreach sk in curDartboard
 	{
-		//auto_log_info("Searching for parts in " + curDartboard[sk], "blue");
-		//set_property("auto_interrupt", true);
-		if(contains_text(curDartboard[sk], "butt"))
+		if(contains_text(curDartboard[sk], "butt")) // get more items
 		{
-			//set_property("auto_interrupt", true);
 			auto_log_info("Going for the butt", "blue");
 			return to_skill(substring(curDartboard[sk],0,4).to_int());
 		}
-		else if(contains_text(curDartboard[sk], "torso") || contains_text(sk, "pseudopod"))
+		else if(contains_text(curDartboard[sk], "torso") || contains_text(sk, "pseudopod")) //get more meat
 		{
-			//set_property("auto_interrupt", true);
 			auto_log_info("Going for the chest", "blue");
 			return to_skill(substring(curDartboard[sk],0,4).to_int());
 		}
