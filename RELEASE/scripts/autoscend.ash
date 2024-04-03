@@ -1,4 +1,4 @@
-since r27858;	// Parse dart skill -> target
+since r27883	;	// Everything looks red disables darts: bullseye
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
