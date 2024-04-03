@@ -333,7 +333,7 @@ boolean auto_run_choice(int choice, string page)
 				break;
 			}
 			// do oil jar if we can
-			if(options contains 3 && item_amount($item[oil jar]) > 0)
+			if(options contains 3 && item_amount($item[jar of oil]) > 0)
 			{
 				run_choice(3);
 				break;
