@@ -542,6 +542,15 @@ void auto_useWardrobe();
 ########################################################################################################
 //Defined in autoscend/iotms/mr2024.ash
 boolean auto_haveSpringShoes();
+boolean auto_haveAprilingBandHelmet();
+boolean auto_getAprilingBandItems();
+boolean auto_playAprilSax();
+boolean auto_playAprilTuba();
+boolean auto_setAprilBandNonCombat();
+boolean auto_setAprilBandCombat();
+boolean auto_setAprilBandDrops();
+int auto_AprilSaxLuckyLeft();
+int auto_AprilTubaForcesLeft();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
