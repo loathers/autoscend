@@ -1194,7 +1194,7 @@ boolean L11_aridDesert()
 			pullXWhenHaveY($item[Drum Machine], 1, 0);
 			if(item_amount($item[Drum Machine]) == 0)
 			{
-				auto_makeMonkeyPawWish($item[Drum Machine]));
+				auto_makeMonkeyPawWish($item[Drum Machine]);
 			}
 			if(item_amount($item[Drum Machine]) > 0)
 			{
