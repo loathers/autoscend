@@ -87,6 +87,9 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		}
 		return false;
 	}
+	
+	// Do the April band
+	auto_setAprilBandCombat();
 
 	// Now handle buffs that cost MP, items or other resources
 
@@ -256,6 +259,9 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		}
 		return false;
 	}
+	
+	// Do the April band
+	auto_setAprilBandNonCombat();
 
 	// Now handle buffs that cost MP, items or other resources
 
