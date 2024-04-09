@@ -71,12 +71,14 @@ boolean auto_setAprilBandDrops()
 
 int auto_AprilSaxLuckyLeft()
 {
-	if(!auto_haveAprilingBandHelmet()) return 0;
+	if(!auto_haveAprilingBandHelmet()) {return 0;}
+	if(available_amount($item[Apriling band saxophone]) == 0) {return 0;}
 	return 3-get_property("_aprilBandSaxophoneUses").to_int();
 }
 
 int auto_AprilTubaForcesLeft()
 {
-	if(!auto_haveAprilingBandHelmet()) return 0;
+	if(!auto_haveAprilingBandHelmet()) {return 0;}
+	if(available_amount($item[Apriling band tuba]) == 0) {return 0;}
 	return 3-get_property("_aprilBandTubaUses").to_int();
 }
