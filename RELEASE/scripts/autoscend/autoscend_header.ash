@@ -750,6 +750,7 @@ boolean in_koe();
 boolean koe_initializeSettings();
 int koe_rmi_count();
 boolean koe_acquire_rmi();
+boolean koe_NeedWhitePixels();
 boolean LX_koeInvaderHandler();
 item koe_L12FoodSelect();
 void koe_RationingOutDestruction();

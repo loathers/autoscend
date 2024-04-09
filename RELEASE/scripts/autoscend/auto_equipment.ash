@@ -728,6 +728,14 @@ void finalizeMaximize(boolean speculative)
 			addBonusToMaximize($item[spring shoes], 50);
 		}
 	}
+	// We still need pixels in KoE, badly.
+	if(in_koe() && auto_hasPowerfulGlove())
+	{
+		if(koe_NeedWhitePixels())
+		{
+			addBonusToMaximize($item[powerful glove], 250);
+		}
+	}
 	if(pathHasFamiliar())
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp

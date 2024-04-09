@@ -2195,6 +2195,10 @@ boolean evokeEldritchHorror()
 
 boolean fightScienceTentacle()
 {
+	if(in_koe())
+	{
+		return false;
+	}
 	if(get_property("_eldritchTentacleFought").to_boolean())
 	{
 		return false;
