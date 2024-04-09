@@ -1236,6 +1236,8 @@ int cloversAvailable(boolean override)
 		{
 			numClovers += 1;
 		}
+		//Get from April band
+		numClovers += auto_AprilSaxLuckyLeft();
 	}
 
 	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
@@ -1269,6 +1271,18 @@ boolean cloverUsageInit(boolean override)
 	if (have_effect($effect[Lucky!]) > 0)
 	{
 		return true;
+	}
+	
+	if (auto_AprilSaxLuckyLeft() > 0)
+	{
+		if (auto_playAprilSax()) {
+			auto_log_info("Clover usage initialized, using Apriling sax.");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after playing the Apriling sax.");
+		}
 	}
 
 	//Use August Scepter skill if we can
@@ -4038,6 +4052,17 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 			abort("Attempted to force a noncombat with [Cincho] but was unable to.");
 		}
 		set_property("auto_forceNonCombatSource", "cincho");
+		return true;
+	}
+	else if(auto_AprilTubaForcesLeft()>0)
+	{
+		if(speculative) return true;
+		auto_playAprilTuba();
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [Apriling tuba] but was unable to.");
+		}
+		set_property("auto_forceNonCombatSource", "Apriling tuba");
 		return true;
 	}
 	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso())
