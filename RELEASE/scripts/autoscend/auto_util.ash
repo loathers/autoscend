@@ -1490,6 +1490,10 @@ boolean isUnclePAvailable()
 	{
 		return false;
 	}
+	if(in_koe())
+	{
+		return false;
+	}
 	string page_text = visit_url("place.php?whichplace=desertbeach");
 	return !page_text.contains_text("You don't know where a desert beach is");
 }
