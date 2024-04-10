@@ -1687,7 +1687,7 @@ void __cure_bad_stuff()
 	// let mafia figure out how to best remove beaten up
 	if(have_effect($effect[Beaten Up]) > 0){
 		auto_log_info("Ouch, you got beaten up. Lets get you patched up, if we can.");
-		uneffect($effect[Beaten Up]);
+		auto_beaten_handler();
 
 		if(have_effect($Effect[Beaten Up]) > 0){
 			auto_log_warning("Well, you're still beaten up, thats probably not great...", "red");
