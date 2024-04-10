@@ -1676,6 +1676,23 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 
 void auto_beaten_handler()
 {
+	void __remove_beaten_up()
+	{
+		if(get_property("auto_beatenUpCount").to_int() <= 10 && my_mp() >= mp_cost($skill[Tongue of the Walrus]) && auto_have_skill($skill[Tongue of the Walrus]))
+		{
+			auto_log_info("trying to recover with [Tongue of the Walrus]", "red");
+			use_skill(1, $skill[Tongue of the Walrus]);
+			if(have_effect($effect[Beaten Up]) == 0)
+			{
+				return;
+			}
+			else
+			{
+				auto_log_warning("Mysteriously failed to recover beaten up with [Tongue of the Walrus]");
+			}
+		}
+	}
+
 	if(have_effect($effect[Beaten Up]) == 0)
 	{
 		set_property("auto_beatenUpLastAdv", false);
@@ -1683,6 +1700,7 @@ void auto_beaten_handler()
 	}
 	if(last_choice() == 1467) {
 		auto_log_info("Getting beaten up here gave us 5 adventures, that's a win.");
+		__remove_beaten_up();
 		return;
 	}
 	set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
@@ -1711,19 +1729,7 @@ void auto_beaten_handler()
 	}
 	else auto_log_warning("I got beaten up", "red");
 	
-	if(get_property("auto_beatenUpCount").to_int() <= 10 && my_mp() >= mp_cost($skill[Tongue of the Walrus]) && auto_have_skill($skill[Tongue of the Walrus]))
-	{
-		auto_log_info("trying to recover with [Tongue of the Walrus]", "red");
-		use_skill(1, $skill[Tongue of the Walrus]);
-		if(have_effect($effect[Beaten Up]) == 0)
-		{
-			return;
-		}
-		else
-		{
-			auto_log_warning("Mysteriously failed to recover beaten up with [Tongue of the Walrus]");
-		}
-	}
+	__remove_beaten_up();
 }
 
 void __cure_bad_stuff()
