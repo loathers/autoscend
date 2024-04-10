@@ -364,7 +364,8 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 		if(canUse($skill[Darts: Aim for the Bullseye]) && have_effect($effect[Everything Looks Red]) == 0 && (wantFreeKillNowEspecially || !reserveFreekills) && dartBullseyeChance() >= 50)
 		{
-			handleTracker(enemy, $skill[Darts: Aim for the Bullseye], "auto_instakill");
+			set_property("auto_instakillSource", "darts bullseye");
+			set_property("auto_instakillSuccess", true);
 			loopHandlerDelayAll();
 			return useSkill($skill[Darts: Aim for the Bullseye]);
 		}
