@@ -1,57 +1,5 @@
 import<autoscend.ash>
 
-void auto_beaten_handler()
-{
-	if(have_effect($effect[Beaten Up]) == 0)
-	{
-		set_property("auto_beatenUpLastAdv", false);
-		return;		//we are not beaten up. nothing to handle
-	}
-	if(last_choice() == 1467) {
-		auto_log_info("Getting beaten up here gave us 5 adventures, that's a win.");
-		return;
-	}
-	set_property("auto_beatenUpCount", get_property("auto_beatenUpCount").to_int() + 1);
-	string loc = get_property("auto_beatenUpLocations");
-	if(loc != "") loc += ",";
-	loc += "day:" +my_daycount()+ ":level:" +my_level()+ ":place:" +my_location();
-	set_property("auto_beatenUpLocations", loc);
-	set_property("auto_beatenUpLastAdv", true);
-
-	buffMaintain($effect[They\'ve Got Fleas]);
-	if(my_level() < 11 || get_property("sidequestJunkyardCompleted") != "none")	//don't risk blocking effect persisting in gremlins quest
-	{
-		//try to avoid getting beaten up again
-		buffMaintain($effect[Everything Is Bananas]);
-	}
-	
-	if(my_location() == $location[The X-32-F Combat Training Snowman])
-	{
-		auto_log_info("I got beaten up at the snojo, let's not keep going there and dying....", "red");
-		set_property("_snojoFreeFights", 10);
-	}
-	else if(last_monster() == $monster[ninja snowman assassin])
-	{
-		auto_log_info("I got beaten up by a [ninja snowman assassin]. disabling ninja route", "red");
-		set_property("auto_L8_ninjaAssassinFail", true);
-	}
-	else auto_log_warning("I got beaten up", "red");
-	
-	if(get_property("auto_beatenUpCount").to_int() <= 10 && my_mp() >= mp_cost($skill[Tongue of the Walrus]) && auto_have_skill($skill[Tongue of the Walrus]))
-	{
-		auto_log_info("trying to recover with [Tongue of the Walrus]", "red");
-		use_skill(1, $skill[Tongue of the Walrus]);
-		if(have_effect($effect[Beaten Up]) == 0)
-		{
-			return;
-		}
-		else
-		{
-			auto_log_warning("Mysteriously failed to recover beaten up with [Tongue of the Walrus]");
-		}
-	}
-}
-
 boolean auto_post_adventure()
 {
 	auto_log_debug("Running auto_post_adv.ash");
