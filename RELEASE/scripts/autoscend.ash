@@ -1,4 +1,4 @@
-since r27832;	// Spring Kick banish management
+since r27897;	// additional monster parts
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1947,7 +1947,7 @@ void auto_begin()
 	backupSetting("counterScript", "");
 	if (!get_property("auto_disableExcavator").to_boolean())
 	{
-		backupSetting("spadingScript", "excavator.ash");
+		backupSetting("spadingScript", "excavator.js");
 	}
 	backupSetting("hpAutoRecovery", -0.05);
 	backupSetting("hpAutoRecoveryTarget", -0.05);
