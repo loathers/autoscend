@@ -24,8 +24,10 @@ boolean auto_getAprilingBandItems()
 	if(!auto_haveAprilingBandHelmet()) {return false;}
 	boolean have_sax  = available_amount($item[Apriling band saxophone]) > 0;
 	boolean have_tuba = available_amount($item[Apriling band tuba]     ) > 0;
-	if (!have_tuba) { cli_execute("aprilband item tuba"); }
-	if (!have_sax ) { cli_execute("aprilband item saxophone"); }
+	int instruments_so_far = get_property("_aprilBandInstruments").to_int();
+	if (!have_tuba && instruments_so_far < 2) { cli_execute("aprilband item tuba"); }
+	instruments_so_far = get_property("_aprilBandInstruments").to_int();
+	if (!have_sax && instruments_so_far < 2) { cli_execute("aprilband item saxophone"); }
 	
 	have_sax  = available_amount($item[Apriling band saxophone]) > 0;
 	have_tuba = available_amount($item[Apriling band tuba]     ) > 0;
