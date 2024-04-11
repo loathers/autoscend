@@ -775,6 +775,19 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 	return false;
 }
 
+boolean auto_wantToFreeRun(monster enemy, location loc)
+{
+	if(appearance_rates(loc)[enemy] <= 0)
+	{
+		return false;
+	}
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] monstersToFreeRun = auto_getMonsters("freerun");
+	set_location(locCache);
+	return monstersToFreeRun[enemy];
+}
+
 boolean canFreeRun(monster enemy, location loc)
 {
 	// are there any restrictions on free running?

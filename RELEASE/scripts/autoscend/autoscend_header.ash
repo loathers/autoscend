@@ -1665,6 +1665,7 @@ boolean auto_wantToBanish(monster enemy, location loc);
 boolean canBanish(monster enemy, location loc);
 boolean adjustForBanish(string combat_string);
 boolean adjustForBanishIfPossible(monster enemy, location loc);
+boolean auto_wantToFreeRun(monster enemy, location loc);
 boolean canFreeRun(monster enemy, location loc);
 string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat);
 string freeRunCombatString(monster enemy, location loc, boolean inCombat);
