@@ -1,4 +1,4 @@
-since r27832;	// Spring Kick banish management
+since r27897;	// additional monster parts
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
