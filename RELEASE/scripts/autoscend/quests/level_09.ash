@@ -126,8 +126,7 @@ int fastenerCount()
 	base = base + item_amount($item[Thick Caulk]);
 	base = base + item_amount($item[Long Hard Screw]);
 	base = base + item_amount($item[Messy Butt Joint]);
-	// Name has a b in it and doesn't have a g
-	if(!in_bhy() && !in_glover())
+	if(auto_is_valid($item[Smut Orc Keepsake Box]))
 	{
 		base = base + 5 * item_amount($item[Smut Orc Keepsake Box]);
 	}
@@ -141,8 +140,7 @@ int lumberCount()
 	base = base + item_amount($item[Morningwood Plank]);
 	base = base + item_amount($item[Raging Hardwood Plank]);
 	base = base + item_amount($item[Weirdwood Plank]);
-	// Name has a b in it and doesn't have a g
-	if(!in_bhy() && !in_glover())
+	if(auto_is_valid($item[Smut Orc Keepsake Box]))
 	{
 		base = base + 5 * item_amount($item[Smut Orc Keepsake Box]);
 	}
