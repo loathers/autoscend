@@ -25,27 +25,21 @@ void dartChoiceHandler(int choice, string[int] options)
 	int dcchoice = 0;
 	foreach idx, str in options
 	{
-		if(contains_text(str,"25%") && dcchoice == 0) //Higher chance of getting a Bullseye
-		{
-			dcchoice = idx;
-			break;
-		}
-		else if(contains_text(str,"impress") && dcchoice == 0) //Shorter CD on ELR after Bullseye
-		{
-			dcchoice = idx;
-			break;
-		}
-		else if(contains_text(str,"Butt") && dcchoice == 0) //Get all that junk in the trunk (butt)
-		{
-			dcchoice = idx;
-			break;
-		}
-		else
-		{
-			dcchoice = 1;
-			break;
-		}
+		auto_log_info("choice " + idx + " is " + str, "blue");
 	}
+	foreach perk in $strings[better,targeting,bullseye,butt] //Ranked as 1. bullseye chance, 2. Shorter ELR CD, 3. Butt Awareness, 4. Everything else
+	{
+		foreach idx, str in options
+		{
+			if(contains_text(str,perk))
+			{
+				dcchoice = idx;
+				break;
+			}
+		}
+		if(dcchoice != 0) break;
+	}
+	if(dcchoice == 0) dcchoice = 1; //if choice is not set, just choose the 1st option
 	run_choice(dcchoice);
 }
 
