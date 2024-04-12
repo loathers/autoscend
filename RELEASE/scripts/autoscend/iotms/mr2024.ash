@@ -28,18 +28,22 @@ void dartChoiceHandler(int choice, string[int] options)
 		if(contains_text(str,"25%") && dcchoice == 0) //Higher chance of getting a Bullseye
 		{
 			dcchoice = idx;
+			break;
 		}
 		else if(contains_text(str,"impress") && dcchoice == 0) //Shorter CD on ELR after Bullseye
 		{
 			dcchoice = idx;
+			break;
 		}
 		else if(contains_text(str,"Butt") && dcchoice == 0) //Get all that junk in the trunk (butt)
 		{
 			dcchoice = idx;
+			break;
 		}
 		else
 		{
 			dcchoice = 1;
+			break;
 		}
 	}
 	run_choice(dcchoice);
