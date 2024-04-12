@@ -1,4 +1,4 @@
-since r27891;	// April band CLI command
+since r27897;	// additional monster parts
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1137,7 +1137,6 @@ boolean dailyEvents()
 	auto_buyFrom2002MrStore();
 	auto_useBlackMonolith();
 	auto_scepterSkills();
-	auto_getAprilingBandItems();
 	
 	return true;
 }

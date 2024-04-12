@@ -333,7 +333,7 @@ boolean L7_crypt()
 		return autoAdv($location[The Defiled Cranny]);
 	}
 
-	if(get_property("cyrptTotalEvilness").to_int() <= 0)
+	if( (get_property("cyrptTotalEvilness").to_int() <= 0) || (get_property("cyrptTotalEvilness").to_int() == 999) )
 	{
 		if(my_class() == $class[seal clubber] && auto_have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
 		{
