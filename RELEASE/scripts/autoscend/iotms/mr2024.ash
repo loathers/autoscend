@@ -31,7 +31,7 @@ void dartChoiceHandler(int choice, string[int] options)
 	{
 		foreach idx, str in options
 		{
-			if(contains_text(str,perk))
+			if(contains_text(str.to_lower_case(),perk))
 			{
 				dcchoice = idx;
 				break;
@@ -47,10 +47,10 @@ int dartBullseyeChance()
 {
 	string[int] perks;
 	int chance = 25; // base bullseye chance is 25%
-	perks = split_string(get_property("everfullDartPerks").to_string(), ",");
+	perks = split_string(get_property("everfullDartPerks").to_string().to_lower_case(), ",");
 	foreach perk in perks
 	{
-		if (contains_text(perks[perk], "25%"))
+		if (contains_text(perks[perk], "better") || contains_text(perks[perk], "targeting"))
 		{
 			chance += 25;
 		}	
@@ -61,7 +61,7 @@ int dartBullseyeChance()
 skill dartSkill()
 {
 	string[int] curDartboard;
-	curDartboard = split_string(get_property("_currentDartboard").to_string(), ",");
+	curDartboard = split_string(get_property("_currentDartboard").to_string().to_lower_case(), ",");
 	foreach sk in curDartboard
 	{
 		if(contains_text(curDartboard[sk], "butt")) // get more items
