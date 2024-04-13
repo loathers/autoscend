@@ -64,30 +64,31 @@ freerun	4	Punk Rock Giant
 freerun	5	Raver Giant
 freerun	6	Steampunk Giant
 freerun	7	Irritating Series of Random Encounters
-freerun	8	MagiMechTech MechaMech
-freerun	9	Protagonist	!class:Ed the Undying
-freerun	10	bar
-freerun	11	spooky mummy
-freerun	12	spooky vampire
-freerun	13	triffid
-freerun	14	warwelf	!class:Ed the Undying
-freerun	15	wolfman	!class:Ed the Undying
-freerun	16	cubist bull
-freerun	17	empty suit of armor
-freerun	18	guy with a pitchfork, and his wife
-freerun	19	claw-foot bathtub
-freerun	20	malevolent hair clog
-freerun	21	toilet papergeist
-freerun	22	Iiti Kitty
-freerun	23	tomb bat
-freerun	24	tomb servant	loc:The Upper Chamber
-freerun	25	Knob Goblin Assistant Chef
-freerun	26	sleeping Knob Goblin Guard
-freerun	27	Sub-Assistant Knob Mad Scientist
-freerun	28	animated mahogany nightstand
-freerun	29	animated ornate nightstand
-freerun	30	animated rustic nightstand
-freerun	31	Wardröb nightstand
+freerun	8	Protagonist	!class:Ed the Undying
+freerun	9	bar
+freerun	10	spooky mummy
+freerun	11	spooky vampire
+freerun	12	triffid
+freerun	13	warwelf	!class:Ed the Undying
+freerun	14	wolfman	!class:Ed the Undying
+freerun	15	cubist bull
+freerun	16	empty suit of armor
+freerun	17	guy with a pitchfork, and his wife
+freerun	18	claw-foot bathtub
+freerun	19	malevolent hair clog
+freerun	20	toilet papergeist
+freerun	21	Iiti Kitty
+freerun	22	tomb bat
+freerun	23	tomb servant	loc:The Upper Chamber
+freerun	24	Knob Goblin Assistant Chef
+freerun	25	sleeping Knob Goblin Guard
+freerun	26	Sub-Assistant Knob Mad Scientist
+freerun	27	animated mahogany nightstand
+freerun	28	animated ornate nightstand
+freerun	29	animated rustic nightstand
+freerun	30	Wardröb nightstand
+freerun	31	drunken rat
+freerun	32	bunch of drunken rats
 
 replace	0	Banshee Librarian	item:Killing Jar>0
 replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber;!pathid:41;!path:Wildfire;!path:Fall of the Dinosaurs;!path:Avator of Shadows Over Loathing;!path:Legacy of Loathing
