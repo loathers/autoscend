@@ -49,7 +49,7 @@ boolean LX_koeInvaderHandler()
 	{
 		return false;
 	}
-	if (internalQuestStatus("questL13Final") < 3 || get_property("spaceInvaderDefeated").to_boolean())
+	if (get_property("spaceInvaderDefeated").to_boolean())
 	{
 		// invader drops 10 white pixels so fight it before we do the hedge maze
 		// as we need elemental resists for both and we may be able to get enough
