@@ -213,6 +213,8 @@ boolean auto_pre_adventure()
 		item_amount($item[red rocket]) == 0 &&			// Don't buy if we already have one
 		auto_is_valid($item[red rocket]) &&				// or if it's not valid
 		can_eat() &&									// be in a path that can eat
+		my_class() != $class[Pig Skinner] &&			// don't want to use a red rocket in Pig Skinner
+		!auto_haveDarts() &&							// don't want to use a red rocket if we have darts
 		my_meat() > npc_price($item[red rocket]) + meatReserve())
 	{
 		retrieve_item(1, $item[red rocket]);
