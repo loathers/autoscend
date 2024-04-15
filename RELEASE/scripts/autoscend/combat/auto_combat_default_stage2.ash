@@ -362,7 +362,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[lightning strike]);
 		}
 
-		if(canUse($skill[Darts: Aim for the Bullseye]) && have_effect($effect[Everything Looks Red]) == 0 && (wantFreeKillNowEspecially || !reserveFreekills))
+		if(canUse($skill[Darts: Aim for the Bullseye]) && have_effect($effect[Everything Looks Red]) == 0 && dartELRcd() <= 40)
 		{
 			set_property("auto_instakillSource", "darts bullseye");
 			set_property("auto_instakillSuccess", true);

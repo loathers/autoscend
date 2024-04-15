@@ -58,6 +58,21 @@ int dartBullseyeChance()
 	return chance;
 }
 
+int dartELRcd()
+{
+	string[int] perks;
+	int cd = 50; // base cd is 50 turns
+	perks = split_string(get_property("everfullDartPerks").to_string().to_lower_case(), ",");
+	foreach perk in perks
+	{
+		if (contains_text(perks[perk], "impress"))
+		{
+			cd -= 10;
+		}	
+	}
+	return cd;
+}
+
 skill dartSkill()
 {
 	string[int] curDartboard;

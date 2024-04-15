@@ -545,6 +545,7 @@ boolean auto_haveSpringShoes();
 boolean auto_haveDarts();
 void dartChoiceHandler(int choice, string[int] options);
 int dartBullseyeChance();
+int dartELRcd();
 skill dartSkill();
 
 ########################################################################################################
