@@ -27,7 +27,7 @@ void dartChoiceHandler(int choice, string[int] options)
 	{
 		auto_log_info("choice " + idx + " is " + str, "blue");
 	}
-	foreach perk in $strings[better,targeting,bullseye,butt] //Ranked as 1. bullseye chance, 2. Shorter ELR CD, 3. Butt Awareness, 4. Everything else
+	foreach perk in $strings[impress,better,targeting,butt] //Ranked as 1. Shorter ELR CD, 2. bullseye chance, 3. Butt Awareness, 4. Everything else
 	{
 		foreach idx, str in options
 		{
