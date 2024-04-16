@@ -83,6 +83,14 @@ boolean auto_post_adventure()
 		set_property("auto_parkaSpikesDeployed", false);
 	}
 
+	if(get_property("auto_instakillSource") != "" && get_property("auto_instakillSuccess").to_boolean())
+	{
+		auto_log_info("Successful instakill with: " + get_property("auto_instakillSource"), "blue");
+		handleTracker(get_property("lastEncounter"), get_property("auto_instakillSource"), "auto_instakill");
+		set_property("auto_instakillSource", "");
+		set_property("auto_instakillSuccess", false);
+	}
+
 	if(have_effect($effect[Eldritch Attunement]) > 0)
 	{
 		if(last_monster() != $monster[Eldritch Tentacle])
