@@ -3041,10 +3041,6 @@ boolean auto_is_valid(item it)
 	{
 		return bhy_is_item_valid(it);
 	}
-	if(my_class() == $class[Pig Skinner]) //want to ignore Red Rocket in PS because Free-For-All is more important
-	{
-		if(it == $item[Red Rocket]) return false;
-	}
 	
 	return is_unrestricted(it);
 }
