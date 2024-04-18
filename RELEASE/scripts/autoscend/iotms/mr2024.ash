@@ -12,6 +12,10 @@ boolean auto_haveSpringShoes()
 boolean auto_haveAprilingBandHelmet()
 {
 	if(auto_is_valid($item[Apriling band helmet]) && available_amount($item[Apriling band helmet]) > 0 )
+	{
+		return true;
+	}
+	return false;
 }
 
 boolean auto_getAprilingBandItems()
