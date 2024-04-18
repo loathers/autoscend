@@ -211,6 +211,8 @@ void initializeSettings() {
 	set_property("auto_ignoreCombat", "");
 	set_property("auto_ignoreFlyer", false);
 	set_property("auto_instakill", "");
+	set_property("auto_instakillSource", "");
+	set_property("auto_instakillSuccess", false);
 	set_property("auto_modernzmobiecount", "");
 	set_property("auto_powerfulglove", "");
 	set_property("auto_otherstuff", "");
