@@ -551,6 +551,11 @@ boolean auto_setAprilBandCombat();
 boolean auto_setAprilBandDrops();
 int auto_AprilSaxLuckyLeft();
 int auto_AprilTubaForcesLeft();
+boolean auto_haveDarts();
+void dartChoiceHandler(int choice, string[int] options);
+int dartBullseyeChance();
+int dartELRcd();
+skill dartSkill();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
