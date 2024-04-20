@@ -1620,7 +1620,7 @@ boolean L13_towerNSTower()
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
 		acquireHP();
 
-		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]);
+		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]) + item_amount($item[scented massage oil]);
 		if(in_plumber())
 		{
 			n_healing_items = item_amount($item[super deluxe mushroom]);
@@ -1638,17 +1638,27 @@ boolean L13_towerNSTower()
 			{
 				pullXWhenHaveY(it,1,item_amount(it));
 			}
-
-			int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
-			if(create_target > 0)
+			
+			// If we're in Kingdom of Exploathing, there's no realm . Let's try clovering for massage oil instead
+			if (in_koe())
 			{
-				if(create(create_target, $item[red pixel potion]))
-				{
-					return true;
-				}
-				abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
+				cloverUsageInit();
+				autoAdv($location[Cobb\'s Knob Harem]);
+				if(cloverUsageRestart()) autoAdv($location[Cobb\'s Knob Harem]);
+				cloverUsageFinish();
 			}
-			return autoAdv($location[8-bit Realm]);
+			else {
+				int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
+				if(create_target > 0)
+				{
+					if(create(create_target, $item[red pixel potion]))
+					{
+						return true;
+					}
+					abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
+				}
+				return autoAdv($location[8-bit Realm]);
+			}
 		}
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 		return true;

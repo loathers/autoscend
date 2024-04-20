@@ -1139,6 +1139,7 @@ boolean dailyEvents()
 	auto_buyFrom2002MrStore();
 	auto_useBlackMonolith();
 	auto_scepterSkills();
+	auto_getAprilingBandItems();
 	
 	return true;
 }
