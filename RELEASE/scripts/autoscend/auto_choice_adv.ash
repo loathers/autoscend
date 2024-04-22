@@ -722,7 +722,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(2); // only come here to get shadow waters buff
 			break;
 		case 1522: // The Antiscientific Method
-			set_property("auto_wereprof_smashedLoc", get_property("auto_wereprof_smashedLoc") + "," + my_location().to_string())
+			set_property("auto_wereprof_smashedLoc", get_property("auto_wereprof_smashedLoc") + "," + my_location().to_string());
 			run_choice(1);
 			break;
 		case 1525:
