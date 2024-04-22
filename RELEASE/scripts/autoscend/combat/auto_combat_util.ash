@@ -259,7 +259,7 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Make Friends];		//avatar of sneaky pete specific skill
 	}
-	if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red!]) == 0 && !isSniffed(enemy, $skill[Hunt]))
+	if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
 	{
 		return $skill[Hunt];				//WereProfessor Werewolf specific skill
 	}
