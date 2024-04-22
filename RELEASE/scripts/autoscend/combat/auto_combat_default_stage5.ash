@@ -34,6 +34,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combatFallOfTheDinosaursStage5(round, enemy, text);
 	if(retval != "") return retval;
 
+	// Path = Wereprofessor
+	retval = auto_combatWereProfessorStage5(round, enemy, text);
+	if(retval != "") return retval;
+
 	//with loofah, you can stagger and deal cold or hot damage
 	if(canUse($skill[loofah stew]) && monster_element(enemy) != $element[cold])
 	{

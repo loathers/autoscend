@@ -369,6 +369,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			loopHandlerDelayAll();
 			return useSkill($skill[Darts: Aim for the Bullseye]);
 		}
+
+		if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0)
+		{
+			set_property("auto_instakillSource", "slaughter");
+			set_property("auto_instakillSuccess", true);
+			loopHandlerDelayAll();
+			return useSkill($skill[Slaughter]);
+		}
+
 		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
 		{
 			if((wantFreeKillNowEspecially || my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))

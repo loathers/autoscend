@@ -1785,6 +1785,8 @@ boolean doTasks()
 	pete_buySkills();
 	zombieSlayer_buySkills();
 	lol_buyReplicas();
+	wereprof_buySkills();
+	wereprof_buyEquip()
 
 	oldPeoplePlantStuff();
 	use_barrels();

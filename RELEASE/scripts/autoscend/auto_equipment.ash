@@ -716,6 +716,34 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("+equip " + toEquip);
 		}
 	}
+
+	if(in_wereprof() && !is_werewolf() && auto_haveDarts()) //Absolutely need darts for Professor
+	{
+		addBonusToMaximize($item[Everfull Dart Holster], 1000);
+	}
+
+	if(in_wereprof() && !is_werewolf() && (item_amount($item[biphasic molecular oculus]) > 0 || item_amount($item[triphasic molecular oculus]) > 0)) //Want that Advanced Research as a professor
+	{
+		if(item_amount($item[biphasic molecular oculus]) > 0)
+		{
+			addBonusToMaximize($item[biphasic molecular oculus], 1000);
+		}
+		addBonusToMaximize($item[triphasic molecular oculus], 1000);
+	}
+
+	if(in_wereprof() && !is_werewolf() && (item_amount($item[high-tension exoskeleton]) > 0 || item_amount($item[ultra-high-tension exoskeleton]) > 0 || item_amount($item[irresponsible-tension exoskeleton]) > 0)) //Want that damage avoidance
+	{
+		if(item_amount($item[high-tension exoskeleton]) > 0)
+		{
+			addBonusToMaximize($item[high-tension exoskeleton], 1000);
+		}
+		if(item_amount($item[ultra-high-tension exoskeleton]) > 0)
+		{
+			addBonusToMaximize($item[ultra-high-tension exoskeleton], 1000);
+		}
+		addBonusToMaximize($item[irresponsible-tension exoskeleton], 1000);
+	}
+
 	
 	if(auto_haveSpringShoes())
 	{

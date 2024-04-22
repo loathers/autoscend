@@ -911,6 +911,15 @@ boolean tcrs_maximize_with_items(string maximizerString);
 boolean in_wotsf();
 
 ########################################################################################################
+//Defined in autoscend/paths/wereprofessor.ash
+boolean in_wereprof();
+void wereprof_initializeSettings();
+boolean is_werewolf();
+void wereprof_buySkills();
+void wereprof_buyEquip();
+boolean LX_wereprof_getSmashedEquip();
+
+########################################################################################################
 //Defined in autoscend/paths/wildfire.ash
 boolean in_wildfire();
 void wildfire_initializeSettings();

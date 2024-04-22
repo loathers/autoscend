@@ -259,6 +259,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Make Friends];		//avatar of sneaky pete specific skill
 	}
+	if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red!]) == 0 && !isSniffed(enemy, $skill[Hunt]))
+	{
+		return $skill[Hunt];				//WereProfessor Werewolf specific skill
+	}
 	if(canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5 && !isSniffed(enemy, $skill[Long Con]))
 	{
 		return $skill[Long Con];
@@ -636,6 +640,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if(auto_canFeelHatred() && auto_is_valid($skill[Feel Hatred]) && !(used contains "Feel Hatred"))
 	{
 		return "skill " + $skill[Feel Hatred];
+	}
+
+	if(auto_have_skill($skill[[7510]Punt]) && !(used contains "Punt"))
+	{
+		return "skill " + $skill[[7510]Punt];
 	}
 	
 	if(auto_have_skill($skill[[28021]Punt]) && (my_mp() > mp_cost($skill[[28021]Punt])) && !(used contains "Punt"))

@@ -721,6 +721,10 @@ boolean auto_run_choice(int choice, string page)
 		case 1500: // Like a Loded Stone
 			run_choice(2); // only come here to get shadow waters buff
 			break;
+		case 1522: // The Antiscientific Method
+			set_property("auto_wereprof_smashedLoc", get_property("auto_wereprof_smashedLoc") + "," + my_location().to_string())
+			run_choice(1);
+			break;
 		case 1525:
 			dartChoiceHandler(choice, options);
 			break;
