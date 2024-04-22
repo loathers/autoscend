@@ -155,6 +155,105 @@ Avatar of Jarlsberg	54	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 Avatar of Jarlsberg	55	L13_towerAscent
 Avatar of Jarlsberg	56	LX_attemptPowerLevel
 
+default	0	LX_freeCombatsTask
+default	1	woods_questStart
+default	2	LX_unlockPirateRealm
+default	3	catBurglarHeist
+default	4	auto_breakfastCounterVisit
+default	5	chateauPainting
+default	6	LX_setWorkshed
+default	7	LX_galaktikSubQuest
+default	8	L9_leafletQuest
+default	9	L5_findKnob
+default	10	L12_sonofaPrefix
+default	11	LX_burnDelay
+default	12	LX_summonMonster
+# path handling which should be in it's own task order but pre-dates task order functionality (tech debt FTW).
+default	13	LM_edTheUndying
+default	14	LX_bugbearInvasion
+default	15	LX_lowkeySummer
+# make sure we don't waste turns of Ultrahydrated doing something else.
+default	16	L11_aridDesert	L11_hasUltrahydrated
+# Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
+default	17	L11_shenStartQuest
+# Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
+default	18	finishBuildingSmutOrcBridge
+# Underground Adventuring for CMC/Breathitin.
+default	19	LX_goingUnderground
+# Burn Breathitin charges
+default	20	LX_useBreathitinCharges
+# Guild access.
+default	21	LX_guildUnlock
+#	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
+default	22	LX_unlockDesert
+default	23	LX_lockPicking
+default	24	LX_fatLootToken
+#	Get the Steel Organ if the user wants it (needs L6 quest complete)
+default	25	LX_steelOrgan
+# open up delay zones.
+default	26	LX_spookyravenManorFirstFloor
+# open up zones where we want to force non-combats.
+# Open up underground zones so they are available for Breathitin.
+default	27	L5_getEncryptionKey
+default	28	L5_findKnob
+#	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
+default	29	L12_islandWar
+# Start the macguffin quest
+default	30	L11_blackMarket
+default	31	L11_forgedDocuments
+default	32	L11_mcmuffinDiary
+default	33	L11_getBeehive
+# open the hidden city up (delay zones)
+default	34	L2_mosquito
+default	35	LX_unlockHiddenTemple
+default	36	L6_dakotaFanning
+default	37	L11_unlockHiddenCity
+# Murder pygmies for the ancient amulet.
+default	38	L11_hiddenCityZones
+default	39	L11_hiddenCity
+# Dance with lady spookyraven so we can go murder her undead husband and take the Eye of Ed
+default	40	LX_spookyravenManorSecondFloor
+default	41	L11_mauriceSpookyraven
+# Lay the smack down on those Jerk Copperhead twins
+default	42	L11_talismanOfNam
+# Open up the top of the beanstalk.
+default	43	L10_plantThatBean
+# Clean up the plains
+default	44	L10_rainOnThePlains
+# Get Black Angus his pizza
+default	45	L9_chasmBuild
+default	46	L9_highLandlord
+#  Kill Groar because *we* are the monsters.
+default	47	L8_trapperQuest
+# Kill the undead? Is this an oxymoron?
+default	48	L7_crypt
+# Cleanse the taint.
+default	49	L6_friarsGetParts
+# Finish the other Macguffin zones so we can beat Ed to death repeatedly and waste all his Ka coins.
+default	50	L11_palindome
+default	51	L11_aridDesert
+default	52	L11_unlockPyramid
+default	53	L11_unlockEd
+default	54	L11_defeatEd
+#	Finish off the Goblin King.
+default	55	L5_slayTheGoblinKing
+# Show the Boss bat who's boss.
+default	56	L4_batCave
+# Fix that dripping tap.
+default	57	L3_tavern
+# Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
+default	58	L2_mosquito
+# release the softblock on delay burning
+default	59	setSoftblockDelay	allowSoftblockDelay
+# release the softblock on Underground Adventures
+default	60	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
+# There's an extra task in KoE
+default	61	LX_koeInvaderHandler
+# "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
+default	62	L13_towerAscent
+# if all else fails, powerlevel like there's no tomorrow.
+default	63	LX_attemptPowerLevel
+
 Legacy of Loathing	0	LX_freeCombatsTask
 Legacy of Loathing	1	woods_questStart
 Legacy of Loathing	2	LX_unlockPirateRealm
@@ -376,101 +475,4 @@ Zombie Slayer	53	setSoftblockDelay	allowSoftblockDelay
 Zombie Slayer	54	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 Zombie Slayer	55	L13_towerAscent
 Zombie Slayer	56	LX_attemptPowerLevel
-
-default	0	LX_freeCombatsTask
-default	1	woods_questStart
-default	2	LX_unlockPirateRealm
-default	3	catBurglarHeist
-default	4	auto_breakfastCounterVisit
-default	5	chateauPainting
-default	6	LX_setWorkshed
-default	7	LX_galaktikSubQuest
-default	8	L9_leafletQuest
-default	9	L5_findKnob
-default	10	L12_sonofaPrefix
-default	11	LX_burnDelay
-default	12	LX_summonMonster
-# path handling which should be in it's own task order but pre-dates task order functionality (tech debt FTW).
-default	13	LM_edTheUndying
-default	14	LX_bugbearInvasion
-default	15	LX_lowkeySummer
-# make sure we don't waste turns of Ultrahydrated doing something else.
-default	16	L11_aridDesert	L11_hasUltrahydrated
-# Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
-default	17	L11_shenStartQuest
-# Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
-default	18	finishBuildingSmutOrcBridge
-# Underground Adventuring for CMC/Breathitin.
-default	19	LX_goingUnderground
-# Burn Breathitin charges
-default	20	LX_useBreathitinCharges
-# Guild access.
-default	21	LX_guildUnlock
-#	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
-default	22	LX_unlockDesert
-default	23	LX_lockPicking
-default	24	LX_fatLootToken
-#	Get the Steel Organ if the user wants it (needs L6 quest complete)
-default	25	LX_steelOrgan
-# open up delay zones.
-default	26	LX_spookyravenManorFirstFloor
-# open up zones where we want to force non-combats.
-# Open up underground zones so they are available for Breathitin.
-default	27	L5_getEncryptionKey
-default	28	L5_findKnob
-#	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
-default	29	L12_islandWar
-# Start the macguffin quest
-default	30	L11_blackMarket
-default	31	L11_forgedDocuments
-default	32	L11_mcmuffinDiary
-default	33	L11_getBeehive
-# open the hidden city up (delay zones)
-default	34	L2_mosquito
-default	35	LX_unlockHiddenTemple
-default	36	L6_dakotaFanning
-default	37	L11_unlockHiddenCity
-# Murder pygmies for the ancient amulet.
-default	38	L11_hiddenCityZones
-default	39	L11_hiddenCity
-# Dance with lady spookyraven so we can go murder her undead husband and take the Eye of Ed
-default	40	LX_spookyravenManorSecondFloor
-default	41	L11_mauriceSpookyraven
-# Lay the smack down on those Jerk Copperhead twins
-default	42	L11_talismanOfNam
-# Open up the top of the beanstalk.
-default	43	L10_plantThatBean
-# Clean up the plains
-default	44	L10_rainOnThePlains
-# Get Black Angus his pizza
-default	45	L9_chasmBuild
-default	46	L9_highLandlord
-#  Kill Groar because *we* are the monsters.
-default	47	L8_trapperQuest
-# Kill the undead? Is this an oxymoron?
-default	48	L7_crypt
-# Cleanse the taint.
-default	49	L6_friarsGetParts
-# Finish the other Macguffin zones so we can beat Ed to death repeatedly and waste all his Ka coins.
-default	50	L11_palindome
-default	51	L11_aridDesert
-default	52	L11_unlockPyramid
-default	53	L11_unlockEd
-default	54	L11_defeatEd
-#	Finish off the Goblin King.
-default	55	L5_slayTheGoblinKing
-# Show the Boss bat who's boss.
-default	56	L4_batCave
-# Fix that dripping tap.
-default	57	L3_tavern
-# Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
-default	58	L2_mosquito
-# release the softblock on delay burning
-default	59	setSoftblockDelay	allowSoftblockDelay
-# release the softblock on Underground Adventures
-default	60	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
-# "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
-default	61	L13_towerAscent
-# if all else fails, powerlevel like there's no tomorrow.
-default	62	LX_attemptPowerLevel
 

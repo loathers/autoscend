@@ -1192,6 +1192,10 @@ boolean L11_aridDesert()
 		if((item_amount($item[Worm-Riding Hooks]) > 0) && ((get_property("gnasirProgress").to_int() & 16) != 16))
 		{
 			pullXWhenHaveY($item[Drum Machine], 1, 0);
+			if(item_amount($item[Drum Machine]) == 0)
+			{
+				auto_makeMonkeyPawWish($item[Drum Machine]);
+			}
 			if(item_amount($item[Drum Machine]) > 0)
 			{
 				auto_log_info("Drum machine desert time!", "blue");
