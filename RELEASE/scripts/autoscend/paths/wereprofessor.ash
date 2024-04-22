@@ -98,7 +98,7 @@ void wereprof_buySkills()
 	pureblood	100	liver3	Synthroid-parathormone cocktail	Shorten ELR
 	*/
 	int rp = get_property("wereProfessorResearchPoints").to_int();
-	while rp > 0
+	while(rp > 0)
 	{
 		foreach sk in $strings[stomach3, liver3, stomach2, liver2, stomach1, liver1, hp3, init3, hp2, init2, hp1, init1, mus3, mox3, mus2,
 		mox2, mus1, mox1, punt, slaughter, hunt, kick3, kick2, kick1, rend3, rend2, rend1, items3, items2, items1, res3, res2, res1, myst3,
@@ -158,11 +158,11 @@ boolean LX_wereprof_getSmashedEquip()
 	}
 
 	location[int] smashedLocs;
-	alreadySmashedLocs = get_property("auto_wereprof_smashedLoc").to_string();
+	string alreadySmashedLocs = get_property("auto_wereprof_smashedLoc").to_string();
 	//There's a couple other locations, but we shouldn't EVER visit them
 	foreach sl in $locations[Noob Cave, The Haunted Pantry, The Thinknerd Warehouse, Vanya's Castle, The Castle in the Clouds in the Sky (Top Floor), Hidden Hospital]
 	{
-		if(!contains_text(alreadySmasedLocs,sl.to_string()))
+		if(!contains_text(alreadySmashedLocs,sl.to_string()))
 		{
 			auto_log_info("Going for Smashed Scientific Equipment in " + sl.to_string(), "blue");
 			return autoAdv(1, sl);
