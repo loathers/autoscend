@@ -696,6 +696,10 @@ boolean L8_trapperGroar()
 	{
 		return false;
 	}
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false; //don't try for Groar as Professor
+	}
 	
 	// we need 5 cold res to be allowed to adventure in [Mist-shrouded Peak]
 	int [element] resGoal;

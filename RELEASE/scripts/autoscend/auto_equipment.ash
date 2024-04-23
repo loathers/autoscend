@@ -717,7 +717,7 @@ void finalizeMaximize(boolean speculative)
 		}
 	}
 
-	if(in_wereprof() && !is_werewolf() && auto_haveDarts()) //Absolutely need darts for Professor
+	if(in_wereprof() && auto_haveDarts()) //Absolutely need darts for Professor. Should level up darts while Werewolf
 	{
 		addBonusToMaximize($item[Everfull Dart Holster], 1000);
 	}
@@ -726,22 +726,28 @@ void finalizeMaximize(boolean speculative)
 	{
 		if(item_amount($item[biphasic molecular oculus]) > 0)
 		{
-			addBonusToMaximize($item[biphasic molecular oculus], 1000);
+			addToMaximize("+equip " + $item[biphasic molecular oculus]);
 		}
-		addBonusToMaximize($item[triphasic molecular oculus], 1000);
+		else
+		{
+			addToMaximize("+equip " + $item[triphasic molecular oculus]);
+		}
 	}
 
 	if(in_wereprof() && !is_werewolf() && (item_amount($item[high-tension exoskeleton]) > 0 || item_amount($item[ultra-high-tension exoskeleton]) > 0 || item_amount($item[irresponsible-tension exoskeleton]) > 0)) //Want that damage avoidance
 	{
 		if(item_amount($item[high-tension exoskeleton]) > 0)
 		{
-			addBonusToMaximize($item[high-tension exoskeleton], 1000);
+			addToMaximize("+equip " + $item[high-tension exoskeleton]);
 		}
-		if(item_amount($item[ultra-high-tension exoskeleton]) > 0)
+		else if(item_amount($item[ultra-high-tension exoskeleton]) > 0)
 		{
-			addBonusToMaximize($item[ultra-high-tension exoskeleton], 1000);
+			addToMaximize("+equip " + $item[ultra-high-tension exoskeleton]);
 		}
-		addBonusToMaximize($item[irresponsible-tension exoskeleton], 1000);
+		else
+		{
+			addToMaximize("+equip " + $item[irresponsible-tension exoskeleton]);
+		}
 	}
 
 	

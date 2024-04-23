@@ -489,6 +489,10 @@ boolean acquireHermitItem(item it)
 	{
 		return false;
 	}
+	if(is_werewolf())
+	{
+		return false;
+	}
 	if((item_amount($item[Hermit Permit]) == 0) && (my_meat() >= npc_price($item[Hermit Permit])))
 	{
 		auto_buyUpTo(1, $item[Hermit Permit]);

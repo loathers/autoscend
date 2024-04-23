@@ -317,6 +317,10 @@ boolean auto_nextRestOverCinch()
 
 boolean auto_getCinch(int goal)
 {
+	if(is_werewolf())
+	{
+		return false;
+	}
 	if(auto_currentCinch() >= goal)
 	{
 		return true;

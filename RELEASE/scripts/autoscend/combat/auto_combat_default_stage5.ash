@@ -163,7 +163,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	//Everfull Dart Holder
 	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0)
 	{
-		return useSkill(dartSkill());
+		return useSkill(dartSkill(), false);
 	}
     
 	//mortar shell is amazing. it really should not be limited to sauceror only.

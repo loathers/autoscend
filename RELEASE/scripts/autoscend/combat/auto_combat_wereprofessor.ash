@@ -1,10 +1,10 @@
-string auto_combatWereProfessorStage1(int round, monster enemy, string text)
+string auto_combatWereProfessorStage4(int round, monster enemy, string text)
 {
 	if(!in_wereprof())
 	{
 		return "";
 	}
-	if(!is_werewolf())
+	if(!is_werewolf() && werewolf_oculus())
 	{
 		if(canUse(to_skill(7512))) //Advanced Research
 		{
@@ -44,7 +44,7 @@ string auto_combatWereProfessorStage5(int round, monster enemy, string text)
 	{
 		if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0) //want dart skill as high as possible for Professor
 		{
-			return useSkill(dartSkill());
+			return useSkill(dartSkill(), false);
 		}
 		else
 		{

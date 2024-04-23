@@ -32,7 +32,8 @@ void wereprof_buySkills()
 	{
 		return;
 	}
-	if(is_werewolf())
+	int rp = get_property("wereProfessorResearchPoints").to_int();
+	if(is_werewolf() || (!is_werewolf() && get_property("wereProfessorTransformTurns") > 1 && rp >= 10) || rp == 0) //Want as many RP as possible before looping through the skills
 	{
 		return;
 	}
@@ -97,19 +98,22 @@ void wereprof_buySkills()
 	liver3	60	liver2	Synthetic aldosterone	Liver +3
 	pureblood	100	liver3	Synthroid-parathormone cocktail	Shorten ELR
 	*/
-	int rp = get_property("wereProfessorResearchPoints").to_int();
+	int[string] rpcost = {"stomach3": 60, "liver3": 60, "stomach2": 50, "liver2":50, "stomach1": 40, "liver1": 40, "hp3": 40, "init3": 40, "hp2": 30, "init2": 30,
+	"hp1": 20, "init1": 20, "mus3": 30, "mox3": 30, "mus2": 20, "mox2": 20, "mus1": 10, "mox1": 10, "punt": 100, "slaughter": 100, "hunt": 100, "kick3": 40, "kick2": 30,
+	"kick1": 20, "rend3": 40, "rend2": 30, "rend1": 20, "items3": 60, "items2": 50, "items1": 40, "res3": 40, "res2": 30, "res1": 20, "myst3": 30, "myst2": 20, "myst1": 10,
+	"bite3": 40, "bite2": 30, "bite1": 20, "perfecthair": 100, "meat3": 60, "meat2": 50, "meat1": 40, "ml3": 60, "ml2": 50, "ml1": 40, "skin3": 60, "skin2": 50, "skin1": 40,
+	"pureblood": 100, "feasting": 100, "skinheal": 100, "howl": 100, "feed": 100};
 	while(rp > 0)
 	{
-		foreach sk in $strings[stomach3, liver3, stomach2, liver2, stomach1, liver1, hp3, init3, hp2, init2, hp1, init1, mus3, mox3, mus2,
-		mox2, mus1, mox1, punt, slaughter, hunt, kick3, kick2, kick1, rend3, rend2, rend1, items3, items2, items1, res3, res2, res1, myst3,
-		myst2, myst1, bite3, bite2, bite1, perfecthair, meat3, meat2, meat1, ml3, ml2, ml1, skin3, skin2, skin1, pureblood, feasting,
-		skinheal, howl, feed]
+		foreach sk, cost in rpcost
 		{
-			if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
+			if(contains_text(get_property("beastSkillsAvailable").to_string(), sk) && cost < rp)
 			{
 				cli_execute('wereprofessor research ' + sk);
+				break;
 			}
 		}
+		break;
 	}
 }
 
@@ -146,6 +150,19 @@ void wereprof_buyEquip()
 	}
 }
 
+boolean werewolf_oculus()
+{
+	if(!in_wereprof())
+	{
+		return false;
+	}
+	if(have_equipped($item[biphasic molecular oculus]) || have_equipped($item[triphasic molecular oculus]))
+	{
+		return true;
+	}
+	return false;
+}
+
 boolean LX_wereprof_getSmashedEquip()
 {
 	if(!in_wereprof())
@@ -158,9 +175,9 @@ boolean LX_wereprof_getSmashedEquip()
 	}
 
 	location[int] smashedLocs;
-	string alreadySmashedLocs = get_property("auto_wereprof_smashedLoc").to_string();
+	string alreadySmashedLocs = get_property("antiScientificMethod").to_string();
 	//There's a couple other locations, but we shouldn't EVER visit them
-	foreach sl in $locations[Noob Cave, The Haunted Pantry, The Thinknerd Warehouse, Vanya's Castle, The Castle in the Clouds in the Sky (Top Floor), Hidden Hospital]
+	foreach sl in $locations[Noob Cave, The Haunted Pantry, The Thinknerd Warehouse, Vanya's Castle, The Castle in the Clouds in the Sky (Top Floor), The Hidden Hospital]
 	{
 		if(!contains_text(alreadySmashedLocs,sl.to_string()))
 		{
