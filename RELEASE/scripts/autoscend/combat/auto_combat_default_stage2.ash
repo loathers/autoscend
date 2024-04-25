@@ -171,8 +171,8 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		combat_status_add("banishercheck");
 	}
 
-	// Free run from monsters we want to banish but are unable to
-	if(!combat_status_check("freeruncheck") && auto_wantToBanish(enemy, my_location()))
+	// Free run from monsters we want to banish but are unable to, or monsters on the free run list
+	if(!combat_status_check("freeruncheck") && (auto_wantToFreeRun(enemy, my_location()) || auto_wantToBanish(enemy, my_location())))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")

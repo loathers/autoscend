@@ -56,6 +56,40 @@ banish	49	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering;!sniffed
 banish	50	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation;!sniffed:ancient unspeakable bugbear
 banish	51	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!sniffed:trendy bugbear chef
 
+freerun	0	Foodie Giant
+freerun	1	Possibility Giant	prop:auto_hippyInstead==false
+freerun	2	Procrastination Giant
+freerun	3	Renaissance Giant
+freerun	4	Punk Rock Giant
+freerun	5	Raver Giant
+freerun	6	Steampunk Giant
+freerun	7	Irritating Series of Random Encounters
+freerun	8	Protagonist	!class:Ed the Undying
+freerun	9	bar
+freerun	10	spooky mummy
+freerun	11	spooky vampire
+freerun	12	triffid
+freerun	13	warwelf	!class:Ed the Undying
+freerun	14	wolfman	!class:Ed the Undying
+freerun	15	cubist bull
+freerun	16	empty suit of armor
+freerun	17	guy with a pitchfork, and his wife
+freerun	18	claw-foot bathtub
+freerun	19	malevolent hair clog
+freerun	20	toilet papergeist
+freerun	21	Iiti Kitty
+freerun	22	tomb bat
+freerun	23	tomb servant	loc:The Upper Chamber
+freerun	24	Knob Goblin Assistant Chef
+freerun	25	sleeping Knob Goblin Guard
+freerun	26	Sub-Assistant Knob Mad Scientist
+freerun	27	animated mahogany nightstand
+freerun	28	animated ornate nightstand
+freerun	29	animated rustic nightstand
+freerun	30	Wardröb nightstand
+freerun	31	drunken rat
+freerun	32	bunch of drunken rats
+
 replace	0	Banshee Librarian	item:Killing Jar>0
 replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber;!pathid:41;!path:Wildfire;!path:Fall of the Dinosaurs;!path:Avator of Shadows Over Loathing;!path:Legacy of Loathing
 replace	2	Knob Goblin Madam	item:Knob Goblin Perfume>0
