@@ -244,6 +244,11 @@ boolean auto_pre_adventure()
 		prepareForSmutOrcs();
 	}
 
+	if(place == $location[Twin Peak])
+	{
+		prepareForTwinPeak(false);
+	}
+
 	if(place == $location[Vanya\'s Castle])
 	{
 		provideInitiative(600, $location[Vanya\'s Castle], true);	
