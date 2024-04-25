@@ -1236,6 +1236,8 @@ int cloversAvailable(boolean override)
 		{
 			numClovers += 1;
 		}
+		//Get from April band
+		numClovers += auto_AprilSaxLuckyLeft();
 	}
 
 	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
@@ -1269,6 +1271,18 @@ boolean cloverUsageInit(boolean override)
 	if (have_effect($effect[Lucky!]) > 0)
 	{
 		return true;
+	}
+	
+	if (auto_AprilSaxLuckyLeft() > 0)
+	{
+		if (auto_playAprilSax()) {
+			auto_log_info("Clover usage initialized, using Apriling sax.");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after playing the Apriling sax.");
+		}
 	}
 
 	//Use August Scepter skill if we can
@@ -1473,6 +1487,10 @@ boolean isUnclePAvailable()
 		return false;
 	}
 	if(in_zombieSlayer())
+	{
+		return false;
+	}
+	if(in_koe())
 	{
 		return false;
 	}
@@ -2181,6 +2199,10 @@ boolean evokeEldritchHorror()
 
 boolean fightScienceTentacle()
 {
+	if(in_koe())
+	{
+		return false;
+	}
 	if(get_property("_eldritchTentacleFought").to_boolean())
 	{
 		return false;
@@ -2960,10 +2982,6 @@ boolean auto_is_valid(item it)
 	if(in_bhy())
 	{
 		return bhy_is_item_valid(it);
-	}
-	if(my_class() == $class[Pig Skinner]) //want to ignore Red Rocket in PS because Free-For-All is more important
-	{
-		if(it == $item[Red Rocket]) return false;
 	}
 	
 	return is_unrestricted(it);
@@ -4038,6 +4056,17 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 			abort("Attempted to force a noncombat with [Cincho] but was unable to.");
 		}
 		set_property("auto_forceNonCombatSource", "cincho");
+		return true;
+	}
+	else if(auto_AprilTubaForcesLeft()>0)
+	{
+		if(speculative) return true;
+		auto_playAprilTuba();
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [Apriling tuba] but was unable to.");
+		}
+		set_property("auto_forceNonCombatSource", "Apriling tuba");
 		return true;
 	}
 	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso())
