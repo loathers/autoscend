@@ -55,6 +55,11 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 		return "";
 	}
 
+	if(!is_werewolf() && in_wereprof())
+	{
+		return "";
+	}
+
 	if(place == $location[The Hidden Bowling Alley] && get_property("auto_bowledAtAlley").to_int() != my_ascensions())
 	{
 		if(!speculation)

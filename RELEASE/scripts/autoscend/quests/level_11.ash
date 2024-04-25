@@ -929,6 +929,10 @@ boolean L11_mcmuffinDiary()
 	{
 		return false;
 	}
+	if(is_werewolf())
+	{
+		return false; //can't access stores as werewolf which includes the shore
+	}
 	if(in_koe() && item_amount($item[Forged Identification Documents]) > 0)
 	{
 		council(); // Shore doesn't exist in Exploathing so we acquire diary from the council
@@ -1892,7 +1896,7 @@ boolean L11_hiddenCity()
 				if(canDrinkCursedPunch)
 				{
 					L11_hiddenTavernUnlock(true);
-					if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
+					if(my_ascensions() == get_property("hiddenTavernUnlock").to_int() && !is_werewolf())
 					{
 						auto_buyUpTo(cursesNeeded, $item[Cursed Punch]);
 						if(item_amount($item[Cursed Punch]) < cursesNeeded)

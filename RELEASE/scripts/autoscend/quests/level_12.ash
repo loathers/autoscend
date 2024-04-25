@@ -1078,8 +1078,16 @@ boolean L12_orchardFinalize()
 		pulverizeThing($item[A Light that Never Goes Out]);
 	}
 	equipWarOutfit();
-	visit_url("bigisland.php?place=orchard&action=stand&pwd=");
-	visit_url("shop.php?whichshop=hippy");
+	if(is_werewolf())
+	{
+		visit_url("bigisland.php?place=orchard&action=stand&pwd=");
+		return true; // can't access the shop as a werewolf so just want to return after done
+	}
+	else
+	{
+		visit_url("bigisland.php?place=orchard&action=stand&pwd=");
+		visit_url("shop.php?whichshop=hippy");
+	}
 	return true;
 }
 
@@ -1713,7 +1721,17 @@ boolean L12_themtharHills()
 
 	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 	{
-		outfit("Frat Warrior Fatigues");
+		if(!is_werewolf() && in_wereprof())
+		{
+			//Need to manually equip because professor
+			if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
+			if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
+			if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
+		}
+		else
+		{
+			outfit("Frat Warrior Fatigues");
+		}
 		cli_execute("concert 2");
 	}
 
@@ -2227,7 +2245,17 @@ boolean L12_finalizeWar()
 	if(possessOutfit("War Hippy Fatigues"))
 	{
 		auto_log_info("Getting dimes.", "blue");
-		outfit("War Hippy Fatigues");
+		if(in_wereprof())
+		{
+			//Need to manually equip because professor
+			if(!have_equipped($item[bullet-proof corduroys])) equip($item[bullet-proof corduroys]);
+			if(!have_equipped($item[round purple sunglasses])) equip($item[round purple sunglasses]);
+			if(!have_equipped($item[reinforced beaded headband])) equip($item[reinforced beaded headband]);
+		}
+		else
+		{
+			outfit("War Hippy Fatigues");
+		}
 		foreach it in $items[padl phone, red class ring, blue class ring, white class ring]
 		{
 			sell(it.buyer, item_amount(it), it);
@@ -2247,7 +2275,17 @@ boolean L12_finalizeWar()
 	if(possessOutfit("Frat Warrior Fatigues"))
 	{
 		auto_log_info("Getting quarters.", "blue");
-		outfit("Frat Warrior Fatigues");
+		if(in_wereprof())
+		{
+			//Need to manually equip because professor
+			if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
+			if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
+			if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
+		}
+		else
+		{
+			outfit("Frat Warrior Fatigues");
+		}
 		foreach it in $items[pink clay bead, purple clay bead, green clay bead, communications windchimes]
 		{
 			sell(it.buyer, item_amount(it), it);
@@ -2303,6 +2341,13 @@ boolean L12_finalizeWar()
 
 	if(possessOutfit("War Hippy Fatigues"))
 	{
+		if(in_wereprof())
+		{
+			//Need to manually equip because professor
+			if(!have_equipped($item[bullet-proof corduroys])) equip($item[bullet-proof corduroys]);
+			if(!have_equipped($item[round purple sunglasses])) equip($item[round purple sunglasses]);
+			if(!have_equipped($item[reinforced beaded headband])) equip($item[reinforced beaded headband]);
+		}
 		while($coinmaster[Dimemaster].available_tokens >= 5)
 		{
 			cli_execute("make " + $coinmaster[Dimemaster].available_tokens/5 + " fancy seashell necklace");
@@ -2319,6 +2364,13 @@ boolean L12_finalizeWar()
 
 	if(possessOutfit("Frat Warrior Fatigues"))
 	{
+		if(in_wereprof())
+		{
+			//Need to manually equip because professor
+			if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
+			if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
+			if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
+		}
 		while($coinmaster[Quartersmaster].available_tokens >= 5)
 		{
 			cli_execute("make " + $coinmaster[Quartersmaster].available_tokens/5 + " commemorative war stein");
@@ -2363,6 +2415,11 @@ boolean L12_finalizeWar()
 	pages[0] = "bigisland.php?place=camp&whichcamp=1";
 	pages[1] = "bigisland.php?place=camp&whichcamp=2";
 	pages[2] = "bigisland.php?action=bossfight&pwd";
+	//Shouldn't fight boss if Professor in WereProfessor so burn turns until Werewolf
+	if(!is_werewolf() && in_wereprof())
+	{
+		autoAdvBypass("place.php?whichplace=wereprof_cottage&action=wereprof_bookshelf");
+	}
 	if(!autoAdvBypass(0, pages, bossFight, ""))
 	{
 		auto_log_warning("Boss already defeated, ignoring", "red");

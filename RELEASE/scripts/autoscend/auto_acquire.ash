@@ -357,6 +357,10 @@ boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condi
 
 boolean auto_buyUpTo(int num, item it)
 {
+	if(is_werewolf())
+	{
+		return false; //can't buy anything as a werewolf
+	}
 	if(item_amount(it) >= num)
 	{
 		return true;	//we already have the target amount

@@ -125,25 +125,25 @@ void wereprof_buyEquip()
 	}
 	
 	//There's probably a better way to do this
-	while(item_amount($item[smashed scientific equipment]) > 0)
+	while(item_amount($item[smashed scientific equipment]) > 0 && !possessEquipment($item[triphasic molecular oculus]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
 	{
-		if(item_amount($item[biphasic molecular oculus]) == 0 && item_amount($item[triphasic molecular oculus]) == 0)
+		if(!possessEquipment($item[biphasic molecular oculus]) && !possessEquipment($item[triphasic molecular oculus]))
 		{
 			cli_execute('tinker biphasic molecular oculus');
 		}
-		if(item_amount($item[biphasic molecular oculus]) > 0 && item_amount($item[triphasic molecular oculus]) == 0)
+		if(possessEquipment($item[biphasic molecular oculus]) && !possessEquipment($item[triphasic molecular oculus]))
 		{
 			cli_execute('tinker triphasic molecular oculus');
 		}
-		if(item_amount($item[high-tension exoskeleton]) == 0 && item_amount($item[ultra-high-tension exoskeleton]) == 0 && item_amount($item[irresponsible-tension exoskeleton]) == 0)
+		if(!possessEquipment($item[high-tension exoskeleton]) && !possessEquipment($item[ultra-high-tension exoskeleton]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
 		{
 			cli_execute('tinker high-tension exoskeleton');
 		}
-		if(item_amount($item[high-tension exoskeleton]) > 0 && item_amount($item[ultra-high-tension exoskeleton]) == 0 && item_amount($item[irresponsible-tension exoskeleton]) == 0)
+		if(possessEquipment($item[high-tension exoskeleton]) && !possessEquipment($item[ultra-high-tension exoskeleton]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
 		{
 			cli_execute('tinker ultra-high-tension exoskeleton');
 		}
-		if(item_amount($item[high-tension exoskeleton]) == 0 && item_amount($item[ultra-high-tension exoskeleton]) > 0 && item_amount($item[irresponsible-tension exoskeleton]) == 0)
+		if(!possessEquipment($item[high-tension exoskeleton]) && possessEquipment($item[ultra-high-tension exoskeleton]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
 		{
 			cli_execute('tinker irresponsible-tension exoskeleton');
 		}

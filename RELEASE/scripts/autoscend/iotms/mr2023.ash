@@ -338,13 +338,19 @@ boolean auto_getCinch(int goal)
 		return false;
 	}
 	// use free rests until have enough cinch or out of rests
-	while(auto_currentCinch() < goal && haveFreeRestAvailable())
+	while(auto_currentCinch() < goal && haveFreeRestAvailable() && !in_wereprof())
 	{
 		if(!doFreeRest())
 		{
 			abort("Failed to rest to charge cincho");
 		}
 	}
+
+	// go for cinch as a professor
+	/*while(auto_currentCinch() < goal && !is_werewolf() && in_wereprof())
+	{
+		visit_url("place.php?whichplace=wereprof_cottage&action=wereprof_sleep"); //just visit the cottage to sleep as professor
+	}*/
 
 	// see if we got enough cinch after using free rests
 	if(auto_currentCinch() >= goal)

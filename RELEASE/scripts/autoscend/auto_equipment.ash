@@ -724,13 +724,19 @@ void finalizeMaximize(boolean speculative)
 
 	if(in_wereprof() && !is_werewolf() && (item_amount($item[biphasic molecular oculus]) > 0 || item_amount($item[triphasic molecular oculus]) > 0)) //Want that Advanced Research as a professor
 	{
-		if(item_amount($item[biphasic molecular oculus]) > 0)
+		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
+		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
+		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
+		McMillicancuddy's Other Back 40] contains my_location()))
 		{
-			addToMaximize("+equip " + $item[biphasic molecular oculus]);
-		}
-		else
-		{
-			addToMaximize("+equip " + $item[triphasic molecular oculus]);
+			if(item_amount($item[biphasic molecular oculus]) > 0)
+			{
+				addToMaximize("+equip " + $item[biphasic molecular oculus]);
+			}
+			else
+			{
+				addToMaximize("+equip " + $item[triphasic molecular oculus]);
+			}
 		}
 	}
 

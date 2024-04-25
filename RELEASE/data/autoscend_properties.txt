@@ -219,3 +219,4 @@
 226	auto_aosolLastSkill
 227 auto_skipStage2
 228 auto_skipStage4
+229 auto_skipStage3

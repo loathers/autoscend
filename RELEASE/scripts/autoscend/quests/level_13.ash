@@ -391,6 +391,12 @@ boolean L13_towerNSContests()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_01_contestbooth"))
 	{
+		if(in_wereprof() && get_property("wereProfessorTransformTurns") < 48)
+		{
+			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
+			visit_url("choice.php?pwd=&whichchoice=1003&option=5", true);
+			visit_url("main.php");
+		}
 		if(get_property("nsContestants1").to_int() == -1)
 		{
 			resetMaximize();
@@ -1818,6 +1824,11 @@ boolean L13_towerNSFinal()
 	if(in_lol())
 	{
 		abort("Freeing the king will result in losing all your replica IOTM. Enjoy them while you have them!");
+	}
+
+	if(in_wereprof())
+	{
+		abort("Freeing the king will result in a path change. Go howl at the moon some more if you want.");
 	}
 
 	if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))

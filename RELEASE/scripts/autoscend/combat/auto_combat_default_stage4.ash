@@ -2,6 +2,9 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 {
 	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	string retval;
+
+	//Unskip stage 3
+	if(get_property("auto_skipStage3").to_boolean()) set_property("auto_skipStage3", false);
 	
 	// Path = The Source
 	retval = auto_combatTheSourceStage4(round, enemy, text);

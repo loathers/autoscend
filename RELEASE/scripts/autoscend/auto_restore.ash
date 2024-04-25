@@ -2132,6 +2132,10 @@ int doRest()
 		}
 
 	}
+	else if (!is_werewolf() && in_wereprof())
+	{
+		visit_url("place.php?whichplace=wereprof_cottage&action=wereprof_sleep");
+	}
 	else
 	{
 		set_property("restUsingChateau", false);

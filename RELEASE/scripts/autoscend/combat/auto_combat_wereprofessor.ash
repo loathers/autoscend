@@ -1,3 +1,18 @@
+string auto_combatWereProfessorStage1(int round, monster enemy, string text)
+{
+	if(!in_wereprof())
+	{
+		return "";
+	}
+
+	if(!is_werewolf())
+	{
+		set_property("auto_skipStage3", true); //Don't even want to try Stage 3 as a Professor
+	}
+
+	return "";
+}
+
 string auto_combatWereProfessorStage4(int round, monster enemy, string text)
 {
 	if(!in_wereprof())
@@ -44,7 +59,7 @@ string auto_combatWereProfessorStage5(int round, monster enemy, string text)
 	{
 		if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0) //want dart skill as high as possible for Professor
 		{
-			return useSkill(dartSkill(), false);
+			return useSkill(dartSkill());
 		}
 		else
 		{
