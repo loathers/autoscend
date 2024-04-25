@@ -1,4 +1,4 @@
-since r27897;	// additional monster parts
+since r27905;	// Account for TinkeringBenchRequest ability to use equipped items
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
