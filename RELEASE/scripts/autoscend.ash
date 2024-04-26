@@ -1369,7 +1369,7 @@ boolean adventureFailureHandler()
 		}
 	}
 
-	if(last_monster() == $monster[Crate])
+	if(last_monster() == $monster[Crate] && (!is_werewolf() && $location[Noob Cave].turns_spent < 8)) //want 7 turns of Noob Cave as a Werewolf
 	{
 		if(get_property("auto_newbieOverride").to_boolean())
 		{
