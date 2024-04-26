@@ -2608,6 +2608,11 @@ boolean L11_ronCopperhead()
 		return false;
 	}
 
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false; //can't do Copperhead Club as a Professor
+	}
+
 
 	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
 	{

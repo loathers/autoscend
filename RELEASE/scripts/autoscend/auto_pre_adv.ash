@@ -742,6 +742,14 @@ boolean auto_pre_adventure()
 		purgeML = false;
 	}
 
+	// want as little ML as possible as professor in wereprof
+	if(in_wereprof() && !is_werewolf())
+	{
+		doML = false;
+		removeML = true;
+		purgeML = false;
+	}
+
 		// NOTE: If we aren't quits before we pass L13, let us gain stats.
 	if ((get_property("flyeredML").to_int() > 9999 || internalQuestStatus("questL12War") > 1 || get_property("sidequestArenaCompleted") != "none") && my_level() > 12)
 	{

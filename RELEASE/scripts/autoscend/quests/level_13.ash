@@ -1826,7 +1826,7 @@ boolean L13_towerNSFinal()
 		abort("Freeing the king will result in losing all your replica IOTM. Enjoy them while you have them!");
 	}
 
-	if(in_wereprof())
+	if(in_wereprof() && (0 < item_amount($item[Thwaitgold wolf spider statuette])))
 	{
 		abort("Freeing the king will result in a path change. Go howl at the moon some more if you want.");
 	}
