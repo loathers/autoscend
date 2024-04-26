@@ -756,6 +756,9 @@ boolean auto_run_choice(int choice, string page)
 		case 1500: // Like a Loded Stone
 			run_choice(2); // only come here to get shadow waters buff
 			break;
+		case 1519: // The coffee was *gasp* decaf!
+			run_choice(1);
+			break;
 		case 1520: // Hang On to Yourself
 			run_choice(1);
 			break;
