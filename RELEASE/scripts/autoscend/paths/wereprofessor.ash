@@ -189,7 +189,7 @@ boolean LX_wereprof_getSmashedEquip()
 	//There's a couple other locations, but we shouldn't EVER visit them
 	foreach sl in $locations[The Hidden Hospital, The Castle in the Clouds in the Sky (Top Floor), Noob Cave, The Haunted Pantry, The Thinknerd Warehouse, Vanya's Castle]
 	{
-		if(!contains_text(alreadySmashedLocs,sl.to_string()))
+		if(!contains_text(alreadySmashedLocs,sl.to_string()) && zone_available(sl))
 		{
 			auto_log_info("Going for Smashed Scientific Equipment in " + sl.to_string(), "blue");
 			return autoAdv(1, sl);
