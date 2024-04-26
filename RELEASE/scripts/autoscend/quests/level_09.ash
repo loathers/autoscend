@@ -444,7 +444,7 @@ boolean L9_aBooPeak()
 
 		//	Do we need to manually adjust for the parrot?
 
-		if(black_market_available() && (item_amount($item[Can of Black Paint]) == 0) && (have_effect($effect[Red Door Syndrome]) == 0) && (my_meat() >= npc_price($item[Can of Black Paint])))
+		if(black_market_available() && (item_amount($item[Can of Black Paint]) == 0) && (have_effect($effect[Red Door Syndrome]) == 0) && (my_meat() >= npc_price($item[Can of Black Paint])) && !is_werewolf())
 		{
 			auto_buyUpTo(1, $item[Can of Black Paint]);
 			coldResist += 2;

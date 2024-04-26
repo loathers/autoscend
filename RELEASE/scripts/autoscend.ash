@@ -587,9 +587,9 @@ boolean tophatMaker()
 
 boolean LX_doVacation()
 {
-	if(in_koe())
+	if(in_koe() || is_werewolf())
 	{
-		return false;		//cannot vacation in kingdom of exploathing path
+		return false;		//cannot vacation in kingdom of exploathing path or are a werewolf in wereprofessor
 	}
 	
 	int meat_needed = 500;

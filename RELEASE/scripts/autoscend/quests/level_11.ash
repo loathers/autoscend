@@ -914,6 +914,10 @@ boolean L11_forgedDocuments()
 		pages[1] = "shop.php?whichshop=blackmarket&action=fightbmguy";
 		return autoAdvBypass(0, pages, $location[Noob Cave], "");
 	}
+	if(is_werewolf())
+	{
+		return false; // can't access shops as a werewolf
+	}
 	auto_buyUpTo(1, $item[Forged Identification Documents]);
 	if(item_amount($item[Forged Identification Documents]) > 0)
 	{
@@ -1000,6 +1004,10 @@ boolean L11_getUVCompass()
 	if(in_koe())
 	{
 		return false;		//impossible to get compass in this path. [The Shore, Inc] is unavailable
+	}
+	if(is_werewolf())
+	{
+		return false; // can't access shore as a werewolf
 	}
 
 	pullXWhenHaveY($item[Shore Inc. Ship Trip Scrip], 1, 0);
@@ -1098,7 +1106,7 @@ boolean L11_aridDesert()
 		if((get_property("gnasirProgress").to_int() & 2) != 2)
 		{
 			boolean canBuyPaint = true;
-			if(in_wotsf() || in_nuclear())
+			if(in_wotsf() || in_nuclear() || is_werewolf())
 			{
 				canBuyPaint = false;
 			}
@@ -1842,7 +1850,7 @@ boolean L11_hiddenCity()
 				//can drink and inebriety allows it
 				if(canDrinkCursedPunch)
 				{
-					boolean canBuyCursedPunch = (my_meat() >= cursesNeeded*500*npcStoreDiscountMulti());
+					boolean canBuyCursedPunch = (my_meat() >= cursesNeeded*500*npcStoreDiscountMulti() && !is_werewolf()); //can't buy cursed punch as a werewolf
 					
 					if(canBuyCursedPunch)
 					{
@@ -1993,7 +2001,7 @@ boolean L11_hiddenCity()
 		L11_hiddenTavernUnlock(true);
 		if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
 		{
-			if(item_amount($item[Bowl Of Scorpions]) == 0)
+			if(item_amount($item[Bowl Of Scorpions]) == 0 && !is_werewolf()) //can't access shops as werewolf
 			{
 				auto_buyUpTo(1, $item[Bowl Of Scorpions]);
 				if(in_ocrs())
@@ -2603,7 +2611,7 @@ boolean L11_ronCopperhead()
 
 	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
 	{
-		if (item_amount($item[Red Zeppelin Ticket]) < 1 && !in_wotsf()) // no black market in wotsf
+		if (item_amount($item[Red Zeppelin Ticket]) < 1 && !in_wotsf() && !is_werewolf()) // no black market in wotsf, can't access as werewolf
 		{
 			// use the priceless diamond since we go to the effort of trying to get one in the Copperhead Club
 			// and it saves us 4.5k meat.

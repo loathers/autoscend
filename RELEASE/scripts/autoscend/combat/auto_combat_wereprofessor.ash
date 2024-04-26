@@ -19,7 +19,7 @@ string auto_combatWereProfessorStage4(int round, monster enemy, string text)
 	{
 		return "";
 	}
-	if(!is_werewolf() && werewolf_oculus())
+	if(!is_werewolf() && wereprof_oculus())
 	{
 		if(canUse(to_skill(7512))) //Advanced Research
 		{
@@ -60,6 +60,10 @@ string auto_combatWereProfessorStage5(int round, monster enemy, string text)
 		if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0) //want dart skill as high as possible for Professor
 		{
 			return useSkill(dartSkill());
+		}
+		else if(auto_haveCosmicBowlingBall() && canUse($item[cosmic bowling ball]) && monster_hp() < 100)
+		{
+			return useItem($item[cosmic bowling ball]);
 		}
 		else
 		{

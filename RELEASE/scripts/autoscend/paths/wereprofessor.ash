@@ -117,9 +117,19 @@ void wereprof_buySkills()
 	}
 }
 
+boolean wereprof_haveEquip()
+{
+	//Only care about the final equipment
+	if(!possessEquipment($item[triphasic molecular oculus]) || !possessEquipment($item[irresponsible-tension exoskeleton]))
+	{
+		return false;
+	}
+	return true;
+}
+
 void wereprof_buyEquip()
 {
-	if(is_werewolf())
+	if(is_werewolf() || wereprof_haveEquip())
 	{
 		return;
 	}
@@ -150,7 +160,7 @@ void wereprof_buyEquip()
 	}
 }
 
-boolean werewolf_oculus()
+boolean wereprof_oculus()
 {
 	if(!in_wereprof())
 	{
@@ -169,7 +179,7 @@ boolean LX_wereprof_getSmashedEquip()
 	{
 		return false;
 	}
-	if(!is_werewolf())
+	if(!is_werewolf() || wereprof_haveEquip())
 	{
 		return false;
 	}
