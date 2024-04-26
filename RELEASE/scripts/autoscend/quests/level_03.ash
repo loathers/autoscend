@@ -167,6 +167,7 @@ boolean auto_tavern()
 				autoAdv(1, $location[Noob Cave]);
 			}
 			if(last_monster() == $monster[Crate] && (in_wereprof() && !is_werewolf() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave as a Werewolf
+			{
 				if(get_property("auto_newbieOverride").to_boolean())
 				{
 					set_property("auto_newbieOverride", false);
