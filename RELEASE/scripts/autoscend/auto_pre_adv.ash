@@ -244,6 +244,11 @@ boolean auto_pre_adventure()
 		prepareForSmutOrcs();
 	}
 
+	if(place == $location[Twin Peak])
+	{
+		prepareForTwinPeak(false);
+	}
+
 	if(place == $location[Vanya\'s Castle])
 	{
 		provideInitiative(600, $location[Vanya\'s Castle], true);	
@@ -396,11 +401,17 @@ boolean auto_pre_adventure()
 				adjustForYellowRayIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
-			if(auto_wantToBanish(mon, place))
+			boolean wantToBanish  = auto_wantToBanish(mon, place);
+			boolean wantToFreeRun = auto_wantToFreeRun(mon, place);
+			if(wantToBanish || wantToFreeRun)
 			{
 				// attempt to prepare for banishing, but if we can not try free running
-				boolean canBanish = adjustForBanishIfPossible(mon, place);
-				if(!canBanish)
+				boolean willBanish = false;
+				if (wantToBanish)
+				{
+					willBanish = adjustForBanishIfPossible(mon, place);
+				}
+				if(!willBanish)
 				{
 					adjustForFreeRunIfPossible(mon,place);
 				}
