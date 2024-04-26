@@ -187,7 +187,7 @@ boolean LX_wereprof_getSmashedEquip()
 	location[int] smashedLocs;
 	string alreadySmashedLocs = get_property("antiScientificMethod").to_string();
 	//There's a couple other locations, but we shouldn't EVER visit them
-	foreach sl in $locations[Noob Cave, The Haunted Pantry, The Thinknerd Warehouse, Vanya's Castle, The Castle in the Clouds in the Sky (Top Floor), The Hidden Hospital]
+	foreach sl in $locations[The Hidden Hospital, The Castle in the Clouds in the Sky (Top Floor), Noob Cave, The Haunted Pantry, The Thinknerd Warehouse, Vanya's Castle]
 	{
 		if(!contains_text(alreadySmashedLocs,sl.to_string()))
 		{
