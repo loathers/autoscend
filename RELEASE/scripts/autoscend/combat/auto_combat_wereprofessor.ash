@@ -7,6 +7,7 @@ string auto_combatWereProfessorStage1(int round, monster enemy, string text)
 
 	if(!is_werewolf())
 	{
+		set_property("auto_skipStage2", true); //Don't even want to try Stage 2 as a Professor
 		set_property("auto_skipStage3", true); //Don't even want to try Stage 3 as a Professor
 	}
 
