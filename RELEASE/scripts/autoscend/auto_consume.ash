@@ -841,6 +841,10 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			blacklist[it] = true;
 		}
 	}
+	if(in_wereprof() && (!is_werewolf() || (is_werewolf() && get_property("wereProfessorTransformTurns") < 50)))
+	{
+		blacklist[$item[plain calzone]] = true;
+	}
 	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !possessEquipment($item[Mega Gem]) && !isActuallyEd())
 	{
 		blacklist[$item[wet stew]] = true;
