@@ -33,9 +33,18 @@ void wereprof_buySkills()
 		return;
 	}
 	int rp = get_property("wereProfessorResearchPoints").to_int();
-	if(is_werewolf() || (!is_werewolf() && get_property("wereProfessorTransformTurns") > 1 && rp >= 10) || rp == 0) //Want as many RP as possible before looping through the skills
+	if(is_werewolf() || rp == 0)
 	{
 		return;
+	}
+	boolean do_skills = true;
+	if((!is_werewolf() && get_property("wereProfessorTransformTurns") > 1))
+	{
+		do_skills = false; //Want as many RP as possible before looping through the skills
+	}
+	if(!is_werewolf() && organsFull() && my_adventures() <= auto_advToReserve() && (!contains_text(get_property("beastSkillsKnown").to_string(), "stomach3") || !contains_text(get_property("beastSkillsKnown").to_string(), "liver3")))
+	{
+		do_skills = true; //If organs are full, should do skills if we need more organ space and don't have all organ expanding skills and limited adventures left
 	}
 	/* Taken from wereprofessor.txt in Mafia src
 	# Muscle Skill Tree
@@ -103,17 +112,20 @@ void wereprof_buySkills()
 	"kick1": 20, "rend3": 40, "rend2": 30, "rend1": 20, "items3": 60, "items2": 50, "items1": 40, "res3": 40, "res2": 30, "res1": 20, "myst3": 30, "myst2": 20, "myst1": 10,
 	"bite3": 40, "bite2": 30, "bite1": 20, "perfecthair": 100, "meat3": 60, "meat2": 50, "meat1": 40, "ml3": 60, "ml2": 50, "ml1": 40, "skin3": 60, "skin2": 50, "skin1": 40,
 	"pureblood": 100, "feasting": 100, "skinheal": 100, "howl": 100, "feed": 100};
-	while(rp > 0)
+	if(do_skills)
 	{
-		foreach sk, cost in rpcost
+		while(rp > 0)
 		{
-			if(contains_text(get_property("beastSkillsAvailable").to_string(), sk) && cost < rp)
+			foreach sk, cost in rpcost
 			{
-				cli_execute('wereprofessor research ' + sk);
-				break;
+				if(contains_text(get_property("beastSkillsAvailable").to_string(), sk) && cost < rp)
+				{
+					cli_execute('wereprofessor research ' + sk);
+					break;
+				}
 			}
+			break;
 		}
-		break;
 	}
 }
 
