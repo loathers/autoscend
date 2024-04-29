@@ -819,7 +819,8 @@ boolean auto_handleCCSC()
 	   || (place == $location[An Overgrown Shrine (Northeast)] && !get_property("_candyCaneSwordOvergrownShrine").to_boolean())
 	   || (place == $location[The Overgrown Lot] && !get_property("_candyCaneSwordOvergrownLot").to_boolean())
 	   || (place == $location[The Penultimate Fantasy Airship] && (!possessEquipment($item[Amulet of Extreme Plot Significance]) || !possessEquipment($item[unbreakable umbrella]) || !possessEquipment($item[Titanium Assault Umbrella])))
-	   || ($locations[The Sleazy Back Alley, A Mob of Zeppelin Protesters, Wartime Frat House, Wartime Hippy Camp, The Daily Dungeon]) contains place)
+	   || ((place == $location[Wartime Frat House] && possessOutfit("War Hippy Fatigues")) || (place == $location[Wartime Hippy Camp] && possessOutfit("Frat Warrior Fatigues")))
+	   || ($locations[The Sleazy Back Alley, A Mob of Zeppelin Protesters, The Daily Dungeon]) contains place)
 	{
 		return true;
 	}
