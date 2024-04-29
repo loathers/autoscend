@@ -966,7 +966,7 @@ boolean L12_filthworms()
 		asdonBuff($effect[Driving Observantly]);
 		bat_formBats();
 
-		buffMaintain($effect[Frosty]);
+		if(!in_wereprof()) buffMaintain($effect[Frosty]);
 		
 		//craft IOTM derivative that gives high item bonus
 		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
@@ -1766,7 +1766,7 @@ boolean L12_themtharHills()
 	handleFamiliar("meat");
 	addToMaximize("200meat drop");
 
-	if(have_effect($effect[Frosty])==0)
+	if(have_effect($effect[Frosty])==0 && !in_wereprof())
 	{
 		auto_wishForEffect($effect[Frosty]);
 	}
