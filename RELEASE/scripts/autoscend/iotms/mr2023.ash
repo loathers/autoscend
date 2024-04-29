@@ -778,7 +778,7 @@ boolean auto_burnLeaves()
 
 boolean auto_haveCCSC()
 {
-	if(auto_is_valid($item[Candy Cane Sword Cane]) && available_amount($item[Candy Cane Sword Cane]) > 0 )
+	if(auto_can_equip($item[Candy Cane Sword Cane]) && available_amount($item[Candy Cane Sword Cane]) > 0 )
 	{
 		return true;
 	}
