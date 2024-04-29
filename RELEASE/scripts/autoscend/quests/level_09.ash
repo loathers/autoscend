@@ -877,6 +877,11 @@ boolean L9_oilPeak()
 		return false;
 	}
 
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false; //can't do Oil Peak as a Professor
+	}
+
 	if(contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))
 	{
 		int oilProgress = get_property("twinPeakProgress").to_int();
