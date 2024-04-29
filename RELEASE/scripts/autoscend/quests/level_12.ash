@@ -1153,6 +1153,10 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false; //Only 1 HP as a professor
+	}
 	if(get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 192))
 	{
 		return false;
