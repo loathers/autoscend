@@ -1194,7 +1194,7 @@ boolean doBedtime()
 	effect effect_to_wish = $effect[Frosty];
 	if (get_property("auto_MLSafetyLimit")!="")
 	{
-		if (get_property("auto_MLSafetyLimit").to_int() < 25) // We're adding +25 ML that won't be shrugged.
+		if (get_property("auto_MLSafetyLimit").to_int() < 25 || in_wereprof()) // We're adding +25 ML that won't be shrugged. Professor hates ML
 		{
 			effect_to_wish = $effect[One Very Clear Eye];
 		}
