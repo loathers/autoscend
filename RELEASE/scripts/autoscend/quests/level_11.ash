@@ -2608,10 +2608,6 @@ boolean L11_ronCopperhead()
 		return false;
 	}
 
-	if(in_wereprof() && !is_werewolf())
-	{
-		return false; //can't do Copperhead Club as a Professor
-	}
 
 
 	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
@@ -2676,6 +2672,11 @@ boolean L11_shenStartQuest()
 		return false;
 	}
 	
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false; //can't do Copperhead Club as a Professor
+	}
+	
 	auto_log_info("Going to see the World's Biggest Jerk about some snakes and stones and stuff.", "blue");
 	if (autoAdv($location[The Copperhead Club]))
 	{
@@ -2710,6 +2711,12 @@ boolean L11_shenCopperhead()
 		// if we haven't spoke to Shen for the first time yet, don't try to handle the quest.
 		return false;
 	}
+
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false; //can't do Copperhead Club as a Professor
+	}
+
 
 	if (internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
 	{
