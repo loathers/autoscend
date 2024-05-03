@@ -124,6 +124,7 @@ void wereprof_buySkills()
 					break;
 				}
 			}
+			return;
 		}
 	}
 }
@@ -194,10 +195,20 @@ boolean LM_wereprof()
 	{
 		return false;
 	}
+	if(get_property("auto_wereprof_init").to_boolean())
+	{
+		return false;
+	}
 
+	auto_log_info("Getting skills", "blue");
 	wereprof_buySkills();
-	ovenHandle(); //buy an oven ASAP
-	return true;
+	auto_log_info("Buying an oven", "blue");
+	if(ovenHandle()) //buy an oven ASAP
+	{
+		set_property("auto_wereprof_init", true);
+		return true;
+	}
+	return false;
 }
 
 boolean LX_wereprof_getSmashedEquip()
