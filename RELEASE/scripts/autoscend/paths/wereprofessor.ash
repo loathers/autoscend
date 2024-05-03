@@ -197,6 +197,7 @@ boolean LM_wereprof()
 
 	wereprof_buySkills();
 	ovenHandle(); //buy an oven ASAP
+	return true;
 }
 
 boolean LX_wereprof_getSmashedEquip()
