@@ -124,7 +124,6 @@ void wereprof_buySkills()
 					break;
 				}
 			}
-			break;
 		}
 	}
 }
@@ -183,6 +182,21 @@ boolean wereprof_oculus()
 		return true;
 	}
 	return false;
+}
+
+boolean LM_wereprof()
+{
+	if(!in_wereprof())
+	{
+		return false;
+	}
+	if(is_werewolf())
+	{
+		return false;
+	}
+
+	wereprof_buySkills();
+	ovenHandle(); //buy an oven ASAP
 }
 
 boolean LX_wereprof_getSmashedEquip()

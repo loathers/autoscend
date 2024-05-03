@@ -918,6 +918,7 @@ boolean is_werewolf();
 void wereprof_buySkills();
 void wereprof_buyEquip();
 boolean wereprof_oculus();
+boolean LM_wereprof();
 boolean LX_wereprof_getSmashedEquip();
 
 ########################################################################################################
