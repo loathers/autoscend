@@ -114,7 +114,7 @@ void wereprof_buySkills()
 	"pureblood": 100, "feasting": 100, "skinheal": 100, "howl": 100, "feed": 100};
 	if(do_skills)
 	{
-		while(rp > 0)
+		while(rp > 1)
 		{
 			foreach sk, cost in rpcost
 			{
@@ -147,7 +147,7 @@ void wereprof_buyEquip()
 	}
 	
 	//There's probably a better way to do this
-	while(item_amount($item[smashed scientific equipment]) > 0 && !possessEquipment($item[triphasic molecular oculus]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
+	while(item_amount($item[smashed scientific equipment]) > 1 && !possessEquipment($item[triphasic molecular oculus]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
 	{
 		if(!possessEquipment($item[biphasic molecular oculus]) && !possessEquipment($item[triphasic molecular oculus]))
 		{
