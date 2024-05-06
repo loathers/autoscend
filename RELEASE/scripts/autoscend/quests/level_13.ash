@@ -1493,7 +1493,7 @@ boolean L13_towerNSTower()
 		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 		boolean has_boning_knife = item_amount($item[Electric Boning Knife]) > 0;
 		
-		if(has_boning_knife || in_pokefam())		//I have everything I need. just go fight
+		if(has_boning_knife || in_pokefam() || (in_wereprof() && canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0))		//I have everything I need. just go fight
 		{
 			return autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
 		}

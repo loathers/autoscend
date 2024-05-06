@@ -158,6 +158,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		{
 			return "item " + $item[Electric Boning Knife];
 		}
+		if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0)
+		{
+			return useSkill($skill[Slaughter]);
+		}
 		if(((my_hp() * 4) < my_maxhp()) && (have_effect($effect[Takin\' It Greasy]) > 0))
 		{
 			return useSkill($skill[Unleash The Greash], false);

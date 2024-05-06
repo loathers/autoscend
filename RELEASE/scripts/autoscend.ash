@@ -280,6 +280,7 @@ void initializeSettings() {
 	fotd_initializeSettings();
 	lol_initializeSettings();
 	small_initializeSettings();
+	wereprof_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -1833,6 +1834,7 @@ boolean doTasks()
 	if(LM_robot())						return true;
 	if(LM_plumber())					return true;
 	if(LM_zombieSlayer())				return true;
+	if(LM_wereprof())					return true;
 
 	{
 		cheeseWarMachine(0, 0, 0, 0);
