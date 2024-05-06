@@ -38,7 +38,7 @@ void wereprof_buySkills()
 		return;
 	}
 	boolean do_skills = true;
-	if((!is_werewolf() && get_property("wereProfessorTransformTurns") > 1))
+	if((!is_werewolf() && get_property("wereProfessorTransformTurns") > 2))
 	{
 		do_skills = false; //Want as many RP as possible before looping through the skills
 	}
