@@ -38,6 +38,10 @@ void wereprof_buySkills()
 		return;
 	}
 	boolean do_skills = true;
+	if(get_property("auto_wereprof_init").to_boolean())
+	{
+		do_skills = false;
+	}
 	if((!is_werewolf() && get_property("wereProfessorTransformTurns") > 2))
 	{
 		do_skills = false; //Want as many RP as possible before looping through the skills
