@@ -2422,7 +2422,7 @@ boolean L12_finalizeWar()
 	//Shouldn't fight boss if Professor in WereProfessor so burn turns until Werewolf
 	if(!is_werewolf() && in_wereprof())
 	{
-		auto_log_info("Can't beat the Boss as a Professor so skipping for now", blue);
+		auto_log_info("Can't beat the Boss as a Professor so skipping for now", "blue");
 		//autoAdvBypass("place.php?whichplace=wereprof_cottage&action=wereprof_bookshelf");
 		return false;
 	}
