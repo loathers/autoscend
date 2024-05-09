@@ -25,6 +25,7 @@ boolean LX_burnDelay();
 boolean LX_calculateTheUniverse(boolean speculative);
 boolean tophatMaker();
 boolean LX_doVacation();
+boolean auto_doTempleSummit();
 void initializeDay(int day);
 boolean dailyEvents();
 boolean Lsc_flyerSeals();
