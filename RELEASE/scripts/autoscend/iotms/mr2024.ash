@@ -266,11 +266,11 @@ boolean auto_MayamClaimWhatever()
 
 boolean auto_MayamClaimAll()
 {
-	auto_log_info("Claiming mayam calendar items");
 	if(!auto_haveMayamCalendar())
 	{
 		return false;
 	}
+	auto_log_info("Claiming mayam calendar items");
 	auto_MayamClaimStinkBomb();
 	auto_MayamClaimBelt();
 	auto_MayamClaimWhatever();
