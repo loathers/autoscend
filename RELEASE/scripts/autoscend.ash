@@ -1,4 +1,4 @@
-since r27897;	// additional monster parts
+since r27930;	// mayam
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1809,6 +1809,7 @@ boolean doTasks()
 	auto_checkTrainSet();
 	prioritizeGoose();
 	auto_useWardrobe();
+	auto_MayamClaimAll();
 	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
