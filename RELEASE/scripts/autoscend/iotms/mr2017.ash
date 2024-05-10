@@ -819,7 +819,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 	{
 		if(!dontCare)
 		{
-			auto_log_info("We did not initialize the briefcase this ascension, we cannot care", "red");
+			auto_log_info("We did not initialize the briefcase this ascension, we do not care", "red");
 			dontCare = true;
 		}
 	}
