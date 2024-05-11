@@ -42,6 +42,10 @@ void wereprof_buySkills()
 	{
 		do_skills = false; //Want as many RP as possible before looping through the skills
 	}
+	if((!is_werewolf() && turns_played() == 0))
+	{
+		do_skills = true; //Do skills before we do anything else
+	}
 	if(!is_werewolf() && organsFull() && my_adventures() <= auto_advToReserve() && (!contains_text(get_property("beastSkillsKnown").to_string(), "stomach3") || !contains_text(get_property("beastSkillsKnown").to_string(), "liver3")))
 	{
 		do_skills = true; //If organs are full, should do skills if we need more organ space and don't have all organ expanding skills and limited adventures left
