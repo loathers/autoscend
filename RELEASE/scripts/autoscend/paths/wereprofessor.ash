@@ -10,7 +10,7 @@ void wereprof_initializeSettings()
 		return;
 	}
 	set_property("auto_wandOfNagamar", false);		//wand not used in this path
-	set_property("auto_wereprof_smashedequip", ""); //string used for when we find smashed equipment so we know we don't need to look there
+	set_property("auto_wereprof_init", false); 		//string used for when we find smashed equipment so we know we don't need to look there
 }
 
 boolean is_werewolf()
