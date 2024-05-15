@@ -22,6 +22,11 @@ boolean auto_voidMonster(location loc)
 		return false;
 	}
 
+	if (in_wereprof() && !is_werewolf())
+	{
+		return false; //can't beat the void guys as a professor
+	}
+
 	// return false if we've fought the 5 free void monsters already today or we're still charging up the counter
 	if (get_property("_voidFreeFights").to_int() >= 5 || get_property("cursedMagnifyingGlassCount").to_int() != 13)
 	{

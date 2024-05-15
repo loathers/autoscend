@@ -11,6 +11,7 @@ void wereprof_initializeSettings()
 	}
 	set_property("auto_wandOfNagamar", false);		//wand not used in this path
 	set_property("auto_wereprof_init", false); 		//string used for when we find smashed equipment so we know we don't need to look there
+	cli_execute('wereprofessor research');			//parse the research bench
 }
 
 boolean is_werewolf()
@@ -38,16 +39,19 @@ void wereprof_buySkills()
 		return;
 	}
 	boolean do_skills = true;
-	if((!is_werewolf() && get_property("wereProfessorTransformTurns") > 2))
+	if((!is_werewolf() && get_property("wereProfessorTransformTurns") > 3))
 	{
+		auto_log_info("Too many turns remaining", "blue");
 		do_skills = false; //Want as many RP as possible before looping through the skills
 	}
 	if((!is_werewolf() && turns_played() == 0))
 	{
+		auto_log_info("Buy skills first", "blue");
 		do_skills = true; //Do skills before we do anything else
 	}
 	if(!is_werewolf() && organsFull() && my_adventures() <= auto_advToReserve() && (!contains_text(get_property("beastSkillsKnown").to_string(), "stomach3") || !contains_text(get_property("beastSkillsKnown").to_string(), "liver3")))
 	{
+		auto_log_info("Need more organs", "blue");
 		do_skills = true; //If organs are full, should do skills if we need more organ space and don't have all organ expanding skills and limited adventures left
 	}
 	/* Taken from wereprofessor.txt in Mafia src
@@ -111,26 +115,26 @@ void wereprof_buySkills()
 	liver3	60	liver2	Synthetic aldosterone	Liver +3
 	pureblood	100	liver3	Synthroid-parathormone cocktail	Shorten ELR
 	*/
-	int[string] rpcost = {"stomach3": 60, "liver3": 60, "stomach2": 50, "liver2":50, "stomach1": 40, "liver1": 40, "hp3": 40, "init3": 40, "hp2": 30, "init2": 30,
-	"hp1": 20, "init1": 20, "mus3": 30, "mox3": 30, "mus2": 20, "mox2": 20, "mus1": 10, "mox1": 10, "punt": 100, "slaughter": 100, "hunt": 100, "kick3": 40, "kick2": 30,
-	"kick1": 20, "rend3": 40, "rend2": 30, "rend1": 20, "items3": 60, "items2": 50, "items1": 40, "res3": 40, "res2": 30, "res1": 20, "myst3": 30, "myst2": 20, "myst1": 10,
-	"bite3": 40, "bite2": 30, "bite1": 20, "perfecthair": 100, "meat3": 60, "meat2": 50, "meat1": 40, "ml3": 60, "ml2": 50, "ml1": 40, "skin3": 60, "skin2": 50, "skin1": 40,
-	"pureblood": 100, "feasting": 100, "skinheal": 100, "howl": 100, "feed": 100};
 	if(do_skills)
 	{
+		auto_log_info("Buying skills", "blue");
 		while(rp > 1)
 		{
-			foreach sk, cost in rpcost
+			foreach sk in $strings[stomach3, liver3, stomach2, liver2, stomach1, liver1, hp3, init3, hp2, init2, hp1, init1, mus3,
+			mox3, mus2, mox2, mus1, mox1, punt, slaughter, hunt, kick3, kick2, kick1, rend3, rend2, rend1, items3, items2, items1,
+			res3, res2, res1, myst3, myst2, myst1, bite3, bite2, bite1, perfecthair, meat3, meat2, meat1, ml3, ml2, ml1, skin3,
+			skin2, skin1, pureblood, feasting, skinheal, howl, feed]
 			{
-				if(contains_text(get_property("beastSkillsAvailable").to_string(), sk) && cost < rp)
+				if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
 				{
+					auto_log_info("Buying " + sk, "blue");
 					cli_execute('wereprofessor research ' + sk);
 					break;
 				}
 			}
-			return;
 		}
 	}
+	return;
 }
 
 boolean wereprof_haveEquip()
