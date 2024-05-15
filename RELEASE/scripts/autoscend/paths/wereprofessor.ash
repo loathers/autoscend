@@ -115,6 +115,11 @@ void wereprof_buySkills()
 	liver3	60	liver2	Synthetic aldosterone	Liver +3
 	pureblood	100	liver3	Synthroid-parathormone cocktail	Shorten ELR
 	*/
+	int[string] rpcost = {"stomach3": 60, "liver3": 60, "stomach2": 50, "liver2":50, "stomach1": 40, "liver1": 40, "hp3": 40, "init3": 40, "hp2": 30, "init2": 30,
+	"hp1": 20, "init1": 20, "mus3": 30, "mox3": 30, "mus2": 20, "mox2": 20, "mus1": 10, "mox1": 10, "punt": 100, "slaughter": 100, "hunt": 100, "kick3": 40, "kick2": 30,
+	"kick1": 20, "rend3": 40, "rend2": 30, "rend1": 20, "items3": 60, "items2": 50, "items1": 40, "res3": 40, "res2": 30, "res1": 20, "myst3": 30, "myst2": 20, "myst1": 10,
+	"bite3": 40, "bite2": 30, "bite1": 20, "perfecthair": 100, "meat3": 60, "meat2": 50, "meat1": 40, "ml3": 60, "ml2": 50, "ml1": 40, "skin3": 60, "skin2": 50, "skin1": 40,
+	"pureblood": 100, "feasting": 100, "skinheal": 100, "howl": 100, "feed": 100};
 	if(do_skills)
 	{
 		auto_log_info("Buying skills", "blue");
@@ -127,11 +132,20 @@ void wereprof_buySkills()
 			{
 				if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
 				{
-					auto_log_info("Buying " + sk, "blue");
-					cli_execute('wereprofessor research ' + sk);
+					boolean canbuy = true;
+					if(rpcost[sk] > rp)
+					{
+						canbuy = false;
+					}
+					if(canbuy)
+					{
+						auto_log_info("Buying " + sk, "blue");
+						cli_execute('wereprofessor research ' + sk);
+					}
 					break;
 				}
 			}
+			break;
 		}
 	}
 	return;
