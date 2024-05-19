@@ -31,6 +31,8 @@ LX_bitchinMeatcar	LX_bitchinMeatcar_condition
 LX_unlockDesert
 LX_lockPicking
 LX_fatLootToken
+# Get access to the island access ASAP because only Professor can do it
+LX_islandAccess
 #	Get the Steel Organ if the user wants it (needs L6 quest complete)
 LX_steelOrgan
 # open up delay zones.

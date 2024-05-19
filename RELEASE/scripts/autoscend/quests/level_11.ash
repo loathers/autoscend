@@ -2226,6 +2226,10 @@ boolean L11_mauriceSpookyraven()
 	{
 		return false;		//delay fight so we can make sure we are strong enough to beat him
 	}
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false;		//Can't beat Lord Spookyraven as the Professor
+	}
 
 	if (internalQuestStatus("questL11Manor") < 1)
 	{
