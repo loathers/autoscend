@@ -2245,6 +2245,10 @@ boolean L12_finalizeWar()
 	{
 		return false;
 	}
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false; //need to wait until werewolf because can't kill Boss as a Prof
+	}
 
 	if(possessOutfit("War Hippy Fatigues"))
 	{
@@ -2419,13 +2423,6 @@ boolean L12_finalizeWar()
 	pages[0] = "bigisland.php?place=camp&whichcamp=1";
 	pages[1] = "bigisland.php?place=camp&whichcamp=2";
 	pages[2] = "bigisland.php?action=bossfight&pwd";
-	//Shouldn't fight boss if Professor in WereProfessor so burn turns until Werewolf
-	if(!is_werewolf() && in_wereprof())
-	{
-		auto_log_info("Can't beat the Boss as a Professor so skipping for now", "blue");
-		//autoAdvBypass("place.php?whichplace=wereprof_cottage&action=wereprof_bookshelf");
-		return false;
-	}
 	if(!autoAdvBypass(0, pages, bossFight, ""))
 	{
 		auto_log_warning("Boss already defeated, ignoring", "red");

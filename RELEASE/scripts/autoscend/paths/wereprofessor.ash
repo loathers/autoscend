@@ -39,7 +39,7 @@ void wereprof_buySkills()
 		return;
 	}
 	boolean do_skills = true;
-	if((!is_werewolf() && get_property("wereProfessorTransformTurns") > 3))
+	if((!is_werewolf() && get_property("wereProfessorTransformTurns").to_int() > 3))
 	{
 		auto_log_info("Too many turns remaining", "blue");
 		do_skills = false; //Want as many RP as possible before looping through the skills
@@ -123,8 +123,10 @@ void wereprof_buySkills()
 	if(do_skills)
 	{
 		auto_log_info("Buying skills", "blue");
+		int cantbuy;
 		while(rp > 1)
 		{
+			cantbuy = 0;
 			foreach sk in $strings[stomach3, liver3, stomach2, liver2, stomach1, liver1, hp3, init3, hp2, init2, hp1, init1, mus3,
 			mox3, mus2, mox2, mus1, mox1, punt, slaughter, hunt, kick3, kick2, kick1, rend3, rend2, rend1, items3, items2, items1,
 			res3, res2, res1, myst3, myst2, myst1, bite3, bite2, bite1, perfecthair, meat3, meat2, meat1, ml3, ml2, ml1, skin3,
@@ -132,20 +134,22 @@ void wereprof_buySkills()
 			{
 				if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
 				{
-					boolean canbuy = true;
 					if(rpcost[sk] > rp)
 					{
-						canbuy = false;
+						cantbuy += 1;
+						if(cantbuy==count(split_string(get_property("beastSkillsAvailable").to_string(),",")))
+						{
+							return; //return if we can't buy the same amount of beast skills available
+						}
 					}
-					if(canbuy)
+					else
 					{
 						auto_log_info("Buying " + sk, "blue");
 						cli_execute('wereprofessor research ' + sk);
+						break; //break on buy to reset the foreach loop
 					}
-					break;
 				}
 			}
-			break;
 		}
 	}
 	return;
@@ -169,27 +173,35 @@ void wereprof_buyEquip()
 	}
 	
 	//There's probably a better way to do this
-	while(item_amount($item[smashed scientific equipment]) > 1 && !possessEquipment($item[triphasic molecular oculus]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
+	while(item_amount($item[smashed scientific equipment]) >= 1)
 	{
-		if(!possessEquipment($item[biphasic molecular oculus]) && !possessEquipment($item[triphasic molecular oculus]))
+		while(!possessEquipment($item[triphasic molecular oculus]) || !possessEquipment($item[irresponsible-tension exoskeleton]))
 		{
-			cli_execute('tinker biphasic molecular oculus');
-		}
-		if(possessEquipment($item[biphasic molecular oculus]) && !possessEquipment($item[triphasic molecular oculus]))
-		{
-			cli_execute('tinker triphasic molecular oculus');
-		}
-		if(!possessEquipment($item[high-tension exoskeleton]) && !possessEquipment($item[ultra-high-tension exoskeleton]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
-		{
-			cli_execute('tinker high-tension exoskeleton');
-		}
-		if(possessEquipment($item[high-tension exoskeleton]) && !possessEquipment($item[ultra-high-tension exoskeleton]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
-		{
-			cli_execute('tinker ultra-high-tension exoskeleton');
-		}
-		if(!possessEquipment($item[high-tension exoskeleton]) && possessEquipment($item[ultra-high-tension exoskeleton]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
-		{
-			cli_execute('tinker irresponsible-tension exoskeleton');
+			if(!possessEquipment($item[biphasic molecular oculus]) && !possessEquipment($item[triphasic molecular oculus]))
+			{
+				cli_execute('tinker biphasic molecular oculus');
+				break;
+			}
+			if(possessEquipment($item[biphasic molecular oculus]) && !possessEquipment($item[triphasic molecular oculus]))
+			{
+				cli_execute('tinker triphasic molecular oculus');
+				break;
+			}
+			if(!possessEquipment($item[high-tension exoskeleton]) && !possessEquipment($item[ultra-high-tension exoskeleton]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
+			{
+				cli_execute('tinker high-tension exoskeleton');
+				break;
+			}
+			if(possessEquipment($item[high-tension exoskeleton]) && !possessEquipment($item[ultra-high-tension exoskeleton]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
+			{
+				cli_execute('tinker ultra-high-tension exoskeleton');
+				break;
+			}
+			if(!possessEquipment($item[high-tension exoskeleton]) && possessEquipment($item[ultra-high-tension exoskeleton]) && !possessEquipment($item[irresponsible-tension exoskeleton]))
+			{
+				cli_execute('tinker irresponsible-tension exoskeleton');
+				break;
+			}
 		}
 	}
 }

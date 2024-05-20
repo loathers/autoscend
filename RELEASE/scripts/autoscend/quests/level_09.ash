@@ -359,6 +359,11 @@ boolean L9_aBooPeak()
 		return false;
 	}
 
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false;
+	}
+
 	item clue = $item[A-Boo Clue];
 	if(in_glover())
 	{
