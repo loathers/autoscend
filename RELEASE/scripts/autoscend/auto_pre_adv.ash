@@ -126,7 +126,7 @@ void auto_ghost_prep(location place)
 	}
 	if(auto_haveDarts() && dartEleDmg())
 	{
-		addToMaximize("+equip " + $item[Everfull Dart Holster]); //If we have darts and they have elemental damage buff, might as well use that
+		addToMaximize("+equip " + $item[Everfull Dart Holster]); //If we have darts and an elemental damage buff, might as well use that
 		return;
 	}
 	

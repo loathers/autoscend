@@ -174,7 +174,7 @@ boolean dartEleDmg()
 	perks = split_string(get_property("everfullDartPerks").to_string().to_lower_case(), ",");
 	foreach perk in perks
 	{
-		if (contains_text(perks[perk], "Add ")) // Only ele dmg perks have "Add " in their perk description so as long as we have 1, we are good
+		if (contains_text(perks[perk], "add ")) // Only ele dmg perks have "add " in their perk description so as long as we have 1, we are good
 		{
 			return true;
 		}	
