@@ -41,7 +41,6 @@ void wereprof_buySkills()
 	boolean do_skills = true;
 	if((!is_werewolf() && get_property("wereProfessorTransformTurns").to_int() > 3))
 	{
-		auto_log_info("Too many turns remaining", "blue");
 		do_skills = false; //Want as many RP as possible before looping through the skills
 	}
 	if((!is_werewolf() && turns_played() == 0))
@@ -139,13 +138,14 @@ void wereprof_buySkills()
 						cantbuy += 1;
 						if(cantbuy==count(split_string(get_property("beastSkillsAvailable").to_string(),",")))
 						{
-							return; //return if we can't buy the same amount of beast skills available
+							return; //break if we can't buy the same amount of beast skills available
 						}
 					}
 					else
 					{
 						auto_log_info("Buying " + sk, "blue");
 						cli_execute('wereprofessor research ' + sk);
+						rp = get_property("wereProfessorResearchPoints").to_int();
 						break; //break on buy to reset the foreach loop
 					}
 				}

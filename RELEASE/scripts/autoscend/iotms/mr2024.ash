@@ -167,3 +167,17 @@ skill dartSkill()
 	}
 	return to_skill(7513); // If there aren't any darts available return the Darts: Throw at %PART1
 }
+
+boolean dartEleDmg()
+{
+	string[int] perks;
+	perks = split_string(get_property("everfullDartPerks").to_string().to_lower_case(), ",");
+	foreach perk in perks
+	{
+		if (contains_text(perks[perk], "Add ")) // Only ele dmg perks have "Add " in their perk description so as long as we have 1, we are good
+		{
+			return true;
+		}	
+	}
+	return false;
+}

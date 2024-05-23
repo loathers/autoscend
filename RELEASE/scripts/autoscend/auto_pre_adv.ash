@@ -124,6 +124,11 @@ void auto_ghost_prep(location place)
 		}
 		if(canUse(sk)) return;	//we can kill them with a spell
 	}
+	if(auto_haveDarts() && dartEleDmg())
+	{
+		addToMaximize("+equip " + $item[Everfull Dart Holster]); //If we have darts and they have elemental damage buff, might as well use that
+		return;
+	}
 	
 	int m_hot = 1;
 	int m_cold = 1;

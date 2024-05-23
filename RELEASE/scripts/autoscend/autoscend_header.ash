@@ -556,6 +556,7 @@ void dartChoiceHandler(int choice, string[int] options);
 int dartBullseyeChance();
 int dartELRcd();
 skill dartSkill();
+boolean dartEleDmg()
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
