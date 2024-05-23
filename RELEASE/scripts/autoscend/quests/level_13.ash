@@ -394,7 +394,7 @@ boolean L13_towerNSContests()
 		if(in_wereprof() && get_property("wereProfessorTransformTurns") < 48)
 		{
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
-			visit_url("choice.php?pwd=&whichchoice=1003&option=5", true);
+			visit_url("choice.php?pwd=&whichchoice=1003&option=5", true); //want as many turns of werewolf as possible at the contest booth so refresh with this choice
 			visit_url("main.php");
 		}
 		if(get_property("nsContestants1").to_int() == -1)

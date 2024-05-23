@@ -717,7 +717,7 @@ void finalizeMaximize(boolean speculative)
 		}
 	}
 
-	if(in_wereprof() && auto_haveDarts()) //Absolutely need darts for Professor. Should level up darts while Werewolf
+	if(in_wereprof() && auto_haveDarts()) //Absolutely need darts for Professor. Should level up darts while Werewolf too
 	{
 		addBonusToMaximize($item[Everfull Dart Holster], 1000);
 	}
@@ -765,7 +765,7 @@ void finalizeMaximize(boolean speculative)
 		}
 		else if(in_wereprof() && my_hp() < 0.5*my_maxhp() && my_hp() > 0)
 		{
-			addBonusToMaximize($item[spring shoes], 200); // bonus to heal in wereprof as the werewolf
+			addBonusToMaximize($item[spring shoes], 200); // bonus to heal in wereprof as the werewolf after transition from Professor
 		}
 		else // just add a little bonus for the MP generation
 		{

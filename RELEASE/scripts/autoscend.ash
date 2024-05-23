@@ -1,4 +1,4 @@
-since r27905;	// Account for TinkeringBenchRequest ability to use equipped items
+since r27943;	// more wereprof boss parts
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

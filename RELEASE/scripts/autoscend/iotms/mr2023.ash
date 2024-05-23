@@ -319,7 +319,7 @@ boolean auto_getCinch(int goal)
 {
 	if(is_werewolf())
 	{
-		return false;
+		return false; //can't rest as werewolf
 	}
 	if(auto_currentCinch() >= goal)
 	{
@@ -346,8 +346,8 @@ boolean auto_getCinch(int goal)
 		}
 	}
 
-	// go for cinch as a professor
-	/*while(auto_currentCinch() < goal && !is_werewolf() && in_wereprof())
+	// go for cinch as a professor. commented out for now because mafia tracking of free rests as a prof MAY not be working as expected
+	/*while(auto_currentCinch() < goal && haveFreeRestAvailable() && !is_werewolf() && in_wereprof())
 	{
 		visit_url("place.php?whichplace=wereprof_cottage&action=wereprof_sleep"); //just visit the cottage to sleep as professor
 	}*/

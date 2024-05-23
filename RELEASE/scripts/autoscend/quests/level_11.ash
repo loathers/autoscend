@@ -2612,8 +2612,6 @@ boolean L11_ronCopperhead()
 		return false;
 	}
 
-
-
 	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
 	{
 		if (item_amount($item[Red Zeppelin Ticket]) < 1 && !in_wotsf() && !is_werewolf()) // no black market in wotsf, can't access as werewolf

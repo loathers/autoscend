@@ -843,7 +843,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	}
 	if(in_wereprof() && (!is_werewolf() || (is_werewolf() && get_property("wereProfessorTransformTurns") < 50)))
 	{
-		blacklist[$item[plain calzone]] = true;
+		blacklist[$item[plain calzone]] = true; //because 50 turn buff and can only handle +ML as a werewolf, either blacklist altogether or get lucky and eat ASAP as a werewolf
 	}
 	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !possessEquipment($item[Mega Gem]) && !isActuallyEd())
 	{

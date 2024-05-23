@@ -361,7 +361,7 @@ boolean L9_aBooPeak()
 
 	if(in_wereprof() && !is_werewolf())
 	{
-		return false;
+		return false; // Not worth trying when we only have 1 hp
 	}
 
 	item clue = $item[A-Boo Clue];

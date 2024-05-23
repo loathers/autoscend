@@ -495,7 +495,7 @@ boolean acquireHermitItem(item it)
 	}
 	if(is_werewolf())
 	{
-		return false;
+		return false; //can access the hermit, but can't buy chewing gum as a Werewolf
 	}
 	if((item_amount($item[Hermit Permit]) == 0) && (my_meat() >= npc_price($item[Hermit Permit])))
 	{

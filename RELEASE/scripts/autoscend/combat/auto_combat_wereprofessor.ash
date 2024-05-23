@@ -45,7 +45,7 @@ string auto_combatWereProfessorStage5(int round, monster enemy, string text)
 	{
 		if(enemy_physical_immune && canUse($skill[Bite]))
 		{
-			return(use_skill($skill[Bite]));
+			return(use_skill($skill[Bite])); // elemental damage skill
 		}
 		else if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0) //want dart skill as high as possible for Professor
 		{
@@ -62,9 +62,9 @@ string auto_combatWereProfessorStage5(int round, monster enemy, string text)
 		{
 			return useSkill(dartSkill());
 		}
-		else if(auto_haveCosmicBowlingBall() && canUse($item[cosmic bowling ball]) && monster_hp() < 100)
+		else if(auto_haveCosmicBowlingBall() && canUse($item[cosmic bowling ball]) && !enemy_physical_immune && monster_hp() < 100)
 		{
-			return useItem($item[cosmic bowling ball]);
+			return useItem($item[cosmic bowling ball]); // 100 physical damage
 		}
 		else
 		{

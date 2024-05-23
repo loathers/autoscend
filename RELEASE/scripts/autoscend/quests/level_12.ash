@@ -966,7 +966,7 @@ boolean L12_filthworms()
 		asdonBuff($effect[Driving Observantly]);
 		bat_formBats();
 
-		if(!in_wereprof()) buffMaintain($effect[Frosty]);
+		if(!in_wereprof()) buffMaintain($effect[Frosty]); //wereprof doesn't like +ML effects outside of Werewolf
 		
 		//craft IOTM derivative that gives high item bonus
 		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))

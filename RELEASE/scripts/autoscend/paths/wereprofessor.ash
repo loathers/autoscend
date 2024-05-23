@@ -34,9 +34,9 @@ void wereprof_buySkills()
 		return;
 	}
 	int rp = get_property("wereProfessorResearchPoints").to_int();
-	if(is_werewolf() || rp == 0)
+	if(is_werewolf() || rp < 10)
 	{
-		return;
+		return; // can't access the research bench as a werewolf and don't care about it when we have less than 10 RP
 	}
 	boolean do_skills = true;
 	if((!is_werewolf() && get_property("wereProfessorTransformTurns").to_int() > 3))
@@ -123,7 +123,7 @@ void wereprof_buySkills()
 	{
 		auto_log_info("Buying skills", "blue");
 		int cantbuy;
-		while(rp > 1)
+		while(rp >= 10)
 		{
 			cantbuy = 0;
 			foreach sk in $strings[stomach3, liver3, stomach2, liver2, stomach1, liver1, hp3, init3, hp2, init2, hp1, init1, mus3,
@@ -138,7 +138,7 @@ void wereprof_buySkills()
 						cantbuy += 1;
 						if(cantbuy==count(split_string(get_property("beastSkillsAvailable").to_string(),",")))
 						{
-							return; //break if we can't buy the same amount of beast skills available
+							return; //return if we can't buy any beast skills
 						}
 					}
 					else
@@ -146,7 +146,7 @@ void wereprof_buySkills()
 						auto_log_info("Buying " + sk, "blue");
 						cli_execute('wereprofessor research ' + sk);
 						rp = get_property("wereProfessorResearchPoints").to_int();
-						break; //break on buy to reset the foreach loop
+						break; //break on buy to reset the foreach loop to look from the top
 					}
 				}
 			}
@@ -169,7 +169,7 @@ void wereprof_buyEquip()
 {
 	if(is_werewolf() || wereprof_haveEquip())
 	{
-		return;
+		return; // can't tinker if we are a werewolf and don't care about anything but the best oculus and exoskeleton
 	}
 	
 	//There's probably a better way to do this
