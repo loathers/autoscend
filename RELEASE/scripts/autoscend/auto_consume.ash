@@ -498,6 +498,14 @@ boolean canDrink(item toDrink, boolean checkValidity)
 		// liver size of 1 in small path
 		return false;
 	}
+	if(is_werewolf())
+	{
+		//Can't access Fancy Dan as Werewolf
+		if($items[Champagne Shimmy, Charleston Choo-Choo, Marltini, Mysterious Stranger, Strong\, Silent Type, Velvet Veil] contains toDrink)
+		{
+			return false;
+		}
+	}
 
 	// small path ignores consumable level requirements
 	if(my_level() < toDrink.levelreq && !in_small())
