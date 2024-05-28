@@ -1,4 +1,4 @@
-since r27943;	// more wereprof boss parts
+since r27958;	// Remove WereProf stat req exemption
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
