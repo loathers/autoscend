@@ -798,6 +798,7 @@ boolean canFreeRun(monster enemy, location loc)
 string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat)
 {
 	if (isFreeMonster(enemy, loc)) return "";
+	if (is_werewolf()) return ""; //can't freerun as a Werewolf in WereProfessor
 
 	// Prefer some specalized free run items before other sources
 	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
