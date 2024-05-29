@@ -1764,7 +1764,7 @@ boolean L11_hiddenCity()
 
 
 	//can we handle this zone?
-	if(!in_pokefam() && !in_darkGyffte() && !in_aosol())
+	if(!in_pokefam() && !in_darkGyffte() && !in_aosol() && !in_wereprof())
 	{
 		if(!acquireHP())	//try to restore HP to max.
 		{
