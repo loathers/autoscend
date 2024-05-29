@@ -822,6 +822,7 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 {
 	if (isFreeMonster(enemy, my_location())) return "";
+	if (is_werewolf()) return ""; //can't freerun as a Werewolf in WereProfessor
 	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
 	if (pre_banish != "") return pre_banish;
 
