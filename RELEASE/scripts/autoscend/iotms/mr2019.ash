@@ -305,6 +305,10 @@ boolean auto_sausageGoblin(location loc, string option)
 	{
 		return false;
 	}
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false;
+	}
 
 	if(loc == $location[none])
 	{

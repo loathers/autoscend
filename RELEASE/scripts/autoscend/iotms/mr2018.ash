@@ -788,6 +788,11 @@ boolean neverendingPartyCombat()
 		return false;
 	}
 
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false;
+	}
+
 	if(in_glover()) // only non stat effect is valid in G-Lover
 	{
 		fightClubSpa($effect[Flagrantly Fragrant]);
