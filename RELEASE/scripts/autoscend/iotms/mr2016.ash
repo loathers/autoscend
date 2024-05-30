@@ -428,6 +428,10 @@ boolean auto_advWitchess(string target, string option)
 	{
 		return false;
 	}
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false;
+	}
 
 	if(my_adventures() == 0)
 	{
