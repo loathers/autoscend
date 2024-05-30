@@ -1435,6 +1435,10 @@ boolean isGeneralStoreAvailable()
 	{
 		return false;
 	}
+	if(is_werewolf())
+	{
+		return false;
+	}
 	return true;
 }
 

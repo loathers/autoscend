@@ -219,6 +219,7 @@ boolean auto_pre_adventure()
 		auto_is_valid($item[red rocket]) &&				// or if it's not valid
 		can_eat() &&									// be in a path that can eat
 		my_class() != $class[Pig Skinner] &&			// don't want to use a red rocket in Pig Skinner
+		in_wereprof() &&								// don't use if we are in WereProf
 		!auto_haveDarts() &&							// don't want to use a red rocket if we have darts
 		my_meat() > npc_price($item[red rocket]) + meatReserve())
 	{
