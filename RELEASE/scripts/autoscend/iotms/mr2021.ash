@@ -778,7 +778,7 @@ int auto_fireExtinguisherCharges()
 // returns zone specific skill if in usable zone and hasn't been used yet there this ascension. Otherwise returns empty string
 string auto_FireExtinguisherCombatString(location place)
 {
-	if(auto_fireExtinguisherCharges() < 20)
+	if(auto_fireExtinguisherCharges() < 20 && auto_is_valid($skill[Fire Extinguisher: Zone Specific]))
 	{
 		return "";
 	}
