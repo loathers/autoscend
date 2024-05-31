@@ -48,7 +48,7 @@ void wereprof_buySkills()
 		auto_log_info("Buy skills first", "blue");
 		do_skills = true; //Do skills before we do anything else
 	}
-	if(!is_werewolf() && organsFull() && my_adventures() <= auto_advToReserve() && (!contains_text(get_property("beastSkillsKnown").to_string(), "stomach3") || !contains_text(get_property("beastSkillsKnown").to_string(), "liver3")))
+	if(!is_werewolf() && organsFull() && my_adventures() <= auto_advToReserve() && !(contains_text(get_property("beastSkillsKnown").to_string(), "stomach3") && contains_text(get_property("beastSkillsKnown").to_string(), "liver3")))
 	{
 		auto_log_info("Need more organs", "blue");
 		do_skills = true; //If organs are full, should do skills if we need more organ space and don't have all organ expanding skills and limited adventures left
