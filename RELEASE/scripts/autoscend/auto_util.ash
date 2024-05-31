@@ -3019,6 +3019,8 @@ boolean auto_is_valid(skill sk)
 {
 	// Hack for Legacy of Loathing as is_unrestricted returns false for Source Terminal skills
 	if (in_lol() && $skills[Extract, Turbo, Digitize, Duplicate, Portscan, Compress] contains sk) return true;
+	// No skills for the Professor in WereProf
+	if (in_wereprof() && !is_werewolf()) return false;
 	//do not check check for B in bees hate you path. it only restricts items and not skills.
 	return (glover_usable(sk.to_string()) || (sk.passive && sk != $skill[disco nap])) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
 }
