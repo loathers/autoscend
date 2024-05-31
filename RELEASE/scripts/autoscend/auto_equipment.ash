@@ -719,7 +719,14 @@ void finalizeMaximize(boolean speculative)
 
 	if(in_wereprof() && auto_haveDarts()) //Absolutely need darts for Professor. Should level up darts while Werewolf too
 	{
-		addBonusToMaximize($item[Everfull Dart Holster], 1000);
+		if(is_werewolf())
+		{
+			addBonusToMaximize($item[Everfull Dart Holster], 1000);
+		}
+		else
+		{
+			addToMaximize("+equip " + $item[Everfull Dart Holster]);
+		}
 	}
 
 	if(in_wereprof() && !is_werewolf() && (possessEquipment($item[biphasic molecular oculus]) || possessEquipment($item[triphasic molecular oculus]))) //Want that Advanced Research as a professor
