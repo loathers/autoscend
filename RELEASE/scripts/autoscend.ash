@@ -1968,6 +1968,7 @@ void auto_begin()
 	backupSetting("logPreferenceChange", "true");
 	backupSetting("logPreferenceChangeFilter", "maximizerMRUList,testudinalTeachings,auto_maximize_current");
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
+	backupSetting("allowNonMoodBurning", true); // required to be true for burn cli cmd to work properly
 
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))

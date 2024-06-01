@@ -2169,7 +2169,7 @@ int auto_potentialMaxFreeRests()
 	// we can get the count of "intrinsic" free rests e.g perm'd skills & rests you get just from having something available in run
 	int potential = numeric_modifier("Free Rests");
 
-	if (auto_canUseJuneCleaver() && !possessEquipment($item[mother's necklace]))
+	if (auto_canUseJuneCleaver() && !possessEquipment($item[mother\'s necklace]))
 	{
 		potential += 5;
 	}
