@@ -2208,11 +2208,7 @@ boolean doFreeRest(){
 
 		if (mpToBurn > 0)
 		{
-			// allowNonMoodBurning must be true for burn command to work properly
-			string originalValue = get_property("allowNonMoodBurning");
-			set_property("allowNonMoodBurning", true);
 			cli_execute("burn " + mpToBurn);
-			set_property("allowNonMoodBurning", originalValue);
 		}
 
 		// resting and success check
