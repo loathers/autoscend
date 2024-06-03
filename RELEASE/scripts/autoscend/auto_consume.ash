@@ -132,21 +132,38 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 
 	int expectedInebriety = toDrink.inebriety * howMany;
 
-	if(canOde(toDrink) && possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
+	if(expectedInebriety == 1 && howMany == 1 && item_amount($item[mime army shotglass]) > 0 && !get_property("_mimeArmyShotglassUsed").to_boolean() && !get_property("_auto_mimeArmyShotglassUsed").to_boolean() && my_mp() < 200)
 	{
-		if((have_effect($effect[Drunk and Avuncular]) < expectedInebriety) && (item_amount($item[Drunk Uncles Holo-Record]) == 0))
-		{
-			auto_buyUpTo(1, $item[Drunk Uncles Holo-Record]);
-		}
-		buffMaintain($effect[Drunk and Avuncular], 0, 1, expectedInebriety);
+		set_property("_auto_mimeArmyShotglassUsed","true");	//in case the shotglass text didn't get tracked by mafia don't keep skipping ode
+		auto_log_debug("Not considering Ode to Booze effects for mime army shotglass drink");
 	}
-
-	if(canOde(toDrink) && auto_have_skill($skill[The Ode to Booze]))
+	else if(canOde(toDrink))
 	{
-		shrugAT($effect[Ode to Booze]);
-		// get enough turns of ode
-		while(acquireMP(mp_cost($skill[The Ode to Booze]), 0) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
-			/*do nothing, the loop condition is doing the work*/;
+		if(possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
+		{
+			if((have_effect($effect[Drunk and Avuncular]) < expectedInebriety) && (item_amount($item[Drunk Uncles Holo-Record]) == 0))
+			{
+				auto_buyUpTo(1, $item[Drunk Uncles Holo-Record]);
+			}
+			buffMaintain($effect[Drunk and Avuncular], 0, 1, expectedInebriety);
+		}
+
+		if(auto_have_skill($skill[The Ode to Booze]) && have_effect($effect[Ode to Booze]) < expectedInebriety)
+		{
+			if(my_maxmp() < mp_cost($skill[The Ode to Booze]))
+			{
+				provideMaxMP(mp_cost($skill[The Ode to Booze]));
+			}
+			shrugAT($effect[Ode to Booze]);
+			// get enough turns of ode
+			while(acquireMP(mp_cost($skill[The Ode to Booze]), 0) && buffMaintain($effect[Ode to Booze], mp_cost($skill[The Ode to Booze]), 1, expectedInebriety))
+			{	///*do nothing, the loop condition is doing the work*/;
+				if(have_effect($effect[Ode to Booze]) >= expectedInebriety)
+				{	
+					break;	//but stop before the loop does an extra acquireMP
+				}
+			}
+		}
 	}
 
 	equipStatgainIncreasersFor(toDrink);
