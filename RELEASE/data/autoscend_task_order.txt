@@ -469,8 +469,10 @@ default	58	L2_mosquito
 default	59	setSoftblockDelay	allowSoftblockDelay
 # release the softblock on Underground Adventures
 default	60	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
+# There's an extra task in KoE
+default	61	LX_koeInvaderHandler
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
-default	61	L13_towerAscent
+default	62	L13_towerAscent
 # if all else fails, powerlevel like there's no tomorrow.
-default	62	LX_attemptPowerLevel
+default	63	LX_attemptPowerLevel
 

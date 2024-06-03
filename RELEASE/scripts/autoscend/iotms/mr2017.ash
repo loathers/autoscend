@@ -819,7 +819,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 	{
 		if(!dontCare)
 		{
-			auto_log_info("We did not initialize the briefcase this ascension, we can not care", "red");
+			auto_log_info("We did not initialize the briefcase this ascension, we do not care", "red");
 			dontCare = true;
 		}
 	}
@@ -909,7 +909,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 			{
 				if(button == 0)
 				{
-					abort("Can not seem to recover situation regarding splendid martinis");
+					abort("Cannot seem to recover situation regarding splendid martinis");
 				}
 				auto_log_info("Trying to restore tabs", "green");
 				continue;

@@ -734,6 +734,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[familiar scrapbook]);
 	}
+	if(combat_string == "skill " + $skill[Spring Kick])
+	{
+		return autoEquip($item[spring shoes]);
+	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
 		return autoEquip($slot[weapon], wrap_item($item[Fourth of May cosplay saber]));
@@ -775,6 +779,19 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 	return false;
 }
 
+boolean auto_wantToFreeRun(monster enemy, location loc)
+{
+	if(appearance_rates(loc)[enemy] <= 0)
+	{
+		return false;
+	}
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] monstersToFreeRun = auto_getMonsters("freerun");
+	set_location(locCache);
+	return monstersToFreeRun[enemy];
+}
+
 boolean canFreeRun(monster enemy, location loc)
 {
 	// are there any restrictions on free running?
@@ -810,6 +827,34 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	if (isFreeMonster(enemy, my_location())) return "";
 	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
 	if (pre_banish != "") return pre_banish;
+
+	//Standard free-runs
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
+	{
+		if(auto_haveSpringShoes() && auto_is_valid($skill[Spring Away]))
+		{
+			if(!inCombat)
+			{
+				autoEquip($item[spring shoes]);
+				return "skill " + $skill[Spring Away];
+			}
+			else
+			{
+				if(canUse($skill[Spring Away]))
+				{
+					return "skill " + $skill[Spring Away];
+				}
+			}
+		}
+
+		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
+		{
+			if (canUse(it) && item_amount(it) > 0)
+			{
+				return useItem(it);
+			}
+		}
+	}
 
 	if(canChangeToFamiliar($familiar[Frumious Bandersnatch]))
 	{
@@ -908,18 +953,6 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	if(!inAftercore())
 	{
 		foreach it in $items[giant eraser] //assuming additional ones will be added, eventually
-		{
-			if (canUse(it) && item_amount(it) > 0)
-			{
-				return useItem(it);
-			}
-		}
-	}
-
-	//Standard free-runs
-	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
-	{
-		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{
@@ -1234,6 +1267,8 @@ int cloversAvailable(boolean override)
 		{
 			numClovers += 1;
 		}
+		//Get from April band
+		numClovers += auto_AprilSaxLuckyLeft();
 	}
 
 	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
@@ -1267,6 +1302,18 @@ boolean cloverUsageInit(boolean override)
 	if (have_effect($effect[Lucky!]) > 0)
 	{
 		return true;
+	}
+	
+	if (auto_AprilSaxLuckyLeft() > 0)
+	{
+		if (auto_playAprilSax()) {
+			auto_log_info("Clover usage initialized, using Apriling sax.");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after playing the Apriling sax.");
+		}
 	}
 
 	//Use August Scepter skill if we can
@@ -1471,6 +1518,10 @@ boolean isUnclePAvailable()
 		return false;
 	}
 	if(in_zombieSlayer())
+	{
+		return false;
+	}
+	if(in_koe())
 	{
 		return false;
 	}
@@ -2179,6 +2230,10 @@ boolean evokeEldritchHorror()
 
 boolean fightScienceTentacle()
 {
+	if(in_koe())
+	{
+		return false;
+	}
 	if(get_property("_eldritchTentacleFought").to_boolean())
 	{
 		return false;
@@ -2959,10 +3014,6 @@ boolean auto_is_valid(item it)
 	{
 		return bhy_is_item_valid(it);
 	}
-	if(my_class() == $class[Pig Skinner]) //want to ignore Red Rocket in PS because Free-For-All is more important
-	{
-		if(it == $item[Red Rocket]) return false;
-	}
 	
 	return is_unrestricted(it);
 }
@@ -2981,7 +3032,7 @@ boolean auto_is_valid(skill sk)
 	// Hack for Legacy of Loathing as is_unrestricted returns false for Source Terminal skills
 	if (in_lol() && $skills[Extract, Turbo, Digitize, Duplicate, Portscan, Compress] contains sk) return true;
 	//do not check check for B in bees hate you path. it only restricts items and not skills.
-	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
+	return (glover_usable(sk.to_string()) || (sk.passive && sk != $skill[disco nap])) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
 }
 
 boolean auto_is_valid(effect eff)
@@ -4036,6 +4087,17 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 			abort("Attempted to force a noncombat with [Cincho] but was unable to.");
 		}
 		set_property("auto_forceNonCombatSource", "cincho");
+		return true;
+	}
+	else if(auto_AprilTubaForcesLeft()>0)
+	{
+		if(speculative) return true;
+		auto_playAprilTuba();
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [Apriling tuba] but was unable to.");
+		}
+		set_property("auto_forceNonCombatSource", "Apriling tuba");
 		return true;
 	}
 	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso())

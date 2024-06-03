@@ -18,7 +18,7 @@ boolean L10_plantThatBean()
 		if(auto_haveSpringShoes())
 		{
 			// shoes gives stats when planting bean, but must be equipped
-			equip($item[Spring Shoes]);
+			equip($slot[acc3], $item[spring shoes]); //free stats
 		}
 		visit_url("place.php?whichplace=plains&action=garbage_grounds");
 		return true;

@@ -90,7 +90,12 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		{
 			return "item " +hand_1;
 		}
-		abort("Uh oh, I ran out of healing items to use against your shadow");
+		if (item_amount($item[scented massage oil])==0) {
+			abort("Uh oh, I ran out of healing items to use against your shadow");
+		}
+		else {
+		  abort("Uh oh, I ran out of simple healing items to use against your shadow. You could win manually with Scented Massage oil though.");
+		}
 	}
 
 	if(enemy == $monster[Wall Of Meat])
