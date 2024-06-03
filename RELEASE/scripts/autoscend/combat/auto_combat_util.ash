@@ -681,12 +681,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Monkey Slap];
 	}
-
-	// not free
-	if((inCombat ? auto_have_skill($skill[Spring Kick]) : auto_haveSpringShoes()) && auto_is_valid($skill[Spring Kick]) && !(used contains "Spring Kick"))
-	{
-		return "skill " + $skill[Spring Kick];
-	}
 	
 	//[Nanorhino] familiar specific banish. fairly low priority as it consumes 40 to 50 adv worth of a decent buff.
 	if(canUse($skill[Unleash Nanites]) && have_effect($effect[Nanobrawny]) >= 40)

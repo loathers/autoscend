@@ -761,10 +761,6 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[cursed monkey\'s paw]);
 	}
-	if(combat_string == "skill " + $skill[Spring Kick])
-	{
-		return autoEquip($item[Spring Shoes]);
-	}
 	return true;
 }
 
@@ -928,20 +924,6 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 				return "runaway item " + $item[Navel ring of navel gazing];
 			}
 		}
-	}
-
-	if(auto_haveSpringShoes() && have_effect($effect[Everything Looks Green]) == 0)
-	{
-		if(!inCombat)
-		{
-			autoEquip($item[Spring Shoes]);
-			return "skill " + $skill[Spring Away];
-		}
-		if(inCombat && canUse($skill[Spring Away]))
-		{
-			return "skill " + $skill[Spring Away];
-		}
-		
 	}
 
 	if (canUse($skill[Peel Out]) && pete_peelOutRemaining() > 0)
