@@ -205,6 +205,11 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		{
 			zones_to_avoid[$location[The Batrat and Ratbat Burrow]] = false;
 		}
+		// don't delay Hole in the Sky in WereProf if ran out of stuff to do
+		if(get_property("auto_powerLevelLastAttempted").to_int() == my_turncount() && in_wereprof())
+		{
+			zones_to_avoid[$location[The Hole in the Sky]] = false;
+		}
 		return zones_to_avoid;
 	}
 }
