@@ -1,5 +1,24 @@
 # This is meant for items that have a date of 2024
 
+boolean consumeBlackAndWhiteApronKit()
+{
+	item apronKit = $item[Black and White Apron Meal Kit];
+	if(item_amount(apronKit) < 1)
+	{
+		return false;
+	}
+	if(fullness_left() < 3)
+	{
+		//return false;
+	}
+	use(apronKit);
+	//run_choice(1);s
+	//visit_url("inv_use.php?whichitem=11472&pwd");
+	//href="inv_use.php?whichitem=11472&pwd"
+	//visit_url("choice.php?pwd=&whichchoice=1518&option=2",true);
+	return true;
+}
+
 boolean auto_haveSpringShoes()
 {
 	if(auto_is_valid($item[spring shoes]) && available_amount($item[spring shoes]) > 0 )
