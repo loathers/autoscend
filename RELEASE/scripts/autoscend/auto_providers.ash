@@ -279,8 +279,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Ink Cloud,
 		Cloak of Shadows,
 		Chocolatesphere,
-		Disquiet Riot,
-		Ultra-Soft Steps
+		Disquiet Riot
 	])) {
 		return result();
 	}
