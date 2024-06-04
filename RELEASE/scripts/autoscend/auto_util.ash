@@ -858,6 +858,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		// TODO add fam weight buffing
 		int banderRunsLeft = floor((familiar_weight($familiar[Frumious Bandersnatch]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		if(in_wereprof() && !is_werewolf()) return "";
 		if(!inCombat)
 		{
 			if(auto_have_skill($skill[The Ode to Booze]) &&
@@ -884,6 +885,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		// TODO add fam weight buffing
 		// boots and bander share same counter
 		int banderRunsLeft = floor((familiar_weight($familiar[Pair of Stomping Boots]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		if(in_wereprof() && !is_werewolf()) return "";
 		if(!inCombat)
 		{
 			if(banderRunsLeft > 0 && handleFamiliar($familiar[Pair of Stomping Boots]))
