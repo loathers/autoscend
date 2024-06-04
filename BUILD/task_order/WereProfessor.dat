@@ -92,6 +92,9 @@ L2_mosquito
 setSoftblockDelay	allowSoftblockDelay
 # release the softblock on Underground Adventures
 setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
+# want to do these before we start the tower so we can make sure we have as much werewolf as possible
+LX_getStarKey
+LX_getDigitalKey
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 L13_towerAscent
 # if all else fails, powerlevel like there's no tomorrow.

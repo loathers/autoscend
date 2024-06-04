@@ -413,10 +413,13 @@ WereProfessor	59	L2_mosquito
 WereProfessor	60	setSoftblockDelay	allowSoftblockDelay
 # release the softblock on Underground Adventures
 WereProfessor	61	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
+# want to do these before we start the tower so we can make sure we have as much werewolf as possible
+WereProfessor	62	LX_getStarKey
+WereProfessor	63	LX_getDigitalKey
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
-WereProfessor	62	L13_towerAscent
+WereProfessor	64	L13_towerAscent
 # if all else fails, powerlevel like there's no tomorrow.
-WereProfessor	63	LX_attemptPowerLevel
+WereProfessor	65	LX_attemptPowerLevel
 
 Zombie Slayer	0	LM_zombieSlayer
 Zombie Slayer	1	woods_questStart
