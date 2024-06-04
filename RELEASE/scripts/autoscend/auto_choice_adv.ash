@@ -759,6 +759,9 @@ boolean auto_run_choice(int choice, string page)
 		case 1525:
 			dartChoiceHandler(choice, options);
 			break;
+		case 1528: // Eye-Eye-Eye!
+			run_choice(1); // one button, click it
+			break;
 		default:
 			break;
 	}
