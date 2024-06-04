@@ -2009,6 +2009,7 @@ boolean prepare_food_xp_multi()
 	
 	//[Ready to Eat] is gotten by using a red rocket from fireworks shop in VIP clan. it gives +400% XP on next food item
 	if(have_fireworks_shop() &&
+	!in_wereprof() && // don't want to use in WereProfessor
 	have_effect($effect[Ready to Eat]) <= 0 &&
 	auto_is_valid($item[red rocket]))
 	{
