@@ -61,14 +61,10 @@ boolean auto_post_adventure()
 		return true;
 	}
 
-	// abort if got drunken stupor. Need or for "Hey, baby.." as can't escape comma
-	if($strings[Coyote Ugly, Gutterbound, The Too-Much Booze Blues, What's that smell?] contains get_property("lastEncounter")
-		|| contains_text(get_property("lastEncounter"),"Hey, baby. Wanna wrestle?"))
+	if($strings[Coyote Ugly, Gutterbound, The Too-Much Booze Blues, What's that smell?, Hey\, baby.  Wanna wrestle?] contains get_property("lastEncounter"))
 	{
 		abort("Adventured while drunk and got drunken stupor NC: " + get_property("lastEncounter"));
 	}
-
-	//abort("testing done");
 
 	set_property("auto_nextEncounter","");
 
