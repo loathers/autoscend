@@ -73,6 +73,7 @@ boolean EightBitRealmHandler()
 	boolean adv_spent = false;
 
 	string color = get_property("8BitColor");
+	if(!woods_questStart()) return false;
 	switch(color)
 	{
 		case "black":
