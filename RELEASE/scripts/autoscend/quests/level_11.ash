@@ -2231,10 +2231,6 @@ boolean L11_mauriceSpookyraven()
 	{
 		return false;		//delay fight so we can make sure we are strong enough to beat him
 	}
-	if(in_wereprof() && !is_werewolf())
-	{
-		return false;		//Can't beat Lord Spookyraven as the Professor
-	}
 
 	if (internalQuestStatus("questL11Manor") < 1)
 	{
@@ -2264,6 +2260,10 @@ boolean L11_mauriceSpookyraven()
 
 	if (internalQuestStatus("questL11Manor") > 2)
 	{
+		if(in_wereprof() && !is_werewolf())
+		{
+			return false;		//Can't beat Lord Spookyraven as the Professor
+		}
 		auto_log_info("Down with the tyrant of Spookyraven!", "blue");
 		//AoSOL buffs
 		if(in_aosol())
@@ -2430,6 +2430,13 @@ boolean L11_mauriceSpookyraven()
 		{
 			auto_change_mcd(0);
 			autoEquip($slot[acc2], $item[gumshoes]);
+		}
+		
+		if(in_wereprof() && !is_werewolf())
+		{
+			// +ML is BAD for professor
+			auto_change_mcd(0);
+			removeFromMaximize("500ml " + auto_convertDesiredML(82) + "max");
 		}
 		
 		if(monster_level_adjustment() < 57)

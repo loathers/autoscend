@@ -73,7 +73,11 @@ boolean EightBitRealmHandler()
 	boolean adv_spent = false;
 
 	string color = get_property("8BitColor");
-	if(!woods_questStart()) return false;
+	if((internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0) && available_amount($item[Continuum Transfunctioner]) == 0)
+	{
+		// need distant woods and continuum transfunctioner
+		return false;
+	}
 	switch(color)
 	{
 		case "black":
