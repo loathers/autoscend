@@ -1156,6 +1156,11 @@ boolean Lsc_flyerSeals()
 	{
 		return false;
 	}
+	// although seals can be fought drunk, it complicates code without serving a purpose
+	if(my_inebriety() > inebriety_limit())
+	{
+		return false;
+	}
 	if (internalQuestStatus("questL12War") != 1)
 	{
 		return false;
