@@ -42,18 +42,19 @@ string auto_combatWereProfessorStage5(int round, monster enemy, string text)
 
 	if(is_werewolf())
 	{
-		if(enemy_physical_immune && canUse($skill[Bite]))
+		if(enemy_physical_immune && canUse($skill[Bite], true))
 		{
-			return(use_skill($skill[Bite])); // elemental damage skill
+			return(useSkill($skill[Bite], true)); // elemental damage skill
 		}
 		else if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0) //want dart skill as high as possible for Professor
 		{
 			return useSkill(dartSkill());
 		}
-		if(canUse($skill[Rend]))
+		if(canUse($skill[Rend], false))
 		{
-			return useSkill($skill[Rend]);
+			return useSkill($skill[Rend], true);
 		}
+		return "attack with weapon"; //worst case scenario just use this
 	}
 	if(!is_werewolf())
 	{
