@@ -1544,7 +1544,7 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 		if(metadata.type == "skill")
 		{
 			skill s = to_skill(metadata.name);
-			if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s), meat_reserve, useFreeRests))
+			if(my_mp() < mp_cost(s) && !acquireMP(mp_cost(s), 0, useFreeRests))
 			{
 				auto_log_warning("Couldnt acquire enough MP to cast " + s, "red");
 				return false;
@@ -1619,6 +1619,8 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 			}
 			print("Aborting due to restore failure... you can override this setting for today by entering in gCLI:" ,"blue");
 			print("set _auto_ignoreRestoreFailureToday = true" ,"blue");
+			print("You can override this setting forever by entering in gCLI:" ,"blue");
+			print("set auto_ignoreRestoreFailure = true" ,"blue");
 			abort();
 		}
 
@@ -2157,6 +2159,24 @@ int freeRestsRemaining(){
 	return max(0, total_free_rests() - get_property("timesRested").to_int());
 }
 
+int auto_potentialMaxFreeRests()
+{
+	// return the number of free rests we could potentially have if we get all the stuff that gives them from IotMs.
+	// we can get the count of "intrinsic" free rests e.g perm'd skills & rests you get just from having something available in run
+	int potential = numeric_modifier("Free Rests");
+
+	if (auto_canUseJuneCleaver() && !possessEquipment($item[mother\'s necklace]))
+	{
+		potential += 5;
+	}
+	if (auto_haveBurningLeaves() && !(get_campground() contains $item[forest canopy bed]))
+	{
+		potential += 5;
+	}
+	// add more old stuff here. I only care about what is in 2023 Standard right now.
+	return potential;
+}
+
 boolean haveAnyIotmAlternativeRestSiteAvailable(){
 	return chateaumantegna_available() || auto_campawayAvailable();
 }
@@ -2168,8 +2188,36 @@ boolean haveAnyIotmAlternativeRestSiteAvailable(){
  */
 boolean doFreeRest(){
 	if(haveFreeRestAvailable()){
+
+		// burn MP if possible prior to resting
+		int restorableMp = my_maxmp() - my_mp();
+		int mpToBurn = 0;
+		if (chateaumantegna_available() || auto_campawayAvailable()) // will restore at least 100 MP
+		{
+			mpToBurn = 100 - restorableMp;
+		} else if (get_dwelling() == $item[Frobozz Real-Estate Company Instant House (TM)])
+		{
+			mpToBurn = 40 - restorableMp;
+		} else if (get_dwelling() == $item[Newbiesport&trade; tent])
+		{
+			mpToBurn = 10 - restorableMp;
+		} else // assume resting on the ground
+		{
+			mpToBurn = 5 - restorableMp;
+		}
+
+		if (mpToBurn > 0)
+		{
+			cli_execute("burn " + mpToBurn);
+		}
+
+		// resting and success check
+		int hpMp_before = my_hp() + my_mp();
 		int rest_count = get_property("timesRested").to_int();
-		return doRest() > rest_count;
+		boolean result = doRest() > rest_count;
+		int hpMp_after = my_hp() + my_mp();
+		boolean success = (hpMp_after > hpMp_before) || result;
+		return success;
 	}
 	return false;
 }
@@ -2190,7 +2238,7 @@ boolean uneffect(effect toRemove)
 	{
 		return true;
 	}
-	if(($effects[Driving Intimidatingly, Driving Obnoxiously, Driving Observantly, Driving Quickly, Driving Recklessly, Driving Safely, Driving Stealthily, Driving Wastefully, Driving Waterproofly] contains toRemove) && (auto_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(($effects[Driving Intimidatingly, Driving Obnoxiously, Driving Observantly, Driving Quickly, Driving Recklessly, Driving Safely, Driving Stealthily, Driving Wastefully, Driving Waterproofly] contains toRemove) && (auto_get_campground() contains $item[Asdon Martin keyfob (on ring)]))
 	{
 		visit_url("campground.php?pwd=&preaction=undrive");
 		return true;

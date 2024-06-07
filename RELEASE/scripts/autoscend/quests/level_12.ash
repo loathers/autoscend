@@ -796,7 +796,7 @@ boolean L12_startWar()
 
 	// wear the appropriate war outfit based on auto_hippyInstead
 	equipWarOutfit();
-
+	
 	// start the war when siding with frat boys
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
@@ -1139,7 +1139,7 @@ boolean L12_gremlins()
 			{
 				return false;
 			}
-			buyUpTo(30, $item[Doc Galaktik\'s Pungent Unguent]);
+			auto_buyUpTo(30, $item[Doc Galaktik\'s Pungent Unguent]);
 		}
 	}
 	else
@@ -1404,7 +1404,7 @@ boolean L12_sonofaPrefix()
 				}
 				if(auto_voteMonster() && !auto_voteMonster(true))
 				{
-					auto_voteMonster(false, $location[Sonofa Beach], "");
+					auto_voteMonster(false, $location[Sonofa Beach]);
 					return true;
 				}
 				else if(auto_sausageGoblin() && !auto_haveVotingBooth())
@@ -1696,7 +1696,7 @@ boolean L12_themtharHills()
 	handleBjornify($familiar[Hobo Monkey]);
 	if((equipped_item($slot[off-hand]) != $item[Half a Purse]) && !possessEquipment($item[Half a Purse]) && (item_amount($item[Lump of Brituminous Coal]) > 0))
 	{
-		buyUpTo(1, $item[Loose Purse Strings]);
+		auto_buyUpTo(1, $item[Loose Purse Strings]);
 		autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Loose purse strings]);
 	}
 
@@ -1747,6 +1747,7 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Earning Interest]);
 	buffMaintain($effect[Bet Your Autumn Dollar]);
 	buffMaintain($effect[Flapper Dancin\']);
+	buffMaintain($effect[shadow waters]);
 		
 	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
 	{

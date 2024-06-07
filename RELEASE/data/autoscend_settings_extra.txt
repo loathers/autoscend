@@ -10,42 +10,37 @@ action	2	auto_combatDirective	string	An action to execute at the start of next c
 any	0	auto_abooclover	boolean	Are we considering using a clover at A-Boo Peak?
 any	1	auto_aboopending	integer	The last turn of a pending A-Boo Clue. 0 if no clue active.
 any	2	auto_clanstuff	string	What was the last day we did 'end of day' clan stuff.
-any	3	auto_noSleepingDog	boolean	When true do not eat a Sleeping Dog.
-any	4	auto_maxCandyPrice	integer	Max allowable price per candy for Rethinking Candy (default 2500)
-any	5	_auto_ignoreRestoreFailureToday	boolean	if true we will for today only ignore failure to restore MP or HP and just continue playing
-any	6	auto_aosol_dontUnCurse	boolean	Avatar of Shadows Over Loathing: if true will keep all cursed items.
+any	3	auto_maxCandyPrice	integer	Max allowable price per candy for Rethinking Candy (default 2500)
+any	4	_auto_ignoreRestoreFailureToday	boolean	if true we will for today only ignore failure to restore MP or HP and just continue playing
+any	5	auto_aosol_dontUnCurse	boolean	Avatar of Shadows Over Loathing: if true will keep all cursed items.
 
 post	0	auto_chasmBusted	boolean	Has the orc chasm bridge been 'trolled yet? Ed only.
-post	1	auto_cookie	integer	HCCS Only: Tracks fortune cookie.
-post	2	auto_day1_dna	string	'finished' if we have hybridized ourselves at the start of Ascension.
-post	3	auto_day_init	string	Current daycount if we finished initializing today.
-post	4	auto_getBoningKnife	boolean	Do we want Boning Knife this ascension?
-post	5	auto_gnasirUnlocked	boolean	Have we found gnasir in the Desert?
-post	6	auto_grimstoneFancyOilPainting	boolean	do grimstone for fancy oil painting this ascension?
-post	7	auto_grimstoneOrnateDowsingRod	boolean	do grimstone for ornate dowsing rod this ascension?
-post	8	auto_hedge	string	'fast' or 'slow', determining how quickly we want to finish the Hedge Maze.
-post	9	auto_powerLevelLastLevel	string	Last Level that we had nothing to do.
-post	10	auto_powerLevelAdvCount	string	Adventures count of times we had nothing to do.
-post	11	auto_powerLevelLastAttempted	string	Last adventure that we did nothing on.
-post	12	auto_skipNuns	boolean	Skip nuns quest this ascension?
-post	13	auto_waitingArrowAlcove	integer	If we arrowed a modern zmobie, this tells us when to return to the Alcove (cyrptAlcoveEvilness value).
-post	14	auto_100familiar	string	If a familiar type, do not allow familiar switching (for 100% runs). Otherwise, can be none or blank.
-post	15	auto_beatenUpCount	integer	How many times were we beaten up this ascension. Affects ML and whether we try to heal or abort when we get beaten up.
-post	16	auto_doneInitialize	integer	Indicates last ascension that we initialized with the script.
-post	17	auto_noSnakeOil	integer	Last day that we could no longer Extract Oil.
-post	18	auto_renenutetBought	integer	Number of Talisman of Renenutet's bought on last tracking.
-post	19	auto_batoomerangDay	integer	Part of Replica Bat-oomerang Tracker
-post	20	auto_batoomerangUse	integer	Part of Replica Bat-oomerang Tracker
-post	21	_auto_lastABooConsider	integer	Last turn that we considered doing A-Boo Peak
-post	22	_auto_lastABooCycleFix	integer	Tracker to prevent us infinitely looping on A-Boo Peak
-post	23	_auto_witchessBattles	integer	Tracker for Witchess Combats (yes, this is actually needed).
-post	24	auto_needLegs	boolean	In Ed, do we require getting legs before trying to Ka farm?
-post	25	auto_haveoven	boolean	Track oven status. If you have an oven this should be true. But we can't always check the campground.
-post	26	auto_doGalaktik	boolean	Do Galaktik optional sidequest this ascension?
-post	27	auto_doArmory	boolean	Do Lending a Hand (and a Foot) optional sidequest this ascension to unlock madeline baking supply?
-post	28	auto_doMeatsmith	boolean	Do Meatsmith optional sidequest this ascension?
-post	29	auto_L8_ninjaAssassinFail	boolean	True means we think we cannot defeat ninja snowmen assassins and are thus avoiding them this ascension. We will not copy them nor adventure in the lair of the ninja snowmen
-post	30	auto_L8_extremeInstead	boolean	True means we want to adventure in the extreme slope path instead of the ninja snowmen lair this ascension.
+post	1	auto_day1_dna	string	'finished' if we have hybridized ourselves at the start of Ascension.
+post	2	auto_day_init	string	Current daycount if we finished initializing today.
+post	3	auto_getBoningKnife	boolean	Do we want Boning Knife this ascension?
+post	4	auto_gnasirUnlocked	boolean	Have we found gnasir in the Desert?
+post	5	auto_grimstoneFancyOilPainting	boolean	do grimstone for fancy oil painting this ascension?
+post	6	auto_grimstoneOrnateDowsingRod	boolean	do grimstone for ornate dowsing rod this ascension?
+post	7	auto_hedge	string	'fast' or 'slow', determining how quickly we want to finish the Hedge Maze.
+post	8	auto_powerLevelLastLevel	string	Last Level that we had nothing to do.
+post	9	auto_powerLevelAdvCount	string	Adventures count of times we had nothing to do.
+post	10	auto_powerLevelLastAttempted	string	Last adventure that we did nothing on.
+post	11	auto_skipNuns	boolean	Skip nuns quest this ascension?
+post	12	auto_100familiar	string	If a familiar type, do not allow familiar switching (for 100% runs). Otherwise, can be none or blank.
+post	13	auto_beatenUpCount	integer	How many times were we beaten up this ascension. Affects ML and whether we try to heal or abort when we get beaten up.
+post	14	auto_doneInitialize	integer	Indicates last ascension that we initialized with the script.
+post	15	auto_noSnakeOil	integer	Last day that we could no longer Extract Oil.
+post	16	auto_renenutetBought	integer	Number of Talisman of Renenutet's bought on last tracking.
+post	17	auto_batoomerangDay	integer	Part of Replica Bat-oomerang Tracker
+post	18	auto_batoomerangUse	integer	Part of Replica Bat-oomerang Tracker
+post	19	_auto_lastABooConsider	integer	Last turn that we considered doing A-Boo Peak
+post	20	_auto_lastABooCycleFix	integer	Tracker to prevent us infinitely looping on A-Boo Peak
+post	21	_auto_witchessBattles	integer	Tracker for Witchess Combats (yes, this is actually needed).
+post	22	auto_needLegs	boolean	In Ed, do we require getting legs before trying to Ka farm?
+post	23	auto_haveoven	boolean	Track oven status. If you have an oven this should be true. But we can't always check the campground.
+post	24	auto_doGalaktik	boolean	Do Galaktik optional sidequest this ascension?
+post	25	auto_L8_ninjaAssassinFail	boolean	True means we think we cannot defeat ninja snowmen assassins and are thus avoiding them this ascension. We will not copy them nor adventure in the lair of the ninja snowmen
+post	26	auto_L8_extremeInstead	boolean	True means we want to adventure in the extreme slope path instead of the ninja snowmen lair this ascension.
 
 pre	0	auto_doGalaktik_initialize	boolean	When we initialize an ascension this will be copied to auto_doGalaktik
 

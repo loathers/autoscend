@@ -1510,7 +1510,6 @@ boolean LA_robot()
 	if(LX_freeCombats(true)) return true;
 	
 	if(LX_galaktikSubQuest()) return true;			//only if user manually set auto_doGalaktik to true this ascension
-	if(LX_armorySideQuest()) return true;			//only if user manually set auto_doArmory to true this ascension
 	
 	//get some levels early on
 	if(LX_robot_level()) return true;

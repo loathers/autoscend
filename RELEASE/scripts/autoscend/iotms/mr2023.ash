@@ -41,15 +41,9 @@ boolean wantToThrowGravel(location loc, monster enemy)
 
 	if(item_amount($item[groveling gravel]) == 0) return false;
 	if(!auto_is_valid($item[groveling gravel])) return false;
-	if (isFreeMonster(enemy)) { return false; } // don't use gravel against inherently free fights
+	if (isFreeMonster(enemy, loc)) { return false; } // don't use gravel against inherently free fights
 	// prevent overuse after breaking ronin or in casual
 	if(can_interact()) return false;
-
-	// don't use gravel if already free
-	if(get_property("breathitinCharges").to_int() > 0 && loc.environment == "outdoor")
-	{
-		return false;
-	}
 
 	// many monsters in these zones with similar names
 	if(loc == $location[The Battlefield (Frat Uniform)] && 
@@ -113,10 +107,119 @@ void auto_SITCourse()
 	}
 }
 
+boolean auto_havePayPhone()
+{
+	return auto_is_valid($item[closed-circuit pay phone]) && item_amount($item[closed-circuit pay phone]) > 0;
+}
+
+location auto_availableBrickRift()
+{
+	if(!auto_havePayPhone())
+	{
+		return $location[none];
+	}
+
+	boolean[location] riftsWithBricks = $locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)];
+	foreach loc in riftsWithBricks
+	{
+		if(can_adventure(loc)) return loc;
+	}
+	return $location[none];
+}
+
+int auto_neededShadowBricks()
+{
+	if(!auto_havePayPhone())
+	{
+		return 0;
+	}
+
+	int currentBricks = item_amount($item[shadow brick]);
+	int bricksUsedToday = get_property("_shadowBricksUsed").to_int();
+	return max(0, 13 - currentBricks - bricksUsedToday);
+}
+
+boolean auto_getPhoneQuest()
+{
+	if(!auto_havePayPhone())
+	{
+		return false;
+	}
+
+	if(get_property("questRufus") != "unstarted")
+	{
+		// already started quest
+		return true;
+	}
+
+	// get artifact quest
+	// auto_choice_adv handles actually picking it
+	use($item[closed-circuit pay phone]);
+
+	return get_property("questRufus") != "unstarted";
+}
+
+boolean auto_doPhoneQuest()
+{
+	if(!auto_havePayPhone())
+	{
+		return false;
+	}
+	// only accept and do quest if we can get bricks
+	if(auto_availableBrickRift() == $location[none])
+	{
+		return false;
+	}
+	// already finished phone quest today
+	if(get_property("_shadowAffinityToday").to_boolean() && have_effect($effect[Shadow Affinity]) == 0 && get_property("questRufus") == "unstarted")
+	{
+		return false;
+	}
+	// not high enough level yet. Survive at least 2 hits
+	if(my_maxhp() <= expected_damage($monster[shadow slab]) * 2)
+	{
+		return false;
+	}
+	// don't start quest if fights will already be free... unless we already have shadow affinity
+	if(isFreeMonster($monster[shadow slab], auto_availableBrickRift()) && have_effect($effect[Shadow Affinity]) == 0)
+	{
+		return false;
+	}
+
+	// get quest
+	if(!auto_getPhoneQuest())
+	{
+		abort("Failed to get Rufus quest from cursed phone.");
+	}
+
+	// finish quest
+	if(get_property("questRufus") == "step1")
+	{
+		use($item[closed-circuit pay phone]);
+		if(get_property("questRufus") != "unstarted")
+		{
+			abort("Failed to finish Rufus quest from cursed phone.");
+		}
+		return true;
+	}
+
+	backupSetting("shadowLabyrinthGoal", "browser"); // use mafia's automation handling for the Shadow Rift NC.
+	return autoAdv(auto_availableBrickRift());
+}
+
 boolean auto_haveMonkeyPaw()
 {
 	static item paw = $item[cursed monkey\'s paw];
 	return auto_is_valid(paw) && (item_amount(paw) > 0 || have_equipped(paw));
+}
+
+int auto_monkeyPawWishesLeft()
+{
+	if (auto_haveMonkeyPaw())
+	{
+		return 5 - get_property("_monkeyPawWishesUsed").to_int();
+	}
+	return 0;
 }
 
 boolean auto_makeMonkeyPawWish(effect wish)
@@ -125,7 +228,7 @@ boolean auto_makeMonkeyPawWish(effect wish)
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
-	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+	if (auto_monkeyPawWishesLeft() < 1) {
 		auto_log_info("Out of monkey paw wishes, skipping "+to_string(wish));
 		return false;
 	}
@@ -142,7 +245,7 @@ boolean auto_makeMonkeyPawWish(item wish)
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
-	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+	if (auto_monkeyPawWishesLeft() < 1) {
 		auto_log_info("Out of monkey paw wishes, skipping "+to_string(wish));
 		return false;
 	}
@@ -159,7 +262,7 @@ boolean auto_makeMonkeyPawWish(string wish)
 		auto_log_info("Requested monkey paw wish without paw available, skipping "+to_string(wish));
 		return false;
 	}
-	if(get_property("_monkeyPawWishesUsed").to_int() >= 5) {
+	if (auto_monkeyPawWishesLeft() < 1) {
 		auto_log_info("Out of monkey paw wishes, skipping "+wish);
 		return false;
 	}
@@ -214,19 +317,9 @@ boolean auto_nextRestOverCinch()
 
 boolean auto_getCinch(int goal)
 {
-	boolean atMaxMpHp()
-	{
-		return my_mp() == my_maxmp() && my_hp() == my_maxhp();
-	}
-
 	if(auto_currentCinch() >= goal)
 	{
 		return true;
-	}
-	if(atMaxMpHp())
-	{
-		// can't rest if we have full mp and hp
-		return false;
 	}
 	if(!haveFreeRestAvailable())
 	{
@@ -243,11 +336,6 @@ boolean auto_getCinch(int goal)
 	// use free rests until have enough cinch or out of rests
 	while(auto_currentCinch() < goal && haveFreeRestAvailable())
 	{
-		if(atMaxMpHp())
-		{
-			// can't rest if we have full mp and hp
-			return false;
-		}
 		if(!doFreeRest())
 		{
 			abort("Failed to rest to charge cincho");
@@ -284,7 +372,7 @@ boolean shouldCinchoConfetti()
 		return false;
 	}
 	// use all free rests before using confetti. May get enough cinch to fiesta exit
-	if(haveFreeRestAvailable())
+	if (haveFreeRestAvailable() || numeric_modifier("Free Rests") < auto_potentialMaxFreeRests())
 	{
 		return false;
 	}
@@ -359,12 +447,14 @@ void auto_buyFrom2002MrStore()
 		use(itemConsidering);
 	}
 	// giant black monlith. Mostly useful at low level for stats
-	itemConsidering = $item[giant black monolith];
-	if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
-	{
-		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
-		use(itemConsidering);
-		visit_url("campground.php?action=monolith");
+	if (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) {
+		itemConsidering = $item[giant black monolith];
+		if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
+		{
+			buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+			use(itemConsidering);
+			visit_url("campground.php?action=monolith");
+		}
 	}
 	// crimbo cookie. Should we expand to buy more or use in more paths beyond HC LoL?
 	itemConsidering = $item[Crimbo cookie sheet];
@@ -473,4 +563,296 @@ void auto_lostStomach(boolean force)
 	{
 		use_skill($skill[Aug. 16th: Roller Coaster Day!]);
 	}
+}
+
+boolean auto_haveBofa()
+{
+	return auto_is_valid($skill[just the facts]) && have_skill($skill[just the facts]);
+}
+
+boolean auto_canHabitat()
+{
+	if (!auto_haveBofa())
+	{
+		return false;
+	}
+	if (get_property("_monsterHabitatsRecalled").to_int() >= 3)
+	{
+		// no charges left
+		return false;
+	}
+	if (get_property("_monsterHabitatsFightsLeft").to_int() > 0)
+	{
+		// already habitating something but we may not need all 5 of them in certain situations
+		switch (get_property("_monsterHabitatsMonster").to_monster())
+		{
+			case $monster[fantasy bandit]:
+				return (fantasyBanditsFought() < 5);
+			case $monster[modern zmobie]:
+				return get_property("cyrptAlcoveEvilness").to_int() > 13;
+			default:
+				return false;
+		}
+	}
+	return true;
+}
+
+boolean auto_habitatTarget(monster target)
+{
+	if (!auto_canHabitat()) {
+		return false;
+	}
+	if (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() > 0)
+	{
+		// already habitating this monster
+		return false;
+	}
+	switch (target)
+	{
+		case $monster[fantasy bandit]:
+			// only worth it if we need all 5.
+			return (fantasyBanditsFought() == 0);
+		case $monster[modern zmobie]:
+		 	// only worth it if we need 30 or more evilness reduced.
+			return (get_property("cyrptAlcoveEvilness").to_int() > 42);
+		case $monster[eldritch tentacle]:
+			return (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0));
+		default:
+			return (get_property("auto_habitatMonster").to_monster() == target);
+	}
+	return false;
+}
+
+int auto_habitatFightsLeft()
+{
+	return get_property("_monsterHabitatsFightsLeft").to_int();
+}
+
+monster auto_habitatMonster()
+{
+	if (get_property("_monsterHabitatsFightsLeft").to_int() > 0)
+	{
+		return get_property("_monsterHabitatsMonster").to_monster();
+	}
+	return $monster[none];
+}
+
+boolean auto_canCircadianRhythm()
+{
+	if (!auto_haveBofa())
+	{
+		return false;
+	}
+	if (get_property("_circadianRhythmsRecalled").to_boolean())
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean auto_circadianRhythmTarget(monster target)
+{
+	if (!auto_canCircadianRhythm())
+	{
+		return false;
+	}
+	if (!($monsters[shadow bat, shadow cow, shadow devil, shadow guy, shadow hexagon, shadow orb, shadow prism, shadow slab, shadow snake, shadow spider, shadow stalk, shadow tree] contains target))
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean auto_haveJillOfAllTrades()
+{
+	if(auto_have_familiar($familiar[Jill-of-All-Trades]))
+	{
+		return true;
+	}
+	return false;
+}
+
+string getParsedCandleMode()
+{
+	// returns candle mode which matches our familiar categories
+	switch(get_property("ledCandleMode"))
+	{
+		case "disco":
+			return "item";
+		case "ultraviolet":
+			return "meat";
+		case "reading":
+			return "stat";
+		case "red":
+			return "boss";
+		default:
+			return "unknown";
+	}
+}
+
+void auto_handleJillOfAllTrades()
+{
+	if (!auto_haveJillOfAllTrades() || item_amount($item[LED candle]) == 0)
+	{
+		return;
+	}
+
+	// only bother to configure candle if Jill is equiped
+	if(my_familiar() != $familiar[Jill-of-All-Trades])
+	{
+		return;
+	}
+
+	string currentMode = getParsedCandleMode();
+	// want to configure jill to have bonus of whatever fam type we last looked up
+	string desiredCandleMode = get_property("auto_lastFamiliarLookupType");
+
+	auto_log_debug(`Jill current mode: {currentMode} and desired is {desiredCandleMode}`);
+	if(currentMode == desiredCandleMode)
+	{
+		return;
+	}
+
+	switch(desiredCandleMode)
+	{
+		case "item":
+		case "regen":
+		case "init":
+		case "gremlin":
+		case "yellowray":
+			cli_execute("jillcandle item");
+			break;
+		case "meat":
+			cli_execute("jillcandle meat");
+			break;
+		case "stat":
+		case "drop":
+			cli_execute("jillcandle stat");
+			break;
+		case "boss":
+			cli_execute("jillcandle attack");
+			break;
+		default:
+			abort("tried to configure Jill's LED Candle with a non-supported type");
+	}
+
+	return;
+}
+
+boolean auto_haveBurningLeaves()
+{
+	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];
+}
+
+boolean auto_burnLeaves()
+{
+	if (!auto_haveBurningLeaves())
+	{
+		return false;
+	}
+	if (available_amount($item[rake]) < 1)
+	{
+		// visit the pile of burning leaves to grab the rakes
+		visit_url("campground.php?preaction=leaves");
+	}
+	if (item_amount($item[inflammable leaf]) > 73 && !(get_campground() contains $item[forest canopy bed]) && get_dwelling() != $item[big rock] && auto_haveCincho())
+	{
+		// get and use the forest canopy bed if we don't have one already and have a Cincho as it is +5 free rests
+		if (create(1, $item[forest canopy bed]))
+		{
+			return use(1, $item[forest canopy bed]);
+		}
+		return false;
+	}
+	if (get_campground() contains $item[forest canopy bed] && item_amount($item[inflammable leaf]) > 49 && have_effect($effect[Resined]) == 0)
+	{
+		// Get the Resined effect if we don't have it as it is net positive for leaves.
+		if (create(1, $item[distilled resin]))
+		{
+			return use(1, $item[distilled resin]);
+		}
+		return false;
+	}
+	return false;
+}
+
+boolean auto_haveCCSC()
+{
+	if(auto_can_equip($item[Candy Cane Sword Cane]) && available_amount($item[Candy Cane Sword Cane]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_handleCCSC()
+{
+	if(!auto_haveCCSC())
+	{
+		return false;
+	}
+	location place = my_location();
+	
+	/* Where/Why We Want Only Certain Locations
+	 The Sleazy Back Alley - 11-leaf clover (only visit if we are a moxie class unlocking guild, but still potentially useful)
+	 The Daily Dungeon - Eleven-foot pole replacement. +1 Fat Loot Token
+	 The Shore, Inc. Travel Agency - 2 Scrips and all stats
+	 The Defiled Cranny - -11 evilness
+	 The eXtreme Slope - If we can't do ninja snowmen for some reason, gives us 2 pieces of equipment in one NC
+	 The Penultimate Fantasy Airship - Get an umbrella for basement, metallic A for wand, SGEEA, and Fantasy Chest for even more items
+	 The Black Forest - +8 exploration
+	 The Copperhead Club - Gives us a priceless diamond, saving 4950-5000 meat
+	 The Hidden Apartment Building - +1 cursed level, Doesn't leave NC
+	 The Hidden Bowling Alley - 1 less bowling ball needed
+	 An Overgrown Shrine (Northeast) - Free Meat
+	 A Mob of Zeppelin Protesters - Double Sleaze Protestors
+	 Wartime Frat House/Camp - Skip non-useful NC to go to war start NC
+	 */
+
+	if((place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5 && !get_property("candyCaneSwordBowlingAlley").to_boolean())
+	   || (place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0 && !get_property("candyCaneSwordShore").to_boolean())
+	   || (place == $location[The eXtreme Slope] && (!possessEquipment($item[eXtreme scarf]) && !possessEquipment($item[snowboarder pants])))
+	   || (place == $location[The Copperhead Club] && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0) && !get_property("candyCaneSwordCopperheadClub").to_boolean())
+	   || (place == $location[The Defiled Cranny] && !get_property("candyCaneSwordDefiledCranny").to_boolean())
+	   || (place == $location[The Black Forest] && !get_property("candyCaneSwordBlackForest").to_boolean())
+	   || (place == $location[The Hidden Apartment Building] && !get_property("candyCaneSwordApartmentBuilding").to_boolean())
+	   || (place == $location[An Overgrown Shrine (Northeast)] && !get_property("_candyCaneSwordOvergrownShrine").to_boolean())
+	   || (place == $location[The Overgrown Lot] && !get_property("_candyCaneSwordOvergrownLot").to_boolean())
+	   || (place == $location[The Penultimate Fantasy Airship] && (!possessEquipment($item[Amulet of Extreme Plot Significance]) || !possessEquipment($item[unbreakable umbrella]) || !possessEquipment($item[Titanium Assault Umbrella])))
+	   || ((place == $location[Wartime Frat House] && possessOutfit("War Hippy Fatigues")) || (place == $location[Wartime Hippy Camp] && possessOutfit("Frat Warrior Fatigues")))
+	   || ($locations[The Sleazy Back Alley, A Mob of Zeppelin Protesters, The Daily Dungeon]) contains place)
+	{
+		return true;
+	}
+	return false;
+}
+
+void auto_useWardrobe()
+{
+	if(!auto_is_valid($item[wardrobe-o-matic]))
+	{
+		return;
+	}
+	if(item_amount($item[wardrobe-o-matic]) == 0)
+	{
+		return;
+	}
+	// check one of the 3 prefs which get set when wardrobe is used each day
+	if(get_property("_futuristicHatModifier") != "")
+	{
+		return;
+	}
+	// wait for level 5 to get an upgraded wardrobe
+	if(my_level() < 5)
+	{
+		return;
+	}
+	// wait for level 15 if close and not at NS tower
+	if(my_level() == 14 && internalQuestStatus("questL13Final") < 0)
+	{
+		return;
+	}
+	// only need to use it so we get the hat, shirt, fam equip
+	// let maximizer handle if any of it is worth equipping
+	use($item[wardrobe-o-matic]);
 }

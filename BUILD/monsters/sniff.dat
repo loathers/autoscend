@@ -2,13 +2,11 @@ pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed;prop:hidden
 Writing Desk	prop:writingDesksDefeated<4
 cabinet of Dr. Limpieza
 Dairy Goat	loc:The Goatlet
-Morbid Skull	loc:Fear Man's Level
 Pygmy Bowler
 Pygmy Witch Surgeon
 pygmy witch accountant	loc:The Hidden Office Building
 pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
 Pygmy Janitor	loc:The Hidden Park;!tavern:true;!itemdropcapped:20=book of matches
-Quiet Healer	!prop:questL10Garbage=finished
 Tomb Rat
 Bob Racecar	!sniffed:Racecar Bob
 Racecar Bob	!sniffed:Bob Racecar
@@ -27,8 +25,8 @@ elephant (meatcar?) topiary animal	!familiar:Melodramedary;!sniffed:bearpig topi
 spider (duck?) topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:bearpig topiary animal
 Serialbus	item:bus pass<4
 CH Imp	item:imp air<4
-Camel Toe	!sniffed:Skinflute
-Skinflute	!sniffed:Camel Toe
+Camel's Toe	!sniffed:Skinflute
+Skinflute	!sniffed:Camel's Toe
 Red Butler	prop:_glarkCableUses<5;item:glark cable<5
 # Unlocking Knob Menagerie
 Knob Goblin Very Mad Scientist	loc:Cobb's Knob Laboratory;item:Cobb's Knob Menagerie key<1;turnsspent:Cobb's Knob Laboratory>7

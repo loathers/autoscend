@@ -3,7 +3,9 @@
 # First we grab up to small amount of various specific drops.
 #
 # every 2 cookbookbat ingredients generate a size 1 density 7 food. prioritize having enough to craft 1.
-Cookbookbat	item:Vegetable of Jarlsberg<2;item:Yeast of Boris<2;item:St. Sneaky Pete's Whey<2
+Cookbookbat	item:Vegetable of Jarlsberg<2;item:Yeast of Boris<2;item:St. Sneaky Pete's Whey<2;!prop_boolean:auto_dontUseCookBookBat
+# jill will drop her fam equip and a halloween map. Only consider map though
+Jill-of-All-Trades	item:Map to a candy-rich block<1
 # 5 turkey booze drops a day. each is size 1 and density of either 5, 5.5, or 6
 Fist Turkey	prop:_turkeyBooze<5
 # every 10 yellow pixels make a size 2 density 5 food or drink. unlimited drops per day. prioritize having enough to craft 2.
@@ -34,9 +36,9 @@ Melodramedary	prop:camelSpit<100
 Intergnat	item:BACON<150
 #
 # Generate extra cookbookbat ingredients to make sure we have enough stock on hand for higher-tier foods
-Cookbookbat	item:Vegetable of Jarlsberg<4
-Cookbookbat	item:Yeast of Boris<4
-Cookbookbat	item:St. Sneaky Pete's Whey<4
+Cookbookbat	item:Vegetable of Jarlsberg<4;!prop_boolean:auto_dontUseCookBookBat
+Cookbookbat	item:Yeast of Boris<4;!prop_boolean:auto_dontUseCookBookBat
+Cookbookbat	item:St. Sneaky Pete's Whey<4;!prop_boolean:auto_dontUseCookBookBat
 # Below this lines drops are not needed more of for the run and are just grabbing for profit.
 # Most are useful in limited amounts which we already grab via boolean autoChooseFamiliar(location place)
 #
@@ -61,4 +63,4 @@ Green Pixie	prop:_absintheDrops<5
 # Hot ashes can make a potion that gives +15 ML for 15 adv. drop limit 5/day
 Galloping Grill	prop:_hotAshesDrops<5
 # If all else fails, keep generating CBB ingredients
-Cookbookbat
+Cookbookbat	!prop_boolean:auto_dontUseCookBookBat

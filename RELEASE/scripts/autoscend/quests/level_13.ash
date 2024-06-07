@@ -69,26 +69,23 @@ int EightBitScore()
 boolean EightBitRealmHandler()
 {
 	//Spend adventures to get the digital key
+	//Preparing for each zone is handled in auto_pre_adv.ash
 	boolean adv_spent = false;
 
 	string color = get_property("8BitColor");
 	switch(color)
 	{
-		case "black":	
-			provideInitiative(600, $location[Vanya\'s Castle], true);	
-			addToMaximize("200initiative 800max");
+		case "black":
+			// limited buff that is helpful for 3 of 4 8-bit zones
+			buffMaintain($effect[shadow waters]);
 			adv_spent = autoAdv($location[Vanya\'s Castle]);
 			break;
 		case "red":
-			buffMaintain($effect[Polka of Plenty], 30, 1, 1);
-			addToMaximize("200meat drop 550max");
+			// limited buff that is helpful for 3 of 4 8-bit zones
+			buffMaintain($effect[shadow waters]);
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
-			buffMaintain($effect[Ghostly Shell], 30, 1, 1);			//+80 DA. 6 MP
-			buffMaintain($effect[Astral Shell], 30, 1, 1);			//+80 DA, 10 MP
-			buffMaintain($effect[Feeling Peaceful], 0, 1, 1);
-			addToMaximize("200DA 600max");
 			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":
@@ -192,9 +189,9 @@ void LX_buyStarKeyParts()
 	{
 		return;	//no unrestricted mall access
 	}
-	buyUpTo(1, $item[Star Chart], 1000);
-	buyUpTo(8, $item[Star], 1000);
-	buyUpTo(7, $item[line], 1000);
+	auto_buyUpTo(1, $item[Star Chart]);
+	auto_buyUpTo(8, $item[Star]);
+	auto_buyUpTo(7, $item[line]);
 }
 
 boolean LX_getStarKey()
@@ -226,14 +223,22 @@ boolean LX_getStarKey()
 	
 	LX_buyStarKeyParts();
 
+	// summon Skinflute or Camel's Toe to get both stars and lines. We can copy them into delay zones like the 8-bit realm.
+	int copiesNeeded = max((8 - item_amount($item[star])) / 2, (7 - item_amount($item[line])) / 2);
+	if (needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7 && auto_haveBackupCamera() && auto_backupUsesLeft() >= copiesNeeded)
+	{
+		// in case it matters later, summon only the monster we can naturally encounter in this ascension.
+		if(my_ascensions() % 2 == 1 && !summonedMonsterToday($monster[Skinflute]) && canSummonMonster($monster[Skinflute]) && summonMonster($monster[Skinflute])) return true;
+		if(my_ascensions() % 2 == 0 && !summonedMonsterToday($monster[Camel's Toe]) && canSummonMonster($monster[Camel's Toe]) && summonMonster($monster[Camel's Toe])) return true;
+	}
+
 	boolean at_tower_door = internalQuestStatus("questL13Final") == 5;
-	if (!in_hardcore() && at_tower_door && item_amount($item[Richard\'s Star Key]) == 0 && item_amount($item[Star Chart]) == 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key") && 
-	item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
+	if (!in_hardcore() && at_tower_door && needStarKey() && item_amount($item[Star Chart]) == 0 && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7)
 	{
 		pullXWhenHaveY($item[Star Chart], 1, 0);
 	}
 	
-	if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) > 0) && (item_amount($item[star]) >= 8) && (item_amount($item[line]) >= 7) && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
+	if (item_amount($item[Richard\'s Star Key]) == 0 && creatable_amount($item[Richard\'s Star Key]) > 0 && !get_property("nsTowerDoorKeysUsed").contains_text("Richard's star key"))
 	{
 		return create(1, $item[Richard\'s Star Key]);
 	}
@@ -580,8 +585,16 @@ boolean L13_towerNSContests()
 				if(crowd3Insufficient()) auto_beachCombHead("spooky");
 				if(crowd3Insufficient()) buffMaintain($effect[Spooky Hands]);
 				if(crowd3Insufficient()) buffMaintain($effect[Spooky Weapon]);
-				if(crowd3Insufficient()) buffMaintain($effect[Dirge of Dreadfulness (Remastered)]);
-				if(crowd3Insufficient()) buffMaintain($effect[Dirge of Dreadfulness], 10, 1, 1);
+				// at this point, an example list of songs is phat loot / polka / celerity / madrigal
+				if(crowd3Insufficient()) {
+					// specify normal effect to avoid failing the skill check
+					shrugAT($effect[Dirge of Dreadfulness]);
+					buffMaintain($effect[Dirge of Dreadfulness (Remastered)]);
+				}
+				if(crowd3Insufficient()) {
+					shrugAT($effect[Dirge of Dreadfulness]);
+					buffMaintain($effect[Dirge of Dreadfulness], 10, 1, 1);
+				}
 				if(crowd3Insufficient()) buffMaintain($effect[Intimidating Mien], 15, 1, 1);
 				if(crowd3Insufficient()) buffMaintain($effect[Snarl of Three Timberwolves]);
 				if(crowd3Insufficient()) buffMaintain($effect[Snarl of the Timberwolf], 10, 1, 1);
@@ -825,7 +838,7 @@ boolean L13_sorceressDoor()
 		return false;
 	}
 
-	if (LX_getDigitalKey() || LX_getStarKey()) {
+	if (LX_getStarKey() || LX_getDigitalKey()) { // should attempt Star Key first as 8-bit zones can be progressed with backups etc.
 		return true;
 	}
 
@@ -1607,7 +1620,7 @@ boolean L13_towerNSTower()
 		cli_execute("scripts/autoscend/auto_post_adv.ash");
 		acquireHP();
 
-		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]);
+		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]) + item_amount($item[scented massage oil]);
 		if(in_plumber())
 		{
 			n_healing_items = item_amount($item[super deluxe mushroom]);
@@ -1625,17 +1638,27 @@ boolean L13_towerNSTower()
 			{
 				pullXWhenHaveY(it,1,item_amount(it));
 			}
-
-			int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
-			if(create_target > 0)
+			
+			// If we're in Kingdom of Exploathing, there's no realm . Let's try clovering for massage oil instead
+			if (in_koe())
 			{
-				if(create(create_target, $item[red pixel potion]))
-				{
-					return true;
-				}
-				abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
+				cloverUsageInit();
+				autoAdv($location[Cobb\'s Knob Harem]);
+				if(cloverUsageRestart()) autoAdv($location[Cobb\'s Knob Harem]);
+				cloverUsageFinish();
 			}
-			return autoAdv($location[8-bit Realm]);
+			else {
+				int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
+				if(create_target > 0)
+				{
+					if(create(create_target, $item[red pixel potion]))
+					{
+						return true;
+					}
+					abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
+				}
+				return autoAdv($location[8-bit Realm]);
+			}
 		}
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 		return true;

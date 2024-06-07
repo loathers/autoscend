@@ -397,9 +397,8 @@ boolean zataraSeaside(string who)
 	return true;
 }
 
-boolean zataraClanmate(string who)
+boolean zataraClanmate()
 {
-	# who is ignored.
 	if(item_amount($item[Clan VIP Lounge Key]) == 0)
 	{
 		return false;
@@ -428,6 +427,22 @@ boolean zataraClanmate(string who)
 #	}
 #	set_property("_clanFortuneConsultUses", get_property("_clanFortuneConsultUses").to_int() + 1);
 
+	int attempts = 0;
+	int player = 3690803;
+	string consultOverrideName = get_property("auto_consultChoice");
+	string name = get_player_name(player);
+	if (consultOverrideName != "")
+	{
+		name = consultOverrideName;
+		player = get_player_id(consultOverrideName).to_int();
+	}
+
+	if (!is_online(name))
+	{
+		// consult will not return in reasonable timeframe
+		return false;
+	}
+
 	int oldClan = get_clan_id();
 	string clanName = get_property("auto_consultClan");
 	if (clanName != "")
@@ -443,16 +458,6 @@ boolean zataraClanmate(string who)
 	{
 		set_property("_clanFortuneConsultUses", 42069);
 		return false;
-	}
-
-	int attempts = 0;
-	int player = 3038166;
-	string consultOverrideName = get_property("auto_consultChoice");
-	string name = get_player_name(player);
-	if (consultOverrideName != "")
-	{
-		name = consultOverrideName;
-		player = get_player_id(consultOverrideName).to_int();
 	}
 
 	boolean needWait = true;

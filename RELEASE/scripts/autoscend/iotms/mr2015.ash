@@ -280,7 +280,7 @@ boolean auto_mayoItems()
 		}
 		if(item_amount(mayo) == 0)
 		{
-			buy(1, mayo);
+			auto_buyUpTo(1, mayo);
 			return true;
 		}
 	}
@@ -733,7 +733,7 @@ boolean deck_cheat(string cheat)
 	cards["black mana"] = 32;
 	cards["red mana"] = 33;
 	cards["green mana"] = 34;
-	cards["blue mana"] = 36;
+	cards["blue mana"] = 35;
 	cards["key"] = 47;
 	cards["tower"] = 47;
 	cards["init"] = 48;
@@ -836,188 +836,46 @@ boolean deck_useScheme(string action)
 	}
 	else
 	{
-		switch(my_class())
-		{
-		case $class[Seal Clubber]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["Lead Pipe"] = true;		break;
-				#case 2:				cards["Lead Pipe"] = true;		break;
-				#case 3:				cards["Lead Pipe"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Turtle Tamer]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["Lead Pipe"] = true;		break;
-				#case 2:				cards["Lead Pipe"] = true;		break;
-				#case 3:				cards["Lead Pipe"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Pastamancer]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["Wrench"] = true;		break;
-				#case 2:				cards["Wrench"] = true;		break;
-				#case 3:				cards["Wrench"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Sauceror]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["Candlestick"] = true;		break;
-				#case 2:				cards["Candlestick"] = true;		break;
-#				case 3:				cards["Candlestick"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Disco Bandit]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["Knife"] = true;		break;
-				#case 2:				cards["Knife"] = true;		break;
-				#case 3:				cards["Knife"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Accordion Thief]:
-			if(!is_unrestricted($item[The Smith\'s Tome]))
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			else
-			{
-				switch(my_daycount())
-				{
-				case 1:				cards["key"] = true;						break;
-				case 2:				cards["key"] = true;						break;
-				case 3:				cards["key"] = true;		break;
-				}
-			}
-			break;
-		case $class[Avatar of Boris]:
-		case $class[Avatar of Jarlsberg]:
-			switch(my_daycount())
-			{
-			case 1:				cards["key"] = true;						break;
-			case 2:				cards["key"] = true;						break;
-			case 3:				cards["1952 Mickey Mantle"] = true;						break;
-			}
-			break;
-		case $class[Ed the Undying]:
-			switch(my_daycount())
-			{
-			case 1:				cards["ore"] = true;						break;
-			case 2:				cards["ore"] = true;						break;
-			}
-			break;
-		}
-
-		if(in_nuclear() || in_lta())
+		// First priority is grab a key if we need one.
+		int missingHeroKeys = 3 - towerKeyCount();
+		if (missingHeroKeys > 0)
 		{
 			cards["key"] = true;
 		}
-
-		switch(my_daycount())
+		// Next priority is ore, only if we don't have a train set installed
+		if (!auto_haveTrainSet() && needOre())
 		{
-		case 1:
-			#cards[my_primestat() + " stat"] = true;
-			cards["1952 Mickey Mantle"] = true;
-			break;
-		case 2:
-			if(item_amount($item[Stone Wool]) == 0)
-			{
-				cards["Sheep"] = true;
-			}
 			cards["ore"] = true;
-			cards["1952 Mickey Mantle"] = true;
-			break;
-		case 3:
-			cards["key"] = true;
-			cards["ore"] = true;
-			#cards["Ancestral Recall"] = true;
-			break;
 		}
-
+		// Stats are higher priority early on in LoL where we're never gonna need stone wool day1
+		if (in_lol() && my_level() < 4)
+		{
+			string mainstat = my_primestat().to_string().to_lower_case();
+			cards[mainstat+" stat"] = true;
+		}
+		// Stone wool
+		if (count(cards) < 3 && internalQuestStatus("questL11Worship") < 2 && item_amount($item[stone wool]) < 2)
+		{
+			cards["stone wool"] = true;
+		}
+		// Meat
+	  if( count(cards) < 3 && my_meat() < 10000 && !in_wotsf()) {
+			cards["1952 Mickey Mantle"] = true;
+		}
+		if( count(cards) < 3 && my_level() < 11 )
+		{
+			string mainstat = my_primestat().to_string().to_lower_case();
+			cards[mainstat+" stat"] = true;
+		}
 	}
-#	else if((action == "") && in_hardcore() && isGuildClass())
-#	{
-#		cards = $strings[none];
-#	}
-#	else
-#	{
-#		switch(my_daycount())
-#		{
-#		default:				cards = $strings[none];							break;
-#		}
-#	}
 
 	if(count(cards) < 3)
 	{
-		cards["key"] = true;
+		cards["ancestral recall"] = true;
+	}
+	if(count(cards) < 3)
+	{
+		cards["blue mana"] = true;
 	}
 
 	if(count(cards) == 0)
@@ -1170,39 +1028,6 @@ boolean resolveSixthDMT()
 
 	handleFamiliar($familiar[Machine Elf]);
 	return autoAdv($location[The Deep Machine Tunnels]);
-}
-
-boolean LX_dinseylandfillFunbucks()
-{
-	if(!get_property("auto_getDinseyGarbageMoney").to_boolean())
-	{
-		return false;
-	}
-	if(!elementalPlanes_access($element[stench]))
-	{
-		return false;
-	}
-	if((my_adventures() == 0) || (my_level() < 6))
-	{
-		return false;
-	}
-	if(item_amount($item[Bag of Park Garbage]) > 0 && !can_interact())
-	{
-		return dinseylandfill_garbageMoney();
-	}
-	// Abort if we've already gotten our easy funbucks.
-	// If we don't do this, we get stuck in a loop of getting garbage, using it, and doing BARF more.
-	if(get_property("_dinseyGarbageDisposed").to_boolean()){
-		return false;
-	}
-	if((my_daycount() >= 3) && (my_adventures() > 5))
-	{
-		# We do this after the item check since we may have an extra bag and we should turn that in.
-		return false;
-	}
-	buffMaintain($effect[How to Scam Tourists]);
-	autoAdv(1, $location[Barf Mountain]);
-	return true;
 }
 
 void doghouseChoiceHandler(int choice)

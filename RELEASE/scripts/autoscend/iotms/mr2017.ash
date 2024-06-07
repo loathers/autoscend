@@ -819,7 +819,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 	{
 		if(!dontCare)
 		{
-			auto_log_info("We did not initialize the briefcase this ascension, we can not care", "red");
+			auto_log_info("We did not initialize the briefcase this ascension, we do not care", "red");
 			dontCare = true;
 		}
 	}
@@ -909,7 +909,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 			{
 				if(button == 0)
 				{
-					abort("Can not seem to recover situation regarding splendid martinis");
+					abort("Cannot seem to recover situation regarding splendid martinis");
 				}
 				auto_log_info("Trying to restore tabs", "green");
 				continue;
@@ -1230,11 +1230,11 @@ boolean asdonBuff(string goal)
 
 boolean canAsdonBuff(effect goal)
 {
-	if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(!(auto_get_campground() contains $item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Asdon Martin Keyfob]))
+	if(!is_unrestricted($item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
@@ -1307,11 +1307,11 @@ boolean asdonAutoFeed(int goal)
 	{
 		return false;
 	}
-	if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(!(auto_get_campground() contains $item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Asdon Martin Keyfob]))
+	if(!is_unrestricted($item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
@@ -1450,11 +1450,11 @@ boolean asdonAutoFeed(int goal)
 
 boolean asdonFeed(item it, int qty)
 {
-	if(!(auto_get_campground() contains $item[Asdon Martin Keyfob]))
+	if(!(auto_get_campground() contains $item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[Asdon Martin Keyfob]))
+	if(!is_unrestricted($item[Asdon Martin keyfob (on ring)]))
 	{
 		return false;
 	}
@@ -1478,7 +1478,7 @@ boolean asdonFeed(item it)
 
 boolean asdonCanMissile()
 {
-	return (auto_get_campground() contains $item[Asdon Martin Keyfob]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean();
+	return (auto_get_campground() contains $item[Asdon Martin keyfob (on ring)]) && (get_fuel() >= fuel_cost($skill[Asdon Martin: Missile Launcher])) && !get_property("_missileLauncherUsed").to_boolean();
 }
 
 boolean isHorseryAvailable() {
@@ -1698,27 +1698,19 @@ boolean auto_haveGenieBottleOrPocketWishes()
 	        item_amount($item[Pocket Wish] ) > 0 && auto_is_valid($item[Pocket Wish] ) );
 }
 
-boolean auto_shouldUseWishes()
-{
-	return get_property("auto_useWishes").to_boolean();
-}
-
 int auto_wishesAvailable()
 {
-	int retval = 0;
-	if (auto_shouldUseWishes())
+	int wishes = 0;
+	item bottle = wrap_item($item[Genie Bottle]);
+	if (item_amount(bottle) > 0 && auto_is_valid(bottle))
 	{
-		item bottle = wrap_item($item[Genie Bottle]);
-		if(item_amount(bottle) > 0 && auto_is_valid(bottle))
-		{
-			retval += 3 - get_property("_genieWishesUsed").to_int();
-		}
-		if(auto_is_valid($item[pocket wish]))
-		{
-			retval += item_amount($item[pocket wish]);
-		}
+		wishes += 3 - get_property("_genieWishesUsed").to_int();
 	}
-	return retval;
+	if (auto_is_valid($item[pocket wish]))
+	{
+		wishes += item_amount($item[pocket wish]);
+	}
+	return wishes;
 }
 
 boolean makeGenieWish(string wish)

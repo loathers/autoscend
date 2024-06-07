@@ -58,7 +58,6 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	remove_property("auto_funCombatHandler");				//ocrs specific tracker
 	remove_property("auto_funPrefix");						//ocrs specific tracker
 	set_property("auto_combatHandlerThunderBird", "0");
-	set_property("auto_combatHandlerFingernailClippers", "0");
 	set_property("_auto_combatTracker_MortarRound", -1);		//tracks which round we used Stuffed Mortar Shell in.
 	
 	//log some important info.
@@ -106,7 +105,7 @@ string auto_combatHandler(int round, monster enemy, string text)
 
 	if(in_pokefam())
 	{
-		if(svn_exists("Ezandora-Helix-Fossil-branches-Release") || git_exists("Ezandora-Helix-Fossil-Release"))
+		if(git_exists("Ezandora-Helix-Fossil"))
 		{
 		auto_log_info("Combat via Ezandora:", "green");
 		boolean ignore = cli_execute("Pocket Familiars");

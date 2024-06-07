@@ -418,81 +418,6 @@ boolean restoreSetting(string setting)
 	return false;
 }
 
-location provideAdvPHPZone()
-{
-	if(elementalPlanes_access($element[stench]))
-	{
-		if(($location[Barf Mountain].turns_spent <= 5) && !contains_text($location[Barf Mountain].noncombat_queue, "Welcome to Barf Mountain"))
-		{
-			return $location[Barf Mountain];
-		}
-		if(($location[Pirates of the Garbage Barges].turns_spent <= 5) && !contains_text($location[Pirates of the Garbage Barges].noncombat_queue, "Dead Men Smell No Tales"))
-		{
-			return $location[Pirates of the Garbage Barges];
-		}
-	}
-	if(elementalPlanes_access($element[sleaze]))
-	{
-		if(($location[Sloppy Seconds Diner].turns_spent <= 5) && !contains_text($location[Sloppy Seconds Diner].noncombat_queue, "Nothing Could Be Finer"))
-		{
-			return $location[Sloppy Seconds Diner];
-		}
-		if(($location[The Fun-Guy Mansion].turns_spent <= 5) && !contains_text($location[The Fun-Guy Mansion].noncombat_queue, "A Fungible Fun Experience"))
-		{
-			return $location[The Fun-Guy Mansion];
-		}
-	}
-	if(elementalPlanes_access($element[spooky]))
-	{
-		if(($location[The Secret Government Laboratory].turns_spent <= 5) && !contains_text($location[The Secret Government Laboratory].noncombat_queue, "See What's on the Slab"))
-		{
-			return $location[The Secret Government Laboratory];
-		}
-		if(($location[The Mansion of Dr. Weirdeaux].turns_spent <= 5) && !contains_text($location[The Mansion of Dr. Weirdeaux].noncombat_queue, "Ready, Set, Geaux!"))
-		{
-			return $location[The Mansion of Dr. Weirdeaux];
-		}
-		if(($location[The Deep Dark Jungle].turns_spent <= 5) && !contains_text($location[The Deep Dark Jungle].noncombat_queue, "Fun and Games!"))
-		{
-			return $location[The Deep Dark Jungle];
-		}
-	}
-	if(elementalPlanes_access($element[cold]))
-	{
-		if(($location[VYKEA].turns_spent <= 5) && !contains_text($location[VYKEA].noncombat_queue, "Just Some Oak and Some Pine and a Handful of Norsemen"))
-		{
-			return $location[VYKEA];
-		}
-		if(($location[The Ice Hotel].turns_spent <= 5) && !contains_text($location[The Ice Hotel].noncombat_queue, "Lending a Hand (and a Foot)"))
-		{
-			return $location[The Ice Hotel];
-		}
-	}
-	if(elementalPlanes_access($element[hot]))
-	{
-		if(($location[LavaCo&trade; Lamp Factory].turns_spent <= 5) && !contains_text($location[LavaCo&trade; Lamp Factory].noncombat_queue, "LavaCo&trade; Welcomes You"))
-		{
-			return $location[LavaCo&trade; Lamp Factory];
-		}
-		if(($location[The SMOOCH Army HQ].turns_spent <= 5) && !contains_text($location[The SMOOCH Army HQ].noncombat_queue, "An Introductory SMOOCH"))
-		{
-			return $location[The SMOOCH Army HQ];
-		}
-		if(($location[The Bubblin\' Caldera].turns_spent <= 5) && !contains_text($location[The Bubblin\' Caldera].noncombat_queue, "Caldera Air"))
-		{
-			return $location[The Bubblin\' Caldera];
-		}
-	}
-	if(elementalPlanes_access($element[stench]))
-	{
-		if(($location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice].turns_spent <= 5) && !contains_text($location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice].noncombat_queue, "Gator Done"))
-		{
-			return $location[Uncle Gator\'s Country Fun-Time Liquid Waste Sluice];
-		}
-	}
-	return $location[none];
-}
-
 boolean loopHandler(string turnSetting, string counterSetting, string abortMessage, int threshold)
 {
 	if(my_turncount() == get_property(turnSetting).to_int())
@@ -550,69 +475,6 @@ string reverse(string s)
 	return ret;
 }
 
-boolean setAdvPHPFlag()
-{
-	location toAdv = provideAdvPHPZone();
-	if(toAdv == $location[none])
-	{
-		return false;
-	}
-	autoAdv(toAdv);
-	return true;
-
-}
-
-boolean isOverdueArrow()
-{
-	if(get_property("_romanticFightsLeft").to_int() == 0)
-	{
-		return false;
-	}
-	if(get_counters("Romantic Monster window end", 1, 200) == "Romantic Monster window end")
-	{
-		return false;
-	}
-	if(contains_text(get_property("_tempRelayCounters"), "Romantic Monster window end"))
-	{
-		return false;
-	}
-	if(get_counters("Romantic Monster window end", 0, 0) == "Romantic Monster window end")
-	{
-		return true;
-	}
-	return false;
-}
-
-boolean isExpectingArrow()
-{
-	if(get_property("_romanticFightsLeft").to_int() == 0)
-	{
-		return false;
-	}
-	if(get_counters("Romantic Monster window end", 1, 200) == "Romantic Monster window end")
-	{
-		if(get_counters("Romantic Monster window start", 0, 0) == "Romantic Monster window start")
-		{
-			return true;
-		}
-		if(get_counters("Romantic Monster window end", 0, 200) == "")
-		{
-			return true;
-		}
-
-		return false;
-	}
-	if(contains_text(get_property("_tempRelayCounters"), "Romantic Monster window end"))
-	{
-		return false;
-	}
-	if(get_counters("Romantic Monster window end", 0, 0) == "Romantic Monster window end")
-	{
-		return true;
-	}
-	return false;
-}
-
 int[monster] banishedMonsters()
 {
 	int[monster] retval;
@@ -636,19 +498,6 @@ int[monster] banishedMonsters()
 boolean isBanished(monster enemy)
 {
 	return (banishedMonsters() contains enemy);
-}
-
-boolean is_avatar_potion(item it)
-{
-	#From Veracity\'s "avatar potion" post
-	#http://kolmafia.us/showthread.php?19302-Add-quot-avatar-potion-quot-as-an-item_type%28%29&p=129243&viewfull=1#post129243
-	effect e = effect_modifier(it, "Effect");
-	if(e == $effect[none])
-	{
-		return false;
-	}
-	string avatar = string_modifier(e, "Avatar");
-	return (avatar != "");
 }
 
 int autoCraft(string mode, int count, item item1, item item2)
@@ -691,26 +540,6 @@ int internalQuestStatus(string prop)
 		return to_int(my_element.group(1));
 	}
 	return -1;
-}
-
-int estimatedTurnsLeft()
-{
-	//Probably will try bother to try dealing with milk, glorious lunch, ode, at least not now.
-	int turns = my_adventures();
-	if(can_eat())
-	{
-		turns += fullness_left() * 4.5;
-	}
-	if(can_drink())
-	{
-		turns += inebriety_left() * 4.75;
-	}
-	if(haveSpleenFamiliar())
-	{
-		turns += spleen_left() * 1.8;
-	}
-
-	return turns;
 }
 
 boolean canYellowRay(monster target)
@@ -785,6 +614,29 @@ boolean canYellowRay(monster target)
 boolean canYellowRay()
 {
 	return canYellowRay($monster[none]);
+}
+
+float [monster] auto_combat_appearance_rates(location place, boolean queue)
+{	//return probability of fighting each monster if the encounter is not a noncombat
+	//appearance_rates includes noncombat chance for $monster[none]
+	float [monster] res_including_noncombat = appearance_rates(place,queue);
+	float [monster] res_excluding_noncombat;
+	
+	float noncombat_frequency = res_including_noncombat[$monster[none]];
+	if(noncombat_frequency == 0 || noncombat_frequency >= 100) return res_including_noncombat;
+	
+	foreach mob, freq in res_including_noncombat
+	{
+		if(mob != $monster[none])
+		{
+			res_excluding_noncombat[mob] = freq / (100 - noncombat_frequency);
+		}
+	}
+	return res_excluding_noncombat;
+}
+
+float [monster] auto_combat_appearance_rates(location place)
+{	return auto_combat_appearance_rates(place, false);
 }
 
 boolean[string] auto_banishesUsedAt(location loc)
@@ -882,6 +734,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[familiar scrapbook]);
 	}
+	if(combat_string == "skill " + $skill[Spring Kick])
+	{
+		return autoEquip($item[spring shoes]);
+	}
 	if(combat_string == ("skill " + $skill[Use the Force]))
 	{
 		return autoEquip($slot[weapon], wrap_item($item[Fourth of May cosplay saber]));
@@ -901,6 +757,10 @@ boolean adjustForBanish(string combat_string)
 		}
 		return false;
 	}
+	if(combat_string == "skill " + $skill[Monkey Slap])
+	{
+		return autoEquip($item[cursed monkey\'s paw]);
+	}
 	return true;
 }
 
@@ -915,6 +775,19 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 	return false;
 }
 
+boolean auto_wantToFreeRun(monster enemy, location loc)
+{
+	if(appearance_rates(loc)[enemy] <= 0)
+	{
+		return false;
+	}
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] monstersToFreeRun = auto_getMonsters("freerun");
+	set_location(locCache);
+	return monstersToFreeRun[enemy];
+}
+
 boolean canFreeRun(monster enemy, location loc)
 {
 	// are there any restrictions on free running?
@@ -924,21 +797,21 @@ boolean canFreeRun(monster enemy, location loc)
 // monsters that we want to run away from before banishing
 string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat)
 {
-	if (isFreeMonster(enemy)) return "";
+	if (isFreeMonster(enemy, loc)) return "";
 
 	// Prefer some specalized free run items before other sources
-	if (!inAftercore())
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
 	{
 		// todo: other ghosts
 		if(isGhost(enemy) && canUse($item[T.U.R.D.S. Key]) && item_amount($item[T.U.R.D.S. Key]) > 0)
 		{
-			return "item " + $item[T.U.R.D.S. Key];
+			return useItem($item[T.U.R.D.S. Key]);
 		}
 		//free runaway against pygmies. accelerates hidden city quest
 		if(canUse($item[short writ of habeas corpus]) && item_amount($item[short writ of habeas corpus]) > 0
 			&& $monsters[Pygmy Orderlies, Pygmy Witch Lawyer, Pygmy Witch Nurse] contains enemy)
 		{
-			return "item " + $item[Short Writ Of Habeas Corpus];
+			return useItem($item[Short Writ Of Habeas Corpus]);
 		}
 	}
 
@@ -947,9 +820,37 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 
 string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 {
-	if (isFreeMonster(enemy)) return "";
+	if (isFreeMonster(enemy, my_location())) return "";
 	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
 	if (pre_banish != "") return pre_banish;
+
+	//Standard free-runs
+	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
+	{
+		if(auto_haveSpringShoes() && auto_is_valid($skill[Spring Away]))
+		{
+			if(!inCombat)
+			{
+				autoEquip($item[spring shoes]);
+				return "skill " + $skill[Spring Away];
+			}
+			else
+			{
+				if(canUse($skill[Spring Away]))
+				{
+					return "skill " + $skill[Spring Away];
+				}
+			}
+		}
+
+		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
+		{
+			if (canUse(it) && item_amount(it) > 0)
+			{
+				return useItem(it);
+			}
+		}
+	}
 
 	if(canChangeToFamiliar($familiar[Frumious Bandersnatch]))
 	{
@@ -1030,13 +931,14 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Peel Out];
 	}
 
-	if (!inAftercore())
+	//Non-standard free-runs
+	if(!inAftercore())
 	{
-		foreach it in $items[giant eraser, green smoke bomb, tattered scrap of paper, GOTO]
+		foreach it in $items[giant eraser] //assuming additional ones will be added, eventually
 		{
 			if (canUse(it) && item_amount(it) > 0)
 			{
-				return "item " + it;
+				return useItem(it);
 			}
 		}
 	}
@@ -1074,7 +976,7 @@ boolean adjustForYellowRay(string combat_string)
 	{
 		auto_configureParka("acid");
 	}
-	if(combat_string == ("skill " + $skill[Unleash the Devil's Kiss]))
+	if(combat_string == ("skill " + $skill[Unleash the Devil\'s Kiss]))
 	{
 		auto_configureRetrocape("heck", "kiss");
 	}
@@ -1162,6 +1064,10 @@ boolean canSniff(monster enemy, location loc)
 boolean adjustForSniffingIfPossible(monster target)
 {
 	skill sniffer = getSniffer(target, false);
+	if(sniffer == $skill[Monkey Point])
+	{
+		return autoEquip($item[cursed monkey\'s paw]);
+	}
 	if(sniffer != $skill[none])
 	{
 		return acquireMP(sniffer.mp_cost());
@@ -1172,20 +1078,6 @@ boolean adjustForSniffingIfPossible(monster target)
 boolean adjustForSniffingIfPossible()
 {
 	return adjustForSniffingIfPossible($monster[none]);
-}
-
-string statCard()
-{
-	switch(my_primestat())
-	{
-	case $stat[Muscle]:
-		return "68";
-	case $stat[Mysticality]:
-		return "70";
-	case $stat[Moxie]:
-		return "69";
-	}
-	return "";
 }
 
 boolean hasTorso()
@@ -1286,37 +1178,6 @@ effect whatStatSmile()
 	return $effect[none];
 }
 
-item whatHiMein()
-{
-	if(my_level() < 8)
-	{
-		return $item[none];
-	}
-	if(my_level() < 9)
-	{
-		return $item[Fettucini Inconnu];
-	}
-
-	if(!in_hardcore() && (my_level() >= 12) && (pulls_remaining() > 0))
-	{
-		switch(my_class())
-		{
-		case $class[Seal Clubber]:
-		case $class[Turtle Tamer]:
-			return $item[Cold Hi Mein];
-		case $class[Sauceror]:
-		case $class[Pastamancer]:
-		case $class[Ed the Undying]:
-			return $item[Spooky Hi Mein];
-		case $class[Disco Bandit]:
-		case $class[Accordion Thief]:
-			return $item[Sleazy Hi Mein];
-		}
-	}
-
-	return $item[crudles];
-}
-
 boolean ovenHandle()
 {
 	if((auto_get_campground() contains $item[Dramatic&trade; range]) && !get_property("auto_haveoven").to_boolean())
@@ -1334,7 +1195,7 @@ boolean ovenHandle()
 
 	if(!get_property("auto_haveoven").to_boolean() && (my_meat() >= (npc_price($item[Dramatic&trade; range]) + 1000)) && isGeneralStoreAvailable())
 	{
-		buyUpTo(1, $item[Dramatic&trade; range]);
+		auto_buyUpTo(1, $item[Dramatic&trade; range]);
 		use(1, $item[Dramatic&trade; range]);
 		set_property("auto_haveoven", true);
 	}
@@ -1388,6 +1249,8 @@ int cloversAvailable(boolean override)
 		{
 			numClovers += 1;
 		}
+		//Get from April band
+		numClovers += auto_AprilSaxLuckyLeft();
 	}
 
 	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
@@ -1421,6 +1284,18 @@ boolean cloverUsageInit(boolean override)
 	if (have_effect($effect[Lucky!]) > 0)
 	{
 		return true;
+	}
+	
+	if (auto_AprilSaxLuckyLeft() > 0)
+	{
+		if (auto_playAprilSax()) {
+			auto_log_info("Clover usage initialized, using Apriling sax.");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after playing the Apriling sax.");
+		}
 	}
 
 	//Use August Scepter skill if we can
@@ -1628,6 +1503,10 @@ boolean isUnclePAvailable()
 	{
 		return false;
 	}
+	if(in_koe())
+	{
+		return false;
+	}
 	string page_text = visit_url("place.php?whichplace=desertbeach");
 	return !page_text.contains_text("You don't know where a desert beach is");
 }
@@ -1810,6 +1689,11 @@ int freeCrafts()
 
 boolean isFreeMonster(monster mon)
 {
+	return isFreeMonster(mon, $location[none]);
+}
+
+boolean isFreeMonster(monster mon, location loc)
+{
 	if ($monsters[Angry Ghost, Annoyed Snake, Government Bureaucrat, Slime Blob, Terrible Mutant] contains mon && get_property("_voteFreeFights").to_int() < 3)
 	{
 		return true;
@@ -1843,6 +1727,17 @@ boolean isFreeMonster(monster mon)
 		return true;
 	}
 
+	if(get_property("breathitinCharges").to_int() > 0 && loc.environment == "outdoor")
+	{
+		return true;
+	}
+
+	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains loc
+		&& have_effect($effect[shadow affinity]) > 0)
+	{
+		return true;
+	}
+
 	if (mon.random_modifiers["optimal"])
 	{
 		return true;
@@ -1856,24 +1751,7 @@ boolean isFreeMonster(monster mon)
 	return false;
 }
 
-boolean declineTrades()
-{
-	int count = 0;
-	string trades = visit_url("makeoffer.php");
-	string digit = "(\\d*)";
-	matcher trade_matcher = create_matcher("makeoffer.php[?]action=decline&whichoffer=" + digit, trades);
-	while(trade_matcher.find())
-	{
-		string temp = visit_url("makeoffer.php?action=decline&whichoffer=" + trade_matcher.group(1), false);
-		count++;
-	}
-	if(count > 0)
-	{
-		auto_log_info("Declined " + count + " trades.", "blue");
-		return true;
-	}
-	return false;
-}
+
 
 boolean auto_deleteMail(kmailObject msg)
 {
@@ -1892,7 +1770,7 @@ boolean auto_deleteMail(kmailObject msg)
 			return true;
 		}
 	}
-	if((msg.fromid == 3038166) && (contains_text(msg.message, "completed your relationship fortune test")) && get_property("auto_hideAdultery").to_boolean())
+	if((msg.fromid == 3690803) && (contains_text(msg.message, "completed your relationship fortune test")) && get_property("auto_hideAdultery").to_boolean())
 	{
 		return true;
 	}
@@ -1986,9 +1864,16 @@ boolean LX_summonMonster()
 	}
 
 	// summon astronomer if only missing star chart for star key
-	if(needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]))
+	// only in Hardcore or if we have no pulls remaining as we can just pull a star chart in Normal
+	if (needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]) && (in_hardcore() || pulls_remaining() < 1))
 	{
 		if(summonMonster($monster[Astronomer])) return true;
+	}
+
+	// summon grops to start copy chain. Goal is to copy into delay zones and get war progress at same time. Bonus if we get smoke bombs
+	if(!summonedMonsterToday($monster[Green Ops Soldier]) && get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe() && auto_backupUsesLeft() > 0)
+	{
+		if(summonMonster($monster[Green Ops Soldier])) return true;
 	}
 
 	// summon additional monsters in heavy rains with rain man when available
@@ -2078,21 +1963,25 @@ boolean summonMonster(monster mon, boolean speculative)
 		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via cargo shorts", "blue");
 		return true;
 	}
-	if(auto_shouldUseWishes())
+	if(speculative && canGenieCombat(mon))
 	{
-		if(speculative && canGenieCombat(mon))
-		{
-			auto_log_debug("Can summon " + mon + " via wishing", "blue");
-			return true;
-		}
-		else if(!speculative && makeGenieCombat(mon))
-		{
-			auto_log_debug("Did summon " + mon + " via wishing", "blue");
-			return true;
-		}
+		auto_log_debug("Can summon " + mon + " via wishing", "blue");
+		return true;
+	}
+	else if(!speculative && makeGenieCombat(mon))
+	{
+		auto_log_debug("Did summon " + mon + " via wishing", "blue");
+		return true;
 	}
 
 	return false;
+}
+
+boolean summonedMonsterToday(monster mon)
+{
+	string copiedMonsters = get_property("auto_copies");
+	string searchString = "(" + my_daycount() + ":" + mon.to_string();
+	return contains_text(copiedMonsters, searchString);
 }
 
 boolean handleCopiedMonster(item itm)
@@ -2321,8 +2210,12 @@ boolean evokeEldritchHorror()
 	return evokeEldritchHorror("");
 }
 
-boolean fightScienceTentacle(string option)
+boolean fightScienceTentacle()
 {
+	if(in_koe())
+	{
+		return false;
+	}
 	if(get_property("_eldritchTentacleFought").to_boolean())
 	{
 		return false;
@@ -2358,15 +2251,8 @@ boolean fightScienceTentacle(string option)
 	string[int] pages;
 	pages[0] = "place.php?whichplace=forestvillage&action=fv_scientist";
 	pages[1] = "choice.php?whichchoice=1201&pwd=&option=1";
-	return autoAdvBypass(0, pages, $location[Noob Cave], option);
-
+	return autoAdvBypass(0, pages, $location[Noob Cave], "");
 }
-
-boolean fightScienceTentacle()
-{
-	return fightScienceTentacle("");
-}
-
 
 boolean handleSealNormal(item it)
 {
@@ -2520,20 +2406,6 @@ boolean use_barrels()
 	return retval;
 }
 
-boolean forceEquip(slot sl, item it)
-{
-	if(!possessEquipment(it))
-	{
-		return false;
-	}
-	if(equipped_item(sl) == it)
-	{
-		return true;
-	}
-	autoEquip(sl, it);
-	return true;
-}
-
 boolean auto_autosell(int quantity, item toSell)
 {
 	if(my_meat() > 100000)
@@ -2577,34 +2449,6 @@ string runChoice(string page_text)
 		page_text = visit_url(url);
 	}
 	return page_text;
-}
-
-boolean set_property_ifempty(string setting, string change)
-{
-	if(get_property(setting) == "")
-	{
-		set_property(setting, change);
-		return true;
-	}
-	return false;
-}
-
-boolean restore_property(string setting, string source)
-{
-	string data = get_property(source);
-	set_property(setting, data);
-	set_property(source, "");
-	return (data != "");
-}
-
-boolean clear_property_if(string setting, string cond)
-{
-	if(get_property(setting) == cond)
-	{
-		set_property(setting, "");
-		return true;
-	}
-	return false;
 }
 
 int doNumberology(string goal)
@@ -2687,11 +2531,21 @@ boolean have_skills(boolean[skill] array)
 }
 
 //From Bale\'s woods.ash relay script.
-void woods_questStart()
+boolean woods_questStart()
 {
+	if(internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0)
+	{
+		// distant woods access is gated behind level 2 quest & whitey's grove quest.
+		// for some reason mafia doesn't track this any other way
+		return false;
+	}
+	if(in_koe()) // no access to woods or forest village in KoE
+	{
+		return false;
+	}
 	if(available_amount($item[Continuum Transfunctioner]) > 0)
 	{
-		return;
+		return false;
 	}
 	visit_url("place.php?whichplace=woods");
 	visit_url("place.php?whichplace=forestvillage&action=fv_mystic");
@@ -2707,15 +2561,7 @@ void woods_questStart()
 	{
 		visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
 	}
-}
-
-int howLongBeforeHoloWristDrop()
-{
-	int drops = get_property("_holoWristDrops").to_int() + 1;
-	int need = (drops * ((drops * 5) + 17)) / 2;
-	drops = drops - 1;
-	need = need - (drops * ((drops * 5) + 17)) / 2;
-	return need - get_property("_holoWristProgress").to_int();
+	return true;
 }
 
 boolean hasShieldEquipped()
@@ -2931,6 +2777,8 @@ boolean[effect] ATSongList()
 		Inigo\'s Incantation of Inspiration,
 		The Ballad of Richie Thingfinder,
 		Chorale of Companionship,
+		// under normal circumstances we should never get this, but if we do we want to keep it
+		Dirge of Dreadfulness (Remastered),
 		Ode to Booze,
 		Ur-Kel\'s Aria of Annoyance,
 		Carlweather\'s Cantata of Confrontation,
@@ -2944,7 +2792,6 @@ boolean[effect] ATSongList()
 		Prelude of Precision,
 		Elron\'s Explosive Etude,
 		Benetton\'s Medley of Diversity,
-		Dirge of Dreadfulness (Remastered),
 		Dirge of Dreadfulness,
 		Stevedave\'s Shanty of Superiority,
 		Brawnee\'s Anthem of Absorption,
@@ -3018,26 +2865,6 @@ void shrugAT(effect anticipated)
 		}
 	}
 	auto_log_info("I think we're good to go to apply " + anticipated, "blue");
-}
-
-boolean acquireTransfunctioner()
-{
-	if(available_amount($item[Continuum Transfunctioner]) > 0)
-	{
-		return false;
-	}
-	if(!zone_isAvailable($location[The Spooky Forest]))
-	{
-		return false;
-	}
-	//From Bale\'s Woods.ash
-	visit_url("place.php?whichplace=forestvillage&action=fv_mystic");
-	visit_url("choice.php?pwd="+my_hash()+"&whichchoice=664&option=1&choiceform1=Sure%2C+old+man.++Tell+me+all+about+it.");
-	visit_url("choice.php?pwd="+my_hash()+"&whichchoice=664&option=1&choiceform1=Against+my+better+judgment%2C+yes.");
-	visit_url("choice.php?pwd="+my_hash()+"&whichchoice=664&option=1&choiceform1=Er,+sure,+I+guess+so...");
-	visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest");
-
-	return true;
 }
 
 int [item] auto_get_campground()
@@ -3151,93 +2978,6 @@ boolean haveCampgroundMaid()
 	return false;
 }
 
-location solveDelayZone()
-{
-	int[location] delayableZones = zone_delayable();
-	int amt = count(delayableZones);
-	location burnZone = $location[none];
-	if (count(delayableZones) != 0) {
-		// find the delayable zone with the lowest delay left.
-		foreach loc, delay in delayableZones {
-			if (burnZone == $location[none] || delay < delayableZones[burnZone]) {
-				burnZone = loc;
-			}
-			if (loc == $location[The Spooky Forest] && delay == delayableZones[burnZone])
-			{
-				// prioritise the Spooky Forest when its delay remaining equals the lowest delay zone
-				burnZone = loc;
-			}
-		}
-	}
-
-	if(burnZone != $location[none])
-	{
-		return burnZone;
-	}
-
-	// These are locations that aren't 1:1 turn savings, but can still be useful
-
-	// Shorten the time before finding Gnasir, so that we can start acquiring desert pages sooner
-	if(zone_isAvailable($location[The Arid\, Extra-Dry Desert]) && $location[The Arid\, Extra-Dry Desert].turns_spent >= 1 && $location[The Arid\, Extra-Dry Desert].turns_spent < 10)
-	{
-		burnZone = $location[The Arid\, Extra-Dry Desert];
-	}
-
-	// Shorten the time until the first "burn a food or drink" noncombat
-	// There's some opportunity to be clever here, but this is probably good enough.
-	// If we didn't check turns_spent we'd have to be careful to equip the war outfit,
-	// just in case the noncombat shows up.
-	if(in_koe() && $location[The Exploaded Battlefield].turns_spent < 5)
-	{
-		burnZone = $location[The Exploaded Battlefield];
-	}
-
-	if(in_lowkeysummer())
-	{
-		burnZone = lowkey_nextAvailableKeyDelayLocation();
-	}
-
-	return burnZone;
-}
-
-boolean allowSoftblockDelay()
-{
-	return get_property("auto_delayLastLevel").to_int() < my_level();
-}
-
-boolean setSoftblockDelay()
-{
-	auto_log_warning("I was trying to avoid delay zones, but I've run out of stuff to do. Releasing softblock.", "red");
-	set_property("auto_delayLastLevel", my_level());
-	return true;
-}
-
-boolean canBurnDelay(location loc)
-{
-	// TODO: Add Digitize (Portscan?) & LOV Enamorang
-	if (!zone_delay(loc)._boolean || !allowSoftblockDelay())
-	{
-		return false;
-	}
-	if (auto_haveBackupCamera() && auto_backupUsesLeft() > 0)
-	{
-		return true;
-	}
-	else if (auto_haveKramcoSausageOMatic() && auto_sausageFightsToday() < 9)
-	{
-		return true;
-	}
-	else if (auto_haveVotingBooth() && get_property("_voteFreeFights").to_int() < 3)
-	{
-		return true;
-	}
-	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera()))
-	{
-		return true;
-	}
-	return false;
-}
-
 boolean auto_is_valid(item it)
 {
 	if(!glover_usable(it))
@@ -3255,10 +2995,6 @@ boolean auto_is_valid(item it)
 	if(in_bhy())
 	{
 		return bhy_is_item_valid(it);
-	}
-	if(my_class() == $class[Pig Skinner]) //want to ignore Red Rocket in PS because Free-For-All is more important
-	{
-		if(it == $item[Red Rocket]) return false;
 	}
 	
 	return is_unrestricted(it);
@@ -3278,7 +3014,7 @@ boolean auto_is_valid(skill sk)
 	// Hack for Legacy of Loathing as is_unrestricted returns false for Source Terminal skills
 	if (in_lol() && $skills[Extract, Turbo, Digitize, Duplicate, Portscan, Compress] contains sk) return true;
 	//do not check check for B in bees hate you path. it only restricts items and not skills.
-	return (glover_usable(sk.to_string()) || sk.passive) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
+	return (glover_usable(sk.to_string()) || (sk.passive && sk != $skill[disco nap])) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
 }
 
 boolean auto_is_valid(effect eff)
@@ -3559,6 +3295,8 @@ boolean auto_check_conditions(string conds)
 					return true;
 				if(get_property("_gallapagosMonster").to_monster() == check_sniffed)
 					return true;
+				if(get_property("monkeyPointMonster").to_monster() == check_sniffed)
+					return true;
 				if(get_property("_latteMonster").to_monster() == check_sniffed)
 					return true;
 				if(get_property("motifMonster").to_monster() == check_sniffed)
@@ -3651,7 +3389,7 @@ boolean auto_wantToSniff(monster enemy, location loc)
 	location locCache = my_location();
 	set_location(loc);
 	boolean [monster] toSniff = auto_getMonsters("sniff");
-	if(toSniff[enemy] && appearance_rates(loc)[enemy] < 100)
+	if(toSniff[enemy] && auto_combat_appearance_rates(loc)[enemy] < 100)
 	{
 		set_location(locCache);
 		return true;
@@ -4333,6 +4071,17 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "cincho");
 		return true;
 	}
+	else if(auto_AprilTubaForcesLeft()>0)
+	{
+		if(speculative) return true;
+		auto_playAprilTuba();
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [Apriling tuba] but was unable to.");
+		}
+		set_property("auto_forceNonCombatSource", "Apriling tuba");
+		return true;
+	}
 	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso())
 	{
 		if(speculative) return true;
@@ -4406,37 +4155,6 @@ boolean auto_forceNextNoncombat(location loc)
 boolean auto_haveQueuedForcedNonCombat()
 {
 	return get_property("noncombatForcerActive").to_boolean();
-}
-
-boolean is_superlikely(string encounterName)
-{
-	static boolean[string] __SUPERLIKELIES = $strings[
-		Code Red,
-		Screwdriver\, wider than a mile.,
-		The Manor in Which You're Accustomed
-		That's your cue
-		Polo Tombstone,
-		The Oracle Will See You Now,
-		A Man in Black,
-		Fitting In,
-		You\, M.D.,
-		We'll All Be Flat,
-		Rod Nevada\, Vendor,
-		Last Egg Gets Al,
-		Do Geese See God?,
-		Drawn Onward,
-		Mr. Alarm\, I Presarm,
-		Mega Gem,
-		Dr. Awkward,
-		Whee!,
-		Adventurer\, $1.99,
-		They Tried and Pailed,
-		Brushed Off...,
-		Shoe of Many Colors,
-		Highway to Hey Deze,
-	];
-	return __SUPERLIKELIES contains encounterName;
-
 }
 
 // Function to Predict how many turns we will get from an AT buff
@@ -4720,7 +4438,7 @@ boolean auto_wishForEffect(effect wish)
 		if (auto_makeMonkeyPawWish(wish)) { return true; }
 	}
 	// If we're allowed to use the genie bottle, do that.
-	if(auto_shouldUseWishes() && auto_haveGenieBottleOrPocketWishes())
+	if (auto_haveGenieBottleOrPocketWishes())
 	{
 		if(makeGenieWish(wish)) { return true; }
 	}

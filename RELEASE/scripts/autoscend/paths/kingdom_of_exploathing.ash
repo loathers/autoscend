@@ -49,7 +49,7 @@ boolean LX_koeInvaderHandler()
 	{
 		return false;
 	}
-	if (internalQuestStatus("questL13Final") < 3 || get_property("spaceInvaderDefeated").to_boolean())
+	if (get_property("spaceInvaderDefeated").to_boolean())
 	{
 		// invader drops 10 white pixels so fight it before we do the hedge maze
 		// as we need elemental resists for both and we may be able to get enough
@@ -70,6 +70,11 @@ boolean LX_koeInvaderHandler()
 	buffMaintain($effect[Elemental Saucesphere], 10, 1, 1);
 	buffMaintain($effect[Scariersauce], 10, 1, 1);
 	buffMaintain($effect[Scarysauce], 10, 1, 1);
+	buffMaintain($effect[Oiled-Up]);
+	
+	buffMaintain($effect[Minor Invulnerability]);
+	buffMaintain($effect[Feeling Peaceful]);
+	buffMaintain($effect[Covered in the Rainbow]);
 
 	resetMaximize();
 
@@ -91,27 +96,86 @@ boolean LX_koeInvaderHandler()
 	int turns = ceil(0.95 / damagePerRound);
 
 	int damageCap = 100 * my_daycount();
-
+	
+	// It's easiest to kill the invader in two hits with the June cleaver and Lunging Thrust Smack
+	if(have_skill($skill[Lunging Thrust-Smack]) && auto_is_valid($skill[Lunging Thrust-Smack]) &&
+	   auto_canUseJuneCleaver())
+	{
+		// To kill in 3 rounds, need 19 of each element, or 10 plus bend hell. Check we have it.
+		boolean have_19_each = true;
+		boolean have_10_each = true;
+		foreach el in "Cold;Hot;Sleaze;Spooky;Stench".split_string(";")
+		{
+			int damage_bonus = to_int(get_property("_juneCleaver"+el));
+			if (damage_bonus < 19) { have_19_each = false; }
+			if (damage_bonus < 10) { have_10_each = false; }
+		}
+		// Cast bend hell if needed
+		if (have_10_each)
+		{
+			if (have_skill($skill[Bend Hell]) && auto_is_valid($skill[Bend Hell]) &&
+			   !have_19_each)
+			{
+				buffMaintain($effect[Bendin\' Hell]);
+			}
+			if (have_effect($effect[Bendin\' Hell])>0)
+			{
+				have_19_each = true;
+			}
+		}
+		
+		// Actually go in for the kill
+		if (have_19_each)
+		{
+			acquireMP(24, 0);
+			auto_log_info("Attacking the Invader, using June Cleaver and LTS.", "blue");
+			addToMaximize("200 all res, +equip june cleaver");
+			boolean ret = autoAdv(1, $location[The Invader]);
+			if(have_effect($effect[Beaten Up]) > 0)
+			{
+				abort("We died to the invader. Do it manually please?");
+			}
+			return ret;
+	  }
+	}
+	// End of the June cleaver logic. Try a spell instead?
+	
 	// How many damage sources do we need?
 	if(have_skill($skill[Weapon of the Pastalord]) && auto_is_valid($skill[Weapon of the Pastalord]))
 	{
 		int sources = 2;
-		if(acquireOrPull($item[meteorb])) sources++;
+		item hot_source = $item[none];
+		if(item_amount($item[Big hot pepper]) > 0 && auto_is_valid($item[Big hot pepper]))
+		{
+			hot_source = $item[Big hot pepper];
+			sources++;
+		}
+		else if(acquireOrPull($item[meteorb]))
+		{
+			hot_source = $item[meteorb];
+			sources++;
+		}
+		
 		if(sources * turns * damageCap >= 1000)
 		{
 			foreach el in $elements[cold, hot, sleaze, spooky, stench]
 			{
 				auto_beachCombHead(el);
 			}
-			// Meteorb is going to add +hot, so remove that
+			// Meteorb/pepper is going to add +hot, so remove that
 			setFlavour($element[cold]);
 			buffMaintain($effect[Carol of the Hells], 50, 1, 1);
 			buffMaintain($effect[Song of Sauce], 150, 1, 1);
 			buffMaintain($effect[Glittering Eyelashes]);
 			acquireMP(100, 0);
-
+			
+			auto_log_info("Attacking the Invader, using Weapon of the Pastalord.", "blue");
 			// Use maximizer now that we are for sure fighting the Invader
 			addToMaximize("200 all res");
+			if (hot_source != $item[none])
+			{
+				addToMaximize("+equip "+to_string(hot_source));
+			}
 
 			boolean ret = autoAdv(1, $location[The Invader]);
 			if(have_effect($effect[Beaten Up]) > 0)
@@ -169,7 +233,7 @@ boolean L12_koe_clearBattlefield()
 	{
 		return false;
 	}
-	if(!haveWarOutfit())
+	if(!haveWarOutfit(true))
 	{
 		return false;
 	}
@@ -306,4 +370,11 @@ boolean L13_koe_towerNSNagamar()
 	}
 	abort("I failed to acquire [Wand of Nagamar]");
 	return false;	//must have return value even after an abort
+}
+
+boolean koe_NeedWhitePixels()
+{
+	if(!needDigitalKey()) { return false; }
+	int pixels_needed = to_boolean(get_property("spaceInvaderDefeated")) ? 30 : 20;
+	return item_amount($item[white pixel])<pixels_needed;
 }

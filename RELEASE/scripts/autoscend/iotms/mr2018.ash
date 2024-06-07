@@ -385,7 +385,12 @@ boolean songboomSetting(int option)
 
 	int boomsLeft = 0;
 	string page = visit_url("inv_use.php?pwd=&which=3&whichitem=9919");
-	matcher boomMatcher = create_matcher("You grab your boombox and select the soundtrack for your life,  which you can do <b>(?:-?)(\\d+)", page);
+
+	// Find the number of songs left by matching the number in the "X more times" sentence. Overly flexible to prevent April Fools word salad breakage.
+	// \\b(\\d+)\\b matches a whole number (\\d+) that's surrounded by word boundaries (\\b), e.g. a space
+	// [^.]* matches any characters except a period (.), any number of times (*), capturing everything up to the end of the sentence
+	// \\. matches the literal ending period to only check the top boombox sentence
+	matcher boomMatcher = create_matcher("\\b(\\d+)\\b[^.]*\\.", page);
 	if(boomMatcher.find())
 	{
 		boomsLeft = to_int(boomMatcher.group(1));
@@ -771,11 +776,6 @@ boolean neverendingPartyAvailable()
 	if (get_property("_questPartyFair") == "finished")
 	{
 		// Can't adventure if the quest is complete for the day.
-		return false;
-	}
-	if (get_property("auto_skipNEPOverride").to_boolean())
-	{
-		// if the user says don't use it, don't use it.
 		return false;
 	}
 	return true;
@@ -1185,7 +1185,7 @@ boolean auto_voteSetup(int candidate, int first, int second)
 		return false;
 	}
 
-	if(git_exists("midgleyc-Voting-Booth"))
+	if(git_exists("Ezandora-Voting-Booth"))
 	{
 		cli_execute("VotingBooth.ash");
 		return true;
@@ -1218,60 +1218,53 @@ boolean auto_voteMonster()
 
 boolean auto_voteMonster(boolean freeMon)
 {
-	return auto_voteMonster(freeMon, $location[none], "");
+	return auto_voteMonster(freeMon, $location[none]);
 }
 
 boolean auto_voteMonster(boolean freeMon, location loc)
 {
-	return auto_voteMonster(freeMon, loc, "");
-}
-
-boolean auto_voteMonster(boolean freeMon, location loc, string option)
-{
-	if(!auto_haveVotingBooth())
+	if (!auto_haveVotingBooth())
 	{
 		return false;
 	}
-	if(get_property("_voteModifier") == "")
+	if (get_property("_voteModifier") == "")
 	{
 		return false;
 	}
 
 	//Some things override this, like a semi-rare?
 
-	if(get_property("lastVoteMonsterTurn").to_int() >= total_turns_played())
+	if (get_property("lastVoteMonsterTurn").to_int() >= total_turns_played())
 	{
 		return false;
 	}
-	if((total_turns_played() % 11) != 1)
+	if ((total_turns_played() % 11) != 1)
 	{
 		return false;
 	}
 	// is_unrestricted instead of auto_is_valid as the monsters can be encountered in g-lover
-	if(!possessEquipment($item[&quot;I voted!&quot; sticker]) || !is_unrestricted($item[&quot;I voted!&quot; sticker]))
+	if (!possessEquipment($item[&quot;I voted!&quot; sticker]) || !is_unrestricted($item[&quot;I voted!&quot; sticker]))
 	{
 		return false;
 	}
 
-	if(freeMon && (get_property("_voteFreeFights").to_int() >= 3))
+	if (freeMon && (get_property("_voteFreeFights").to_int() >= 3))
 	{
 		return false;
 	}
 
-	if(loc == $location[none])
+	if (loc == $location[none])
 	{
 		return true;
 	}
 
-	if(!have_equipped($item[&quot;I voted!&quot; sticker]))
+	if (autoEquip($slot[acc3], $item[&quot;I voted!&quot; sticker]))
 	{
-		if(item_amount($item[&quot;I voted!&quot; sticker]) == 0)
-		{
-			return false;
-		}
-		autoEquip($slot[acc3], $item[&quot;I voted!&quot; sticker]);
+		set_property("auto_nextEncounter", get_property("_voteMonster"));
+		return autoAdv(loc);
 	}
-	return autoAdv(1, loc, option);
+	set_property("auto_nextEncounter","");
+	return false;
 }
 
 boolean fightClubNap()

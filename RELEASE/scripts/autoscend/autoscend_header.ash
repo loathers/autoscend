@@ -62,7 +62,7 @@ boolean drinkSpeakeasyDrink(item drink);
 boolean drinkSpeakeasyDrink(string drink);
 boolean zataraAvailable();
 boolean zataraSeaside(string who);
-boolean zataraClanmate(string who);
+boolean zataraClanmate();
 boolean eatFancyDog(string dog);
 boolean auto_floundryUse();
 boolean auto_floundryAction();
@@ -71,14 +71,8 @@ boolean auto_floundryAction(item it);
 ########################################################################################################
 //Defined in autoscend/iotms/auto_elementalPlanes.ash
 item[element] getCharterIndexable();
-boolean elementalPlanes_initializeSettings();
 boolean elementalPlanes_access(element ele);
 boolean elementalPlanes_takeJob(element ele);
-boolean dinseylandfill_garbageMoney();
-boolean getDiscoStyle(int choice);
-boolean getDiscoStyle();
-boolean volcano_lavaDogs();
-boolean volcano_bunkerJob();
 
 ########################################################################################################
 //Defined in autoscend/iotms/auto_eudora.ash
@@ -148,7 +142,6 @@ boolean deck_cheat(string cheat);
 boolean deck_useScheme(string action);
 boolean adjustEdHat(string goal);
 boolean resolveSixthDMT();
-boolean LX_dinseylandfillFunbucks();
 void doghouseChoiceHandler(int choice);
 
 ########################################################################################################
@@ -235,7 +228,6 @@ void horseCrazy();
 void horsePale();
 boolean horsePreAdventure();
 boolean auto_haveGenieBottleOrPocketWishes();
-boolean auto_shouldUseWishes();
 int auto_wishesAvailable();
 boolean makeGenieWish(string wish);
 boolean makeGenieWish(effect eff);
@@ -296,7 +288,6 @@ boolean auto_voteSetup(int candidate, int first, int second);
 boolean auto_voteMonster();
 boolean auto_voteMonster(boolean freeMon);
 boolean auto_voteMonster(boolean freeMon, location loc);
-boolean auto_voteMonster(boolean freeMon, location loc, string option);
 boolean fightClubNap();
 boolean fightClubSpa();
 boolean fightClubSpa(effect eff);
@@ -435,6 +426,7 @@ boolean auto_haveBackupCamera();
 void auto_enableBackupCameraReverser();
 int auto_backupUsesLeft();
 boolean auto_backupTarget();
+boolean auto_backupToYourLastEnemy(location loc);
 boolean auto_harvestBatteries();
 int batteryPoints(item battery);
 int totalBatteryPoints();
@@ -450,12 +442,14 @@ string auto_FireExtinguisherCombatString(location place);
 boolean auto_canExtinguisherBeRefilled();
 boolean auto_haveColdMedCabinet();
 int auto_CMCconsultsLeft();
-boolean auto_shouldUseCMC();
 boolean auto_CMCconsultAvailable();
 void auto_CMCconsult();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2022.ash
+boolean auto_haveCursedMagnifyingGlass();
+boolean auto_voidMonster();
+boolean auto_voidMonster(location loc);
 boolean auto_haveCosmicBowlingBall();
 string auto_bowlingBallCombatString(location place, boolean speculation);
 boolean auto_haveCombatLoversLocket();
@@ -467,7 +461,9 @@ boolean auto_haveGreyGoose();
 int gooseExpectedDrones();
 boolean dronesOut();
 void prioritizeGoose();
-boolean canUseCleaver();
+boolean auto_haveMaydayContract();
+boolean auto_canUseJuneCleaver();
+boolean auto_juneCleaverAdventure();
 void juneCleaverChoiceHandler(int choice);
 boolean canUseSweatpants();
 int getSweat();
@@ -503,7 +499,13 @@ void pickRocks();
 boolean wantToThrowGravel(location loc, monster enemy);
 boolean auto_haveSITCourse();
 void auto_SITCourse();
+location auto_availableBrickRift();
+int auto_neededShadowBricks();
+boolean auto_havePayPhone();
+boolean auto_getPhoneQuest();
+boolean auto_doPhoneQuest();
 boolean auto_haveMonkeyPaw();
+int auto_monkeyPawWishesLeft();
 boolean auto_makeMonkeyPawWish(effect wish);
 boolean auto_makeMonkeyPawWish(item wish);
 boolean auto_makeMonkeyPawWish(string wish);
@@ -522,6 +524,38 @@ void auto_useBlackMonolith();
 boolean auto_haveAugustScepter();
 void auto_scepterSkills();
 void auto_lostStomach();
+boolean auto_haveBofa();
+boolean auto_canHabitat();
+boolean auto_habitatTarget(monster target);
+int auto_habitatFightsLeft();
+monster auto_habitatMonster();
+boolean auto_canCircadianRhythm();
+boolean auto_circadianRhythmTarget(monster target);
+boolean auto_haveJillOfAllTrades();
+void auto_handleJillOfAllTrades();
+boolean auto_haveBurningLeaves();
+boolean auto_burnLeaves();
+boolean auto_haveCCSC();
+boolean auto_handleCCSC();
+void auto_useWardrobe();
+
+########################################################################################################
+//Defined in autoscend/iotms/mr2024.ash
+boolean auto_haveSpringShoes();
+boolean auto_haveAprilingBandHelmet();
+boolean auto_getAprilingBandItems();
+boolean auto_playAprilSax();
+boolean auto_playAprilTuba();
+boolean auto_setAprilBandNonCombat();
+boolean auto_setAprilBandCombat();
+boolean auto_setAprilBandDrops();
+int auto_AprilSaxLuckyLeft();
+int auto_AprilTubaForcesLeft();
+boolean auto_haveDarts();
+void dartChoiceHandler(int choice, string[int] options);
+int dartBullseyeChance();
+int dartELRcd();
+skill dartSkill();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -634,7 +668,6 @@ boolean in_community();
 ########################################################################################################
 //Defined in autoscend/paths/dark_gyffte.ash
 boolean in_darkGyffte();
-void bat_startAscension();
 void bat_initializeSettings();
 boolean bat_wantHowl(location loc);
 boolean bat_formNone();
@@ -704,8 +737,6 @@ boolean LM_gnoob();
 ########################################################################################################
 //Defined in autoscend/paths/grey_goo.ash
 boolean in_ggoo();
-void grey_goo_initializeSettings();
-void grey_goo_initializeDay(int day);
 boolean LA_grey_goo_tasks();
 
 ########################################################################################################
@@ -724,6 +755,7 @@ boolean in_koe();
 boolean koe_initializeSettings();
 int koe_rmi_count();
 boolean koe_acquire_rmi();
+boolean koe_NeedWhitePixels();
 boolean LX_koeInvaderHandler();
 item koe_L12FoodSelect();
 void koe_RationingOutDestruction();
@@ -758,7 +790,6 @@ item auto_ItemToReplica(item it);
 //Defined in autoscend/paths/license_to_adventure.ash
 boolean in_lta();
 void bond_initializeSettings();
-boolean bond_initializeDay(int day);
 boolean bond_buySkills();
 boolean LM_bond();
 item[int] bondDrinks();
@@ -1010,6 +1041,7 @@ boolean L9_leafletQuest();
 void L9_chasmMaximizeForNoncombat();
 int fastenerCount();
 int lumberCount();
+boolean finishBuildingSmutOrcBridge();
 void prepareForSmutOrcs();
 boolean L9_chasmBuild();
 boolean L9_aBooPeak();
@@ -1059,6 +1091,7 @@ boolean L11_forgedDocuments();
 boolean L11_mcmuffinDiary();
 void auto_visit_gnasir();
 boolean L11_getUVCompass();
+boolean L11_hasUltrahydrated();
 boolean L11_aridDesert();
 boolean L11_unlockHiddenCity();
 void hiddenTempleChoiceHandler(int choice, string page);
@@ -1150,6 +1183,7 @@ boolean L13_towerAscent();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_any.ash
+void LX_handleIntroAdventures();
 boolean LX_bitchinMeatcar_condition();
 boolean LX_bitchinMeatcar();
 boolean LX_unlockDesert();
@@ -1172,7 +1206,6 @@ boolean LX_dronesOut();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash
-boolean LX_artistQuest();
 boolean LX_unlockThinknerdWarehouse(boolean spend_resources);
 boolean LX_melvignShirt();
 boolean LX_steelOrgan_condition_slow();
@@ -1180,14 +1213,12 @@ boolean LX_steelOrgan();
 boolean LX_guildUnlock();
 boolean startArmorySubQuest();
 boolean finishArmorySideQuest();
-boolean LX_armorySideQuest();
 void considerGalaktikSubQuest();
 boolean startGalaktikSubQuest();
 boolean finishGalaktikSubQuest();
 boolean LX_galaktikSubQuest();
 boolean startMeatsmithSubQuest();
 boolean finishMeatsmithSubQuest();
-boolean LX_meatsmithSubQuest();
 boolean LX_doingPirates();
 boolean LX_pirateOutfit();
 void piratesCoveChoiceHandler(int choice);
@@ -1220,9 +1251,7 @@ boolean pulverizeThing(item it);
 boolean buyableMaintain(item toMaintain, int howMany);
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin);
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);
-boolean buy_item(item it, int quantity, int maxprice);
-boolean buyUpTo(int num, item it);
-boolean buyUpTo(int num, item it, int maxprice);
+boolean auto_buyUpTo(int num, item it);
 float npcStoreDiscountMulti();
 boolean acquireGumItem(item it);
 boolean acquireTotem();
@@ -1313,19 +1342,6 @@ boolean stillReachable();
 boolean distill(item target);
 boolean prepare_food_xp_multi();
 void consumeStuff();
-
-########################################################################################################
-//Defined in autoscend/auto_settings.ash
-boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);
-void cleanup_property(string target);
-void auto_rename_property(string oldprop, string newprop);
-void boolFix(string p);
-void auto_settingsUpgrade();
-void auto_settingsFix();
-void auto_settingsDelete();
-void defaultConfig(string prop, string val);
-void auto_settingsDefaults();
-void auto_settings();
 
 ########################################################################################################
 //Defined in autoscend/auto_craft.ash
@@ -1465,6 +1481,13 @@ int[int] intList();
 item[int] itemList();
 
 ########################################################################################################
+//Defined in autoscend/autoscend_migration.ash
+string autoscend_current_version();
+string autoscend_previous_version();
+boolean autoscend_needs_update();
+boolean autoscend_migrate();
+
+########################################################################################################
 //Defined in autoscend/auto_monsterparts.ash
 boolean hasArm(monster enemy);
 boolean hasHead(monster enemy);
@@ -1557,14 +1580,46 @@ boolean haveAnyIotmAlternativeRestSiteAvailable();
 boolean doFreeRest();
 boolean haveFreeRestAvailable();
 int freeRestsRemaining();
+int auto_potentialMaxFreeRests();
 boolean uneffect(effect toRemove);
 
 ########################################################################################################
-//Defined in autoscend/autoscend_migration.ash
-string autoscend_current_version();
-string autoscend_previous_version();
-boolean autoscend_needs_update();
-boolean autoscend_migrate();
+//Defined in autoscend/auto_routing.ash
+location solveDelayZone(boolean skipOutdoorZones);
+location solveDelayZone();
+boolean setSoftblockDelay();
+boolean allowSoftblockDelay();
+boolean setSoftblockDelay();
+boolean canBurnDelay(location loc);
+boolean allowSoftblockUndergroundAdvs();
+boolean setSoftblockUndergroundAdvs();
+boolean auto_reserveUndergroundAdventures();
+boolean LX_goingUnderground();
+boolean allowSoftblockOutdoorAdvs();
+boolean setSoftblockOutdoorAdvs();
+boolean auto_reserveOutdoorAdventures();
+boolean LX_useBreathitinCharges();
+
+########################################################################################################
+//Defined in autoscend/auto_settings.ash
+boolean trackingSplitterFixer(string oldSetting, int day, string newSetting);
+void cleanup_property(string target);
+void auto_rename_property(string oldprop, string newprop);
+void boolFix(string p);
+void auto_settingsUpgrade();
+void auto_settingsFix();
+void auto_settingsDelete();
+void defaultConfig(string prop, string val);
+void auto_settingsDefaults();
+void auto_settings();
+
+########################################################################################################
+//Defined in autoscend/auto_sim.ash
+void printSim();
+void PrintSimRequired();
+void printSimSuggested();
+void printSimMarginal();
+void formattedSimPrint(boolean have, string name, string description);
 
 ########################################################################################################
 //Defined in autoscend/auto_zlib.ash
@@ -1612,29 +1667,26 @@ boolean organsFull();
 boolean backupSetting(string setting, string newValue);
 boolean restoreAllSettings();
 boolean restoreSetting(string setting);
-location provideAdvPHPZone();
 boolean loopHandler(string turnSetting, string counterSetting, string abortMessage, int threshold);
 boolean loopHandler(string turnSetting, string counterSetting, int threshold);
 boolean loopHandlerDelay(string counterSetting);
 boolean loopHandlerDelay(string counterSetting, int threshold);
 boolean loopHandlerDelayAll();
 string reverse(string s);
-boolean setAdvPHPFlag();
-boolean isOverdueArrow();
-boolean isExpectingArrow();
 int[monster] banishedMonsters();
 boolean isBanished(monster enemy);
-boolean is_avatar_potion(item it);
 int autoCraft(string mode, int count, item item1, item item2);
 int internalQuestStatus(string prop);
-int estimatedTurnsLeft();
 boolean canYellowRay(monster target);
 boolean canYellowRay();
+float[monster] auto_combat_appearance_rates(location place, boolean queue);
+float[monster] auto_combat_appearance_rates(location place);
 boolean[string] auto_banishesUsedAt(location loc);
 boolean auto_wantToBanish(monster enemy, location loc);
 boolean canBanish(monster enemy, location loc);
 boolean adjustForBanish(string combat_string);
 boolean adjustForBanishIfPossible(monster enemy, location loc);
+boolean auto_wantToFreeRun(monster enemy, location loc);
 boolean canFreeRun(monster enemy, location loc);
 string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat);
 string freeRunCombatString(monster enemy, location loc, boolean inCombat);
@@ -1650,7 +1702,6 @@ boolean adjustForReplaceIfPossible();
 boolean canSniff(monster enemy, location loc);
 boolean adjustForSniffingIfPossible(monster target);
 boolean adjustForSniffingIfPossible();
-string statCard();
 boolean hasTorso();
 boolean isGuildClass();
 float elemental_resist_value(int resistance);
@@ -1658,7 +1709,6 @@ int elemental_resist(element goal);
 skill preferredLibram();
 boolean lastAdventureSpecialNC();
 effect whatStatSmile();
-item whatHiMein();
 boolean ovenHandle();
 boolean isGhost(monster mon);
 boolean isProtonGhost(monster mon);
@@ -1686,12 +1736,13 @@ float combatItemDamageMultiplier();
 float MLDamageToMonsterMultiplier();
 int freeCrafts();
 boolean isFreeMonster(monster mon);
-boolean declineTrades();
+boolean isFreeMonster(monster mon, location loc);
 boolean auto_deleteMail(kmailObject msg);
 boolean LX_summonMonster();
 boolean canSummonMonster(monster mon);
 boolean summonMonster(monster mon);
 boolean summonMonster(monster mon, boolean speculative);
+boolean summonedMonsterToday(monster mon);
 boolean handleCopiedMonster(item itm);
 boolean handleCopiedMonster(item itm, string option);
 int maxSealSummons();
@@ -1703,7 +1754,6 @@ boolean auto_change_mcd(int mcd);
 boolean auto_change_mcd(int mcd, boolean immediately);
 boolean evokeEldritchHorror(string option);
 boolean evokeEldritchHorror();
-boolean fightScienceTentacle(string option);
 boolean fightScienceTentacle();
 boolean handleSealNormal(item it);
 boolean handleSealNormal(item it, string option);
@@ -1713,33 +1763,22 @@ boolean handleSealElement(element flavor);
 boolean handleSealElement(element flavor, string option);
 boolean handleBarrelFullOfBarrels(boolean daily);
 boolean use_barrels();
-boolean forceEquip(slot sl, item it);
 boolean auto_autosell(int quantity, item toSell);
 string runChoice(string page_text);
-boolean set_property_ifempty(string setting, string change);
-boolean restore_property(string setting, string source);
-boolean clear_property_if(string setting, string cond);
 int doNumberology(string goal);
 int doNumberology(string goal, string option);
 int doNumberology(string goal, boolean doIt);
 int doNumberology(string goal, boolean doIt, string option);
 boolean auto_have_skill(skill sk);
 boolean have_skills(boolean[skill] array);
-void woods_questStart();
-int howLongBeforeHoloWristDrop();
+boolean woods_questStart();
 boolean hasShieldEquipped();
 boolean careAboutDrops(monster mon);
 float effectiveDropChance(item it, float baseDropRate);
 boolean[effect] ATSongList();
 void shrugAT();
 void shrugAT(effect anticipated);
-boolean acquireTransfunctioner();
 int [item] auto_get_campground();
-location solveDelayZone();
-boolean setSoftblockDelay();
-boolean allowSoftblockDelay();
-boolean setSoftblockDelay();
-boolean canBurnDelay(location loc);
 boolean auto_is_valid(item it);
 boolean auto_is_valid(familiar fam);
 boolean auto_is_valid(skill sk);
@@ -1779,7 +1818,6 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML);
 boolean auto_canForceNextNoncombat();
 boolean auto_forceNextNoncombat();
 boolean auto_haveQueuedForcedNonCombat();
-boolean is_superlikely(string encounterName);
 int auto_predictAccordionTurns();
 boolean hasTTBlessing();
 void effectAblativeArmor(boolean passive_dmg_allowed);

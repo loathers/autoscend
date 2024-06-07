@@ -21,7 +21,7 @@ void bedtime_still()
 		//tonic water is an excellent MP restorer and also can be used to craft some drinks.
 		if(target == $item[none] && my_meat() > meatReserve() + 100 && isGeneralStoreAvailable())
 		{
-			if(buyUpTo(1, $item[soda water]))
+			if(auto_buyUpTo(1, $item[soda water]))
 			{
 				target = $item[tonic water];
 			}
@@ -619,7 +619,8 @@ boolean doBedtime()
 
 	while(LX_freeCombats());
 
-	if((my_class() == $class[Seal Clubber]) && guild_store_available())
+	// although seals can be fought drunk, it complicates code without a meaningful benefit
+	if((my_class() == $class[Seal Clubber]) && guild_store_available() && my_inebriety() <= inebriety_limit())
 	{
 		handleFamiliar("stat");
 		int oldSeals = get_property("_sealsSummoned").to_int();
@@ -629,31 +630,31 @@ boolean doBedtime()
 			if((my_daycount() == 1) && (my_level() >= 6) && isHermitAvailable())
 			{
 				cli_execute("make figurine of an ancient seal");
-				buyUpTo(3, $item[seal-blubber candle]);
+				auto_buyUpTo(3, $item[seal-blubber candle]);
 				ensureSealClubs();
 				handleSealAncient();
 				summoned = true;
 			}
 			else if(my_level() >= 9)
 			{
-				buyUpTo(1, $item[figurine of an armored seal]);
-				buyUpTo(10, $item[seal-blubber candle]);
+				auto_buyUpTo(1, $item[figurine of an armored seal]);
+				auto_buyUpTo(10, $item[seal-blubber candle]);
 				ensureSealClubs();
 				handleSealNormal($item[Figurine of an Armored Seal]);
 				summoned = true;
 			}
 			else if(my_level() >= 5)
 			{
-				buyUpTo(1, $item[figurine of a Cute Baby Seal]);
-				buyUpTo(5, $item[seal-blubber candle]);
+				auto_buyUpTo(1, $item[figurine of a Cute Baby Seal]);
+				auto_buyUpTo(5, $item[seal-blubber candle]);
 				ensureSealClubs();
 				handleSealNormal($item[Figurine of a Cute Baby Seal]);
 				summoned = true;
 			}
 			else
 			{
-				buyUpTo(1, $item[figurine of a Wretched-Looking Seal]);
-				buyUpTo(1, $item[seal-blubber candle]);
+				auto_buyUpTo(1, $item[figurine of a Wretched-Looking Seal]);
+				auto_buyUpTo(1, $item[seal-blubber candle]);
 				ensureSealClubs();
 				handleSealNormal($item[Figurine of a Wretched-Looking Seal]);
 				summoned = true;
@@ -834,7 +835,7 @@ boolean doBedtime()
 	{
 		if((item_amount($item[frilly skirt]) < 1) && knoll_available())
 		{
-			buyUpTo(1, $item[frilly skirt]);
+			auto_buyUpTo(1, $item[frilly skirt]);
 		}
 		if(item_amount($item[frilly skirt]) > 0)
 		{
@@ -867,7 +868,7 @@ boolean doBedtime()
 
 	heavyrains_doBedtime();
 
-	while(my_daycount() == 1 && item_amount($item[resolution: be more adventurous]) > 0 && get_property("_resolutionAdv").to_int() < 10 && !can_interact())
+	while(my_daycount() == 1 && auto_is_valid($item[resolution: be more adventurous]) && item_amount($item[resolution: be more adventurous]) > 0 && get_property("_resolutionAdv").to_int() < 10 && !can_interact())
 	{
 		use(1, $item[resolution: be more adventurous]);
 	}
@@ -1185,15 +1186,6 @@ boolean doBedtime()
 	elementalPlanes_takeJob($element[stench]);
 	elementalPlanes_takeJob($element[cold]);
 
-	if((get_property("auto_dickstab").to_boolean()) && chateaumantegna_available() && (my_daycount() == 1))
-	{
-		boolean[item] furniture = chateaumantegna_decorations();
-		if(!furniture[$item[Artificial Skylight]])
-		{
-			chateaumantegna_buyStuff($item[Artificial Skylight]);
-		}
-	}
-
 	auto_beachUseFreeCombs();
 	auto_drinkNightcap();
 	equipRollover(false);
@@ -1211,7 +1203,7 @@ boolean doBedtime()
 	if (auto_haveMonkeyPaw())
 	{
 		boolean success = true;
-		while (get_property("_monkeyPawWishesUsed").to_int() < 5 && success)
+		while (auto_monkeyPawWishesLeft() > 0 && success)
 		{
 			success = auto_makeMonkeyPawWish(effect_to_wish);
 		}
@@ -1234,6 +1226,10 @@ boolean doBedtime()
 
 	boolean canChangeToStooper()
 	{
+		if (in_small()) // In smol, the stooper can be equipped, but does not modify the liver size
+		{
+			return false;
+		}
 		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
 		pathAllowsChangingFamiliar() &&		//some paths forbid familiar or dont allow changing it but mafia still indicates you have the familiar
 		my_familiar() != $familiar[Stooper])

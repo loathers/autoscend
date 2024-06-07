@@ -4,7 +4,6 @@
 1	auto_hpAutoRecovery
 2	auto_hpAutoRecoveryTarget
 3	auto_day_init
-4	auto_dickstab
 5	auto_sorceress
 6	auto_edCombatCount
 7	auto_edCombatRoundCount
@@ -19,7 +18,6 @@
 16	auto_bat_desiredForm
 17	auto_mpAutoRecovery
 18	auto_mpAutoRecoveryTarget
-19	auto_getDinseyGarbageMoney
 20	auto_dinseyGarbageMoney
 21	auto_delayTimer
 22	auto_100familiar
@@ -92,7 +90,6 @@
 89	auto_day1_skills
 90	auto_allowSharingData
 91	auto_backup_
-92	auto_cookie
 93	auto_gremlins
 94	auto_haveoven
 95	auto_hideAdultery
@@ -109,7 +106,6 @@
 106	auto_aboopending
 107	auto_day1_cobb
 108	auto_mcmuffin
-109	auto_saveMagicalSausage
 110	auto_spoonsign
 111	auto_spoonconfirmed
 112	auto_maximize_baseline
@@ -117,7 +113,6 @@
 114	auto_equipment_override_
 115	auto_ignoreCombat
 116	auto_diceMode
-117	auto_skipNEPOverride
 118	auto_csDoWheel
 119	auto_hccsNoConcludeDay
 120	auto_combatHandler
@@ -127,7 +122,6 @@
 124	auto_saveMargarita
 125	auto_pauseForWitchess
 126	auto_saveVintage
-127	auto_noSleepingDog
 128	auto_saveSausage
 129	auto_diag_round
 130	auto_stayInRun
@@ -135,7 +129,6 @@
 132	auto_modernzmobiecount
 133	auto_combatHP
 134	auto_combatHandlerThunderBird
-135	auto_combatHandlerFingernailClippers
 136	auto_combatDirective
 137	auto_useTatter
 138	auto_useCleesh
@@ -205,16 +198,13 @@
 202	auto_ballroomopen
 203	auto_masonryWall
 204	auto_towelChoice
-205	auto_dickStab
 206	auto_skipDesert
 207	auto_getBeehive
 208	auto_holeinthesky
 209	auto_choice1119
-210	auto_waitingArrowAlcove
 211	auto_getSteelOrgan
 212	auto_newbieOverride
 213	auto_dakotaFanning
-214	auto_delayHauntedKitchen
 215	auto_prehippy
 216	auto_boopeak
 217	auto_aboocount

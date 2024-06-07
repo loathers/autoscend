@@ -87,6 +87,9 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		}
 		return false;
 	}
+	
+	// Do the April band
+	auto_setAprilBandCombat();
 
 	// Now handle buffs that cost MP, items or other resources
 
@@ -115,7 +118,8 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		Celestial Saltiness,
 		Simply Irresistible,
 		Crunching Leaves,
-		Romantically Roused
+		Romantically Roused,
+		Crunchy Steps
 	])) {
 		return result();
 	}
@@ -255,6 +259,9 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		}
 		return false;
 	}
+	
+	// Do the April band
+	auto_setAprilBandNonCombat();
 
 	// Now handle buffs that cost MP, items or other resources
 
@@ -301,7 +308,8 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Inky Camouflage,	
 		Celestial Camouflage,
 		Feeling Lonely,
-		Feeling Sneaky
+		Feeling Sneaky,
+		Ultra-Soft Steps
 	])) {
 		return result();
 	}
@@ -526,6 +534,16 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		if(!speculative)
 			auto_beachCombHead("init");
 		handleEffect(auto_beachCombHeadEffect("init"));
+		if(pass())
+			return result();
+	}
+
+	if(doEquips && auto_haveCCSC() && have_effect($effect[Peppermint Rush]) == 0 && !get_property("_candyCaneSwordLyle").to_boolean()) {
+		if (!speculative) {
+			equip($item[candy cane sword cane]);
+			string temp = visit_url("place.php?whichplace=monorail&action=monorail_lyle");
+		}
+		handleEffect($effect[Peppermint Rush]);
 		if(pass())
 			return result();
 	}

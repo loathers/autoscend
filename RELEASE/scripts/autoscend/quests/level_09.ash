@@ -126,6 +126,7 @@ int fastenerCount()
 	base = base + item_amount($item[Thick Caulk]);
 	base = base + item_amount($item[Long Hard Screw]);
 	base = base + item_amount($item[Messy Butt Joint]);
+	base = base + 5 * item_amount($item[Smut Orc Keepsake Box]);
 
 	return base;
 }
@@ -136,9 +137,38 @@ int lumberCount()
 	base = base + item_amount($item[Morningwood Plank]);
 	base = base + item_amount($item[Raging Hardwood Plank]);
 	base = base + item_amount($item[Weirdwood Plank]);
+	base = base + 5 * item_amount($item[Smut Orc Keepsake Box]);
 
 	return base;
 }
+
+boolean finishBuildingSmutOrcBridge()
+{
+	if (internalQuestStatus("questL09Topping") != 0 || get_property("chasmBridgeProgress").to_int() >= 30)
+	{
+		return false;
+	}
+
+	// use any keepsake boxes we have
+	item keepsakeBox = $item[Smut Orc Keepsake Box];
+	if(item_amount(keepsakeBox) > 0 && auto_is_valid(keepsakeBox))
+	{
+		use(item_amount(keepsakeBox), keepsakeBox);
+	}
+
+	// make sure our progress count is correct before we do anything.
+	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
+
+	// finish chasm if we can
+	if(get_property("chasmBridgeProgress").to_int() >= 30)
+	{
+		visit_url("place.php?whichplace=highlands&action=highlands_dude");
+		return true;
+	}
+
+	return false;
+}
+
 
 void prepareForSmutOrcs()
 {
@@ -162,7 +192,7 @@ void prepareForSmutOrcs()
 		// so let's not waste time and console spam when we're a class or path that can't do any of this.
 		boolean useSpellsInOrcCamp = false;
 		
-		acquireMP(32, 1000);	//pre_adv will always do this later, but waiting for it may fail checks of ability to cast spells here
+		acquireMP(32, 0);	//pre_adv will always do this later, but waiting for it may fail checks of ability to cast spells here
 		if(setFlavour($element[cold]) && canUse($skill[Stuffed Mortar Shell]))
 		{
 			useSpellsInOrcCamp = true;
@@ -285,6 +315,11 @@ boolean L9_chasmBuild()
 		return false;
 	}
 
+	if(finishBuildingSmutOrcBridge())
+	{
+		return true;
+	}
+
 	if (shenShouldDelayZone($location[The Smut Orc Logging Camp]))
 	{
 		auto_log_debug("Delaying Logging Camp in case of Shen.");
@@ -305,22 +340,6 @@ boolean L9_chasmBuild()
 	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
 
 	auto_log_info("Chasm time", "blue");
-	
-	// make sure our progress count is correct before we do anything.
-	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
-
-	// use any keepsake boxes we have
-	if(item_amount($item[Smut Orc Keepsake Box]) > 0 && auto_is_valid($item[Smut Orc Keepsake Box]))
-	{
-		use(1, $item[Smut Orc Keepsake Box]);
-	}
-
-	// finish chasm if we can
-	if(get_property("chasmBridgeProgress").to_int() >= 30)
-	{
-		visit_url("place.php?whichplace=highlands&action=highlands_dude");
-		return true;
-	}
 
 	// prepareForSmutOrcs() called in pre-adv
 	autoAdv(1, $location[The Smut Orc Logging Camp]);
@@ -428,7 +447,7 @@ boolean L9_aBooPeak()
 
 		if(black_market_available() && (item_amount($item[Can of Black Paint]) == 0) && (have_effect($effect[Red Door Syndrome]) == 0) && (my_meat() >= npc_price($item[Can of Black Paint])))
 		{
-			buyUpTo(1, $item[Can of Black Paint]);
+			auto_buyUpTo(1, $item[Can of Black Paint]);
 			coldResist += 2;
 			spookyResist += 2;
 		}
@@ -668,6 +687,85 @@ int hedgeTrimmersNeeded()
 	return neededTrimmers;
 }
 
+// returns true if can successfully do one of the tasks at the great overlook lodge NC (606)
+boolean prepareForTwinPeak(boolean speculative)
+{
+	int progress = get_property("twinPeakProgress").to_int();
+	boolean needStench = ((progress & 1) == 0);
+	boolean needFood = ((progress & 2) == 0);
+	boolean needJar = ((progress & 4) == 0);
+	boolean needInit = (progress == 7);
+
+	if(needInit)
+	{
+		if(provideInitiative(40, $location[Twin Peak], true, speculative) >= 40)
+		{
+			return true;
+		}
+		else
+		{
+			//init test shows up last. if we can't do it there is no point in checking rest of function.
+			return false;
+		}
+	}
+
+	if(needJar && item_amount($item[Jar of Oil]) >= 1)
+	{
+		return true;
+	}
+
+	if(needFood)
+	{
+		float food_drop = item_drop_modifier() + numeric_modifier("Food Drop");
+		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight"), equipped_item($slot[familiar]));
+		
+		if(my_servant() == $servant[Cat])
+		{
+			food_drop -= numeric_modifier($familiar[Baby Gravy Fairy], "Item Drop", $servant[Cat].level, $item[none]);
+		}
+		if((food_drop < 50) && (food_drop >= 20) && have_effect($effect[Brother Flying Burrito\'s Blessing]) == 0)
+		{
+			if(friars_available() && (!get_property("friarsBlessingReceived").to_boolean()) && !speculative)
+			{
+				cli_execute("friars food");
+			}
+			if(have_effect($effect[Brother Flying Burrito\'s Blessing]) > 0)
+			{
+				food_drop = food_drop + 30;
+			}
+		}
+		if((food_drop < 50.0) && (item_amount($item[Eagle Feather]) > 0) && (have_effect($effect[Eagle Eyes]) == 0) && auto_is_valid($item[Eagle Feather]))
+		{
+			if(!speculative) use(1, $item[Eagle Feather]);
+			food_drop = food_drop + 20;
+		}
+		if((food_drop < 50.0) && (item_amount($item[resolution: be happier]) > 0) && (have_effect($effect[Joyful Resolve]) == 0) && auto_is_valid($item[resolution: be happier]))
+		{
+			if(!speculative) buffMaintain($effect[Joyful Resolve]);
+			food_drop = food_drop + 15;
+		}
+		if(food_drop >= 50.0)
+		{
+			return true;
+		}
+	}
+
+	if(needStench)
+	{
+		int [element] resGoal;
+		resGoal[$element[stench]] = 4;
+		// check if we can get enough stench res before we start applying anything
+		int [element] resPossible = provideResistances(resGoal, $location[Twin Peak], true, true);
+		if(resPossible[$element[stench]] >= 4)
+		{
+			if(!speculative) provideResistances(resGoal, $location[Twin Peak], true);
+			return true;
+		}
+	}
+
+	return false;
+}
+
 boolean L9_twinPeak()
 {
 	if (internalQuestStatus("questL09Topping") < 2 || internalQuestStatus("questL09Topping") > 3)
@@ -680,7 +778,8 @@ boolean L9_twinPeak()
 		return false;
 	}
 
-	if(hedgeTrimmersNeeded() > 0 && auto_autumnatonCanAdv($location[Twin Peak]) && !isAboutToPowerlevel() && $location[Twin Peak].turns_spent > 0)
+	if(hedgeTrimmersNeeded() > 0 && auto_autumnatonCanAdv($location[Twin Peak]) && !isAboutToPowerlevel() && 
+		($location[Twin Peak].turns_spent > 0 || get_property("twinPeakProgress").to_int() > 0)) // using trimmers doesn't increment turns_spent, so look at quest status also
 	{
 		// delay zone to allow autumnaton to grab rusty hedge trimmers
 		// unless we have ran out of other stuff to do
@@ -703,95 +802,22 @@ boolean L9_twinPeak()
 	if(in_bhy())
 	{
 		// we can't make an oil jar to solve the quest, just adventure until the hotel is burned down
-		set_property("choiceAdventure606", "6"); // and flee the music NC
 		return autoAdv($location[Twin Peak]);
 	}
 
-	int progress = get_property("twinPeakProgress").to_int();
-	boolean needStench = ((progress & 1) == 0);
-	boolean needFood = ((progress & 2) == 0);
-	boolean needJar = ((progress & 4) == 0);
-	boolean needInit = (progress == 7);
-
-	boolean attempt = false;
-	if(!attempt && needInit)
+	if(!prepareForTwinPeak(true))
 	{
-		if(provideInitiative(40, $location[Twin Peak], true))
-		{
-			set_property("choiceAdventure606", "4");
-			attempt = true;
-		}
-		else
-		{
-			return false;			//init test shows up last. if we can't do it there is no point in checking rest of function.
-		}
-	}
-
-	if(!attempt && needJar)
-	{
-		if(item_amount($item[Jar of Oil]) == 1)
-		{
-			set_property("choiceAdventure606", "3");
-			attempt = true;
-		}
-	}
-
-	if(!attempt && needFood)
-	{
-		float food_drop = item_drop_modifier() + numeric_modifier("Food Drop");
-		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight"), equipped_item($slot[familiar]));
-		
-		if(my_servant() == $servant[Cat])
-		{
-			food_drop -= numeric_modifier($familiar[Baby Gravy Fairy], "Item Drop", $servant[Cat].level, $item[none]);
-		}
-		if((food_drop < 50) && (food_drop >= 20) && have_effect($effect[Brother Flying Burrito\'s Blessing]) == 0)
-		{
-			if(friars_available() && (!get_property("friarsBlessingReceived").to_boolean()))
-			{
-				cli_execute("friars food");
-			}
-			if(have_effect($effect[Brother Flying Burrito\'s Blessing]) > 0)
-			{
-				food_drop = food_drop + 30;
-			}
-		}
-		if((food_drop < 50.0) && (item_amount($item[Eagle Feather]) > 0) && (have_effect($effect[Eagle Eyes]) == 0))
-		{
-			use(1, $item[Eagle Feather]);
-			food_drop = food_drop + 20;
-		}
-		if((food_drop < 50.0) && (item_amount($item[resolution: be happier]) > 0) && (have_effect($effect[Joyful Resolve]) == 0))
-		{
-			buffMaintain($effect[Joyful Resolve]);
-			food_drop = food_drop + 15;
-		}
-		if(food_drop >= 50.0)
-		{
-			set_property("choiceAdventure606", "2");
-			attempt = true;
-		}
-	}
-
-	if(!attempt && needStench)
-	{
-		int [element] resGoal;
-		resGoal[$element[stench]] = 4;
-		// check if we can get enough stench res before we start applying anything
-		int [element] resPossible = provideResistances(resGoal, $location[Twin Peak], true, true);
-		if(resPossible[$element[stench]] >= 4)
-		{
-			provideResistances(resGoal, $location[Twin Peak], true);
-			set_property("choiceAdventure606", "1");
-			attempt = true;
-		}
-	}
-
-	if(!attempt)
-	{
+		auto_log_debug("Can't complete any task at the Great Overlook Lodge. Will come back to Twin Peak later");
 		return false;
 	}
+
 	auto_log_info("Twin Peak", "blue");
+
+	if(item_amount($item[Rusty Hedge Trimmers]) == 0 && $location[Twin Peak].turns_spent == 0)
+	{
+		// wish for trimmer so we can later send fallbot for the rest
+		auto_makeMonkeyPawWish($item[Rusty Hedge Trimmers]);
+	}
 
 	int starting_trimmers = item_amount($item[Rusty Hedge Trimmers]);
 	if(starting_trimmers > 0)
@@ -890,10 +916,6 @@ boolean L9_oilPeak()
 
 	auto_MaxMLToCap(auto_convertDesiredML(100), true);
 
-	if (isActuallyEd() && get_property("auto_dickstab").to_boolean())
-	{
-		buffMaintain($effect[The Dinsey Look]);
-	}
 	if(monster_level_adjustment() < 50)
 	{
 		buffMaintain($effect[The Dinsey Look]);

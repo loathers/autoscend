@@ -42,6 +42,13 @@ void small_initializeSettings()
 			set_property("auto_disregardInstantKarma", "false");
 		}
 	}
+	else
+	{
+		if (auto_have_familiar($familiar[Cookbookbat]) && (canPull($item[Calzone of Legend]) || canPull($item[Deep Dish of Legend]) || canPull($item[Pizza of Legend])))
+		{
+			set_property("auto_dontUseCookBookBat", true); // don't need the CBB in Normal if we can pull a legend food.
+		}
+	}
 }
 
 void auto_SmallPulls()

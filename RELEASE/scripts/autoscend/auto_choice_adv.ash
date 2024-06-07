@@ -6,7 +6,7 @@ boolean auto_run_choice(int choice, string page)
 	
 	auto_log_debug("Running auto_choice_adv.ash");
 	string[int] options = available_choice_options();
-	
+
 	switch(choice)
 	{
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
@@ -60,7 +60,14 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(4); // skip
 			break;
 		case 109: // Dumpster Diving (The Sleazy Back Alley)
-			run_choice(1); // fight a drunken half-orc hobo
+			if(options contains 4)
+			{
+				run_choice(4); // 11-leaf clover with candy cane sword cane equipped
+			}
+			else
+			{
+				run_choice(1); // fight a drunken half-orc hobo
+			}
 			break;
 		case 110: // The Entertainer (The Sleazy Back Alley)
 			run_choice(4); // skip
@@ -97,10 +104,24 @@ boolean auto_run_choice(int choice, string page)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
 		case 139: // Bait and Switch (The Hippy Camp (Verge of War))
-			run_choice(3); // fight a War Hippy (space) cadet for outfit pieces
+			if(options contains 4 && haveWarOutfit())
+			{
+				run_choice(4); // use your candy cane sword cane to skip to the war start
+			}
+			else
+			{
+				run_choice(3); // fight a War Hippy (space) cadet for outfit pieces
+			}
 			break;
 		case 140: // The Thin Tie-Dyed Line (The Hippy Camp (Verge of War))
-			run_choice(3); // fight a War Hippy drill sergeant for outfit pieces
+			if(options contains 4 && haveWarOutfit())
+			{
+				run_choice(4); // use your candy cane sword cane to skip to the war start
+			}
+			else
+			{
+				run_choice(3); // fight a War Hippy drill sergeant for outfit pieces
+			}
 			break;
 		case 141: // Blockin' Out the Scenery (The Hippy Camp (Verge of War) wearing Frat Boy Ensemble)
 			run_choice(1); // get 50 mysticality
@@ -109,10 +130,24 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(3); // starts the war. skips adventure if already started.
 			break;
 		case 143: // Catching Some Zetas (Orcish Frat House (Verge of War))
-			run_choice(3); // fight a War Pledge for outfit pieces
+			if(options contains 4 && haveWarOutfit())
+			{
+				run_choice(4); // use your candy cane sword cane to skip to the war start
+			}
+			else
+			{
+				run_choice(3); // fight a War Pledge for outfit pieces
+			}
 			break;
 		case 144: // One Less Room Than In That Movie (Orcish Frat House (Verge of War))
-			run_choice(3); // fight a Frat Warrior drill sergeant for outfit pieces
+			if(options contains 4 && haveWarOutfit())
+			{
+				run_choice(4); // use your candy cane sword cane to skip to the war start
+			}
+			else
+			{
+				run_choice(3); // fight a Frat Warrior drill sergeant for outfit pieces
+			}
 			break;
 		case 145: // Fratacombs (Orcish Frat House (Verge of War) wearing Filthy Hippy Disguise)
 			run_choice(1); // get 50 muscle
@@ -152,6 +187,10 @@ boolean auto_run_choice(int choice, string page)
 			if(item_amount($item[model airship]) == 0)
 			{
 				run_choice(4); // get the model airship
+			}
+			else if (options contains 5)
+			{
+				run_choice(5); // get titanium umbrella, metallic A, SGEEA and a penultimate fantasy chest
 			}
 			else
 			{
@@ -278,6 +317,42 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 604: // Welcome to the Great Overlook Lodge (Twin Peak Part 1)
 		case 605: // Welcome to the Great Overlook Lodge (Twin Peak Part 2)
+			run_choice(1); // always advance to next option via choice 1
+			break;
+		case 606: // Lost in the Great Overlook
+			if(in_bhy())
+			{
+				// we can't make an oil jar to solve the quest, just adventure until the hotel is burned down
+				run_choice(6); // and flee the music NC
+				break;
+			}
+			// do init if we can
+			if(options contains 4)
+			{
+				run_choice(4);
+				break;
+			}
+			// do oil jar if we can
+			if(options contains 3 && item_amount($item[jar of oil]) > 0)
+			{
+				run_choice(3);
+				break;
+			}
+			// do pantry search if we can
+			if(options contains 2)
+			{
+				run_choice(2);
+				break;
+			}
+			// do stench test if we can
+			if(options contains 1)
+			{
+				run_choice(1);
+				break;
+			}
+			// getting this NC without being able to pick a choice is not ideal
+			auto_log_warning("Got the Twin Peak NC (Lost in the Great Overlook) without able to complete any of the tasks :(");
+			break;
 		case 607: // Room 237 (Lost in the Great Overlook Lodge)
 		case 608: // Go Check It Out! (Lost in the Great Overlook Lodge)
 		case 609: // There's Always Music In the Air (Lost in the Great Overlook Lodge)
@@ -356,7 +431,11 @@ boolean auto_run_choice(int choice, string page)
 			hiddenCityChoiceHandler(choice);
 			break;
 		case 793: // The Shore, Inc. Travel Agency. doing a vacation
-			if(my_primestat() == $stat[Muscle])
+			if(options contains 5)
+			{
+				run_choice(5); // 2 Shore scrips, all stats, +wdmg
+			}
+			else if(my_primestat() == $stat[Muscle])
 			{
 				run_choice(1); // muscle stats
 			}
@@ -414,7 +493,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(6); // skip
 			break;
 		case 888: // Take a Look, it's in a Book! (Rise) (The Haunted Library)
-			run_choice(4); // skip
+			run_choice(5); // skip
 			break;
 		case 889: // Take a Look, it's in a Book! (Fall) (The Haunted Library)
 			if(item_amount($item[dictionary]) == 0 && get_property("auto_getDictionary").to_boolean())
@@ -499,6 +578,18 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1062: // Lots of Options (The Overgrown Lot)
+			if(options contains 6)
+			{
+				run_choice(6); // Use Candy Cane Sword Cane to get all flowers and grass clippings
+				if(options contains 1)
+				{
+					run_choice(1); // get flowers for doc galaktik quest
+				}
+				else
+				{
+					run_choice(4); // get 15 moxie substat
+				}
+			}
 			if(options contains 1)
 			{
 				run_choice(1); // get flowers for doc galaktik quest
@@ -624,18 +715,18 @@ boolean auto_run_choice(int choice, string page)
 		case 1436: // Billiards Room Options (Cartography)
 			cartographyChoiceHandler(choice);
 			break;
-		case 1467:
-		case 1468:
-		case 1469:
-		case 1470:
-		case 1471:
-		case 1472:
-		case 1473:
-		case 1474:
-		case 1475:
+		case 1467: // Poetic Justice (Cleaver)
+		case 1468: // Aunts not Ants (Cleaver)
+		case 1469: // Beware of Aligator (Cleaver)
+		case 1470: // Teacher's Pet (Cleaver)
+		case 1471: // Lost and Found (Cleaver)
+		case 1472: // Summer Days (Cleaver)
+		case 1473: // Bath Time (Cleaver)
+		case 1474: // Delicious Sprouts (Cleaver)
+		case 1475: // Hypnotic Master (Cleaver)
 			juneCleaverChoiceHandler(choice);
 			break;
-		case 1491:  //Strange Stalagmite(s) (Strange stalagmite from Rock Garden)
+		case 1491: // Strange Stalagmite(s) (Rock Garden)
 			if(my_primestat() == $stat[Muscle])
 			{
 				run_choice(1); // muscle stats
@@ -649,15 +740,24 @@ boolean auto_run_choice(int choice, string page)
 				run_choice(3); // moxie stats
 			}
 			break;
-		case 1494:
+		case 1494: // Examine S.I.T. Course Certificate (S.I.T Course)
 			if(my_level() < 8)
 			{
-				run_choice(3); //Cryptobotanist (S.I.T. Course)
+				run_choice(3); // Cryptobotanist (S.I.T. Course)
 			}
 			else
 			{
-				run_choice(2); //Insectologist (S.I.T. Course)
+				run_choice(2); // Insectologist (S.I.T. Course)
 			}
+			break;
+		case 1497: // Calling Rufus
+			run_choice(2); // get artifact quest
+			break;
+		case 1500: // Like a Loded Stone
+			run_choice(2); // only come here to get shadow waters buff
+			break;
+		case 1525:
+			dartChoiceHandler(choice, options);
 			break;
 		default:
 			break;

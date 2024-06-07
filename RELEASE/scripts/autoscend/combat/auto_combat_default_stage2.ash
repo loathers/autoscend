@@ -151,7 +151,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			else if(index_of(banishAction, "item") == 0)
 			{
-				handleTracker(enemy, to_item(substring(banishAction, 5)), "auto_banishes");
+				if(contains_text(banishAction, ", none"))
+				{
+					int commapos = index_of(banishAction, ", none");
+					handleTracker(enemy, to_item(substring(banishAction, 5, commapos)), "auto_banishes");
+				}
+				else
+				{
+					handleTracker(enemy, to_item(substring(banishAction, 5)), "auto_banishes");
+				}
 			}
 			else
 			{
@@ -163,8 +171,8 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		combat_status_add("banishercheck");
 	}
 
-	// Free run from monsters we want to banish but are unable to
-	if(!combat_status_check("freeruncheck") && auto_wantToBanish(enemy, my_location()))
+	// Free run from monsters we want to banish but are unable to, or monsters on the free run list
+	if(!combat_status_check("freeruncheck") && (auto_wantToFreeRun(enemy, my_location()) || auto_wantToBanish(enemy, my_location())))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")
@@ -185,7 +193,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			else if(index_of(freeRunAction, "item") == 0)
 			{
-				handleTracker(enemy, to_item(substring(freeRunAction, 5)), "auto_freeruns");
+				if(contains_text(freeRunAction, ", none"))
+				{
+					int commapos = index_of(freeRunAction, ", none");
+					handleTracker(enemy, to_item(substring(freeRunAction, 5, commapos)), "auto_freeruns");
+				}
+				else
+				{
+					handleTracker(enemy, to_item(substring(freeRunAction, 5)), "auto_freeruns");
+				}
 			}
 			else
 			{
@@ -282,8 +298,18 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			couldInstaKill = false;
 		}
 	}
+	else if(wantToForceDrop(enemy))
+	{
+		//want drops from this enemy
+		couldInstaKill = false;
+	}
+	else if($monsters[dirty thieving brigand] contains enemy)
+	{
+		//want meat drops. Free fights cap meat drop to 1k
+		couldInstaKill = false;
+	}
 
-	if(instakillable(enemy) && !isFreeMonster(enemy) && couldInstaKill)
+	if(instakillable(enemy) && !isFreeMonster(enemy, my_location()) && couldInstaKill)
 	{
 		boolean wantFreeKillNowEspecially;
 		
@@ -336,6 +362,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[lightning strike]);
 		}
 
+		if(canUse($skill[Darts: Aim for the Bullseye]) && have_effect($effect[Everything Looks Red]) == 0 && dartELRcd() <= 40)
+		{
+			set_property("auto_instakillSource", "darts bullseye");
+			set_property("auto_instakillSuccess", true);
+			loopHandlerDelayAll();
+			return useSkill($skill[Darts: Aim for the Bullseye]);
+		}
 		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
 		{
 			if((wantFreeKillNowEspecially || my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
@@ -396,12 +429,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 		if(canUse($item[shadow brick]) && (get_property("_shadowBricksUsed").to_int() < 13) && !reserveFreekills)
 		{
-			if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
-			{
-				handleTracker(enemy, $item[shadow brick], "auto_instakill");
-				loopHandlerDelayAll();
-				return useItem($item[shadow brick]);
-			}
+			handleTracker(enemy, $item[shadow brick], "auto_instakill");
+			loopHandlerDelayAll();
+			return useItems($item[shadow brick], $item[none]);
 		}
 
 		if(canUse($skill[Fire the Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean())

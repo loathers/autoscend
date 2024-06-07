@@ -522,7 +522,11 @@ void theeXtremeSlopeChoiceHandler(int choice)
 	}
 	else if(choice == 575) // Duffel on the Double
 	{
-		if(!possessOutfit("eXtreme Cold-Weather Gear"))
+		if (have_equipped($item[Candy Cane Sword Cane]))
+		{
+			run_choice(5); // get mittens and pants and lucky pill
+		}
+		else if(!possessOutfit("eXtreme Cold-Weather Gear"))
 		{
 			run_choice(1); // get an outfit piece
 		}

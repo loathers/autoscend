@@ -104,7 +104,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 		{
 			if(!speculative)
 			{
-				buy(numToBuy, source);
+				auto_buyUpTo(numToBuy, source);
 			}
 			else
 			{
@@ -117,7 +117,7 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 		{
 			if(!speculative)
 			{
-				buy(numToBuy, source, meatAvailableToBuy / numToBuy);
+				auto_buyUpTo(numToBuy, source);
 			}
 			else
 			{
@@ -286,7 +286,8 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		{
 			useSkill = $skill[Curiosity of Br\'er Tarrypin];
 		}																						break;
-	case $effect[Crunching Leaves]:				useItem = $item[Autumn Leaf];					break;	
+	case $effect[Crunching Leaves]:				useItem = $item[Autumn Leaf];					break;
+	case $effect[Crunchy Steps]:				useItem = $item[crunchy brush];					break;
 	case $effect[Dance of the Sugar Fairy]:		useItem = $item[Sugar Fairy];					break;
 	case $effect[Destructive Resolve]:			useItem = $item[Resolution: Be Feistier];		break;
 	case $effect[Dexteri Tea]:					useItem = $item[cuppa Dexteri tea];				break;
@@ -538,7 +539,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Oiled Skin]:					useItem = $item[Skin Oil];						break;
 	case $effect[Oiled-Up]:						useItem = $item[Pec Oil];						break;
 	case $effect[Oilsphere]:					useSkill = $skill[Oilsphere];					break;
-	case $effect[Offhand Remarkable]:			useSkill = $skill[Aug. 13th: Left\/Off Hander's Day!];break;
+	case $effect[Offhand Remarkable]:			useSkill = $skill[Aug. 13th: Left\/Off Hander\'s Day!];break;
 	case $effect[OMG WTF]:						useItem = $item[Confiscated Cell Phone];		break;
 	case $effect[One Very Clear Eye]:			useItem = $item[Cyclops Eyedrops];				break;
 	case $effect[Orange Crusher]:				useItem = $item[Pulled Orange Taffy];			break;
@@ -670,6 +671,17 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Serendipi Tea]:				useItem = $item[cuppa Serendipi tea];			break;
 	case $effect[Serendipity]:					useSkill =$skill[Aug. 18th: Serendipity Day!];	break;
 	case $effect[Seriously Mutated]:			useItem = $item[Extra-Potent Gremlin Mutagen];	break;
+	case $effect[Shadow Waters]:
+		if(item_amount($item[Rufus\'s shadow lodestone]) > 0)
+		{
+			if(speculative)
+			{
+				return true;
+			}
+			// lodestene will be consumed for a free NC to get this buff
+			autoAdv(auto_availableBrickRift());
+		}
+		break;
 	case $effect[Shells of the Damned]:			useItem = $item[cyan seashell];					break;
 	case $effect[Shield of the Pastalord]:
 		useSkill = $skill[Shield of the Pastalord];
@@ -809,6 +821,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
+	case $effect[Ultra-Soft Steps]:				useItem = $item[ultra-soft ferns];				break;
 	case $effect[Unmuffled]:
 		if(get_property("peteMotorbikeMuffler") == "Extra-Loud Muffler")
 		{

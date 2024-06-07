@@ -688,25 +688,21 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("-equip " + wrap_item($item[Kramco Sausage-o-Matic&trade;]).to_string());
 		}
 	}
-	if (possessEquipment($item[Cursed Magnifying Glass]))
+	if (auto_haveCursedMagnifyingGlass())
 	{
 		if (get_property("cursedMagnifyingGlassCount").to_int() == 13)
 		{
-			if(get_property("mappingMonsters").to_boolean() || auto_backupTarget() || (get_property("_voidFreeFights").to_int() >= 5 && !in_hardcore()))
+			if(get_property("mappingMonsters").to_boolean() || auto_backupTarget() || (get_property("_voidFreeFights").to_int() >= 5 && get_property("cursedMagnifyingGlassCount").to_int() >= 13 && !in_hardcore()))
 			{
 				// don't equip for non free fights in softcore? (pending allowed conditions like delay zone && none of the monsters in the zone is a sniff/YR target?)
 				// don't interfere with backups or Map the Monsters
 				addToMaximize("-equip " + $item[Cursed Magnifying Glass].to_string());
 			}
-			else if(get_property("_voidFreeFights").to_int() < 5)
-			{
-				// add bonus if next fight is a free void monster
-				addBonusToMaximize($item[Cursed Magnifying Glass], 1000);
-			}
 		}
-		else if(!nextMonsterIsFree && get_property("_voidFreeFights").to_int() < 5 && solveDelayZone() != $location[none])
+		else if (!nextMonsterIsFree && get_property("cursedMagnifyingGlassCount").to_int() < 13 && solveDelayZone() != $location[none])
 		{
 			// add bonus to charge free fights. charge is added when completing nonfree fights only
+			// also we can pre-charge it for the next day once we have used our 5 free fights.
 			addBonusToMaximize($item[Cursed Magnifying Glass], 200);
 		}
 	}
@@ -720,11 +716,26 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("+equip " + toEquip);
 		}
 	}
-	if(auto_wantToEquipPowerfulGlove())
-	{
-		addBonusToMaximize($item[Powerful Glove], 1000); // pixels
-	}
 	
+	if(auto_haveSpringShoes())
+	{
+		if(item_amount($item[ultra-soft ferns])<4 || item_amount($item[crunchy brush])<4) // collect the spring shoes potions
+		{
+			addBonusToMaximize($item[spring shoes], 200);
+		}
+		else // just add a little bonus for the MP generation
+		{
+			addBonusToMaximize($item[spring shoes], 50);
+		}
+	}
+	// We still need pixels in KoE, badly.
+	if(in_koe() && auto_hasPowerfulGlove())
+	{
+		if(koe_NeedWhitePixels())
+		{
+			addBonusToMaximize($item[powerful glove], 250);
+		}
+	}
 	if(pathHasFamiliar())
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp
@@ -761,7 +772,7 @@ void finalizeMaximize(boolean speculative)
 		}
 	}
 	
-	if (canUseCleaver()) {
+	if (auto_canUseJuneCleaver()) {
 		if (get_property("_juneCleaverFightsLeft").to_int() < my_adventures() * 1.1 || (fullness_limit() == 0 && inebriety_limit() == 0) || consumptionProgress() < 1) {
 			addBonusToMaximize($item[June cleaver], 200); // We want to ramp this up and the NCs are nice as well
 		}
@@ -892,6 +903,31 @@ void equipMaximizedGear()
 {
 	finalizeMaximize();
 	maximize(get_property("auto_maximize_current"), 2500, 0, false);
+	// below code is to help diagnose, debug and workaround the intermittent issue where the maximizer fails to equip anything in hand slots
+	// if this is confirmed as fixed by mafia devs, remove the below code.
+	if (equipped_item($slot[weapon]) == $item[none] && my_path() != $path[Way of the Surprising Fist]) {
+		// do we actually have a weapon we can equip?
+		item equippableWeapon = $item[none];
+		foreach it in get_inventory() {
+			if (it.to_slot() == $slot[weapon] && can_equip(it)) {
+				// found a weapon and we should be able to equip it.
+				equippableWeapon = it;
+				break;
+			}
+		}
+		if (equippableWeapon != $item[none]) {
+			auto_log_error("It looks like the maximizer didn't equip any weapons for you. Lets dump some debugging info to help the KolMafia devs look into this.");
+			addToMaximize("2 dump"); // maximizer will dump a bunch of stuff to the session log with this
+			maximize(get_property("auto_maximize_current"), 2500, 0, false);
+			removeFromMaximize("2 dump");
+			if (equipped_item($slot[weapon]) == $item[none]) {
+				// workaround. equip a weapon & re-running maximizer appears to fix the issue.
+				equip(equippableWeapon);
+				maximize(get_property("auto_maximize_current"), 2500, 0, false);
+				auto_log_error("No weapon was equipped by the maximizer. If you want to report this to the mafia devs at kolmafia.us include your session log. We have attempted a work around.");
+			}
+		}
+	}
 }
 
 void equipOverrides()

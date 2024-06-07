@@ -604,7 +604,7 @@ boolean auto_doPrecinct()
 	{
 		return false;
 	}
-	if(svn_exists("Ezandora-Detective-Solver-branches-Release") || git_exists("Ezandora-Detective-Solver-Release"))
+	if(git_exists("Ezandora-Detective-Solver"))
 	{
 		//Assume if someone has this installed that they want to use it.
 		cli_execute("ash import<Detective Solver.ash> solveAllCases(false);");
@@ -1105,7 +1105,7 @@ boolean timeSpinnerGet(string goal)
 		return false;
 	}
 
-	if(svn_exists("Ezandora-Far-Future-branches-Release") || git_exists("Ezandora-Far-Future-Release"))
+	if(git_exists("Ezandora-Far-Future"))
 	{
 		//Required by dependencies
 		cli_execute("FarFuture " + goal);

@@ -90,7 +90,12 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		{
 			return "item " +hand_1;
 		}
-		abort("Uh oh, I ran out of healing items to use against your shadow");
+		if (item_amount($item[scented massage oil])==0) {
+			abort("Uh oh, I ran out of healing items to use against your shadow");
+		}
+		else {
+		  abort("Uh oh, I ran out of simple healing items to use against your shadow. You could win manually with Scented Massage oil though.");
+		}
 	}
 
 	if(enemy == $monster[Wall Of Meat])
@@ -209,10 +214,26 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 	}
 
-	if(auto_backupTarget() && enemy != get_property("lastCopyableMonster").to_monster() && canUse($skill[Back-Up to your Last Enemy]))
+	if (auto_canCircadianRhythm() && auto_circadianRhythmTarget(enemy) && canUse($skill[Recall Facts: %phylum Circadian Rhythms]))
+	{
+		handleTracker($skill[Recall Facts: %phylum Circadian Rhythms], enemy.phylum, "auto_otherstuff");
+		return useSkill($skill[Recall Facts: %phylum Circadian Rhythms]);
+	}
+
+	if (auto_canHabitat() && auto_habitatTarget(enemy) && canUse($skill[Recall Facts: Monster Habitats]))
+	{
+		handleTracker($skill[Recall Facts: Monster Habitats], enemy, "auto_copies");
+		return useSkill($skill[Recall Facts: Monster Habitats]);
+	}
+
+	monster backedUpMonster = get_property("lastCopyableMonster").to_monster();
+	// reserve last 2 advs for end of day free fights
+	boolean reserveAdvsForFreeFights = my_adventures() < 3 && !isFreeMonster(backedUpMonster);
+	if(auto_backupTarget() && enemy != backedUpMonster && canUse($skill[Back-Up to your Last Enemy])
+		&& !reserveAdvsForFreeFights)
 	{
 		handleTracker(enemy, $skill[Back-Up to your Last Enemy], "auto_replaces");
-		handleTracker(get_property("lastCopyableMonster").to_monster(), $skill[Back-Up to your Last Enemy], "auto_copies");
+		handleTracker(backedUpMonster, $skill[Back-Up to your Last Enemy], "auto_copies");
 		return useSkill($skill[Back-Up to your Last Enemy]);	
 	}
 

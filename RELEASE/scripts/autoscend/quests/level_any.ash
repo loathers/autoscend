@@ -1,5 +1,74 @@
 // This file should contain functions for adventuring which are not related to any of the council quests nor any "optional" quests.
 
+void LX_handleIntroAdventures()
+{
+	// This function simply handles the "intro" adventures many challenge paths have upon a new ascension.
+	// Handling these in this manner allows us to sidestep potential mafia issues related to parsing of status
+	if (handling_choice())
+	{
+		int choice = last_choice();
+
+		if (995 == choice)
+		{
+			// 995 is "Being Picky", intro for Picky (Winter 2014 challenge path).
+			picky_startAscension();
+		}
+
+		if (1023 == choice)
+		{
+			// 1023 is "Like a Bat Into Hell" where Actually Ed enters the Underworld when losing combat
+			// It is conceivable that we could be stuck in this when the script is (re)started if we lost the previous combat.
+			edUnderworldChoiceHandler(choice);
+		}
+
+		if (1230 == choice)
+		{
+			// 1230 is "Welcome to the Kingdom, Gelatinous Noob", intro for Gelatinous Noob (Spring 2017 challenge path).
+			// TODO: This should be refactored to use the choiceAdventureScript instead of this terrible hack.
+			string page = visit_url("main.php");
+			page = visit_url("api.php?what=status&for=4", false);
+			gnoob_startAscension(page);
+		}
+
+		if (1342 == choice)
+		{
+			// 1342 is "Torpor", the non-combat Vampyre ends up in when losing combat or resting at campground.
+			// It is conceivable that we could be stuck in this when the script is (re)started if we lost the previous combat.
+			auto_log_info("Torporing, since I think we're already in torpor.", "blue");
+			bat_reallyPickSkills(20);
+		}
+
+		if (1343 == choice)
+		{
+			// 1343 is "Intro: View of a Vampire", intro for Dark Gyffte (Spring 2019 challenge path).
+			run_choice(1);
+			bat_reallyPickSkills(20);
+		}
+
+		if ($ints[1495] contains choice) {
+			// 1495 is "Into the Shadows", intro for Avatar of Shadows Over Loathing (Spring 2023 challenge path).
+			// These intros have "meaningful" choices with respect to the run so we don't want to handle them automatically and will intentionally abort here.
+			abort("You are stuck in an intro adventure which requires you to choose a path. I suggest you do so before trying to run autoscend and you may have better results.");
+		}
+
+		if ($ints[1046, 1405, 1416, 1419, 1446, 1450, 1464, 1480, 1503, 1507] contains choice)
+		{
+			// 1046 is "Actually Ed the Undying", intro for Actually Ed the Undying (Spring 2015 challenge path).
+			// 1405 is "Let's, uh, go!", intro for Path of the Plumber (Spring 2020 challenge path).
+			// 1416 is "Low-Key Summer", intro for Low-Key Summer (Summer 2020 challenge path).
+			// 1419 is "Grey Sky Morning", intro for Grey Goo (Fall 2020 challenge path).
+			// 1446 is "You, Robot", intro for You, Robot (Spring 2021 challenge path).
+			// 1450 is "Wildfire!", intro for Wildfire (Fall 2021 challenge path).
+			// 1464 is "Your Friend Goo", intro for Grey You (Spring 2022 challenge path).
+			// 1480 is "Fall of the Dinosaurs", intro for Fall of the Dinosaurs (Fall 2022 challenge path).
+			// 1503 is "Starting Your Legacy", intro for Legacy of Loathing (Summer 2023 challenge path).
+			// 1507 is "Jumbled in the Bungle", intro for A Shrunken Adventurer am I (Fall 2023 challenge path).
+			// yes they really phoned some of the titles of these in.
+			run_choice(1);
+		}
+	}
+}
+
 boolean LX_bitchinMeatcar_condition()
 {
 	return knoll_available() && get_property("auto_spoonconfirmed").to_int() == my_ascensions();
@@ -70,7 +139,7 @@ boolean LX_bitchinMeatcar()
 		}
 	}
 	if (item_amount($item[Tires]) > 0 && enginePartsMissing >= 4 && 
-	appearance_rates($location[The Degrassi Knoll Garage])[$monster[Gnollish Gearhead]] < 77.0)
+	auto_combat_appearance_rates($location[The Degrassi Knoll Garage])[$monster[Gnollish Gearhead]] < 77.0)
 	{
 		//all parts of the engine are missing and would take a while to acquire from lootboxes at normal appearance rates
 		if (pullXWhenHaveY($item[meat engine],1,0))
@@ -139,7 +208,7 @@ boolean LX_unlockDesert()
 	if(my_meat() >= (npc_price($item[Desert Bus Pass]) + 1000) && isGeneralStoreAvailable())
 	{
 		auto_log_info("We're rich, let's take the bus instead of building a car.", "blue");
-		buyUpTo(1, $item[Desert Bus Pass]);
+		auto_buyUpTo(1, $item[Desert Bus Pass]);
 		if(item_amount($item[Desert Bus Pass]) > 0)
 		{
 			return true;
@@ -173,7 +242,7 @@ boolean LX_desertAlternate()
 	}
 	if((my_meat() >= npc_price($item[Desert Bus Pass])) && isGeneralStoreAvailable())
 	{
-		buyUpTo(1, $item[Desert Bus Pass]);
+		auto_buyUpTo(1, $item[Desert Bus Pass]);
 		if(item_amount($item[Desert Bus Pass]) > 0)
 		{
 			return true;
@@ -199,7 +268,7 @@ boolean LX_islandAccess()
 	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (get_property("lastIslandUnlock").to_int() != my_ascensions()) && (my_meat() >= npc_price($item[dingy planks])) && isGeneralStoreAvailable())
 	{
 		cli_execute("make dinghy plans");
-		buyUpTo(1, $item[dingy planks]);
+		auto_buyUpTo(1, $item[dingy planks]);
 		use(1, $item[dinghy plans]);
 		return true;
 	}
@@ -263,7 +332,7 @@ boolean LX_islandAccess()
 	if((my_meat() >= npc_price($item[dingy planks])) && (item_amount($item[Dinghy Plans]) == 0) && isGeneralStoreAvailable())
 	{
 		cli_execute("make dinghy plans");
-		buyUpTo(1, $item[dingy planks]);
+		auto_buyUpTo(1, $item[dingy planks]);
 		use(1, $item[dinghy plans]);
 		return true;
 	}
@@ -272,7 +341,7 @@ boolean LX_islandAccess()
 
 boolean startHippyBoatmanSubQuest()
 {
-	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted")
+	if(my_basestat(my_primestat()) >= 25 && get_property("questM19Hippy") == "unstarted" && !in_koe())
 	{
 		string temp = visit_url("place.php?whichplace=woods&action=woods_smokesignals");
 		temp = visit_url("choice.php?pwd=&whichchoice=798&option=1");
@@ -475,7 +544,7 @@ boolean LX_fatLootToken()
 		// at NS tower door and still need hero keys
 
 		// summon and copy fantasy realm bandit. Allows for getting fantasy realm token without having FR available
-		if(!acquiredFantasyRealmToken() && auto_haveBackupCamera() && auto_backupUsesLeft() >= (4 - fantasyBanditsFought()) && canSummonMonster($monster[fantasy bandit]))
+		if(!acquiredFantasyRealmToken() && ((auto_haveBackupCamera() && auto_backupUsesLeft() >= (4 - fantasyBanditsFought())) || auto_canHabitat()) && canSummonMonster($monster[fantasy bandit]))
 		{
 			return summonMonster($monster[fantasy bandit]);
 		}
@@ -540,11 +609,11 @@ boolean LX_dailyDungeonToken()
 	
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
 	{
-		buyUpTo(1, $item[Eleven-Foot Pole]);
-		buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
+		auto_buyUpTo(1, $item[Eleven-Foot Pole]);
+		auto_buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
 		if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not buy a second one if already equipped
 		{
-			buyUpTo(1, $item[Ring of Detect Boring Doors]);
+			auto_buyUpTo(1, $item[Ring of Detect Boring Doors]);
 		}
 	}
 	
@@ -623,7 +692,19 @@ void dailyDungeonChoiceHandler(int choice, string[int] options)
 			break;
 		case 690: // The First Chest Isn't the Deepest. (Daily Dungeon 5th room)
 		case 691: // Second Chest (Daily Dungeon 10th room)
-			if(options contains 2)
+			if(options contains 4)
+			{
+				run_choice(4); // Get a fat loot token with your Candy Cane Sword Cane
+				if(options contains 2)
+				{
+					run_choice(2);	// skip 3 rooms using ring of Detect Boring Doors
+				} 
+				else
+				{
+					run_choice(3);	// skip 1 room
+				}
+			}
+			else if(options contains 2)
 			{
 				run_choice(2);	// skip 3 rooms using ring of Detect Boring Doors
 			} 
@@ -661,10 +742,14 @@ void dailyDungeonChoiceHandler(int choice, string[int] options)
 			else abort("I made an error and tried to adventure in the daily dungeon when I have no means of handling [I Wanna Be a Door]");
 			break;
 		case 693: // It's Almost Certainly a Trap (Daily Dungeon)
-			if(options contains 2)
+			if(options contains 4)
+			{
+				run_choice(4); // use Candy cane sword cane to skip and get stats
+			}
+			else if(options contains 2)
 			{
 				run_choice(2);	// use eleven-foot pole to skip
-			} 
+			}
 			else
 			{
 				run_choice(1);	// take damage to progress
@@ -683,7 +768,7 @@ boolean LX_dolphinKingMap()
 	{
 		if(possessEquipment($item[Snorkel]) || ((my_meat() >= npc_price($item[Snorkel])) && isArmoryAvailable()))
 		{
-			buyUpTo(1, $item[Snorkel]);
+			auto_buyUpTo(1, $item[Snorkel]);
 			item oldHat = equipped_item($slot[hat]);
 			equip($item[Snorkel]);
 			use(1, $item[Dolphin King\'s Map]);
@@ -729,7 +814,7 @@ item LX_getDesiredWorkshed(){
 			return $item[cold medicine cabinet];
 		case "asdon martin keyfob":
 		case "asdon":
-			return $item[Asdon Martin keyfob];
+			return $item[Asdon Martin keyfob (on ring)];
 		case "diabolic pizza cube":
 		case "pizza":
 			return $item[diabolic pizza cube]; //unless support is added, don't want to use this
@@ -794,9 +879,9 @@ boolean LX_setWorkshed(){
 				auto_log_info("Installed your model train set");
 				return true;
 			}
-			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
+			if ((auto_is_valid($item[Asdon Martin keyfob (on ring)])) && (item_amount($item[Asdon Martin keyfob (on ring)]) > 0))
 			{
-				use(1, $item[Asdon Martin keyfob]);
+				use(1, $item[Asdon Martin keyfob (on ring)]);
 				auto_log_info("Installed your Asdon Martin keyfob");
 				return true;
 			}
@@ -824,9 +909,9 @@ boolean LX_setWorkshed(){
 		//once we have enough fasteners and only if we are currently using the model train set
 		if((fastenerCount() >= 30 && lumberCount() >= 30) && existingShed == $item[model train set])
 		{
-			if ((auto_is_valid($item[Asdon Martin keyfob])) && (item_amount($item[Asdon Martin keyfob]) > 0))
+			if ((auto_is_valid($item[Asdon Martin keyfob (on ring)])) && (item_amount($item[Asdon Martin keyfob (on ring)]) > 0))
 			{
-				use(1, $item[Asdon Martin keyfob]);
+				use(1, $item[Asdon Martin keyfob (on ring)]);
 				auto_log_info("Changed your workshed to Asdon Martin keyfob");
 				return true;
 			}
@@ -925,7 +1010,7 @@ boolean LX_dronesOut()
 		}
 		return autoAdv($location[The Middle Chamber]); //Tomb ratchets
 	}
-	if((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && get_property("twinPeakProgress").to_int() < 15 && zone_isAvailable($location[Twin Peak]))
+	if((internalQuestStatus("questL09Topping") >= 2 && internalQuestStatus("questL09Topping") <= 3) && hedgeTrimmersNeeded() > 1 && zone_isAvailable($location[Twin Peak]) && prepareForTwinPeak(true))
 	{
 		auto_log_info("Going to Twin Peak");
 		if(get_property("auto_priorLocation").to_location() != $location[Twin Peak])

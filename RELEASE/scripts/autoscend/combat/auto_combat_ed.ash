@@ -584,11 +584,11 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if (canUse($item[Tattered Scrap of Paper], false))
+	if (canUse($item[Tattered Scrap of Paper], false) && have_effect($effect[Everything Looks Green]) == 0)
 	{
 		if($monsters[Bubblemint Twins, Bunch of Drunken Rats, Coaltergeist, Creepy Ginger Twin, Demoninja, Drunk Goat, Drunken Rat, Fallen Archfiend, Hellion, Knob Goblin Elite Guard, L imp, Mismatched Twins, Sabre-Toothed Goat, W imp] contains enemy)
 		{
-			return useItem($item[Tattered Scrap Of Paper], false);
+			return useItem($item[Tattered Scrap Of Paper]);
 		}
 	}
 
@@ -678,7 +678,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		// insta-kills protestors and removes an additional 5-7 (optimal!)
 	}
 
-	if(enemy == $monster[Pygmy Orderlies] && canUse($item[Short Writ of Habeas Corpus], false))
+	if(enemy == $monster[Pygmy Orderlies] && canUse($item[Short Writ of Habeas Corpus], false) && have_effect($effect[Everything Looks Green]) == 0)
 	{
 		return useItem($item[Short Writ of Habeas Corpus]);
 	}
@@ -689,7 +689,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return 	auto_bowlingBallCombatString(my_location(), false);
 	}
 	
-	if(instakillable(enemy) && !isFreeMonster(enemy) && doInstaKill)
+	if(instakillable(enemy) && !isFreeMonster(enemy,my_location()) && doInstaKill)
 	{
 		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0))
 		{
