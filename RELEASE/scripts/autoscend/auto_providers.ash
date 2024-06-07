@@ -1360,7 +1360,9 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 		Unusual Perspective,
 		Eagle Eyes,
 		Heart of Lavender,
-		Five Sticky Fingers
+		Five Sticky Fingers,
+		Wet and Greedy,
+		Frosty
 	]))
 		return result();
 		
@@ -1396,16 +1398,6 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 	}
 	if(pass())
 		return result();
-	
-
-	if(get_property("auto_dickstab").to_boolean())
-	{
-		if(tryEffects($effects[
-			Wet and Greedy,
-			Frosty
-		]))
-			return result();
-	}
 
 	if(doEquips && amt >= 400)
 	{
