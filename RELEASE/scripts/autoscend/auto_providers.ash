@@ -1224,6 +1224,7 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 	else
 	{
 		auto_log_debug("We already have enough!");
+		return alreadyHave;
 	}
 
 	float delta = 0;
@@ -1233,20 +1234,9 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 		return numeric_modifier("Item Drop") + delta;
 	}
 
+	// don't craft equipment here. See how much +item we can get with gear on hand
 	if(doEquips)
 	{
-		//craft IOTM derivative that gives high item bonus
-		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0) && auto_is_valid($item[A Light That Never Goes Out]))
-		{
-			auto_buyUpTo(1, $item[third-hand lantern]);
-			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
-		}
-
-		if(auto_is_valid($item[Broken Champagne Bottle]) && get_property("garbageChampagneCharge").to_int() > 0) {
-			//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
-			januaryToteAcquire($item[Broken Champagne Bottle]);
-		}
-
 		string max = "500item " + (amt + 100) + "max";
 		if(speculative)
 		{
@@ -1258,7 +1248,7 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 			simMaximize(loc);
 		}
 		delta = simValue("Item Drop") - numeric_modifier("Item Drop");
-		auto_log_debug("With gear we can get to " + result());
+		auto_log_debug("With existing gear we can get to " + result());
 	}
 
 	boolean pass()
@@ -1279,13 +1269,16 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 		// fam isn't equipped immediatly even if we aren't speculating
 		// so add bonus from fam regardless of speculation
 		familiar target = lookupFamiliarDatafile("item");
-		if(target != $familiar[none])
+		if(target != $familiar[none] && target != my_familiar())
 		{
 			int famWeight = familiar_weight(target) + weight_adjustment();
 			delta += numeric_modifier(target, "Item Drop",famWeight,$item[none]);
+			auto_log_debug("With using familiar: " + target + " we can get to " + result());
 		}
-
-		auto_log_debug("With familiar we can get to " + result());
+		else
+		{
+			auto_log_debug("Already have desired familar, " + target + ", active.");
+		}
 
 		if(pass())
 			return result();
@@ -1398,6 +1391,35 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 	}
 	if(pass())
 		return result();
+
+	// craft equipment, even limited use, here
+	if(doEquips)
+	{
+		//craft IOTM derivative that gives high item bonus
+		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0) && auto_is_valid($item[A Light That Never Goes Out]))
+		{
+			auto_buyUpTo(1, $item[third-hand lantern]);
+			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
+		}
+
+		if(auto_is_valid($item[Broken Champagne Bottle]) && get_property("garbageChampagneCharge").to_int() > 0) {
+			//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
+			januaryToteAcquire($item[Broken Champagne Bottle]);
+		}
+
+		string max = "500item " + (amt + 100) + "max";
+		if(speculative)
+		{
+			simMaximizeWith(loc, max);
+		}
+		else
+		{
+			addToMaximize(max);
+			simMaximize(loc);
+		}
+		delta = simValue("Item Drop") - numeric_modifier("Item Drop");
+		auto_log_debug("With existing and crafted gear we can get to " + result());
+	}
 
 	if(doEquips && amt >= 400)
 	{
