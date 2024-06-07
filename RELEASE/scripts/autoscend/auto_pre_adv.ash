@@ -85,6 +85,9 @@ void print_footer()
 		}
 	}
 	auto_log_info(next_line, "blue");
+
+	// FOR DEBUGGING ONLY
+	auto_log_debug("Provider expected item: " + get_property("auto_ExpectedItem") " actual: " + numeric_modifier("Item Drop"));
 }
 
 void auto_ghost_prep(location place)
