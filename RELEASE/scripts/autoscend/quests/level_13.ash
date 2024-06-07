@@ -89,8 +89,8 @@ boolean EightBitRealmHandler()
 			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":
-			provideItem(400, $location[Hero\'s Field], true);
-			addToMaximize("200item 500max");
+			// limited buff that is helpful for 3 of 4 8-bit zones
+			buffMaintain($effect[shadow waters]);
 			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;
 		default:

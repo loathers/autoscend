@@ -268,8 +268,7 @@ boolean auto_pre_adventure()
 	}
 	if(place == $location[Hero\'s Field])
 	{
-		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
-		buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
+		provideItem(400, $location[Hero\'s Field], true);
 		addToMaximize("200item 500max");
 	}
 
