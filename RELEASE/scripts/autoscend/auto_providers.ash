@@ -1238,7 +1238,7 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 		//craft IOTM derivative that gives high item bonus
 		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0) && auto_is_valid($item[A Light That Never Goes Out]))
 		{
-			buyUpTo(1, $item[third-hand lantern]);
+			auto_buyUpTo(1, $item[third-hand lantern]);
 			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
 		}
 
