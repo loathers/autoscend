@@ -50,7 +50,7 @@ string auto_combatWereProfessorStage5(int round, monster enemy, string text)
 		{
 			return useSkill(dartSkill());
 		}
-		if(canUse($skill[Rend], false))
+		if(!enemy_physical_immune && canUse($skill[Rend], false))
 		{
 			return useSkill($skill[Rend], true);
 		}
