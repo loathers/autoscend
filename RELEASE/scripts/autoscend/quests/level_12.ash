@@ -943,8 +943,6 @@ boolean L12_filthworms()
 				}
 			}
 			
-			//todo check if provide item can simulate enough not to bother with delaying?
-			
 			if(delayFilthworms)
 			{
 				auto_log_info("Delaying filthworms because Everything Looks Yellow");
@@ -953,7 +951,7 @@ boolean L12_filthworms()
 		}
 
 		// filth worm glands have 10% drop rate
-		// since we got here, going to try to get one to drop
+		// getting here means we don't have a yellow ray, not delaying for the yr, and don't have enough +item yet
 		provideItem(900,$location[The Feeding Chamber], true);
 
 		if(in_lar())
