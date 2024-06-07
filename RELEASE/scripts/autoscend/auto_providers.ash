@@ -1210,9 +1210,10 @@ boolean provideMoxie(int amt, boolean doEquips)
 	return provideMoxie(amt, my_location(), doEquips);
 }
 
-float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
+float provideItem(int amt, location loc, boolean doEverything, boolean speculative)
 {
-	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " item, " + (doEquips ? "with" : "without") + " equipment", "blue");
+	//doEverything means use equipment, familiar slot, and limited buffs (ie steely eye squint)
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " item, " + (doEverything ? "with" : "without") + " equipment, familiar, and limited buffs", "blue");
 
 	float alreadyHave = numeric_modifier("Item Drop");
 	float need = amt - alreadyHave;
@@ -1234,8 +1235,18 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 		return numeric_modifier("Item Drop") + delta;
 	}
 
+	boolean pass()
+	{
+		//FOR DEBUGGING
+		set_property("auto_ExpectedItem", result());
+		return result() >= amt;
+	}
+
+	if(pass())
+		return result();
+	
 	// don't craft equipment here. See how much +item we can get with gear on hand
-	if(doEquips)
+	if(doEverything)
 	{
 		string max = "500item " + (amt + 100) + "max";
 		if(speculative)
@@ -1249,18 +1260,13 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 		}
 		delta = simValue("Item Drop") - numeric_modifier("Item Drop");
 		auto_log_debug("With existing gear we can get to " + result());
-	}
 
-	boolean pass()
-	{
-		return result() >= amt;
+		if(pass())
+			return result();
 	}
-
-	if(pass())
-		return result();
 
 	//see how much familiar will help
-	if(doEquips && pathHasFamiliar() && pathAllowsChangingFamiliar())
+	if(doEverything && pathHasFamiliar() && pathAllowsChangingFamiliar())
 	{
 		if(!speculative)
 		{
@@ -1393,7 +1399,7 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 		return result();
 
 	// craft equipment, even limited use, here
-	if(doEquips)
+	if(doEverything)
 	{
 		//craft IOTM derivative that gives high item bonus
 		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0) && auto_is_valid($item[A Light That Never Goes Out]))
@@ -1419,9 +1425,12 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 		}
 		delta = simValue("Item Drop") - numeric_modifier("Item Drop");
 		auto_log_debug("With existing and crafted gear we can get to " + result());
+
+		if(pass())
+			return result();
 	}
 
-	if(doEquips && amt >= 400)
+	if(doEverything && amt >= 400)
 	{
 		if(!get_property("_steelyEyedSquintUsed").to_boolean() && buffMaintain($effect[Steely-Eyed Squint], 0, 1, 1, speculative))
 		{
@@ -1436,17 +1445,17 @@ float provideItem(int amt, location loc, boolean doEquips, boolean speculative)
 	return result();
 }
 
-float provideItem(int amt, boolean doEquips, boolean speculative)
+float provideItem(int amt, boolean doEverything, boolean speculative)
 {
-	return provideItem(amt, my_location(), doEquips, speculative);
+	return provideItem(amt, my_location(), doEverything, speculative);
 }
 
-boolean provideItem(int amt, location loc, boolean doEquips)
+boolean provideItem(int amt, location loc, boolean doEverything)
 {
-	return provideItem(amt, loc, doEquips, false) >= amt;
+	return provideItem(amt, loc, doEverything, false) >= amt;
 }
 
-boolean provideItem(int amt, boolean doEquips)
+boolean provideItem(int amt, boolean doEverything)
 {
-	return provideItem(amt, my_location(), doEquips);
+	return provideItem(amt, my_location(), doEverything);
 }
