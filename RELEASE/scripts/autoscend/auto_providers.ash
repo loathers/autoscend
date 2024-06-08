@@ -1224,7 +1224,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 	}
 	else
 	{
-		auto_log_debug("We already have enough!");
+		auto_log_debug("We already have enough +item!");
 		return alreadyHave;
 	}
 
