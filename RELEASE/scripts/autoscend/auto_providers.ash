@@ -1237,8 +1237,6 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 
 	boolean pass()
 	{
-		//FOR DEBUGGING
-		set_property("auto_ExpectedItem", result());
 		return result() >= amt;
 	}
 

@@ -85,14 +85,6 @@ void print_footer()
 		}
 	}
 	auto_log_info(next_line, "blue");
-
-	// FOR DEBUGGING ONLY
-	int expectedItem = get_property("auto_ExpectedItem").to_int();
-	if(expectedItem > 0)
-	{
-		auto_log_debug("Provider expected item: " + expectedItem + " actual: " + numeric_modifier("Item Drop"));
-		set_property("auto_ExpectedItem", 0);
-	}
 	
 }
 
