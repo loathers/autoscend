@@ -359,11 +359,6 @@ boolean L9_aBooPeak()
 		return false;
 	}
 
-	if(in_wereprof() && !is_werewolf())
-	{
-		return false; // Not worth trying when we only have 1 hp
-	}
-
 	item clue = $item[A-Boo Clue];
 	if(in_glover())
 	{
@@ -374,6 +369,11 @@ boolean L9_aBooPeak()
 		clue = $item[Glued A-Boo Clue];
 	}
 	int clueAmt = item_amount(clue);
+
+	if(in_wereprof() && !is_werewolf() && clueAmt >= 3)
+	{
+		return false; // We have clues but we can't survive them so not worth trying when we only have 1 hp
+	}
 
 	if (get_property("booPeakProgress").to_int() > 90)
 	{
