@@ -10,6 +10,14 @@ string auto_combatWereProfessorStage1(int round, monster enemy, string text)
 		set_property("auto_skipStage3", true); //Don't even want to try Stage 3 as a Professor
 	}
 
+	if(enemy == $monster[Wall Of Bones])
+	{
+		if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0)
+		{
+			return useSkill($skill[Slaughter]);
+		}
+	}
+
 	return "";
 }
 
