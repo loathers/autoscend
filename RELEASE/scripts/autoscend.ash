@@ -1,4 +1,4 @@
-since r27832;	// Spring Kick banish management
+since r27897;	// additional monster parts
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -211,6 +211,8 @@ void initializeSettings() {
 	set_property("auto_ignoreCombat", "");
 	set_property("auto_ignoreFlyer", false);
 	set_property("auto_instakill", "");
+	set_property("auto_instakillSource", "");
+	set_property("auto_instakillSuccess", false);
 	set_property("auto_modernzmobiecount", "");
 	set_property("auto_powerfulglove", "");
 	set_property("auto_otherstuff", "");
@@ -760,8 +762,8 @@ void initializeDay(int day)
 		use_skill(1, $skill[Iron Palm Technique]);
 	}
 
-	// Get emotionally chipped if you have the item.  boris\zombie slayer\ed cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_gnoob() || in_darkGyffte()))
+	// Get emotionally chipped if you have the item.  boris\jarlsberg\sneaky pete\zombie slayer\ed cannot use this skill so excluding.
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || is_jarlsberg() || is_pete() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_gnoob() || in_darkGyffte()))
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -1137,6 +1139,7 @@ boolean dailyEvents()
 	auto_buyFrom2002MrStore();
 	auto_useBlackMonolith();
 	auto_scepterSkills();
+	auto_getAprilingBandItems();
 	
 	return true;
 }
@@ -1148,6 +1151,11 @@ boolean Lsc_flyerSeals()
 		return false;
 	}
 	if(get_property("auto_ignoreFlyer").to_boolean())
+	{
+		return false;
+	}
+	// although seals can be fought drunk, it complicates code without serving a purpose
+	if(my_inebriety() > inebriety_limit())
 	{
 		return false;
 	}
@@ -1947,7 +1955,7 @@ void auto_begin()
 	backupSetting("counterScript", "");
 	if (!get_property("auto_disableExcavator").to_boolean())
 	{
-		backupSetting("spadingScript", "excavator.ash");
+		backupSetting("spadingScript", "excavator.js");
 	}
 	backupSetting("hpAutoRecovery", -0.05);
 	backupSetting("hpAutoRecoveryTarget", -0.05);
@@ -1960,6 +1968,7 @@ void auto_begin()
 	backupSetting("logPreferenceChange", "true");
 	backupSetting("logPreferenceChangeFilter", "maximizerMRUList,testudinalTeachings,auto_maximize_current");
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
+	backupSetting("allowNonMoodBurning", true); // required to be true for burn cli cmd to work properly
 
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))

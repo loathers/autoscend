@@ -717,6 +717,25 @@ void finalizeMaximize(boolean speculative)
 		}
 	}
 	
+	if(auto_haveSpringShoes())
+	{
+		if(item_amount($item[ultra-soft ferns])<4 || item_amount($item[crunchy brush])<4) // collect the spring shoes potions
+		{
+			addBonusToMaximize($item[spring shoes], 200);
+		}
+		else // just add a little bonus for the MP generation
+		{
+			addBonusToMaximize($item[spring shoes], 50);
+		}
+	}
+	// We still need pixels in KoE, badly.
+	if(in_koe() && auto_hasPowerfulGlove())
+	{
+		if(koe_NeedWhitePixels())
+		{
+			addBonusToMaximize($item[powerful glove], 250);
+		}
+	}
 	if(pathHasFamiliar())
 	{
 		addBonusToMaximize($item[familiar scrapbook], 200); // scrap generation for banish/exp

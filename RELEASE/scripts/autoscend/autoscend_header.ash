@@ -547,6 +547,20 @@ void auto_useWardrobe();
 ########################################################################################################
 //Defined in autoscend/iotms/mr2024.ash
 boolean auto_haveSpringShoes();
+boolean auto_haveAprilingBandHelmet();
+boolean auto_getAprilingBandItems();
+boolean auto_playAprilSax();
+boolean auto_playAprilTuba();
+boolean auto_setAprilBandNonCombat();
+boolean auto_setAprilBandCombat();
+boolean auto_setAprilBandDrops();
+int auto_AprilSaxLuckyLeft();
+int auto_AprilTubaForcesLeft();
+boolean auto_haveDarts();
+void dartChoiceHandler(int choice, string[int] options);
+int dartBullseyeChance();
+int dartELRcd();
+skill dartSkill();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -746,6 +760,7 @@ boolean in_koe();
 boolean koe_initializeSettings();
 int koe_rmi_count();
 boolean koe_acquire_rmi();
+boolean koe_NeedWhitePixels();
 boolean LX_koeInvaderHandler();
 item koe_L12FoodSelect();
 void koe_RationingOutDestruction();
@@ -1675,6 +1690,7 @@ boolean canBanish(phylum enemyphylum, location loc);
 boolean adjustForBanish(string combat_string);
 boolean adjustForBanishIfPossible(monster enemy, location loc);
 boolean adjustForBanishIfPossible(phylum enemyphylum, location loc);
+boolean auto_wantToFreeRun(monster enemy, location loc);
 boolean canFreeRun(monster enemy, location loc);
 string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat);
 string freeRunCombatString(monster enemy, location loc, boolean inCombat);

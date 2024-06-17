@@ -2,5 +2,5 @@ github Ezandora/Detective-Solver
 github Ezandora/Helix-Fossil
 github Ezandora/Far-Future
 github Ezandora/Voting-Booth
-github gausie/excavator
+github loathers/excavator release
 github loathers/combo release

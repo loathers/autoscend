@@ -4,6 +4,11 @@ string auto_combatExploathingStage1(int round, monster enemy, string text)
 {
 	##stage1 = 1st round actions: puzzle boss, banish, escape, pickpocket, etc. things that need to be done before debuff
 	
+	if (enemy == $monster[The Invader] && canUse($skill[Lunging Thrust-Smack], false) && have_equipped($item[June Cleaver]))
+	{
+		return useSkill($skill[Lunging Thrust-Smack], false);
+	}
+	
 	if (enemy == $monster[The Invader] && canUse($skill[Weapon of the Pastalord], false))
 	{
 		return useSkill($skill[Weapon of the Pastalord], false);

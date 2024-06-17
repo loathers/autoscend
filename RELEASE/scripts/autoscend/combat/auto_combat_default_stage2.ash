@@ -196,8 +196,8 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		combat_status_add("banishercheck");
 	}
 
-	// Free run from monsters we want to banish/phylumbanish but are unable to
-	if(!combat_status_check("freeruncheck") && (auto_wantToBanish(enemy, my_location()) || auto_wantToBanish(monster_phylum(enemy), my_location())))
+	// Free run from monsters we want to banish/phylumbanish but are unable to, or monsters on the free run list
+	if(!combat_status_check("freeruncheck") && (auto_wantToFreeRun(enemy, my_location()) || (auto_wantToBanish(enemy, my_location()) || auto_wantToBanish(monster_phylum(enemy), my_location()))))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")
@@ -387,6 +387,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[lightning strike]);
 		}
 
+		if(canUse($skill[Darts: Aim for the Bullseye]) && have_effect($effect[Everything Looks Red]) == 0 && dartELRcd() <= 40)
+		{
+			set_property("auto_instakillSource", "darts bullseye");
+			set_property("auto_instakillSuccess", true);
+			loopHandlerDelayAll();
+			return useSkill($skill[Darts: Aim for the Bullseye]);
+		}
 		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
 		{
 			if((wantFreeKillNowEspecially || my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))

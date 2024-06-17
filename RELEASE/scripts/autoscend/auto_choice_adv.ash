@@ -6,7 +6,7 @@ boolean auto_run_choice(int choice, string page)
 	
 	auto_log_debug("Running auto_choice_adv.ash");
 	string[int] options = available_choice_options();
-	
+
 	switch(choice)
 	{
 		case 15: // Yeti Nother Hippy (The eXtreme Slope)
@@ -104,7 +104,7 @@ boolean auto_run_choice(int choice, string page)
 			hiddenTempleChoiceHandler(choice, page);
 			break;
 		case 139: // Bait and Switch (The Hippy Camp (Verge of War))
-			if(options contains 4)
+			if(options contains 4 && haveWarOutfit())
 			{
 				run_choice(4); // use your candy cane sword cane to skip to the war start
 			}
@@ -114,7 +114,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 140: // The Thin Tie-Dyed Line (The Hippy Camp (Verge of War))
-			if(options contains 4)
+			if(options contains 4 && haveWarOutfit())
 			{
 				run_choice(4); // use your candy cane sword cane to skip to the war start
 			}
@@ -130,7 +130,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(3); // starts the war. skips adventure if already started.
 			break;
 		case 143: // Catching Some Zetas (Orcish Frat House (Verge of War))
-			if(options contains 4)
+			if(options contains 4 && haveWarOutfit())
 			{
 				run_choice(4); // use your candy cane sword cane to skip to the war start
 			}
@@ -140,7 +140,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 144: // One Less Room Than In That Movie (Orcish Frat House (Verge of War))
-			if(options contains 4)
+			if(options contains 4 && haveWarOutfit())
 			{
 				run_choice(4); // use your candy cane sword cane to skip to the war start
 			}
@@ -317,7 +317,42 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 604: // Welcome to the Great Overlook Lodge (Twin Peak Part 1)
 		case 605: // Welcome to the Great Overlook Lodge (Twin Peak Part 2)
+			run_choice(1); // always advance to next option via choice 1
+			break;
 		case 606: // Lost in the Great Overlook
+			if(in_bhy())
+			{
+				// we can't make an oil jar to solve the quest, just adventure until the hotel is burned down
+				run_choice(6); // and flee the music NC
+				break;
+			}
+			// do init if we can
+			if(options contains 4)
+			{
+				run_choice(4);
+				break;
+			}
+			// do oil jar if we can
+			if(options contains 3 && item_amount($item[jar of oil]) > 0)
+			{
+				run_choice(3);
+				break;
+			}
+			// do pantry search if we can
+			if(options contains 2)
+			{
+				run_choice(2);
+				break;
+			}
+			// do stench test if we can
+			if(options contains 1)
+			{
+				run_choice(1);
+				break;
+			}
+			// getting this NC without being able to pick a choice is not ideal
+			auto_log_warning("Got the Twin Peak NC (Lost in the Great Overlook) without able to complete any of the tasks :(");
+			break;
 		case 607: // Room 237 (Lost in the Great Overlook Lodge)
 		case 608: // Go Check It Out! (Lost in the Great Overlook Lodge)
 		case 609: // There's Always Music In the Air (Lost in the Great Overlook Lodge)
@@ -720,6 +755,9 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 1500: // Like a Loded Stone
 			run_choice(2); // only come here to get shadow waters buff
+			break;
+		case 1525:
+			dartChoiceHandler(choice, options);
 			break;
 		default:
 			break;
