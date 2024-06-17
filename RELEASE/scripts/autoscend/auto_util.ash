@@ -3984,10 +3984,6 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 // 30
 	// Start with the biggest and drill down for max ML
 	tryEffects($effects[Ceaseless Snarling, Punchable Face, Zomg WTF]);
-	if(!in_wereprof())
-	{
-		tryEffects($effects[Keep Free Hate In Your Heart]); // too long of a buff for wereprof
-	}
 
 // 29 >= U >= 25
 	UrKelCheck(ToML, 29, 25);

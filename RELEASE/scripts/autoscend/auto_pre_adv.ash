@@ -802,12 +802,12 @@ boolean auto_pre_adventure()
 		purgeML = false;
 	}
 
-	// want as little ML as possible as professor in wereprof
+	// Path Specific Conditions
 	if(in_wereprof() && !is_werewolf())
 	{
 		doML = false;
 		removeML = true;
-		purgeML = false;
+		purgeML = true;
 	}
 
 	// Act on ML settings
