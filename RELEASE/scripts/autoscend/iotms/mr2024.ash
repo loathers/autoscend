@@ -1,5 +1,7 @@
 # This is meant for items that have a date of 2024
 
+import <c2t_apron.ash>// used in consumeBlackAndWhiteApronKit()
+
 boolean consumeBlackAndWhiteApronKit()
 {
 	item apronKit = $item[Black and White Apron Meal Kit];
@@ -9,14 +11,21 @@ boolean consumeBlackAndWhiteApronKit()
 	}
 	if(fullness_left() < 3)
 	{
-		//return false;
+		return false;
 	}
-	use(apronKit);
-	//run_choice(1);s
-	//visit_url("inv_use.php?whichitem=11472&pwd");
-	//href="inv_use.php?whichitem=11472&pwd"
-	//visit_url("choice.php?pwd=&whichchoice=1518&option=2",true);
-	return true;
+
+	if(!git_exists("C2Talon-c2t_apron-master"))
+	{
+		abort("script c2t_apron didn't install properly. Fix and run autoscend again.");
+	}
+	
+	// configure so no extra ingredients are used
+	set_property("c2t_apron_allowlist","");
+	
+	// consume the apron kit using c2t's script
+	// this will default to consuming food for our current mainstat
+	// https://github.com/C2Talon/c2t_apron
+	return c2t_apron();
 }
 
 boolean auto_haveSpringShoes()
