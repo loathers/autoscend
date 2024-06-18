@@ -1238,7 +1238,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	{
 		int size = 3;
 		float adv = 12.0;
-		int obtainMethod = item_amount(apronKit) > 0 AUTO_OBTAIN_NULL: AUTO_OBTAIN_PULL;
+		int obtainMethod = item_amount(apronKit) > 0 ? AUTO_OBTAIN_NULL : AUTO_OBTAIN_PULL;
 		actions[count(actions)] = new ConsumeAction(apronKit, 0, size, adv, adv, AUTO_ORGAN_STOMACH, obtainMethod);
 	}
 

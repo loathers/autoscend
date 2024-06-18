@@ -33,6 +33,7 @@ boolean consumeBlackAndWhiteApronKit()
 	{
 		allowList += ",2063";
 	}
+	int oilProgress = get_property("twinPeakProgress").to_int();
 	if(((oilProgress & 4) == 1) || item_amount($item[Jar Of Oil]) > 0 || item_amount($item[Bubblin\' Crude]) > 12)
 	{
 		allowList += ",5789";
