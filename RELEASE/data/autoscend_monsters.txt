@@ -84,7 +84,7 @@ freerun	24	Knob Goblin Assistant Chef
 freerun	25	sleeping Knob Goblin Guard
 freerun	26	Sub-Assistant Knob Mad Scientist
 freerun	27	animated mahogany nightstand
-freerun	28	animated ornate nightstand
+freerun	28	animated ornate nightstand	item:Disposable Instant Camera>0;item:Lord Spookyraven's Spectacles>0
 freerun	29	animated rustic nightstand
 freerun	30	Wardröb nightstand
 freerun	31	drunken rat
