@@ -1234,11 +1234,12 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 
 	// Add black and white apron if we are looking to eat
 	item apronKit = $item[Black and White Apron Meal Kit];
-	if(type == AUTO_ORGAN_STOMACH && item_amount(apronKit) > 0 && auto_is_valid(apronKit))
+	if(type == AUTO_ORGAN_STOMACH && (item_amount(apronKit) > 0 || canPull(apronKit)) && auto_is_valid(apronKit))
 	{
 		int size = 3;
 		float adv = 12.0;
-		actions[count(actions)] = new ConsumeAction(apronKit, 0, size, adv, adv, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_NULL);
+		int obtainMethod = item_amount(apronKit) > 0 AUTO_OBTAIN_NULL: AUTO_OBTAIN_PULL;
+		actions[count(actions)] = new ConsumeAction(apronKit, 0, size, adv, adv, AUTO_ORGAN_STOMACH, obtainMethod);
 	}
 
 	// Now, to load cafe consumables. This has some TCRS-specific code.
