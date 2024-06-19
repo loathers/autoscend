@@ -756,14 +756,6 @@ boolean auto_run_choice(int choice, string page)
 		case 1500: // Like a Loded Stone
 			run_choice(2); // only come here to get shadow waters buff
 			break;
-		case 1518: // Prepare your Meal (Black and White Apron Kit)
-			run_choice(1);
-			//string page = visit_url("choice.php?pwd=&whichchoice=1518&option=1",true);
-			boolean works = contains_text(page,"too");
-			print("did it in choice adv");
-			print(works);
-			//print(page);
-			break;
 		case 1525:
 			dartChoiceHandler(choice, options);
 			break;
