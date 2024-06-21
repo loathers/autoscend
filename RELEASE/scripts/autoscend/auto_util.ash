@@ -4468,12 +4468,12 @@ boolean auto_burnMP(int mpToBurn)
 			break;
 		}
 	}
-	if(defaultSkill == $skill[none])
+
+	if(defaultSkill != $skill[none])
 	{
-		// don't have any avaiable default skill. Perhaps in an avatar path
-		return false;
+		// only set a default skill if we have one
+		set_property("lastChanceBurn","cast # " + defaultSkill);
 	}
-	set_property("lastChanceBurn","cast # " + defaultSkill);
 
 	// record starting MP
 	int startingMP = my_mp();
