@@ -4470,9 +4470,6 @@ boolean auto_burnMP(int mpToBurn)
 	}
 	set_property("lastChanceBurn","cast # " + defaultSkill);
 
-	// want to use last chance burn always
-	set_property("lastChanceThreshold",1);
-
 	// record starting MP
 	int startingMP = my_mp();
 	cli_execute("burn " + mpToBurn);
