@@ -329,6 +329,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	{
 		if(consumeBlackAndWhiteApronKit())
 		{
+			handleTracker("Black and White Apron Kit", "auto_eaten");
 			return true;
 		}
 		else
