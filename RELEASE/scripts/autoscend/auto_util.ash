@@ -4459,7 +4459,7 @@ boolean auto_burnMP(int mpToBurn)
 	// burn command only extends existing buffs
 	// set default skill to cast so MP is burned if we don't have any active buffs
 	// only consider the default stating buffs for the 6 standard classes
-	skill defaultSkill;
+	skill defaultSkill = $skill[none];
 	foreach sk in $skills[Sauce Contemplation, Seal Clubbing Frenzy, Patience of the Tortoise, Manicotti Meditation, Disco Aerobics, Moxie of the Mariachi]
 	{
 		if(have_skill(sk))
@@ -4467,6 +4467,11 @@ boolean auto_burnMP(int mpToBurn)
 			defaultSkill = sk;
 			break;
 		}
+	}
+	if(defaultSkill == $skill[none])
+	{
+		// don't have any avaiable default skill. Perhaps in an avatar path
+		return false;
 	}
 	set_property("lastChanceBurn","cast # " + defaultSkill);
 
