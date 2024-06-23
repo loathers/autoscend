@@ -493,10 +493,7 @@ boolean acquireHermitItem(item it)
 	{
 		return false;
 	}
-	if(is_werewolf())
-	{
-		return false; //can access the hermit, but can't buy chewing gum as a Werewolf
-	}
+	
 	if((item_amount($item[Hermit Permit]) == 0) && (my_meat() >= npc_price($item[Hermit Permit])))
 	{
 		auto_buyUpTo(1, $item[Hermit Permit]);
@@ -533,6 +530,10 @@ boolean acquireHermitItem(item it)
 		}
 		else
 		{
+			if(is_werewolf())
+			{
+				return false; //can access the hermit, but can't buy chewing gum as a Werewolf
+			}
 			auto_buyUpTo(1, $item[Chewing Gum on a String]);
 			use(1, $item[Chewing Gum on a String]);
 		}

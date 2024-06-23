@@ -170,14 +170,10 @@ skill dartSkill()
 
 boolean dartEleDmg()
 {
-	string[int] perks;
-	perks = split_string(get_property("everfullDartPerks").to_string().to_lower_case(), ",");
-	foreach perk in perks
+	string perks = get_property("everfullDartPerks").to_string(),to_lower_case();
+	if (contains_text(perks, "add ")) // Only ele dmg perks have "add " in their perk description so as long as we have 1, we are good
 	{
-		if (contains_text(perks[perk], "add ")) // Only ele dmg perks have "add " in their perk description so as long as we have 1, we are good
-		{
-			return true;
-		}	
-	}
+		return true;
+	}	
 	return false;
 }
