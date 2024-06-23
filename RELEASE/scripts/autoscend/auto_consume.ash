@@ -325,6 +325,18 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	{
 		return false;
 	}
+	if(toEat == $item[Black and White Apron Meal Kit])
+	{
+		if(consumeBlackAndWhiteApronKit())
+		{
+			handleTracker("Black and White Apron Kit", "auto_eaten");
+			return true;
+		}
+		else
+		{
+			abort("Attempted to eat food from Black and White Apron Kit, but failed.");
+		}
+	}
 	if(item_amount(toEat) < howMany)
 	{
 		return false;
@@ -1231,6 +1243,16 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		int size = 1;
 		float adv = auto_expectedStillsuitAdvs().to_float();
 		actions[count(actions)] = new ConsumeAction($item[tiny stillsuit], 0, size, adv, adv, AUTO_ORGAN_LIVER, AUTO_OBTAIN_NULL);
+	}
+
+	// Add black and white apron if we are looking to eat
+	item apronKit = $item[Black and White Apron Meal Kit];
+	if(type == AUTO_ORGAN_STOMACH && (item_amount(apronKit) > 0 || canPull(apronKit)) && auto_is_valid(apronKit))
+	{
+		int size = 3;
+		float adv = 12.0;
+		int obtainMethod = item_amount(apronKit) > 0 ? AUTO_OBTAIN_NULL : AUTO_OBTAIN_PULL;
+		actions[count(actions)] = new ConsumeAction(apronKit, 0, size, adv, adv, AUTO_ORGAN_STOMACH, obtainMethod);
 	}
 
 	// Now, to load cafe consumables. This has some TCRS-specific code.
