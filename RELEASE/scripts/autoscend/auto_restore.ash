@@ -1812,7 +1812,7 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 				}
 				if(my_mp() > 0)
 				{
-					catch cli_execute("burn " + min(excessMP,my_mp()));
+					auto_burnMP(min(excessMP,my_mp()));
 				}
 			}
 			use_skill(casts, $skill[Soul Food]);
@@ -1837,7 +1837,7 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 				}
 				if(my_mp() > 0)
 				{
-					catch cli_execute("burn " + min(excessMP,my_mp()));
+					auto_burnMP(min(excessMP,my_mp()));
 				}
 			}
 			use_skill(casts, $skill[Sip Some Sweat]);
@@ -2208,7 +2208,7 @@ boolean doFreeRest(){
 
 		if (mpToBurn > 0)
 		{
-			cli_execute("burn " + mpToBurn);
+			auto_burnMP(mpToBurn);
 		}
 
 		// resting and success check

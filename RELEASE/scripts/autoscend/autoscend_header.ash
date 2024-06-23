@@ -1822,3 +1822,4 @@ boolean hasUsefulShirt();
 int meatReserve();
 boolean auto_wishForEffect(effect wish);
 item wrap_item(item it);
+boolean auto_burnMP(int mpToBurn);
