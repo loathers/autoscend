@@ -4453,3 +4453,31 @@ item wrap_item(item it) // convert an item into another item, used for replicas 
 	}
 	return it;
 }
+
+boolean auto_burnMP(int mpToBurn)
+{
+	// burn command only extends existing buffs
+	// set default skill to cast so MP is burned if we don't have any active buffs
+	// only consider the default stating buffs for the 6 standard classes
+	skill defaultSkill = $skill[none];
+	foreach sk in $skills[Sauce Contemplation, Seal Clubbing Frenzy, Patience of the Tortoise, Manicotti Meditation, Disco Aerobics, Moxie of the Mariachi]
+	{
+		if(have_skill(sk))
+		{
+			defaultSkill = sk;
+			break;
+		}
+	}
+
+	if(defaultSkill != $skill[none])
+	{
+		// only set a default skill if we have one
+		set_property("lastChanceBurn","cast # " + defaultSkill);
+	}
+
+	// record starting MP
+	int startingMP = my_mp();
+	cli_execute("burn " + mpToBurn);
+	return startingMP != my_mp();
+}
+
