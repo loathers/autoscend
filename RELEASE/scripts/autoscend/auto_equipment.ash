@@ -747,7 +747,6 @@ void finalizeMaximize(boolean speculative)
 				if(contains_text(advresearch, mob.id))
 				{
 					monseen += 1;
-					auto_log_info(monseen + " monsters researched of " + totalmob, "blue");
 				}
 			}			
 			if(monseen == totalmob) nooculus = true;
