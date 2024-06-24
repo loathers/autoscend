@@ -738,11 +738,11 @@ void finalizeMaximize(boolean speculative)
 		int totalmob = 0;
 		//calculate total non-boss and non-UR mobs
 		foreach mob, freq in monster_list {
-			if(freq > 0 && mon.id > 0 && mon.copyable && !mon.boss) totalmob += 1;
+			if(freq > 0 && mob.id > 0 && mob.copyable && !mob.boss) totalmob += 1;
 		}
 		//find how many mobs we've already researched and if the count matches total non-boss/non-UR mobs, don't equip the oculus
 		foreach mob, freq in monster_list {
-			if(freq > 0 && mon.id > 0 && mon.copyable && !mon.boss)
+			if(freq > 0 && mob.id > 0 && mob.copyable && !mob.boss)
 			{
 				if(contains_text(advresearch, mob.id))
 				{
