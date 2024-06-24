@@ -23,10 +23,18 @@ string auto_combatWereProfessorStage1(int round, monster enemy, string text)
 
 string auto_combatWereProfessorStage4(int round, monster enemy, string text)
 {
+	//only care about Advanced Research as a Professor
 	if(!in_wereprof())
 	{
 		return "";
 	}
+
+	string advresearch = get_property("wereProfessorAdvancedResearch");
+	if(contains_text(advresearch, enemy.id))
+	{
+		return "";
+	}
+
 	if(!is_werewolf() && wereprof_oculus() && !haveUsed(to_skill(7512)))
 	{
 		markAsUsed(to_skill(7512));
