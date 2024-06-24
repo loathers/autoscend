@@ -731,10 +731,19 @@ void finalizeMaximize(boolean speculative)
 
 	if(in_wereprof() && !is_werewolf() && (possessEquipment($item[biphasic molecular oculus]) || possessEquipment($item[triphasic molecular oculus]))) //Want that Advanced Research as a professor
 	{
+		monster [int] monster_list = get_monsters(my_location());
+		string advresearch = get_property("wereProfessorAdvancedResearch");
+		boolean nooculus = false;
+		int monseen = 0;
+		foreach mon in monster_list {
+			if(contains_text(advresearch, monster_list[mon].id)) monseen += 1;
+			auto_log_info(monseen + " monsters researched of " + count(monster_list), "blue");
+			if monseen == count(monster_list) nooculus = true;
+		}
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
 		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
-		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location()))
+		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location()) && !nooculus)
 		{
 			if(possessEquipment($item[biphasic molecular oculus]))
 			{
