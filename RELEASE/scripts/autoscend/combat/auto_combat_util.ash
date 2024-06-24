@@ -239,7 +239,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -259,10 +259,11 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Make Friends];		//avatar of sneaky pete specific skill
 	}
-	if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
+	//commented out because Mafia doesn't track Hunt yet
+	/*if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
 	{
 		return $skill[Hunt];				//WereProfessor Werewolf specific skill
-	}
+	}*/
 	if(canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5 && !isSniffed(enemy, $skill[Long Con]))
 	{
 		return $skill[Long Con];
