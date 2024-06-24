@@ -736,8 +736,10 @@ void finalizeMaximize(boolean speculative)
 		boolean nooculus = false;
 		int monseen = 0;
 		foreach mon in monster_list {
-			if(contains_text(advresearch, monster_list[mon].id)) monseen += 1;
-			auto_log_info(monseen + " monsters researched of " + count(monster_list), "blue");
+			if(contains_text(advresearch, monster_list[mon].id)){
+				monseen += 1;
+				auto_log_info(monseen + " monsters researched of " + count(monster_list), "blue");
+			}
 			if(monseen == count(monster_list)) nooculus = true;
 		}
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
