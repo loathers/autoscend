@@ -740,7 +740,7 @@ void finalizeMaximize(boolean speculative)
 			if(freq > 0) totalmob += 1;
 		}
 		foreach mob, freq in monster_list {
-			if(freq > 0)
+			if(freq > 0 && mob != monster[none])
 			{
 				if(contains_text(advresearch, mob.id))
 				{
