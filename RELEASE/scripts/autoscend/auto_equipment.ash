@@ -738,7 +738,7 @@ void finalizeMaximize(boolean speculative)
 		foreach mon in monster_list {
 			if(contains_text(advresearch, monster_list[mon].id)) monseen += 1;
 			auto_log_info(monseen + " monsters researched of " + count(monster_list), "blue");
-			if monseen == count(monster_list) nooculus = true;
+			if(monseen == count(monster_list)) nooculus = true;
 		}
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
 		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
