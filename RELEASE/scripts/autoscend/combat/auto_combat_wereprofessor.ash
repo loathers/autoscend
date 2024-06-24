@@ -27,12 +27,10 @@ string auto_combatWereProfessorStage4(int round, monster enemy, string text)
 	{
 		return "";
 	}
-	if(!is_werewolf() && wereprof_oculus())
+	if(!is_werewolf() && wereprof_oculus() && !haveUsed(to_skill(7512)))
 	{
-		if(canUse(to_skill(7512))) //Advanced Research
-		{
-			return(to_skill(7512));
-		}
+		markAsUsed(to_skill(7512));
+		return(to_skill(7512));
 	}
 	return "";
 }
