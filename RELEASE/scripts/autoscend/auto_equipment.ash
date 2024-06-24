@@ -736,11 +736,13 @@ void finalizeMaximize(boolean speculative)
 		boolean nooculus = false;
 		int monseen = 0;
 		int totalmob = 0;
+		//calculate total non-boss and non-UR mobs
 		foreach mob, freq in monster_list {
-			if(freq > 0) totalmob += 1;
+			if(freq > 0 && mon.id > 0 && mon.copyable && !mon.boss) totalmob += 1;
 		}
+		//find how many mobs we've already researched and if the count matches total non-boss/non-UR mobs, don't equip the oculus
 		foreach mob, freq in monster_list {
-			if(freq > 0 && mob != monster[none])
+			if(freq > 0 && mon.id > 0 && mon.copyable && !mon.boss)
 			{
 				if(contains_text(advresearch, mob.id))
 				{
@@ -751,9 +753,10 @@ void finalizeMaximize(boolean speculative)
 			if(monseen == totalmob) nooculus = true;
 		}
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
-		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
+		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
-		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location()) && !nooculus)
+		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location())) nooculus = true;
+		if(!nooculus)
 		{
 			if(possessEquipment($item[biphasic molecular oculus]))
 			{
