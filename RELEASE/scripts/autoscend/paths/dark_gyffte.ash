@@ -22,12 +22,21 @@ void bat_initializeSettings()
 
 boolean bat_wantHowl(location loc)
 {
-	if(!have_skill($skill[Baleful Howl]))
+	if(!auto_have_skill($skill[Baleful Howl]))
 	{
 		return false;
 	}
 	if(auto_banishesUsedAt(loc) contains "baleful howl")
 	{
+		return false;
+	}
+	if(get_property("_balefulHowlUses").to_int() >= 10)
+	{
+		return false;
+	}
+	if(my_hp() <= hp_cost($skill[Baleful Howl]))
+	{
+		// DG doesn't heal in pre-adv, so current HP is how much we will have when we adv
 		return false;
 	}
 	int[monster] banished = banishedMonsters();

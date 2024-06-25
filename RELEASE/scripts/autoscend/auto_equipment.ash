@@ -501,7 +501,7 @@ string defaultMaximizeStatement()
 
 	if(in_darkGyffte())
 	{
-		res += ",0.8hp,3hp regen";
+		res += ",0.8hp,4hp regen";
 	}
 	else
 	{

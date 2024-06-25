@@ -167,7 +167,8 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			return banishAction;
 		}
-		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
+		//we wanted to banish an enemy and failed or banisher did not end combat. 
+		//set a property so we do not bother trying in subsequent rounds
 		combat_status_add("banishercheck");
 	}
 
