@@ -557,8 +557,11 @@ void bedtime_pulls()
 	//scan through all pullable items for items that have a better rollover adv gain than currently best equipped item.
 	bedtime_pulls_rollover_equip();
 
-	//always pull an 11-leaf clover, if possible
-	pullXWhenHaveY($item[11-Leaf Clover], 1, item_amount($item[11-Leaf Clover]));
+	//pull 11-leaf clover if we can use it
+	if(auto_is_valid($item[11-Leaf Clover]))
+	{
+		pullXWhenHaveY($item[11-Leaf Clover], 1, item_amount($item[11-Leaf Clover]));
+	}
 }
 
 boolean doBedtime()
