@@ -508,41 +508,35 @@ void auto_scepterSkills()
 	{
 		return;
 	}
-	//Day 1 skills
-	if(my_daycount() == 1)
+	
+	if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
 	{
-		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
-		}
-		if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
-		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
-		{
-			if(!is100FamRun())
-			{
-				use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
-			}
-			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
-		}
+		use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
 	}
-	//Day 2+ skills
-	if(my_daycount() >= 2)
+	if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
 	{
-		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		if(!is100FamRun())
 		{
-			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+			use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
 		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
-		{
-			if(!is100FamRun())
-			{
-				handleFamiliar("stat"); //get any familiar equipped if not in a 100% run
-			}
-			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
-		}
+		use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+	}
+}
+
+void auto_scepterRollover()
+{
+	if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
+	}
+	if(canUse($skill[Aug. 13th: Left\/Off Hander\'s Day!]) && !get_property("_aug13Cast").to_boolean() &&
+	get_property("_augSkillsCast").to_int()< 5 && numeric_modifier(equipped_item($slot[off-hand]),"Adventures") > 0)
+	{
+		use_skill($skill[Aug. 13th: Left\/Off Hander\'s Day!]); //bump up the off-hand
+	}
+	if(canUse($skill[Aug. 27th: Just Because Day!]) && !get_property("_aug27Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 27th: Just Because Day!]); //3 random buffs
 	}
 }
 
@@ -738,6 +732,211 @@ void auto_handleJillOfAllTrades()
 	}
 
 	return;
+}
+
+boolean auto_haveEagle()
+{
+	if(auto_have_familiar($familiar[Patriotic Eagle]))
+	{
+		return true;
+	}
+	return false;
+}
+
+string activeCitZoneMod() // get the active Citizen of a Zone mods, if any
+{
+	if(!auto_haveEagle() || have_effect($effect[Citizen of a Zone]) == 0)
+	{
+		return "none";
+	}
+	visit_url("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944"); // visit url to refresh Mafia's _citizenZoneMods preference
+	string activeCitZoneMod = get_property("_citizenZoneMods").to_lower_case();
+	return activeCitZoneMod;
+}
+
+boolean auto_getCitizenZone(string goal)
+{
+	familiar eagle = $familiar[Patriotic Eagle];
+	//zones are approximately organized by autoscend level quest structure
+	boolean[location] meatZones = $locations[The Battlefield (Frat Uniform), The Oasis, The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
+	Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
+	boolean[location] itemZones = $locations[A Massive Ziggurat, The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
+	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
+	boolean[location] initZones = $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, An Overgrown Shrine (Northeast),
+	Oil Peak, Cobb's Knob Kitchens, The VERY Unquiet Garves, The Haunted Kitchen];
+	//mp zones are organized by 20-30 mp regen then 10-15 mp regen and then approximately autoscend level quest structure
+	boolean[location] mpZones = $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp,
+	Megalo-City, Shadow Rift, Vanya's Castle, The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,
+	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
+	string activeCitZoneMod = activeCitZoneMod();
+	
+	if((have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal)) || (!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) == 0 && have_effect($effect[Citizen of a Zone]) > 0))
+	{
+		if(have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal))
+		{
+			auto_log_info("No need to remove Citizen of a Zone");
+		}
+		else
+		{
+			auto_log_info("Can't remove Citizen of a Zone");
+		}
+		return false; //if we have the desired Citizen of a Zone effects or we can't remove it
+	}
+	if(!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0) //try to remove Citizen of a Zone
+	{
+		uneffect($effect[Citizen of a Zone]);
+		if(have_effect($effect[Citizen of a Zone]) > 0)
+		{
+			auto_log_debug("Tried to remove Citizen of a Zone but couldn't");
+			return false;
+		}
+	}
+	switch(goal)
+	{
+		case "meat": //Get +50% meat
+			foreach loc in meatZones
+			{
+				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else return false;
+			}
+		case "initiative": //Get +100% initiative. Give the option to add this to a quest later, but currently unused
+			foreach loc in initZones
+			{
+				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else return false;
+			}
+		case "mp": //Get 20-30 mp regen or 10-15 mp regen. Currently only gets 10-15 mp regen in The Spooky Forest
+			foreach loc in mpZones
+			{
+				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else return false;
+			}
+		default: //Get +30% item by default
+			foreach loc in itemZones
+			{
+				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				{
+					handleFamiliar(eagle);
+					if(autoAdv(loc))
+					{
+						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+						{
+							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+							return true;
+						}
+						return false;
+					}
+					return false;
+				}
+				else return false;
+			}
+	}
+	return false;
+}
+
+familiar auto_forceEagle()
+{
+	//Force the Patriotic Eagle if we used a banish recently and can't use one until we burn 11 combats with the Eagle
+	if(auto_haveEagle() && get_property("screechCombats").to_int() > 0)
+	{
+		return $familiar[Patriotic Eagle];
+	}
+	return $familiar[none];
 }
 
 boolean auto_haveBurningLeaves()

@@ -487,6 +487,10 @@ boolean LX_unlockManorSecondFloor() {
 			auto_log_info("Attemping to use Map the Monsters to olfact a writing desk.");
 		}
 	}
+	if(my_location() == $location[The Haunted Library])
+	{
+		auto_getCitizenZone("item"); //since in the library anyway
+	}
 	return autoAdv($location[The Haunted Library]);
 }
 
@@ -2837,6 +2841,11 @@ boolean L11_palindome()
 
 	if (!possessEquipment($item[Talisman o\' Namsilat])) {
 		return false;
+	}
+
+	if (isBanishedPhyla($phylum[dude]) && get_property("screechCombats").to_int() > 0)
+	{
+		return false; //can't unscreech-banish dudes until screechCombats = 0. If new phylum banishers come out, this should be updated.
 	}
 
 	int total = 0;

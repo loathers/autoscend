@@ -500,6 +500,31 @@ boolean isBanished(monster enemy)
 	return (banishedMonsters() contains enemy);
 }
 
+int[phylum] banishedPhyla()
+{
+	int[phylum] retval;
+	string[int] data = split_string(get_property("banishedPhyla"), ":");
+
+	if(get_property("banishedPhyla") == "")
+	{
+		return retval;
+	}
+
+	int i=0;
+	while(i<count(data))
+	{
+		retval[to_phylum(data[i])] = to_int(data[i+2]);
+		i += 3;
+	}
+
+	return retval;
+}
+
+boolean isBanishedPhyla(phylum monsterPhylum)
+{
+	return (banishedPhyla() contains monsterPhylum);
+}
+
 int autoCraft(string mode, int count, item item1, item item2)
 {
 	if((mode == "combine") && !knoll_available())
@@ -693,9 +718,23 @@ boolean auto_wantToBanish(monster enemy, location loc)
 	return monstersToBanish[enemy];
 }
 
+boolean auto_wantToBanish(phylum enemyphylum, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [phylum] phylumToBanish = auto_getPhylum("banish");
+	set_location(locCache);
+	return phylumToBanish[enemyphylum];
+}
+
 boolean canBanish(monster enemy, location loc)
 {
 	return banisherCombatString(enemy, loc) != "";
+}
+
+boolean canBanish(phylum enemyphylum, location loc)
+{
+	return banisherCombatString(enemyphylum, loc) != "";
 }
 
 boolean adjustForBanish(string combat_string)
@@ -746,6 +785,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[Kremlin\'s Greatest Briefcase]);
 	}
+	if(combat_string == "skill" + $skill[%fn\, Release the Patriotic Screech!])
+	{
+		return use_familiar($familiar[Patriotic Eagle]);
+	}
 	if(combat_string == "skill " + $skill[Beancannon])
 	{
 		foreach beancan in $items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork 'n' Pork 'n' Pork 'n' Beans, Shrub's Premium Baked Beans, Tesla's Electroplated Beans, Trader Olaf's Exotic Stinkbeans, World's Blackest-Eyed Peas]
@@ -770,6 +813,17 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 	{
 		string banish_string = banisherCombatString(enemy, loc);
 		auto_log_info("Adjusting to have banisher available for " + enemy + ": " + banish_string, "blue");
+		return adjustForBanish(banish_string);
+	}
+	return false;
+}
+
+boolean adjustForBanishIfPossible(phylum enemyphylum, location loc)
+{
+	if(canBanish(enemyphylum, loc))
+	{
+		string banish_string = banisherCombatString(enemyphylum, loc);
+		auto_log_info("Adjusting to have phylum banisher available for " + enemyphylum + ": " + banish_string, "blue");
 		return adjustForBanish(banish_string);
 	}
 	return false;
@@ -1067,6 +1121,10 @@ boolean adjustForSniffingIfPossible(monster target)
 	if(sniffer == $skill[Monkey Point])
 	{
 		return autoEquip($item[cursed monkey\'s paw]);
+	}
+	if(sniffer == $skill[%fn, fire a Red, White and Blue Blast])
+	{
+		handleFamiliar($familiar[Patriotic Eagle]);
 	}
 	if(sniffer != $skill[none])
 	{
@@ -3301,6 +3359,8 @@ boolean auto_check_conditions(string conds)
 					return true;
 				if(get_property("motifMonster").to_monster() == check_sniffed)
 					return true;
+				if(get_property("rwbMonster").to_monster() == check_sniffed)
+					return true;
 				return false;
 			// data: Doesn't matter, but put something so I don't have to support dataless conditions
 			// True when you expect a protonic ghost report
@@ -3380,6 +3440,27 @@ boolean [monster] auto_getMonsters(string category)
 		if(!auto_check_conditions(conds))
 			continue;
 		res[thisMonster] = true;
+	}
+	return res;
+}
+
+boolean [phylum] auto_getPhylum(string category)
+{
+	boolean [phylum] res;
+	string [string,int,string] phylum_text;
+	if(!file_to_map("autoscend_phylums.txt", phylum_text))
+		auto_log_error("Could not load autoscend_phylums.txt. This is bad!");
+	foreach i,name,conds in phylum_text[category]
+	{
+		phylum thisPhylum = name.to_phylum();
+		if(thisPhylum == $phylum[none])
+		{
+			auto_log_warning('"' + name + '" does not convert to a phylum properly!', "red");
+			continue;
+		}
+		if(!auto_check_conditions(conds))
+			continue;
+		res[thisPhylum] = true;
 	}
 	return res;
 }

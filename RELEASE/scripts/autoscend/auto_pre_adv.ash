@@ -401,6 +401,12 @@ boolean auto_pre_adventure()
 				adjustForYellowRayIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
+			if(auto_wantToBanish(monster_phylum(mon), place))
+			{
+				// attempt to prepare for banishing, but if we can not try free running
+				boolean canBanish = adjustForBanishIfPossible(monster_phylum(mon), place);
+				zoneHasUnwantedMonsters = true;
+			}
 			boolean wantToBanish  = auto_wantToBanish(mon, place);
 			boolean wantToFreeRun = auto_wantToFreeRun(mon, place);
 			if(wantToBanish || wantToFreeRun)
