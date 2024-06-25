@@ -342,7 +342,8 @@ boolean auto_getCinch(int goal)
 	{
 		if(!doFreeRest())
 		{
-			abort("Failed to rest to charge cincho");
+			auto_log_debug("Failed to rest to charge cincho. Will try again later.");
+			return false;
 		}
 	}
 
