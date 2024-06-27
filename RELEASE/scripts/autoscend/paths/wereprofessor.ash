@@ -39,7 +39,7 @@ void wereprof_buySkills()
 		return; // can't access the research bench as a werewolf and don't care about it when we have less than 10 RP
 	}
 	boolean do_skills = true;
-	if((!is_werewolf() && get_property("wereProfessorTransformTurns").to_int() > 3))
+	if(get_property("wereProfessorTransformTurns").to_int() > 3)
 	{
 		do_skills = false; //Want as many RP as possible before looping through the skills
 	}
@@ -48,11 +48,12 @@ void wereprof_buySkills()
 		auto_log_info("Buy skills first", "blue");
 		do_skills = true; //Do skills before we do anything else
 	}
-	if(!is_werewolf() && organsFull() && my_adventures() <= auto_advToReserve() && !(contains_text(get_property("beastSkillsKnown").to_string(), "stomach3") && contains_text(get_property("beastSkillsKnown").to_string(), "liver3")))
+	if(organsFull() && my_adventures() <= auto_advToReserve() && !(contains_text(get_property("beastSkillsKnown").to_string(), "stomach3") && contains_text(get_property("beastSkillsKnown").to_string(), "liver3")))
 	{
 		auto_log_info("Need more organs", "blue");
 		do_skills = true; //If organs are full, should do skills if we need more organ space and don't have all organ expanding skills and limited adventures left
 	}
+	int cantbuy;
 	/* Taken from wereprofessor.txt in Mafia src
 	# Muscle Skill Tree
 	mus1	10	none	Osteocalcin injection	Mus +20%
@@ -122,32 +123,29 @@ void wereprof_buySkills()
 	if(do_skills)
 	{
 		auto_log_info("Buying skills", "blue");
-		int cantbuy;
-		while(rp >= 10)
+		cantbuy = 0;
+		//Priority is: Expanding organs, useful skills (banish, instakill, ELR CD), stat gains, +meat, DR, relatively useless skills and waiting on Mafia support skills
+		foreach sk in $strings[stomach3, liver3, stomach2, liver2, stomach1, liver1, hp3, init3, hp2, init2, hp1, init1, mus3,
+		mox3, mus2, mox2, mus1, mox1, punt, slaughter, pureblood, kick3, kick2, kick1, rend3, rend2, rend1, items3, items2, items1,
+		res3, res2, res1, myst3, myst2, myst1, bite3, bite2, bite1, perfecthair, meat3, meat2, meat1, ml3, ml2, ml1, skin3,
+		skin2, skin1, hunt, feasting, skinheal, howl, feed]
 		{
-			cantbuy = 0;
-			foreach sk in $strings[stomach3, liver3, stomach2, liver2, stomach1, liver1, hp3, init3, hp2, init2, hp1, init1, mus3,
-			mox3, mus2, mox2, mus1, mox1, punt, slaughter, hunt, kick3, kick2, kick1, rend3, rend2, rend1, items3, items2, items1,
-			res3, res2, res1, myst3, myst2, myst1, bite3, bite2, bite1, perfecthair, meat3, meat2, meat1, ml3, ml2, ml1, skin3,
-			skin2, skin1, pureblood, feasting, skinheal, howl, feed]
+			if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
 			{
-				if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
+				if(rpcost[sk] >= rp)
 				{
-					if(rpcost[sk] > rp)
+					cantbuy += 1;
+					if(cantbuy==count(split_string(get_property("beastSkillsAvailable").to_string(),",")))
 					{
-						cantbuy += 1;
-						if(cantbuy==count(split_string(get_property("beastSkillsAvailable").to_string(),",")))
-						{
-							return; //return if we can't buy any beast skills
-						}
+						return; //return if we can't buy any beast skills
 					}
-					else
-					{
-						auto_log_info("Buying " + sk, "blue");
-						cli_execute('wereprofessor research ' + sk);
-						rp = get_property("wereProfessorResearchPoints").to_int();
-						break; //break on buy to reset the foreach loop to look from the top
-					}
+				}
+				else
+				{
+					auto_log_info("Buying " + sk, "blue");
+					cli_execute('wereprofessor research ' + sk);
+					rp = get_property("wereProfessorResearchPoints").to_int();
+					break; //break on buy to reset the foreach loop to look from the top
 				}
 			}
 		}
@@ -155,7 +153,7 @@ void wereprof_buySkills()
 	return;
 }
 
-boolean wereprof_haveEquip()
+boolean wereprof_haveAllEquipment()
 {
 	//Only care about the final equipment
 	if(!possessEquipment($item[triphasic molecular oculus]) || !possessEquipment($item[irresponsible-tension exoskeleton]))
@@ -167,7 +165,7 @@ boolean wereprof_haveEquip()
 
 void wereprof_buyEquip()
 {
-	if(is_werewolf() || wereprof_haveEquip())
+	if(is_werewolf() || wereprof_haveAllEquipment())
 	{
 		return; // can't tinker if we are a werewolf and don't care about anything but the best oculus and exoskeleton
 	}
@@ -251,7 +249,7 @@ boolean LX_wereprof_getSmashedEquip()
 	{
 		return false;
 	}
-	if(!is_werewolf() || wereprof_haveEquip())
+	if(!is_werewolf() || wereprof_haveAllEquipment())
 	{
 		return false;
 	}

@@ -918,6 +918,7 @@ boolean in_wereprof();
 void wereprof_initializeSettings();
 boolean is_werewolf();
 void wereprof_buySkills();
+boolean wereprof_haveAllEquipment();
 void wereprof_buyEquip();
 boolean wereprof_oculus();
 boolean LM_wereprof();
