@@ -123,29 +123,32 @@ void wereprof_buySkills()
 	if(do_skills)
 	{
 		auto_log_info("Buying skills", "blue");
-		cantbuy = 0;
-		//Priority is: Expanding organs, useful skills (banish, instakill, ELR CD), stat gains, +meat, DR, relatively useless skills and waiting on Mafia support skills
-		foreach sk in $strings[stomach3, liver3, stomach2, liver2, stomach1, liver1, hp3, init3, hp2, init2, hp1, init1, mus3,
-		mox3, mus2, mox2, mus1, mox1, punt, slaughter, pureblood, kick3, kick2, kick1, rend3, rend2, rend1, items3, items2, items1,
-		res3, res2, res1, myst3, myst2, myst1, bite3, bite2, bite1, perfecthair, meat3, meat2, meat1, ml3, ml2, ml1, skin3,
-		skin2, skin1, hunt, feasting, skinheal, howl, feed]
+		while(rp >= 10)
 		{
-			if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
+			cantbuy = 0;
+			//Priority is: Expanding organs, useful skills (banish, instakill, ELR CD), stat gains, +meat, DR, relatively useless skills and waiting on Mafia support skills
+			foreach sk in $strings[stomach3, liver3, stomach2, liver2, stomach1, liver1, hp3, init3, hp2, init2, hp1, init1, mus3,
+			mox3, mus2, mox2, mus1, mox1, punt, slaughter, pureblood, kick3, kick2, kick1, rend3, rend2, rend1, items3, items2, items1,
+			res3, res2, res1, myst3, myst2, myst1, bite3, bite2, bite1, perfecthair, meat3, meat2, meat1, ml3, ml2, ml1, skin3,
+			skin2, skin1, hunt, feasting, skinheal, howl, feed]
 			{
-				if(rpcost[sk] >= rp)
+				if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
 				{
-					cantbuy += 1;
-					if(cantbuy==count(split_string(get_property("beastSkillsAvailable").to_string(),",")))
+					if(rpcost[sk] >= rp)
 					{
-						return; //return if we can't buy any beast skills
+						cantbuy += 1;
+						if(cantbuy==count(split_string(get_property("beastSkillsAvailable").to_string(),",")))
+						{
+							return; //return if we can't buy any beast skills
+						}
 					}
-				}
-				else
-				{
-					auto_log_info("Buying " + sk, "blue");
-					cli_execute('wereprofessor research ' + sk);
-					rp = get_property("wereProfessorResearchPoints").to_int();
-					break; //break on buy to reset the foreach loop to look from the top
+					else
+					{
+						auto_log_info("Buying " + sk, "blue");
+						cli_execute('wereprofessor research ' + sk);
+						rp = get_property("wereProfessorResearchPoints").to_int();
+						break; //break on buy to reset the foreach loop to look from the top
+					}
 				}
 			}
 		}
