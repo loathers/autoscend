@@ -751,6 +751,10 @@ boolean rainManSummon(monster target, boolean speculative);
 boolean L13_heavyrains_towerFinal();
 
 ########################################################################################################
+//Defined in autoscend/paths/heavy_rains.ash
+boolean in_iluh();
+
+########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash
 boolean in_koe();
 boolean koe_initializeSettings();
