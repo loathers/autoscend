@@ -304,6 +304,10 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false;
+	}
 
 	string temp = visit_url("place.php?whichplace=town_wrong");
 	if(!(contains_text(temp, "townwrong_tunnel")))

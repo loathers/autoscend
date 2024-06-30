@@ -305,6 +305,10 @@ boolean auto_sausageGoblin(location loc, string option)
 	{
 		return false;
 	}
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false;
+	}
 
 	if(loc == $location[none])
 	{
@@ -817,7 +821,7 @@ boolean auto_beachUseFreeCombs() {
 // place.php?whichplace=campaway
 boolean auto_campawayAvailable()
 {
-	return is_unrestricted($item[Distant Woods Getaway Brochure]) && get_property("getawayCampsiteUnlocked").to_boolean();
+	return is_unrestricted($item[Distant Woods Getaway Brochure]) && get_property("getawayCampsiteUnlocked").to_boolean() && !is_werewolf();
 }
 
 boolean auto_campawayGrabBuffs()

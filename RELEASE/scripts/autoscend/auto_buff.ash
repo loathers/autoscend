@@ -489,6 +489,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Loyal Tea]:					useItem = $item[cuppa Loyal Tea];				break;
 	case $effect[Lucky Struck]:					useItem = $item[Lucky Strikes Holo-Record];		break;
 	case $effect[Lycanthropy\, Eh?]:			useItem = $item[Weremoose Spit];				break;
+	case $effect[Keep Free Hate In Your Heart]:	useItem = $item[Daily Affirmation: Keep Free Hate In Your Heart];	break;
 	case $effect[Kindly Resolve]:				useItem = $item[Resolution: Be Kinder];			break;
 	case $effect[Knob Goblin Perfume]:			useItem = $item[Knob Goblin Perfume];			break;
 	case $effect[Knowing Smile]:				useSkill = $skill[Knowing Smile];				break;

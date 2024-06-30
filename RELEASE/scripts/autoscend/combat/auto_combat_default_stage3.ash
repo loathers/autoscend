@@ -8,6 +8,9 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 	//Unskip stage 2
 	if(get_property("auto_skipStage2").to_boolean()) set_property("auto_skipStage2", false);
+
+	//Skip stage 3 if set
+	if(get_property("auto_skipStage3").to_boolean()) return "";
 	
 	// Path = Heavy Rains
 	retval = auto_combatHeavyRainsStage3(round, enemy, text);

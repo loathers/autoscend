@@ -557,6 +557,7 @@ void dartChoiceHandler(int choice, string[int] options);
 int dartBullseyeChance();
 int dartELRcd();
 skill dartSkill();
+boolean dartEleDmg();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -910,6 +911,18 @@ boolean tcrs_maximize_with_items(string maximizerString);
 ########################################################################################################
 //Defined in autoscend/paths/way_of_the_surprising_fist.ash
 boolean in_wotsf();
+
+########################################################################################################
+//Defined in autoscend/paths/wereprofessor.ash
+boolean in_wereprof();
+void wereprof_initializeSettings();
+boolean is_werewolf();
+void wereprof_buySkills();
+boolean wereprof_haveAllEquipment();
+void wereprof_buyEquip();
+boolean wereprof_oculus();
+boolean LM_wereprof();
+boolean LX_wereprof_getSmashedEquip();
 
 ########################################################################################################
 //Defined in autoscend/paths/wildfire.ash

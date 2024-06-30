@@ -428,6 +428,10 @@ boolean auto_advWitchess(string target, string option)
 	{
 		return false;
 	}
+	if(in_wereprof() && !is_werewolf())
+	{
+		return false;
+	}
 
 	if(my_adventures() == 0)
 	{
@@ -1001,6 +1005,10 @@ boolean LX_ghostBusting()
 		return false;
 	}
 	if(goal == $location[Inside The Palindome] && !possessEquipment($item[Talisman O\' Namsilat]))
+	{
+		return false;
+	}
+	if(in_wereprof() && !is_werewolf())
 	{
 		return false;
 	}
