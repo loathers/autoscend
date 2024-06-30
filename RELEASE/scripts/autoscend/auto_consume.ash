@@ -375,6 +375,10 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		{
 			use(1, $item[whet stone]);
 		}
+		if(item_amount($item[mini kiwi aioli]) > 0) //use mini kiwi aioli if we got one from the mini kiwi
+		{
+			use(1, $item[mini kiwi aioli]);
+		}
 		if(have_effect($effect[Ready to Eat]) > 0)
 		{
 			wasReadyToEat = true;
