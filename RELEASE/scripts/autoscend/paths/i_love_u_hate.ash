@@ -42,4 +42,5 @@ boolean iluh_famAvoid(string fam)
 	{
 		return false;
 	}
+	return true;
 }
