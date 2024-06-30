@@ -566,7 +566,7 @@ boolean canEat(item toEat, boolean checkValidity)
 		// stomach size of 2 in small path
 		return false;
 	}
-	if(in_iluh() && !iluh_foodConsumable(toEat.to_string()))
+	if(in_iluh() && !iluh_foodConsumable(toEat.name))
 	{
 		return false;
 	}
