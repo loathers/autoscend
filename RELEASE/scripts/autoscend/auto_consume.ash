@@ -566,6 +566,10 @@ boolean canEat(item toEat, boolean checkValidity)
 		// stomach size of 2 in small path
 		return false;
 	}
+	if(in_iluh() && !iluh_foodConsumable())
+	{
+		return false;
+	}
 
 	// small path ignores consumable level requirements
 	if(my_level() < toEat.levelreq && !in_small())

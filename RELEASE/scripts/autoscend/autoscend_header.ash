@@ -753,6 +753,7 @@ boolean L13_heavyrains_towerFinal();
 ########################################################################################################
 //Defined in autoscend/paths/heavy_rains.ash
 boolean in_iluh();
+boolean iluh_foodConsumable(string str);
 
 ########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash
