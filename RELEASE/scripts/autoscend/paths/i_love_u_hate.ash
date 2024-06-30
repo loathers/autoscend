@@ -19,14 +19,14 @@ boolean iluh_foodConsumable(string str)
 	{
 		return false;
 	}
-	if(!contains_text(str, "i"))
+	if(contains_text(str, "i"))
 	{
-		return false;
+		return true;
 	}
-	if(!contains_text(str, "I"))
+	if(contains_text(str, "I"))
 	{
-		return false;
+		return true;
 	}
 	
-	return true;
+	return false;
 }
