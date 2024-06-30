@@ -30,3 +30,16 @@ boolean iluh_foodConsumable(string str)
 	
 	return false;
 }
+
+boolean iluh_famAvoid(string fam)
+{
+	if(!in_iluh())
+	{
+		return true;
+	}
+	//Is there an acceptable number of u's? 
+	if(contains_text(fam, "u") || contains_text(fam, "U"))
+	{
+		return false;
+	}
+}

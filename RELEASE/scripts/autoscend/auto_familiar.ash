@@ -153,6 +153,10 @@ boolean auto_have_familiar(familiar fam)
 	{
 		return false;
 	}
+	if(iluh_famAvoid(fam.name))
+	{
+		return false;
+	}
 	
 	return have_familiar(fam);
 }
