@@ -198,59 +198,61 @@ meat	4	Unconscious Collective	prop:_dreamJarDrops<3
 meat	5	Grim Brother	prop:_grimFairyTaleDrops<3
 # Wanna build up heists
 meat	6	Cat Burglar	prop:_catBurglarCharge<30
+# Mini Kiwi for turn gen in 11 Things path
+meat	7	Mini Kiwi	path:11 Things I Hate About U;item:mini kiwi<=8
 # Wanna get booze ingredients
-meat	7	Robortender
+meat	8	Robortender
 # Might as well get tales of spelunking
-meat	8	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
+meat	9	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # Might as well get devilish folios
-meat	9	Blavious Kloop	prop:_kloopDrops<3
+meat	10	Blavious Kloop	prop:_kloopDrops<3
 # Leprechauns with a >1 multiplier
 # 1.5x multiplier leprechaun
-meat	10	Jill-of-All-Trades	item:LED candle>0
+meat	11	Jill-of-All-Trades	item:LED candle>0
 #Mutant Cactus Bud	grimdark:0
-meat	11	Hobo Monkey
+meat	12	Hobo Monkey
 #Mutant Cactus Bud	grimdark:1
 # Does everything
-meat	12	Jill-of-All-Trades
+meat	13	Jill-of-All-Trades
 # Volleychauns
-meat	13	Golden Monkey
-meat	14	Bloovian Groose
-meat	15	Unconscious Collective
-meat	16	Grim Brother
-meat	17	Mini Kiwi
-meat	18	Dramatic Hedgehog
-meat	19	Chauvinist Pig
-meat	20	Uniclops
-meat	21	Hunchbacked Minion
-meat	22	Nervous Tick
-meat	23	Cymbal-Playing Monkey
-meat	24	Cheshire Bat
+meat	14	Golden Monkey
+meat	15	Bloovian Groose
+meat	16	Unconscious Collective
+meat	17	Grim Brother
+meat	18	Mini Kiwi
+meat	19	Dramatic Hedgehog
+meat	20	Chauvinist Pig
+meat	21	Uniclops
+meat	22	Hunchbacked Minion
+meat	23	Nervous Tick
+meat	24	Cymbal-Playing Monkey
+meat	25	Cheshire Bat
 # Fairychauns
-meat	25	Cat Burglar
-meat	26	Blavious Kloop
-meat	27	Adventurous Spelunker
-meat	28	Hippo Ballerina
-meat	29	Dancing Frog
-meat	30	Cheshire Bat
-meat	31	Piano Cat
-meat	32	Psychedelic Bear
-meat	33	Casagnova Gnome
-meat	34	Jitterbug
-meat	35	Attention-Deficit Demon
-meat	36	Coffee Pixie
+meat	26	Cat Burglar
+meat	27	Blavious Kloop
+meat	28	Adventurous Spelunker
+meat	29	Hippo Ballerina
+meat	30	Dancing Frog
+meat	31	Cheshire Bat
+meat	32	Piano Cat
+meat	33	Psychedelic Bear
+meat	34	Casagnova Gnome
+meat	35	Jitterbug
+meat	36	Attention-Deficit Demon
+meat	37	Coffee Pixie
 # Wowee
-meat	37	Hand Turkey
+meat	38	Hand Turkey
 # Sorry, we don't use him for yellow rays but we can at least use him for meat I guess
-meat	38	He-Boulder
+meat	39	He-Boulder
 # Marginally special leprechauns
-meat	39	Ghost of Crimbo Commerce
-meat	40	Knob Goblin Organ Grinder
+meat	40	Ghost of Crimbo Commerce
+meat	41	Knob Goblin Organ Grinder
 #Mutant Cactus Bud	grimdark:2
-meat	41	Urchin Urchin
+meat	42	Urchin Urchin
 # Memes, doesn't actually give substats apparently
-meat	42	Cornbeefadon
+meat	43	Cornbeefadon
 # The original
-meat	43	Leprechaun
+meat	44	Leprechaun
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)
@@ -317,57 +319,59 @@ regen	32	Mosquito
 stat	0	Galloping Grill	ML:>=120
 stat	1	Baby Sandworm	ML:>=120
 stat	2	God Lobster	ML:>=120;item:God Lobster's Ring>0
+# Mini Kiwi for turn gen in 11 Things path
+stat	3	Mini Kiwi	path:11 Things I Hate About U;item:mini kiwi<=8
 # Volleyball or sombrero (whichever is best) with a multiplier
-stat	3	Jill-of-All-Trades	item:LED candle>0
-stat	4	Patriotic Eagle	ML:>=120
-stat	5	Hovering Sombrero	ML:>=120
+stat	4	Jill-of-All-Trades	item:LED candle>0
+stat	5	Patriotic Eagle	ML:>=120
+stat	6	Hovering Sombrero	ML:>=120
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
-stat	6	Crimbo Shrub
+stat	7	Crimbo Shrub
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
 # Fairyeverything
-stat	7	Jill-of-All-Trades
+stat	8	Jill-of-All-Trades
 # Fairyballs
-stat	8	Elf Operative
-stat	9	Optimistic Candle
-stat	10	Rockin' Robin
-stat	11	Hobo in Sheep's Clothing
+stat	9	Elf Operative
+stat	10	Optimistic Candle
+stat	11	Rockin' Robin
+stat	12	Hobo in Sheep's Clothing
 # Volleychauns
-stat	12	Ghost of Crimbo Commerce
-stat	13	Golden Monkey
-stat	14	Bloovian Groose
-stat	15	Unconscious Collective
-stat	16	Grim Brother
-stat	17	Mini Kiwi
-stat	18	Dramatic Hedgehog
-stat	19	Chauvinist Pig
-stat	20	Uniclops
-stat	21	Hunchbacked Minion
-stat	22	Nervous Tick
-stat	23	Cymbal-Playing Monkey
-stat	24	Cheshire Bat
+stat	13	Ghost of Crimbo Commerce
+stat	14	Golden Monkey
+stat	15	Bloovian Groose
+stat	16	Unconscious Collective
+stat	17	Grim Brother
+stat	18	Mini Kiwi
+stat	19	Dramatic Hedgehog
+stat	20	Chauvinist Pig
+stat	21	Uniclops
+stat	22	Hunchbacked Minion
+stat	23	Nervous Tick
+stat	24	Cymbal-Playing Monkey
+stat	25	Cheshire Bat
 # VolleyWhelps
-stat	25	Melodramedary
+stat	26	Melodramedary
 # Build up weight for free runs
-stat	26	Frumious Bandersnatch
+stat	27	Frumious Bandersnatch
 # Slightly special volleyballs
-stat	27	Ghost of Crimbo Cheer
-stat	28	Reanimated Reanimator
-stat	29	God Lobster
-stat	30	Party Mouse
-stat	31	Lil' Barrel Mimic
-stat	32	Piranha Plant
-stat	33	Antique Nutcracker
-stat	34	Jill-O-Lantern
+stat	28	Ghost of Crimbo Cheer
+stat	29	Reanimated Reanimator
+stat	30	God Lobster
+stat	31	Party Mouse
+stat	32	Lil' Barrel Mimic
+stat	33	Piranha Plant
+stat	34	Antique Nutcracker
+stat	35	Jill-O-Lantern
 # Fancy
-stat	35	Miniature Sword &amp; Martini Guy
+stat	36	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	36	Grinning Turtle
+stat	37	Grinning Turtle
 # His winning smile
-stat	37	Smiling Rat
+stat	38	Smiling Rat
 # The original
-stat	38	Blood-Faced Volleyball
+stat	39	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work

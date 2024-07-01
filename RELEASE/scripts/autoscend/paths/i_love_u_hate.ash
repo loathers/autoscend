@@ -11,19 +11,11 @@ boolean iluh_foodConsumable(string str)
 	}
 
 	//can't consume anything with a u in it. Must have an i in it
-	if(contains_text(str, "u"))
+	if(contains_text(str.to_lower_case(), "u"))
 	{
 		return false;
 	}
-	if(contains_text(str, "U"))
-	{
-		return false;
-	}
-	if(contains_text(str, "i"))
-	{
-		return true;
-	}
-	if(contains_text(str, "I"))
+	if(contains_text(str.to_lower_case(), "i"))
 	{
 		return true;
 	}
@@ -31,14 +23,14 @@ boolean iluh_foodConsumable(string str)
 	return false;
 }
 
-boolean iluh_famAvoid(string fam)
+boolean iluh_famAllowed(string fam)
 {
 	if(!in_iluh())
 	{
 		return true;
 	}
-	//Is there an acceptable number of u's? 
-	if(contains_text(fam, "u") || contains_text(fam, "U"))
+	//Is there an acceptable number of u's? Familiars with u's in name deal 10-20 sleaze damage per U each round
+	if(contains_text(fam.to_lower_case(), "u"))
 	{
 		return false;
 	}

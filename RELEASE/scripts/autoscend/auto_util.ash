@@ -2996,6 +2996,10 @@ boolean auto_is_valid(item it)
 	{
 		return bhy_is_item_valid(it);
 	}
+	if(in_iluh())
+	{
+		return iluh_foodConsumable(it.to_string());
+	}
 	
 	return is_unrestricted(it);
 }
@@ -3006,7 +3010,7 @@ boolean auto_is_valid(familiar fam)
 	{
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
-	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && is_unrestricted(fam);
+	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && iluh_famAllowed(fam.to_string()) && is_unrestricted(fam);
 }
 
 boolean auto_is_valid(skill sk)
