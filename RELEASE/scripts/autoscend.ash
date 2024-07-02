@@ -1,4 +1,4 @@
-since r27930;	// mayam
+since r27955;	// consider free rests from mayam chair
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
