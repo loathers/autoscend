@@ -4460,6 +4460,9 @@ boolean auto_burnMP(int mpToBurn)
 	// set default skill to cast so MP is burned if we don't have any active buffs
 	// only consider the default stating buffs for the 6 standard classes
 	skill defaultSkill = $skill[none];
+	// mafia will attempt to cast the last chance burn skill even if we no longer have it, like in avatar paths
+	// clear pref to avoid abbort due to not having the skill
+	set_property("lastChanceBurn","");
 	foreach sk in $skills[Sauce Contemplation, Seal Clubbing Frenzy, Patience of the Tortoise, Manicotti Meditation, Disco Aerobics, Moxie of the Mariachi]
 	{
 		if(have_skill(sk))
