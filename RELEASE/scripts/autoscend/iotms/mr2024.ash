@@ -190,6 +190,12 @@ boolean auto_MayamIsUsed(string glyph)
 	return false;
 }
 
+boolean auto_MayamAllUsed()
+{
+	// mayam is currently fully used if all 3 ring1 symbols have been used
+	return auto_MayamIsUsed("yam1") && auto_MayamIsUsed("eye") && auto_MayamIsUsed("vessel");
+}
+
 boolean auto_MayamClaimStinkBomb()
 {
 	if(!auto_haveMayamCalendar())
@@ -267,6 +273,10 @@ boolean auto_MayamClaimWhatever()
 boolean auto_MayamClaimAll()
 {
 	if(!auto_haveMayamCalendar())
+	{
+		return false;
+	}
+	if(auto_MayamAllUsed())
 	{
 		return false;
 	}
