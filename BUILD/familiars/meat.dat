@@ -9,6 +9,8 @@ Unconscious Collective	prop:_dreamJarDrops<3
 Grim Brother	prop:_grimFairyTaleDrops<3
 # Wanna build up heists
 Cat Burglar	prop:_catBurglarCharge<30
+# Mini Kiwi for turn gen in 11 Things path
+Mini Kiwi	path:11 Things I Hate About U;item:mini kiwi<=8
 # Wanna get booze ingredients
 Robortender
 # Might as well get tales of spelunking
@@ -28,6 +30,7 @@ Golden Monkey
 Bloovian Groose
 Unconscious Collective
 Grim Brother
+Mini Kiwi
 Dramatic Hedgehog
 Chauvinist Pig
 Uniclops

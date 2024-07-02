@@ -432,6 +432,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Heart of Yellow]:				useItem = $item[yellow candy heart];			break;
 	case $effect[Hide of Sobek]:				useSkill = $skill[Hide of Sobek];				break;
 	case $effect[High Colognic]:				useItem = $item[Musk Turtle];					break;
+	case $effect[Hippy Antimilitarism]:			useItem = $item[mini kiwi antimilitaristic hippy petition];	break;
 	case $effect[Hippy Stench]:					useItem = $item[reodorant];						break;
 	case $effect[Hot Hands]:					useItem = $item[lotion of hotness];				break;
 	case $effect[How to Scam Tourists]:			useItem = $item[How to Avoid Scams];			break;
@@ -450,6 +451,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Icy Glare]:					useSkill = $skill[Icy Glare];					break;
 	case $effect[Impeccable Coiffure]:			useSkill = $skill[Self-Combing Hair];			break;
 	case $effect[Inigo\'s Incantation of Inspiration]:useSkill = $skill[Inigo\'s Incantation of Inspiration];break;
+	case $effect[Incredibly Healthy]:			useItem = $item[mini kiwi illicit antibiotic];	break;
 	case $effect[Incredibly Hulking]:			useItem = $item[Ferrigno\'s Elixir of Power];	break;
 	case $effect[Incredibly Well Lit]:			useSkill = $skill[Aug. 7th: Lighthouse Day!];	break;
 	case $effect[Industrial Strength Starch]:	useItem = $item[Industrial Strength Starch];	break;
