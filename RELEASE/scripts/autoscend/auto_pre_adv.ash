@@ -952,7 +952,7 @@ boolean auto_pre_adventure()
 		if(wasted_mp > 0 && my_mp() > 400)
 		{
 			auto_log_info("Burning " + wasted_mp + " MP...");
-			cli_execute("burn " + wasted_mp);
+			auto_burnMP(wasted_mp);
 		}
 	}
 	borisWastedMP();

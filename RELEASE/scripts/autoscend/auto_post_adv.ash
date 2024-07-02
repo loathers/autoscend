@@ -61,6 +61,11 @@ boolean auto_post_adventure()
 		return true;
 	}
 
+	if($strings[Coyote Ugly, Gutterbound, The Too-Much Booze Blues, What's that smell?, Hey\, baby.  Wanna wrestle?] contains get_property("lastEncounter"))
+	{
+		abort("Adventured while drunk and got drunken stupor NC: " + get_property("lastEncounter"));
+	}
+
 	set_property("auto_nextEncounter","");
 
 	/* This tracks noncombat-forcers like Clara's Bell and stench jelly, which
