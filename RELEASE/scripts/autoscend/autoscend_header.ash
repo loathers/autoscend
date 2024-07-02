@@ -559,6 +559,7 @@ int dartELRcd();
 skill dartSkill();
 boolean auto_haveMayamCalendar();
 boolean auto_MayamIsUsed(string glyph);
+boolean auto_MayamAllUsed();
 boolean auto_MayamClaimStinkBomb();
 boolean auto_MayamClaimBelt();
 boolean auto_MayamClaimWhatever();
