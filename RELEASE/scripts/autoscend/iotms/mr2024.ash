@@ -243,7 +243,7 @@ boolean auto_MayamIsUsed(string glyph)
 boolean auto_MayamAllUsed()
 {
 	// mayam is currently fully used if all 3 ring1 symbols have been used
-	return auto_MayamIsUsed("yam1") && auto_MayamIsUsed("eye") && auto_MayamIsUsed("vessel");
+	return auto_MayamIsUsed("yam4") && auto_MayamIsUsed("clock") && auto_MayamIsUsed("explosion");
 }
 
 boolean auto_MayamClaimStinkBomb()
@@ -292,13 +292,14 @@ boolean auto_MayamClaimWhatever()
 	string ring4 = "BAD_VALUE";
 	boolean failure = false;
 	
-	if      (!auto_MayamIsUsed("yam1"))   { ring1 = "yam"; }
+	if      (!auto_MayamIsUsed("chair") && auto_haveCincho())   { ring1 = "chair"; }
+	// todo: add support for giving appropriate fam 100xp with fur option
 	else if (!auto_MayamIsUsed("eye"))    { ring1 = "eye"; }
 	else if (!auto_MayamIsUsed("vessel")) { ring1 = "vessel"; }
 	else { failure = true; }
 	
-	if      (!auto_MayamIsUsed("yam2"))   { ring2 = "yam"; }
-	else if (!auto_MayamIsUsed("wood"))   { ring2 = "wood"; }
+	if      (!auto_MayamIsUsed("wood") && (lumberCount() < 30 || fastenerCount() < 30))   { ring2 = "wood"; }
+	else if (!auto_MayamIsUsed("lightning"))   { ring2 = "lightning"; }
 	else if (!auto_MayamIsUsed("meat"))   { ring2 = "meat"; }
 	else { failure = true; }
 	
