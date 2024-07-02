@@ -542,6 +542,7 @@ void auto_useWardrobe();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2024.ash
+boolean consumeBlackAndWhiteApronKit();
 boolean auto_haveSpringShoes();
 boolean auto_haveAprilingBandHelmet();
 boolean auto_getAprilingBandItems();
@@ -1829,3 +1830,4 @@ boolean hasUsefulShirt();
 int meatReserve();
 boolean auto_wishForEffect(effect wish);
 item wrap_item(item it);
+boolean auto_burnMP(int mpToBurn);

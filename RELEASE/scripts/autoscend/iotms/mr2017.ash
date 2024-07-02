@@ -819,7 +819,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 	{
 		if(!dontCare)
 		{
-			auto_log_info("We did not initialize the briefcase this ascension, we can not care", "red");
+			auto_log_info("We did not initialize the briefcase this ascension, we do not care", "red");
 			dontCare = true;
 		}
 	}
@@ -909,7 +909,7 @@ boolean kgb_getMartini(string page, boolean dontCare)
 			{
 				if(button == 0)
 				{
-					abort("Can not seem to recover situation regarding splendid martinis");
+					abort("Cannot seem to recover situation regarding splendid martinis");
 				}
 				auto_log_info("Trying to restore tabs", "green");
 				continue;
@@ -1773,6 +1773,11 @@ boolean[monster] failedWishMonsters;
 
 boolean canGenieCombat(monster mon)
 {
+	if(!mon.wishable)
+	{
+		return false;
+	}
+	
 	item bottle = wrap_item($item[Genie Bottle]);
 	boolean haveBottle = item_amount(bottle) > 0;
 	boolean bottleWishesLeft = get_property("_genieWishesUsed").to_int() < 3;
@@ -1822,7 +1827,7 @@ boolean makeGenieCombat(monster mon, string option)
 	string[int] pages;
 	item bottle = wrap_item($item[Genie Bottle]);
 	int wish_provider = bottle.to_int();
-	if (item_amount($item[pocket wish]) > 0)
+	if (item_amount($item[pocket wish]) > 0 && auto_is_valid($item[pocket wish]))
 	{
 		wish_provider = $item[pocket wish].to_int();
 	}

@@ -1,5 +1,55 @@
 # This is meant for items that have a date of 2024
 
+import <c2t_apron.ash>// used in consumeBlackAndWhiteApronKit()
+
+boolean consumeBlackAndWhiteApronKit()
+{
+	item apronKit = $item[Black and White Apron Meal Kit];
+	if(fullness_left() < 3)
+	{
+		return false;
+	}
+	if(item_amount(apronKit) < 1)
+	{
+		return false;
+	}
+
+	if(!git_exists("C2Talon-c2t_apron-master"))
+	{
+		abort("script c2t_apron didn't install properly. Fix and run autoscend again.");
+	}
+	
+	// default ingredient allow list. Allow all but:
+	// Potentially quest relevant: Blackberry, Bubblin' crude, enchanted bean
+	// Extra cold damage: grapefruit
+	// 20ml: dill
+	string allowList = "3489,1356,1560,2525,3490,748,1562,1557,1561,3491,\
+	1122,1559,2094,183,182,2338,237,787,1004,238,328,1005,2583,1006,589,672,2524,304,6724,\
+	1462,161,158,358,2589,55,302,332,170,2532,187,357,245,242,4956,830,165,1003,8,786,1558,\
+	246,4,159,209";
+
+	// allow quest items if no longer needed
+	if(possessEquipment($item[Blackberry Galoshes]) || item_amount($item[Blackberry]) > 3)
+	{
+		allowList += ",2063";
+	}
+	int oilProgress = get_property("twinPeakProgress").to_int();
+	if(((oilProgress & 4) == 1) || item_amount($item[Jar Of Oil]) > 0 || item_amount($item[Bubblin\' Crude]) > 12)
+	{
+		allowList += ",5789";
+	}
+	if(item_amount($item[Enchanted Bean]) > 1 || internalQuestStatus("questL10Garbage") >= 1)
+	{
+		allowList += ",186";
+	}
+	set_property("c2t_apron_allowlist",allowList);
+	
+	// consume the apron kit using c2t's script
+	// this will default to consuming food for our current mainstat
+	// https://github.com/C2Talon/c2t_apron
+	return c2t_apron();
+}
+
 boolean auto_haveSpringShoes()
 {
 	if(auto_is_valid($item[spring shoes]) && available_amount($item[spring shoes]) > 0 )

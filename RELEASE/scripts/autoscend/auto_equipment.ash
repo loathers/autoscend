@@ -424,7 +424,7 @@ void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip
 	}
 	else if(alwaysEquip)
 	{
-		catch cli_execute("burn " + (targetedMP - my_maxmp()));
+		auto_burnMP(targetedMP - my_maxmp());
 		doEquips = true;
 	}
 	

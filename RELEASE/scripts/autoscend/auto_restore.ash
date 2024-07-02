@@ -1812,7 +1812,7 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 				}
 				if(my_mp() > 0)
 				{
-					catch cli_execute("burn " + min(excessMP,my_mp()));
+					auto_burnMP(min(excessMP,my_mp()));
 				}
 			}
 			use_skill(casts, $skill[Soul Food]);
@@ -1837,7 +1837,7 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 				}
 				if(my_mp() > 0)
 				{
-					catch cli_execute("burn " + min(excessMP,my_mp()));
+					auto_burnMP(min(excessMP,my_mp()));
 				}
 			}
 			use_skill(casts, $skill[Sip Some Sweat]);
@@ -2165,7 +2165,7 @@ int auto_potentialMaxFreeRests()
 	// we can get the count of "intrinsic" free rests e.g perm'd skills & rests you get just from having something available in run
 	int potential = numeric_modifier("Free Rests");
 
-	if (auto_canUseJuneCleaver() && !possessEquipment($item[mother's necklace]))
+	if (auto_canUseJuneCleaver() && !possessEquipment($item[mother\'s necklace]))
 	{
 		potential += 5;
 	}
@@ -2208,7 +2208,7 @@ boolean doFreeRest(){
 
 		if (mpToBurn > 0)
 		{
-			cli_execute("burn " + mpToBurn);
+			auto_burnMP(mpToBurn);
 		}
 
 		// resting and success check
