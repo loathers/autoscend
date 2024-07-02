@@ -2996,7 +2996,7 @@ boolean auto_is_valid(item it)
 	{
 		return bhy_is_item_valid(it);
 	}
-	if(in_iluh())
+	if(in_iluh() && it.fullness > 0) // only care about foods being consumable in iluh
 	{
 		return iluh_foodConsumable(it.to_string());
 	}
