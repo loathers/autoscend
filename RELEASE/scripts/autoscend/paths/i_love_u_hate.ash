@@ -54,7 +54,7 @@ void iluh_buyEquiq()
 	{
 		create(1, $item[mini kiwi whipping stick]);
 	}
-	if(item_amount($item[mini kiwi]) >= 4 && equipmentAmount($item[mini kiwi invisible dirigible]) == 0)
+	if(item_amount($item[mini kiwi]) >= 3 && equipmentAmount($item[mini kiwi invisible dirigible]) == 0)
 	{
 		create(1, $item[mini kiwi invisible dirigible]);
 	}
