@@ -2478,6 +2478,16 @@ boolean L11_redZeppelin()
 	{
 		auto_beachCombHead("sleaze");
 	}
+	foreach sl in $slots[acc1, acc2, acc3]
+	{
+		if((numeric_modifier(equipped_item(sl), "sleaze damage") + numeric_modifier(equipped_item(sl), "sleaze spell damage")) < 60)
+		{
+			if(item_amount($item[mini kiwi]) >= 2 && equipmentAmount($item[mini kiwi bikini]) < 3)
+			{
+				create(1, $item[mini kiwi bikini]);
+			}
+		}
+	}
 
 	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
 	{
