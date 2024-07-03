@@ -1,4 +1,4 @@
-since r27897;	// additional monster parts
+since r27980;	// feat: beer from wiki, kiwi plurals
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
