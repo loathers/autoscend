@@ -47,7 +47,7 @@ void iluh_buyEquiq()
 {
 	if(!in_iluh())
 	{
-		return false;
+		return;
 	}
 
 	if(item_amount($item[mini kiwi]) >= 4 && equipmentAmount($item[mini kiwi whipping stick]) == 0)
@@ -58,4 +58,5 @@ void iluh_buyEquiq()
 	{
 		create(1, $item[mini kiwi invisible dirigible]);
 	}
+	 return;
 }
