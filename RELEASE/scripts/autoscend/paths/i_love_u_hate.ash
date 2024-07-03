@@ -11,7 +11,7 @@ boolean iluh_foodConsumable(string str)
 	}
 
 	//Not actually going to ever be consumed but need this exception to actually make it for the Palindome quest
-	if(contains_text(str.to_lower_case(), "wet stunt nut stew"))
+	if(contains_text(str.to_lower_case(), "stunt nut"))
 	{
 		return true;
 	}
