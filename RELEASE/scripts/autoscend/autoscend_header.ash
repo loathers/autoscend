@@ -756,6 +756,7 @@ boolean in_iluh();
 boolean iluh_foodConsumable(string str);
 boolean iluh_famAllowed(string fam);
 void iluh_buyEquiq();
+void iluh_pulls();
 
 ########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash

@@ -614,6 +614,8 @@ int handlePulls(int day)
 
 		// pulls for small path
 		auto_SmallPulls();
+		// pulls for 11THIAU path
+		iluh_pulls();
 
 		if((storage_amount($item[etched hourglass]) > 0) && auto_is_valid($item[etched hourglass]))
 		{

@@ -50,13 +50,30 @@ void iluh_buyEquiq()
 		return;
 	}
 
-	if(item_amount($item[mini kiwi]) >= 4 && equipmentAmount($item[mini kiwi whipping stick]) == 0)
+	if(item_amount($item[mini kiwi]) >= 4 && possessEquipment($item[mini kiwi whipping stick]))
 	{
 		create(1, $item[mini kiwi whipping stick]);
 	}
-	if(item_amount($item[mini kiwi]) >= 3 && equipmentAmount($item[mini kiwi invisible dirigible]) == 0)
+	if(item_amount($item[mini kiwi]) >= 3 && possessEquipment($item[mini kiwi invisible dirigible]))
 	{
 		create(1, $item[mini kiwi invisible dirigible]);
 	}
 	 return;
+}
+
+void iluh_pulls()
+{
+	if(!in_iluh())
+	{
+		return;
+	}
+
+	if(storage_amount($item[mini kiwi whipping stick]) > 0 && auto_is_valid($item[mini kiwi whipping stick]))
+	{
+		pullXWhenHaveY($item[mini kiwi whipping stick], 1, 0);
+	}
+	if(storage_amount($item[mini kiwi bikini]) > 0 && auto_is_valid($item[mini kiwi bikini]))
+	{
+		pullXWhenHaveY($item[mini kiwi bikini], 1, 0);
+	}
 }
