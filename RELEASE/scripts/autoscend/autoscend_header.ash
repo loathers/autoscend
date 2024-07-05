@@ -25,6 +25,7 @@ boolean LX_burnDelay();
 boolean LX_calculateTheUniverse(boolean speculative);
 boolean tophatMaker();
 boolean LX_doVacation();
+boolean auto_doTempleSummit();
 void initializeDay(int day);
 boolean dailyEvents();
 boolean Lsc_flyerSeals();
@@ -558,6 +559,13 @@ int dartBullseyeChance();
 int dartELRcd();
 skill dartSkill();
 boolean dartEleDmg();
+boolean auto_haveMayamCalendar();
+boolean auto_MayamIsUsed(string glyph);
+boolean auto_MayamAllUsed();
+boolean auto_MayamClaimStinkBomb();
+boolean auto_MayamClaimBelt();
+boolean auto_MayamClaimWhatever();
+boolean auto_MayamClaimAll();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

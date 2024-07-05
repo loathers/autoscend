@@ -654,6 +654,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[[7510]Punt];
 	}
 	
+	if((item_amount($item[stuffed yam stinkbomb]) > 0) && (!(used contains "stuffed yam stinkbomb")) && auto_is_valid($item[stuffed yam stinkbomb]))
+	{
+		return "item " + $item[stuffed yam stinkbomb];
+	}
+
 	if(auto_have_skill($skill[[28021]Punt]) && (my_mp() > mp_cost($skill[[28021]Punt])) && !(used contains "Punt"))
 	{
 		return "skill " + $skill[[28021]Punt];
