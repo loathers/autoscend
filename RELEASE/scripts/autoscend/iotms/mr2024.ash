@@ -217,3 +217,125 @@ skill dartSkill()
 	}
 	return to_skill(7513); // If there aren't any darts available return the Darts: Throw at %PART1
 }
+
+boolean auto_haveMayamCalendar()
+{
+	if(auto_is_valid($item[Mayam Calendar]) && available_amount($item[Mayam Calendar]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_MayamIsUsed(string glyph)
+{
+	string[int] used = split_string(get_property("_mayamSymbolsUsed"),",");
+	foreach idx,str in used
+	{
+		if (glyph==str)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean auto_MayamAllUsed()
+{
+	// mayam is currently fully used if all 3 ring1 symbols have been used
+	return auto_MayamIsUsed("yam4") && auto_MayamIsUsed("clock") && auto_MayamIsUsed("explosion");
+}
+
+boolean auto_MayamClaimStinkBomb()
+{
+	if(!auto_haveMayamCalendar())
+	{
+		return false;
+	}
+	if(auto_MayamIsUsed("vessel") ||
+	   auto_MayamIsUsed("yam2")   ||
+	   auto_MayamIsUsed("cheese") ||
+	   auto_MayamIsUsed("explosion") )
+	{
+		return false;
+	}
+	cli_execute("mayam rings vessel yam cheese explosion");
+	return true;
+}
+
+boolean auto_MayamClaimBelt()
+{
+	if(!auto_haveMayamCalendar())
+	{
+		return false;
+	}
+	if(auto_MayamIsUsed("yam1") ||
+	   auto_MayamIsUsed("meat")   ||
+	   auto_MayamIsUsed("eyepatch") ||
+	   auto_MayamIsUsed("yam4") )
+	{
+		return false;
+	}
+	cli_execute("mayam rings yam meat eyepatch yam");
+	return true;
+}
+
+boolean auto_MayamClaimWhatever()
+{
+	if(!auto_haveMayamCalendar())
+	{
+		return false;
+	}
+	string ring1 = "BAD_VALUE";
+	string ring2 = "BAD_VALUE";
+	string ring3 = "BAD_VALUE";
+	string ring4 = "BAD_VALUE";
+	boolean failure = false;
+	
+	if      (!auto_MayamIsUsed("chair") && auto_haveCincho())   { ring1 = "chair"; }
+	// todo: add support for giving appropriate fam 100xp with fur option
+	else if (!auto_MayamIsUsed("eye"))    { ring1 = "eye"; }
+	else if (!auto_MayamIsUsed("vessel")) { ring1 = "vessel"; }
+	else { failure = true; }
+	
+	if      (!auto_MayamIsUsed("wood") && (lumberCount() < 30 || fastenerCount() < 30))   { ring2 = "wood"; }
+	else if (!auto_MayamIsUsed("lightning"))   { ring2 = "lightning"; }
+	else if (!auto_MayamIsUsed("meat"))   { ring2 = "meat"; }
+	else { failure = true; }
+	
+	if      (!auto_MayamIsUsed("yam3"))   { ring3 = "yam"; }
+	else if (!auto_MayamIsUsed("cheese")) { ring3 = "cheese"; }
+	else if (!auto_MayamIsUsed("wall"))   { ring3 = "wall"; }
+	else { failure = true; }
+	
+	if      (!auto_MayamIsUsed("yam4"))      { ring4 = "yam"; }
+	else if (!auto_MayamIsUsed("clock"))     { ring4 = "clock"; }
+	else if (!auto_MayamIsUsed("explosion")) { ring4 = "explosion"; }
+	else { failure = true; }
+	if (failure)
+	{
+		return false;
+	}
+	
+	cli_execute("mayam rings "+ring1+" "+ring2+" "+ring3+" "+ring4);
+	return true;
+}
+
+boolean auto_MayamClaimAll()
+{
+	if(!auto_haveMayamCalendar())
+	{
+		return false;
+	}
+	if(auto_MayamAllUsed())
+	{
+		return false;
+	}
+	auto_log_info("Claiming mayam calendar items");
+	auto_MayamClaimStinkBomb();
+	auto_MayamClaimBelt();
+	auto_MayamClaimWhatever();
+	auto_MayamClaimWhatever();
+	auto_MayamClaimWhatever();
+	return true;
+}
