@@ -680,7 +680,13 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 				return true;
 			}
 			// lodestene will be consumed for a free NC to get this buff
-			autoAdv(auto_availableBrickRift());
+			// visit url directly to not run pre adv script
+			switch(auto_availableBrickRift())
+			{
+			case $location[Shadow Rift (The Ancient Buried Pyramid)]:		visit_url("place.php?whichplace=pyramid&action=pyramid_shadowrift");	break;
+			case $location[Shadow Rift (The Hidden City)]:				visit_url("place.php?whichplace=hiddencity&action=hc_shadowrift");		break;
+			case $location[Shadow Rift (The Misspelled Cemetary)]:		visit_url("place.php?whichplace=cemetery&action=cem_shadowrift");		break;
+			}
 		}
 		break;
 	case $effect[Shells of the Damned]:			useItem = $item[cyan seashell];					break;
