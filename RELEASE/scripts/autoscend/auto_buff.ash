@@ -679,13 +679,18 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 			{
 				return true;
 			}
+			int startingShadwWatersAdvs = have_effect($effect[Shadow Waters]);
 			// lodestene will be consumed for a free NC to get this buff
 			// visit url directly to not run pre adv script
 			switch(auto_availableBrickRift())
 			{
-			case $location[Shadow Rift (The Ancient Buried Pyramid)]:		visit_url("place.php?whichplace=pyramid&action=pyramid_shadowrift");	break;
+			case $location[Shadow Rift (The Ancient Buried Pyramid)]:	visit_url("place.php?whichplace=pyramid&action=pyramid_shadowrift");	break;
 			case $location[Shadow Rift (The Hidden City)]:				visit_url("place.php?whichplace=hiddencity&action=hc_shadowrift");		break;
 			case $location[Shadow Rift (The Misspelled Cemetary)]:		visit_url("place.php?whichplace=cemetery&action=cem_shadowrift");		break;
+			}
+			if(have_effect($effect[Shadow Waters]) == startingShadwWatersAdvs)
+			{
+				abort("Failed to get Shadow Waters buff");
 			}
 		}
 		break;
