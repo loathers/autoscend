@@ -50,11 +50,11 @@ void iluh_buyEquiq()
 		return;
 	}
 
-	if(item_amount($item[mini kiwi]) >= 4 && possessEquipment($item[mini kiwi whipping stick]))
+	if(item_amount($item[mini kiwi]) >= 4 && !possessEquipment($item[mini kiwi whipping stick]))
 	{
 		create(1, $item[mini kiwi whipping stick]);
 	}
-	if(item_amount($item[mini kiwi]) >= 3 && possessEquipment($item[mini kiwi invisible dirigible]))
+	if(item_amount($item[mini kiwi]) >= 3 && !possessEquipment($item[mini kiwi invisible dirigible]))
 	{
 		create(1, $item[mini kiwi invisible dirigible]);
 	}

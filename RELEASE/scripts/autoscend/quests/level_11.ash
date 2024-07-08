@@ -2482,7 +2482,7 @@ boolean L11_redZeppelin()
 	{
 		if((numeric_modifier(equipped_item(sl), "sleaze damage") + numeric_modifier(equipped_item(sl), "sleaze spell damage")) < 60)
 		{
-			if(item_amount($item[mini kiwi]) >= 2 && equipmentAmount($item[mini kiwi bikini]) < 3)
+			if(item_amount($item[mini kiwi]) >= 2 && equipmentAmount($item[mini kiwi bikini]) < 3 && auto_is_valid($item[mini kiwi bikini]))
 			{
 				create(1, $item[mini kiwi bikini]);
 			}
