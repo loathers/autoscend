@@ -2000,6 +2000,7 @@ void auto_begin()
 	backupSetting("maximizerMRUSize", 0); // shuts the maximizer spam up!
 	backupSetting("allowNonMoodBurning", true); // required to be true for burn cli cmd to work properly
 	backupSetting("lastChanceThreshold", 1); // burn command will always use last chance skill, if we have no active buffs
+	backupSetting("lastChanceBurn",""); // clear default mana burn skill so mafia doesn't attempt to cast a skill we don't currently have
 
 	string charpane = visit_url("charpane.php");
 	if(contains_text(charpane, "<hr width=50%><table"))
