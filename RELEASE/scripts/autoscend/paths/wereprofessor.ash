@@ -38,6 +38,10 @@ void wereprof_buySkills()
 	{
 		return; // can't access the research bench as a werewolf and don't care about it when we have less than 10 RP
 	}
+	if(get_property("beastSkillsAvailable") == "")
+	{
+		cli_execute('wereprofessor research');			//parse the research bench
+	}
 	boolean do_skills = true;
 	if(get_property("wereProfessorTransformTurns").to_int() > 3)
 	{
