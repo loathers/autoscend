@@ -222,6 +222,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		{
 			useSkill = $skill[Seek Out a Bird];
 		}																						break;
+	case $effect[Blessing of the War Snapper]:
+		if(auto_have_skill($skill[Blessing of the War Snapper]) && acquireTotem())
+		{
+			useSkill = $skill[Blessing of the War Snapper];
+		}																						break;					
 	case $effect[Blessing of Your Favorite Bird]:
 		if(auto_favoriteBirdCanSeek())
 		{
