@@ -297,7 +297,7 @@ boolean L7_crypt()
 
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
 	{
-		if(in_wereprof() && !is_werewolf()) //don't do if we are the Professor. Death Rattlin' = Beaten Up
+		if(is_professor()) //don't do if we are the Professor. Death Rattlin' = Beaten Up
 		{
 			return false;
 		}

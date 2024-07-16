@@ -729,7 +729,7 @@ void finalizeMaximize(boolean speculative)
 		}
 	}
 
-	if(in_wereprof() && !is_werewolf() && (possessEquipment($item[biphasic molecular oculus]) || possessEquipment($item[triphasic molecular oculus]))) //Want that Advanced Research as a professor
+	if(is_professor() && (possessEquipment($item[biphasic molecular oculus]) || possessEquipment($item[triphasic molecular oculus]))) //Want that Advanced Research as a professor
 	{
 		float [monster] monster_list = appearance_rates(my_location());
 		string advresearch = get_property("wereProfessorAdvancedResearch");
@@ -768,7 +768,7 @@ void finalizeMaximize(boolean speculative)
 		}
 	}
 
-	if(in_wereprof() && !is_werewolf() && (possessEquipment($item[high-tension exoskeleton]) || possessEquipment($item[ultra-high-tension exoskeleton]) || possessEquipment($item[irresponsible-tension exoskeleton]))) //Want that damage avoidance
+	if(is_professor() && (possessEquipment($item[high-tension exoskeleton]) || possessEquipment($item[ultra-high-tension exoskeleton]) || possessEquipment($item[irresponsible-tension exoskeleton]))) //Want that damage avoidance
 	{
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
 		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,

@@ -122,7 +122,7 @@ void oldPeoplePlantStuff()
 	{
 		addml = false;
 	}
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
 		addml = false;
 	}

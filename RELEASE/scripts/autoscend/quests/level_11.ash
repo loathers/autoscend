@@ -2260,7 +2260,7 @@ boolean L11_mauriceSpookyraven()
 
 	if (internalQuestStatus("questL11Manor") > 2)
 	{
-		if(in_wereprof() && !is_werewolf())
+		if(is_professor())
 		{
 			return false;		//Can't beat Lord Spookyraven as the Professor
 		}
@@ -2432,7 +2432,7 @@ boolean L11_mauriceSpookyraven()
 			autoEquip($slot[acc2], $item[gumshoes]);
 		}
 		
-		if(in_wereprof() && !is_werewolf())
+		if(is_professor())
 		{
 			// +ML is BAD for professor
 			auto_change_mcd(0);
@@ -2686,7 +2686,7 @@ boolean L11_shenStartQuest()
 		return false;
 	}
 	
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
 		return false; //can't do Copperhead Club as a Professor
 	}
@@ -2726,7 +2726,7 @@ boolean L11_shenCopperhead()
 		return false;
 	}
 
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
 		return false; //can't do Copperhead Club as a Professor
 	}

@@ -1153,9 +1153,9 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
-		return false; //Only 1 HP as a professor
+		return false; //Only 1 HP as a professor so can't stasis long enough
 	}
 	if(get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 192))
 	{
@@ -1725,7 +1725,7 @@ boolean L12_themtharHills()
 
 	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 	{
-		if(!is_werewolf() && in_wereprof())
+		if(is_professor())
 		{
 			//Need to manually equip because professor
 			if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
@@ -2245,9 +2245,9 @@ boolean L12_finalizeWar()
 	{
 		return false;
 	}
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
-		return false; //need to wait until werewolf because can't kill Boss as a Prof
+		return false; //need to wait until werewolf because can't survive combat long enough as a Prof
 	}
 
 	if(possessOutfit("War Hippy Fatigues"))

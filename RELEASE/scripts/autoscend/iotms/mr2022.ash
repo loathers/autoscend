@@ -22,7 +22,7 @@ boolean auto_voidMonster(location loc)
 		return false;
 	}
 
-	if (in_wereprof() && !is_werewolf())
+	if (is_professor())
 	{
 		return false; //can't beat the void guys as a professor
 	}
@@ -60,7 +60,7 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 		return "";
 	}
 
-	if(!is_werewolf() && in_wereprof())
+	if(is_professor())
 	{
 		return ""; //Handle specially in WereProf Combat file
 	}

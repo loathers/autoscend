@@ -304,7 +304,7 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
 		return false;
 	}

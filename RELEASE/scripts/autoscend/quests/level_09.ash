@@ -370,7 +370,7 @@ boolean L9_aBooPeak()
 	}
 	int clueAmt = item_amount(clue);
 
-	if(in_wereprof() && !is_werewolf() && clueAmt >= 3)
+	if(is_professor() && clueAmt >= 3)
 	{
 		return false; // We have clues but we can't survive them so not worth trying when we only have 1 hp
 	}
@@ -882,7 +882,7 @@ boolean L9_oilPeak()
 		return false;
 	}
 
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
 		return false; //can't do Oil Peak as a Professor
 	}

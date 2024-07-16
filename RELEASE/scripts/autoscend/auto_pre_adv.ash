@@ -803,7 +803,7 @@ boolean auto_pre_adventure()
 	}
 
 	// Path Specific Conditions
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())  //WereProfessor professor doesn't like ML
 	{
 		doML = false;
 		removeML = true;

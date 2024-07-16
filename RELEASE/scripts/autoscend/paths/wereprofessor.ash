@@ -27,6 +27,19 @@ boolean is_werewolf()
 	return false;
 }
 
+boolean is_professor()
+{
+	if(!in_wereprof())
+	{
+		return false;
+	}
+	if(have_effect($effect[Mild-Mannered Professor]) > 0)
+	{
+		return true;
+	}
+	return false;
+}
+
 void wereprof_buySkills()
 {
 	if(!in_wereprof())
@@ -47,7 +60,7 @@ void wereprof_buySkills()
 	{
 		do_skills = false; //Want as many RP as possible before looping through the skills
 	}
-	if((!is_werewolf() && turns_played() == 0))
+	if((is_professor() && turns_played() == 0))
 	{
 		auto_log_info("Buy skills first", "blue");
 		do_skills = true; //Do skills before we do anything else
@@ -256,7 +269,7 @@ boolean LX_wereprof_getSmashedEquip()
 	{
 		return false;
 	}
-	if(!is_werewolf() || wereprof_haveAllEquipment())
+	if(is_professor() || wereprof_haveAllEquipment())
 	{
 		return false;
 	}

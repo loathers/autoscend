@@ -925,6 +925,7 @@ boolean in_wotsf();
 boolean in_wereprof();
 void wereprof_initializeSettings();
 boolean is_werewolf();
+boolean is_professor();
 void wereprof_buySkills();
 boolean wereprof_haveAllEquipment();
 void wereprof_buyEquip();

@@ -42,12 +42,12 @@ LX_spookyravenManorFirstFloor
 L5_getEncryptionKey
 L5_findKnob
 # Quests with Werewolf/Professor specific limitations should have higher priority so we do those when we can
-L12_Gremlins is_werewolf
-L11_forgedDocuments !is_werewolf
-L11_mcmuffinDiary !is_werewolf
-L11_getUVCompass !is_werewolf
-L11_mauriceSpookyraven is_werewolf
-L11_shenCopperhead is_werewolf
+L12_Gremlins	is_werewolf
+L11_forgedDocuments	is_professor
+L11_mcmuffinDiary	is_professor
+L11_getUVCompass	is_professor
+L11_mauriceSpookyraven	is_werewolf
+L11_shenCopperhead	is_werewolf
 L9_aBooPeak
 L9_oilPeak
 L8_trapperGroar

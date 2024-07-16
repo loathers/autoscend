@@ -428,7 +428,7 @@ boolean auto_advWitchess(string target, string option)
 	{
 		return false;
 	}
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
 		return false;
 	}
@@ -1008,7 +1008,7 @@ boolean LX_ghostBusting()
 	{
 		return false;
 	}
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
 		return false;
 	}

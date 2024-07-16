@@ -861,7 +861,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			blacklist[it] = true;
 		}
 	}
-	if(in_wereprof() && (!is_werewolf() || (is_werewolf() && get_property("wereProfessorTransformTurns") < 50)))
+	if(is_professor() || (is_werewolf() && get_property("wereProfessorTransformTurns") < 50))
 	{
 		blacklist[$item[plain calzone]] = true; //because 50 turn buff and can only handle +ML as a werewolf, either blacklist altogether or get lucky and eat ASAP as a werewolf
 	}

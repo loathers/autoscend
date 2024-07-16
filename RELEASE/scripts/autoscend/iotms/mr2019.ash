@@ -305,7 +305,7 @@ boolean auto_sausageGoblin(location loc, string option)
 	{
 		return false;
 	}
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
 		return false;
 	}

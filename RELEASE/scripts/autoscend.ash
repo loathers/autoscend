@@ -1397,7 +1397,7 @@ boolean adventureFailureHandler()
 		}
 	}
 
-	if(last_monster() == $monster[Crate] && (in_wereprof() && !is_werewolf() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave as a Werewolf
+	if(last_monster() == $monster[Crate] && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
 	{
 		if(get_property("auto_newbieOverride").to_boolean())
 		{

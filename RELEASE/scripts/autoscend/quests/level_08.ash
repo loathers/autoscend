@@ -696,7 +696,7 @@ boolean L8_trapperGroar()
 	{
 		return false;
 	}
-	if(in_wereprof() && !is_werewolf())
+	if(is_professor())
 	{
 		return false; //don't try for Groar as Professor
 	}

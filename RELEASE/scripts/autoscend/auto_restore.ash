@@ -2132,7 +2132,7 @@ int doRest()
 		}
 
 	}
-	else if (!is_werewolf() && in_wereprof())
+	else if(is_professor())
 	{
 		visit_url("place.php?whichplace=wereprof_cottage&action=wereprof_sleep");
 	}
