@@ -338,7 +338,7 @@ WereProfessor	14	LX_wereprof_getSmashedEquip
 # make sure we don't waste turns of Ultrahydrated doing something else.
 WereProfessor	15	L11_aridDesert	L11_hasUltrahydrated
 # Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
-WereProfessor	16	L11_shenStartQuest is_werewolf
+WereProfessor	16	L11_shenStartQuest	is_werewolf
 # Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
 WereProfessor	17	finishBuildingSmutOrcBridge
 # Underground Adventuring for CMC/Breathitin.

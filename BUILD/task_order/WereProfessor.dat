@@ -17,7 +17,7 @@ LX_wereprof_getSmashedEquip
 # make sure we don't waste turns of Ultrahydrated doing something else.
 L11_aridDesert	L11_hasUltrahydrated
 # Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
-L11_shenStartQuest is_werewolf
+L11_shenStartQuest	is_werewolf
 # Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
 finishBuildingSmutOrcBridge
 # Underground Adventuring for CMC/Breathitin.
