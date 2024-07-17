@@ -2685,12 +2685,7 @@ boolean L11_shenStartQuest()
 	{
 		return false;
 	}
-	
-	if(is_professor())
-	{
-		return false; //can't do Copperhead Club as a Professor
-	}
-	
+		
 	auto_log_info("Going to see the World's Biggest Jerk about some snakes and stones and stuff.", "blue");
 	if (autoAdv($location[The Copperhead Club]))
 	{
@@ -2726,14 +2721,12 @@ boolean L11_shenCopperhead()
 		return false;
 	}
 
-	if(is_professor())
-	{
-		return false; //can't do Copperhead Club as a Professor
-	}
-
-
 	if (internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
 	{
+		if(is_professor())
+		{
+			return false; //can't do Copperhead Club as a Professor but can do other parts of Shen quest
+		}
 		if (item_amount($item[Crappy Waiter Disguise]) > 0 && have_effect($effect[Crappily Disguised as a Waiter]) == 0 && !in_tcrs())
 		{
 			use(1, $item[Crappy Waiter Disguise]);
