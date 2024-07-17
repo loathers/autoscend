@@ -46,7 +46,8 @@ L12_Gremlins	is_werewolf
 L11_forgedDocuments	is_professor
 L11_mcmuffinDiary	is_professor
 L11_getUVCompass	is_professor
-L11_mauriceSpookyraven	is_werewolf
+# Putting Lord Spookyraven here because he is limited but to get to him isn't
+L11_mauriceSpookyraven
 L11_shenCopperhead	is_werewolf
 L9_aBooPeak
 L9_oilPeak

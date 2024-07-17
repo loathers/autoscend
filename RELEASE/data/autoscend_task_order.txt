@@ -367,7 +367,8 @@ WereProfessor	30	L12_Gremlins	is_werewolf
 WereProfessor	31	L11_forgedDocuments	is_professor
 WereProfessor	32	L11_mcmuffinDiary	is_professor
 WereProfessor	33	L11_getUVCompass	is_professor
-WereProfessor	34	L11_mauriceSpookyraven	is_werewolf
+# Putting Lord Spookyraven here because he is limited but to get to him isn't
+WereProfessor	34	L11_mauriceSpookyraven
 WereProfessor	35	L11_shenCopperhead	is_werewolf
 WereProfessor	36	L9_aBooPeak
 WereProfessor	37	L9_oilPeak
