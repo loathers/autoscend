@@ -783,6 +783,11 @@ string auto_FireExtinguisherCombatString(location place)
 		return "";
 	}
 
+	if(in_wereprof())
+	{
+		return "";
+	}
+
 	// once per ascension uses
 	if($locations[Guano Junction, The Batrat and Ratbat Burrow, The Beanbat Chamber] contains place && !get_property("fireExtinguisherBatHoleUsed").to_boolean())
 	{
