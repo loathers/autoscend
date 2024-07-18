@@ -751,7 +751,7 @@ boolean doBedtime()
 		boolean notNeeded = have_effect($effect[Everything Looks Yellow]) > 0 || hasDisintegrate || canYellowRay(); //have a common unlimited source of YR, no need to make viral video
 		boolean baconUnused = item_amount($item[BACON]) >= (100*my_daycount() - 20*(my_daycount() - 1));  //BACON hasn't been used for something else this ascension
 		if(auto_is_valid($item[Viral Video]) && !notNeeded && baconUnused &&
-		!in_koe())	//bacon store is unreachable in kingdom of exploathing
+		!in_koe() && !is_werewolf())	//bacon store is unreachable in kingdom of exploathing or as werewolf
 		{
 			//can only buy 1 per day and more than one a day might be wanted later so buy today's viral video
 			create(1, $item[Viral Video]);
@@ -1230,6 +1230,10 @@ boolean doBedtime()
 	boolean canChangeToStooper()
 	{
 		if (in_small()) // In smol, the stooper can be equipped, but does not modify the liver size
+		{
+			return false;
+		}
+		if (in_wereprof()) // stooper does not give added benefit in WereProfessor
 		{
 			return false;
 		}
