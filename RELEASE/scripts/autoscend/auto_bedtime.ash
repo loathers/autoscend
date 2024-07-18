@@ -1233,10 +1233,6 @@ boolean doBedtime()
 		{
 			return false;
 		}
-		if (in_wereprof()) // stooper does not give added benefit in WereProfessor
-		{
-			return false;
-		}
 		if(have_familiar($familiar[Stooper]) &&	//do not use auto_ that returns false in 100run, which stooper drinking does not interrupt.
 		pathAllowsChangingFamiliar() &&		//some paths forbid familiar or dont allow changing it but mafia still indicates you have the familiar
 		my_familiar() != $familiar[Stooper])
