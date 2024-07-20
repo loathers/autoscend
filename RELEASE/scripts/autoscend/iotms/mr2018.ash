@@ -788,11 +788,6 @@ boolean neverendingPartyCombat()
 		return false;
 	}
 
-	if(is_professor())
-	{
-		return false;
-	}
-
 	if(in_glover()) // only non stat effect is valid in G-Lover
 	{
 		fightClubSpa($effect[Flagrantly Fragrant]);

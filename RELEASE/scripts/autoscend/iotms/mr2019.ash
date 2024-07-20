@@ -305,10 +305,6 @@ boolean auto_sausageGoblin(location loc, string option)
 	{
 		return false;
 	}
-	if(is_professor())
-	{
-		return false;
-	}
 
 	if(loc == $location[none])
 	{

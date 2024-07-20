@@ -304,10 +304,6 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
-	if(is_professor())
-	{
-		return false;
-	}
 
 	string temp = visit_url("place.php?whichplace=town_wrong");
 	if(!(contains_text(temp, "townwrong_tunnel")))
