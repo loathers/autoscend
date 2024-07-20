@@ -1229,7 +1229,7 @@ boolean doBedtime()
 
 	boolean canChangeToStooper()
 	{
-		if (in_small()) // In smol, the stooper can be equipped, but does not modify the liver size
+		if (in_small() || in_wereprof()) // In smol and wereprofessor, the stooper can be equipped, but does not modify the liver size
 		{
 			return false;
 		}
