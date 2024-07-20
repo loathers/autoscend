@@ -932,6 +932,7 @@ void wereprof_buyEquip();
 boolean wereprof_oculus();
 boolean LM_wereprof();
 boolean LX_wereprof_getSmashedEquip();
+boolean wereprof_usable(string str);
 
 ########################################################################################################
 //Defined in autoscend/paths/wildfire.ash

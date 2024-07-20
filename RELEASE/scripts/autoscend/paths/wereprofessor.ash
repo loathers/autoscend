@@ -287,3 +287,16 @@ boolean LX_wereprof_getSmashedEquip()
 	}
 	return false;
 }
+
+boolean wereprof_usable(string str)
+{
+	if(!in_wereprof())
+	{
+		return true;
+	}
+	if(str == "Stooper") //currently only thing we don't want at all
+	{
+		return false;
+	}
+	return true;
+}
