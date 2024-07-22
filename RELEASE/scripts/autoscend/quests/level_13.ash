@@ -73,6 +73,11 @@ boolean EightBitRealmHandler()
 	boolean adv_spent = false;
 
 	string color = get_property("8BitColor");
+	if((internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0) && available_amount($item[Continuum Transfunctioner]) == 0)
+	{
+		// need distant woods and continuum transfunctioner
+		return false;
+	}
 	switch(color)
 	{
 		case "black":
@@ -391,6 +396,12 @@ boolean L13_towerNSContests()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_01_contestbooth"))
 	{
+		if(in_wereprof() && get_property("wereProfessorTransformTurns") < 48)
+		{
+			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
+			visit_url("choice.php?pwd=&whichchoice=1003&option=5", true); //want as many turns of werewolf as possible at the contest booth so refresh with this choice
+			visit_url("main.php");
+		}
 		if(get_property("nsContestants1").to_int() == -1)
 		{
 			resetMaximize();
@@ -1487,7 +1498,7 @@ boolean L13_towerNSTower()
 		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 		boolean has_boning_knife = item_amount($item[Electric Boning Knife]) > 0;
 		
-		if(has_boning_knife || in_pokefam())		//I have everything I need. just go fight
+		if(has_boning_knife || in_pokefam() || (in_wereprof() && canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0))		//I have everything I need. just go fight
 		{
 			return autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
 		}
@@ -1818,6 +1829,11 @@ boolean L13_towerNSFinal()
 	if(in_lol())
 	{
 		abort("Freeing the king will result in losing all your replica IOTM. Enjoy them while you have them!");
+	}
+
+	if(in_wereprof() && (0 < item_amount($item[Thwaitgold wolf spider statuette])))
+	{
+		abort("Freeing the king will result in a path change. Go howl at the moon some more if you want.");
 	}
 
 	if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))

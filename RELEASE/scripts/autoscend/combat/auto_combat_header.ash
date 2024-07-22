@@ -147,6 +147,12 @@ string auto_combatTheSourceStage4(int round, monster enemy, string text);
 string auto_combatBHYStage1(int round, monster enemy, string text);
 
 #####################################################
+//defined in /autoscend/combat/auto_combat_wereprofessor.ash
+string auto_combatWereProfessorStage1(int round, monster enemy, string text);
+string auto_combatWereProfessorStage4(int round, monster enemy, string text);
+string auto_combatWereProfessorStage5(int round, monster enemy, string text);
+
+#####################################################
 //defined in /autoscend/combat/auto_combat_wildfire.ash
 string auto_combatWildfireStage1(int round, monster enemy, string text);
 

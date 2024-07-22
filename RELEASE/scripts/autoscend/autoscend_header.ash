@@ -558,6 +558,7 @@ void dartChoiceHandler(int choice, string[int] options);
 int dartBullseyeChance();
 int dartELRcd();
 skill dartSkill();
+boolean dartEleDmg();
 boolean auto_haveMayamCalendar();
 boolean auto_MayamIsUsed(string glyph);
 boolean auto_MayamAllUsed();
@@ -918,6 +919,20 @@ boolean tcrs_maximize_with_items(string maximizerString);
 ########################################################################################################
 //Defined in autoscend/paths/way_of_the_surprising_fist.ash
 boolean in_wotsf();
+
+########################################################################################################
+//Defined in autoscend/paths/wereprofessor.ash
+boolean in_wereprof();
+void wereprof_initializeSettings();
+boolean is_werewolf();
+boolean is_professor();
+void wereprof_buySkills();
+boolean wereprof_haveAllEquipment();
+void wereprof_buyEquip();
+boolean wereprof_oculus();
+boolean LM_wereprof();
+boolean LX_wereprof_getSmashedEquip();
+boolean wereprof_usable(string str);
 
 ########################################################################################################
 //Defined in autoscend/paths/wildfire.ash
