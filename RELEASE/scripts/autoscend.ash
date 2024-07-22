@@ -85,6 +85,7 @@ import <autoscend/paths/small.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
 import <autoscend/paths/way_of_the_surprising_fist.ash>
+import <autoscend/paths/wereprofessor.ash>
 import <autoscend/paths/wildfire.ash>
 import <autoscend/paths/you_robot.ash>
 import <autoscend/paths/zombie_slayer.ash>
@@ -280,6 +281,7 @@ void initializeSettings() {
 	fotd_initializeSettings();
 	lol_initializeSettings();
 	small_initializeSettings();
+	wereprof_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -587,9 +589,9 @@ boolean tophatMaker()
 
 boolean LX_doVacation()
 {
-	if(in_koe())
+	if(in_koe() || is_werewolf())
 	{
-		return false;		//cannot vacation in kingdom of exploathing path
+		return false;		//cannot vacation in kingdom of exploathing path or are a werewolf in wereprofessor
 	}
 	
 	int meat_needed = 500;
@@ -786,7 +788,7 @@ void initializeDay(int day)
 	}
 
 	// Get emotionally chipped if you have the item.  boris\jarlsberg\sneaky pete\zombie slayer\ed cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || is_jarlsberg() || is_pete() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_gnoob() || in_darkGyffte()))
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || is_jarlsberg() || is_pete() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_gnoob() || in_darkGyffte() || in_wereprof()))
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -864,7 +866,7 @@ void initializeDay(int day)
 			{
 				acquireGumItem($item[disco ball]);
 			}
-			if(!(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber()))
+			if(!(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber() || in_wereprof()))
 			{
 				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && ((my_meat() > npc_price($item[Toy Accordion])) && (npc_price($item[Toy Accordion]) != 0)))
 				{
@@ -1396,7 +1398,7 @@ boolean adventureFailureHandler()
 		}
 	}
 
-	if(last_monster() == $monster[Crate])
+	if(last_monster() == $monster[Crate] && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
 	{
 		if(get_property("auto_newbieOverride").to_boolean())
 		{
@@ -1813,6 +1815,8 @@ boolean doTasks()
 	pete_buySkills();
 	zombieSlayer_buySkills();
 	lol_buyReplicas();
+	wereprof_buySkills();
+	wereprof_buyEquip();
 	iluh_buyEquiq();
 
 	oldPeoplePlantStuff();
@@ -1860,6 +1864,7 @@ boolean doTasks()
 	if(LM_robot())						return true;
 	if(LM_plumber())					return true;
 	if(LM_zombieSlayer())				return true;
+	if(LM_wereprof())					return true;
 
 	{
 		cheeseWarMachine(0, 0, 0, 0);

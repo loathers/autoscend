@@ -798,6 +798,7 @@ boolean canFreeRun(monster enemy, location loc)
 string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat)
 {
 	if (isFreeMonster(enemy, loc)) return "";
+	if (is_werewolf()) return ""; //can't freerun as a Werewolf in WereProfessor
 
 	// Prefer some specalized free run items before other sources
 	if (!inAftercore() && have_effect($effect[Everything Looks Green]) == 0)
@@ -821,6 +822,7 @@ string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inComba
 string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 {
 	if (isFreeMonster(enemy, my_location())) return "";
+	if (is_werewolf()) return ""; //can't freerun as a Werewolf in WereProfessor
 	string pre_banish = freeRunCombatStringPreBanish(enemy, loc, inCombat);
 	if (pre_banish != "") return pre_banish;
 
@@ -856,6 +858,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		// TODO add fam weight buffing
 		int banderRunsLeft = floor((familiar_weight($familiar[Frumious Bandersnatch]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		if(is_professor()) return "";
 		if(!inCombat)
 		{
 			if(auto_have_skill($skill[The Ode to Booze]) &&
@@ -882,6 +885,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		// TODO add fam weight buffing
 		// boots and bander share same counter
 		int banderRunsLeft = floor((familiar_weight($familiar[Pair of Stomping Boots]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		if(is_professor()) return "";
 		if(!inCombat)
 		{
 			if(banderRunsLeft > 0 && handleFamiliar($familiar[Pair of Stomping Boots]))
@@ -1430,6 +1434,10 @@ boolean isGeneralStoreAvailable()
 		return false;
 	}
 	if(in_zombieSlayer())
+	{
+		return false;
+	}
+	if(is_werewolf())
 	{
 		return false;
 	}
@@ -3010,13 +3018,15 @@ boolean auto_is_valid(familiar fam)
 	{
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
-	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && iluh_famAllowed(fam.to_string()) && is_unrestricted(fam);
+	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && wereprof_usable(fam.to_string()) && iluh_famAllowed(fam.to_string()) && is_unrestricted(fam);
 }
 
 boolean auto_is_valid(skill sk)
 {
 	// Hack for Legacy of Loathing as is_unrestricted returns false for Source Terminal skills
 	if (in_lol() && $skills[Extract, Turbo, Digitize, Duplicate, Portscan, Compress] contains sk) return true;
+	// No skills for the Professor except Advanced Research in WereProf
+	if (is_professor() && sk != to_skill(7512)) return false;
 	//do not check check for B in bees hate you path. it only restricts items and not skills.
 	return (glover_usable(sk.to_string()) || (sk.passive && sk != $skill[disco nap])) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
 }

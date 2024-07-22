@@ -205,6 +205,11 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 		{
 			zones_to_avoid[$location[The Batrat and Ratbat Burrow]] = false;
 		}
+		// don't delay Hole in the Sky in WereProf if ran out of stuff to do
+		if(get_property("auto_powerLevelLastAttempted").to_int() == my_turncount() && in_wereprof())
+		{
+			zones_to_avoid[$location[The Hole in the Sky]] = false;
+		}
 		return zones_to_avoid;
 	}
 }
@@ -914,6 +919,10 @@ boolean L11_forgedDocuments()
 		pages[1] = "shop.php?whichshop=blackmarket&action=fightbmguy";
 		return autoAdvBypass(0, pages, $location[Noob Cave], "");
 	}
+	if(is_werewolf())
+	{
+		return false; // can't access shops as a werewolf
+	}
 	auto_buyUpTo(1, $item[Forged Identification Documents]);
 	if(item_amount($item[Forged Identification Documents]) > 0)
 	{
@@ -928,6 +937,10 @@ boolean L11_mcmuffinDiary()
 	if (internalQuestStatus("questL11MacGuffin") != 1 || internalQuestStatus("questL11Black") < 2)
 	{
 		return false;
+	}
+	if(is_werewolf())
+	{
+		return false; //can't access stores as werewolf which includes the shore
 	}
 	if(in_koe() && item_amount($item[Forged Identification Documents]) > 0)
 	{
@@ -996,6 +1009,10 @@ boolean L11_getUVCompass()
 	if(in_koe())
 	{
 		return false;		//impossible to get compass in this path. [The Shore, Inc] is unavailable
+	}
+	if(is_werewolf())
+	{
+		return false; // can't access shore as a werewolf
 	}
 
 	pullXWhenHaveY($item[Shore Inc. Ship Trip Scrip], 1, 0);
@@ -1094,7 +1111,7 @@ boolean L11_aridDesert()
 		if((get_property("gnasirProgress").to_int() & 2) != 2)
 		{
 			boolean canBuyPaint = true;
-			if(in_wotsf() || in_nuclear())
+			if(in_wotsf() || in_nuclear() || is_werewolf())
 			{
 				canBuyPaint = false;
 			}
@@ -1752,7 +1769,7 @@ boolean L11_hiddenCity()
 
 
 	//can we handle this zone?
-	if(!in_pokefam() && !in_darkGyffte() && !in_aosol())
+	if(!in_pokefam() && !in_darkGyffte() && !in_aosol() && !in_wereprof())
 	{
 		if(!acquireHP())	//try to restore HP to max.
 		{
@@ -1838,7 +1855,7 @@ boolean L11_hiddenCity()
 				//can drink and inebriety allows it
 				if(canDrinkCursedPunch)
 				{
-					boolean canBuyCursedPunch = (my_meat() >= cursesNeeded*500*npcStoreDiscountMulti());
+					boolean canBuyCursedPunch = (my_meat() >= cursesNeeded*500*npcStoreDiscountMulti() && !is_werewolf()); //can't buy cursed punch as a werewolf
 					
 					if(canBuyCursedPunch)
 					{
@@ -1892,7 +1909,7 @@ boolean L11_hiddenCity()
 				if(canDrinkCursedPunch)
 				{
 					L11_hiddenTavernUnlock(true);
-					if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
+					if(my_ascensions() == get_property("hiddenTavernUnlock").to_int() && !is_werewolf())
 					{
 						auto_buyUpTo(cursesNeeded, $item[Cursed Punch]);
 						if(item_amount($item[Cursed Punch]) < cursesNeeded)
@@ -1989,7 +2006,7 @@ boolean L11_hiddenCity()
 		L11_hiddenTavernUnlock(true);
 		if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
 		{
-			if(item_amount($item[Bowl Of Scorpions]) == 0)
+			if(item_amount($item[Bowl Of Scorpions]) == 0 && !is_werewolf()) //can't access shops as werewolf
 			{
 				auto_buyUpTo(1, $item[Bowl Of Scorpions]);
 				if(in_ocrs())
@@ -2243,6 +2260,10 @@ boolean L11_mauriceSpookyraven()
 
 	if (internalQuestStatus("questL11Manor") > 2)
 	{
+		if(is_professor())
+		{
+			return false;		//Can't beat Lord Spookyraven as the Professor
+		}
 		auto_log_info("Down with the tyrant of Spookyraven!", "blue");
 		//AoSOL buffs
 		if(in_aosol())
@@ -2409,6 +2430,13 @@ boolean L11_mauriceSpookyraven()
 		{
 			auto_change_mcd(0);
 			autoEquip($slot[acc2], $item[gumshoes]);
+		}
+		
+		if(is_professor())
+		{
+			// +ML is BAD for professor
+			auto_change_mcd(0);
+			removeFromMaximize("500ml " + auto_convertDesiredML(82) + "max");
 		}
 		
 		if(monster_level_adjustment() < 57)
@@ -2606,10 +2634,9 @@ boolean L11_ronCopperhead()
 		return false;
 	}
 
-
 	if (internalQuestStatus("questL11Ron") > 1 && internalQuestStatus("questL11Ron") < 5)
 	{
-		if (item_amount($item[Red Zeppelin Ticket]) < 1 && !in_wotsf()) // no black market in wotsf
+		if (item_amount($item[Red Zeppelin Ticket]) < 1 && !in_wotsf() && !is_werewolf()) // no black market in wotsf, can't access as werewolf
 		{
 			// use the priceless diamond since we go to the effort of trying to get one in the Copperhead Club
 			// and it saves us 4.5k meat.
@@ -2668,7 +2695,7 @@ boolean L11_shenStartQuest()
 	{
 		return false;
 	}
-	
+		
 	auto_log_info("Going to see the World's Biggest Jerk about some snakes and stones and stuff.", "blue");
 	if (autoAdv($location[The Copperhead Club]))
 	{
@@ -2706,6 +2733,10 @@ boolean L11_shenCopperhead()
 
 	if (internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
 	{
+		if(is_professor())
+		{
+			return false; //can't do Copperhead Club as a Professor but can do other parts of Shen quest
+		}
 		if (item_amount($item[Crappy Waiter Disguise]) > 0 && have_effect($effect[Crappily Disguised as a Waiter]) == 0 && !in_tcrs())
 		{
 			use(1, $item[Crappy Waiter Disguise]);

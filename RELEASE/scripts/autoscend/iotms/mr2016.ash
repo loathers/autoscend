@@ -1004,6 +1004,10 @@ boolean LX_ghostBusting()
 	{
 		return false;
 	}
+	if(is_professor())
+	{
+		return false;
+	}
 	
 	//zone unlocks which require no adv spent. ghost will not show up here unless zone is available. no need to skip ghost if zone unavailable.
 	startHippyBoatmanSubQuest();	//unlocks $location[The Old Landfill].
