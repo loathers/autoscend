@@ -31,7 +31,7 @@ string auto_combatWereProfessorStage4(int round, monster enemy, string text)
 
 	foreach str in split_string(get_property("wereProfessorAdvancedResearch").to_string(),",")
 	{
-		if(contains_text(str, enemy.id))
+		if(str == enemy.id)
 		{
 			return "";
 		}
