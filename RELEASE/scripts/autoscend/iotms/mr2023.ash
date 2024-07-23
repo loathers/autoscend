@@ -796,6 +796,10 @@ boolean auto_getCitizenZone(string goal)
 	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
 	string activeCitZoneMod = activeCitZoneMod();
 	
+	if(my_meat() < meatReserve() && goal != "mp")
+	{
+		return false; //don't attempt to change if we don't have a lot of meat and we are going for something other than mp
+	}
 	if((have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal)) || (!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) == 0 && have_effect($effect[Citizen of a Zone]) > 0))
 	{
 		if(have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal))
