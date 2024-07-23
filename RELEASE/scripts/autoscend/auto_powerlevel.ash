@@ -4,6 +4,10 @@ boolean isAboutToPowerlevel() {
 
 location highestScalingZone()
 {
+	if(my_adventures() > 2 && is_professor()) //only give a scaling location as professor if at bedtime
+	{
+		return $location[none];
+	}
 	//all scaling zones have monster level = my_buffedstat($stat[moxie]) + monster_level_adjustment() + enemy_value. up to a cap
 	//returns the zone with the highest enemy_value which we can adventure in
 	if(neverendingPartyAvailable())
