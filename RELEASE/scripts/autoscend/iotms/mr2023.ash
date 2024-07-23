@@ -551,15 +551,15 @@ void auto_scepterRollover()
 	//Get mainstats as a last resort
 	if(get_property("_augSkillsCast").to_int()< 5)
 	{
-		if(canUse($skill[Aug. 12th: Elephant Day!] && !get_property("_aug12Cast").to_boolean()) && my_primestat() == $stat[muscle])
+		if(canUse($skill[Aug. 12th: Elephant Day!]) && !get_property("_aug12Cast").to_boolean() && my_primestat() == $stat[muscle])
 		{
 			use_skill($skill[Aug. 12th: Elephant Day!]); //get muscle stubstats
 		}
-		if(canUse($skill[Aug. 11th: Presidential Joke Day!] && !get_property("_aug11Cast").to_boolean()) && my_primestat() == $stat[mysticality])
+		if(canUse($skill[Aug. 11th: Presidential Joke Day!]) && !get_property("_aug11Cast").to_boolean() && my_primestat() == $stat[mysticality])
 		{
 			use_skill($skill[Aug. 11th: Presidential Joke Day!]); //get mysticality stubstats
 		}
-		if(canUse($skill[Aug. 23rd: Ride the Wind Day!] && !get_property("_aug23Cast").to_boolean()) && my_primestat() == $stat[moxie])
+		if(canUse($skill[Aug. 23rd: Ride the Wind Day!]) && !get_property("_aug23Cast").to_boolean() && my_primestat() == $stat[moxie])
 		{
 			use_skill($skill[Aug. 23rd: Ride the Wind Day!]); //get moxies stubstats
 		}
