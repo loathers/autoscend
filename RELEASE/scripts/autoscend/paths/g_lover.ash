@@ -55,7 +55,7 @@ boolean glover_usable(string it)
 	eXtreme scarf, snowboarder pants, eXtreme mittens, linoleum ore, chrome ore, asbestos ore,
 	loadstone, amulet of extreme plot significance, titanium assault umbrella, antique machete,
 	half-size scalpel, head mirror, wet stew, UV-resistant compass, Talisman o' Namsilat, Unstable Fulminate,
-	Orcish baseball cap, Orcish frat-paddle, filthy knitted dread sack, filthy corduroys,
+	Orcish baseball cap, Orcish frat-paddle, filthy knitted dread sack, filthy corduroys, continuum transfunctioner,
 	beer helmet, distressed denim pants, reinforced beaded headband, bullet-proof corduroys] contains checkItem)
 	{
 		// these are all used for quest furthering porpoises so they still "work" even though they don't contain G's
