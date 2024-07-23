@@ -29,10 +29,12 @@ string auto_combatWereProfessorStage4(int round, monster enemy, string text)
 		return "";
 	}
 
-	string advresearch = get_property("wereProfessorAdvancedResearch");
-	if(contains_text(advresearch, enemy.id))
+	foreach str in split_string(get_property("wereProfessorAdvancedResearch").to_string(),",")
 	{
-		return "";
+		if(contains_text(str, enemy.id))
+		{
+			return "";
+		}
 	}
 
 	if(is_professor() && wereprof_oculus() && !haveUsed(to_skill(7512)))
