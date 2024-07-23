@@ -30,7 +30,7 @@ string auto_combatWereProfessorStage4(int round, monster enemy, string text)
 	}
 
 	string advresearch = get_property("wereProfessorAdvancedResearch");
-	if(advresearch == enemy.id)
+	if(contains_text(advresearch, enemy.id))
 	{
 		return "";
 	}
