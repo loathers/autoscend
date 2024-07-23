@@ -166,7 +166,7 @@ boolean auto_tavern()
 				auto_log_warning("Tavern handler: You are RL drunk, you should not be here.", "red");
 				autoAdv(1, $location[Noob Cave]);
 			}
-			if(last_monster() == $monster[Crate])
+			if(last_monster() == $monster[Crate] || (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in WereProfessor for Smashed Scientific Equipment
 			{
 				if(get_property("auto_newbieOverride").to_boolean())
 				{

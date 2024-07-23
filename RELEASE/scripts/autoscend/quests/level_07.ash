@@ -297,6 +297,10 @@ boolean L7_crypt()
 
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
 	{
+		if(is_professor()) //don't do if we are the Professor. Death Rattlin' = Beaten Up
+		{
+			return false;
+		}
 		auto_log_info("The Cranny!", "blue");
 
 		if(my_mp() > 60)
