@@ -3004,6 +3004,10 @@ boolean auto_is_valid(item it)
 	{
 		return bhy_is_item_valid(it);
 	}
+	if(in_wereprof())
+	{
+		return wereprof_usable(it.to_string());
+	}
 	
 	return is_unrestricted(it);
 }
