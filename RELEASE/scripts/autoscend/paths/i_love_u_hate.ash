@@ -76,4 +76,8 @@ void iluh_pulls()
 	{
 		pullXWhenHaveY($item[mini kiwi bikini], 1, 0);
 	}
+	if(storage_amount($item[mini kiwi invisible dirigible]) > 0 && auto_is_valid($item[mini kiwi invisible dirigible]))
+	{
+		pullXWhenHaveY($item[mini kiwi invisible dirigible], 1, 0);
+	}
 }
