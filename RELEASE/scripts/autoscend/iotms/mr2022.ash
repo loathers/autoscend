@@ -404,9 +404,15 @@ void sweatpantsPreAdventure() {
 		}
 	}
 
-	// This is just opportunistic use of sweat. This skill should be used in auto_restore.ash.
-	if (sweat >= 95 && my_mp() < my_maxmp()) {
-		use_skill($skill[Sip Some Sweat]);
+	if (sweat >= 95) {
+		if(get_property("auto_pvpEnable").to_boolean() && spleen_left() >= 4 * (1 + item_amount($item[sweat-ade]))) {
+			// Our player participates in PVP, let's give them a low-effort spleen item to end the day with, if there's still room.
+			use_skill($skill[Make Sweat-Ade]);
+		}
+		else if(my_mp() < my_maxmp()) {
+			// This is just opportunistic use of sweat. This skill should be used in auto_restore.ash.
+			use_skill($skill[Sip Some Sweat]);
+		}
 	}
 }
 
