@@ -241,15 +241,15 @@ boolean LM_wereprof()
 {
 	if(!in_wereprof())
 	{
-		//return false;
+		return false;
 	}
 	if(is_werewolf())
 	{
-		//return false;
+		return false;
 	}
 	if(get_property("auto_wereprof_init").to_boolean())
 	{
-	//	return false;
+		return false;
 	}
 	item elixer = $item[Doc Galaktik\'s Homeopathic Elixir];
 	int elixerAmount = item_amount(elixer);
