@@ -790,10 +790,6 @@ void finalizeMaximize(boolean speculative)
 		}
 	}
 
-	if(is_professor())
-	{
-		addToMaximize("-equip " + $item[sombrero-mounted sparkler]);
-	}
 	
 	if(auto_haveSpringShoes())
 	{

@@ -298,9 +298,5 @@ boolean wereprof_usable(string str)
 	{
 		return false;
 	}
-	if(str == "sombrero-mounted sparker" && is_professor()) //1 damage kills professors
-	{
-		return false;
-	}
 	return true;
 }
