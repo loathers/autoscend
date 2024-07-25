@@ -685,7 +685,6 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		}
 		else if(metadata.name == __NUNS)
 		{
-			print("how many left");
 			available = 3 - get_property("nunsVisits").to_int();
 		}
 		return max(0.0, available);
