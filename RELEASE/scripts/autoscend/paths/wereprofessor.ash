@@ -247,10 +247,6 @@ boolean LM_wereprof()
 	{
 		return false;
 	}
-	if(get_property("auto_wereprof_init").to_boolean())
-	{
-		return false;
-	}
 	item elixer = $item[Doc Galaktik\'s Homeopathic Elixir];
 	int elixerAmount = item_amount(elixer);
 	if(elixerAmount < 10 && (my_meat() - npc_price(elixer) > meatReserve()))
@@ -263,9 +259,9 @@ boolean LM_wereprof()
 	auto_log_info("Getting skills", "blue");
 	wereprof_buySkills();
 	auto_log_info("Buying an oven", "blue");
-	if(ovenHandle()) //buy an oven ASAP
+	if(!get_property("auto_haveoven").to_boolean()) //buy an oven ASAP
 	{
-		set_property("auto_wereprof_init", true);
+		ovenHandle()
 		return true;
 	}
 	return false;
