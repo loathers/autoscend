@@ -254,21 +254,16 @@ boolean LM_wereprof()
 		// buy a single one each time through to slowly build it
 		auto_buyUpTo(elixerAmount + 1, elixer);
 	}
-	item elixer = $item[Doc Galaktik\'s Homeopathic Elixir];
-	int elixerAmount = item_amount(elixer);
-	if(elixerAmount < 10 && (my_meat() - npc_price(elixer) > meatReserve()))
-	{
-		// make a stock pile of 10 healing items to use as needed when werewolf
-		// buy a single one each time through to slowly build it
-		auto_buyUpTo(elixerAmount + 1, elixer);
-	}
 
 	auto_log_info("Getting skills", "blue");
 	wereprof_buySkills();
-	auto_log_info("Buying an oven", "blue");
+	auto_log_info("Getting equipment", "blue");
+	wereprof_buyEquip();
+	
 	if(!get_property("auto_haveoven").to_boolean()) //buy an oven ASAP
 	{
-		ovenHandle()
+		auto_log_info("Buying an oven", "blue");
+		ovenHandle();
 		return true;
 	}
 	return false;
