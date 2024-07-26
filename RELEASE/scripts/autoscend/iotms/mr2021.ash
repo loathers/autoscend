@@ -739,7 +739,7 @@ boolean auto_buyFireworksHat()
 	}
 
 	// +combat hat is second most useful but has no effect in LAR and kills the professor
-	if(auto_can_equip($item[sombrero-mounted sparkler]) && (!in_lar() || in_wereprof()))
+	if(auto_can_equip($item[sombrero-mounted sparkler]) && !(in_lar() || in_wereprof()))
 	{
 		float simCombat = providePlusCombat(25, $location[noob cave], true, true);
 		if(simCombat < 25.0)
