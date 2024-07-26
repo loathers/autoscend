@@ -1358,11 +1358,17 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		Eagle Eyes,
 		Heart of Lavender,
 		Five Sticky Fingers,
-		Wet and Greedy,
-		Frosty
+		Wet and Greedy
 	]))
 		return result();
-		
+	
+	if(!in_wereprof())
+	{
+		//wereprof doesn't like +ML effects outside of Werewolf
+		if(tryEffects($effects[Frosty]))
+			return result();
+	}
+
 	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
 	{
 		if(!speculative)
