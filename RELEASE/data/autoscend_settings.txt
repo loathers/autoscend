@@ -52,7 +52,7 @@ any	39	auto_log_level	int	valid choices: 0 = error. 1 = warning. 2 = info. 3 = d
 any	40	auto_log_level_restore	int	valid choices: 0 = no extra debugging. 1 = log the stages and their results 2 = log restorer data dump. Sets the level of extra debug logging which autoscend restore code will output to gCLI and session log. Defaults to 0. Note that this is just for extra debugging.
 any	41	auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.
 any	42	auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dungeon and fantasy realm every day even if you already have enough for this run. This is mainly for new accounts who want to get the cubeling and/or skillbooks.
-any	43	auto_pvpEnable	boolean	Break the hippy stone to unlock PvP?
+any	43	auto_pvpEnable	boolean	Break the hippy stone to unlock PvP? This may also let autoscend collect low-effort PVP items.
 any	44	auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns). Blank by default.
 any	45	auto_ignoreRestoreFailure	boolean	if true we will always ignore failure to restore MP or HP and just continue playing
 any	46	auto_workshed	string	What workshed item should we initialize with? If blank or invalid, we will change workshed based on priorities. There are some shorthands or you can use the full name of the workshed item. Some worksheds are not implemented so unless you are certain you want to deviate, use auto.
@@ -69,4 +69,3 @@ post	6	auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar in this as
 pre	0	auto_getSteelOrgan_initialize	boolean	When we initialize an ascension this will be copied to auto_getSteelOrgan
 
 sharing	0	auto_disableExcavator	boolean	When set to true will disable automatically sending spading data via the Extractor script
-
