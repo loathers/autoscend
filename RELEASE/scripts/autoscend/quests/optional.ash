@@ -1106,7 +1106,7 @@ boolean LX_NemesisQuest()
 void houseUpgrade()
 {
 	//function for upgrading your dwelling.
-	if(isActuallyEd() || in_darkGyffte() || in_nuclear())
+	if(isActuallyEd() || in_darkGyffte() || in_nuclear() || in_wereprof())
 	{
 		return;		//paths where dwelling is locked
 	}

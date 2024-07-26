@@ -236,7 +236,7 @@ boolean auto_sausageEatEmUp(int maxToEat)
 			int desiredMp = max(my_maxmp() - 999, 0);
 			int mpToBurn = max(my_mp() - desiredMp, 0);
 			if(mpToBurn > 0)
-				cli_execute("burn " + mpToBurn);
+				auto_burnMP(mpToBurn);
 		}
 
 		if(!eat(1, $item[magical sausage]))
@@ -253,7 +253,7 @@ boolean auto_sausageEatEmUp(int maxToEat)
 	{
 		int mpToBurn = max(my_mp() - originalMp, 0);
 		if(mpToBurn > 0)
-			cli_execute("burn " + mpToBurn);
+			auto_burnMP(mpToBurn);
 		cli_execute("outfit checkpoint");
 	}
 

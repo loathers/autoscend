@@ -1052,8 +1052,16 @@ boolean L12_orchardFinalize()
 		pulverizeThing($item[A Light that Never Goes Out]);
 	}
 	equipWarOutfit();
-	visit_url("bigisland.php?place=orchard&action=stand&pwd=");
-	visit_url("shop.php?whichshop=hippy");
+	if(is_werewolf())
+	{
+		visit_url("bigisland.php?place=orchard&action=stand&pwd=");
+		return true; // can't access the shop as a werewolf so just want to return after done
+	}
+	else
+	{
+		visit_url("bigisland.php?place=orchard&action=stand&pwd=");
+		visit_url("shop.php?whichshop=hippy");
+	}
 	return true;
 }
 
@@ -1118,6 +1126,10 @@ boolean L12_gremlins()
 	if(in_koe() || in_pokefam() || in_bhy())
 	{
 		return false;
+	}
+	if(is_professor())
+	{
+		return false; //Only 1 HP as a professor so can't stasis long enough
 	}
 	if(get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 192))
 	{
@@ -1687,7 +1699,17 @@ boolean L12_themtharHills()
 
 	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 	{
-		outfit("Frat Warrior Fatigues");
+		if(is_professor())
+		{
+			//Need to manually equip because professor
+			if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
+			if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
+			if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
+		}
+		else
+		{
+			outfit("Frat Warrior Fatigues");
+		}
 		cli_execute("concert 2");
 	}
 
@@ -1722,7 +1744,7 @@ boolean L12_themtharHills()
 	handleFamiliar("meat");
 	addToMaximize("200meat drop");
 
-	if(have_effect($effect[Frosty])==0)
+	if(have_effect($effect[Frosty])==0 && !in_wereprof())
 	{
 		auto_wishForEffect($effect[Frosty]);
 	}
@@ -2197,11 +2219,25 @@ boolean L12_finalizeWar()
 	{
 		return false;
 	}
+	if(is_professor())
+	{
+		return false; //need to wait until werewolf because can't survive combat long enough as a Prof
+	}
 
 	if(possessOutfit("War Hippy Fatigues"))
 	{
 		auto_log_info("Getting dimes.", "blue");
-		outfit("War Hippy Fatigues");
+		if(in_wereprof())
+		{
+			//Need to manually equip because professor
+			if(!have_equipped($item[bullet-proof corduroys])) equip($item[bullet-proof corduroys]);
+			if(!have_equipped($item[round purple sunglasses])) equip($item[round purple sunglasses]);
+			if(!have_equipped($item[reinforced beaded headband])) equip($item[reinforced beaded headband]);
+		}
+		else
+		{
+			outfit("War Hippy Fatigues");
+		}
 		foreach it in $items[padl phone, red class ring, blue class ring, white class ring]
 		{
 			sell(it.buyer, item_amount(it), it);
@@ -2221,7 +2257,17 @@ boolean L12_finalizeWar()
 	if(possessOutfit("Frat Warrior Fatigues"))
 	{
 		auto_log_info("Getting quarters.", "blue");
-		outfit("Frat Warrior Fatigues");
+		if(in_wereprof())
+		{
+			//Need to manually equip because professor
+			if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
+			if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
+			if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
+		}
+		else
+		{
+			outfit("Frat Warrior Fatigues");
+		}
 		foreach it in $items[pink clay bead, purple clay bead, green clay bead, communications windchimes]
 		{
 			sell(it.buyer, item_amount(it), it);
@@ -2277,6 +2323,13 @@ boolean L12_finalizeWar()
 
 	if(possessOutfit("War Hippy Fatigues"))
 	{
+		if(in_wereprof())
+		{
+			//Need to manually equip because professor
+			if(!have_equipped($item[bullet-proof corduroys])) equip($item[bullet-proof corduroys]);
+			if(!have_equipped($item[round purple sunglasses])) equip($item[round purple sunglasses]);
+			if(!have_equipped($item[reinforced beaded headband])) equip($item[reinforced beaded headband]);
+		}
 		while($coinmaster[Dimemaster].available_tokens >= 5)
 		{
 			cli_execute("make " + $coinmaster[Dimemaster].available_tokens/5 + " fancy seashell necklace");
@@ -2293,6 +2346,13 @@ boolean L12_finalizeWar()
 
 	if(possessOutfit("Frat Warrior Fatigues"))
 	{
+		if(in_wereprof())
+		{
+			//Need to manually equip because professor
+			if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
+			if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
+			if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
+		}
 		while($coinmaster[Quartersmaster].available_tokens >= 5)
 		{
 			cli_execute("make " + $coinmaster[Quartersmaster].available_tokens/5 + " commemorative war stein");

@@ -357,6 +357,10 @@ boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condi
 
 boolean auto_buyUpTo(int num, item it)
 {
+	if(is_werewolf())
+	{
+		return false; //can't buy anything as a werewolf
+	}
 	if(item_amount(it) >= num)
 	{
 		return true;	//we already have the target amount
@@ -489,6 +493,7 @@ boolean acquireHermitItem(item it)
 	{
 		return false;
 	}
+	
 	if((item_amount($item[Hermit Permit]) == 0) && (my_meat() >= npc_price($item[Hermit Permit])))
 	{
 		auto_buyUpTo(1, $item[Hermit Permit]);
@@ -525,6 +530,10 @@ boolean acquireHermitItem(item it)
 		}
 		else
 		{
+			if(is_werewolf())
+			{
+				return false; //can access the hermit, but can't buy chewing gum as a Werewolf
+			}
 			auto_buyUpTo(1, $item[Chewing Gum on a String]);
 			use(1, $item[Chewing Gum on a String]);
 		}
