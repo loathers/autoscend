@@ -1366,7 +1366,7 @@ boolean doBedtime()
 			auto_log_info("You have a tea tree to shake!", "blue");
 		}
 
-		if((item_amount($item[August Scepter]) > 0) && (get_property("_augSkillsCast").to_int() < 5))
+		if (auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5)
 		{
 			auto_log_info("You still have " + (5 - get_property("_augSkillsCast").to_int()) + " August Scepter casts remaining! Perhaps consider casting Aug 13th/30th for more rollover adventures, and/or 7th for a buff for tomorrow?", "blue");
 		}
