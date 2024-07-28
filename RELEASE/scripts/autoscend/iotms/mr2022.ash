@@ -22,6 +22,11 @@ boolean auto_voidMonster(location loc)
 		return false;
 	}
 
+	if (is_professor())
+	{
+		return false; //can't beat the void guys as a professor
+	}
+
 	// return false if we've fought the 5 free void monsters already today or we're still charging up the counter
 	if (get_property("_voidFreeFights").to_int() >= 5 || get_property("cursedMagnifyingGlassCount").to_int() != 13)
 	{
@@ -53,6 +58,11 @@ string auto_bowlingBallCombatString(location place, boolean speculation)
 	if(!auto_haveCosmicBowlingBall())
 	{
 		return "";
+	}
+
+	if(is_professor())
+	{
+		return ""; //Handle specially in WereProf Combat file
 	}
 
 	if(place == $location[The Hidden Bowling Alley] && get_property("auto_bowledAtAlley").to_int() != my_ascensions())
@@ -224,7 +234,7 @@ void prioritizeGoose() //prioritize Goose only if we still have things to get
 			((needStarKey() && (item_amount($item[star]) < 7 && item_amount($item[line]) < 6)) && gooseExpectedDrones() < 4) ||
 			(internalQuestStatus("questL11Ron") < 5 && gooseExpectedDrones() < 2) ||
 			((get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball])) < 5 && gooseExpectedDrones() < 2) ||
-			(((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 9) && gooseExpectedDrones() < 3))
+			(((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 9) && item_amount($item[Tangle of Rat Tails]) > 0 && gooseExpectedDrones() < 3))
 	{
 		set_property("auto_prioritizeGoose", true);
 		return;
@@ -394,9 +404,15 @@ void sweatpantsPreAdventure() {
 		}
 	}
 
-	// This is just opportunistic use of sweat. This skill should be used in auto_restore.ash.
-	if (sweat >= 95 && my_mp() < my_maxmp()) {
-		use_skill($skill[Sip Some Sweat]);
+	if (sweat >= 95) {
+		if(get_property("auto_pvpEnable").to_boolean() && spleen_left() >= 4 * (1 + item_amount($item[sweat-ade]))) {
+			// Our player participates in PVP, let's give them a low-effort spleen item to end the day with, if there's still room.
+			use_skill($skill[Make Sweat-Ade]);
+		}
+		else if(my_mp() < my_maxmp()) {
+			// This is just opportunistic use of sweat. This skill should be used in auto_restore.ash.
+			use_skill($skill[Sip Some Sweat]);
+		}
 	}
 }
 

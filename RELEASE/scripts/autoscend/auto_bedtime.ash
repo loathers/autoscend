@@ -557,8 +557,11 @@ void bedtime_pulls()
 	//scan through all pullable items for items that have a better rollover adv gain than currently best equipped item.
 	bedtime_pulls_rollover_equip();
 
-	//always pull an 11-leaf clover, if possible
-	pullXWhenHaveY($item[11-Leaf Clover], 1, item_amount($item[11-Leaf Clover]));
+	//pull 11-leaf clover if we can use it
+	if(auto_is_valid($item[11-Leaf Clover]))
+	{
+		pullXWhenHaveY($item[11-Leaf Clover], 1, item_amount($item[11-Leaf Clover]));
+	}
 }
 
 boolean doBedtime()
@@ -748,7 +751,7 @@ boolean doBedtime()
 		boolean notNeeded = have_effect($effect[Everything Looks Yellow]) > 0 || hasDisintegrate || canYellowRay(); //have a common unlimited source of YR, no need to make viral video
 		boolean baconUnused = item_amount($item[BACON]) >= (100*my_daycount() - 20*(my_daycount() - 1));  //BACON hasn't been used for something else this ascension
 		if(auto_is_valid($item[Viral Video]) && !notNeeded && baconUnused &&
-		!in_koe())	//bacon store is unreachable in kingdom of exploathing
+		!in_koe() && !is_werewolf())	//bacon store is unreachable in kingdom of exploathing or as werewolf
 		{
 			//can only buy 1 per day and more than one a day might be wanted later so buy today's viral video
 			create(1, $item[Viral Video]);
@@ -1193,9 +1196,9 @@ boolean doBedtime()
 	// Use up any cursed monkey paw wishes on Frosty (+100% item, +100% meat, +25 ML)
 	// Unless we're limiting ML, then do One Very Clear Eye
 	effect effect_to_wish = $effect[Frosty];
-	if (get_property("auto_MLSafetyLimit")!="")
+	if (get_property("auto_MLSafetyLimit")!="" || in_wereprof())  // Professor hates ML
 	{
-		if (get_property("auto_MLSafetyLimit").to_int() < 25) // We're adding +25 ML that won't be shrugged.
+		if (get_property("auto_MLSafetyLimit").to_int() < 25 || in_wereprof()) // We're adding +25 ML that won't be shrugged. Professor hates ML
 		{
 			effect_to_wish = $effect[One Very Clear Eye];
 		}
@@ -1226,7 +1229,7 @@ boolean doBedtime()
 
 	boolean canChangeToStooper()
 	{
-		if (in_small()) // In smol, the stooper can be equipped, but does not modify the liver size
+		if (in_small() || in_wereprof()) // In smol and wereprofessor, the stooper can be equipped, but does not modify the liver size
 		{
 			return false;
 		}

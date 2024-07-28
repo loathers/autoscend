@@ -424,7 +424,7 @@ void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip
 	}
 	else if(alwaysEquip)
 	{
-		catch cli_execute("burn " + (targetedMP - my_maxmp()));
+		auto_burnMP(targetedMP - my_maxmp());
 		doEquips = true;
 	}
 	
@@ -716,12 +716,90 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("+equip " + toEquip);
 		}
 	}
+
+	if(in_wereprof() && auto_haveDarts()) //Absolutely need darts for Professor. Should level up darts while Werewolf too
+	{
+		if(is_werewolf())
+		{
+			addBonusToMaximize($item[Everfull Dart Holster], 1000);
+		}
+		else
+		{
+			addToMaximize("+equip " + $item[Everfull Dart Holster]);
+		}
+	}
+
+	if(is_professor() && (possessEquipment($item[biphasic molecular oculus]) || possessEquipment($item[triphasic molecular oculus]))) //Want that Advanced Research as a professor
+	{
+		float [monster] monster_list = appearance_rates(my_location());
+		string advresearch = get_property("wereProfessorAdvancedResearch");
+		boolean nooculus = false;
+		int monseen = 0;
+		int totalmob = 0;
+		//calculate total non-boss and non-UR mobs
+		foreach mob, freq in monster_list {
+			if(freq > 0 && mob.id > 0 && mob.copyable && !mob.boss) totalmob += 1;
+		}
+		//find how many mobs we've already researched and if the count matches total non-boss/non-UR mobs, don't equip the oculus
+		foreach mob, freq in monster_list {
+			if(freq > 0 && mob.id > 0 && mob.copyable && !mob.boss)
+			{
+				if(contains_text(advresearch, mob.id))
+				{
+					monseen += 1;
+				}
+			}			
+			if(monseen == totalmob) nooculus = true;
+		}
+		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
+		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
+		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
+		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location())) nooculus = true;
+		if(!nooculus)
+		{
+			if(possessEquipment($item[biphasic molecular oculus]))
+			{
+				addToMaximize("+equip " + $item[biphasic molecular oculus]);
+			}
+			else
+			{
+				addToMaximize("+equip " + $item[triphasic molecular oculus]);
+			}
+		}
+	}
+
+	if(is_professor() && (possessEquipment($item[high-tension exoskeleton]) || possessEquipment($item[ultra-high-tension exoskeleton]) || possessEquipment($item[irresponsible-tension exoskeleton]))) //Want that damage avoidance
+	{
+		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
+		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
+		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
+		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location()))
+		{
+			if(possessEquipment($item[high-tension exoskeleton]))
+			{
+				addToMaximize("+equip " + $item[high-tension exoskeleton]);
+			}
+			else if(possessEquipment($item[ultra-high-tension exoskeleton]))
+			{
+				addToMaximize("+equip " + $item[ultra-high-tension exoskeleton]);
+			}
+			else
+			{
+				addToMaximize("+equip " + $item[irresponsible-tension exoskeleton]);
+			}
+		}
+	}
+
 	
 	if(auto_haveSpringShoes())
 	{
 		if(item_amount($item[ultra-soft ferns])<4 || item_amount($item[crunchy brush])<4) // collect the spring shoes potions
 		{
 			addBonusToMaximize($item[spring shoes], 200);
+		}
+		else if(my_hp() < 0.5*my_maxhp() && my_hp() > 0)
+		{
+			addBonusToMaximize($item[spring shoes], 200); // bonus to heal in wereprof as the werewolf after transition from Professor
 		}
 		else // just add a little bonus for the MP generation
 		{

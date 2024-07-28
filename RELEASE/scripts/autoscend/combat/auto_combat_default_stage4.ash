@@ -2,6 +2,9 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 {
 	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	string retval;
+
+	//Unskip stage 3
+	if(get_property("auto_skipStage3").to_boolean()) set_property("auto_skipStage3", false);
 	
 	// Path = The Source
 	retval = auto_combatTheSourceStage4(round, enemy, text);
@@ -15,6 +18,10 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	retval = auto_combatZombieSlayerStage4(round, enemy, text);
 	if(retval != "") return retval;
 
+	// Path = WereProfessor
+	retval = auto_combatWereProfessorStage4(round, enemy, text);
+	if(retval != "") return retval;
+	
 	// Skip if have drones out
 	if(get_property("auto_skipStage4").to_boolean()) return "";
 	

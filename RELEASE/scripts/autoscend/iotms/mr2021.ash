@@ -688,6 +688,10 @@ boolean have_fireworks_shop()
 		// can't access fireworks shop in kindom of exploathing
 		return false;
 	}
+	if(is_werewolf())
+	{
+		return false; //can't access fireworks shop as a werewolf
+	}
 	if(item_amount($item[Clan VIP Lounge Key]) == 0)
 	{
 		return false;
@@ -734,8 +738,8 @@ boolean auto_buyFireworksHat()
 		}
 	}
 
-	// +combat hat is second most useful but has no effect in LAR
-	if(auto_can_equip($item[sombrero-mounted sparkler]) && !in_lar())
+	// +combat hat is second most useful but has no effect in LAR and kills the professor
+	if(auto_can_equip($item[sombrero-mounted sparkler]) && !(in_lar() || in_wereprof()))
 	{
 		float simCombat = providePlusCombat(25, $location[noob cave], true, true);
 		if(simCombat < 25.0)
@@ -774,7 +778,12 @@ int auto_fireExtinguisherCharges()
 // returns zone specific skill if in usable zone and hasn't been used yet there this ascension. Otherwise returns empty string
 string auto_FireExtinguisherCombatString(location place)
 {
-	if(auto_fireExtinguisherCharges() < 20)
+	if(auto_fireExtinguisherCharges() < 20 || !auto_is_valid($skill[Fire Extinguisher: Zone Specific]))
+	{
+		return "";
+	}
+
+	if(in_wereprof())
 	{
 		return "";
 	}

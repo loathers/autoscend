@@ -370,6 +370,11 @@ boolean L9_aBooPeak()
 	}
 	int clueAmt = item_amount(clue);
 
+	if(is_professor() && clueAmt >= 3)
+	{
+		return false; // We have clues but we can't survive them so not worth trying when we only have 1 hp
+	}
+
 	if (get_property("booPeakProgress").to_int() > 90)
 	{
 		auto_log_info("A-Boo Peak (initial): " + get_property("booPeakProgress"), "blue");
@@ -444,7 +449,7 @@ boolean L9_aBooPeak()
 
 		//	Do we need to manually adjust for the parrot?
 
-		if(black_market_available() && (item_amount($item[Can of Black Paint]) == 0) && (have_effect($effect[Red Door Syndrome]) == 0) && (my_meat() >= npc_price($item[Can of Black Paint])))
+		if(black_market_available() && (item_amount($item[Can of Black Paint]) == 0) && (have_effect($effect[Red Door Syndrome]) == 0) && (my_meat() >= npc_price($item[Can of Black Paint])) && !is_werewolf())
 		{
 			auto_buyUpTo(1, $item[Can of Black Paint]);
 			coldResist += 2;
@@ -875,6 +880,11 @@ boolean L9_oilPeak()
 	if(monster_level_adjustment() < 50 && my_level() < 12 && !isAboutToPowerlevel())
 	{
 		return false;
+	}
+
+	if(is_professor())
+	{
+		return false; //can't do Oil Peak as a Professor
 	}
 
 	if(contains_text(visit_url("place.php?whichplace=highlands"), "fire3.gif"))

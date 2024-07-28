@@ -317,6 +317,10 @@ boolean auto_nextRestOverCinch()
 
 boolean auto_getCinch(int goal)
 {
+	if(is_werewolf())
+	{
+		return false; //can't rest as werewolf
+	}
 	if(auto_currentCinch() >= goal)
 	{
 		return true;
@@ -334,13 +338,20 @@ boolean auto_getCinch(int goal)
 		return false;
 	}
 	// use free rests until have enough cinch or out of rests
-	while(auto_currentCinch() < goal && haveFreeRestAvailable())
+	while(auto_currentCinch() < goal && haveFreeRestAvailable() && !in_wereprof())
 	{
 		if(!doFreeRest())
 		{
-			abort("Failed to rest to charge cincho");
+			auto_log_debug("Failed to rest to charge cincho. Will try again later.");
+			return false;
 		}
 	}
+
+	// go for cinch as a professor. commented out for now because mafia tracking of free rests as a prof MAY not be working as expected
+	/*while(auto_currentCinch() < goal && haveFreeRestAvailable() && is_professor())
+	{
+		visit_url("place.php?whichplace=wereprof_cottage&action=wereprof_sleep"); //just visit the cottage to sleep as professor
+	}*/
 
 	// see if we got enough cinch after using free rests
 	if(auto_currentCinch() >= goal)

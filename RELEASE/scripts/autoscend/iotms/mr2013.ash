@@ -117,6 +117,15 @@ void oldPeoplePlantStuff()
 	{
 		return;
 	}
+	boolean addml = true;
+	if((monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != "") || get_property("auto_MLSafetyLimit").to_int() == -1)
+	{
+		addml = false;
+	}
+	if(is_professor())
+	{
+		addml = false;
+	}
 
 	if((my_location() == $location[The Outskirts of Cobb\'s Knob]))
 	{
@@ -131,7 +140,9 @@ void oldPeoplePlantStuff()
 	}
 	else if((my_location() == $location[The Haunted Bathroom]))
 	{
-		cli_execute("florist plant war lily");
+		if(addml){
+			cli_execute("florist plant war lily");
+		}
 		cli_execute("florist plant Impatiens");
 		cli_execute("florist plant arctic moss");
 	}
@@ -155,7 +166,9 @@ void oldPeoplePlantStuff()
 	}
 	else if((my_location() == $location[The Obligatory Pirate\'s Cove]))
 	{
-		cli_execute("florist plant rabid dogwood");
+		if(addml){
+			cli_execute("florist plant rabid dogwood");
+		}
 		cli_execute("florist plant artichoker");
 	}
 	else if((my_location() == $location[Barrrney\'s Barrr]) && (my_class() != $class[Ed the Undying]))
@@ -172,7 +185,9 @@ void oldPeoplePlantStuff()
 	}
 	else if((my_location() == $location[The Castle in the Clouds in the Sky (Basement)]) && (my_daycount() == 1))
 	{
-		cli_execute("florist plant blustery puffball");
+		if(addml){
+			cli_execute("florist plant blustery puffball");
+		}
 		cli_execute("florist plant dis lichen");
 		cli_execute("florist plant max headshroom");
 	}
@@ -182,13 +197,17 @@ void oldPeoplePlantStuff()
 	}
 	else if((my_location() == $location[Oil Peak]))
 	{
-		cli_execute("florist plant rabid dogwood");
+		if(addml){
+			cli_execute("florist plant rabid dogwood");
+		}
 		cli_execute("florist plant artichoker");
 		cli_execute("florist plant celery stalker");
 	}
 	else if((my_location() == $location[The Haunted Boiler Room]))
 	{
-		cli_execute("florist plant war lily");
+		if(addml){
+			cli_execute("florist plant war lily");
+		}
 		cli_execute("florist plant red fern");
 		cli_execute("florist plant arctic moss");
 	}
@@ -223,7 +242,9 @@ void oldPeoplePlantStuff()
 	}
 	else if((my_location() == $location[The Upper Chamber]))
 	{
-		cli_execute("florist plant Blustery Puffball");
+		if(addml){
+			cli_execute("florist plant Blustery Puffball");
+		}
 		cli_execute("florist plant Loose Morels");
 		cli_execute("florist plant Foul Toadstool");
 	}

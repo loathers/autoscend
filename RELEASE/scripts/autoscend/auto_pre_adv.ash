@@ -124,6 +124,11 @@ void auto_ghost_prep(location place)
 		}
 		if(canUse(sk)) return;	//we can kill them with a spell
 	}
+	if(auto_haveDarts() && dartEleDmg())
+	{
+		addToMaximize("+equip " + $item[Everfull Dart Holster]); //If we have darts and an elemental damage buff, might as well use that
+		return;
+	}
 	
 	int m_hot = 1;
 	int m_cold = 1;
@@ -214,6 +219,7 @@ boolean auto_pre_adventure()
 		auto_is_valid($item[red rocket]) &&				// or if it's not valid
 		can_eat() &&									// be in a path that can eat
 		my_class() != $class[Pig Skinner] &&			// don't want to use a red rocket in Pig Skinner
+		!in_wereprof() &&								// don't use if we are in WereProf
 		!auto_haveDarts() &&							// don't want to use a red rocket if we have darts
 		my_meat() > npc_price($item[red rocket]) + meatReserve())
 	{
@@ -337,11 +343,12 @@ boolean auto_pre_adventure()
 				auto_buyUpTo(1, $item[hair spray]);
 				use(1, $item[hair spray]);
 			}
-			if (0 == have_effect($effect[Minerva\'s Zen]))
-			{
-				auto_buyUpTo(1, $item[glittery mascara]);
-				use(1, $item[glittery mascara]);
-			}
+			// below no longer applicable due to current seed, will find new source
+			//	if (0 == have_effect($effect[Minerva\'s Zen]))
+			//	{
+			//		auto_buyUpTo(1, $item[glittery mascara]);
+			//		use(1, $item[glittery mascara]);
+			//	}
 		}
 	}
 
@@ -796,6 +803,14 @@ boolean auto_pre_adventure()
 		purgeML = false;
 	}
 
+	// Path Specific Conditions
+	if(is_professor())  //WereProfessor professor doesn't like ML
+	{
+		doML = false;
+		removeML = true;
+		purgeML = true;
+	}
+
 	// Act on ML settings
 	if(doML)
 	{
@@ -952,7 +967,7 @@ boolean auto_pre_adventure()
 		if(wasted_mp > 0 && my_mp() > 400)
 		{
 			auto_log_info("Burning " + wasted_mp + " MP...");
-			cli_execute("burn " + wasted_mp);
+			auto_burnMP(wasted_mp);
 		}
 	}
 	borisWastedMP();

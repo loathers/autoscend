@@ -143,7 +143,7 @@ boolean L7_defiledAlcove()
 		}
 	}
 
-	if (isActuallyEd() && (!have_skill($skill[More Legs]) || (expected_damage($monster[modern zmobie]) + 15) < my_maxhp()))
+	if (isActuallyEd() && (!have_skill($skill[More Legs]) || (expected_damage($monster[modern zmobie]) + 15) > my_maxhp()))
 	{
 		// Ed needs to be able to survive long enough to do stuff in combat vs a modern zmobie.
 		return false;
@@ -297,6 +297,10 @@ boolean L7_crypt()
 
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
 	{
+		if(is_professor()) //don't do if we are the Professor. Death Rattlin' = Beaten Up
+		{
+			return false;
+		}
 		auto_log_info("The Cranny!", "blue");
 
 		if(my_mp() > 60)
