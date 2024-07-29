@@ -679,7 +679,6 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 			{
 				return true;
 			}
-			int startingShadwWatersAdvs = have_effect($effect[Shadow Waters]);
 			// lodestene will be consumed for a free NC to get this buff
 			// visit url directly to not run pre adv script
 			switch(auto_availableBrickRift())
