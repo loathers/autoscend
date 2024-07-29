@@ -784,7 +784,7 @@ boolean auto_getCitizenZone(string goal)
 {
 	familiar eagle = $familiar[Patriotic Eagle];
 	//zones are approximately organized by autoscend level quest structure
-	boolean[location] meatZones = $locations[The Battlefield (Frat Uniform), The Oasis, The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
+	boolean[location] meatZones = $locations[The Battlefield (Frat Uniform), The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
 	Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
 	boolean[location] itemZones = $locations[A Massive Ziggurat, The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
 	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
@@ -826,36 +826,31 @@ boolean auto_getCitizenZone(string goal)
 		case "meat": //Get +50% meat
 			foreach loc in meatZones
 			{
-				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
+				if(!can_adventure(loc))
 				{
-					handleFamiliar(eagle);
-					if(autoAdv(loc))
+					continue;
+				}
+				handleFamiliar(eagle);
+				if(autoAdv(loc))
+				{
+					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
 					{
-						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-						{
-							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-							return true;
-						}
+						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+						return true;
+					}
+					else
+					{
+						auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
 						return false;
 					}
-					return false;
 				}
-				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				else
 				{
-					handleFamiliar(eagle);
-					if(autoAdv(loc))
-					{
-						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-						{
-							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-							return true;
-						}
-						return false;
-					}
+					auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
 					return false;
 				}
-				else return false;
 			}
+			break;
 		case "initiative": //Get +100% initiative. Give the option to add this to a quest later, but currently unused
 			foreach loc in initZones
 			{
