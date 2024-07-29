@@ -800,17 +800,15 @@ boolean auto_getCitizenZone(string goal)
 	{
 		return false; //don't attempt to change if we don't have a lot of meat and we are going for something other than mp
 	}
-	if((have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal)) || (!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) == 0 && have_effect($effect[Citizen of a Zone]) > 0))
+	if(have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal))
 	{
-		if(have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal))
-		{
-			auto_log_info("No need to remove Citizen of a Zone");
-		}
-		else
-		{
-			auto_log_info("Can't remove Citizen of a Zone");
-		}
-		return false; //if we have the desired Citizen of a Zone effects or we can't remove it
+		auto_log_info("No need to remove Citizen of a Zone");
+		return false;
+	}
+	if(have_effect($effect[Citizen of a Zone]) > 0 && !contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) == 0)
+	{
+		auto_log_info("Can't remove Citizen of a Zone");
+		return false;
 	}
 	if(!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0) //try to remove Citizen of a Zone
 	{
@@ -854,102 +852,87 @@ boolean auto_getCitizenZone(string goal)
 		case "initiative": //Get +100% initiative. Give the option to add this to a quest later, but currently unused
 			foreach loc in initZones
 			{
-				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
+				if(!can_adventure(loc))
 				{
-					handleFamiliar(eagle);
-					if(autoAdv(loc))
+					continue;
+				}
+				handleFamiliar(eagle);
+				if(autoAdv(loc))
+				{
+					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
 					{
-						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-						{
-							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-							return true;
-						}
+						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+						return true;
+					}
+					else
+					{
+						auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
 						return false;
 					}
-					return false;
 				}
-				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				else
 				{
-					handleFamiliar(eagle);
-					if(autoAdv(loc))
-					{
-						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-						{
-							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-							return true;
-						}
-						return false;
-					}
+					auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
 					return false;
 				}
-				else return false;
 			}
+			break;
 		case "mp": //Get 20-30 mp regen or 10-15 mp regen. Currently only gets 10-15 mp regen in The Spooky Forest
 			foreach loc in mpZones
 			{
-				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
+				if(!can_adventure(loc))
 				{
-					handleFamiliar(eagle);
-					if(autoAdv(loc))
+					continue;
+				}
+				handleFamiliar(eagle);
+				if(autoAdv(loc))
+				{
+					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
 					{
-						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-						{
-							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-							return true;
-						}
+						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+						return true;
+					}
+					else
+					{
+						auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
 						return false;
 					}
-					return false;
 				}
-				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				else
 				{
-					handleFamiliar(eagle);
-					if(autoAdv(loc))
-					{
-						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-						{
-							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-							return true;
-						}
-						return false;
-					}
+					auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
 					return false;
 				}
-				else return false;
 			}
+			break;
 		default: //Get +30% item by default
 			foreach loc in itemZones
 			{
-				if(loc == my_location()) // don't bother checking if we can adventure since we are already there
+				if(!can_adventure(loc))
 				{
-					handleFamiliar(eagle);
-					if(autoAdv(loc))
+					continue;
+				}
+				handleFamiliar(eagle);
+				if(autoAdv(loc))
+				{
+					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
 					{
-						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-						{
-							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-							return true;
-						}
+						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+						return true;
+					}
+					else
+					{
+						auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
 						return false;
 					}
-					return false;
 				}
-				else if(can_adventure(loc)) // need this separate if because we don't want to change locations if we don't have to
+				else
 				{
-					handleFamiliar(eagle);
-					if(autoAdv(loc))
-					{
-						if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-						{
-							handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-							return true;
-						}
-						return false;
-					}
+					auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
 					return false;
 				}
-				else return false;
 			}
+			break;
 	}
 	return false;
 }
