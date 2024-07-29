@@ -108,6 +108,9 @@ item	79	Holy Spring Water	0	50	0	0	none	Spiritually Awake
 item	80	Spirit Beer	0	90	0	0	none	Spiritually Aware
 item	81	Sacramental Wine	0	180	0	0	none	Spiritually Awash
 
+# special handling in auto_restore.ash accounts for mp restore if completed as frat warrior
+place	0	the nunnery	1000	0	3	0	none	none
+
 skill	0	Tongue of the Walrus	35	0	0	0	Beaten Up	none
 skill	1	Cannelloni Cocoon	1000	0	0	0	none	none
 skill	2	Shake it Off	ALL	0	0	0	All Negative	none
