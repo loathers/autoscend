@@ -739,6 +739,10 @@ boolean canBanish(phylum enemyphylum, location loc)
 
 boolean adjustForBanish(string combat_string)
 {
+	if(combat_string == "skill" + $skill[%fn\, Release the Patriotic Screech!])
+	{
+		return use_familiar($familiar[Patriotic Eagle]);
+	}
 	if(combat_string == "skill " + $skill[Throw Latte on Opponent])
 	{
 		return autoEquip($item[latte lovers member\'s mug]);
@@ -784,10 +788,6 @@ boolean adjustForBanish(string combat_string)
 	if(combat_string == "skill " + $skill[KGB Tranquilizer Dart])
 	{
 		return autoEquip($item[Kremlin\'s Greatest Briefcase]);
-	}
-	if(combat_string == "skill" + $skill[%fn\, Release the Patriotic Screech!])
-	{
-		return use_familiar($familiar[Patriotic Eagle]);
 	}
 	if(combat_string == "skill " + $skill[Beancannon])
 	{
