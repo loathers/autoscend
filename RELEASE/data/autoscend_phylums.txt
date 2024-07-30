@@ -5,9 +5,9 @@
 banish	0	dude	loc:The Black Forest
 banish	1	dude	loc:Twin Peak
 banish	2	dude	loc:The Red Zeppelin;sniffed:Red Butler;item:Glark Cable>2
-banish	3	dude	loc:Whitey's Grove;prop:questL11Palindome!=step4
+banish	3	dude	loc:Whitey's Grove;quest:questL11Palindome<=3
 banish	4	beast	loc:The Hidden Park
-banish	5	beast	loc:Inside the Palindome;prop:questL11Palindome!=step4
+banish	5	beast	loc:Inside the Palindome;quest:questL11Palindome<=3
 banish	6	beast	loc:The Penultimate Fantasy Airship
 banish	7	undead	loc:The Haunted Library
 banish	8	undead	loc:The Haunted Wine Cellar
