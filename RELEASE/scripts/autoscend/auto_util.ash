@@ -720,6 +720,10 @@ boolean auto_wantToBanish(monster enemy, location loc)
 
 boolean auto_wantToBanish(phylum enemyphylum, location loc)
 {
+	if(appearance_rates(loc)[enemy] <= 0)
+	{
+		return false;
+	}
 	location locCache = my_location();
 	set_location(loc);
 	boolean [phylum] phylumToBanish = auto_getPhylum("banish");
@@ -807,23 +811,23 @@ boolean adjustForBanish(string combat_string)
 	return true;
 }
 
-boolean adjustForBanishIfPossible(monster enemy, location loc)
-{
-	if(canBanish(enemy, loc))
-	{
-		string banish_string = banisherCombatString(enemy, loc);
-		auto_log_info("Adjusting to have banisher available for " + enemy + ": " + banish_string, "blue");
-		return adjustForBanish(banish_string);
-	}
-	return false;
-}
-
 boolean adjustForBanishIfPossible(phylum enemyphylum, location loc)
 {
 	if(canBanish(enemyphylum, loc))
 	{
 		string banish_string = banisherCombatString(enemyphylum, loc);
 		auto_log_info("Adjusting to have phylum banisher available for " + enemyphylum + ": " + banish_string, "blue");
+		return adjustForBanish(banish_string);
+	}
+	return false;
+}
+
+boolean adjustForBanishIfPossible(monster enemy, location loc)
+{
+	if(canBanish(enemy, loc))
+	{
+		string banish_string = banisherCombatString(enemy, loc);
+		auto_log_info("Adjusting to have banisher available for " + enemy + ": " + banish_string, "blue");
 		return adjustForBanish(banish_string);
 	}
 	return false;
