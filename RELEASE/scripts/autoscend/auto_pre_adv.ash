@@ -353,10 +353,10 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && place == solveDelayZone());
-	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
+	boolean burningDelay = auto_burningDelay();
+	boolean gettingLucky = auto_gettingLucky();
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
-	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
+	boolean zoneQueueIgnored = auto_queueIgnore();
 	generic_t combatModifier = zone_combatMod(place);
 	if (combatModifier._boolean && !zoneQueueIgnored) {
 		acquireCombatMods(combatModifier._int, true);

@@ -1832,7 +1832,32 @@ boolean isFreeMonster(monster mon, location loc)
 	return false;
 }
 
+boolean auto_burningDelay()
+{
+	if((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && place == solveDelayZone())
+	{
+		return true;
+	}
+	return false;
+}
 
+boolean auto_gettingLucky()
+{
+	if(have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_queueIgnore()
+{
+	if(auto_burningDelay() || auto_gettingLucky() || auto_haveQueuedForcedNonCombat())
+	{
+		return true;
+	}
+	return false;
+}
 
 boolean auto_deleteMail(kmailObject msg)
 {
