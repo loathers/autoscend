@@ -1834,7 +1834,7 @@ boolean isFreeMonster(monster mon, location loc)
 
 boolean auto_burningDelay()
 {
-	if((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && place == solveDelayZone())
+	if((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && my_location() == solveDelayZone())
 	{
 		return true;
 	}
@@ -1843,7 +1843,7 @@ boolean auto_burningDelay()
 
 boolean auto_gettingLucky()
 {
-	if(have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place))
+	if(have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(my_location()))
 	{
 		return true;
 	}
