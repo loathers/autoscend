@@ -829,6 +829,21 @@ boolean adjustForBanishIfPossible(phylum enemyphylum, location loc)
 	return false;
 }
 
+boolean auto_forceFreeRun(boolean combat)
+{
+	if(get_property("auto_forceFreeRun").to_boolean() && combat)
+	{
+		set_property("auto_forceFreeRun", false); //want to reset as soon as we see it as true while in combat
+		return true;
+	}
+	if(get_property("auto_forceFreeRun").to_boolean())
+	{
+		//don't need to reset it because we haven't taken a turn to freeRun yet
+		return true;
+	}
+	return false;
+}
+
 boolean auto_wantToFreeRun(monster enemy, location loc)
 {
 	if(appearance_rates(loc)[enemy] <= 0)

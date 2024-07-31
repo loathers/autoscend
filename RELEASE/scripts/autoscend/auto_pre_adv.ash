@@ -415,7 +415,7 @@ boolean auto_pre_adventure()
 				zoneHasUnwantedMonsters = true;
 			}
 			boolean wantToBanish  = auto_wantToBanish(mon, place);
-			boolean wantToFreeRun = auto_wantToFreeRun(mon, place);
+			boolean wantToFreeRun = auto_wantToFreeRun(mon, place) || auto_forceFreeRun(false);
 			if(wantToBanish || wantToFreeRun)
 			{
 				// attempt to prepare for banishing, but if we can not try free running

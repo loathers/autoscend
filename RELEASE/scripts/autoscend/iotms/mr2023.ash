@@ -829,6 +829,7 @@ boolean auto_getCitizenZone(string goal)
 					continue;
 				}
 				handleFamiliar(eagle);
+				set_property("auto_forceFreeRun", true);
 				if(autoAdv(loc))
 				{
 					activeCitZoneMod();
@@ -858,6 +859,7 @@ boolean auto_getCitizenZone(string goal)
 					continue;
 				}
 				handleFamiliar(eagle);
+				set_property("auto_forceFreeRun", true);
 				if(autoAdv(loc))
 				{
 					activeCitZoneMod();
@@ -887,6 +889,7 @@ boolean auto_getCitizenZone(string goal)
 					continue;
 				}
 				handleFamiliar(eagle);
+				set_property("auto_forceFreeRun", true);
 				if(autoAdv(loc))
 				{
 					activeCitZoneMod();
@@ -916,6 +919,7 @@ boolean auto_getCitizenZone(string goal)
 					continue;
 				}
 				handleFamiliar(eagle);
+				set_property("auto_forceFreeRun", true);
 				if(autoAdv(loc))
 				{
 					activeCitZoneMod();
