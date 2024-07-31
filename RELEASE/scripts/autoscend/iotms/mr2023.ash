@@ -832,7 +832,7 @@ boolean auto_getCitizenZone(string goal)
 				set_property("auto_forceFreeRun", true);
 				if(autoAdv(loc))
 				{
-					activeCitZoneMod();
+					activeCitZoneMod = activeCitZoneMod();
 					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
 					{
 						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
@@ -862,7 +862,7 @@ boolean auto_getCitizenZone(string goal)
 				set_property("auto_forceFreeRun", true);
 				if(autoAdv(loc))
 				{
-					activeCitZoneMod();
+					activeCitZoneMod = activeCitZoneMod();
 					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
 					{
 						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
@@ -892,7 +892,7 @@ boolean auto_getCitizenZone(string goal)
 				set_property("auto_forceFreeRun", true);
 				if(autoAdv(loc))
 				{
-					activeCitZoneMod();
+					activeCitZoneMod = activeCitZoneMod();
 					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
 					{
 						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
@@ -922,7 +922,7 @@ boolean auto_getCitizenZone(string goal)
 				set_property("auto_forceFreeRun", true);
 				if(autoAdv(loc))
 				{
-					activeCitZoneMod();
+					activeCitZoneMod = activeCitZoneMod();
 					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
 					{
 						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
