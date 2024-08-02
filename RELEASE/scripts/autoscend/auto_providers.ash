@@ -309,7 +309,8 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Celestial Camouflage,
 		Feeling Lonely,
 		Feeling Sneaky,
-		Ultra-Soft Steps
+		Ultra-Soft Steps,
+		Hippy Antimilitarism
 	])) {
 		return result();
 	}
@@ -818,7 +819,8 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			Gritty,
 			Too Shamed,
 			Twangy,
-			minor invulnerability
+			minor invulnerability,
+			Incredibly Healthy
 		]))
 			return result();
 	}
