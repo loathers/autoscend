@@ -852,7 +852,7 @@ boolean auto_getCitizenZone(location loc)
 		//if for some reason we make it into the location getCitizenZone and it's not in any of the defined zones, get the item buff
 		auto_getCitizenZone("item");
 	}
-	if(!auto_citizenZonePrep(string goal))
+	if(!auto_citizenZonePrep(goal))
 	{
 		return false;
 	}
@@ -895,7 +895,7 @@ boolean auto_getCitizenZone(string goal)
 	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
 	string activeCitZoneMod = activeCitZoneMod();
 	
-	if(!auto_citizenZonePrep(string goal))
+	if(!auto_citizenZonePrep(goal))
 	{
 		return false;
 	}
