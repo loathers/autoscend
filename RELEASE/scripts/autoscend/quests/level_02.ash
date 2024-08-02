@@ -106,7 +106,7 @@ boolean L2_mosquito()
 
 	if(activeCitZoneMod() == "none") //if we don't already have a Citizen of a Zone buff, might as well get this
 	{
-		auto_getCitizenZone("mp");
+		auto_getCitizenZone($location[The Spooky Forest]);
 	}
 	
 	auto_log_info("Trying to find a mosquito.", "blue");

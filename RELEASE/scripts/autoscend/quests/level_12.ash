@@ -1895,6 +1895,7 @@ boolean L12_themtharHills()
 		return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
 	}
 
+	auto_getCitizenZone("meat"); //because it can take a turn, get this before getting any other buffs
 	buffMaintain($effect[Disco Leer], 10, 1, 1);
 	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
 	buffMaintain($effect[Sinuses For Miles]);
@@ -1913,7 +1914,6 @@ boolean L12_themtharHills()
 	buffMaintain($effect[Sweet Heart], 0, 1, 20);
 	buffMaintain($effect[Good Things Are Coming, You Can Smell It]);
 	buffMaintain($effect[Incredibly Well Lit]);
-	auto_getCitizenZone("meat");
 	bat_formWolf();
 	if(auto_is_valid($effect[Meet the Meat]))
 	{

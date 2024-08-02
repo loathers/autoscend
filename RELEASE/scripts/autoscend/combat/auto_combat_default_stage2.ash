@@ -160,7 +160,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return banishAction;
 		}
 		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
-		combat_status_add("banishercheck");
+		combat_status_add("phylumbanishercheck");
 	}
 
 	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()))
@@ -197,7 +197,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 
 	// Free run from monsters we want to banish/phylumbanish but are unable to, or monsters on the free run list
-	if(!combat_status_check("freeruncheck") && ((auto_wantToFreeRun(enemy, my_location()) || auto_forceFreeRun(true)) || (auto_wantToBanish(enemy, my_location()) || auto_wantToBanish(monster_phylum(enemy), my_location()))))
+	if(!combat_status_check("freeruncheck") && (auto_wantToFreeRun(enemy, my_location()) || auto_forceFreeRun(true) || auto_wantToBanish(enemy, my_location()) || auto_wantToBanish(monster_phylum(enemy), my_location())))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")
