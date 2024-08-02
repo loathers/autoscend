@@ -1815,8 +1815,6 @@ boolean doTasks()
 	pete_buySkills();
 	zombieSlayer_buySkills();
 	lol_buyReplicas();
-	wereprof_buySkills();
-	wereprof_buyEquip();
 	iluh_buyEquiq();
 
 	oldPeoplePlantStuff();
@@ -1864,7 +1862,6 @@ boolean doTasks()
 	if(LM_robot())						return true;
 	if(LM_plumber())					return true;
 	if(LM_zombieSlayer())				return true;
-	if(LM_wereprof())					return true;
 
 	{
 		cheeseWarMachine(0, 0, 0, 0);

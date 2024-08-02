@@ -3361,6 +3361,11 @@ boolean L11_defeatEd()
 		return true;
 	}
 
+	if(is_professor())
+	{
+		return false; //need to wait until werewolf because can't survive combat long enough as a Prof
+	}
+
 	int baseML = monster_level_adjustment();
 	if(in_heavyrains())
 	{
