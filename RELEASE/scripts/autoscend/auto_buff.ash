@@ -680,7 +680,9 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 				return true;
 			}
 			// lodestene will be consumed for a free NC to get this buff
-			autoAdv(auto_availableBrickRift());
+		set_property("auto_disableAdventureHandling", true);
+		autoAdv(auto_availableBrickRift());
+		set_property("auto_disableAdventureHandling", false);
 		}
 		break;
 	case $effect[Shells of the Damned]:			useItem = $item[cyan seashell];					break;
