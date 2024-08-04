@@ -36,7 +36,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 	{
 		return false;
 	}
-	if(is_boris() || is_jarlsberg() || is_pete() || in_glover())
+	if(is_boris() || is_jarlsberg() || is_pete() || in_glover() || in_bad_moon())
 	{
 		return false;
 	}
@@ -345,6 +345,11 @@ boolean zataraAvailable()
 		return false;
 	}
 
+	if(in_bad_moon())
+	{
+		return false;
+	}
+
 	if(!(auto_get_clan_lounge() contains $item[Clan Carnival Game]))
 	{
 		return false;
@@ -415,6 +420,11 @@ boolean zataraClanmate()
 	}
 
 	if(get_property("_clanFortuneConsultUses").to_int() >= 3)
+	{
+		return false;
+	}
+
+	if (in_bad_moon())
 	{
 		return false;
 	}

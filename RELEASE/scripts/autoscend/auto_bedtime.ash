@@ -812,7 +812,7 @@ boolean doBedtime()
 		}
 	}
 
-	if((is_unrestricted($item[Clan Pool Table])) && (get_property("_poolGames").to_int() < 3) && (item_amount($item[Clan VIP Lounge Key]) > 0))
+	if((is_unrestricted($item[Clan Pool Table])) && !in_bad_moon() && (get_property("_poolGames").to_int() < 3) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 	{
 		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");
 		visit_url("clan_viplounge.php?preaction=poolgame&stance=1");
@@ -904,7 +904,7 @@ boolean doBedtime()
 	}
 
 	dailyEvents();
-	if((get_property("auto_clanstuff").to_int() < my_daycount()) && (get_clan_id() != -1))
+	if((get_property("auto_clanstuff").to_int() < my_daycount()) && (get_clan_id() != -1) && !in_bad_moon())
 	{
 		if(get_property("_klawSummons").to_int() == 0 && get_clan_rumpus() contains 'Mr. Klaw "Skill" Crane Game')
 		{
@@ -1297,7 +1297,7 @@ boolean doBedtime()
 			{
 				auto_log_info(yellowRay_str);
 			}
-			if(!get_property("_photocopyUsed").to_boolean() && (is_unrestricted($item[Deluxe Fax Machine])) && (my_adventures() > 0) && !(is_boris() || is_jarlsberg() || is_pete()) && (item_amount($item[Clan VIP Lounge Key]) > 0))
+			if(!get_property("_photocopyUsed").to_boolean() && (is_unrestricted($item[Deluxe Fax Machine])) && (my_adventures() > 0) && !(is_boris() || is_jarlsberg() || is_pete() || in_bad_moon()) && (item_amount($item[Clan VIP Lounge Key]) > 0))
 			{
 				auto_log_info("You may have a fax that you can use. Check it out!", "blue");
 			}

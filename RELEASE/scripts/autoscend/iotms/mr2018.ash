@@ -256,6 +256,11 @@ boolean fantasyRealmToken()
 		return false;
 	}
 
+	if (in_bad_moon())
+	{
+		return false;
+	}
+
 	if((get_property("frAlways").to_boolean() || get_property("_frToday").to_boolean()) && !possessEquipment($item[FantasyRealm G. E. M.]))
 	{
 		int option = 1;
