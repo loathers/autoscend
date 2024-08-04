@@ -783,6 +783,10 @@ boolean neverendingPartyAvailable()
 		// Can't adventure if the quest is complete for the day.
 		return false;
 	}
+	if (in_bad_moon())
+	{
+		return false;
+	}
 	return true;
 }
 
