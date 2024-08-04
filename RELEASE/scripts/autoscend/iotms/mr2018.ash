@@ -1274,7 +1274,7 @@ boolean auto_voteMonster(boolean freeMon, location loc)
 
 boolean fightClubNap()
 {
-	if(!is_unrestricted($item[Boxing Day care package]))
+	if(!is_unrestricted($item[Boxing Day care package]) || in_bad_moon())
 	{
 		return false;
 	}
