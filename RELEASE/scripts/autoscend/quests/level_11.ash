@@ -492,6 +492,7 @@ boolean LX_unlockManorSecondFloor() {
 			auto_log_info("Attemping to use Map the Monsters to olfact a writing desk.");
 		}
 	}
+	auto_getCitizenZone($location[The Haunted Library]); //since want to adventure in the Haunted Library anyway
 	return autoAdv($location[The Haunted Library]);
 }
 
@@ -2875,6 +2876,12 @@ boolean L11_palindome()
 	total = total + item_amount($item[Photograph Of An Ostrich Egg]);
 	total = total + item_amount($item[Photograph Of God]);
 	total = total + item_amount($item[Photograph Of A Dog]);
+
+	if(isBanishedPhyla($phylum[dude]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; //If new phylum banishers come out, this should be updated.
+	}
 
 	boolean lovemeDone = hasILoveMeVolI() || (internalQuestStatus("questL11Palindome") >= 1);
 	if(!lovemeDone && (get_property("palindomeDudesDefeated").to_int() >= 5))

@@ -206,6 +206,9 @@ boolean isSniffed(monster enemy, skill sk)
 		case $skill[Transcendent Olfaction]:
 			retval = contains_text(get_property("olfactedMonster"), enemy);
 			break;
+		case $skill[%fn, fire a Red, White and Blue Blast]:
+			retval = contains_text(get_property("rwbMonster"), enemy);
+			break;
 		case $skill[Make Friends]:
 			retval = contains_text(get_property("makeFriendsMonster"), enemy);
 			break;
@@ -239,7 +242,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
+	foreach sk in $skills[Transcendent Olfaction, %fn\, fire a Red\, White and Blue Blast, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -254,6 +257,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	if(canUse($skill[Transcendent Olfaction], true , inCombat) && get_property("_olfactionsUsed").to_int() < 3 && !isSniffed(enemy, $skill[Transcendent Olfaction]))
 	{
 		return $skill[Transcendent Olfaction];
+	}
+	if(canUse($skill[%fn, fire a Red, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
+	{
+		return $skill[%fn, fire a Red, White and Blue Blast];
 	}
 	if(canUse($skill[Make Friends], true , inCombat) && my_audience() >= 20 && !isSniffed(enemy, $skill[Make Friends]))
 	{
@@ -464,6 +471,29 @@ string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string
 	return "abort";	//must have a return
 }
 
+string findPhylumBanisher(int round, monster enemy, string text)
+{
+	string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
+	if(banishAction != "")
+	{
+		auto_log_info("Looking at banishAction: " + banishAction, "green");
+		if(index_of(banishAction, "skill") == 0)
+		{
+			handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
+		}
+		else if(index_of(banishAction, "item") == 0)
+		{
+			handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
+		}
+		else
+		{
+			auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
+		}
+		return banishAction;
+	}
+	return auto_combatHandler(round, enemy, text);
+}
+
 string findBanisher(int round, monster enemy, string text)
 {
 	string banishAction = banisherCombatString(enemy, my_location(), true);
@@ -489,6 +519,33 @@ string findBanisher(int round, monster enemy, string text)
 		return useSkill($skill[Storm of the Scarab], false);
 	}
 	return auto_combatHandler(round, enemy, text);
+}
+
+string banisherCombatString(phylum enemyPhylum, location loc, boolean inCombat)
+{
+	if(inAftercore())
+	{
+		return "";
+	}
+
+	if(in_pokefam())
+	{
+		return "";
+	}
+	
+	//Check that we actually want to banish this thing.
+	if(!auto_wantToBanish(enemyPhylum, loc))
+		return "";
+
+	if(inCombat)
+		auto_log_info("Finding a phylum banisher to use on " + enemyPhylum + " at " + loc, "green");
+
+	if(auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0))
+	{
+		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
+	}
+
+	return "";
 }
 
 string banisherCombatString(monster enemy, location loc, boolean inCombat)
@@ -637,7 +694,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
 	}
-
 	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
 	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]) && !(used contains "Bowl a Curveball") && useFree)
 	{
@@ -755,6 +811,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	}
 
 	return "";
+}
+
+string banisherCombatString(phylum enemyPhylum, location loc)
+{
+	return banisherCombatString(enemyPhylum, loc, false);
 }
 
 string banisherCombatString(monster enemy, location loc)

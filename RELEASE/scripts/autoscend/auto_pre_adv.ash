@@ -353,10 +353,10 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && place == solveDelayZone());
-	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
+	boolean burningDelay = auto_burningDelay();
+	boolean gettingLucky = auto_gettingLucky();
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
-	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
+	boolean zoneQueueIgnored = auto_queueIgnore();
 	generic_t combatModifier = zone_combatMod(place);
 	if (combatModifier._boolean && !zoneQueueIgnored) {
 		acquireCombatMods(combatModifier._int, true);
@@ -408,8 +408,14 @@ boolean auto_pre_adventure()
 				adjustForYellowRayIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
+			if(auto_wantToBanish(monster_phylum(mon), place))
+			{
+				// attempt to prepare for banishing, but if we can not try free running
+				boolean canBanish = adjustForBanishIfPossible(monster_phylum(mon), place);
+				zoneHasUnwantedMonsters = true;
+			}
 			boolean wantToBanish  = auto_wantToBanish(mon, place);
-			boolean wantToFreeRun = auto_wantToFreeRun(mon, place);
+			boolean wantToFreeRun = auto_wantToFreeRun(mon, place) || auto_forceFreeRun(false);
 			if(wantToBanish || wantToFreeRun)
 			{
 				// attempt to prepare for banishing, but if we can not try free running
