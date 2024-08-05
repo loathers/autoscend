@@ -55,7 +55,7 @@ boolean LX_attemptPowerLevel()
 
 	if(get_property("screechDelay").to_boolean())
 	{
-		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else")
+		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else");
 		if(get_property("screechCombats").to_int() > 0)
 		{
 			if(LX_getDigitalKey() || LX_getStarKey())
