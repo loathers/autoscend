@@ -13,4 +13,5 @@ banish	7	undead	loc:The Haunted Library
 banish	8	undead	loc:The Haunted Wine Cellar
 banish	9	undead	loc:The Haunted Boiler Room
 banish	10	undead	loc:The Middle Chamber
+banish	11	construct	loc:Noob Cave
 

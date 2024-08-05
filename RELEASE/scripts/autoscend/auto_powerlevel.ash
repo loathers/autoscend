@@ -52,6 +52,26 @@ boolean LX_attemptPowerLevel()
 		set_property("auto_powerLevelAdvCount", 0);
 		return true;		//restart the main loop to give those quests a chance to run now that the softblock is released.
 	}
+
+	if(get_property("screechDelay").to_boolean())
+	{
+		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else")
+		if(get_property("screechCombats").to_int() > 0)
+		{
+			if(LX_getDigitalKey() || LX_getStarKey())
+			{
+				//If we still need the Digital Key or Star Key burn turns to get them
+				return true;
+			}
+			else
+			{
+				//Nothing else to do but go here
+				autoAdv($location[Noob Cave]);
+			}
+		}
+		set_property("screechDelay", false);
+		return true;
+	}
 	
 	if(in_robot())
 	{

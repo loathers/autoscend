@@ -2877,9 +2877,9 @@ boolean L11_palindome()
 	total = total + item_amount($item[Photograph Of God]);
 	total = total + item_amount($item[Photograph Of A Dog]);
 
-	if(isBanishedPhyla($phylum[dude]) && get_property("screechCombats").to_int() > 0 && total == 3)
+	if(isBanishedPhyla($phylum[dude]) && get_property("screechCombats").to_int() > 0)
 	{
-		//Can't unscreech-banish dudes until screechCombats = 0. Total = 3 implies we got the 3 NCs we need and just need dudes. Maybe we hit a couple of Gnats or Cats or Bats and get screechCombats to 0
+		set_property("screechDelay", true);
 		return false; //If new phylum banishers come out, this should be updated.
 	}
 
