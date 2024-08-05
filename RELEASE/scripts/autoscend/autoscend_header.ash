@@ -1574,6 +1574,10 @@ float provideMoxie(int amt, location loc, boolean doEquips, boolean speculative)
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
 boolean provideMoxie(int amt, location loc, boolean doEquips);
 boolean provideMoxie(int amt, boolean doEquips);
+float provideItem(int amt, location loc, boolean doEverything, boolean speculative);
+float provideItem(int amt, boolean doEverything, boolean speculative);
+boolean provideItem(int amt, location loc, boolean doEverything);
+boolean provideItem(int amt, boolean doEverything);
 
 ########################################################################################################
 //Defined in autoscend/auto_restore.ash
@@ -1652,6 +1656,8 @@ boolean zone_isAvailable(location loc, boolean unlockIfPossible);
 boolean zone_isAvailable(location loc);
 int[location] zone_delayable();
 generic_t zone_needItem(location loc);
+generic_t zone_needItemBooze(location loc);
+generic_t zone_needItemFood(location loc);
 generic_t zone_combatMod(location loc);
 generic_t zone_delay(location loc);
 boolean zone_available(location loc);

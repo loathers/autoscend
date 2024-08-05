@@ -198,10 +198,7 @@ boolean LX_steelOrgan()
 		auto_log_info("I am hungry for some steel.", "blue");
 	}
 
-	if(have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
-	{
-		auto_sourceTerminalEnhance("items");
-	}
+	provideItem(567, $location[The Laugh Floor], true);
 
 	if(get_property("questM10Azazel") == "unstarted")
 	{
