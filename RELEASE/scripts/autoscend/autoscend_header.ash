@@ -760,6 +760,14 @@ boolean rainManSummon(monster target, boolean speculative);
 boolean L13_heavyrains_towerFinal();
 
 ########################################################################################################
+//Defined in autoscend/paths/heavy_rains.ash
+boolean in_iluh();
+boolean iluh_foodConsumable(string str);
+boolean iluh_famAllowed(string fam);
+void iluh_buyEquiq();
+void iluh_pulls();
+
+########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash
 boolean in_koe();
 boolean koe_initializeSettings();
