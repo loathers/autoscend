@@ -2,6 +2,8 @@
 Galloping Grill	ML:>=120
 Baby Sandworm	ML:>=120
 God Lobster	ML:>=120;item:God Lobster's Ring>0
+# Mini Kiwi for turn gen in 11 Things path
+Mini Kiwi	path:11 Things I Hate About U;item:mini kiwi<=8
 # Volleyball or sombrero (whichever is best) with a multiplier
 Jill-of-All-Trades	item:LED candle>0
 Patriotic Eagle	ML:>=120
@@ -23,6 +25,7 @@ Golden Monkey
 Bloovian Groose
 Unconscious Collective
 Grim Brother
+Mini Kiwi
 Dramatic Hedgehog
 Chauvinist Pig
 Uniclops
