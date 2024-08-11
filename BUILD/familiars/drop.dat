@@ -35,6 +35,9 @@ Melodramedary	prop:camelSpit<100
 # Drops BACON every battle. 100 bacon makes size 15 density 4.83 food. 150 bacon can get you a fat loot token
 Intergnat	item:BACON<150
 #
+# Mini Kiwi for turn gen in 11 Things path
+Mini Kiwi	path:11 Things I Hate About U;item:mini kiwi<=8
+#
 # Generate extra cookbookbat ingredients to make sure we have enough stock on hand for higher-tier foods
 Cookbookbat	item:Vegetable of Jarlsberg<4;!prop_boolean:auto_dontUseCookBookBat
 Cookbookbat	item:Yeast of Boris<4;!prop_boolean:auto_dontUseCookBookBat
