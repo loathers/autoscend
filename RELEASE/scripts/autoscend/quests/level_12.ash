@@ -1107,6 +1107,13 @@ void gremlinsFamiliar()
 			set_property("_auto_seaQuestStartedToday", true);
 			visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman");	//get bathysphere by starting the sea quest
 		}
+		if(possessEquipment($item[mini kiwi invisible dirigible]) && !in_iluh())
+		{
+			equip($slot[familiar], $item[mini kiwi invisible dirigible]);
+			strip_familiar = false;
+			//disable maximizer switching of familiar equipment
+			addToMaximize("-familiar");
+		}
 		if(possessEquipment($item[little bitty bathysphere]))
 		{
 			equip($slot[familiar], $item[little bitty bathysphere]);

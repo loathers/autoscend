@@ -604,6 +604,7 @@ void edUnderworldChoiceHandler(int choice);
 //Defined in autoscend/paths/avant_guard.ash
 boolean in_ag();
 void ag_initializeSettings();
+void ag_pulls()
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash
