@@ -1,4 +1,4 @@
-since r28018;	// feat: more raffle items, path items
+since r28019;	// feat: add avant guard path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

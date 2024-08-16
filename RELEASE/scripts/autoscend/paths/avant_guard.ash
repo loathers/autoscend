@@ -1,7 +1,6 @@
 boolean in_ag()
 {
-	//return my_path() == $path[Avant Guard];
-	return true;
+	return my_path() == $path[Avant Guard];
 }
 
 void ag_initializeSettings()
