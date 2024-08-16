@@ -8,7 +8,8 @@ void ag_initializeSettings()
 {
 	if(in_ag())
 	{
-		backupSetting("auto_100familiar", "Burly Bodyguard");
+		set_property("auto_100familiar", "Burly Bodyguard");
+		set_property("auto_skipNuns", true);
 	}
 }
 

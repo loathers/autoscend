@@ -129,7 +129,7 @@ location auto_availableBrickRift()
 
 int auto_neededShadowBricks()
 {
-	if(!auto_havePayPhone())
+	if(!auto_havePayPhone() || in_ag())
 	{
 		return 0;
 	}
