@@ -854,7 +854,7 @@ void initializeDay(int day)
 			{
 				use(1, $item[Xiblaxian holo-wrist-puter simcode]);
 			}
-			if(item_amount($item[baby bodyguard]) > 0 && have_familiar($familiar[burly bodyguard])) //will only happen in Avant Guard
+			if(item_amount($item[baby bodyguard]) > 0 && !have_familiar($familiar[burly bodyguard])) //will only happen in Avant Guard
 			{
 				use(1, $item[baby bodyguard]);
 			}
