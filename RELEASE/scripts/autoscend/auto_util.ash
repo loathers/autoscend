@@ -1763,7 +1763,7 @@ boolean isFreeMonster(monster mon, location loc)
 	}
 
 	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains loc
-		&& have_effect($effect[shadow affinity]) > 0)
+		&& have_effect($effect[shadow affinity]) > 0 && !in_ag())
 	{
 		return true;
 	}
