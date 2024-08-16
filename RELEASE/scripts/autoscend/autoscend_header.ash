@@ -601,6 +601,11 @@ boolean LM_edTheUndying();
 void edUnderworldChoiceHandler(int choice);
 
 ########################################################################################################
+//Defined in autoscend/paths/avant_guard.ash
+boolean in_ag();
+void ag_initializeSettings();
+
+########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash
 boolean is_boris();
 void borisTrusty();
