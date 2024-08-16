@@ -532,6 +532,7 @@ int auto_habitatFightsLeft();
 monster auto_habitatMonster();
 boolean auto_canCircadianRhythm();
 boolean auto_circadianRhythmTarget(monster target);
+boolean auto_circadianRhythmTarget(phylum target);
 boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
 boolean auto_haveBurningLeaves();

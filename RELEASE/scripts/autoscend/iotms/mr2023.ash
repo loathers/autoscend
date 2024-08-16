@@ -674,6 +674,19 @@ boolean auto_circadianRhythmTarget(monster target)
 	return true;
 }
 
+boolean auto_circadianRhythmTarget(phylum target)
+{
+	if (!auto_canCircadianRhythm())
+	{
+		return false;
+	}
+	if (!($phylums[Orc, Hippy] contains target) && $locations[The Battlefield (Hippy Uniform), The Battlefield (Frat Uniform)] contains my_location())
+	{
+		return false;
+	}
+	return true;
+}
+
 boolean auto_haveJillOfAllTrades()
 {
 	if(auto_have_familiar($familiar[Jill-of-All-Trades]))
