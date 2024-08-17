@@ -276,6 +276,28 @@ familiar findNonRockFamiliarInTerrarium()
 	return $familiar[none];
 }
 
+familiar findRockFamiliarInTerrarium()
+{
+	static boolean[familiar] petRockFamiliars = $familiars[pet rock,
+		toothsome rock,
+		bulky buddy box,
+		holiday log,
+		software bug,
+		bad vibe,
+		pet coral,
+		synthetic rock,
+		pixel rock];
+
+	foreach fam in $familiars[]
+	{
+		if(in_terrarium(fam) && auto_have_familiar(fam) && petRockFamiliars contains fam)
+		{
+			return fam;
+		}
+	}
+	return $familiar[none];
+}
+
 familiar lookupFamiliarDatafile(string type)
 {
 	//This function looks through /data/autoscend_familiars.txt for the matching "type" in order and selects the first match whose conditions are met. Said conditions typically include path exclusions and a check to see if that familiar dropped something today.

@@ -1114,6 +1114,13 @@ void gremlinsFamiliar()
 			//disable maximizer switching of familiar equipment
 			addToMaximize("-familiar");
 		}
+		if(possessEquipment($item[Tiny consolation ribbon]))
+		{
+			equip($slot[familiar], $item[Tiny consolation ribbon]);
+			strip_familiar = false;
+			//disable maximizer switching of familiar equipment
+			addToMaximize("-familiar");
+		}
 		if(possessEquipment($item[little bitty bathysphere]))
 		{
 			equip($slot[familiar], $item[little bitty bathysphere]);
