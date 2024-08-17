@@ -549,6 +549,7 @@ void auto_scepterSkills()
 				}
 				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
 			}
+		}
 	}
 	//Day 2+ skills
 	if(my_daycount() >= 2)
