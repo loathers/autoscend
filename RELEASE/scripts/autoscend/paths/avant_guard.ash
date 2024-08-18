@@ -23,3 +23,16 @@ void ag_pulls()
 		}
 	}
 }
+
+void ag_bgChat()
+{
+	if(!in_ag)
+	{
+		return false;
+	}
+	string bgChat = visit_url("main.php?talktobg=1");
+	if(contains_text(bgChat, "Chatting with your Burly Bodyguard"))
+	{
+		run_choice(1, false, "bgid=78"); //knob goblin harem girl proof of concept
+	}
+}
