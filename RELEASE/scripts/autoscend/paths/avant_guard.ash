@@ -35,5 +35,4 @@ void ag_bgChat()
 	{
 		run_choice(1, false, "bgid=78"); //knob goblin harem girl proof of concept
 	}
-	return;
 }
