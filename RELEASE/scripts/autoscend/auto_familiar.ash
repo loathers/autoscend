@@ -268,7 +268,7 @@ familiar findNonRockFamiliarInTerrarium()
 		{
 			continue;
 		}
-		if(in_terrarium(fam) && auto_have_familiar(fam))
+		if(in_terrarium(fam) && have_familiar(fam))
 		{
 			return fam;
 		}

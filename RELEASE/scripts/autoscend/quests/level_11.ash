@@ -815,7 +815,7 @@ boolean L11_blackMarket()
 		return false;
 	}
 
-	if($location[The Black Forest].turns_spent > 12)
+	if($location[The Black Forest].turns_spent > 12 && !in_ag())
 	{
 		auto_log_warning("We have spent a bit many adventures in The Black Forest... manually checking", "red");
 		visit_url("place.php?whichplace=woods");
