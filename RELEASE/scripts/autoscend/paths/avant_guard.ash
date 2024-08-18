@@ -33,7 +33,7 @@ void ag_bgChat()
 	string bgChat = visit_url("main.php?talktobg=1");
 	if(contains_text(bgChat, "Chatting with your Burly Bodyguard"))
 	{
-		auto_log_info("Making the next bodyguard a " + to_monster(78).string(), "blue")
+		auto_log_info("Making the next bodyguard a " + to_monster(78).to_string(), "blue")
 		run_choice(1, false, "bgid=78"); //knob goblin harem girl proof of concept
 	}
 }
