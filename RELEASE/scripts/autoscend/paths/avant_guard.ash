@@ -26,7 +26,7 @@ void ag_pulls()
 
 void ag_bgChat()
 {
-	if(!in_ag)
+	if(!in_ag())
 	{
 		return false;
 	}
