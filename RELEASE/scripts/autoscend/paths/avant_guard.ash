@@ -28,7 +28,7 @@ void ag_bgChat()
 {
 	if(!in_ag())
 	{
-		return false;
+		return;
 	}
 	string bgChat = visit_url("main.php?talktobg=1");
 	if(contains_text(bgChat, "Chatting with your Burly Bodyguard"))
