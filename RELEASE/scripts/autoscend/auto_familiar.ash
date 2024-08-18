@@ -290,7 +290,7 @@ familiar findRockFamiliarInTerrarium()
 
 	foreach fam in $familiars[]
 	{
-		if(in_terrarium(fam) && auto_have_familiar(fam) && petRockFamiliars contains fam)
+		if(in_terrarium(fam) && have_familiar(fam) && petRockFamiliars contains fam)
 		{
 			return fam;
 		}
