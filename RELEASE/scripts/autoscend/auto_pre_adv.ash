@@ -589,6 +589,7 @@ boolean auto_pre_adventure()
 
 	equipOverrides();
 	kolhs_preadv(place);
+	ag_bgChat();
 
 	if (is100FamRun() && my_familiar() == $familiar[none])
 	{

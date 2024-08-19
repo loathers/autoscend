@@ -1822,7 +1822,6 @@ boolean doTasks()
 	zombieSlayer_buySkills();
 	lol_buyReplicas();
 	iluh_buyEquiq();
-	ag_bgChat();
 
 	oldPeoplePlantStuff();
 	use_barrels();
