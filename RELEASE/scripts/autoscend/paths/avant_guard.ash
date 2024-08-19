@@ -31,9 +31,44 @@ void ag_bgChat()
 		return;
 	}
 	string bgChat = visit_url("main.php?talktobg=1");
+	location place = my_location();
+	monster mon;
 	if(contains_text(bgChat, "Chatting with your Burly Bodyguard"))
 	{
-		auto_log_info("Making the next bodyguard a " + to_monster(78).to_string(), "blue");
-		run_choice(1, false, "bgid=78"); //knob goblin harem girl proof of concept
+		switch(place)
+		{
+			case $location[Whitey's Grove]:
+				if(item_amount($item[Wet Stunt Nut Stew]) == 0)
+				{
+					if(item_amount($item[Bird Rib]) == 0)
+					{
+						mon = $monster[whitesnake];
+					}
+					else if(item_amount($item[Lion Oil]) == 0)
+					{
+						mon = $monster[White Lion];
+					}
+					else if(item_amount($item[Stunt Nuts]) == 0)
+					{
+						mon = $monster[Bob Racecar];
+					}
+					else
+					{
+						mon = $monster[Knight in White Satin];
+					}
+					break;
+				}
+			case $location[Cobb's Knob Harem]:
+				if(!have_outfit("Knob Goblin Harem Girl Disguise"))
+				{
+					mon = $monster[Knob Goblin Harem Girl];
+					break;
+				}
+			case default:
+				mon = $monster[Knob Goblin Harem Girl];
+				break;
+		}
+		auto_log_info("Making the next bodyguard a " + mon.to_string(), "blue");
+		run_choice(1, false, "bgid=" + mon.id);
 	}
 }
