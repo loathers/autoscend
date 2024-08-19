@@ -69,6 +69,6 @@ void ag_bgChat()
 				break;
 		}
 		auto_log_info("Making the next bodyguard a " + mon.to_string(), "blue");
-		run_choice(1, false, "bgid=" + mon.id);
+		run_choice(1, "bgid=" + mon.id);
 	}
 }
