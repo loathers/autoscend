@@ -31,9 +31,10 @@ void ag_bgChat()
 		return;
 	}
 	string bgChat = visit_url("main.php?talktobg=1");
+	matcher title = create_matcher("Chatting with your Burly Bodyguard", bgChat);
 	location place = my_location();
 	monster mon;
-	if(contains_text(bgChat, "Chatting with your Burly Bodyguard"))
+	if(title.find())
 	{
 		/*
 		animated ornate nightstand [with ELP]
@@ -56,7 +57,7 @@ void ag_bgChat()
 		white lion
 		whitesnake
 		*/
-		switch(place)
+		switch(place) //won't be sticking with this just a temporary thing
 		{
 			case $location[Whitey's Grove]:
 				if(item_amount($item[Wet Stunt Nut Stew]) == 0)
