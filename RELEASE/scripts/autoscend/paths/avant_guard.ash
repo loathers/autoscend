@@ -35,6 +35,27 @@ void ag_bgChat()
 	monster mon;
 	if(contains_text(bgChat, "Chatting with your Burly Bodyguard"))
 	{
+		/*
+		animated ornate nightstand [with ELP]
+		Astronomer
+		beanbat
+		bearpig topiary animal
+		blur
+		cabinet of Dr. Limpieza / possessed wine rack
+		Camel's Toe / Skinflute
+		dairy goat
+		erudite gremlin (tool) [and others]
+		Green Ops Soldier [or other war hippy]
+		Knob Goblin Harem Girl
+		mountain man
+		pygmy bowler
+		pygmy witch accountant
+		pygmy witch surgeon
+		tomb rat
+		[war frats]
+		white lion
+		whitesnake
+		*/
 		switch(place)
 		{
 			case $location[Whitey's Grove]:
@@ -69,6 +90,10 @@ void ag_bgChat()
 				break;
 		}
 		auto_log_info("Making the next bodyguard a " + mon.to_string(), "blue");
+		string url = "choice.php?whichchoice=1523&option=1&bgid="+ mon.id + "&pwd=" + my_hash();
+		bgChat = visit_url(url);
 		run_choice(1, "bgid=" + mon.id);
+		handleTracker($familiar[Burly Bodyguard], mon.to_string(), "auto_otherstuff");
+		return;
 	}
 }
