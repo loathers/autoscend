@@ -64,7 +64,7 @@ void ag_bgChat()
 					mon = $monster[Knob Goblin Harem Girl];
 					break;
 				}
-			case default:
+			default:
 				mon = $monster[Knob Goblin Harem Girl];
 				break;
 		}
