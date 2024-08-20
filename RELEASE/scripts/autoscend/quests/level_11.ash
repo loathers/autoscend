@@ -2737,7 +2737,7 @@ boolean L11_shenCopperhead()
 		return false;
 	}
 
-	if (isBanishedPhyla($phylum[dude]) && get_property("screechCombats").to_int() > 0)
+	if (isBanishedPhyla($phylum[dude])) // No need to check for Screech Combats because there's nothing in here we want to screech away
 	{
 		set_property("screechDelay", true);
 		return false; //Probably should delay the Copperhead Club because dudes are important here
