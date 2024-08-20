@@ -173,6 +173,13 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		return useSkill($skill[Stuffed Mortar Shell]);
 	}
 
+	
+	//Roman Candelabra red candle
+	if(have_equipped($item[Roman Candelabra]) && have_effect($effect[Everything Looks Red]) == 0)
+	{
+		return useSkill($skill[Blow the Red Candle\!]);
+	}
+
 	//general killing code
 	switch(my_class())
 	{
