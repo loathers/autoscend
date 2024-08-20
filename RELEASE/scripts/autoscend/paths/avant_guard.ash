@@ -30,12 +30,13 @@ void ag_bgChat()
 	{
 		return;
 	}
-	string bgChat = visit_url("main.php?talktobg=1");
+	string bgChat = visit_url("main.php?talktobg=1", false);
 	matcher title = create_matcher("Chatting with your Burly Bodyguard", bgChat);
 	location place = my_location();
 	monster mon;
 	if(title.find())
 	{
+		auto_log_info("Trying to chat with your Bodyguard", "blue");
 		/*
 		animated ornate nightstand [with ELP]
 		Astronomer
@@ -57,6 +58,7 @@ void ag_bgChat()
 		white lion
 		whitesnake
 		*/
+
 		switch(place) //won't be sticking with this just a temporary thing
 		{
 			case $location[Whitey's Grove]:
@@ -90,9 +92,8 @@ void ag_bgChat()
 				mon = $monster[Knob Goblin Harem Girl];
 				break;
 		}
+		string url = visit_url("choice.php?pwd=whichchoice=1532&option=1&bgid=" + mon.id, true);
 		auto_log_info("Making the next bodyguard a " + mon.to_string(), "blue");
-		string url = "choice.php?whichchoice=1523&option=1&bgid="+ mon.id + "&pwd=" + my_hash();
-		bgChat = visit_url(url);
 		handleTracker($familiar[Burly Bodyguard], mon.to_string(), "auto_otherstuff");
 		return;
 	}
