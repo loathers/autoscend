@@ -815,6 +815,11 @@ boolean L11_blackMarket()
 	{
 		return false;
 	}
+	if (isBanishedPhyla($phylum[beast]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; // Can't get the reassembled blackbird if beasts are banished
+	}
 
 	if($location[The Black Forest].turns_spent > 12)
 	{
