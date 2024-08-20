@@ -2737,6 +2737,12 @@ boolean L11_shenCopperhead()
 		return false;
 	}
 
+	if (isBanishedPhyla($phylum[dude]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; //Probably should delay the Copperhead Club because dudes are important here
+	}
+
 	if (internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
 	{
 		if(is_professor())
