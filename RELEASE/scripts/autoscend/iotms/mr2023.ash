@@ -730,6 +730,7 @@ void auto_handleJillOfAllTrades()
 		case "regen":
 		case "init":
 		case "gremlin":
+		case "gremlins":
 		case "yellowray":
 			cli_execute("jillcandle item");
 			break;
