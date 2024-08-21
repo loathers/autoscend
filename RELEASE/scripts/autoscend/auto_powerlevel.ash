@@ -58,6 +58,11 @@ boolean LX_attemptPowerLevel()
 		return LX_robot_powerlevel();		//leveling works very differently in You, Robot path
 	}
 
+	if (my_level() > 12 && !disregardInstantKarma())
+	{
+		return false;
+	}
+
 	if(get_property("screechDelay").to_boolean())
 	{
 		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else");
@@ -78,11 +83,6 @@ boolean LX_attemptPowerLevel()
 		autoAdv($location[Noob Cave]); //adventure here to banish constructs and be able to progress other quests
 		set_property("screechDelay", false);
 		return true;
-	}
-	
-	if (my_level() > 12)
-	{
-		return false;
 	}
 
 	auto_log_warning("I've run out of stuff to do. Time to powerlevel, I suppose.", "red");
