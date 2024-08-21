@@ -2960,6 +2960,11 @@ boolean L11_palindome()
 					restoreSetting("lastGuildStoreOpen");
 					return true;
 				}
+				if(isBanishedPhyla($phylum[beast]) && get_property("screechCombats").to_int() > 0)
+				{
+					set_property("screechDelay", true);
+					return false; //If new phylum banishers come out, this should be updated.
+				}
 				// +item is nice to get that food
 				bat_formBats();
 				auto_lostStomach(true);
