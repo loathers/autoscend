@@ -69,7 +69,7 @@ boolean LX_attemptPowerLevel()
 		while(get_property("screechCombats").to_int() > 0)
 		{
 			handleFamiliar($familiar[Patriotic Eagle]); //force eagle to be used
-			if(LX_getDigitalKey() || LX_getStarKey())
+			if(LX_freeCombats(true) || LX_getDigitalKey() || LX_getStarKey())
 			{
 				continue;
 			}
