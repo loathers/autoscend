@@ -703,7 +703,7 @@ boolean auto_spoonTuneMoon()
 
 boolean auto_beachCombAvailable()
 {
-	if(!is_unrestricted($item[Beach Comb Box]) || !possessEquipment($item[Beach Comb]))
+	if(!auto_can_equip($item[Beach Comb Box]) || !possessEquipment($item[Beach Comb]))
 	{
 		return false;
 	}

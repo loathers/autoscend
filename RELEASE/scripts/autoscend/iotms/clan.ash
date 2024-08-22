@@ -3,7 +3,7 @@ int[item] auto_get_clan_lounge()
 	int[item] retval;
 	foreach it, val in get_clan_lounge()
 	{
-		if(is_unrestricted(it) || (in_trendy() && auto_is_trendy(it.to_string())))
+		if(auto_is_valid(it))
 		{
 			retval[it] = val;
 		}
@@ -32,11 +32,11 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 	{
 		return false;
 	}
-	if(!is_unrestricted($item[deluxe fax machine]))
+	if(!auto_is_valid($item[deluxe fax machine]))
 	{
 		return false;
 	}
-	if(is_boris() || is_jarlsberg() || is_pete() || in_glover() || in_trendy())
+	if(is_boris() || is_jarlsberg() || is_pete() || in_glover())
 	{
 		return false;
 	}
@@ -243,7 +243,7 @@ int hotTubSoaksRemaining(){
 }
 
 boolean isHotTubAvailable(){
-	return (item_amount($item[Clan VIP Lounge Key]) > 0) && is_unrestricted($item[Clan VIP Lounge Key]);
+	return (item_amount($item[Clan VIP Lounge Key]) > 0) && auto_is_valid($item[Clan VIP Lounge Key]);
 }
 
 int doHottub()
@@ -340,7 +340,7 @@ boolean zataraAvailable()
 		return false;
 	}
 
-	if(!is_unrestricted($item[Clan Carnival Game]))
+	if(!auto_is_valid($item[Clan Carnival Game]))
 	{
 		return false;
 	}
@@ -404,7 +404,7 @@ boolean zataraClanmate()
 		return false;
 	}
 
-	if(!is_unrestricted($item[Clan Carnival Game]))
+	if(!auto_is_valid($item[Clan Carnival Game]))
 	{
 		return false;
 	}
