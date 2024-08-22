@@ -1141,7 +1141,7 @@ boolean adjustForSniffingIfPossible(monster target)
 	{
 		return autoEquip($item[cursed monkey\'s paw]);
 	}
-	if(sniffer == $skill[%fn, fire a Red, White and Blue Blast])
+	if(sniffer == $skill[%fn\, fire a Red, White and Blue Blast])
 	{
 		handleFamiliar($familiar[Patriotic Eagle]);
 	}
