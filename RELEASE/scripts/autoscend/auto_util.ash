@@ -3000,6 +3000,10 @@ boolean auto_is_valid(item it)
 		if(!isGuildClass())		//it seems like all non core classes are disallowed. need to spade this to verify if any class is exempt
 			return false;
 	}
+	if(in_trendy())
+	{
+		return auto_is_trendy(it.to_string());
+	}
 	if(in_bhy())
 	{
 		return bhy_is_item_valid(it);
@@ -3018,7 +3022,7 @@ boolean auto_is_valid(familiar fam)
 	{
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
-	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && wereprof_usable(fam.to_string()) && iluh_famAllowed(fam.to_string()) && is_unrestricted(fam);
+	return auto_is_trendy(fam.to_string()) && bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && wereprof_usable(fam.to_string()) && iluh_famAllowed(fam.to_string()) && is_unrestricted(fam);
 }
 
 boolean auto_is_valid(skill sk)
@@ -3028,7 +3032,7 @@ boolean auto_is_valid(skill sk)
 	// No skills for the Professor except Advanced Research in WereProf
 	if (is_professor() && sk != to_skill(7512)) return false;
 	//do not check check for B in bees hate you path. it only restricts items and not skills.
-	return (glover_usable(sk.to_string()) || (sk.passive && sk != $skill[disco nap])) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
+	return auto_is_trendy(sk.to_string()) && (glover_usable(sk.to_string()) || (sk.passive && sk != $skill[disco nap])) && bat_skillValid(sk) && plumber_skillValid(sk) && is_unrestricted(sk);
 }
 
 boolean auto_is_valid(effect eff)

@@ -919,6 +919,11 @@ boolean theSource_oracle();
 boolean LX_attemptPowerLevelTheSource();
 
 ########################################################################################################
+//Defined in autoscend/paths/trendy.ash
+boolean in_trendy();
+boolean auto_is_trendy(string str);
+
+########################################################################################################
 //Defined in autoscend/paths/two_crazy_random_summer.ash
 boolean in_tcrs();
 float tcrs_expectedAdvPerFill(string quality);
