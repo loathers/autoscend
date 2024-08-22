@@ -58,4 +58,6 @@ L3_tavern
 setSoftblockDelay	allowSoftblockDelay
 setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+LX_lastChance
 LX_attemptPowerLevel

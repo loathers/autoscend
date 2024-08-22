@@ -58,31 +58,9 @@ boolean LX_attemptPowerLevel()
 		return LX_robot_powerlevel();		//leveling works very differently in You, Robot path
 	}
 
-	if (my_level() > 12 && !disregardInstantKarma())
+	if (my_level() > 12)
 	{
 		return false;
-	}
-
-	if(get_property("screechDelay").to_boolean())
-	{
-		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else");
-		while(get_property("screechCombats").to_int() > 0)
-		{
-			handleFamiliar($familiar[Patriotic Eagle]); //force eagle to be used
-			if(LX_freeCombats(true) || LX_getDigitalKey() || LX_getStarKey())
-			{
-				continue;
-			}
-			else
-			{
-				//Nothing else to do but go here
-				autoAdv($location[Noob Cave]);
-				continue;
-			}
-		}
-		autoAdv($location[Noob Cave]); //adventure here to banish constructs and be able to progress other quests
-		set_property("screechDelay", false);
-		return true;
 	}
 
 	auto_log_warning("I've run out of stuff to do. Time to powerlevel, I suppose.", "red");
@@ -113,11 +91,6 @@ boolean LX_attemptPowerLevel()
 	
 	//The Source path specific powerleveling
 	LX_attemptPowerLevelTheSource();
-
-	if (LX_getDigitalKey() || LX_getStarKey())
-	{
-		return true;
-	}
 
 	//August Scepter Power Levelling
 	if(auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5){

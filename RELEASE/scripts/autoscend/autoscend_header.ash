@@ -1242,6 +1242,7 @@ boolean LX_meatMaid();
 item LX_getDesiredWorkshed();
 boolean LX_setWorkshed();
 boolean LX_dronesOut();
+boolean LX_lastChance();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash

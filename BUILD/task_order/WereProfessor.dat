@@ -104,5 +104,7 @@ LX_getStarKey
 LX_getDigitalKey
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+LX_lastChance
 # if all else fails, powerlevel like there's no tomorrow.
 LX_attemptPowerLevel
