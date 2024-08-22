@@ -774,7 +774,17 @@ void preAdvUpdateFamiliar(location place)
 	if (my_familiar() == $familiar[Reagnimated Gnome])
 	{
 		// This arena visit to obtain gnome familiar equips is turn free and can be done once a day.
-		if (!get_property("_auto_gnomeArenaVisited").to_boolean())
+		boolean visitArena = false;
+		foreach it in $items[gnomish swimmer's ears, gnomish coal miner's lung, gnomish tennis elbow, gnomish housemaid's kgnee, gnomish athlete's foot]
+		{
+			if (available_amount(it) == 0)
+			{
+				visitArena = true;
+				break;
+			}
+		}
+		// only visit the cake-shaped arena if we need to pickup an equipment.
+		if (!get_property("_auto_gnomeArenaVisited").to_boolean() && visitArena)
 		{
 			visit_url("arena.php");
 			run_choice(-1);
