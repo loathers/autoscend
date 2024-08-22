@@ -3,7 +3,7 @@ int[item] auto_get_clan_lounge()
 	int[item] retval;
 	foreach it, val in get_clan_lounge()
 	{
-		if(is_unrestricted(it))
+		if(is_unrestricted(it) || (in_trendy() && auto_is_trendy(it)))
 		{
 			retval[it] = val;
 		}
@@ -36,7 +36,7 @@ boolean handleFaxMonster(monster enemy, boolean fightIt, string option)
 	{
 		return false;
 	}
-	if(is_boris() || is_jarlsberg() || is_pete() || in_glover())
+	if(is_boris() || is_jarlsberg() || is_pete() || in_glover() || in_trendy())
 	{
 		return false;
 	}
