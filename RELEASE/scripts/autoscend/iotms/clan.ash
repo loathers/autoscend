@@ -3,7 +3,7 @@ int[item] auto_get_clan_lounge()
 	int[item] retval;
 	foreach it, val in get_clan_lounge()
 	{
-		if(is_unrestricted(it) || (in_trendy() && auto_is_trendy(it)))
+		if(is_unrestricted(it) || (in_trendy() && auto_is_trendy(it.to_string())))
 		{
 			retval[it] = val;
 		}
