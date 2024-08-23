@@ -230,7 +230,11 @@ boolean dartEleDmg()
 
 boolean auto_haveMayamCalendar()
 {
-	if(auto_is_valid($item[Mayam Calendar]) && available_amount($item[Mayam Calendar]) > 0 )
+	if(in_lol() && inventory($item[Mayam Calendar]) = 0 )
+	{
+		return false;
+	}
+	else if(auto_is_valid($item[Mayam Calendar]) && available_amount($item[Mayam Calendar]) > 0 )
 	{
 		return true;
 	}
