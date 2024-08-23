@@ -1659,8 +1659,8 @@ void hiddenCityChoiceHandler(int choice)
 			if (available_choice_options() contains 4)
 			{
 				run_choice(4); // get free meat via CCSC
-				run_choice(2); // get the stone triangle
 			}
+			run_choice(2); // get the stone triangle
 		}
 		else
 		{
