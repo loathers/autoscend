@@ -691,6 +691,10 @@ int handlePulls(int day)
 					}
 				}
 			}
+			if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && auto_is_valid(wrap_item($item[Over-The-Shoulder Folder Holder])))
+			{
+				pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
+			}
 			if(auto_have_skill($skill[Summon Smithsness]))
 			{
 				pullXWhenHaveY($item[hand in glove], 1, 0);
@@ -717,33 +721,6 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
-		
-		// path specific pulls are below
-		if(in_wotsf())
-		{
-			pullXWhenHaveY($item[Bittycar Meatcar], 1, 0);
-		}
-		if((in_picky() || !canChangeFamiliar()) && (item_amount(wrap_item($item[Deck of Every Card])) == 0) && (fullness_left() >= 4))
-		{
-			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
-			{
-				pullXWhenHaveY($item[Boris\'s Key Lime Pie], 1, 0);
-			}
-			if((item_amount($item[Sneaky Pete\'s Key]) == 0) && canEat($item[Sneaky Pete\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Sneaky Pete\'s Key]))
-			{
-				pullXWhenHaveY($item[Sneaky Pete\'s Key Lime Pie], 1, 0);
-			}
-			if((item_amount($item[Jarlsberg\'s Key]) == 0) && canEat($item[Jarlsberg\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Jarlsberg\'s Key]))
-			{
-				pullXWhenHaveY($item[Jarlsberg\'s Key Lime Pie], 1, 0);
-			}
-		}
-
-		if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && auto_is_valid(wrap_item($item[Over-The-Shoulder Folder Holder])))
-		{
-			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
-		}
-
 		if((my_primestat() == $stat[Muscle]) && !in_heavyrains() && !in_wotsf() && !in_lol())
 		{	// no need for shields in WotSF; cannot pull items in LoL
 			if(possessEquipment($item[familiar scrapbook]) && auto_is_valid($item[familiar scrapbook]) && my_class() != $class[Turtle Tamer])
@@ -770,14 +747,6 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[Numberwang], 1, 0);
 		}
-
-		if(in_pokefam())
-		{
-			pullXWhenHaveY($item[Ring Of Detect Boring Doors], 1, 0);
-			pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
-			pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
-		}
-
 		if(((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer])) && !in_wotsf() && !in_lol())
 		{	// no need for offhands in WotSF; cannot pull items in LoL
 			if((item_amount(wrap_item($item[Deck of Every Card])) == 0) && !auto_have_skill($skill[Summon Smithsness]))
@@ -790,13 +759,36 @@ int handlePulls(int day)
 			}
 		}
 
+		// path specific pulls are below
+		if(in_wotsf())
+		{
+			pullXWhenHaveY($item[Bittycar Meatcar], 1, 0);
+		}
+		if((in_picky() || !canChangeFamiliar()) && (item_amount(wrap_item($item[Deck of Every Card])) == 0) && (fullness_left() >= 4))
+		{
+			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
+			{
+				pullXWhenHaveY($item[Boris\'s Key Lime Pie], 1, 0);
+			}
+			if((item_amount($item[Sneaky Pete\'s Key]) == 0) && canEat($item[Sneaky Pete\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Sneaky Pete\'s Key]))
+			{
+				pullXWhenHaveY($item[Sneaky Pete\'s Key Lime Pie], 1, 0);
+			}
+			if((item_amount($item[Jarlsberg\'s Key]) == 0) && canEat($item[Jarlsberg\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Jarlsberg\'s Key]))
+			{
+				pullXWhenHaveY($item[Jarlsberg\'s Key Lime Pie], 1, 0);
+			}
+		}
+		if(in_pokefam())
+		{
+			pullXWhenHaveY($item[Ring Of Detect Boring Doors], 1, 0);
+			pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
+			pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
+		}
 		if(in_picky())
 		{
 			pullXWhenHaveY($item[gumshoes], 1, 0);
 		}
-
-
-
 		if(in_darkGyffte())
 		{
 			auto_log_info("You are a powerful vampire who is doing a softcore run. Turngen is busted in this path, so let's see how much we can get.", "blue");
@@ -804,6 +796,13 @@ int handlePulls(int day)
 			{
 				pullXWhenHaveY($item[mime army shotglass], 1, 0);
 			}
+		}
+		if(in_lol())
+		{	// some items that can be pulled to help accelerate runs
+			pullXWhenHaveY($item[portable pantogram], 1, 0);
+			pullXWhenHaveY($item[SpinMaster&trade; lathe], 1, 0);
+			pullXWhenHaveY($item[Asdon Martin keyfob (on ring)], 1, 0);
+			pullXWhenHaveY($item[cold medicine cabinet], 1, 0);			
 		}
 	}
 	else if(day == 2)
@@ -815,9 +814,9 @@ int handlePulls(int day)
 	}
 
 	// do this regardless of day if we still need to complete the bridge.
-	if (canPull($item[smut orc keepsake box]) && lumberCount() < 26 && fastenerCount() < 26)
+	if(canPull($item[smut orc keepsake box]) && lumberCount() < 26 && fastenerCount() < 26)
 	{
-		if (pullXWhenHaveY($item[smut orc keepsake box], 1, 0))
+		if(pullXWhenHaveY($item[smut orc keepsake box], 1, 0))
 		{
 			use(1, $item[smut orc keepsake box]);
 		}
