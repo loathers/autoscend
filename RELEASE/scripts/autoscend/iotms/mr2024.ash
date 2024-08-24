@@ -349,3 +349,12 @@ boolean auto_MayamClaimAll()
 	auto_MayamClaimWhatever();
 	return true;
 }
+
+boolean auto_haveRoman()
+{
+	if(auto_is_valid($item[Roman Candelabra]) && possessEquipment($item[Roman Candelabra]))
+	{
+		return true;
+	}
+	return false;
+}

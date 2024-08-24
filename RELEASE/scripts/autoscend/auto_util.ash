@@ -845,6 +845,22 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 			}
 		}
 
+		if(auto_haveRoman() && auto_is_valid($skill[Blow the Green Candle\!]))
+		{
+			if(!inCombat)
+			{
+				autoEquip($item[Roman Candelabra]);
+				return "skill " + $skill[Blow the Green Candle\!];
+			}
+			else
+			{
+				if(canUse($skill[Blow the Green Candle\!]))
+				{
+					return "skill " + $skill[Blow the Green Candle\!];
+				}
+			}
+		}
+
 		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
 		{
 			if (canUse(it) && item_amount(it) > 0)
