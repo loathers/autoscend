@@ -175,7 +175,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 
 	
 	//Roman Candelabra red candle
-	if(have_equipped($item[Roman Candelabra]) && have_effect($effect[Everything Looks Red]) == 0)
+	if(have_equipped($item[Roman Candelabra]) && have_effect($effect[Everything Looks Red]) == 0 && !auto_haveDarts())
 	{
 		return useSkill($skill[Blow the Red Candle\!]);
 	}
