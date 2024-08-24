@@ -704,7 +704,7 @@ int handlePulls(int day)
 
 		// pulls excluding a handful of paths are below
 		if(!in_heavyrains() && pathHasFamiliar())
-		{
+		{	// heavy rains familiars largely need miniature life preserver
 			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && auto_is_valid($item[Snow Suit]))
 			{
 				pullXWhenHaveY($item[snow suit], 1, 0);
@@ -718,10 +718,10 @@ int handlePulls(int day)
 			}
 		}
 		if(!in_pokefam() && auto_is_valid($item[Replica Bat-oomerang]))
-		{
+		{	//cannot use combat items in pokefam
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
-		if((my_primestat() == $stat[Muscle]) && !in_heavyrains() && !in_wotsf() && !in_lol())
+		if((my_primestat() == $stat[Muscle]) !in_wotsf() && !in_heavyrains() && && !in_lol())
 		{	// no need for shields in WotSF; cannot pull items in LoL
 			if(possessEquipment($item[familiar scrapbook]) && auto_is_valid($item[familiar scrapbook]) && my_class() != $class[Turtle Tamer])
 			{
