@@ -1650,6 +1650,7 @@ void hiddenCityChoiceHandler(int choice)
 	{
 		run_choice(1); // fight the spirit
 	}
+
 	else if(choice == 785) // Air Apparent (An Overgrown Shrine (Northeast))
 	{
 		
@@ -1657,12 +1658,13 @@ void hiddenCityChoiceHandler(int choice)
 		{
 			run_choice(1); // unlock the Hidden Office Building
 		}
+
+		// either use CCSC + unlock or just unlock based on user sphere presence
 		else if(item_amount($item[crackling stone sphere]) > 0)
 		{
 			if (available_choice_options() contains 4)
 			{
-				run_choice(4); // get free meat
-				run_choice(2); // get the stone triangle
+				run_choice(4); // get free meat via CCSC
 			}
 			run_choice(2); // get the stone triangle
 		}

@@ -573,6 +573,7 @@ boolean auto_MayamClaimStinkBomb();
 boolean auto_MayamClaimBelt();
 boolean auto_MayamClaimWhatever();
 boolean auto_MayamClaimAll();
+boolean auto_haveRoman();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

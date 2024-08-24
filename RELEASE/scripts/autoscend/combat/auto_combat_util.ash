@@ -309,6 +309,10 @@ skill getSniffer(monster enemy)
 
 skill getStunner(monster enemy)
 {
+	if(canUse($skill[Blow the Blue Candle\!]) && have_effect($effect[Everything Looks Blue]) == 0)
+	{
+		return $skill[Blow the Blue Candle\!]; //20 Turns
+	}
 	// Class specific
 	switch(my_class())
 	{
@@ -864,6 +868,10 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		if((item_amount($item[yellow rocket]) > 0) && auto_is_valid($item[yellow rocket]))
 		{
 			return "item " + $item[yellow rocket]; // 75 turns & 250 meat
+		}
+		if(inCombat ? have_skill($skill[Blow the Yellow Candle\!]) : auto_haveRoman() && auto_is_valid($skill[Blow the Yellow Candle\!]))
+		{
+			return "skill " + $skill[Blow the Yellow Candle\!]; //75 Turns
 		}
 		if(inCombat ? have_skill($skill[Unleash the Devil\'s Kiss]) : auto_hasRetrocape() && auto_is_valid($skill[Unleash the Devil\'s Kiss]))
 		{
