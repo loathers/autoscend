@@ -746,7 +746,7 @@ int handlePulls(int day)
 		}
 		if(((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer])) && !in_wotsf() && !in_lol())
 		// no need for offhands in way of the surprising fist
-		// cannot pull items in LoL
+		// cannot pull offhands in LoL
 		{
 			if((item_amount(wrap_item($item[Deck of Every Card])) == 0) && !auto_have_skill($skill[Summon Smithsness]))
 			{
