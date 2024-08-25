@@ -5,7 +5,7 @@ dude	loc:Whitey's Grove;quest:questL11Palindome<=3
 beast	loc:The Hidden Park
 beast	loc:Inside the Palindome;quest:questL11Palindome<=3
 beast	loc:The Penultimate Fantasy Airship
-undead	loc:The Haunted Library
+undead	loc:The Haunted Library	item:Killing Jar>0
 undead	loc:The Haunted Wine Cellar
 undead	loc:The Haunted Boiler Room
 undead	loc:The Middle Chamber
