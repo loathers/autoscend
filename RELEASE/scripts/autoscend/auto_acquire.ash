@@ -779,15 +779,15 @@ int handlePulls(int day)
 				pullXWhenHaveY($item[Jarlsberg\'s Key Lime Pie], 1, 0);
 			}
 		}
+		if(in_picky())
+		{
+			pullXWhenHaveY($item[gumshoes], 1, 0);
+		}
 		if(in_pokefam())
 		{
 			pullXWhenHaveY($item[Ring Of Detect Boring Doors], 1, 0);
 			pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
 			pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
-		}
-		if(in_picky())
-		{
-			pullXWhenHaveY($item[gumshoes], 1, 0);
 		}
 		if(in_darkGyffte())
 		{
