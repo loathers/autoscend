@@ -1115,6 +1115,10 @@ void gremlinsFamiliar()
 			addToMaximize("-familiar");
 		}
 	}
+	else_if(in_loL())
+	{	//prevent early kill of gremlins based on limited familiar availability
+		use_familiar($familiar[none]);
+	}
 	else if(lookupFamiliarDatafile("gremlins") == $familiar[none])	//none of the desired familiars available
 	{
 		//don't know what familiar will be chosen or what its own equipment does
