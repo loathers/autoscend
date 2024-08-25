@@ -801,8 +801,7 @@ int handlePulls(int day)
 		{	// some items that can be pulled to help accelerate runs
 			pullXWhenHaveY($item[portable pantogram], 1, 0);
 			pullXWhenHaveY($item[SpinMaster&trade; lathe], 1, 0);
-			pullXWhenHaveY($item[Asdon Martin keyfob (on ring)], 1, 0);
-			pullXWhenHaveY($item[cold medicine cabinet], 1, 0);			
+			pullXWhenHaveY($item[Asdon Martin keyfob (on ring)], 1, 0);		
 		}
 	}
 	else if(day == 2)
