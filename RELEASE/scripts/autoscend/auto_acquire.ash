@@ -721,7 +721,7 @@ int handlePulls(int day)
 		{	//cannot use combat items in pokefam
 			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
-		if((my_primestat() == $stat[Muscle]) !in_wotsf() && !in_heavyrains() && && !in_lol())
+		if((my_primestat() == $stat[Muscle]) !in_wotsf() && !in_heavyrains() && !in_lol())
 		{	// no need for shields in WotSF; cannot pull items in LoL
 			if(possessEquipment($item[familiar scrapbook]) && auto_is_valid($item[familiar scrapbook]) && my_class() != $class[Turtle Tamer])
 			{
