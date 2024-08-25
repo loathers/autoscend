@@ -1084,7 +1084,7 @@ boolean LX_lastChance()
 	if(get_property("screechDelay").to_boolean())
 	{
 		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else");
-		while(get_property("screechCombats").to_int() > 0)
+		while(get_property("screechCombats").to_int() > 0 && my_adventures() > 2)
 		{
 			handleFamiliar($familiar[Patriotic Eagle]); //force eagle to be used
 			if(LX_getDigitalKey() || LX_getStarKey())
@@ -1097,6 +1097,11 @@ boolean LX_lastChance()
 				autoAdv($location[Noob Cave]);
 				continue;
 			}
+		}
+		if(get_property("screechCombats").to_int() > 0)
+		{
+			auto_log_warning("Couldn't clear screech delay without running out of adventures");
+			return false;
 		}
 		autoAdv($location[Noob Cave]); //adventure here to banish constructs and be able to progress other quests
 		set_property("screechDelay", false);
