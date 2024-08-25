@@ -418,6 +418,7 @@ int remainingCatalogCredits()
 		{
 			use($item[2002 Mr. Store Catalog]);
 		}
+	}
 	return get_property("availableMrStore2002Credits").to_int();
 }
 
