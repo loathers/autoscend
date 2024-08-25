@@ -1115,7 +1115,7 @@ void gremlinsFamiliar()
 			addToMaximize("-familiar");
 		}
 	}
-	else_if(in_loL())
+	else if(in_loL())
 	{	//prevent early kill of gremlins based on limited familiar availability
 		use_familiar($familiar[none]);
 	}
