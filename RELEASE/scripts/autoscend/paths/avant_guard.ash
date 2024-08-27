@@ -157,7 +157,7 @@ void ag_bgChat()
 		{
 			mon = $monster[Dairy Goat];
 		}
-		if(item_amount($item[bowling ball]) < 5 && internalQuestStatus("hiddenBowlingAlleyProgress") < 5)
+		else if(item_amount($item[bowling ball]) < 5 && internalQuestStatus("hiddenBowlingAlleyProgress") < 5)
 		{
 			mon = $monster[pygmy bowler];
 		}
