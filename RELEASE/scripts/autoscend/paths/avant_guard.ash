@@ -56,7 +56,7 @@ void ag_bgChat()
 				mon = $monster[White Lion];
 			}
 		}
-		if(needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
+		else if(needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
 		{
 			if(my_ascensions() % 2 == 1)
 			{
@@ -67,19 +67,19 @@ void ag_bgChat()
 				mon = $monster[Camel's Toe];
 			}
 		}
-		if(needStarKey() && item_amount($item[Star chart]) < 1)
+		else if(needStarKey() && item_amount($item[Star chart]) < 1)
 		{
 			mon = $monster[Astronomer];
 		}
-		if(item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 2)
+		else if(item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 2)
 		{
 			mon = $monster[beanbat];
 		}
-		if(!L12_islandWar())
+		else if(!L12_islandWar())
 		{
 			mon = $monster[Green Ops Soldier];
 		}
-		if(item_amount($item[molybdenum magnet]) > 0 && get_property("sidequestJunkyardCompleted") == "none")
+		else if(item_amount($item[molybdenum magnet]) > 0 && get_property("sidequestJunkyardCompleted") == "none")
 		{
 			if(item_amount($item[molybdenum hammer]) == 0)
 			{
@@ -98,41 +98,39 @@ void ag_bgChat()
 				mon = $monster[vegetable gremlin (tool)];
 			}
 		}
-		if((item_amount($item[McClusky file (complete)]) == 0 && item_amount($item[McClusky file (page 5)]) == 0) && internalQuestStatus("hiddenOfficeProgress") < 2)
+		else if((item_amount($item[McClusky file (complete)]) == 0 && item_amount($item[McClusky file (page 5)]) == 0) && internalQuestStatus("hiddenOfficeProgress") < 2)
 		{
 			mon = $monster[pygmy witch accountant];
 		}
-		if(surgeonGearWanted > 0 && internalQuestStatus("questL11Doctor") < 2)
+		else if(surgeonGearWanted > 0 && internalQuestStatus("questL11Doctor") < 2)
 		{
 			mon = $monster[pygmy witch surgeon];
 		}
-		if(!get_property("auto_hippyInstead").to_boolean())
+		else if(!get_property("auto_hippyInstead").to_boolean() && !have_outfit("frat warrior fatigures"))
 		{
-			if(!have_outfit("frat warrior fatigures"))
 			{
 				mon = $monster[War Frat 151st Infantryman];
 			}
 		}
-		else
+		else if(get_property("auto_hippyInstead").to_boolean() && !have_outfit("war hippy fatigues"))
 		{
-			if(!have_outfit("war hippy fatigues"))
 			{
 				mon = $monster[War Hippy Airborne Commander];
 			}
 		}
-		if(needOre() && internalQuestStatus("questL08Trapper") < 2)
+		else if(needOre() && internalQuestStatus("questL08Trapper") < 2)
 		{
 			mon = $monster[Mountain man];
 		}
-		if(item_amount($item[drum machine]) == 0 && get_property("questL11Desert") != "finished")
+		else if(item_amount($item[drum machine]) == 0 && get_property("questL11Desert") != "finished")
 		{
 			mon = $monster[blur];
 		}
-		if(hedgeTrimmersNeeded() > 0)
+		else if(hedgeTrimmersNeeded() > 0)
 		{
 			mon = $monster[bearpig topiary animal];
 		}
-		if(!possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
+		else if(!possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 		{
 			if(item_amount($item[bottle of Chateau de Vinegar]) == 0)
 			{
@@ -143,19 +141,19 @@ void ag_bgChat()
 				mon = $monster[cabinet of Dr. Limpieza];
 			}
 		}
-		if((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10 && !get_property("pyramidBombUsed").to_boolean())
+		else if((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10 && !get_property("pyramidBombUsed").to_boolean())
 		{
 			mon = $monster[tomb rat];
 		}
-		if((!possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2) || (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1))
+		else if((!possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2) || (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1))
 		{
 			mon = $monster[animated ornate nightstand];
 		}
-		if(!have_outfit("Knob Goblin Harem Girl Disguise") && get_property("questL05Goblin") != "finished")
+		else if(!have_outfit("Knob Goblin Harem Girl Disguise") && get_property("questL05Goblin") != "finished")
 		{
 			mon = $monster[Knob Goblin Harem Girl];
 		}
-		if(item_amount($item[Goat Cheese]) < 3 && internalQuestStatus("questL08Trapper") < 2)
+		else if(item_amount($item[Goat Cheese]) < 3 && internalQuestStatus("questL08Trapper") < 2)
 		{
 			mon = $monster[Dairy Goat];
 		}
