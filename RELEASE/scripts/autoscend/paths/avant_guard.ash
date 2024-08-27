@@ -30,10 +30,9 @@ void ag_bgChat()
 	{
 		return;
 	}
+	monster mon;
 	string bgChat = visit_url("main.php?talktobg=1", false);
 	matcher title = create_matcher("Chatting with your Burly Bodyguard", bgChat);
-	location place = my_location();
-	monster mon;
 	if(title.find())
 	{
 		auto_log_info("Trying to chat with your Bodyguard", "blue");
@@ -166,7 +165,7 @@ void ag_bgChat()
 			return; //no bodyguards needed
 		}
 
-		string url = visit_url("choice.php?pwd=whichchoice=1532&option=1&bgid=" + mon.id, true);
+		string url = visit_url("choice.php?pwd=&whichchoice=1532&option=1&bgid=" + mon.id, true);
 		auto_log_info("Making the next bodyguard a " + mon.to_string(), "blue");
 		handleTracker($familiar[Burly Bodyguard], mon.to_string(), "auto_otherstuff");
 		return;
