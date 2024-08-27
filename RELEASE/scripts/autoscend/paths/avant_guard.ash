@@ -161,6 +161,10 @@ void ag_bgChat()
 		{
 			mon = $monster[pygmy bowler];
 		}
+		else
+		{
+			return; //no bodyguards needed
+		}
 
 		string url = visit_url("choice.php?pwd=whichchoice=1532&option=1&bgid=" + mon.id, true);
 		auto_log_info("Making the next bodyguard a " + mon.to_string(), "blue");
