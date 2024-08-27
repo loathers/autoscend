@@ -811,7 +811,7 @@ boolean auto_burnLeaves()
 		}
 		return false;
 	}
-	if(in_ag() && item_amount($item[Autumnic bomb]) == 0)
+	if(in_ag() && item_amount($item[inflammable leaf]) > 37 && item_amount($item[Autumnic bomb]) == 0)
 	{
 		create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
 	}
