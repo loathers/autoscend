@@ -105,13 +105,13 @@ void ag_bgChat()
 		{
 			mon = $monster[pygmy witch surgeon];
 		}
-		else if(!get_property("auto_hippyInstead").to_boolean() && !have_outfit("frat warrior fatigures"))
+		else if(!get_property("auto_hippyInstead").to_boolean() && !have_outfit("frat warrior fatigures") && internalQuestStatus("questL12War") < 1)
 		{
 			{
 				mon = $monster[War Frat 151st Infantryman];
 			}
 		}
-		else if(get_property("auto_hippyInstead").to_boolean() && !have_outfit("war hippy fatigues"))
+		else if(get_property("auto_hippyInstead").to_boolean() && !have_outfit("war hippy fatigues") && internalQuestStatus("questL12War") < 1)
 		{
 			{
 				mon = $monster[War Hippy Airborne Commander];
