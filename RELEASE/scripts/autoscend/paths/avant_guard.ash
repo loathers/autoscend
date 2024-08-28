@@ -162,7 +162,7 @@ void ag_bgChat()
 		}
 		else
 		{
-			return; //no bodyguards needed
+			mon = $monster[Green Ops Soldier]; //might as well grop
 		}
 
 		string url = visit_url("choice.php?pwd=&whichchoice=1532&option=1&bgid=" + mon.id, true);
