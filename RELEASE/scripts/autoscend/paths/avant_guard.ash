@@ -97,7 +97,7 @@ void ag_bgChat()
 				mon = $monster[vegetable gremlin (tool)];
 			}
 		}
-		else if((item_amount($item[McClusky file (complete)]) == 0 && item_amount($item[McClusky file (page 5)]) == 0) && internalQuestStatus("hiddenOfficeProgress") < 2)
+		else if((item_amount($item[McClusky file (complete)]) == 0 && item_amount($item[McClusky file (page 5)]) == 0) && get_property("hiddenOfficeProgress").to_int() < 6)
 		{
 			mon = $monster[pygmy witch accountant];
 		}
