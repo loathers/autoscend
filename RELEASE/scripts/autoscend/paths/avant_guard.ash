@@ -117,7 +117,7 @@ void ag_bgChat()
 				mon = $monster[War Hippy Airborne Commander];
 			}
 		}
-		else if(needOre() && internalQuestStatus("questL08Trapper") < 2)
+		else if(needOre())
 		{
 			mon = $monster[Mountain man];
 		}
