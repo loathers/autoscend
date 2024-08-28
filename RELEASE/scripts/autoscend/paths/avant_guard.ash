@@ -74,7 +74,7 @@ void ag_bgChat()
 		{
 			mon = $monster[beanbat];
 		}
-		else if(!L12_islandWar())
+		else if(internalQuestStatus("questL12War") == 1 && !get_property("auto_hippyInstead").to_boolean())
 		{
 			mon = $monster[Green Ops Soldier];
 		}
