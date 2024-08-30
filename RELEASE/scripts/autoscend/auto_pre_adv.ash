@@ -89,10 +89,10 @@ void print_footer()
 
 void auto_ghost_prep(location place)
 {
-	//if place contains physically immune enemies then we need to be prepared to deal non physical damage.
-	if(!is_ghost_in_zone(place))
+	// if place contains physically immune enemies then we need to be prepared to deal non physical damage.
+	if (!is_ghost_in_zone(place) && !auto_isShadowRift(place))
 	{
-		return;		//no ghosts no problem
+		return;
 	}
 	if(in_plumber())
 	{

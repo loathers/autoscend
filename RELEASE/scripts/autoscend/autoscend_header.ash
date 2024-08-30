@@ -505,6 +505,7 @@ int auto_neededShadowBricks();
 boolean auto_havePayPhone();
 boolean auto_getPhoneQuest();
 boolean auto_doPhoneQuest();
+boolean auto_isShadowRift(location loc);
 boolean auto_haveMonkeyPaw();
 int auto_monkeyPawWishesLeft();
 boolean auto_makeMonkeyPawWish(effect wish);

@@ -207,6 +207,23 @@ boolean auto_doPhoneQuest()
 	return autoAdv(auto_availableBrickRift());
 }
 
+boolean auto_isShadowRift(location loc) {
+	return ($locations[Shadow Rift, 
+										 Shadow Rift (Desert Beach), 
+										 Shadow Rift (Forest Village), 
+										 Shadow Rift (Mt. McLargeHuge), 
+										 Shadow Rift (Somewhere Over the Beanstalk), 
+										 Shadow Rift (Spookyraven Manor Third Floor), 
+										 Shadow Rift (The 8-Bit Realm), 
+										 Shadow Rift (The Ancient Buried Pyramid), 
+										 Shadow Rift (The Castle in the Clouds in the Sky), 
+										 Shadow Rift (The Distant Woods), 
+										 Shadow Rift (The Hidden City), 
+										 Shadow Rift (The Misspelled Cemetary), 
+										 Shadow Rift (The Nearby Plains), 
+										 Shadow Rift (The Right Side of the Tracks)] contains loc);
+}
+
 boolean auto_haveMonkeyPaw()
 {
 	static item paw = $item[cursed monkey\'s paw];
