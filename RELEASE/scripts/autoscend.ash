@@ -1,4 +1,4 @@
-since r27958;	// Remove WereProf stat req exemption
+since r27980;	// feat: beer from wiki, kiwi plurals
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -68,6 +68,7 @@ import <autoscend/paths/g_lover.ash>
 import <autoscend/paths/gelatinous_noob.ash>
 import <autoscend/paths/grey_goo.ash>
 import <autoscend/paths/heavy_rains.ash>
+import <autoscend/paths/i_love_u_hate.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
 import <autoscend/paths/legacy_of_loathing.ash>
@@ -1814,6 +1815,7 @@ boolean doTasks()
 	pete_buySkills();
 	zombieSlayer_buySkills();
 	lol_buyReplicas();
+	iluh_buyEquiq();
 
 	oldPeoplePlantStuff();
 	use_barrels();

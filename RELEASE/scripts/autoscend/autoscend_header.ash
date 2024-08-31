@@ -566,6 +566,7 @@ boolean auto_MayamClaimStinkBomb();
 boolean auto_MayamClaimBelt();
 boolean auto_MayamClaimWhatever();
 boolean auto_MayamClaimAll();
+boolean auto_haveRoman();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -758,6 +759,14 @@ void heavyrains_doBedtime();
 boolean heavyrains_buySkills();
 boolean rainManSummon(monster target, boolean speculative);
 boolean L13_heavyrains_towerFinal();
+
+########################################################################################################
+//Defined in autoscend/paths/heavy_rains.ash
+boolean in_iluh();
+boolean iluh_foodConsumable(string str);
+boolean iluh_famAllowed(string fam);
+void iluh_buyEquiq();
+void iluh_pulls();
 
 ########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash

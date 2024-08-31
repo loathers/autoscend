@@ -845,6 +845,22 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 			}
 		}
 
+		if(auto_haveRoman() && auto_is_valid($skill[Blow the Green Candle\!]))
+		{
+			if(!inCombat)
+			{
+				autoEquip($item[Roman Candelabra]);
+				return "skill " + $skill[Blow the Green Candle\!];
+			}
+			else
+			{
+				if(canUse($skill[Blow the Green Candle\!]))
+				{
+					return "skill " + $skill[Blow the Green Candle\!];
+				}
+			}
+		}
+
 		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
 		{
 			if (canUse(it) && item_amount(it) > 0)
@@ -3004,6 +3020,10 @@ boolean auto_is_valid(item it)
 	{
 		return bhy_is_item_valid(it);
 	}
+	if(in_iluh() && it.fullness > 0) // only care about foods being consumable in iluh
+	{
+		return iluh_foodConsumable(it.to_string());
+	}
 	
 	return is_unrestricted(it);
 }
@@ -3014,7 +3034,7 @@ boolean auto_is_valid(familiar fam)
 	{
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
-	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && wereprof_usable(fam.to_string()) && is_unrestricted(fam);
+	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && wereprof_usable(fam.to_string()) && iluh_famAllowed(fam.to_string()) && is_unrestricted(fam);
 }
 
 boolean auto_is_valid(skill sk)
