@@ -3311,7 +3311,7 @@ boolean L11_unlockEd()
 		{
 			bat_formBats();
 		}
-		if((auto_is_valid($item[posessed sugar cube]) && item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
+		if((auto_is_valid($item[possessed sugar cube]) && item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
 		{
 			cli_execute("make sugar fairy");
 			buffMaintain($effect[Dance of the Sugar Fairy]);
