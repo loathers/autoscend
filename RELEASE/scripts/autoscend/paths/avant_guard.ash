@@ -167,7 +167,7 @@ void ag_bgChat()
 
 		string url = visit_url("choice.php?pwd=&whichchoice=1532&option=1&bgid=" + mon.id, true);
 		auto_log_info("Making the next bodyguard a " + mon.to_string(), "blue");
-		handleTracker($familiar[Burly Bodyguard], mon.to_string(), "auto_otherstuff");
+		handleTracker($familiar[Burly Bodyguard], mon.to_string(), "auto_copies");
 		return;
 	}
 }
