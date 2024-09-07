@@ -92,7 +92,7 @@ void ag_bgChat()
 				mon = $monster[Knob Goblin Harem Girl];
 				break;
 		}
-		string url = visit_url("choice.php?pwd=whichchoice=1532&option=1&bgid=" + mon.id, true);
+		string url = visit_url("choice.php?pwd&whichchoice=1532&option=1&bgid=" + mon.id, true);
 		auto_log_info("Making the next bodyguard a " + mon.to_string(), "blue");
 		handleTracker($familiar[Burly Bodyguard], mon.to_string(), "auto_otherstuff");
 		return;
