@@ -1718,6 +1718,12 @@ boolean isFreeMonster(monster mon)
 
 boolean isFreeMonster(monster mon, location loc)
 {
+	//No free fights in Avant Guard. Well, there are, but they now have non-free bodyguards so anything that is free now costs a turn
+	if(in_ag())
+	{
+		return false;
+	}
+
 	if ($monsters[Angry Ghost, Annoyed Snake, Government Bureaucrat, Slime Blob, Terrible Mutant] contains mon && get_property("_voteFreeFights").to_int() < 3)
 	{
 		return true;
@@ -1757,7 +1763,7 @@ boolean isFreeMonster(monster mon, location loc)
 	}
 
 	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains loc
-		&& have_effect($effect[shadow affinity]) > 0)
+		&& have_effect($effect[shadow affinity]) > 0 && !in_ag())
 	{
 		return true;
 	}

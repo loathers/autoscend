@@ -1,4 +1,4 @@
-since r27980;	// feat: beer from wiki, kiwi plurals
+since r28019;	// feat: add avant guard path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -52,6 +52,7 @@ import <autoscend/iotms/mr2024.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
+import <autoscend/paths/avant_guard.ash>
 import <autoscend/paths/avatar_of_boris.ash>
 import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
@@ -282,6 +283,7 @@ void initializeSettings() {
 	lol_initializeSettings();
 	small_initializeSettings();
 	wereprof_initializeSettings();
+	ag_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -851,6 +853,10 @@ void initializeDay(int day)
 			if(item_amount($item[Xiblaxian holo-wrist-puter simcode]) > 0)
 			{
 				use(1, $item[Xiblaxian holo-wrist-puter simcode]);
+			}
+			if(item_amount($item[baby bodyguard]) > 0 && !have_familiar($familiar[burly bodyguard])) //will only happen in Avant Guard
+			{
+				use(1, $item[baby bodyguard]);
 			}
 
 			if((auto_get_clan_lounge() contains $item[Clan Floundry]) && (item_amount($item[Fishin\' Pole]) == 0))
@@ -1514,7 +1520,7 @@ boolean autosellCrap()
 	}
 	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
 	{
-		if(item_amount(it) > 1)		//for these items we want to keep 1 in stock. sell the rest
+		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. sell the rest
 		{
 			use(min(10,item_amount(it)-1), it);
 		}

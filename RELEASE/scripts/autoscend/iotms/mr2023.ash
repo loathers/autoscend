@@ -129,7 +129,7 @@ location auto_availableBrickRift()
 
 int auto_neededShadowBricks()
 {
-	if(!auto_havePayPhone())
+	if(!auto_havePayPhone() || in_ag())
 	{
 		return 0;
 	}
@@ -529,13 +529,26 @@ void auto_scepterSkills()
 		{
 			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
 		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
+		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar())
 		{
-			if(!is100FamRun())
+			familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+			if(((in_ag() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
 			{
-				use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
+				use_familiar(findRockFamiliarInTerrarium());
+				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
 			}
-			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+			else if((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small())
+			{
+				if(!is100FamRun())
+				{
+					use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
+				}
+				else
+				{
+					use_familiar(hundred_fam); // assuming non-rock familiar
+				}
+				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+			}
 		}
 	}
 	//Day 2+ skills
@@ -674,6 +687,19 @@ boolean auto_circadianRhythmTarget(monster target)
 	return true;
 }
 
+boolean auto_circadianRhythmTarget(phylum target)
+{
+	if (!auto_canCircadianRhythm())
+	{
+		return false;
+	}
+	if (!($phylums[Orc, Hippy] contains target) && $locations[The Battlefield (Hippy Uniform), The Battlefield (Frat Uniform)] contains my_location())
+	{
+		return false;
+	}
+	return true;
+}
+
 boolean auto_haveJillOfAllTrades()
 {
 	if(auto_have_familiar($familiar[Jill-of-All-Trades]))
@@ -784,6 +810,10 @@ boolean auto_burnLeaves()
 			return use(1, $item[distilled resin]);
 		}
 		return false;
+	}
+	if(in_ag() && item_amount($item[inflammable leaf]) > 37 && item_amount($item[Autumnic bomb]) == 0)
+	{
+		create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
 	}
 	return false;
 }
