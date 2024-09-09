@@ -625,6 +625,8 @@ int handlePulls(int day)
 		auto_SmallPulls();
 		// pulls for 11THIAU path
 		iluh_pulls();
+		// pulls for Avant Guard path
+		ag_pulls();
 
 		// generic pulls for any path are below
 		if(auto_is_valid($item[etched hourglass]))

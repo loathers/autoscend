@@ -855,7 +855,7 @@ boolean LX_joinPirateCrew() {
 				else if (possessEquipment($item[mullet wig]) && auto_can_equip($item[mullet wig])) {
 					// easiest to get or wait to get a briefcase
 					// todo modify banish list to not banish pygmy headhunters if wanting a briefcase in hardcore?
-					if (!mightCatburgle && internalQuestStatus("questL04Bat") >= 1 && internalQuestStatus("hiddenOfficeProgress") >= 6) {	
+					if (!mightCatburgle && internalQuestStatus("questL04Bat") >= 1 && get_property("hiddenOfficeProgress").to_int() >= 6) {	
 						// briefcase zones already finished and not expecting Catburgle then try to pull it
 						if (pullXWhenHaveY($item[briefcase], 1, 0) && autoForceEquip($item[mullet wig])) {
 							infiltrationReady = true;
