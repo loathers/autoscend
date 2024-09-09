@@ -532,6 +532,7 @@ int auto_habitatFightsLeft();
 monster auto_habitatMonster();
 boolean auto_canCircadianRhythm();
 boolean auto_circadianRhythmTarget(monster target);
+boolean auto_circadianRhythmTarget(phylum target);
 boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
 boolean auto_haveBurningLeaves();
@@ -599,6 +600,13 @@ boolean edAcquireHP();
 boolean edAcquireHP(int goal);
 boolean LM_edTheUndying();
 void edUnderworldChoiceHandler(int choice);
+
+########################################################################################################
+//Defined in autoscend/paths/avant_guard.ash
+boolean in_ag();
+void ag_initializeSettings();
+void ag_pulls();
+void ag_bgChat();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash
@@ -1436,6 +1444,7 @@ boolean auto_have_familiar(familiar fam);
 boolean canChangeFamiliar();
 boolean canChangeToFamiliar(familiar target);
 familiar findNonRockFamiliarInTerrarium();
+familiar findRockFamiliarInTerrarium();
 familiar lookupFamiliarDatafile(string type);
 boolean handleFamiliar(string type);
 boolean handleFamiliar(familiar fam);

@@ -237,8 +237,22 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			return useSkill($skill[Curse Of Weaksauce]);
 		}
 
+		//HP reduction if the monster has high HP
+		if(monster_hp() > 1500)
+		{
+			if(canUse($skill[Surprisingly Sweet Slash])) //75% less HP
+			{
+				return useSkill($skill[Surprisingly Sweet Slash]);
+			}
+			if(canUse($item[autumnic bomb])) //50% less hp && prismatic damage on hit
+			{
+				return useItem($item[autumnic bomb]);
+			}
+		}
+
 		// delevel and 75% less HP if you have a candy cane sword cane
-		if(canUse($skill[Surprisingly Sweet Slash]))
+		// Need this separate because want to reserve the Slash in Avant Guard for high HP bodyguards
+		if(canUse($skill[Surprisingly Sweet Slash]) && !in_ag())
 		{
 			return useSkill($skill[Surprisingly Sweet Slash]);
 		}
