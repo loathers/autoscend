@@ -199,7 +199,7 @@ boolean auto_doPhoneQuest()
 
 	if(auto_canForceNextNoncombat() && in_ag()) //in avant guard, want to avoid adventuring here unless you can force an NC
 	{
-		auto_forceNextNoncombat($location[Shadow Rift (The Misspelled Cemetary)]); //Should be first to be unlocked so just go here
+		return auto_forceNextNoncombat(auto_availableBrickRift());
 	}
 
 	// finish quest

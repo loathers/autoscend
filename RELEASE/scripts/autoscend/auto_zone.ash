@@ -1691,7 +1691,7 @@ boolean zone_available(location loc)
 	// compare our result with Mafia's native function, log a warning if theres a difference. Ideally we can see if there are any differences between our code and Mafia's, and if not remove all of ours in favor of Mafia's
 	boolean canAdvRetval = can_adventure(loc);
 	if(canAdvRetval != retval){
-		auto_log_debug("Uh oh, autoscend and mafia's can_adventure() dont agree on whether we can adventure at " + loc + " (autoscend: "+retval+", can_adventure(): "+canAdvRetval+"). Will assume locaiton available if either is true.");
+		auto_log_debug("Uh oh, autoscend and mafia's can_adventure() dont agree on whether we can adventure at " + loc + " (autoscend: "+retval+", can_adventure(): "+canAdvRetval+"). Will assume location available if either is true.");
 		retval = retval || canAdvRetval;
 	}
 
