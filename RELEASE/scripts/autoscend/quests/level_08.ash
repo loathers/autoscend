@@ -317,6 +317,11 @@ boolean L8_getMineOres()
 			return true;// pulled successfully the last ore
 		}
 	}
+
+	if(get_workshed() == $item[model train set] && item_amount(oreGoal) < 3)
+	{
+		return false; //will get ore organically through the train set so no need to adventure for it
+	}
 	
 	// use a summon if we can guarentee it will be enough via cat burglar
 	if(canSummonMonster($monster[mountain man]) && catBurglarHeistsLeft() > 1)
