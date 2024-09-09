@@ -443,13 +443,13 @@ void auto_buyFrom2002MrStore()
 		return;
 	}
 	auto_log_debug("Have " + remainingCatalogCredits() + " credit(s) to buy from Mr. Store 2002. Let's spend them!");
-	// meat butler on day 1 of run
+	/*// meat butler on day 1 of run
 	item itemConsidering = $item[meat butler];
 	if(have_campground() && remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
-	}
+	}*/
 	// manual of secret door detection. skill: Secret door awareness
 	itemConsidering = $item[manual of secret door detection];
 	if(can_read_skillbook(itemConsidering) && remainingCatalogCredits() > 0 && !auto_have_skill($skill[Secret door awareness]) && auto_is_valid(itemConsidering))
@@ -457,7 +457,12 @@ void auto_buyFrom2002MrStore()
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
 	}
-	// giant black monlith. Mostly useful at low level for stats
+	itemConsidering = $item[pro skateboard];
+	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+	}
+	/*// giant black monlith. Mostly useful at low level for stats
 	if (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) {
 		itemConsidering = $item[giant black monolith];
 		if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
@@ -466,7 +471,7 @@ void auto_buyFrom2002MrStore()
 			use(itemConsidering);
 			visit_url("campground.php?action=monolith");
 		}
-	}
+	}*/
 	// crimbo cookie. Should we expand to buy more or use in more paths beyond HC LoL?
 	itemConsidering = $item[Crimbo cookie sheet];
 	if(remainingCatalogCredits() > 0 && in_hardcore() && my_daycount() == 1 && in_lol())

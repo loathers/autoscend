@@ -3340,6 +3340,12 @@ boolean L11_unlockEd()
 		auto_log_info("Bringing the Grey Goose to emit some drones at some rat kings.");
 		handleFamiliar($familiar[Grey Goose]);
 	}
+
+	if(auto_can_equip($item[pro skateboard]) && equipmentAmount($item[pro skateboard]) > 0 && !get_property("_epicMcTwistUsed").to_boolean())
+	{
+		auto_log_info("Be like Tony Hawk on a Tomb Rat King!");
+		autoEquip($item[pro skateboard]);
+	}
 	
 	return autoAdv(1, $location[The Middle Chamber]);
 }

@@ -9,6 +9,7 @@ void ag_initializeSettings()
 	{
 		set_property("auto_100familiar", "Burly Bodyguard");
 		set_property("auto_skipNuns", true);
+		set_property("auto_skipUnlockGuild", true);
 	}
 }
 
@@ -17,7 +18,7 @@ void ag_pulls()
 	if(in_ag())
 	{
 		//SUPER helpful for gremlins
-		if(storage_amount($item[mini kiwi invisible dirigible]) > 0 && auto_is_valid($item[mini kiwi invisible dirigible]))
+		if(auto_is_valid($item[mini kiwi invisible dirigible]))
 		{
 			pullXWhenHaveY($item[mini kiwi invisible dirigible], 1, 0);
 		}
