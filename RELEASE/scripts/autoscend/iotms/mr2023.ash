@@ -467,10 +467,18 @@ void auto_buyFrom2002MrStore()
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
 	}
+	//Pro skateboard to dupe tomb rat king drops
 	itemConsidering = $item[pro skateboard];
 	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+	}
+	// meat butler on day 1 of run
+	item itemConsidering = $item[meat butler];
+	if(remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+		use(itemConsidering);
 	}
 	/*// giant black monlith. Mostly useful at low level for stats
 	if (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) {
