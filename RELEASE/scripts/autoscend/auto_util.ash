@@ -2242,7 +2242,7 @@ boolean evokeEldritchHorror()
 
 boolean fightScienceTentacle()
 {
-	if(in_koe())
+	if(in_koe() || in_ag())
 	{
 		return false;
 	}
