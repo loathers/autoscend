@@ -119,6 +119,11 @@ location auto_availableBrickRift()
 		return $location[none];
 	}
 
+	if(in_ag() && !auto_haveQueuedForcedNonCombat()) //if no NC forced, don't adventure in zone
+	{
+		return $location[none];
+	}
+
 	boolean[location] riftsWithBricks = $locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)];
 	foreach loc in riftsWithBricks
 	{
@@ -165,8 +170,8 @@ boolean auto_doPhoneQuest()
 	{
 		return false;
 	}
-	// only accept and do quest if we can get bricks
-	if(auto_availableBrickRift() == $location[none])
+	// only accept and do quest if we can get bricks or force a noncombat
+	if(auto_availableBrickRift() == $location[none] || !auto_canForceNextNoncombat())
 	{
 		return false;
 	}
@@ -190,6 +195,11 @@ boolean auto_doPhoneQuest()
 	if(!auto_getPhoneQuest())
 	{
 		abort("Failed to get Rufus quest from cursed phone.");
+	}
+
+	if(auto_canForceNextNoncombat() && in_ag()) //in avant guard, want to avoid adventuring here unless you can force an NC
+	{
+		auto_forceNextNoncombat($location[Shadow Rift (The Misspelled Cemetary)]); //Should be first to be unlocked so just go here
 	}
 
 	// finish quest
