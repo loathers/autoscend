@@ -306,10 +306,10 @@ boolean isCopied(monster enemy, skill sk)
 	boolean retval = false;
 	switch(sk)
 	{
-		case $skill[Blow the Purple Candle!]:
+		case $skill[Blow the Purple Candle\!]:
 			retval = contains_text(get_property("auto_purple_candled"), enemy);
 			break;
-		default;
+		default:
 			abort("isCopied was asked to check an unidentified skill: " +sk);
 	}
 	return retval;
@@ -318,7 +318,7 @@ boolean isCopied(monster enemy, skill sk)
 boolean isCopied(monster enemy)
 {
 	//checks if the monster enemy is currently copied using any of the copy skills
-	foreach sk in $skills[Blow the Purple Candle!]
+	foreach sk in $skills[Blow the Purple Candle\!]
 	{
 		if(isCopied(enemy, sk)) return true;
 	}
@@ -327,9 +327,9 @@ boolean isCopied(monster enemy)
 
 skill getCopier(monster enemy, boolean inCombat)
 {
-	if(canUse($skill[Blow the Purple Candle!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0)
+	if(canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0)
 	{
-		return $skill[Blow the Purple Candle!];
+		return $skill[Blow the Purple Candle\!];
 	}
 	return $skill[none];
 }

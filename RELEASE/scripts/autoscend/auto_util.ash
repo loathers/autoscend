@@ -1112,9 +1112,9 @@ boolean canCopy(monster enemy, location loc)
 boolean adjustForCopyIfPossible(monster target)
 {
 	skill copier = getCopier(target, false);
-	if(copier == $skill[Blow the Purple Candle!])
+	if(copier == $skill[Blow the Purple Candle\!])
 	{
-		return autoEquip($item[Roman Candelabra])
+		return autoEquip($item[Roman Candelabra]);
 	}
 	return false;
 }
