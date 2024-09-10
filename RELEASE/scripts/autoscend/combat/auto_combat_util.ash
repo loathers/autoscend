@@ -309,7 +309,7 @@ boolean isCopied(monster enemy, skill sk)
 		case $skill[Blow the Purple Candle!]:
 			retval = contains_text(get_property("auto_purple_candled"), enemy);
 			break;
-		case default;
+		default;
 			abort("isCopied was asked to check an unidentified skill: " +sk);
 	}
 	return retval;
