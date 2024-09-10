@@ -65,7 +65,7 @@ copy	5	pygmy witch accountant	loc:The Hidden Office Building
 copy	6	pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
 copy	7	Camel's Toe	item:star<7;item:line<6
 copy	8	Skinflute	item:star<7;item:line<6
-copy	9	Swarm of Ghoul Whelps	prop:cyrptCrannyEvilness>17
+copy	9	Swarm of Ghuol Whelps	prop:cyrptCrannyEvilness>17
 
 freerun	0	Foodie Giant
 freerun	1	Possibility Giant	prop:auto_hippyInstead==false
