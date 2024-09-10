@@ -56,6 +56,8 @@ banish	49	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering;!sniffed
 banish	50	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation;!sniffed:ancient unspeakable bugbear
 banish	51	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!sniffed:trendy bugbear chef
 
+copy	0	Ninja Snowman Assassin
+
 freerun	0	Foodie Giant
 freerun	1	Possibility Giant	prop:auto_hippyInstead==false
 freerun	2	Procrastination Giant

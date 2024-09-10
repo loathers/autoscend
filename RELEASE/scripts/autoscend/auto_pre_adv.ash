@@ -429,6 +429,11 @@ boolean auto_pre_adventure()
 				adjustForReplaceIfPossible(mon);
 				zoneHasUnwantedMonsters = true;
 			}
+			if(auto_wantToCopy(mon, place))
+			{
+				adjustForCopyIfPossible(mon);
+				zoneHasWantedMonsters = true;
+			}
 			if(auto_wantToSniff(mon, place))
 			{
 				adjustForSniffingIfPossible(mon);

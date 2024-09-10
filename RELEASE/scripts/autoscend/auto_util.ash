@@ -1100,6 +1100,30 @@ boolean adjustForSniffingIfPossible()
 	return adjustForSniffingIfPossible($monster[none]);
 }
 
+boolean canCopy(monster enemy, location loc)
+{
+	if(!auto_wantToCopy(enemy, loc))
+	{
+		return false;
+	}
+	return getCopier(enemy, false) != $skill[none];
+}
+
+boolean adjustForCopyIfPossible(monster target)
+{
+	skill copier = getCopier(target, false);
+	if(copier == $skill[Blow the Purple Candle!])
+	{
+		return autoEquip($item[Roman Candelabra])
+	}
+	return false;
+}
+
+boolean adjustForCopyIfPossible()
+{
+	return adjustForCopyIfPossible($monster[none]);
+}
+
 boolean hasTorso()
 {
 	return have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed]) || robot_cpu(9,false);
@@ -3460,6 +3484,15 @@ boolean auto_wantToReplace(monster enemy, location loc)
 	boolean [monster] toReplace = auto_getMonsters("replace");
 	set_location(locCache);
 	return toReplace[enemy];
+}
+
+boolean auto_wantToCopy(monster enemy, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] toCopy = auto_getMonsters("copy");
+	set_location(locCache);
+	return toCopy[enemy];
 }
 
 int total_items(boolean [item] items)
