@@ -210,6 +210,12 @@ boolean canChangeToFamiliar(familiar target)
 	{
 		return true;
 	}
+
+	//Avant Guard specific check for non-adventure.php zones
+	if(in_ag() && $familiar[Gelatinous Cubeling] == target)
+	{
+		return true;
+	}
 	
 	//kolhs specific check that needs to go here specifically. can not take familiars >10 lbs base weight into school zone.
 	if(kolhs_mandatorySchool() || 				//we are in kolhs and are adventuring in a school zone
@@ -697,7 +703,7 @@ boolean haveSpleenFamiliar()
 boolean wantCubeling()
 {
 	//do we still want to use a gelatinous cubeling familiar specifically for it to drop the daily dungeon tools
-	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
+	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]) && !in_ag())
 	{
 		return false;	//can not use it so we do not want it.
 	}
@@ -708,7 +714,8 @@ boolean wantCubeling()
 	
 	boolean need_lockpicks = item_amount($item[pick-o-matic lockpicks]) == 0 && item_amount($item[Platinum Yendorian Express Card]) == 0;
 	boolean need_ring = !possessEquipment($item[Ring of Detect Boring Doors]);	//do not try for a second one if you already have one
-	return item_amount($item[eleven-foot pole]) == 0 || need_ring || need_lockpicks;
+	boolean need_pole = !auto_haveCCSC() && item_amount($item[eleven-foot pole]) == 0;
+	return need_pole || need_ring || need_lockpicks;
 }
 
 void preAdvUpdateFamiliar(location place)

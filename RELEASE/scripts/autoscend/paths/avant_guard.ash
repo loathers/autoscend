@@ -172,3 +172,26 @@ void ag_bgChat()
 		return;
 	}
 }
+
+boolean LX_agNonAdv()
+{
+	if(!in_ag())
+	{
+		return true;
+	}
+	//no longer need to use Cubeling/don't have own
+	if(!wantCubeling() || !have_familiar($familiar[Gelatinous Cubeling]))
+	{
+		return true;
+	}
+
+	//Since we do need to do the Cubeling yet
+	handleFamiliar($familiar[Gelatinous Cubeling]);
+	LX_summonMonster();
+	//These 2 go via autoAdv and adventure in the location
+	//L8_trapperGroar();
+	//L5_goblinKing();
+	L3_tavern();
+
+	return false;
+}
