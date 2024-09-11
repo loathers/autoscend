@@ -1093,7 +1093,7 @@ boolean L12_orchardFinalize()
 
 void gremlinsFamiliar()
 {
-	//when fighting gremlins we want to minimize the familiar ability to cause damage.
+	/*//when fighting gremlins we want to minimize the familiar ability to cause damage.
 	
 	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 	boolean strip_familiar = true;
@@ -1154,7 +1154,8 @@ void gremlinsFamiliar()
 	if(strip_familiar)
 	{
 		equip($slot[familiar], $item[none]);	//strip familiar equipment to avoid passive dmg
-	}
+	}*/
+	return;
 }
 
 boolean L12_gremlins()
