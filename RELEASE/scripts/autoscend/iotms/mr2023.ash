@@ -197,6 +197,11 @@ boolean auto_doPhoneQuest()
 		abort("Failed to get Rufus quest from cursed phone.");
 	}
 
+	if(auto_haveQueuedForcedNonCombat())
+	{
+		return autoAdv(auto_availableBrickRift());
+	}
+
 	if(auto_canForceNextNoncombat() && in_ag()) //in avant guard, want to avoid adventuring here unless you can force an NC
 	{
 		return auto_forceNextNoncombat(auto_availableBrickRift());
