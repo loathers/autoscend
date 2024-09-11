@@ -249,7 +249,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 
 		//HP reduction if the monster has high HP
-		if(monster_hp() > 1500)
+		if(monster_hp() > 1500 || monster.physical_resistance > 90)
 		{
 			if(canUse($skill[Surprisingly Sweet Slash])) //75% less HP
 			{
