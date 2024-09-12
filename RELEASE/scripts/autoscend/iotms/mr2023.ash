@@ -668,7 +668,8 @@ boolean auto_habitatTarget(monster target)
 		 	// only worth it if we need 30 or more evilness reduced.
 			return (get_property("cyrptAlcoveEvilness").to_int() > 42);
 		case $monster[eldritch tentacle]:
-			return (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0));
+			// don't habitat free fights in avant guard
+			return (!in_ag() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
 		default:
 			return (get_property("auto_habitatMonster").to_monster() == target);
 	}
