@@ -642,6 +642,8 @@ boolean auto_canHabitat()
 				return (fantasyBanditsFought() < 5);
 			case $monster[modern zmobie]:
 				return get_property("cyrptAlcoveEvilness").to_int() > 13;
+			case $monster[dirty old lihc]:
+				return get_property("cyrptNicheEvilness").to_int() > 13;
 			default:
 				return false;
 		}
@@ -667,6 +669,9 @@ boolean auto_habitatTarget(monster target)
 		case $monster[modern zmobie]:
 		 	// only worth it if we need 30 or more evilness reduced.
 			return (get_property("cyrptAlcoveEvilness").to_int() > 42);
+		case $monster[dirty old lihc]:
+		 	// only worth it if we need 18 or more evilness reduced.
+			return (get_property("cyrptNicheEvilness").to_int() > 42);
 		case $monster[eldritch tentacle]:
 			// don't habitat free fights in avant guard
 			return (!in_ag() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
