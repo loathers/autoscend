@@ -124,6 +124,8 @@ void knockOffCapePrep()
 
 boolean L7_defiledAlcove()
 {
+	int evilBonus = cyrptEvilBonus();
+
 	if (internalQuestStatus("questL07Cyrptic") != 0 || get_property("cyrptAlcoveEvilness").to_int() == 0)
 	{
 		return false;
@@ -149,8 +151,6 @@ boolean L7_defiledAlcove()
 		return false;
 	}
 
-	int evilBonus = cyrptEvilBonus();
-
 	if (get_property("cyrptAlcoveEvilness").to_int() > (14 + evilBonus))
 	{
 		provideInitiative(850, $location[The Defiled Alcove], true);
@@ -173,38 +173,9 @@ boolean L7_defiledAlcove()
 	return autoAdv($location[The Defiled Alcove]);
 }
 
-boolean L7_crypt()
+boolean L7_defiledNook()
 {
-	if (internalQuestStatus("questL07Cyrptic") != 0)
-	{
-		return false;
-	}
-	if (item_amount($item[chest of the bonerdagon]) == 1)
-	{
-		equipStatgainIncreasers();
-		use(1, $item[chest of the bonerdagon]);
-		return false;
-	}
-
-	// make sure quest status is correct before we attempt to adventure.
-	visit_url("crypt.php");
-	use(1, $item[Evilometer]);
-
 	int evilBonus = cyrptEvilBonus();
-
-	if (L7_defiledAlcove())
-	{
-		return true;
-	}
-
-	// delay remaining crypt zones for cold medicine cabinet usage unless we have run out of other stuff to do
-	// crypt is underground so it will generate breathitins, 5 turns free outside
-	// allow adventuring in Alcove (above) since many backup charges get used for modern zmobies
-	// not delaying better distributes these charges across days
-	if (auto_reserveUndergroundAdventures())
-	{
-		return false;
-	}
 
 	// current mafia bug causes us to lose track of the amount of Evil Eyes in inventory so adding a refresh here
 	cli_execute("refresh inv");
@@ -240,6 +211,21 @@ boolean L7_crypt()
 	else if(skip_in_koe)
 	{
 		auto_log_debug("In Exploathing, skipping Defiled Nook until we get more evil eyes.");
+	}
+	return false;
+}
+
+boolean L7_defiledNiche()
+{
+	int evilBonus = cyrptEvilBonus();
+
+	if (get_property("cyrptNicheEvilness").to_int() > 13 && auto_habitatMonster() == $monster[dirty old lihc])
+	{
+		if (get_property("cyrptNicheEvilness").to_int() <= (13 + (auto_habitatFightsLeft() * (cyrptEvilBonus() + 3))))
+		{
+			// we have enough Habitants to get to 13 or less evilness. Don't need to adventure in this zone.
+			return false;
+		}
 	}
 
 	if((get_property("cyrptNicheEvilness").to_int() > 0) && lar_repeat($location[The Defiled Niche]))
@@ -294,7 +280,13 @@ boolean L7_crypt()
 		}
 		return autoAdv($location[The Defiled Niche]);
 	}
+	return false;
+}
 
+boolean L7_defiledCranny()
+{
+	int evilBonus = cyrptEvilBonus();
+	
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
 	{
 		if(is_professor()) //don't do if we are the Professor. Death Rattlin' = Beaten Up
@@ -336,7 +328,58 @@ boolean L7_crypt()
 		}
 		return autoAdv($location[The Defiled Cranny]);
 	}
+	return false;
+}
 
+boolean L7_crypt()
+{
+	if (internalQuestStatus("questL07Cyrptic") != 0)
+	{
+		return false;
+	}
+	if (item_amount($item[chest of the bonerdagon]) == 1)
+	{
+		equipStatgainIncreasers();
+		use(1, $item[chest of the bonerdagon]);
+		return false;
+	}
+
+	// make sure quest status is correct before we attempt to adventure.
+	visit_url("crypt.php");
+	use(1, $item[Evilometer]);
+
+	int evilBonus = cyrptEvilBonus();
+
+	if (L7_defiledAlcove())
+	{
+		return true;
+	}
+
+	// delay remaining crypt zones for cold medicine cabinet usage unless we have run out of other stuff to do
+	// crypt is underground so it will generate breathitins, 5 turns free outside
+	// allow adventuring in Alcove (above) since many backup charges get used for modern zmobies
+	// not delaying better distributes these charges across days
+	if (auto_reserveUndergroundAdventures())
+	{
+		return false;
+	}
+
+	if (L7_defiledNook())
+	{
+		return true;
+	}
+
+	if (L7_defiledNiche())
+	{
+		return true;
+	}
+
+	if (L7_defiledCranny())
+	{
+		return true;
+	}
+
+	// handle crypt boss
 	if( (get_property("cyrptTotalEvilness").to_int() <= 0) || (get_property("cyrptTotalEvilness").to_int() == 999) )
 	{
 		if(my_class() == $class[seal clubber] && auto_have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
