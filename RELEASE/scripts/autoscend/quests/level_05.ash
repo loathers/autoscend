@@ -147,6 +147,12 @@ boolean L5_goblinKing()
 		buffMaintain($effect[Tricky Timpani], 30, 1, 10);
 	}
 
+	//Gelatinous Cubeling in Avant Guard for cubeling drops
+	if(in_ag() && wantCubeling() && have_familiar($familiar[Gelatinous Cubeling]))
+	{
+		handleFamiliar($familiar[Gelatinous Cubeling])
+	}
+
 	// TODO: I died here, maybe we should heal a bit?
 	if(!in_plumber())
 	{

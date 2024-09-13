@@ -188,8 +188,6 @@ boolean LX_agNonAdv()
 		return true;
 	}
 
-	//Since we do need to do the Cubeling yet
-	handleFamiliar($familiar[Gelatinous Cubeling]);
 	//want these to all be true in order to not come here. !wantCubeling above will skip this if we have all 3 cubeling items
 	if(LX_summonMonster() && L3_tavern() && L8_trapperGroar() && L5_goblinKing() && L7_crypt())
 	{

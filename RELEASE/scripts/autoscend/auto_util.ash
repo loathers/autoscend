@@ -1847,6 +1847,7 @@ boolean auto_deleteMail(kmailObject msg)
 
 boolean LX_summonMonster()
 {
+	//Gelatinous Cubeling in Avant Guard for cubeling drops
 	if(in_ag() && wantCubeling() && have_familiar($familiar[Gelatinous Cubeling]))
 	{
 		handleFamiliar($familiar[Gelatinous Cubeling])

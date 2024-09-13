@@ -17,6 +17,12 @@ boolean auto_tavern()
 	// infrequent compounding issue, reset maximizer
 	resetMaximize();
 
+	//Gelatinous Cubeling in Avant Guard for cubeling drops
+	if(in_ag() && wantCubeling() && have_familiar($familiar[Gelatinous Cubeling]))
+	{
+		handleFamiliar($familiar[Gelatinous Cubeling])
+	}
+
 	boolean maximized = false;
 	// sleaze is the only one we don't care about
 	if(possessEquipment($item[Kremlin\'s Greatest Briefcase]))
