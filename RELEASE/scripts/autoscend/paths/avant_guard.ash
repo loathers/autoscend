@@ -163,12 +163,15 @@ void ag_bgChat()
 		}
 		else
 		{
-			mon = $monster[]; //might as well grop
+			mon = $monster[none]; //set none if there are no more options
 		}
 
-		string url = visit_url("choice.php?pwd=&whichchoice=1532&option=1&bgid=" + mon.id, true);
-		auto_log_info("Making the next bodyguard a " + mon.to_string(), "blue");
-		handleTracker($familiar[Burly Bodyguard], mon.to_string(), "auto_copies");
+		if(mon != $monster[none])
+		{
+			string url = visit_url("choice.php?pwd=&whichchoice=1532&option=1&bgid=" + mon.id, true);
+			auto_log_info("Making the next bodyguard a " + mon.to_string(), "blue");
+			handleTracker($familiar[Burly Bodyguard], mon.to_string(), "auto_copies");
+		}
 		return;
 	}
 }
