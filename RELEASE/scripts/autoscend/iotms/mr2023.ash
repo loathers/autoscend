@@ -474,7 +474,7 @@ void auto_buyFrom2002MrStore()
 	}
 	//Pro skateboard to dupe tomb rat king drops
 	itemConsidering = $item[pro skateboard];
-	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering))
+	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering) && !possessEquipment(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 	}
@@ -668,10 +668,10 @@ boolean auto_habitatTarget(monster target)
 			return (fantasyBanditsFought() == 0);
 		case $monster[modern zmobie]:
 		 	// only worth it if we need 30 or more evilness reduced.
-			return (get_property("cyrptAlcoveEvilness").to_int() > 42);
+			return ((get_property("cyrptAlcoveEvilness").to_int() - (5 * (5 + cyrptEvilBonus()))) > 13);
 		case $monster[dirty old lihc]:
 		 	// only worth it if we need 18 or more evilness reduced.
-			return (get_property("cyrptNicheEvilness").to_int() > 42);
+			return ((get_property("cyrptNicheEvilness").to_int() - (5 * (3 + cyrptEvilBonus()))) > 13);
 		case $monster[eldritch tentacle]:
 			// don't habitat free fights in avant guard
 			return (!in_ag() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
