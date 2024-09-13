@@ -886,6 +886,12 @@ void initializeDay(int day)
 					{
 						auto_buyUpTo(1, $item[Toy Accordion]);
 					}
+					
+					if((in_koe()) && (item_amount($item[Antique Accordion]) == 0) && (koe_rmi_count() >= 10))
+					{
+						koe_acquire_rmi(10);
+						buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Antique Accordion]);
+					}
 				}
 				acquireTotem();
 				if(!possessEquipment($item[Saucepan]))
