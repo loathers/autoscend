@@ -163,7 +163,7 @@ void ag_bgChat()
 		}
 		else
 		{
-			mon = $monster[Green Ops Soldier]; //might as well grop
+			mon = $monster[]; //might as well grop
 		}
 
 		string url = visit_url("choice.php?pwd=&whichchoice=1532&option=1&bgid=" + mon.id, true);
@@ -187,13 +187,11 @@ boolean LX_agNonAdv()
 
 	//Since we do need to do the Cubeling yet
 	handleFamiliar($familiar[Gelatinous Cubeling]);
-	if(LX_summonMonster() || L3_tavern())
+	//want these to all be true in order to not come here. !wantCubeling above will skip this if we have all 3 cubeling items
+	if(LX_summonMonster() && L3_tavern() && L8_trapperGroar() && L5_goblinKing() && L7_crypt())
 	{
 		return true;
 	}
-	//These 2 go via autoAdv and adventure in the location
-	//L8_trapperGroar();
-	//L5_goblinKing();
 
 	return false;
 }
