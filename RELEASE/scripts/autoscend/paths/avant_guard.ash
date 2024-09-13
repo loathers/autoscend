@@ -7,6 +7,11 @@ void ag_initializeSettings()
 {
 	if (in_avantGuard())
 	{
+		if (!auto_have_familiar($familiar[Burly Bodyguard]) && item_amount($item[baby bodyguard]) > 0) {
+			// Add the familiar to the terrarium since we need it to do anything in this path.
+			// No I don't care about that guy who never binds familiars for <reasons>. He can write & maintain his own ascension script.
+			visit_url("inv_familiar.php?pwd=&which=3&whichitem=11631");
+		}
 		set_property("auto_100familiar", "Burly Bodyguard");
 		set_property("auto_skipNuns", true);
 		set_property("auto_skipUnlockGuild", true);
