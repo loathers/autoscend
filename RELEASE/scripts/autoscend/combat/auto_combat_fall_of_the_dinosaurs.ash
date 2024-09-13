@@ -64,11 +64,19 @@ string auto_combatFallOfTheDinosaursStage5(int round, monster enemy, string text
 		// reflects damage from spells back to player. 
 		if(enemy.physical_resistance >= 80)
 		{
+			if (canUse($skill[Implode Universe]))
+			{
+				return useSkill($skill[Implode Universe], true);
+			}
 			abort("Not sure how to handle a physically resistent enemy eaten by a glass-shelled archelon."); // TODO - work something out here?
 		}
 		if(canSurvive(1.5) && round < 25)
 		{
 			return "attack with weapon";
+		}
+		if (canUse($skill[Implode Universe]))
+		{
+			return useSkill($skill[Implode Universe], true);
 		}
 		abort("Not sure how to handle monster eaten by a glass-shelled archelon.");
 	}
