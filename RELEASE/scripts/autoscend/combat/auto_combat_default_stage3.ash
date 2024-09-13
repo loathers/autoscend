@@ -202,8 +202,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	{
 		doWeaksauce = true;
 	}
-	// if(enemy == $monster[invader bullet]) // TODO: on version bump
-	if(enemy.to_string().to_lower_case() == "invader bullet")
+	if(enemy == $monster[invader bullet])
 	{
 		doWeaksauce = false;
 	}
@@ -218,8 +217,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		enemy_la = 151;
 	}
 
-	// if(enemy == $monster[invader bullet]) // TODO: on version bump
-	if(enemy.to_string().to_lower_case() == "invader bullet")
+	if(enemy == $monster[invader bullet])
 	{
 		enemy_la = 151;
 	}
