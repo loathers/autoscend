@@ -1847,6 +1847,10 @@ boolean auto_deleteMail(kmailObject msg)
 
 boolean LX_summonMonster()
 {
+	if(in_ag() && wantCubeling() && have_familiar($familiar[Gelatinous Cubeling]))
+	{
+		handleFamiliar($familiar[Gelatinous Cubeling])
+	}
 	// summon screambat if we are at last wall to knock down and don't have a sonar-in-a-biscuit
 	if(internalQuestStatus("questL04Bat") == 2 && (!auto_is_valid($item[Sonar-In-A-Biscuit]) || item_amount($item[Sonar-In-A-Biscuit]) == 0) &&
 		canSummonMonster($monster[screambat]))
