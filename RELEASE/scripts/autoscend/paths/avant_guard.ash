@@ -1,11 +1,11 @@
-boolean in_ag()
+boolean in_avantGuard()
 {
 	return my_path() == $path[Avant Guard];
 }
 
 void ag_initializeSettings()
 {
-	if(in_ag())
+	if (in_avantGuard())
 	{
 		set_property("auto_100familiar", "Burly Bodyguard");
 		set_property("auto_skipNuns", true);
@@ -15,7 +15,7 @@ void ag_initializeSettings()
 
 void ag_pulls()
 {
-	if(in_ag())
+	if (in_avantGuard())
 	{
 		//SUPER helpful for gremlins
 		if(auto_is_valid($item[mini kiwi invisible dirigible]))
@@ -27,7 +27,7 @@ void ag_pulls()
 
 void ag_bgChat()
 {
-	if(!in_ag())
+	if (!in_avantGuard())
 	{
 		return;
 	}
@@ -178,7 +178,7 @@ void ag_bgChat()
 
 boolean LX_agNonAdv()
 {
-	if(!in_ag())
+	if (!in_avantGuard())
 	{
 		return true;
 	}

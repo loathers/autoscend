@@ -1095,7 +1095,7 @@ void gremlinsFamiliar()
 {
 	//when fighting gremlins we want to minimize the familiar ability to cause damage.
 
-	if (in_ag()) {
+	if (in_avantGuard()) {
 		return;
 	}
 	

@@ -952,7 +952,7 @@ string replaceMonsterCombatString(monster target, boolean inCombat)
 	{
 		return "skill " + $skill[CHEAT CODE: Replace Enemy];
 	}
-	if(canUse($item[waffle]) && !in_ag())
+	if (canUse($item[waffle]) && !in_avantGuard())
 	{
 		return useItems($item[waffle], $item[none]);
 	}

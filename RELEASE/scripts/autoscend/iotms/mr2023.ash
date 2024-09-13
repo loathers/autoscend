@@ -119,7 +119,7 @@ location auto_availableBrickRift()
 		return $location[none];
 	}
 
-	if(in_ag() && !auto_haveQueuedForcedNonCombat()) //if no NC forced, don't adventure in zone
+	if (in_avantGuard() && !auto_haveQueuedForcedNonCombat()) //if no NC forced, don't adventure in zone
 	{
 		return $location[none];
 	}
@@ -134,7 +134,7 @@ location auto_availableBrickRift()
 
 int auto_neededShadowBricks()
 {
-	if(!auto_havePayPhone() || in_ag())
+	if (!auto_havePayPhone() || in_avantGuard())
 	{
 		return 0;
 	}
@@ -202,7 +202,7 @@ boolean auto_doPhoneQuest()
 		return autoAdv(auto_availableBrickRift());
 	}
 
-	if(auto_canForceNextNoncombat() && in_ag()) //in avant guard, want to avoid adventuring here unless you can force an NC
+	if (auto_canForceNextNoncombat() && in_avantGuard()) //in avant guard, want to avoid adventuring here unless you can force an NC
 	{
 		return auto_forceNextNoncombat(auto_availableBrickRift());
 	}
@@ -560,7 +560,7 @@ void auto_scepterSkills()
 		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar())
 		{
 			familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
-			if(((in_ag() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
+			if (((in_avantGuard() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
 			{
 				use_familiar(findRockFamiliarInTerrarium());
 				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
@@ -674,7 +674,7 @@ boolean auto_habitatTarget(monster target)
 			return ((get_property("cyrptNicheEvilness").to_int() - (5 * (3 + cyrptEvilBonus()))) > 13);
 		case $monster[eldritch tentacle]:
 			// don't habitat free fights in avant guard
-			return (!in_ag() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
+			return (!in_avantGuard() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
 		default:
 			return (get_property("auto_habitatMonster").to_monster() == target);
 	}
@@ -845,7 +845,7 @@ boolean auto_burnLeaves()
 		}
 		return false;
 	}
-	if(in_ag() && item_amount($item[inflammable leaf]) > 86 && item_amount($item[Autumnic bomb]) == 0)
+	if (in_avantGuard() && item_amount($item[inflammable leaf]) > 86 && item_amount($item[Autumnic bomb]) == 0)
 	{
 		create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
 	}

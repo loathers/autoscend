@@ -603,7 +603,7 @@ void edUnderworldChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
-boolean in_ag();
+boolean in_avantGuard();
 void ag_initializeSettings();
 void ag_pulls();
 void ag_bgChat();

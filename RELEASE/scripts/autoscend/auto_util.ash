@@ -1743,7 +1743,7 @@ boolean isFreeMonster(monster mon)
 boolean isFreeMonster(monster mon, location loc)
 {
 	//No free fights in Avant Guard. Well, there are, but they now have non-free bodyguards so anything that is free now costs a turn
-	if(in_ag())
+	if (in_avantGuard())
 	{
 		return false;
 	}
@@ -1787,7 +1787,7 @@ boolean isFreeMonster(monster mon, location loc)
 	}
 
 	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains loc
-		&& have_effect($effect[shadow affinity]) > 0 && !in_ag())
+		&& have_effect($effect[shadow affinity]) > 0 && !in_avantGuard())
 	{
 		return true;
 	}
@@ -1848,7 +1848,7 @@ boolean auto_deleteMail(kmailObject msg)
 boolean LX_summonMonster()
 {
 	//Gelatinous Cubeling in Avant Guard for cubeling drops
-	if(in_ag() && wantCubeling() && canChangeToFamiliar($familiar[Gelatinous Cubeling]))
+	if (in_avantGuard() && wantCubeling() && canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 	{
 		handleFamiliar($familiar[Gelatinous Cubeling]);
 	}
@@ -2271,7 +2271,7 @@ boolean evokeEldritchHorror()
 
 boolean fightScienceTentacle()
 {
-	if(in_koe() || in_ag())
+	if (in_koe() || in_avantGuard())
 	{
 		return false;
 	}

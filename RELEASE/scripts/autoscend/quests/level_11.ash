@@ -815,7 +815,7 @@ boolean L11_blackMarket()
 		return false;
 	}
 
-	if($location[The Black Forest].turns_spent > 12 && !in_ag())
+	if ($location[The Black Forest].turns_spent > 12 && !in_avantGuard())
 	{
 		auto_log_warning("We have spent a bit many adventures in The Black Forest... manually checking", "red");
 		visit_url("place.php?whichplace=woods");
@@ -3158,7 +3158,7 @@ boolean L11_palindome()
 			auto_log_info("Attemping to use Map the Monsters to olfact a Bob Racecar.");
 		}
 		boolean advSpent = autoAdv($location[Inside the Palindome]);
-		if($location[Inside the Palindome].turns_spent > 30 && !in_pokefam() && !in_koe() && !in_ag() && auto_is_valid($item[Disposable Instant Camera]))
+		if ($location[Inside the Palindome].turns_spent > 30 && !in_pokefam() && !in_koe() && !in_avantGuard() && auto_is_valid($item[Disposable Instant Camera]))
 		{
 			abort("It appears that we've spent too many turns in the Palindome. If you run me again, I'll try one more time but many I failed finishing the Palindome");
 		}
