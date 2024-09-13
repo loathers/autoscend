@@ -608,11 +608,6 @@ boolean LX_dailyDungeonToken()
 	{
 		return false;	//can switch to cubeling so wait until we have all the tool drops before doing daily dungeon
 	}
-
-	if(in_ag() && !LX_agNonAdv())
-	{
-		return false; //have not done non-adventure.php zones yet in Avant Guard
-	}
 	
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
 	{

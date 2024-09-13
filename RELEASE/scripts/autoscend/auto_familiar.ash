@@ -210,12 +210,6 @@ boolean canChangeToFamiliar(familiar target)
 	{
 		return true;
 	}
-
-	//Avant Guard specific check for non-adventure.php zones
-	if(in_ag() && $familiar[Gelatinous Cubeling] == target)
-	{
-		return true;
-	}
 	
 	//kolhs specific check that needs to go here specifically. can not take familiars >10 lbs base weight into school zone.
 	if(kolhs_mandatorySchool() || 				//we are in kolhs and are adventuring in a school zone
@@ -703,7 +697,7 @@ boolean haveSpleenFamiliar()
 boolean wantCubeling()
 {
 	//do we still want to use a gelatinous cubeling familiar specifically for it to drop the daily dungeon tools
-	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]) && !in_ag())
+	if (!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 	{
 		return false;	//can not use it so we do not want it.
 	}
