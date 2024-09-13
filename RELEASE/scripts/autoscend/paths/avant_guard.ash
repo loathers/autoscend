@@ -187,11 +187,13 @@ boolean LX_agNonAdv()
 
 	//Since we do need to do the Cubeling yet
 	handleFamiliar($familiar[Gelatinous Cubeling]);
-	LX_summonMonster();
+	if(LX_summonMonster() || L3_tavern())
+	{
+		return true;
+	}
 	//These 2 go via autoAdv and adventure in the location
 	//L8_trapperGroar();
 	//L5_goblinKing();
-	L3_tavern();
 
 	return false;
 }
