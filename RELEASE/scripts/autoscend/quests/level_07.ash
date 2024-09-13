@@ -2,24 +2,13 @@ void cyrptChoiceHandler(int choice)
 {
 	if(choice == 153) // Turn Your Head and Coffin (The Defiled Alcove)
 	{
-		if(my_meat() < 1000 + meatReserve())
-		{
-			run_choice(2); // get meat if needed
-		}
-		else
-		{
-			run_choice(4); // skip
-		}
+		run_choice(4); // skip
 	}
 	else if(choice == 155) // Skull, Skull, Skull (The Defiled Nook)
 	{
 		if(in_zombieSlayer() && (item_amount($item[talkative skull]) == 0 || !have_familiar($familiar[Hovering Skull])))
 		{
 			run_choice(1); // get talkative skull
-		}
-		else if(my_meat() < 1000 + meatReserve())
-		{
-			run_choice(2); // get meat if needed
 		}
 		else
 		{
@@ -28,14 +17,7 @@ void cyrptChoiceHandler(int choice)
 	}
 	else if(choice == 157) // Urning Your Keep (The Defiled Niche)
 	{
-		if(my_meat() < 1000 + meatReserve())
-		{
-			run_choice(3); // get meat if needed
-		}
-		else
-		{
-			run_choice(4); // skip
-		}
+		run_choice(4); // skip
 	}
 	else if(choice == 523) // Death Rattlin' (The Defiled Cranny)
 	{
@@ -286,7 +268,7 @@ boolean L7_defiledNiche()
 boolean L7_defiledCranny()
 {
 	int evilBonus = cyrptEvilBonus();
-	
+
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
 	{
 		if(is_professor()) //don't do if we are the Professor. Death Rattlin' = Beaten Up
