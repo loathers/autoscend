@@ -218,9 +218,9 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 	}
 
-	if (auto_canCircadianRhythm() && (auto_circadianRhythmTarget(enemy) || auto_circadianRhythmTarget(enemy.phylum)) && canUse($skill[Recall Facts: %phylum Circadian Rhythms]))
+	if (auto_canCircadianRhythm() && (auto_circadianRhythmTarget(enemy) || auto_circadianRhythmTarget(monster_phylum(enemy))) && canUse($skill[Recall Facts: %phylum Circadian Rhythms]))
 	{
-		handleTracker($skill[Recall Facts: %phylum Circadian Rhythms], enemy.phylum, "auto_otherstuff");
+		handleTracker($skill[Recall Facts: %phylum Circadian Rhythms], monster_phylum(enemy), "auto_otherstuff");
 		return useSkill($skill[Recall Facts: %phylum Circadian Rhythms]);
 	}
 
