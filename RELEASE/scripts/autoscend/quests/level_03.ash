@@ -20,7 +20,7 @@ boolean auto_tavern()
 	//Gelatinous Cubeling in Avant Guard for cubeling drops
 	if(in_ag() && wantCubeling() && have_familiar($familiar[Gelatinous Cubeling]))
 	{
-		handleFamiliar($familiar[Gelatinous Cubeling])
+		handleFamiliar($familiar[Gelatinous Cubeling]);
 	}
 
 	boolean maximized = false;

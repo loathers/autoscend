@@ -150,7 +150,7 @@ boolean L5_goblinKing()
 	//Gelatinous Cubeling in Avant Guard for cubeling drops
 	if(in_ag() && wantCubeling() && have_familiar($familiar[Gelatinous Cubeling]))
 	{
-		handleFamiliar($familiar[Gelatinous Cubeling])
+		handleFamiliar($familiar[Gelatinous Cubeling]);
 	}
 
 	// TODO: I died here, maybe we should heal a bit?

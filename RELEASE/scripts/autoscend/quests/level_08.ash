@@ -709,7 +709,7 @@ boolean L8_trapperGroar()
 	//Gelatinous Cubeling in Avant Guard for cubeling drops
 	if(in_ag() && wantCubeling() && have_familiar($familiar[Gelatinous Cubeling]))
 	{
-		handleFamiliar($familiar[Gelatinous Cubeling])
+		handleFamiliar($familiar[Gelatinous Cubeling]);
 	}
 	
 	// we need 5 cold res to be allowed to adventure in [Mist-shrouded Peak]
