@@ -183,7 +183,7 @@ boolean LX_agNonAdv()
 		return true;
 	}
 	//no longer need to use Cubeling/don't have own
-	if(!wantCubeling() || !have_familiar($familiar[Gelatinous Cubeling]))
+	if(!wantCubeling() || !canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 	{
 		return true;
 	}

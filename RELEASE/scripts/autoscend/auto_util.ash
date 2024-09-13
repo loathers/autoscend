@@ -1848,7 +1848,7 @@ boolean auto_deleteMail(kmailObject msg)
 boolean LX_summonMonster()
 {
 	//Gelatinous Cubeling in Avant Guard for cubeling drops
-	if(in_ag() && wantCubeling() && have_familiar($familiar[Gelatinous Cubeling]))
+	if(in_ag() && wantCubeling() && canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 	{
 		handleFamiliar($familiar[Gelatinous Cubeling]);
 	}
@@ -1862,7 +1862,7 @@ boolean LX_summonMonster()
 	// summon mountain man if we know the ore we need and still need 2 or more
 	// don't summon if we have model train set as it is an easy source of ore
 	item oreGoal = to_item(get_property("trapperOre"));
-	if(internalQuestStatus("questL08Trapper") < 2 && get_workshed() != $item[model train set] && oreGoal != $item[none] && 
+	if(internalQuestStatus("questL08Trapper") < 2 && auto_haveTrainSet() && oreGoal != $item[none] && 
 		item_amount(oreGoal) < 2 && canYellowRay() && canSummonMonster($monster[mountain man]))
 	{
 		adjustForYellowRayIfPossible();

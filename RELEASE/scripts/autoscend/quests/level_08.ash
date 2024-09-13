@@ -318,7 +318,7 @@ boolean L8_getMineOres()
 		}
 	}
 
-	if(get_workshed() == $item[model train set] && item_amount(oreGoal) < 3)
+	if(auto_haveTrainSet() && item_amount(oreGoal) < 3)
 	{
 		return false; //will get ore organically through the train set so no need to adventure for it
 	}
@@ -707,7 +707,7 @@ boolean L8_trapperGroar()
 	}
 
 	//Gelatinous Cubeling in Avant Guard for cubeling drops
-	if(in_ag() && wantCubeling() && have_familiar($familiar[Gelatinous Cubeling]))
+	if(in_ag() && wantCubeling() && canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 	{
 		handleFamiliar($familiar[Gelatinous Cubeling]);
 	}
