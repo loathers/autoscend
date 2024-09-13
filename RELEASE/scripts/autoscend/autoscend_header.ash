@@ -1629,18 +1629,11 @@ boolean uneffect(effect toRemove);
 //Defined in autoscend/auto_routing.ash
 location solveDelayZone(boolean skipOutdoorZones);
 location solveDelayZone();
-boolean setSoftblockDelay();
-boolean allowSoftblockDelay();
-boolean setSoftblockDelay();
 boolean canBurnDelay(location loc);
 boolean allowSoftblockUndergroundAdvs();
-boolean setSoftblockUndergroundAdvs();
 boolean auto_reserveUndergroundAdventures();
-boolean LX_goingUnderground();
-boolean allowSoftblockOutdoorAdvs();
-boolean setSoftblockOutdoorAdvs();
-boolean auto_reserveOutdoorAdventures();
-boolean LX_useBreathitinCharges();
+boolean auto_earlyRoutingHandling();
+boolean auto_softBlockHandler();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
