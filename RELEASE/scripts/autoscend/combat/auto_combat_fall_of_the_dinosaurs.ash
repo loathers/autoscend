@@ -112,7 +112,8 @@ string auto_combatFallOfTheDinosaursStage5(int round, monster enemy, string text
 	}
 	if(dino == "ghostasaurus")	// physically immune, ml-scaling elemental resistance
 	{
-		if (monster_level_adjustment() >= 75 && canUse($skill[Silent Treatment]))
+		int dino_difficulty = enemy.attributes.contains_text("Scale:") ? 0 : enemy.base_attack / 1.8;
+		if (dino_difficulty >= 75 && canUse($skill[Silent Treatment]))
 		{
 			return useSkill($skill[Silent Treatment], true);
 		}
