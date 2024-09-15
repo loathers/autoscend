@@ -607,6 +607,7 @@ boolean in_avantGuard();
 void ag_initializeSettings();
 void ag_pulls();
 void ag_bgChat();
+monster ag_bgToChat();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash
