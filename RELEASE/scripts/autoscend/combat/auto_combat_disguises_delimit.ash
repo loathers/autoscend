@@ -84,12 +84,20 @@ string auto_combatDisguisesStage5(int round, monster enemy, string text)
 			{
 				return useSkill($skill[Saucestorm], false);
 			}
+			if (canUse($skill[Implode Universe]))
+			{
+				return useSkill($skill[Implode Universe], true);
+			}
 			//TODO check if our physical attack can deal elemental damage.
-			else abort("Not sure how to handle a physically resistent enemy wearing a welding mask.");
+			abort("Not sure how to handle a physically resistent enemy wearing a welding mask.");
 		}
 		if(canSurvive(1.5) && round < 10)
 		{
 			return "attack with weapon";
+		}
+		if (canUse($skill[Implode Universe]))
+		{
+			return useSkill($skill[Implode Universe], true);
 		}
 		abort("Not sure how to handle welding mask.");
 	}
