@@ -204,7 +204,7 @@ boolean canChangeToFamiliar(familiar target)
 	{
 		return false;
 	}
-
+	
 	// You are allowed to change to a familiar if it is also the goal of the current 100% run.
 	if(get_property("auto_100familiar").to_familiar() == target)
 	{
@@ -220,6 +220,12 @@ boolean canChangeToFamiliar(familiar target)
 		{
 			return false;
 		}
+	}
+
+	//Avant Guard specific allowance of Gelatinous Cubeling for non-adv.php zones
+	if(in_avantGuard() && !($familiars[Burly Bodyguard, Gelatinous Cubeling] contains target))
+	{
+		return false;
 	}
 
 	// Don't allow switching to a target of none.
@@ -417,6 +423,18 @@ boolean autoChooseFamiliar(location place)
 	if(familiar_target_100 != $familiar[none])
 	{
 		return handleFamiliar(familiar_target_100);		//do not break 100 familiar runs
+	}
+	
+	//Can only use burly bodyguard, except in non-adventure.php zones. In those, we want the Gelatinous Cubeling for Daily Dungeon drops
+	if(in_avantGuard()){
+		if(wantCubeling() && get_property("auto_nonAdvLoc").to_boolean())
+		{
+			return handleFamiliar($familiar[Gelatinous Cubeling]);
+		}
+		else
+		{
+			return handleFamiliar($familiar[Burly Bodyguard]);
+		}
 	}
 	
 	//High priority checks that are too complicated for the datafile

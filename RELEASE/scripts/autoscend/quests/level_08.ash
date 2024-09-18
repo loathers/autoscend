@@ -705,12 +705,6 @@ boolean L8_trapperGroar()
 	{
 		return false; //don't try for Groar as Professor
 	}
-
-	//Gelatinous Cubeling in Avant Guard for cubeling drops
-	if (in_avantGuard() && wantCubeling() && canChangeToFamiliar($familiar[Gelatinous Cubeling]))
-	{
-		handleFamiliar($familiar[Gelatinous Cubeling]);
-	}
 	
 	// we need 5 cold res to be allowed to adventure in [Mist-shrouded Peak]
 	int [element] resGoal;
@@ -737,6 +731,7 @@ boolean L8_trapperGroar()
 		{
 			set_property("auto_nextEncounter","panicking Knott Yeti");
 		}
+		set_property("auto_nonAdvLoc", true);
 		retval = autoAdv($location[Mist-shrouded Peak]);
 	}
 	if(retval && initial_adv == my_session_adv())

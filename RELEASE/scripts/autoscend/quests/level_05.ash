@@ -147,18 +147,13 @@ boolean L5_goblinKing()
 		buffMaintain($effect[Tricky Timpani], 30, 1, 10);
 	}
 
-	//Gelatinous Cubeling in Avant Guard for cubeling drops
-	if (in_avantGuard() && wantCubeling() && canChangeToFamiliar($familiar[Gelatinous Cubeling]))
-	{
-		handleFamiliar($familiar[Gelatinous Cubeling]);
-	}
-
 	// TODO: I died here, maybe we should heal a bit?
 	if(!in_plumber())
 	{
 		auto_change_mcd(10); // get the Crown from the Goblin King.
 	}
 	set_property("auto_nextEncounter","Knob Goblin King");
+	set_property("auto_nonAdvLoc", true);
 	boolean advSpent = autoAdv($location[Throne Room]);
 
 	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished") || in_plumber() || (item_amount($item[Cursed Goblin Cape]) > 0))

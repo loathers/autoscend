@@ -1847,11 +1847,6 @@ boolean auto_deleteMail(kmailObject msg)
 
 boolean LX_summonMonster()
 {
-	//Gelatinous Cubeling in Avant Guard for cubeling drops
-	if (in_avantGuard() && wantCubeling() && canChangeToFamiliar($familiar[Gelatinous Cubeling]))
-	{
-		handleFamiliar($familiar[Gelatinous Cubeling]);
-	}
 	// summon screambat if we are at last wall to knock down and don't have a sonar-in-a-biscuit
 	if(internalQuestStatus("questL04Bat") == 2 && (!auto_is_valid($item[Sonar-In-A-Biscuit]) || item_amount($item[Sonar-In-A-Biscuit]) == 0) &&
 		canSummonMonster($monster[screambat]))
@@ -1974,6 +1969,11 @@ boolean summonMonster(monster mon)
 boolean summonMonster(monster mon, boolean speculative)
 {
 	auto_log_debug((speculative ? "Checking if we can" : "Trying to") + " summon " + mon, "blue");
+
+	if(!speculative)
+	{
+		set_property("auto_nonAdvLoc", true);
+	}
 
 	if (!speculative)
 	{
@@ -2305,6 +2305,7 @@ boolean fightScienceTentacle()
 		return false;
 	}
 
+	set_property("auto_nonAdvLoc", true);
 	temp = visit_url("choice.php?whichchoice=1201&pwd=&option=" + abortChoice);
 	set_property("auto_nextEncounter","Eldritch Tentacle");
 	string[int] pages;
@@ -2556,6 +2557,10 @@ int doNumberology(string goal, boolean doIt, string option)
 
 		if(goal == "battlefield")
 		{
+			if(in_avantGuard() && !LX_agNonAdv())
+			{
+				handleFamiliar($familiar[Gelatinous Cubeling]);
+			}
 			string[int] pages;
 			pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1";
 			pages[1] = "choice.php?whichchoice=1103&pwd=&option=1&num=" + numberology[numberwang];

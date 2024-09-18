@@ -387,12 +387,6 @@ boolean L7_crypt()
 			}
 		}
 
-		//Gelatinous Cubeling in Avant Guard for cubeling drops
-		if (in_avantGuard() && wantCubeling() && canChangeToFamiliar($familiar[Gelatinous Cubeling]))
-		{
-			handleFamiliar($familiar[Gelatinous Cubeling]);
-		}
-
 		acquireHP();
 		if(auto_have_familiar($familiar[Machine Elf]))
 		{
@@ -400,6 +394,7 @@ boolean L7_crypt()
 		}
 		auto_change_mcd(10); // get vertebra to make the necklace.
 		set_property("auto_nextEncounter","Bonerdagon");
+		set_property("auto_nonAdvLoc", true);
 		boolean tryBoner = autoAdv(1, $location[Haert of the Cyrpt]);
 		council();
 		cli_execute("refresh quests");

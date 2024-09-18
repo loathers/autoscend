@@ -17,12 +17,6 @@ boolean auto_tavern()
 	// infrequent compounding issue, reset maximizer
 	resetMaximize();
 
-	//Gelatinous Cubeling in Avant Guard for cubeling drops
-	if (in_avantGuard() && wantCubeling() && canChangeToFamiliar($familiar[Gelatinous Cubeling]))
-	{
-		handleFamiliar($familiar[Gelatinous Cubeling]);
-	}
-
 	boolean maximized = false;
 	// sleaze is the only one we don't care about
 	if(possessEquipment($item[Kremlin\'s Greatest Briefcase]))
@@ -149,6 +143,11 @@ boolean auto_tavern()
 		{
 			int actual = loc + 1;
 			boolean needReset = false;
+			set_property("auto_nonAdvLoc", true);
+			if(in_avantGuard() && !LX_agNonAdv())
+			{
+				handleFamiliar($familiar[Gelatinous Cubeling]);
+			}
 
 			if(autoAdvBypass("cellar.php?action=explore&whichspot=" + actual, $location[The Typical Tavern Cellar]))
 			{

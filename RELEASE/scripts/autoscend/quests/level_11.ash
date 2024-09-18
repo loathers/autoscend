@@ -2292,6 +2292,7 @@ boolean L11_mauriceSpookyraven()
 		}
 		else
 		{
+			set_property("auto_nonAdvLoc", true);
 			autoAdv($location[Summoning Chamber]);
 		}
 		return true;
@@ -3405,6 +3406,7 @@ boolean L11_defeatEd()
 	auto_log_info("Time to waste all of Ed's Ka Coins :(", "blue");
 
 	set_property("auto_nextEncounter","Ed the Undying");
+	set_property("auto_nonAdvLoc", true);
 	autoAdv($location[The Lower Chambers]);
 	if(in_pokefam() || in_koe())
 	{

@@ -12,9 +12,10 @@ void ag_initializeSettings()
 			// No I don't care about that guy who never binds familiars for <reasons>. He can write & maintain his own ascension script.
 			visit_url("inv_familiar.php?pwd=&which=3&whichitem=11631");
 		}
-		set_property("auto_100familiar", "Burly Bodyguard");
+		//set_property("auto_100familiar", "Burly Bodyguard");
 		set_property("auto_skipNuns", true);
 		set_property("auto_skipUnlockGuild", true);
+		set_property("auto_nonAdvLoc", false);
 	}
 }
 
@@ -201,7 +202,7 @@ boolean LX_agNonAdv()
 	}
 
 	//want these to all be true in order to not come here. !wantCubeling above will skip this if we have all 3 cubeling items
-	if(LX_summonMonster() && L3_tavern() && L8_trapperGroar() && L5_goblinKing() && L7_crypt())
+	if(LX_summonMonster() && L3_tavern() && L5_goblinKing() && L7_crypt() && L8_trapperGroar())
 	{
 		return true;
 	}

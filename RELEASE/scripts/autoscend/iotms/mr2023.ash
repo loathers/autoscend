@@ -197,16 +197,6 @@ boolean auto_doPhoneQuest()
 		abort("Failed to get Rufus quest from cursed phone.");
 	}
 
-	if(auto_haveQueuedForcedNonCombat())
-	{
-		return autoAdv(auto_availableBrickRift());
-	}
-
-	if (auto_canForceNextNoncombat() && in_avantGuard()) //in avant guard, want to avoid adventuring here unless you can force an NC
-	{
-		return auto_forceNextNoncombat(auto_availableBrickRift());
-	}
-
 	// finish quest
 	if(get_property("questRufus") == "step1")
 	{
@@ -216,6 +206,17 @@ boolean auto_doPhoneQuest()
 			abort("Failed to finish Rufus quest from cursed phone.");
 		}
 		return true;
+	}
+
+	//Force a non combat instead of adventuring there to save turns, especially in AG
+	if(auto_haveQueuedForcedNonCombat())
+	{
+		return autoAdv(auto_availableBrickRift());
+	}
+
+	if (auto_canForceNextNoncombat() && in_avantGuard()) //in avant guard, want to avoid adventuring here unless you can force an NC
+	{
+		return auto_forceNextNoncombat(auto_availableBrickRift());
 	}
 
 	backupSetting("shadowLabyrinthGoal", "browser"); // use mafia's automation handling for the Shadow Rift NC.
