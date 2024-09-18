@@ -91,7 +91,7 @@ freerun	31	drunken rat
 freerun	32	bunch of drunken rats
 
 replace	0	Banshee Librarian	item:Killing Jar>0
-replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber;!pathid:41;!path:Wildfire;!path:Fall of the Dinosaurs;!path:Avator of Shadows Over Loathing;!path:Legacy of Loathing
+replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber;!pathid:41;!path:Wildfire;!path:Fall of the Dinosaurs;!path:Avatar of Shadows Over Loathing;!path:Legacy of Loathing;!path:WereProfessor
 replace	2	Knob Goblin Madam	item:Knob Goblin Perfume>0
 replace	3	Bookbat
 replace	4	Craven Carven Raven
