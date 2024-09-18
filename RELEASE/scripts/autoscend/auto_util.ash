@@ -3030,6 +3030,10 @@ boolean auto_is_valid(item it)
 	{
 		return iluh_foodConsumable(it.to_string());
 	}
+	if(my_path() == $path[Trendy])
+	{
+		return is_trendy(it);
+	}
 	
 	return is_unrestricted(it);
 }
@@ -3040,11 +3044,17 @@ boolean auto_is_valid(familiar fam)
 	{
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
+	if(my_path() == $path[Trendy])
+	{
+		return is_trendy(fam);
+	}
 	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && wereprof_usable(fam.to_string()) && iluh_famAllowed(fam.to_string()) && is_unrestricted(fam);
 }
 
 boolean auto_is_valid(skill sk)
 {
+	// trendy restricts which skills are valid
+	if(my_path() == $path[Trendy]) return is_trendy(sk);
 	// Hack for Legacy of Loathing as is_unrestricted returns false for Source Terminal skills
 	if (in_lol() && $skills[Extract, Turbo, Digitize, Duplicate, Portscan, Compress] contains sk) return true;
 	// No skills for the Professor except Advanced Research in WereProf
