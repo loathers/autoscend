@@ -1,4 +1,4 @@
-since r27958;	// Remove WereProf stat req exemption
+since r28019;	// feat: add avant guard path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -52,6 +52,7 @@ import <autoscend/iotms/mr2024.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
+import <autoscend/paths/avant_guard.ash>
 import <autoscend/paths/avatar_of_boris.ash>
 import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
@@ -68,6 +69,7 @@ import <autoscend/paths/g_lover.ash>
 import <autoscend/paths/gelatinous_noob.ash>
 import <autoscend/paths/grey_goo.ash>
 import <autoscend/paths/heavy_rains.ash>
+import <autoscend/paths/i_love_u_hate.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
 import <autoscend/paths/legacy_of_loathing.ash>
@@ -281,6 +283,7 @@ void initializeSettings() {
 	lol_initializeSettings();
 	small_initializeSettings();
 	wereprof_initializeSettings();
+	ag_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -851,6 +854,10 @@ void initializeDay(int day)
 			{
 				use(1, $item[Xiblaxian holo-wrist-puter simcode]);
 			}
+			if(item_amount($item[baby bodyguard]) > 0 && !have_familiar($familiar[burly bodyguard])) //will only happen in Avant Guard
+			{
+				use(1, $item[baby bodyguard]);
+			}
 
 			if((auto_get_clan_lounge() contains $item[Clan Floundry]) && (item_amount($item[Fishin\' Pole]) == 0))
 			{
@@ -878,6 +885,12 @@ void initializeDay(int day)
 					if((isArmoryAvailable()) && (item_amount($item[Antique Accordion]) == 0))
 					{
 						auto_buyUpTo(1, $item[Toy Accordion]);
+					}
+					
+					if((in_koe()) && (item_amount($item[Antique Accordion]) == 0) && (koe_rmi_count() >= 10))
+					{
+						koe_acquire_rmi(10);
+						buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Antique Accordion]);
 					}
 				}
 				acquireTotem();
@@ -1513,7 +1526,7 @@ boolean autosellCrap()
 	}
 	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
 	{
-		if(item_amount(it) > 1)		//for these items we want to keep 1 in stock. sell the rest
+		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. sell the rest
 		{
 			use(min(10,item_amount(it)-1), it);
 		}
@@ -1814,8 +1827,7 @@ boolean doTasks()
 	pete_buySkills();
 	zombieSlayer_buySkills();
 	lol_buyReplicas();
-	wereprof_buySkills();
-	wereprof_buyEquip();
+	iluh_buyEquiq();
 
 	oldPeoplePlantStuff();
 	use_barrels();
@@ -1862,7 +1874,6 @@ boolean doTasks()
 	if(LM_robot())						return true;
 	if(LM_plumber())					return true;
 	if(LM_zombieSlayer())				return true;
-	if(LM_wereprof())					return true;
 
 	{
 		cheeseWarMachine(0, 0, 0, 0);

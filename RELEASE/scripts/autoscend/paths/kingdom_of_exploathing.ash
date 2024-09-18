@@ -21,7 +21,7 @@ boolean koe_initializeSettings()
 int koe_rmi_count()
 {
 	//counts how much [rare meat isotopes] you effectively have. since you can convert meat to rmi with no limit at a 1000 to 1 ratio
-	return item_amount($item[rare Meat Isotope]) + (my_meat()/1000);
+	return item_amount($item[rare Meat Isotope]) + (my_meat()/(1000 * npcStoreDiscountMulti()));
 }
 
 boolean koe_acquire_rmi(int target)

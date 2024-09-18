@@ -304,6 +304,10 @@ boolean loveTunnelAcquire(boolean enforcer, stat statItem, boolean engineer, int
 	{
 		return false;
 	}
+	if((in_wereprof() && turns_played() < 50) || is_professor())
+	{
+		return false; //don't try LOV Tunnel if haven't retransformed back to werewolf or is a professor in WereProf
+	}
 
 	string temp = visit_url("place.php?whichplace=town_wrong");
 	if(!(contains_text(temp, "townwrong_tunnel")))
