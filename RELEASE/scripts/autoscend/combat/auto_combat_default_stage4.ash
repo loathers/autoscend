@@ -112,7 +112,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//iotm monster duplicator that creates a chained fight of the current monster
-	if(canUse($skill[Blow the Purple Candle\!]) && have_effect($effect[Everything Looks Purple]) == 0)
+	if(have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!]) && have_effect($effect[Everything Looks Purple]) == 0)
 	{
 		if(enemy == $monster[Ninja Snowman Assassin])
 		{
@@ -123,7 +123,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	if(auto_wantToCopy(enemy, my_location()))
 	{
 		skill copier = getCopier(enemy);
-		if(copier != $skill[none])
+		if(copier != $skill[none] && canUse(copier))
 		{
 			if(copier == $skill[Blow the Purple Candle\!])		//mafia does not track the target of this skill so we must do so.
 			{

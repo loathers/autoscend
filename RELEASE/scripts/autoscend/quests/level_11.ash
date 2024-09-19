@@ -3342,7 +3342,7 @@ boolean L11_unlockEd()
 		handleFamiliar($familiar[Grey Goose]);
 	}
 
-	if(auto_can_equip($item[pro skateboard]) && equipmentAmount($item[pro skateboard]) > 0 && !get_property("_epicMcTwistUsed").to_boolean())
+	if(auto_can_equip($item[pro skateboard]) && equipmentAmount($item[pro skateboard]) > 0 && item_amount($item[Tangle of rat tails]) >= 1 && !get_property("_epicMcTwistUsed").to_boolean())
 	{
 		auto_log_info("Be like Tony Hawk on a Tomb Rat King!");
 		autoEquip($item[pro skateboard]);

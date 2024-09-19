@@ -1837,6 +1837,7 @@ boolean auto_wantToSniff(monster enemy, location loc);
 boolean auto_wantToYellowRay(monster enemy, location loc);
 boolean auto_wantToReplace(monster enemy, location loc);
 boolean auto_wantToCopy(monster enemy, location loc);
+boolean auto_wantToCopy(monster enemy);
 int total_items(boolean [item] items);
 boolean auto_badassBelt();
 void auto_interruptCheck(boolean debug);

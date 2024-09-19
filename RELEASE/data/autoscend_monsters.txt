@@ -58,14 +58,13 @@ banish	51	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!snif
 
 copy	0	Ninja Snowman Assassin	item:ninja carabiner<1;item:ninja rope<1;item:ninja crampons<1
 copy	1	Pygmy Bowler	prop:hiddenBowlingAlleyProgress<4
-copy	2	Writing Desk	prop:writingDesksDefeated<4
-copy	3	Bob Racecar
-copy	4	Racecar Bob
-copy	5	pygmy witch accountant	loc:The Hidden Office Building
-copy	6	pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
-copy	7	Camel's Toe	item:star<7;item:line<6
-copy	8	Skinflute	item:star<7;item:line<6
-copy	9	Swarm of Ghuol Whelps	prop:cyrptCrannyEvilness>17
+copy	2	Bob Racecar
+copy	3	Racecar Bob
+copy	4	pygmy witch accountant	loc:The Hidden Office Building
+copy	5	pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
+copy	6	Camel's Toe	item:star<7;item:line<6
+copy	7	Skinflute	item:star<7;item:line<6
+copy	8	Swarm of Ghuol Whelps	prop:cyrptCrannyEvilness>17
 
 freerun	0	Foodie Giant
 freerun	1	Possibility Giant	prop:auto_hippyInstead==false

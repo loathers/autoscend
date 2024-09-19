@@ -302,7 +302,7 @@ skill getSniffer(monster enemy)
 
 boolean isCopied(monster enemy, skill sk)
 {
-	//checks if the monster enemy is currently sniffed using the specific skill sk
+	//checks if the monster enemy is currently copied using the specific skill sk
 	boolean retval = false;
 	switch(sk)
 	{
@@ -327,7 +327,7 @@ boolean isCopied(monster enemy)
 
 skill getCopier(monster enemy, boolean inCombat)
 {
-	if(canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0)
+	if((auto_haveRoman() && have_effect($effect[Everything Looks Purple]) == 0) || (have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0))
 	{
 		return $skill[Blow the Purple Candle\!];
 	}

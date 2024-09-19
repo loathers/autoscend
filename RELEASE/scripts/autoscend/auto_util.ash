@@ -1983,6 +1983,12 @@ boolean summonMonster(monster mon, boolean speculative)
 			auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from summoning, so we\'re bringing it along.', "blue");
 			autoEquip($item[combat lover\'s locket]);
 		}
+		// Equip a copier if we want to copy it
+		if(auto_wantToCopy(mon))
+		{
+			auto_log_info("We want to copy the " + mon + " so adjusting for our equipment if possible.");
+			adjustForCopyIfPossible(mon);
+		}
 	}
 	// methods which require specific circumstances
 	if(mon == $monster[War Frat 151st Infantryman])
@@ -3502,6 +3508,12 @@ boolean auto_wantToCopy(monster enemy, location loc)
 	set_location(loc);
 	boolean [monster] toCopy = auto_getMonsters("copy");
 	set_location(locCache);
+	return toCopy[enemy];
+}
+
+boolean auto_wantToCopy(monster enemy)
+{
+	boolean [monster] toCopy = auto_getMonsters("copy");
 	return toCopy[enemy];
 }
 
