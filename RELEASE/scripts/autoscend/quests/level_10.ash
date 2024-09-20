@@ -290,6 +290,10 @@ void castleTopFloorChoiceHandler(int choice)
 		{
 			run_choice(2); // if quest not done and have the record, complete the quest
 		}
+		else if(in_koe() && item_amount($item[Model airship]) == 0)
+		{
+			run_choice(1); // if we're in koe we only want to go to Copper Feel if we can complete the quest, so fight a goth giant otherwise
+		}
 		else
 		{
 			run_choice(4); // moves to Copper Feel (#677) in all other scenarios
