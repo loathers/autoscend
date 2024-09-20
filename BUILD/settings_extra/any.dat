@@ -4,3 +4,4 @@ auto_clanstuff	string	What was the last day we did 'end of day' clan stuff.
 auto_maxCandyPrice	integer	Max allowable price per candy for Rethinking Candy (default 2500)
 _auto_ignoreRestoreFailureToday	boolean	if true we will for today only ignore failure to restore MP or HP and just continue playing
 auto_aosol_dontUnCurse	boolean	Avatar of Shadows Over Loathing: if true will keep all cursed items.
+auto_debug_maximizer	boolean	Help debug maximizer issue where it is not equipping a weapon
