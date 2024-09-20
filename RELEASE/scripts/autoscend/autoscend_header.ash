@@ -609,6 +609,7 @@ void ag_pulls();
 void ag_bgChat();
 monster ag_bgToChat();
 boolean LX_agNonAdv();
+boolean ag_is_bodyguard();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash

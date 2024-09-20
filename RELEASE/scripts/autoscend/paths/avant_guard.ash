@@ -209,3 +209,13 @@ boolean LX_agNonAdv()
 
 	return false;
 }
+
+boolean ag_is_bodyguard()
+{
+	if(contains_text(get_property("lastEncounter"), "bodyguard to"))
+	{
+		return true;
+	}
+
+	return false;
+}
