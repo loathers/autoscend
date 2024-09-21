@@ -118,6 +118,12 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
+	//If in Avant Guard, want to make sure the enemy is set correctly to the bodyguard
+	if(in_avantGuard() && ag_is_bodyguard())
+	{
+		enemy = to_monster(substring(get_property("lastEncounter"), 0, index_of(get_property("lastEncounter"), " acting as")));
+	}
+	
 	disguises_combat_helper(round, enemy, text);		//disguise delimit mask identification
 	fotd_combat_helper();				//fall of the dinosaurs dino identification
 
