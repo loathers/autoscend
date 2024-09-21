@@ -1,4 +1,4 @@
-since r28019;	// feat: add avant guard path
+since r28060;	// Avant Guard council text
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1321,7 +1321,8 @@ boolean councilMaintenance()
 boolean adventureFailureHandler()
 {
 	location place = my_location();
-	if(my_location().turns_spent > 52)
+	int limit = (in_avantGuard() ? 100 : 50);
+	if(place.turns_spent > limit)
 	{
 		boolean tooManyAdventures = true;
 		
