@@ -797,6 +797,10 @@ void finalizeMaximize(boolean speculative)
 		{
 			addBonusToMaximize($item[spring shoes], 200);
 		}
+		else if(my_meat() < meatReserve()) // those fruit drops can autosell for a lot
+		{
+			addBonusToMaximize($item[spring shoes], 200);
+		}
 		else if(my_hp() < 0.5*my_maxhp() && my_hp() > 0)
 		{
 			addBonusToMaximize($item[spring shoes], 200); // bonus to heal in wereprof as the werewolf after transition from Professor
