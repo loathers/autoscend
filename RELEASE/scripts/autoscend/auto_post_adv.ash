@@ -916,11 +916,16 @@ boolean auto_post_adventure()
 		// items which give stats
 		buffMaintain($effect[Scorched Earth]);
 		buffMaintain($effect[Wisdom of Others]);
-		foreach it in $items[azurite, eye agate, lapis lazuli]
+		// Only use these if we've got plenty of meat and aren't max level
+		// Otherwise we'll autosell them
+		if(my_meat() > meatReserve()+1000 && my_level()<13)
 		{
-			if(item_amount(it) > 0 && auto_is_valid(it))
+			foreach it in $items[azurite, eye agate, lapis lazuli]
 			{
-				use(it, item_amount(it));
+				if(item_amount(it) > 0 && auto_is_valid(it))
+				{
+					use(it, item_amount(it));
+				}
 			}
 		}
 		
