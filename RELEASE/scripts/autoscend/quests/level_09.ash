@@ -903,7 +903,7 @@ boolean L9_oilPeak()
 				{
 					use(1, $item[Crude Oil Congealer]);
 				}
-				if(item_amount($item[Crude Oil Congealer]) < 1)
+				else
 				{
 					if(item_amount($item[G]) > 2)
 					{
