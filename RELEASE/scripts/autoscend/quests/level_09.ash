@@ -910,7 +910,7 @@ boolean L9_oilPeak()
 						buy($coinmaster[G-Mart], 1, $item[Crude Oil Congealer]);
 						use(1, $item[Crude Oil Congealer]);
 					}
-					if(item_amount($item[G]) < 3)
+					else
 					{
 						return false;
 					}
