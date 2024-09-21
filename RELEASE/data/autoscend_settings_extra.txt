@@ -13,6 +13,7 @@ any	2	auto_clanstuff	string	What was the last day we did 'end of day' clan stuff
 any	3	auto_maxCandyPrice	integer	Max allowable price per candy for Rethinking Candy (default 2500)
 any	4	_auto_ignoreRestoreFailureToday	boolean	if true we will for today only ignore failure to restore MP or HP and just continue playing
 any	5	auto_aosol_dontUnCurse	boolean	Avatar of Shadows Over Loathing: if true will keep all cursed items.
+any	6	auto_debug_maximizer	boolean	Help debug maximizer issue where it is not equipping a weapon
 
 post	0	auto_chasmBusted	boolean	Has the orc chasm bridge been 'trolled yet? Ed only.
 post	1	auto_day1_dna	string	'finished' if we have hybridized ourselves at the start of Ascension.
