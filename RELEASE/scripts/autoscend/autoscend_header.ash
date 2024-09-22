@@ -485,6 +485,7 @@ boolean auto_sendAutumnaton(location loc);
 boolean auto_autumnatonQuest();
 boolean auto_hasSpeakEasy();
 int auto_remainingSpeakeasyFreeFights();
+boolean speakeasyCombat();
 
 
 boolean auto_haveTrainSet();
