@@ -906,25 +906,25 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[Vanya\'s Castle]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && (get_property("8BitColor") == "black" || get_property("8BitColor") == ""))
+		if (needDigitalKey() && possessEquipment($item[Continuum Transfunctioner]) && (get_property("8BitColor") == "black" || get_property("8BitColor") == ""))
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[The Fungus Plains]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "red")
+		if (needDigitalKey() && possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "red")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[Megalo-City]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "blue")
+		if (needDigitalKey() && possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "blue")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[Hero\'s Field]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "green")
+		if (needDigitalKey() && possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "green")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}

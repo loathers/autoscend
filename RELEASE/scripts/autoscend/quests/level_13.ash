@@ -13,6 +13,10 @@ boolean needStarKey()
 
 boolean needDigitalKey()
 {
+	if(isActuallyEd())
+	{
+		return false;
+	}
 	if(contains_text(get_property("nsTowerDoorKeysUsed"),"digital key"))
 	{
 		return false;
