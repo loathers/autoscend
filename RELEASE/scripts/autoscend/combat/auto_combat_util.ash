@@ -1005,6 +1005,29 @@ boolean wantToForceDrop(monster enemy)
 			forceDrop = true;
 		}
 	}
+	
+	if(isActuallyEd() && my_location() == $location[The Secret Council Warehouse])
+	{
+		int progress = get_property("warehouseProgress").to_int();
+		if(enemy == $monster[Warehouse Guard])
+		{
+			int n_pages = item_amount($item[warehouse map page]);
+			int progress_with_pages = progress+n_pages*8;
+			if (progress_with_pages<39) // need 40 to "win", will get +1 for this combat
+			{
+				forceDrop = true;
+			}
+		}
+		else if(enemy == $monster[Warehouse Clerk])
+		{
+			int n_pages = item_amount($item[warehouse inventory page]);
+			int progress_with_pages = progress+n_pages*8;
+			if (progress_with_pages<39) // need 40 to "win", will get +1 for this combat
+			{
+				forceDrop = true;
+			}
+		}
+	} // ed warehouse
 
 	return forceDrop;
 }
