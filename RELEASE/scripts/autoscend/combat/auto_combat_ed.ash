@@ -492,7 +492,10 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	if (!get_property("edUsedLash").to_boolean() && canUse($skill[Lash of the Cobra]) && get_property("_edLashCount").to_int() < 30)
 	{
 		boolean doLash = false;
-
+		if(enemy == $monster[Shadow Slab])
+		{
+			doLash = true;
+		}
 		if((enemy == $monster[Big Wheelin\' Twins]) && !possessEquipment($item[Badge Of Authority]))
 		{
 			doLash = true;
@@ -770,6 +773,13 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 			}
 		}
 
+		if(canUse($item[shadow brick]) && (get_property("_shadowBricksUsed").to_int() < 13))
+		{
+			handleTracker(enemy, $item[shadow brick], "auto_instakill");
+			loopHandlerDelayAll();
+			return useItems($item[shadow brick], $item[none]);
+		}
+
 		if(!combat_status_check("jokesterGun") && (equipped_item($slot[Weapon]) == $item[The Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean() && auto_have_skill($skill[Fire the Jokester\'s Gun]))
 		{
 			combat_status_add("jokesterGun");
@@ -812,6 +822,23 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0)
 	{
 		return useSkill(dartSkill(), false);
+	}
+	
+	if(wantToForceDrop(enemy))
+	{
+		boolean polarVortexAvailable = canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10;
+		boolean mildEvilAvailable = canUse($skill[Perpetrate Mild Evil],false) && get_property("_mildEvilPerpetrated").to_int() < 3;
+		// mild evil only can pick pocket. Use it before fire extinguisher
+		if(mildEvilAvailable)
+		{
+			handleTracker(enemy, $skill[Perpetrate Mild Evil], "auto_otherstuff");
+			return useSkill($skill[Perpetrate Mild Evil]);	
+		}
+		if(polarVortexAvailable)
+		{
+			handleTracker(enemy, $skill[Fire Extinguisher: Polar Vortex], "auto_otherstuff");
+			return useSkill($skill[Fire Extinguisher: Polar Vortex]);	
+		}
 	}
 
 	// Actually killing stuff starts here
