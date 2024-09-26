@@ -4527,3 +4527,12 @@ boolean auto_burnMP(int mpToBurn)
 	return startingMP != my_mp();
 }
 
+boolean can_read_skillbook(item it) {
+  if (it == $item[spinal-fluid-covered emotion chip] && in_robot()) {
+    return true;
+  }
+  if (is_boris() || is_jarlsberg() || is_pete() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_gnoob() || in_darkGyffte() || in_robot() || in_wereprof()) {
+    return false;
+  }
+  return true;
+}

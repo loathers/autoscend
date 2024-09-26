@@ -452,7 +452,7 @@ void auto_buyFrom2002MrStore()
 	}
 	// manual of secret door detection. skill: Secret door awareness
 	itemConsidering = $item[manual of secret door detection];
-	if(remainingCatalogCredits() > 0 && !auto_have_skill($skill[Secret door awareness]) && auto_is_valid(itemConsidering))
+	if(can_read_skillbook(itemConsidering) && remainingCatalogCredits() > 0 && !auto_have_skill($skill[Secret door awareness]) && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
