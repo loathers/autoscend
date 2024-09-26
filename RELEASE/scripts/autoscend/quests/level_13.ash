@@ -1454,7 +1454,7 @@ boolean L13_towerNSTower()
 			abort("auto_towerBreak set to abort here.");
 		}
 		equipBaseline();
-		provideMeat(525.625, true, false);
+		provideMeat(526, true, false);
 
 		acquireHP();
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);

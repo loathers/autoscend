@@ -1759,7 +1759,7 @@ boolean L12_themtharHills()
 		use_familiar(to_familiar(get_property("auto_familiarChoice")));
 	}
 	equipMaximizedGear();
-	float meatDropHave = provideMeat(400, false, true);
+	float meatDropHave = provideMeat(1800, true, true);
 
 	if(isActuallyEd() && have_skill($skill[Curse of Fortune]) && item_amount($item[Ka Coin]) > 0)
 	{

@@ -1257,7 +1257,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 			return result();
 	}
 	//see how much familiar will help
-	if(doEverything && pathHasFamiliar() && pathAllowsChangingFamiliar())
+	if(doEverything && canChangeFamiliar())
 	{
 		if(!speculative)
 		{
@@ -1298,30 +1298,16 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		}
 		return false;
 	}
-	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
-	{
-		if(is_professor())
-		{
-			//Need to manually equip because professor
-			if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
-			if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
-			if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
-		}
-		else
-		{
-			outfit("Frat Warrior Fatigues");
-		}
-		cli_execute("concert 2");
-	}
-	handleBjornify($familiar[Hobo Monkey]);
 	// unlimited skills
 	if(tryEffects($effects[
-		Polka of Plenty,
-		Disco Leer
+		Polka of Plenty, //50% meat
+		Disco Leer //10% meat
 	]))
-		return result();
+		if(pass())
+			return result();
 	if(canAsdonBuff($effect[Driving Observantly]))
 	{
+		//50% meat, 50% item, 50% booze drops
 		if(!speculative)
 			asdonBuff($effect[Driving Observantly]);
 		handleEffect($effect[Driving Observantly]);
@@ -1330,22 +1316,28 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		return result();
 	if(bat_formWolf(speculative))
 	{
+		//150% meat, 150% muscle
 		handleEffect($effect[Wolf Form]);
 	}
 	if(pass())
 		return result();
 	if(auto_birdModifier("Meat Drop") > 0)
 	{
+		//Can be 20/40/60/80/100% meat drop
 		if(tryEffects($effects[Blessing of the Bird]))
-			return result();
+			if(pass())
+				return result();
 	}
 	if(auto_favoriteBirdModifier("Meat Drop") > 0)
 	{
+		//Can be 20/40/60/80/100% meat drop
 		if(tryEffects($effects[Blessing of Your Favorite Bird]))
-			return result();
+			if(pass())
+				return result();
 	}
 	if(isActuallyEd())
 	{
+		//50% meat drop
 		if(!have_skill($skill[Gift of the Maid]) && ($servant[Maid].experience >= 441))
 		{
 			visit_url("charsheet.php");
@@ -1355,81 +1347,103 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 			}
 		}
 		if(tryEffects($effects[
-		Purr of the Feline
+		Purr of the Feline //makes the maid 5 levels higher
 		]))
-		return result();
+		if(pass())
+			return result();
 	}
-	songboomSetting("meat");
+	songboomSetting("meat"); //30% meat
 	// items
 	if(tryEffects($effects[
-		Greedy Resolve,
-		Kindly Resolve,
-		Heightened Senses,
-		Big Meat Big Prizes,
-		Human-Machine Hybrid,
-		Human-Constellation Hybrid,
-		Human-Humanoid Hybrid,
-		Human-Fish Hybrid,
-		Cranberry Cordiality,
-		Patent Avarice,
-		Car-Charged,
-		Heart of Pink,
-		Sweet Heart,
-		Earning Interest,
-		Bet Your Autumn Dollar,
-		Flapper Dancin\',
-		shadow waters
+		Car-Charged, //100% meat, 100% item, 5-10MP, 50% init, 50% spell dmg, +3 stats per fight
+		Flapper Dancin\', //100% meat
+		Heightened Senses, //50% meat, 25% item drop
+		Big Meat Big Prizes, //50% meat
+		Human-Constellation Hybrid, //50% meat
+		Patent Avarice, //50% meat
+		Earning Interest, //50% meat
+		Bet Your Autumn Dollar, //50% meat
+		Greedy Resolve, //30% meat
+		Human-Fish Hybrid, //10 fam
+		Human-Humanoid Hybrid, //20% meat, 10% all stats
+		Heart of Pink, //20% meat, +3 all stats
+		Kindly Resolve, //5 fam weight
+		Human-Machine Hybrid, //5 fam weight, DA +50, DR 5
+		Sweet Heart, // Muscle +X, +2X% meat
+		Cranberry Cordiality, //10% meat
 	]))
-		return result();
-	
-	if(!in_wereprof())
-	{
-		//wereprof doesn't like +ML effects outside of Werewolf
-		if(tryEffects($effects[Frosty]))
-			return result();
-	}
-	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
-	{
-		autoChew(1, $item[body spradium]);
 		if(pass())
 			return result();
-	}
-	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[meat.enh]) == 0 && auto_is_valid($effect[meat.enh]))
-	{
-		if(!speculative)
-			auto_sourceTerminalEnhance("meat");
-		handleEffect($effect[meat.enh]);
-		if(pass())
-			return result();
-	}
+
 	if(have_effect($effect[Synthesis: Greed]) == 0)
 	{
-		rethinkingCandy($effect[Synthesis: Greed]);
+		rethinkingCandy($effect[Synthesis: Greed]); //300% meat
 		if(pass())
 			return result();
 	}
 	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (!in_heavyrains()))
 	{
 		use_familiar($familiar[Trick-or-Treating Tot]);
-		autoEquip($item[Li\'l Pirate Costume]);
+		autoEquip($item[Li\'l Pirate Costume]); //300% meat
 		handleFamiliar($familiar[Trick-or-Treating Tot]);
+		if(pass())
+			return result();
+	}
+	if(!in_wereprof())
+	{
+		//wereprof doesn't like +ML effects outside of Werewolf
+		if(tryEffects($effects[Frosty])) //200% meat, 100% item, 100% init, 25 ML
+			if(pass())
+				return result();
+	}
+	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[meat.enh]) == 0 && auto_is_valid($effect[meat.enh]))
+	{
+		if(!speculative)
+			auto_sourceTerminalEnhance("meat");
+		handleEffect($effect[meat.enh]); //60% meat
+		if(pass())
+			return result();
+	}
+	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
+	{
+		autoChew(1, $item[body spradium]); //50% meat, 5 fam weight
+		if(pass())
+			return result();
 	}
 
 	// craft equipment, even limited use, here. also use limited resources like Inhaler
 	if(doEverything)
 	{
+		handleBjornify($familiar[Hobo Monkey]); //25% meat, hot damage, delevels
 		//craft IOTM derivative that gives high item bonus
 		if((equipped_item($slot[off-hand]) != $item[Half a Purse]) && !possessEquipment($item[Half a Purse]) && (item_amount($item[Lump of Brituminous Coal]) > 0))
 		{
+			//+X% meat based on smithness (10% if only half a purse is equipped)
 			auto_buyUpTo(1, $item[Loose Purse Strings]);
 			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Loose purse strings]);
 		}
 		if(tryEffects($effects[
-		Sinuses For Miles
+		shadow waters, //200% meat, 100% item, 100% init, -10% combat
+		Sinuses For Miles //200% meat
 		]))
 		if(zataraAvailable() && (0 == have_effect($effect[Meet the Meat])) & auto_is_valid($effect[Meet the Meat]))
 		{
-			zataraSeaside("meat");
+			zataraSeaside("meat"); //100% meat, 50% gear drops
+		}
+		if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
+		{
+			if(is_professor())
+			{
+				//Need to manually equip because professor
+				if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
+				if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
+				if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
+			}
+			else
+			{
+				outfit("Frat Warrior Fatigues");
+			}
+			cli_execute("concert 2"); //40% meat
 		}
 		string max = "500meat " + (amt + 100) + "max";
 		if(speculative)
