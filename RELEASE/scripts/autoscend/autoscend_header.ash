@@ -1592,6 +1592,8 @@ float provideMoxie(int amt, location loc, boolean doEquips, boolean speculative)
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
 boolean provideMoxie(int amt, location loc, boolean doEquips);
 boolean provideMoxie(int amt, boolean doEquips);
+boolean provideMaxMP(int amt, location loc, boolean notForCombat, boolean doEquips, boolean speculative);
+boolean provideMaxMP(int amt);
 
 ########################################################################################################
 //Defined in autoscend/auto_restore.ash
