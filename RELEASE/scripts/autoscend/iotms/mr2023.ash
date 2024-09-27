@@ -445,7 +445,7 @@ void auto_buyFrom2002MrStore()
 	auto_log_debug("Have " + remainingCatalogCredits() + " credit(s) to buy from Mr. Store 2002. Let's spend them!");
 	// meat butler on day 1 of run
 	item itemConsidering = $item[meat butler];
-	if(remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
+	if(have_campground() && remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);

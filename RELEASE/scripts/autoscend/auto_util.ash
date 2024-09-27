@@ -4536,3 +4536,17 @@ boolean can_read_skillbook(item it) {
   }
   return true;
 }
+
+boolean have_campground() {
+  if (isActuallyEd() || in_robot() || in_nuclear() || in_small() || in_wereprof()) {
+    return false;
+  }
+  return true;
+}
+
+boolean have_workshed() {
+  if (isActuallyEd() || in_robot() || in_nuclear() || in_wereprof()) {
+    return false;
+  }
+  return true;
+}
