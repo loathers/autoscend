@@ -1371,6 +1371,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Human-Machine Hybrid, //5 fam weight, DA +50, DR 5
 		Sweet Heart, // Muscle +X, +2X% meat
 		Cranberry Cordiality, //10% meat
+		So You Can Work More... //10% meat
 	]))
 		if(pass())
 			return result();
@@ -1424,7 +1425,8 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		}
 		if(tryEffects($effects[
 		shadow waters, //200% meat, 100% item, 100% init, -10% combat
-		Sinuses For Miles //200% meat
+		Sinuses For Miles, //200% meat
+		Incredibly Well Lit //100% meat, 50% item
 		]))
 		if(zataraAvailable() && (0 == have_effect($effect[Meet the Meat])) & auto_is_valid($effect[Meet the Meat]))
 		{
