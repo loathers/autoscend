@@ -716,7 +716,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		useSkill = $skill[Snarl of the Timberwolf];
 		break;
 	case $effect[Snow Shoes]:					useItem = $item[Snow Cleats];					break;
-	case $effect[So You Can Work More...];		useItem = $item[Baggie of powdered sugar];		break;
+	case $effect[So You Can Work More...]:		useItem = $item[Baggie of powdered sugar];		break;
 	case $effect[Soles of Glass]:
 		if(auto_have_familiar($familiar[Grim Brother]))
 		{
