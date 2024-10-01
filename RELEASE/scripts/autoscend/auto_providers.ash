@@ -1363,6 +1363,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Patent Avarice, //50% meat
 		Earning Interest, //50% meat
 		Bet Your Autumn Dollar, //50% meat
+		The Grass... Is Blue..., //40% meat, 20% item
 		Greedy Resolve, //30% meat
 		Human-Fish Hybrid, //10 fam
 		Human-Humanoid Hybrid, //20% meat, 10% all stats
