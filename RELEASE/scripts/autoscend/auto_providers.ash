@@ -1472,6 +1472,35 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		}
 		if(pass())
 			return result();
+		if(auto_monkeyPawWishesLeft() + auto_wishesAvailable() > 0)
+		{
+			foreach eff in $effects[Frosty, //200% meat, 100% item, 25 ML, 100% init
+			Braaaaaains, //200% meat, -50% item
+			Let's Go Shopping!,  //150% meat, 75% item, -300% myst
+			Always Be Collecting, //100% meat, 50% item
+			Incredibly Well Lit, //100% meat, 50% item
+			Friendly Chops, //100% meat, +5 Sleaze Res
+			A View to Some Meat, //100% meat
+			Cravin' for a Ravin', //100% meat
+			Low on the Hog, //100% meat
+			Leisurely Amblin', //100% meat
+			Trufflin', //100% meat
+			Here's Some More Mud in Your Eye, //100% meat
+			Eau d' Clochard, //100% meat
+			Flapper Dancin', //100% meat
+			Fishing for Meat, //100% meat
+			Preternatural Greed] //100% meat
+			{
+				if(have_effect(eff) == 0)
+				{
+					auto_wishForEffect(eff);
+					if(pass())
+						return result();
+				}
+			}
+		}
+		if(pass())
+			return result();
 		delta = simValue("Meat Drop") - numeric_modifier("Meat Drop");
 		auto_log_debug("With limited buffs we can get to " + result());
 		if(pass())
