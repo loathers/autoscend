@@ -1451,10 +1451,14 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 				return result();
 		if(zataraAvailable() && (0 == have_effect($effect[Meet the Meat])) & auto_is_valid($effect[Meet the Meat]))
 		{
-			zataraSeaside("meat"); //100% meat, 50% gear drops
+			if(!speculative)
+			{
+				zataraSeaside("meat");
+			}
+			handleEffect($effect[Meat the meat]); //100% meat, 50% gear drops
+			if(pass())
+				return result();			
 		}
-		if(pass())
-			return result();
 		if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
 		{
 			if(is_professor())
@@ -1468,7 +1472,13 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 			{
 				outfit("Frat Warrior Fatigues");
 			}
-			cli_execute("concert 2"); //40% meat
+			if(!speculative)
+			{
+				cli_execute("concert 2"); //40% meat
+			}
+			handleEffect($effect[Winklered]); //40% meat
+			if(pass())
+				return result();
 		}
 		if(pass())
 			return result();
@@ -1493,14 +1503,14 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 			{
 				if(have_effect(eff) == 0)
 				{
-					auto_wishForEffect(eff);
+					if(!speculative)
+						auto_wishForEffect(eff);
+					handleEffect(eff);
 					if(pass())
 						return result();
 				}
 			}
 		}
-		if(pass())
-			return result();
 		delta = simValue("Meat Drop") - numeric_modifier("Meat Drop");
 		auto_log_debug("With limited buffs we can get to " + result());
 		if(pass())
