@@ -1455,7 +1455,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 			{
 				zataraSeaside("meat");
 			}
-			handleEffect($effect[Meat the meat]); //100% meat, 50% gear drops
+			handleEffect($effect[Meet the meat]); //100% meat, 50% gear drops
 			if(pass())
 				return result();			
 		}
