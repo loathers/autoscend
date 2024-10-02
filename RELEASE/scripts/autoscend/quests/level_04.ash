@@ -65,7 +65,7 @@ boolean L4_batCave()
 			return false;
 		}
 
-		provideMeat(1000, $location[The Boss Bat\'s Lair], false);
+		provideMeat(50, $location[The Boss Bat\'s Lair], false);
 		//AoSOL buffs
 		if(in_aosol())
 		{

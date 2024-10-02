@@ -1355,7 +1355,6 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 	songboomSetting("meat"); //30% meat
 	// items
 	if(tryEffects($effects[
-		Car-Charged, //100% meat, 100% item, 5-10MP, 50% init, 50% spell dmg, +3 stats per fight
 		Flapper Dancin\', //100% meat
 		Heightened Senses, //50% meat, 25% item drop
 		Big Meat Big Prizes, //50% meat
@@ -1413,7 +1412,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 			return result();
 	}
 
-	// craft equipment, even limited use, here. also use limited resources like Inhaler
+	// craft equipment, even limited use, here
 	if(doEverything)
 	{
 		handleBjornify($familiar[Hobo Monkey]); //25% meat, hot damage, delevels
@@ -1423,30 +1422,6 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 			//+X% meat based on smithness (10% if only half a purse is equipped)
 			auto_buyUpTo(1, $item[Loose Purse Strings]);
 			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Loose purse strings]);
-		}
-		if(tryEffects($effects[
-		shadow waters, //200% meat, 100% item, 100% init, -10% combat
-		Sinuses For Miles, //200% meat
-		Incredibly Well Lit //100% meat, 50% item
-		]))
-		if(zataraAvailable() && (0 == have_effect($effect[Meet the Meat])) & auto_is_valid($effect[Meet the Meat]))
-		{
-			zataraSeaside("meat"); //100% meat, 50% gear drops
-		}
-		if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
-		{
-			if(is_professor())
-			{
-				//Need to manually equip because professor
-				if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
-				if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
-				if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
-			}
-			else
-			{
-				outfit("Frat Warrior Fatigues");
-			}
-			cli_execute("concert 2"); //40% meat
 		}
 		string max = "500meat " + (amt + 100) + "max";
 		if(speculative)
@@ -1463,6 +1438,46 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		if(pass())
 			return result();
 	}
+	// Use limited resources like Inhaler
+	if(doEverything)
+	{
+		if(tryEffects($effects[
+		shadow waters, //200% meat, 100% item, 100% init, -10% combat
+		Sinuses For Miles, //200% meat
+		Car-Charged, //100% meat, 100% item, 5-10MP, 50% init, 50% spell dmg, +3 stats per fight
+		Incredibly Well Lit //100% meat, 50% item
+		]))
+			if(pass())
+				return result();
+		if(zataraAvailable() && (0 == have_effect($effect[Meet the Meat])) & auto_is_valid($effect[Meet the Meat]))
+		{
+			zataraSeaside("meat"); //100% meat, 50% gear drops
+		}
+		if(pass())
+			return result();
+		if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
+		{
+			if(is_professor())
+			{
+				//Need to manually equip because professor
+				if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
+				if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
+				if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
+			}
+			else
+			{
+				outfit("Frat Warrior Fatigues");
+			}
+			cli_execute("concert 2"); //40% meat
+		}
+		if(pass())
+			return result();
+		delta = simValue("Meat Drop") - numeric_modifier("Meat Drop");
+		auto_log_debug("With limited buffs we can get to " + result());
+		if(pass())
+			return result();
+	}
+
 	return result();
 }
 
