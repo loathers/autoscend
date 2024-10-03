@@ -1808,6 +1808,10 @@ boolean doTasks()
 	{
 		cli_execute("refresh inv");
 	}
+	if (in_wereprof()) {
+		// wereprof doesn't update wereProfessorTransformTurns unless you hit the charpane
+		visit_url("charpane.php", false);
+	}
 
 	// actually doing stuff should start from here onwards.
 	resetState();
