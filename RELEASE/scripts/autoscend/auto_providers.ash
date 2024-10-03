@@ -1364,6 +1364,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Bet Your Autumn Dollar, //50% meat
 		The Grass... \ Is Blue..., //40% meat, 20% item
 		Greedy Resolve, //30% meat
+		Worth Your Salt, //25% meat, max hp +25
 		Human-Fish Hybrid, //10 fam
 		Human-Humanoid Hybrid, //20% meat, 10% all stats
 		Heart of Pink, //20% meat, +3 all stats

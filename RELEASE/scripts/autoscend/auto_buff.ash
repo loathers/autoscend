@@ -858,6 +858,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Wisdom of Thoth]:				useSkill = $skill[Wisdom of Thoth];				break;
 	case $effect[Wit Tea]:						useItem = $item[cuppa Wit tea];					break;
 	case $effect[Woad Warrior]:					useItem = $item[Pygmy Pygment];					break;
+	case $effect[Worth Your Salt]:				useItem = $item[Salt wages];					break;
 	case $effect[Wry Smile]:					useSkill = $skill[Wry Smile];					break;
 	case $effect[Yoloswagyoloswag]:				useItem = $item[Yolo&trade; Chocolates];		break;
 	case $effect[You Read the Manual]:			useItem = $item[O\'Rly Manual];					break;
