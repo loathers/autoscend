@@ -1485,6 +1485,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		if(auto_monkeyPawWishesLeft() + auto_wishesAvailable() > 0)
 		{
 			boolean success = true;
+			int specwishes = 0;
 			while(auto_monkeyPawWishesLeft() + auto_wishesAvailable() > 0 && success)
 			{
 				foreach eff in $effects[Frosty, //200% meat, 100% item, 25 ML, 100% init
@@ -1508,15 +1509,22 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 					{
 						if(!speculative)
 							success = auto_wishForEffect(eff);
-						handleEffect(eff);
-						if(pass())
-							return result();
+						specwishes +=1;
+						if(specwishes <= auto_monkeyPawWishesLeft() + auto_wishesAvailable())
+						{
+							handleEffect(eff);
+							if(pass())
+								return result();
+						}
+						else
+						{
+							success = false;
+						}
 					}
 					if(!success) break;
 				}
 			}
 		}
-		delta = simValue("Meat Drop") - numeric_modifier("Meat Drop");
 		auto_log_debug("With limited buffs we can get to " + result());
 		if(pass())
 			return result();
