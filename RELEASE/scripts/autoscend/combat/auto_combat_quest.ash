@@ -52,7 +52,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 		return "attack with weapon";
 	}
 
-	if(contains_text(text, "It whips out a hammer") || contains_text(text, "He whips out a crescent") || contains_text(text, "It whips out a pair") || contains_text(text, "It whips out a screwdriver"))
+	if(contains_text(text, "<!--moly1-->") || contains_text(text, "<!--moly2-->") || contains_text(text, "<!--moly3-->") || contains_text(text, "<!--moly4-->"))
 	{
 		return useItem($item[Molybdenum Magnet]);
 	}

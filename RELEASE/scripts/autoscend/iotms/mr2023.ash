@@ -129,7 +129,7 @@ location auto_availableBrickRift()
 
 int auto_neededShadowBricks()
 {
-	if(!auto_havePayPhone())
+	if(!auto_havePayPhone() || in_ag())
 	{
 		return 0;
 	}
@@ -562,6 +562,53 @@ void auto_scepterRollover()
 		if(canUse($skill[Aug. 23rd: Ride the Wind Day!]) && !get_property("_aug23Cast").to_boolean() && my_primestat() == $stat[moxie])
 		{
 			use_skill($skill[Aug. 23rd: Ride the Wind Day!]); //get moxies stubstats
+	//Day 1 skills
+	if(my_daycount() == 1)
+	{
+		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+		}
+		if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
+		}
+		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar())
+		{
+			familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+			if(((in_ag() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
+			{
+				use_familiar(findRockFamiliarInTerrarium());
+				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
+			}
+			else if((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small())
+			{
+				if(!is100FamRun())
+				{
+					use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
+				}
+				else
+				{
+					use_familiar(hundred_fam); // assuming non-rock familiar
+				}
+				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+			}
+		}
+	}
+	//Day 2+ skills
+	if(my_daycount() >= 2)
+	{
+		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		{
+			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+		}
+		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
+		{
+			if(!is100FamRun())
+			{
+				handleFamiliar("stat"); //get any familiar equipped if not in a 100% run
+			}
+			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
 		}
 	}
 }
@@ -678,6 +725,19 @@ boolean auto_circadianRhythmTarget(monster target)
 		return false;
 	}
 	if (!($monsters[shadow bat, shadow cow, shadow devil, shadow guy, shadow hexagon, shadow orb, shadow prism, shadow slab, shadow snake, shadow spider, shadow stalk, shadow tree] contains target))
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean auto_circadianRhythmTarget(phylum target)
+{
+	if (!auto_canCircadianRhythm())
+	{
+		return false;
+	}
+	if (!($phylums[Orc, Hippy] contains target) && $locations[The Battlefield (Hippy Uniform), The Battlefield (Frat Uniform)] contains my_location())
 	{
 		return false;
 	}
@@ -1069,6 +1129,10 @@ boolean auto_burnLeaves()
 			return use(1, $item[distilled resin]);
 		}
 		return false;
+	}
+	if(in_ag() && item_amount($item[inflammable leaf]) > 37 && item_amount($item[Autumnic bomb]) == 0)
+	{
+		create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
 	}
 	return false;
 }

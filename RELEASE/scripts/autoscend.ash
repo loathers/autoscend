@@ -1,4 +1,4 @@
-since r27980;	// feat: beer from wiki, kiwi plurals
+since r28019;	// feat: add avant guard path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -52,6 +52,7 @@ import <autoscend/iotms/mr2024.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
+import <autoscend/paths/avant_guard.ash>
 import <autoscend/paths/avatar_of_boris.ash>
 import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
@@ -282,6 +283,7 @@ void initializeSettings() {
 	lol_initializeSettings();
 	small_initializeSettings();
 	wereprof_initializeSettings();
+	ag_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -852,6 +854,10 @@ void initializeDay(int day)
 			{
 				use(1, $item[Xiblaxian holo-wrist-puter simcode]);
 			}
+			if(item_amount($item[baby bodyguard]) > 0 && !have_familiar($familiar[burly bodyguard])) //will only happen in Avant Guard
+			{
+				use(1, $item[baby bodyguard]);
+			}
 
 			if((auto_get_clan_lounge() contains $item[Clan Floundry]) && (item_amount($item[Fishin\' Pole]) == 0))
 			{
@@ -879,6 +885,12 @@ void initializeDay(int day)
 					if((isArmoryAvailable()) && (item_amount($item[Antique Accordion]) == 0))
 					{
 						auto_buyUpTo(1, $item[Toy Accordion]);
+					}
+					
+					if((in_koe()) && (item_amount($item[Antique Accordion]) == 0) && (koe_rmi_count() >= 10))
+					{
+						koe_acquire_rmi(10);
+						buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Antique Accordion]);
 					}
 				}
 				acquireTotem();
@@ -1514,7 +1526,7 @@ boolean autosellCrap()
 	}
 	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
 	{
-		if(item_amount(it) > 1)		//for these items we want to keep 1 in stock. sell the rest
+		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. sell the rest
 		{
 			use(min(10,item_amount(it)-1), it);
 		}
@@ -1533,7 +1545,7 @@ boolean autosellCrap()
 		return false;
 	}
 
-	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
+	foreach it in $items[Anticheese, Awful Poetry Journal, Azurite, Beach Glass Bead, Beer Bomb, Bit-o-Cactus, Clay Peace-Sign Bead, Cocoa Eggshell Fragment, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Eye Agate, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Lapis Lazuli, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Sea Honeydew, Sea Lychee, Sea Tangelo, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
 	{
 		if(item_amount(it) > 0)
 		{
@@ -1795,6 +1807,10 @@ boolean doTasks()
 	if(get_property("auto_inv_paranoia").to_boolean())
 	{
 		cli_execute("refresh inv");
+	}
+	if (in_wereprof()) {
+		// wereprof doesn't update wereProfessorTransformTurns unless you hit the charpane
+		visit_url("charpane.php", false);
 	}
 
 	// actually doing stuff should start from here onwards.

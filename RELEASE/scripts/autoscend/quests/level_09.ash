@@ -899,13 +899,21 @@ boolean L9_oilPeak()
 		{
 			if(in_glover())
 			{
-				if(item_amount($item[Crude Oil Congealer]) < 1 && item_amount($item[G]) > 2)
-				{
-					buy($coinmaster[G-Mart], 1, $item[Crude Oil Congealer]);
-				}
 				if(item_amount($item[Crude Oil Congealer]) > 0)
 				{
 					use(1, $item[Crude Oil Congealer]);
+				}
+				else
+				{
+					if(item_amount($item[G]) > 2)
+					{
+						buy($coinmaster[G-Mart], 1, $item[Crude Oil Congealer]);
+						use(1, $item[Crude Oil Congealer]);
+					}
+					else
+					{
+						return false;
+					}
 				}
 			}
 			else if(auto_is_valid($item[Bubblin' Crude]) && creatable_amount($item[Jar Of Oil]) > 0)

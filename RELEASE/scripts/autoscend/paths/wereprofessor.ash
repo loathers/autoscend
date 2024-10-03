@@ -150,7 +150,7 @@ void wereprof_buySkills()
 			{
 				if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
 				{
-					if(rpcost[sk] >= rp)
+					if(rpcost[sk] > rp)
 					{
 						cantbuy += 1;
 						if(cantbuy==count(split_string(get_property("beastSkillsAvailable").to_string(),",")))

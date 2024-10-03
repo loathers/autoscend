@@ -268,7 +268,29 @@ familiar findNonRockFamiliarInTerrarium()
 		{
 			continue;
 		}
-		if(in_terrarium(fam) && auto_have_familiar(fam))
+		if(in_terrarium(fam) && have_familiar(fam))
+		{
+			return fam;
+		}
+	}
+	return $familiar[none];
+}
+
+familiar findRockFamiliarInTerrarium()
+{
+	static boolean[familiar] petRockFamiliars = $familiars[pet rock,
+		toothsome rock,
+		bulky buddy box,
+		holiday log,
+		software bug,
+		bad vibe,
+		pet coral,
+		synthetic rock,
+		pixel rock];
+
+	foreach fam in $familiars[]
+	{
+		if(in_terrarium(fam) && have_familiar(fam) && petRockFamiliars contains fam)
 		{
 			return fam;
 		}
