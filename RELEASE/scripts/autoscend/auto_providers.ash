@@ -1494,7 +1494,6 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 				Let's Go Shopping!,  //150% meat, 75% item, -300% myst
 				Always Be Collecting, //100% meat, 50% item
 				Incredibly Well Lit, //100% meat, 50% item
-				Friendly Chops, //100% meat, +5 Sleaze Res
 				A View to Some Meat, //100% meat
 				Cravin' for a Ravin', //100% meat
 				Low on the Hog, //100% meat
