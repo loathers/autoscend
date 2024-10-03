@@ -4528,26 +4528,26 @@ boolean auto_burnMP(int mpToBurn)
 }
 
 boolean can_read_skillbook(item it) {
-  // all the normal classes and AoSOL classes are literate
-  if ($classes[Seal Clubber, Turtle Tamer, Sauceror, Pastamancer, Disco Bandit, Accordion Thief, Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class()) {
-    return true;
-  }
-  if (it == $item[spinal-fluid-covered emotion chip] && in_robot()) {
-    return true;
-  }
-  return false;
+	// all the normal classes and AoSOL classes are literate
+	if ($classes[Seal Clubber, Turtle Tamer, Sauceror, Pastamancer, Disco Bandit, Accordion Thief, Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class()) {
+		return true;
+	}
+	if (it == $item[spinal-fluid-covered emotion chip] && in_robot()) {
+		return true;
+	}
+	return false;
 }
 
 boolean have_campground() {
-  if (isActuallyEd() || in_robot() || in_nuclear() || in_small() || in_wereprof()) {
-    return false;
-  }
-  return true;
+	if (isActuallyEd() || in_robot() || in_nuclear() || in_small() || in_wereprof()) {
+		return false;
+	}
+	return true;
 }
 
 boolean have_workshed() {
-  if (isActuallyEd() || in_robot() || in_nuclear() || in_wereprof()) {
-    return false;
-  }
-  return true;
+	if (isActuallyEd() || in_robot() || in_nuclear() || in_wereprof()) {
+		return false;
+	}
+	return true;
 }
