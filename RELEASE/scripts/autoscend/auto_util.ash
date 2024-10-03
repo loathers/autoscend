@@ -4528,13 +4528,14 @@ boolean auto_burnMP(int mpToBurn)
 }
 
 boolean can_read_skillbook(item it) {
+  // all the normal classes and AoSOL classes are literate
+  if ($classes[Seal Clubber, Turtle Tamer, Sauceror, Pastamancer, Disco Bandit, Accordion Thief, Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class()) {
+    return true;
+  }
   if (it == $item[spinal-fluid-covered emotion chip] && in_robot()) {
     return true;
   }
-  if (is_boris() || is_jarlsberg() || is_pete() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_gnoob() || in_darkGyffte() || in_robot() || in_wereprof()) {
-    return false;
-  }
-  return true;
+  return false;
 }
 
 boolean have_campground() {
