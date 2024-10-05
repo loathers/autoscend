@@ -2575,9 +2575,12 @@ boolean woods_questStart()
 	}
 	visit_url("place.php?whichplace=woods");
 	visit_url("place.php?whichplace=forestvillage&action=fv_mystic");
-	visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Sure%2C+old+man.++Tell+me+all+about+it.");
-	visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Against+my+better+judgment%2C+yes.");
-	visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Er,+sure,+I+guess+so...");
+	if (!in_zombieSlayer())
+	{
+		visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Sure%2C+old+man.++Tell+me+all+about+it.");
+		visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Against+my+better+judgment%2C+yes.");
+		visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Er,+sure,+I+guess+so...");
+	}
 	if(knoll_available())
 	{
 		visit_url("place.php?whichplace=knoll_friendly&action=dk_innabox");
