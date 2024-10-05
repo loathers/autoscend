@@ -165,7 +165,7 @@ boolean zombieSlayer_acquireMP(int goal, int meat_reserve)
 		return false;
 	}
 
-	if (my_hp() >= goal) return true;
+	if (my_mp() >= goal) return true;
 
 	return lureMinions(goal) || summonMinions(goal, meat_reserve);
 }
