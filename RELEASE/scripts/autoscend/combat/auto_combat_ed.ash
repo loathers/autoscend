@@ -824,20 +824,24 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return useSkill(dartSkill(), false);
 	}
 	
-	if(wantToForceDrop(enemy))
+	// Don't risk drop forcing if we've already been beaten up twice
+	if (get_property("_edDefeats").to_int()<2)
 	{
-		boolean polarVortexAvailable = canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10;
-		boolean mildEvilAvailable = canUse($skill[Perpetrate Mild Evil],false) && get_property("_mildEvilPerpetrated").to_int() < 3;
-		// mild evil only can pick pocket. Use it before fire extinguisher
-		if(mildEvilAvailable)
+		if(wantToForceDrop(enemy))
 		{
-			handleTracker(enemy, $skill[Perpetrate Mild Evil], "auto_otherstuff");
-			return useSkill($skill[Perpetrate Mild Evil]);	
-		}
-		if(polarVortexAvailable)
-		{
-			handleTracker(enemy, $skill[Fire Extinguisher: Polar Vortex], "auto_otherstuff");
-			return useSkill($skill[Fire Extinguisher: Polar Vortex]);	
+			boolean polarVortexAvailable = canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10;
+			boolean mildEvilAvailable = canUse($skill[Perpetrate Mild Evil],false) && get_property("_mildEvilPerpetrated").to_int() < 3;
+			// mild evil only can pick pocket. Use it before fire extinguisher
+			if(mildEvilAvailable)
+			{
+				handleTracker(enemy, $skill[Perpetrate Mild Evil], "auto_otherstuff");
+				return useSkill($skill[Perpetrate Mild Evil]);	
+			}
+			if(polarVortexAvailable)
+			{
+				handleTracker(enemy, $skill[Fire Extinguisher: Polar Vortex], "auto_otherstuff");
+				return useSkill($skill[Fire Extinguisher: Polar Vortex]);	
+			}
 		}
 	}
 
