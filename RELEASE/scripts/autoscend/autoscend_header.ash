@@ -1866,3 +1866,6 @@ int meatReserve();
 boolean auto_wishForEffect(effect wish);
 item wrap_item(item it);
 boolean auto_burnMP(int mpToBurn);
+boolean can_read_skillbook(item it);
+boolean have_campground();
+boolean have_workshed();
