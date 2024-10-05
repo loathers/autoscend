@@ -227,6 +227,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		enemy_la = 151;
 	}
 
+	// some dark gyffte boss's are stagger immune
+	if($monsters[%alucard%, Jake Norris, Ricardo Belmont, Jayden Belmont, Sharona, Greg Dagreasy, Travis Belmont, Chad Alacarte] contains enemy)
+	{
+		enemy_la = 151;
+	}
+
 	#Default behaviors:
 	if(enemy_la <= 150)		//enemy has not been rendered immune to staggering from monster level
 	{

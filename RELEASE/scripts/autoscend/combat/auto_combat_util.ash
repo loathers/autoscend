@@ -399,6 +399,12 @@ skill getStunner(monster enemy)
 		break;
 	}
 	
+	// From Designer Sweatpants. Use when have nearly full sweat or when losing combat
+	if(canUse($skill[Sweat Flood]) && (getSweat() > 98 || contains_text(get_property("_auto_combatState"), "last attempt")))
+	{
+		return $skill[Sweat Flood];
+	}
+
 	// Decreases in stun duration the more it's used
 	if(canUse($skill[Summon Love Gnats]))
 	{
