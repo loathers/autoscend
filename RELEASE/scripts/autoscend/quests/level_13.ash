@@ -817,7 +817,11 @@ boolean L13_towerNSHedge()
 
 	maximize_hedge();
 	cli_execute("auto_pre_adv");
-	acquireHP();
+	if(!acquireHP())
+	{
+		// couldn't heal so do slow route. May die to fast route
+		set_property("auto_hedge", "slow");
+	}
 	visit_url("place.php?whichplace=nstower&action=ns_03_hedgemaze");
 	if(get_property("lastEncounter") == "This Maze is... Mazelike...")
 	{
