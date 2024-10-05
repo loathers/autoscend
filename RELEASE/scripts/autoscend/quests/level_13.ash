@@ -1484,6 +1484,11 @@ boolean L13_towerNSTower()
 			autoEquip($item[Meat Tenderizer is Murder]);
 		}
 
+		if(in_zombieSlayer())
+		{
+			acquireMP(30,0);
+		}
+
 		acquireHP();
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);
 		return true;
