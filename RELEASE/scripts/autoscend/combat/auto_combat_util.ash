@@ -302,6 +302,10 @@ skill getSniffer(monster enemy)
 
 skill getStunner(monster enemy)
 {
+	if(canUse($skill[Blow the Blue Candle\!]) && have_effect($effect[Everything Looks Blue]) == 0)
+	{
+		return $skill[Blow the Blue Candle\!]; //20 Turns
+	}
 	// Class specific
 	switch(my_class())
 	{
@@ -810,6 +814,10 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "item " + $item[yellow rocket]; // 75 turns & 250 meat
 		}
+		if(inCombat ? have_skill($skill[Blow the Yellow Candle\!]) : auto_haveRoman() && auto_is_valid($skill[Blow the Yellow Candle\!]))
+		{
+			return "skill " + $skill[Blow the Yellow Candle\!]; //75 Turns
+		}
 		if(inCombat ? have_skill($skill[Unleash the Devil\'s Kiss]) : auto_hasRetrocape() && auto_is_valid($skill[Unleash the Devil\'s Kiss]))
 		{
 			return "skill " + $skill[Unleash the Devil\'s Kiss]; // 99 turns
@@ -1007,3 +1015,51 @@ boolean wantToForceDrop(monster enemy)
 	return forceDrop;
 }
 
+boolean canSurviveShootGhost(monster enemy, int shots) {
+	int damage;
+	switch(enemy)
+	{
+		case $monster[the ghost of Oily McBindle]:
+			damage = my_maxhp() * 0.4 * elemental_resistance($element[sleaze]) / 100;
+			break;
+		case $monster[boneless blobghost]:
+			damage = my_maxhp() * 0.45 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[the ghost of Monsieur Baguelle]:
+			damage = my_maxhp() * 0.5 * elemental_resistance($element[hot]) / 100;
+			break;
+		case $monster[The Headless Horseman]:
+			damage = my_maxhp() * 0.55 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The Icewoman]:
+			damage = my_maxhp() * 0.6 * elemental_resistance($element[cold]) / 100;
+			break;
+		case $monster[The ghost of Ebenoozer Screege]:
+			damage = my_maxhp() * 0.65 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The ghost of Lord Montague Spookyraven]:
+			damage = my_maxhp() * 0.7 * elemental_resistance($element[stench]) / 100;
+			break;
+		case $monster[The ghost of Vanillica "Trashblossom" Gorton]:
+			damage = my_maxhp() * 0.75 * elemental_resistance($element[stench]) / 100;
+			break;
+		case $monster[The ghost of Sam McGee]:
+			damage = my_maxhp() * 0.8 * elemental_resistance($element[hot]) / 100;
+			break;
+		case $monster[The ghost of Richard Cockingham]:
+			damage = my_maxhp() * 0.85 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The ghost of Waldo the Carpathian]:
+			damage = my_maxhp() * 0.9 * elemental_resistance($element[hot]) / 100;
+			break;
+		case $monster[Emily Koops, a spooky lime]:
+			damage = my_maxhp() * 0.95 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The ghost of Jim Unfortunato]:
+			damage = my_maxhp() * elemental_resistance($element[sleaze]) / 100;
+			break;
+		default:
+			damage = my_maxhp() * 0.3;
+	}
+	return my_hp() > damage * shots;
+}

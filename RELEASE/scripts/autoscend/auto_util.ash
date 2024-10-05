@@ -845,6 +845,22 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 			}
 		}
 
+		if(auto_haveRoman() && auto_is_valid($skill[Blow the Green Candle\!]))
+		{
+			if(!inCombat)
+			{
+				autoEquip($item[Roman Candelabra]);
+				return "skill " + $skill[Blow the Green Candle\!];
+			}
+			else
+			{
+				if(canUse($skill[Blow the Green Candle\!]))
+				{
+					return "skill " + $skill[Blow the Green Candle\!];
+				}
+			}
+		}
+
 		foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO]
 		{
 			if (canUse(it) && item_amount(it) > 0)
@@ -1702,6 +1718,12 @@ boolean isFreeMonster(monster mon)
 
 boolean isFreeMonster(monster mon, location loc)
 {
+	//No free fights in Avant Guard. Well, there are, but they now have non-free bodyguards so anything that is free now costs a turn
+	if(in_ag())
+	{
+		return false;
+	}
+
 	if ($monsters[Angry Ghost, Annoyed Snake, Government Bureaucrat, Slime Blob, Terrible Mutant] contains mon && get_property("_voteFreeFights").to_int() < 3)
 	{
 		return true;
@@ -1741,7 +1763,7 @@ boolean isFreeMonster(monster mon, location loc)
 	}
 
 	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains loc
-		&& have_effect($effect[shadow affinity]) > 0)
+		&& have_effect($effect[shadow affinity]) > 0 && !in_ag())
 	{
 		return true;
 	}
@@ -3004,6 +3026,14 @@ boolean auto_is_valid(item it)
 	{
 		return bhy_is_item_valid(it);
 	}
+	if(in_iluh() && it.fullness > 0) // only care about foods being consumable in iluh
+	{
+		return iluh_foodConsumable(it.to_string());
+	}
+	if(my_path() == $path[Trendy])
+	{
+		return is_trendy(it);
+	}
 	
 	return is_unrestricted(it);
 }
@@ -3014,11 +3044,17 @@ boolean auto_is_valid(familiar fam)
 	{
 		return to_familiar(get_property("auto_100familiar")) == fam;
 	}
-	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && wereprof_usable(fam.to_string()) && is_unrestricted(fam);
+	if(my_path() == $path[Trendy])
+	{
+		return is_trendy(fam);
+	}
+	return bhy_usable(fam.to_string()) && glover_usable(fam.to_string()) && zombieSlayer_usable(fam) && wereprof_usable(fam.to_string()) && iluh_famAllowed(fam.to_string()) && is_unrestricted(fam);
 }
 
 boolean auto_is_valid(skill sk)
 {
+	// trendy restricts which skills are valid
+	if(my_path() == $path[Trendy]) return is_trendy(sk);
 	// Hack for Legacy of Loathing as is_unrestricted returns false for Source Terminal skills
 	if (in_lol() && $skills[Extract, Turbo, Digitize, Duplicate, Portscan, Compress] contains sk) return true;
 	// No skills for the Professor except Advanced Research in WereProf
@@ -4491,3 +4527,27 @@ boolean auto_burnMP(int mpToBurn)
 	return startingMP != my_mp();
 }
 
+boolean can_read_skillbook(item it) {
+	// all the normal classes and AoSOL classes are literate
+	if ($classes[Seal Clubber, Turtle Tamer, Sauceror, Pastamancer, Disco Bandit, Accordion Thief, Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class()) {
+		return true;
+	}
+	if (it == $item[spinal-fluid-covered emotion chip] && in_robot()) {
+		return true;
+	}
+	return false;
+}
+
+boolean have_campground() {
+	if (isActuallyEd() || in_robot() || in_nuclear() || in_small() || in_wereprof()) {
+		return false;
+	}
+	return true;
+}
+
+boolean have_workshed() {
+	if (isActuallyEd() || in_robot() || in_nuclear() || in_wereprof()) {
+		return false;
+	}
+	return true;
+}

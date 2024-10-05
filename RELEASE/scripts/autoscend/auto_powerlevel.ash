@@ -215,6 +215,11 @@ int auto_freeCombatsRemaining()
 
 int auto_freeCombatsRemaining(boolean print_remaining_fights)
 {
+	if(in_ag())
+	{
+		//may need to revisit after Avant Guard leaves standard
+		return 0;
+	}
 
 	void logRemainingFights(string msg)
 	{

@@ -102,8 +102,8 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		int shots_takens = usedCount($skill[Shoot Ghost]);
 		if(canUse($skill[Shoot Ghost], false) && shots_takens < 3)
 		{
-			float survive_needed = 3.05 - shots_takens.to_float();
-			if(canSurvive(survive_needed))
+			int shotsLeft = 3 - shots_takens;
+			if(canSurviveShootGhost(enemy, shotsLeft))
 			{
 				markAsUsed($skill[Shoot Ghost]);		//needs to be manually done for skills with a use limit that is not 1
 				return useSkill($skill[Shoot Ghost], false);
@@ -171,6 +171,13 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	{
 		set_property("_auto_combatTracker_MortarRound", round);
 		return useSkill($skill[Stuffed Mortar Shell]);
+	}
+
+	
+	//Roman Candelabra red candle
+	if(have_equipped($item[Roman Candelabra]) && have_effect($effect[Everything Looks Red]) == 0 && !auto_haveDarts())
+	{
+		return useSkill($skill[Blow the Red Candle\!]);
 	}
 
 	//general killing code

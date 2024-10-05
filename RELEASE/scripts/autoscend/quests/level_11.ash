@@ -815,7 +815,7 @@ boolean L11_blackMarket()
 		return false;
 	}
 
-	if($location[The Black Forest].turns_spent > 12)
+	if($location[The Black Forest].turns_spent > 12 && !in_ag())
 	{
 		auto_log_warning("We have spent a bit many adventures in The Black Forest... manually checking", "red");
 		visit_url("place.php?whichplace=woods");
@@ -1644,6 +1644,7 @@ void hiddenCityChoiceHandler(int choice)
 	{
 		run_choice(1); // fight the spirit
 	}
+
 	else if(choice == 785) // Air Apparent (An Overgrown Shrine (Northeast))
 	{
 		
@@ -1651,12 +1652,13 @@ void hiddenCityChoiceHandler(int choice)
 		{
 			run_choice(1); // unlock the Hidden Office Building
 		}
+
+		// either use CCSC + unlock or just unlock based on user sphere presence
 		else if(item_amount($item[crackling stone sphere]) > 0)
 		{
 			if (available_choice_options() contains 4)
 			{
-				run_choice(4); // get free meat
-				run_choice(2); // get the stone triangle
+				run_choice(4); // get free meat via CCSC
 			}
 			run_choice(2); // get the stone triangle
 		}
@@ -2506,6 +2508,16 @@ boolean L11_redZeppelin()
 	{
 		auto_beachCombHead("sleaze");
 	}
+	foreach sl in $slots[acc1, acc2, acc3]
+	{
+		if((numeric_modifier(equipped_item(sl), "sleaze damage") + numeric_modifier(equipped_item(sl), "sleaze spell damage")) < 60)
+		{
+			if(item_amount($item[mini kiwi]) >= 2 && equipmentAmount($item[mini kiwi bikini]) < 3 && auto_is_valid($item[mini kiwi bikini]))
+			{
+				create(1, $item[mini kiwi bikini]);
+			}
+		}
+	}
 
 	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
 	{
@@ -3146,7 +3158,7 @@ boolean L11_palindome()
 			auto_log_info("Attemping to use Map the Monsters to olfact a Bob Racecar.");
 		}
 		boolean advSpent = autoAdv($location[Inside the Palindome]);
-		if($location[Inside the Palindome].turns_spent > 30 && !in_pokefam() && !in_koe() && auto_is_valid($item[Disposable Instant Camera]))
+		if($location[Inside the Palindome].turns_spent > 30 && !in_pokefam() && !in_koe() && !in_ag() && auto_is_valid($item[Disposable Instant Camera]))
 		{
 			abort("It appears that we've spent too many turns in the Palindome. If you run me again, I'll try one more time but many I failed finishing the Palindome");
 		}
@@ -3299,7 +3311,7 @@ boolean L11_unlockEd()
 		{
 			bat_formBats();
 		}
-		if((item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
+		if((auto_is_valid($item[possessed sugar cube]) && item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
 		{
 			cli_execute("make sugar fairy");
 			buffMaintain($effect[Dance of the Sugar Fairy]);

@@ -797,6 +797,10 @@ void finalizeMaximize(boolean speculative)
 		{
 			addBonusToMaximize($item[spring shoes], 200);
 		}
+		else if(my_meat() < meatReserve()) // those fruit drops can autosell for a lot
+		{
+			addBonusToMaximize($item[spring shoes], 200);
+		}
 		else if(my_hp() < 0.5*my_maxhp() && my_hp() > 0)
 		{
 			addBonusToMaximize($item[spring shoes], 200); // bonus to heal in wereprof as the werewolf after transition from Professor
@@ -998,6 +1002,10 @@ void equipMaximizedGear()
 			addToMaximize("2 dump"); // maximizer will dump a bunch of stuff to the session log with this
 			maximize(get_property("auto_maximize_current"), 2500, 0, false);
 			removeFromMaximize("2 dump");
+			if(get_property("auto_debug_maximizer").to_boolean())
+			{
+				abort("NO WEAPON WAS EQUIPPED BY THE MAXIMIZER. REPORT THIS IN DISCORD AND INCLUDE YOUR SESSION LOG! YOU CAN RE-RUN AUTOSCEND AND IT SHOULD RUN OK (possibly).");
+			}
 			if (equipped_item($slot[weapon]) == $item[none]) {
 				// workaround. equip a weapon & re-running maximizer appears to fix the issue.
 				equip(equippableWeapon);

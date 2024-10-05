@@ -51,7 +51,7 @@ void LX_handleIntroAdventures()
 			abort("You are stuck in an intro adventure which requires you to choose a path. I suggest you do so before trying to run autoscend and you may have better results.");
 		}
 
-		if ($ints[1046, 1405, 1416, 1419, 1446, 1450, 1464, 1480, 1503, 1507] contains choice)
+		if ($ints[1046, 1405, 1416, 1419, 1446, 1450, 1464, 1480, 1503, 1507, 1519, 1531] contains choice)
 		{
 			// 1046 is "Actually Ed the Undying", intro for Actually Ed the Undying (Spring 2015 challenge path).
 			// 1405 is "Let's, uh, go!", intro for Path of the Plumber (Spring 2020 challenge path).
@@ -63,6 +63,8 @@ void LX_handleIntroAdventures()
 			// 1480 is "Fall of the Dinosaurs", intro for Fall of the Dinosaurs (Fall 2022 challenge path).
 			// 1503 is "Starting Your Legacy", intro for Legacy of Loathing (Summer 2023 challenge path).
 			// 1507 is "Jumbled in the Bungle", intro for A Shrunken Adventurer am I (Fall 2023 challenge path).
+			// 1519 is "The coffee was *gasp* decaf!", intro for WereProfessor (Spring 2024 challenge path).
+			// 1531 is "A-1 Sound and the Sound's So Suardin'", intro for Avant Guard (Fall 2024 challenge path).
 			// yes they really phoned some of the titles of these in.
 			run_choice(1);
 		}
@@ -854,7 +856,7 @@ boolean LX_setWorkshed(){
 	boolean workshedChanged = get_property("_workshedItemUsed").to_boolean();
 
 	if (workshedChanged) return false; //Don't even try if the workshed has already been changed once
-	if (isActuallyEd() || in_robot() || in_nuclear() || in_wereprof()) return false; //Not usable in Ed, Nuclear Autumn, You, Robot, or WereProfessor
+	if (!have_workshed()) return false; //Not usable in certain paths
 
 	//Check to make sure we can use the workshed item and that it isn't already in the campground. If already in campground, return false also
 	//These first 2 ifs are only used if something valid other than auto is specified. Otherwise we go to the auto 
