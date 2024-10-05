@@ -89,7 +89,14 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	}
 	
 	// Do the April band
-	auto_setAprilBandCombat();
+	if(auto_haveAprilingBandHelmet())
+	{
+		if(!speculative)
+			auto_setAprilBandCombat();
+		handleEffect($effect[Apriling Band Battle Cadence]);
+		if(pass())
+			return result();
+	}
 
 	// Now handle buffs that cost MP, items or other resources
 
@@ -261,7 +268,14 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 	}
 	
 	// Do the April band
-	auto_setAprilBandNonCombat();
+	if(auto_haveAprilingBandHelmet())
+	{
+		if(!speculative)
+			auto_setAprilBandNonCombat();
+		handleEffect($effect[Apriling Band Patrol Beat]);
+		if(pass())
+			return result();
+	}
 
 	// Now handle buffs that cost MP, items or other resources
 

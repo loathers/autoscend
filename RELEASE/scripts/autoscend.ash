@@ -790,7 +790,7 @@ void initializeDay(int day)
 	}
 
 	// Get emotionally chipped if you have the item.  boris\jarlsberg\sneaky pete\zombie slayer\ed cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || is_jarlsberg() || is_pete() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_gnoob() || in_darkGyffte() || in_wereprof()))
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && can_read_skillbook($item[spinal-fluid-covered emotion chip]))
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
@@ -1807,6 +1807,10 @@ boolean doTasks()
 	if(get_property("auto_inv_paranoia").to_boolean())
 	{
 		cli_execute("refresh inv");
+	}
+	if (in_wereprof()) {
+		// wereprof doesn't update wereProfessorTransformTurns unless you hit the charpane
+		visit_url("charpane.php", false);
 	}
 
 	// actually doing stuff should start from here onwards.
