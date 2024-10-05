@@ -1199,6 +1199,7 @@ boolean L12_islandWar();
 //Defined in autoscend/quests/level_13.ash
 boolean needStarKey();
 boolean needDigitalKey();
+boolean need8BitPoints();
 int towerKeyCount();
 int towerKeyCount(boolean effective);
 int EightBitScore();
