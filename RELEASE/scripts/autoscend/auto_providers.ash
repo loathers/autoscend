@@ -1487,42 +1487,40 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		{
 			boolean success = true;
 			int specwishes = 0;
-			while(auto_monkeyPawWishesLeft() + auto_wishesAvailable() > 0 && success)
+			foreach eff in $effects[Frosty, //200% meat, 100% item, 25 ML, 100% init
+			Braaaaaains, //200% meat, -50% item
+			Let's Go Shopping!,  //150% meat, 75% item, -300% myst
+			Always Be Collecting, //100% meat, 50% item
+			Incredibly Well Lit, //100% meat, 50% item
+			A View to Some Meat, //100% meat
+			Cravin' for a Ravin', //100% meat
+			Low on the Hog, //100% meat
+			Leisurely Amblin', //100% meat
+			Trufflin', //100% meat
+			Here's Some More Mud in Your Eye, //100% meat
+			Eau d' Clochard, //100% meat
+			Flapper Dancin', //100% meat
+			Fishing for Meat, //100% meat
+			Preternatural Greed] //100% meat
 			{
-				foreach eff in $effects[Frosty, //200% meat, 100% item, 25 ML, 100% init
-				Braaaaaains, //200% meat, -50% item
-				Let's Go Shopping!,  //150% meat, 75% item, -300% myst
-				Always Be Collecting, //100% meat, 50% item
-				Incredibly Well Lit, //100% meat, 50% item
-				A View to Some Meat, //100% meat
-				Cravin' for a Ravin', //100% meat
-				Low on the Hog, //100% meat
-				Leisurely Amblin', //100% meat
-				Trufflin', //100% meat
-				Here's Some More Mud in Your Eye, //100% meat
-				Eau d' Clochard, //100% meat
-				Flapper Dancin', //100% meat
-				Fishing for Meat, //100% meat
-				Preternatural Greed] //100% meat
+				if(eff == $effect[Frosty] && in_wereprof()) continue; //skip frosty in wereprof
+				if(have_effect(eff) == 0)
 				{
-					if(have_effect(eff) == 0)
+					if(!speculative)
+						success = auto_wishForEffect(eff);
+					specwishes +=1;
+					if(specwishes <= auto_monkeyPawWishesLeft() + auto_wishesAvailable())
 					{
-						if(!speculative)
-							success = auto_wishForEffect(eff);
-						specwishes +=1;
-						if(specwishes <= auto_monkeyPawWishesLeft() + auto_wishesAvailable())
-						{
-							handleEffect(eff);
-							if(pass())
-								return result();
-						}
-						else
-						{
-							success = false;
-						}
+						handleEffect(eff);
+						if(pass())
+							return result();
 					}
-					if(!success) break;
+					else
+					{
+						success = false;
+					}
 				}
+				if(!success) break;
 			}
 		}
 		auto_log_debug("With limited buffs we can get to " + result());
