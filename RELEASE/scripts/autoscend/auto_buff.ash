@@ -716,6 +716,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		useSkill = $skill[Snarl of the Timberwolf];
 		break;
 	case $effect[Snow Shoes]:					useItem = $item[Snow Cleats];					break;
+	case $effect[So You Can Work More...]:		useItem = $item[Baggie of powdered sugar];		break;
 	case $effect[Soles of Glass]:
 		if(auto_have_familiar($familiar[Grim Brother]))
 		{
@@ -801,6 +802,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		{
 			useSkill = $skill[Tenacity of the Snapper];
 		}																						break;
+	case $effect[The Grass... \ Is Blue...]:		useItem = $item[Blue Grass];					break;
 	case $effect[There is a Spoon]:				useItem = $item[Dented Spoon];					break;
 	case $effect[They\'ve Got Fleas]:			useItem = $item[Out-of-work circus flea];		break;
 	case $effect[This is Where You\'re a Viking]:useItem = $item[VYKEA woadpaint];				break;
@@ -856,6 +858,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Wisdom of Thoth]:				useSkill = $skill[Wisdom of Thoth];				break;
 	case $effect[Wit Tea]:						useItem = $item[cuppa Wit tea];					break;
 	case $effect[Woad Warrior]:					useItem = $item[Pygmy Pygment];					break;
+	case $effect[Worth Your Salt]:				useItem = $item[Salt wages];					break;
 	case $effect[Wry Smile]:					useSkill = $skill[Wry Smile];					break;
 	case $effect[Yoloswagyoloswag]:				useItem = $item[Yolo&trade; Chocolates];		break;
 	case $effect[You Read the Manual]:			useItem = $item[O\'Rly Manual];					break;

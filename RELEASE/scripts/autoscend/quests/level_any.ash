@@ -856,7 +856,7 @@ boolean LX_setWorkshed(){
 	boolean workshedChanged = get_property("_workshedItemUsed").to_boolean();
 
 	if (workshedChanged) return false; //Don't even try if the workshed has already been changed once
-	if (isActuallyEd() || in_robot() || in_nuclear() || in_wereprof()) return false; //Not usable in Ed, Nuclear Autumn, You, Robot, or WereProfessor
+	if (!have_workshed()) return false; //Not usable in certain paths
 
 	//Check to make sure we can use the workshed item and that it isn't already in the campground. If already in campground, return false also
 	//These first 2 ifs are only used if something valid other than auto is specified. Otherwise we go to the auto 
