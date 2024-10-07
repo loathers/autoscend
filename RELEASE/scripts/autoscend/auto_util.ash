@@ -950,6 +950,13 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Peel Out];
 	}
+	
+	// Bowling ball is a banish as well, but is available enough that we want to use it as a free run source too
+	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
+	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]))
+	{
+		return "skill " + $skill[Bowl a Curveball];
+	}
 
 	//Non-standard free-runs
 	if(!inAftercore())
