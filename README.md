@@ -1,17 +1,19 @@
 # This Fork
 
-This is a fork och autoscend that is specifically tailored to run Zombie Slayer with the spcifig goal of getting supplied for the clan photo booth. This is done by using the Photo Booth Supply List against the wandering hunter Deputy Nick Soames & Earl.
+This is a fork of autoscend that is specifically tailored to run Zombie Slayer with the spcific goal of getting supplies for the clan photo booth. This is done by using the Photo Booth Supply List against the wandering hunter Deputy Nick Soames & Earl.
 
-To kick this off, the Photo Booth Supply List must be picket up manually before running this script.
+To kick this off, the Photo Booth Supply List must be picked up manually before running this script.
+
+Since this is a complete fork af autoscend, it is of course possible to use it for other supported paths as well.
 
 # Known Issues
 
 The script currently as issues with 
 
-* Shadow Realm on day 1. Unless you have lots of zombe points it's hard to fight the tougher shadows. The script will exit when beaten up, and yoy might want to do the rest of the fights manually. If you have Bear Arms the Bar Hug is great for this.
-* Bear Arms. If you're shiny enough they aren't used at all, wich is a shame.
+* Shadow Realm on day 1. Unless you have lots of zombie points it's hard to fight the tougher shadows. The script will exit when beaten up, and you might want to do the rest of the fights manually. If you have Bear Arms the Bar Hug is great for this.
+* Bear Arms. If you're shiny enough they aren't used at all, which is a shame.
 * Finishing the war. This fight is a bit though. Try to buff MUS and use some deleveler first (Everful Dart Holster is great for this) and then just bash him down.
-* Wall of Meat. Since the default combat tactic is to Plague Claw until we can do a killing blow, thet script struggles with the wall of meat. Just heal up and kill it if that happens.
+* Wall of Meat. Since the default combat tactic is to Plague Claw until we can do a killing blow, the script struggles with the wall of meat. Just heal up and kill it wit h brute force if that happens.
 
 # NOTICE
 
@@ -38,13 +40,15 @@ This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareA
 
 Run this command in the graphical CLI:
 ```
-git checkout loathers/autoscend
+git checkout MattiasKro/autoscend-zs
 ```
 Will require [a recent build of KoLMafia](http://builds.kolmafia.us/job/Kolmafia/lastSuccessfulBuild/).
 
 ## Usage
 
-Just type autoscend in the gCLI! You can configure autoscend in the relay browser via the relay
+First, pick up the photo booth supply list from the Photo Booth in the clan VIP area.
+
+Then just type autoscend in the gCLI! You can configure autoscend in the relay browser via the relay
 script autoscend. If you ever want to interrupt the script, please use the interrupt button in
 the autoscend relay script rather than terminating via mafia with escape. Otherwise certain settings
 may not be restored properly to their pre-run values.
