@@ -165,7 +165,7 @@ boolean zombieSlayer_acquireMP(int goal, int meat_reserve)
 		return false;
 	}
 
-	if (my_hp() >= goal) return true;
+	if (my_mp() >= goal) return true;
 
 	return lureMinions(goal) || summonMinions(goal, meat_reserve);
 }
@@ -186,10 +186,10 @@ boolean zombieSlayer_acquireHP(int goal)
 
 	int missingHP = goal - my_hp();
 
-	// Devour Minions if you need at least 4 casts of Bite Minion
+	// Devour Minions if you need at least 4 casts of Bite Minion or if doing the Hidden Apartment Building
 	if (auto_have_skill($skill[Devour Minions]))
 	{
-		while (missingHP > floor(my_maxhp() * 0.3) && zombieSlayer_acquireMP(mp_cost($skill[Devour Minions])))
+		while ((missingHP > floor(my_maxhp() * 0.3) || ((have_effect($effect[Thrice-Cursed]) > 0 || have_effect($effect[Twice-Cursed]) > 0 || have_effect($effect[Once-Cursed]) > 0) && !(internalQuestStatus("questL11Curses") > 1 || item_amount($item[Moss-Covered Stone Sphere]) > 0))) && zombieSlayer_acquireMP(mp_cost($skill[Devour Minions])))
 		{
 			use_skill(1, $skill[Devour Minions]);
 			if (my_hp() >= goal) break;

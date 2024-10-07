@@ -550,7 +550,7 @@ void hauntedBedroomChoiceHandler(int choice, string[int] options)
 	else if(choice == 878) // One Ornate Nightstand (The Haunted Bedroom)
 	{
 		boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
-		if(is_boris() || in_wotsf() || (in_zombieSlayer() && in_hardcore()) || (in_nuclear() && in_hardcore()))
+		if(is_boris() || in_wotsf() || (in_nuclear() && in_hardcore()))
 		{
 			needSpectacles = false;
 		}
@@ -620,7 +620,7 @@ boolean LX_getLadySpookyravensFinestGown() {
 	// Might not be worth it since we need to fight ornate nightstands for the spectacles and camera
 	boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
 	boolean needCamera = (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1);
-	if (is_boris() || in_wotsf() || (in_zombieSlayer() && in_hardcore()) || (in_nuclear() && in_hardcore())) {
+	if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 		needSpectacles = false;
 	}
 	else if(needCamera && needSpectacles) {
@@ -2315,7 +2315,7 @@ boolean L11_mauriceSpookyraven()
 		}
 	}
 
-	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_zombieSlayer() || in_wotsf() || in_bhy() || in_robot() || (in_nuclear() && !get_property("auto_haveoven").to_boolean()))
+	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_wotsf() || in_bhy() || in_robot() || (in_nuclear() && !get_property("auto_haveoven").to_boolean()))
 	{
 		auto_log_warning("Alternate fulminate pathway... how sad :(", "red");
 		# I suppose we can let anyone in without the Spectacles.

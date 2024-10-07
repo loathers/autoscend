@@ -44,9 +44,14 @@ string auto_combatZombieSlayerStage3(int round, monster enemy, string text)
 		return "";
 	}
 
-	if(canUse($skill[Infectious Bite]) && zombieSlayer_canInfect(enemy) && canSurvive(4.0))
+	if(canUse($skill[Infectious Bite]) && canSurvive(4.0))
 	{
 		return useSkill($skill[Infectious Bite]);
+	}
+	
+	if(canUse($skill[Meat Shields]) && enemy.boss && canSurvive(4.0))
+	{
+		return useSkill($skill[Meat Shields]);
 	}
 
 	// Just always use Bear-ly Legal for the delevel + meat, unless we want to Bear Hug or Kodiak Moment

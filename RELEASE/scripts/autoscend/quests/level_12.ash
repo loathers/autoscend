@@ -1179,7 +1179,14 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if(in_glover())
+	if (in_zombieSlayer())
+	{
+		if(!auto_have_skill($skill[Plague Claws]) && item_amount($item[Seal Tooth]) == 0)
+		{
+			return false;
+		}
+	}
+	else if(in_glover())
 	{
 		int need = 30 - item_amount($item[Doc Galaktik\'s Pungent Unguent]);
 		if((need > 0) && (item_amount($item[Molybdenum Pliers]) == 0))
