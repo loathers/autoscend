@@ -57,6 +57,7 @@ boolean LX_attemptPowerLevel()
 	{
 		return LX_robot_powerlevel();		//leveling works very differently in You, Robot path
 	}
+
 	if (my_level() > 12)
 	{
 		return false;
@@ -90,11 +91,6 @@ boolean LX_attemptPowerLevel()
 	
 	//The Source path specific powerleveling
 	LX_attemptPowerLevelTheSource();
-
-	if (LX_getDigitalKey() || LX_getStarKey())
-	{
-		return true;
-	}
 
 	//August Scepter Power Levelling
 	if(auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5){
@@ -189,6 +185,7 @@ boolean LX_attemptPowerLevel()
 			if(autoAdv($location[The Haunted Gallery])) return true;
 		}		
 	}
+	
 	return false;
 }
 
