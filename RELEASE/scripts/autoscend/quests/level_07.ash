@@ -51,7 +51,7 @@ void cyrptChoiceHandler(int choice)
 					bat_formBats();
 				}
 			}
-			run_choice(5); // if meets thresholds, skip to farm more dieting pills in DG
+			run_choice(6); // if meets thresholds, skip to farm more dieting pills in DG
 		}
 		else if(available_choice_options() contains 5)
 		{

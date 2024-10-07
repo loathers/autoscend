@@ -1600,6 +1600,10 @@ float provideMoxie(int amt, location loc, boolean doEquips, boolean speculative)
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
 boolean provideMoxie(int amt, location loc, boolean doEquips);
 boolean provideMoxie(int amt, boolean doEquips);
+float provideMeat(int amt, location loc, boolean doEverything, boolean speculative);
+float provideMeat(int amt, boolean doEverything, boolean speculative);
+boolean provideMeat(int amt, location loc, boolean doEverything);
+boolean provideMeat(int amt, boolean doEverything);
 
 ########################################################################################################
 //Defined in autoscend/auto_restore.ash
@@ -1882,3 +1886,6 @@ int meatReserve();
 boolean auto_wishForEffect(effect wish);
 item wrap_item(item it);
 boolean auto_burnMP(int mpToBurn);
+boolean can_read_skillbook(item it);
+boolean have_campground();
+boolean have_workshed();
