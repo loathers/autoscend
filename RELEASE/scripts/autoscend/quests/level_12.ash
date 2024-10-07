@@ -1198,7 +1198,11 @@ boolean L12_gremlins()
 		{
 			acquireHermitItem($item[Seal Tooth]);
 			if(item_amount($item[Seal Tooth]) == 0)
+			if (in_zombieSlayer() and have_skill($skill[Plague Claws])) 
 			{
+				auto_log_info("Trying to stasis Gremlins with Plague Claws");
+			}
+			else {
 				abort("We don't have a seal tooth. Stasising Gremlins is not going to go well if you lack something to stasis them with.");
 			}
 		}
