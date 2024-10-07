@@ -1,3 +1,18 @@
+# This Fork
+
+This is a fork och autoscend that is specifically tailored to run Zombie Slayer with the spcifig goal of getting supplied for the clan photo booth. This is done by using the Photo Booth Supply List against the wandering hunter Deputy Nick Soames & Earl.
+
+To kick this off, the Photo Booth Supply List must be picket up manually before running this script.
+
+# Known Issues
+
+The script currently as issues with 
+
+* Shadow Realm on day 1. Unless you have lots of zombe points it's hard to fight the tougher shadows. The script will exit when beaten up, and yoy might want to do the rest of the fights manually. If you have Bear Arms the Bar Hug is great for this.
+* Bear Arms. If you're shiny enough they aren't used at all, wich is a shame.
+* Finishing the war. This fight is a bit though. Try to buff MUS and use some deleveler first (Everful Dart Holster is great for this) and then just bash him down.
+* Wall of Meat. Since the default combat tactic is to Plague Claw until we can do a killing blow, thet script struggles with the wall of meat. Just heal up and kill it if that happens.
+
 # NOTICE
 
 autoscend (formerly [sl_ascend](https://github.com/soolar/sl_ascend); formerly, formally cc_ascend) is under new management. The previous developers decided they could no longer continue supporting the script or Kingdom of Loathing after [actions of Jick and some of the other developers](https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/) were made public.

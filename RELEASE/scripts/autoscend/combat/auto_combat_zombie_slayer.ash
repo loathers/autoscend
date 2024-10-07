@@ -22,6 +22,11 @@ string auto_combatZombieSlayerStage1(int round, monster enemy, string text)
 		return "";
 	}
 
+	// Check to see if we are fighting the Angry Space Marine, bucause in that case the next zombie hunter will be Nick Soames
+	if ((enemy == $monster[Angry Space Marine]) && (item_amount($item[photo booth supply list]) > 0)) {
+		set_property("auto_getSheriffBadgeSupplies", true);
+	}
+
 	return "";
 }
 
@@ -31,6 +36,20 @@ string auto_combatZombieSlayerStage2(int round, monster enemy, string text)
 	if (!in_zombieSlayer())
 	{
 		return "";
+	}
+
+	// If we are fighting Nick Soames and have the photo booth supply list equipped, use it against him
+	if (enemy == $monster[Deputy Nick Soames & Earl]) 
+	{
+		if (canUse($skill[check for photo booth supplies])) 
+		{
+			return useSkill($skill[check for photo booth supplies]);
+			set_property("auto_getSheriffBadgeSupplies", false);
+		} 
+		else
+		{
+			abort("Could not get photo booth supplies from Nick Soames. Please lose this fight and try manually (and/or check the logs to see what went wrong).");
+		}
 	}
 
 	return "";

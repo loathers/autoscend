@@ -163,6 +163,8 @@ string auto_combat_robot_stage5(int round, monster enemy, string text);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_zombie_slayer.ash
+string auto_combatZombieSlayerStage1(int round, monster enemy, string text);
+string auto_combatZombieSlayerStage2(int round, monster enemy, string text);
 string auto_combatZombieSlayerStage3(int round, monster enemy, string text);
 string auto_combatZombieSlayerStage4(int round, monster enemy, string text);
 string auto_combatZombieSlayerStage5(int round, monster enemy, string text);

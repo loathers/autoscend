@@ -175,6 +175,22 @@ boolean zombieSlayer_acquireMP(int goal)
 	return zombieSlayer_acquireMP(goal, meatReserve());
 }
 
+boolean isHavingHiddenApartmentCurse() {
+	boolean isCursed = false;
+	// We are only interested in this when the Hidden Apartment quest is active
+	if (get_property("questL11Curses") != "started") {
+		return false;
+	}
+	foreach eff in $effects[Once-Cursed, Thrice-Cursed, Twice-Cursed]
+	{
+		if(have_effect(eff) > 0)
+		{
+			isCursed = true;
+		}
+	}
+	return isCursed;
+}
+
 boolean zombieSlayer_acquireHP(int goal)
 {
 	if(!in_zombieSlayer())
@@ -186,7 +202,7 @@ boolean zombieSlayer_acquireHP(int goal)
 
 	int missingHP = goal - my_hp();
 
-	// Devour Minions if you need at least 4 casts of Bite Minion
+	// Devour Minions if you need at least 4 casts of Bite Minion 
 	if (auto_have_skill($skill[Devour Minions]))
 	{
 		while (missingHP > floor(my_maxhp() * 0.3) && zombieSlayer_acquireMP(mp_cost($skill[Devour Minions])))
@@ -201,12 +217,15 @@ boolean zombieSlayer_acquireHP(int goal)
 
 	if (auto_have_skill($skill[Bite Minion]))
 	{
-		while (missingHp > 0 && zombieSlayer_acquireMP(mp_cost($skill[Bite Minion])))
-		{
-			use_skill(1, $skill[Bite Minion]);
-			if (my_hp() >= goal) break;
-			if (missingHP == goal - my_hp()) break; // Failed
-			missingHP = goal - my_hp();
+		// Dont use this if you have Devour minions and one of those n:th-cursed effects
+		if (!(auto_have_skill($skill[Devour Minions]) && isHavingHiddenApartmentCurse())) {
+			while (missingHp > 0 && zombieSlayer_acquireMP(mp_cost($skill[Bite Minion])))
+			{
+				use_skill(1, $skill[Bite Minion]);
+				if (my_hp() >= goal) break;
+				if (missingHP == goal - my_hp()) break; // Failed
+				missingHP = goal - my_hp();
+			}
 		}
 	}
 
