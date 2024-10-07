@@ -144,9 +144,9 @@ void wereprof_buySkills()
 			cantbuy = 0;
 			//Priority is: Expanding organs, useful skills (banish, instakill, ELR CD), stat gains, +meat, DR, relatively useless skills and waiting on Mafia support skills
 			foreach sk in $strings[stomach3, liver3, stomach2, liver2, stomach1, liver1, hp3, init3, hp2, init2, hp1, init1, mus3,
-			mox3, mus2, mox2, mus1, mox1, punt, slaughter, pureblood, kick3, kick2, kick1, rend3, rend2, rend1, items3, items2, items1,
+			mox3, mus2, mox2, mus1, mox1, punt, slaughter, pureblood, hunt, kick3, kick2, kick1, rend3, rend2, rend1, items3, items2, items1,
 			res3, res2, res1, myst3, myst2, myst1, bite3, bite2, bite1, perfecthair, meat3, meat2, meat1, ml3, ml2, ml1, skin3,
-			skin2, skin1, hunt, feasting, skinheal, howl, feed]
+			skin2, skin1, feasting, skinheal, howl, feed]
 			{
 				if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
 				{
