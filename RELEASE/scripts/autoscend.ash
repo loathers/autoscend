@@ -5,7 +5,8 @@ since r28019;	// feat: add avant guard path
 
 	Accessory scripts can import autoscend.ash
 ***/
-
+script "Autoscend-ZS";
+notify Tissen;
 
 import <autoscend/autoscend_header.ash>
 import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early
