@@ -1192,7 +1192,7 @@ boolean L12_gremlins()
 			auto_buyUpTo(30, $item[Doc Galaktik\'s Pungent Unguent]);
 		}
 	}
-	else if (in_zombieSlayer() and have_skill($skill[Plague Claws])) 
+	else if (in_zombieSlayer() && auto_have_skill($skill[Plague Claws])) 
 	{
 		auto_log_info("Trying to stasis Gremlins with Plague Claws");
 	}
