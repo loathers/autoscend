@@ -1737,106 +1737,6 @@ boolean L12_themtharHills()
 		auto_log_info("Themthar Nuns!", "blue");
 	}
 
-	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
-	{
-		if(is_professor())
-		{
-			//Need to manually equip because professor
-			if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
-			if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
-			if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
-		}
-		else
-		{
-			outfit("Frat Warrior Fatigues");
-		}
-		cli_execute("concert 2");
-	}
-
-	handleBjornify($familiar[Hobo Monkey]);
-	if((equipped_item($slot[off-hand]) != $item[Half a Purse]) && !possessEquipment($item[Half a Purse]) && (item_amount($item[Lump of Brituminous Coal]) > 0))
-	{
-		auto_buyUpTo(1, $item[Loose Purse Strings]);
-		autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Loose purse strings]);
-	}
-
-	autoEquip($item[Half a Purse]);
-	if(in_heavyrains())
-	{
-		autoEquip($item[Thor\'s Pliers]);
-	}
-	autoEquip($item[Miracle Whip]);
-
-	shrugAT($effect[Polka of Plenty]);
-	if(isActuallyEd())
-	{
-		if(!have_skill($skill[Gift of the Maid]) && ($servant[Maid].experience >= 441))
-		{
-			visit_url("charsheet.php");
-			if(have_skill($skill[Gift of the Maid]))
-			{
-				auto_log_warning("Gift of the Maid not properly detected until charsheet refresh.", "red");
-			}
-		}
-	}
-	buffMaintain($effect[Purr of the Feline], 10, 1, 1);
-	songboomSetting("meat");
-	handleFamiliar("meat");
-	addToMaximize("200meat drop");
-
-	if(have_effect($effect[Frosty])==0 && !in_wereprof())
-	{
-		auto_wishForEffect($effect[Frosty]);
-	}
-	buffMaintain($effect[Greedy Resolve]);
-	buffMaintain($effect[Disco Leer], 10, 1, 1);
-	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
-	#Handle for familiar weight change.
-	buffMaintain($effect[Kindly Resolve]);
-	buffMaintain($effect[Heightened Senses]);
-	buffMaintain($effect[Big Meat Big Prizes]);
-	buffMaintain($effect[Human-Machine Hybrid]);
-	buffMaintain($effect[Human-Constellation Hybrid]);
-	buffMaintain($effect[Human-Humanoid Hybrid]);
-	buffMaintain($effect[Human-Fish Hybrid]);
-	buffMaintain($effect[Cranberry Cordiality]);
-	buffMaintain($effect[Patent Avarice]);
-	buffMaintain($effect[Car-Charged]);
-	buffMaintain($effect[Heart of Pink]);
-	buffMaintain($effect[Sweet Heart], 0, 1, 20);
-	buffMaintain($effect[Earning Interest]);
-	buffMaintain($effect[Bet Your Autumn Dollar]);
-	buffMaintain($effect[Flapper Dancin\']);
-	buffMaintain($effect[shadow waters]);
-		
-	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
-	{
-		autoChew(1, $item[body spradium]);
-	}
-	if(have_effect($effect[meat.enh]) == 0 && auto_is_valid($effect[meat.enh]))
-	{
-		if(auto_sourceTerminalEnhanceLeft() > 0)
-		{
-			auto_sourceTerminalEnhance("meat");
-		}
-	}
-	if(have_effect($effect[Synthesis: Greed]) == 0)
-	{
-		rethinkingCandy($effect[Synthesis: Greed]);
-	}
-	asdonBuff($effect[Driving Observantly]);
-
-	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (!in_heavyrains()))
-	{
-		use_familiar($familiar[Trick-or-Treating Tot]);
-		autoEquip($item[Li\'l Pirate Costume]);
-		handleFamiliar($familiar[Trick-or-Treating Tot]);
-	}
-
-	if(in_heavyrains())
-	{
-		buffMaintain($effect[Sinuses For Miles]);
-	}
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
 	//count inhaler if we have one or if we have a clover to obtain one and can use one
@@ -1859,7 +1759,7 @@ boolean L12_themtharHills()
 		use_familiar(to_familiar(get_property("auto_familiarChoice")));
 	}
 	equipMaximizedGear();
-	float meatDropHave = meat_drop_modifier();
+	float meatDropHave = provideMeat(1800, true, true);
 
 	if(isActuallyEd() && have_skill($skill[Curse of Fortune]) && item_amount($item[Ka Coin]) > 0)
 	{
@@ -1909,29 +1809,7 @@ boolean L12_themtharHills()
 		return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
 	}
 
-	buffMaintain($effect[Disco Leer], 10, 1, 1);
-	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
-	buffMaintain($effect[Sinuses For Miles]);
-	buffMaintain($effect[Greedy Resolve]);
-	buffMaintain($effect[Kindly Resolve]);
-	buffMaintain($effect[Heightened Senses]);
-	buffMaintain($effect[Big Meat Big Prizes]);
-	buffMaintain($effect[Fortunate Resolve]);
-	buffMaintain($effect[Human-Machine Hybrid]);
-	buffMaintain($effect[Human-Constellation Hybrid]);
-	buffMaintain($effect[Human-Humanoid Hybrid]);
-	buffMaintain($effect[Human-Fish Hybrid]);
-	buffMaintain($effect[Cranberry Cordiality]);
-	buffMaintain($effect[Car-Charged]);
-	buffMaintain($effect[Heart of Pink]);
-	buffMaintain($effect[Sweet Heart], 0, 1, 20);
-	buffMaintain($effect[Good Things Are Coming, You Can Smell It]);
-	buffMaintain($effect[Incredibly Well Lit]);
-	bat_formWolf();
-	if(auto_is_valid($effect[Meet the Meat]))
-	{
-		zataraSeaside("meat");
-	}
+	provideMeat(1800, true, false); // Do as much as possible to get meat drops
 
 	{
 		equipWarOutfit();

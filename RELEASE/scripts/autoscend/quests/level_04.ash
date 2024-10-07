@@ -65,7 +65,7 @@ boolean L4_batCave()
 			return false;
 		}
 
-		buffMaintain($effect[Polka of Plenty], 15, 1, 1);
+		provideMeat(50, $location[The Boss Bat\'s Lair], false);
 		//AoSOL buffs
 		if(in_aosol())
 		{
@@ -75,8 +75,6 @@ boolean L4_batCave()
 				handleFamiliar($familiar[Grey Goose]);
 			}
 		}
-		bat_formWolf();
-		addToMaximize("10meat");
 		int batskinBelt = item_amount($item[Batskin Belt]);
 		auto_change_mcd(4); // get the pants from the Boss Bat.
 		autoAdv($location[The Boss Bat\'s Lair]);
