@@ -399,6 +399,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[The Glistening]:				useItem = $item[Vial of the Glistening];		break;
 	case $effect[Glittering Eyelashes]:			useItem = $item[Glittery Mascara];				break;
+	case $effect[Glowing Hands]:				useItem = $item[emergency glowstick];			break;
 	case $effect[Go Get \'Em\, Tiger!]:			useItem = $item[Ben-gal&trade; Balm];			break;
 	case $effect[Good Things Are Coming, You Can Smell It]:	useItem = $item[Smoldering Clover&trade; candle];break;
 	case $effect[Got Milk]:						useItem = $item[Milk of Magnesium];				break;
