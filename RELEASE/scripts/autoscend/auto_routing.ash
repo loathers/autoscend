@@ -229,7 +229,8 @@ boolean LX_useBreathitinCharges()
 	if (get_property("breathitinCharges").to_int() > 0)
 	{
 		auto_log_debug("Have Breathitin Charges to burn. Calling a quest function with outdoor zones.");
-		if (LX_unlockHiddenTemple() || L11_hiddenCityZones() || L5_getEncryptionKey() || L10_airship() || L9_chasmBuild() || L9_highLandlord() || L6_friarsGetParts())
+		if (LX_unlockHiddenTemple() || L11_hiddenCityZones() || L5_getEncryptionKey() || L10_airship() || 
+			L9_chasmBuild() || (get_property("_auto_lastABooCycleFix").to_int() < 5 && L9_highLandlord()) || L6_friarsGetParts())
 		{
 			// quests with adventures in outdoor zones in some sort of priority order here.
 			// LX_unlockHiddenTemple unlocks the Hidden Temple by adventuring in the Spooky Forest. High priority as Hidden City has a lot of delay

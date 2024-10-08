@@ -57,35 +57,38 @@ drop	13	Melodramedary	prop:camelSpit<100
 # Drops BACON every battle. 100 bacon makes size 15 density 4.83 food. 150 bacon can get you a fat loot token
 drop	14	Intergnat	item:BACON<150
 #
+# Mini Kiwi for turn gen in 11 Things path
+drop	15	Mini Kiwi	path:11 Things I Hate About U;item:mini kiwi<=8
+#
 # Generate extra cookbookbat ingredients to make sure we have enough stock on hand for higher-tier foods
-drop	15	Cookbookbat	item:Vegetable of Jarlsberg<4;!prop_boolean:auto_dontUseCookBookBat
-drop	16	Cookbookbat	item:Yeast of Boris<4;!prop_boolean:auto_dontUseCookBookBat
-drop	17	Cookbookbat	item:St. Sneaky Pete's Whey<4;!prop_boolean:auto_dontUseCookBookBat
+drop	16	Cookbookbat	item:Vegetable of Jarlsberg<4;!prop_boolean:auto_dontUseCookBookBat
+drop	17	Cookbookbat	item:Yeast of Boris<4;!prop_boolean:auto_dontUseCookBookBat
+drop	18	Cookbookbat	item:St. Sneaky Pete's Whey<4;!prop_boolean:auto_dontUseCookBookBat
 # Below this lines drops are not needed more of for the run and are just grabbing for profit.
 # Most are useful in limited amounts which we already grab via boolean autoChooseFamiliar(location place)
 #
 # density 1.875 size 4 spleen consumables. boolean autoChooseFamiliar(location place) will already grab the amount needed for spleen
 # Here they are only used to grab extras.
-drop	18	Grim Brother	prop:_grimFairyTaleDrops<5
-drop	19	Pair of Stomping Boots	!path:G-Lover;prop:_bootStomps<7
-drop	20	Baby Sandworm	prop:_aguaDrops<5
-drop	21	Bloovian Groose	prop:_grooseDrops<5
-drop	22	Golden Monkey	prop:_powderedGoldDrops<5
-drop	23	Unconscious Collective	prop:_dreamJarDrops<5
+drop	19	Grim Brother	prop:_grimFairyTaleDrops<5
+drop	20	Pair of Stomping Boots	!path:G-Lover;prop:_bootStomps<7
+drop	21	Baby Sandworm	prop:_aguaDrops<5
+drop	22	Bloovian Groose	prop:_grooseDrops<5
+drop	23	Golden Monkey	prop:_powderedGoldDrops<5
+drop	24	Unconscious Collective	prop:_dreamJarDrops<5
 # psychoanalytic jar 1 per day.
-drop	24	Angry Jung Man	prop:_jungDrops<1
+drop	25	Angry Jung Man	prop:_jungDrops<1
 # grimstone mask 1 per day
-drop	25	Grimstone Golem	prop:_grimstoneMaskDrops<1
+drop	26	Grimstone Golem	prop:_grimstoneMaskDrops<1
 # tales of spelunking 1 per day
-drop	26	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
+drop	27	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # can drop 5 devilish folio a day
-drop	27	Blavious Kloop	prop:_kloopDrops<5
+drop	28	Blavious Kloop	prop:_kloopDrops<5
 # can drop 5 absinthe a day
-drop	28	Green Pixie	prop:_absintheDrops<5
+drop	29	Green Pixie	prop:_absintheDrops<5
 # Hot ashes can make a potion that gives +15 ML for 15 adv. drop limit 5/day
-drop	29	Galloping Grill	prop:_hotAshesDrops<5
+drop	30	Galloping Grill	prop:_hotAshesDrops<5
 # If all else fails, keep generating CBB ingredients
-drop	30	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
+drop	31	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
 
 # We want to delevel, but don't want to deal damage
 gremlins	0	Nosy Nose
@@ -198,58 +201,61 @@ meat	4	Unconscious Collective	prop:_dreamJarDrops<3
 meat	5	Grim Brother	prop:_grimFairyTaleDrops<3
 # Wanna build up heists
 meat	6	Cat Burglar	prop:_catBurglarCharge<30
+# Mini Kiwi for turn gen in 11 Things path
+meat	7	Mini Kiwi	path:11 Things I Hate About U;item:mini kiwi<=8
 # Wanna get booze ingredients
-meat	7	Robortender
+meat	8	Robortender
 # Might as well get tales of spelunking
-meat	8	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
+meat	9	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # Might as well get devilish folios
-meat	9	Blavious Kloop	prop:_kloopDrops<3
+meat	10	Blavious Kloop	prop:_kloopDrops<3
 # Leprechauns with a >1 multiplier
 # 1.5x multiplier leprechaun
-meat	10	Jill-of-All-Trades	item:LED candle>0
+meat	11	Jill-of-All-Trades	item:LED candle>0
 #Mutant Cactus Bud	grimdark:0
-meat	11	Hobo Monkey
+meat	12	Hobo Monkey
 #Mutant Cactus Bud	grimdark:1
 # Does everything
-meat	12	Jill-of-All-Trades
+meat	13	Jill-of-All-Trades
 # Volleychauns
-meat	13	Golden Monkey
-meat	14	Bloovian Groose
-meat	15	Unconscious Collective
-meat	16	Grim Brother
-meat	17	Dramatic Hedgehog
-meat	18	Chauvinist Pig
-meat	19	Uniclops
-meat	20	Hunchbacked Minion
-meat	21	Nervous Tick
-meat	22	Cymbal-Playing Monkey
-meat	23	Cheshire Bat
+meat	14	Golden Monkey
+meat	15	Bloovian Groose
+meat	16	Unconscious Collective
+meat	17	Grim Brother
+meat	18	Mini Kiwi
+meat	19	Dramatic Hedgehog
+meat	20	Chauvinist Pig
+meat	21	Uniclops
+meat	22	Hunchbacked Minion
+meat	23	Nervous Tick
+meat	24	Cymbal-Playing Monkey
+meat	25	Cheshire Bat
 # Fairychauns
-meat	24	Cat Burglar
-meat	25	Blavious Kloop
-meat	26	Adventurous Spelunker
-meat	27	Hippo Ballerina
-meat	28	Dancing Frog
-meat	29	Cheshire Bat
-meat	30	Piano Cat
-meat	31	Psychedelic Bear
-meat	32	Casagnova Gnome
-meat	33	Jitterbug
-meat	34	Attention-Deficit Demon
-meat	35	Coffee Pixie
+meat	26	Cat Burglar
+meat	27	Blavious Kloop
+meat	28	Adventurous Spelunker
+meat	29	Hippo Ballerina
+meat	30	Dancing Frog
+meat	31	Cheshire Bat
+meat	32	Piano Cat
+meat	33	Psychedelic Bear
+meat	34	Casagnova Gnome
+meat	35	Jitterbug
+meat	36	Attention-Deficit Demon
+meat	37	Coffee Pixie
 # Wowee
-meat	36	Hand Turkey
+meat	38	Hand Turkey
 # Sorry, we don't use him for yellow rays but we can at least use him for meat I guess
-meat	37	He-Boulder
+meat	39	He-Boulder
 # Marginally special leprechauns
-meat	38	Ghost of Crimbo Commerce
-meat	39	Knob Goblin Organ Grinder
+meat	40	Ghost of Crimbo Commerce
+meat	41	Knob Goblin Organ Grinder
 #Mutant Cactus Bud	grimdark:2
-meat	40	Urchin Urchin
+meat	42	Urchin Urchin
 # Memes, doesn't actually give substats apparently
-meat	41	Cornbeefadon
+meat	43	Cornbeefadon
 # The original
-meat	42	Leprechaun
+meat	44	Leprechaun
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)
@@ -317,56 +323,59 @@ regen	33	Mosquito
 stat	0	Galloping Grill	ML:>=120
 stat	1	Baby Sandworm	ML:>=120
 stat	2	God Lobster	ML:>=120;item:God Lobster's Ring>0
+# Mini Kiwi for turn gen in 11 Things path
+stat	3	Mini Kiwi	path:11 Things I Hate About U;item:mini kiwi<=8
 # Volleyball or sombrero (whichever is best) with a multiplier
-stat	3	Jill-of-All-Trades	item:LED candle>0
-stat	4	Patriotic Eagle	ML:>=120
-stat	5	Hovering Sombrero	ML:>=120
+stat	4	Jill-of-All-Trades	item:LED candle>0
+stat	5	Patriotic Eagle	ML:>=120
+stat	6	Hovering Sombrero	ML:>=120
 # Can be tuned to give pure mainstat, so it's better than other volleyballs
-stat	6	Crimbo Shrub
+stat	7	Crimbo Shrub
 #Baby Mutant Rattlesnake	grimdark:0
 #Baby Mutant Rattlesnake	grimdark:1
 # Fairyeverything
-stat	7	Jill-of-All-Trades
+stat	8	Jill-of-All-Trades
 # Fairyballs
-stat	8	Elf Operative
-stat	9	Optimistic Candle
-stat	10	Rockin' Robin
-stat	11	Hobo in Sheep's Clothing
+stat	9	Elf Operative
+stat	10	Optimistic Candle
+stat	11	Rockin' Robin
+stat	12	Hobo in Sheep's Clothing
 # Volleychauns
-stat	12	Ghost of Crimbo Commerce
-stat	13	Golden Monkey
-stat	14	Bloovian Groose
-stat	15	Unconscious Collective
-stat	16	Grim Brother
-stat	17	Dramatic Hedgehog
-stat	18	Chauvinist Pig
-stat	19	Uniclops
-stat	20	Hunchbacked Minion
-stat	21	Nervous Tick
-stat	22	Cymbal-Playing Monkey
-stat	23	Cheshire Bat
+stat	13	Ghost of Crimbo Commerce
+stat	14	Golden Monkey
+stat	15	Bloovian Groose
+stat	16	Unconscious Collective
+stat	17	Grim Brother
+stat	18	Mini Kiwi
+stat	19	Dramatic Hedgehog
+stat	20	Chauvinist Pig
+stat	21	Uniclops
+stat	22	Hunchbacked Minion
+stat	23	Nervous Tick
+stat	24	Cymbal-Playing Monkey
+stat	25	Cheshire Bat
 # VolleyWhelps
-stat	24	Melodramedary
+stat	26	Melodramedary
 # Build up weight for free runs
-stat	25	Frumious Bandersnatch
+stat	27	Frumious Bandersnatch
 # Slightly special volleyballs
-stat	26	Ghost of Crimbo Cheer
-stat	27	Reanimated Reanimator
-stat	28	God Lobster
-stat	29	Party Mouse
-stat	30	Lil' Barrel Mimic
-stat	31	Piranha Plant
-stat	32	Antique Nutcracker
-stat	33	Jill-O-Lantern
+stat	28	Ghost of Crimbo Cheer
+stat	29	Reanimated Reanimator
+stat	30	God Lobster
+stat	31	Party Mouse
+stat	32	Lil' Barrel Mimic
+stat	33	Piranha Plant
+stat	34	Antique Nutcracker
+stat	35	Jill-O-Lantern
 # Fancy
-stat	34	Miniature Sword &amp; Martini Guy
+stat	36	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	35	Grinning Turtle
+stat	37	Grinning Turtle
 # His winning smile
-stat	36	Smiling Rat
+stat	38	Smiling Rat
 # The original
-stat	37	Blood-Faced Volleyball
+stat	39	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work

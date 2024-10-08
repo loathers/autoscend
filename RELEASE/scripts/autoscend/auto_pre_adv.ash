@@ -263,7 +263,7 @@ boolean auto_pre_adventure()
 	}
 	if(place == $location[The Fungus Plains])
 	{
-		buffMaintain($effect[Polka of Plenty], 30, 1, 1);
+		provideMeat(450, $location[The Fungus Plains], true);
 		addToMaximize("200meat drop 550max");
 	}
 	if(place == $location[Megalo-City])
@@ -580,7 +580,7 @@ boolean auto_pre_adventure()
 	}
 
 	item dartHolster = $item[Everfull Dart Holster];
-	if(auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0)
+	if(auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0 && !in_ag())
 	{
 		auto_log_info("We don't have ELR so let's hit a bullseye");
 		autoEquip($slot[acc3], dartHolster);
@@ -589,6 +589,7 @@ boolean auto_pre_adventure()
 
 	equipOverrides();
 	kolhs_preadv(place);
+	ag_bgChat();
 
 	if (is100FamRun() && my_familiar() == $familiar[none])
 	{

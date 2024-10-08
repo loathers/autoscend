@@ -10,7 +10,6 @@ void wereprof_initializeSettings()
 		return;
 	}
 	set_property("auto_wandOfNagamar", false);		//wand not used in this path
-	set_property("auto_wereprof_init", false); 		//string used for when we find smashed equipment so we know we don't need to look there
 	cli_execute('wereprofessor research');			//parse the research bench
 }
 
@@ -151,7 +150,7 @@ void wereprof_buySkills()
 			{
 				if(contains_text(get_property("beastSkillsAvailable").to_string(), sk))
 				{
-					if(rpcost[sk] >= rp)
+					if(rpcost[sk] > rp)
 					{
 						cantbuy += 1;
 						if(cantbuy==count(split_string(get_property("beastSkillsAvailable").to_string(),",")))
@@ -247,17 +246,24 @@ boolean LM_wereprof()
 	{
 		return false;
 	}
-	if(get_property("auto_wereprof_init").to_boolean())
+	item elixer = $item[Doc Galaktik\'s Homeopathic Elixir];
+	int elixerAmount = item_amount(elixer);
+	if(elixerAmount < 10 && (my_meat() - npc_price(elixer) > meatReserve()))
 	{
-		return false;
+		// make a stock pile of 10 healing items to use as needed when werewolf
+		// buy a single one each time through to slowly build it
+		auto_buyUpTo(elixerAmount + 1, elixer);
 	}
 
 	auto_log_info("Getting skills", "blue");
 	wereprof_buySkills();
-	auto_log_info("Buying an oven", "blue");
-	if(ovenHandle()) //buy an oven ASAP
+	auto_log_info("Getting equipment", "blue");
+	wereprof_buyEquip();
+	
+	if(!get_property("auto_haveoven").to_boolean()) //buy an oven ASAP
 	{
-		set_property("auto_wereprof_init", true);
+		auto_log_info("Buying an oven", "blue");
+		ovenHandle();
 		return true;
 	}
 	return false;

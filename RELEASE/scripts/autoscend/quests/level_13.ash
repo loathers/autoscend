@@ -396,7 +396,7 @@ boolean L13_towerNSContests()
 
 	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_01_contestbooth"))
 	{
-		if(in_wereprof() && get_property("wereProfessorTransformTurns") < 48)
+		if(in_wereprof() && get_property("wereProfessorTransformTurns").to_int() < 48)
 		{
 			visit_url("place.php?whichplace=nstower&action=ns_01_contestbooth");
 			visit_url("choice.php?pwd=&whichchoice=1003&option=5", true); //want as many turns of werewolf as possible at the contest booth so refresh with this choice
@@ -804,7 +804,11 @@ boolean L13_towerNSHedge()
 
 	maximize_hedge();
 	cli_execute("auto_pre_adv");
-	acquireHP();
+	if(!acquireHP())
+	{
+		// couldn't heal so do slow route. May die to fast route
+		set_property("auto_hedge", "slow");
+	}
 	visit_url("place.php?whichplace=nstower&action=ns_03_hedgemaze");
 	if(get_property("lastEncounter") == "This Maze is... Mazelike...")
 	{
@@ -1454,35 +1458,7 @@ boolean L13_towerNSTower()
 			abort("auto_towerBreak set to abort here.");
 		}
 		equipBaseline();
-		shrugAT($effect[Polka of Plenty]);
-		buffMaintain($effect[Disco Leer]);
-		buffMaintain($effect[Polka of Plenty]);
-		buffMaintain($effect[Cranberry Cordiality]);
-		buffMaintain($effect[Big Meat Big Prizes]);
-		buffMaintain($effect[Patent Avarice]);
-		buffMaintain($effect[Flapper Dancin\']);
-		buffMaintain($effect[Incredibly Well Lit]);
-		bat_formWolf();
-		if(auto_birdModifier("Meat Drop") > 0)
-		{
-			buffMaintain($effect[Blessing of the Bird]);
-		}
-		if(auto_favoriteBirdModifier("Meat Drop") > 0)
-		{
-			buffMaintain($effect[Blessing of Your Favorite Bird]);
-		}
-		if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
-		{
-			cli_execute("concert 2");
-		}
-		
-		handleFamiliar("meat");
-		addToMaximize("200meat drop");
-		
-		if(my_class() == $class[Seal Clubber])
-		{
-			autoEquip($item[Meat Tenderizer is Murder]);
-		}
+		provideMeat(626, true, false);
 
 		acquireHP();
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);
