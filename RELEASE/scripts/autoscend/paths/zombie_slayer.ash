@@ -201,7 +201,39 @@ boolean zombieSlayer_acquireHP(int goal)
 	if (my_hp() >= goal) return true;
 
 	int missingHP = goal - my_hp();
+	boolean failOut = false;
 
+	while ((missingHp > 0) && (!failOut)) 
+	{
+		// Devour Minions is less cost effective when we are under max 80hp 
+		// It is also less effective if we would heal less than 30% of max hp
+		// But if we have the hidden apartment curses we should always try to use it anyway
+		if ((my_maxhp() > 80 && missingHP > floor(my_maxhp() * 0.3)) || isHavingHiddenApartmentCurse())
+		{
+			if (auto_have_skill($skill[Devour Minions]) && zombieSlayer_acquireMP(mp_cost($skill[Devour Minions])))
+			{
+				auto_log_debug("Sacrificing 4 minions for HP");
+				use_skill(1, $skill[Devour Minions]);
+			}
+		} 
+		// Only use Bite Minions if it doesn't remove a hidden apartment curse (wich it can do if we have Devour Minion)
+		if (!(auto_have_skill($skill[Devour Minions]) && isHavingHiddenApartmentCurse())) 
+		{
+			if (auto_have_skill($skill[Bite Minion]) && zombieSlayer_acquireMP(mp_cost($skill[Bite Minion])))
+			{
+				auto_log_debug("Sacrificing 1 minion for HP");
+				use_skill(1, $skill[Bite Minion]);
+			}
+		}
+		if (missingHP == goal - my_hp()) 
+		{
+			auto_log_debug("Could not sacrifice minion(s) for HP", "red");
+			failOut = true; // Failed
+		} 
+		missingHP = goal - my_hp();
+	}
+
+/*
 	// Devour Minions if you need at least 4 casts of Bite Minion 
 	if (auto_have_skill($skill[Devour Minions]))
 	{
@@ -228,7 +260,7 @@ boolean zombieSlayer_acquireHP(int goal)
 			}
 		}
 	}
-
+*/
 	return my_hp() >= goal;
 }
 
