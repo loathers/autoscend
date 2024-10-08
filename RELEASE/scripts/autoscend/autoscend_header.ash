@@ -1872,6 +1872,7 @@ int poolSkillPracticeGains();
 boolean hasUsefulShirt();
 int meatReserve();
 boolean auto_wishForEffect(effect wish);
+int auto_totalEffectWishesAvailable();
 item wrap_item(item it);
 boolean auto_burnMP(int mpToBurn);
 boolean can_read_skillbook(item it);
