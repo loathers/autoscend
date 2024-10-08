@@ -1719,6 +1719,15 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 			return result();
 	}
 
+	if((auto_is_valid($item[possessed sugar cube]) && item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
+	{
+		if(!speculative)
+			cli_execute("make sugar fairy");
+		handleEffect($effect[Dance of the Sugar Fairy]);
+		if(pass())
+			return result();
+	}
+	
 	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
 	{
 		if(!speculative)
