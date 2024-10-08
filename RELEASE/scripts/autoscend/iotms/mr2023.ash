@@ -467,7 +467,7 @@ void auto_buyFrom2002MrStore()
 		use(itemConsidering);
 	}*/
 	// manual of secret door detection. skill: Secret door awareness
-	itemConsidering = $item[manual of secret door detection];
+	item itemConsidering = $item[manual of secret door detection];
 	if(can_read_skillbook(itemConsidering) && remainingCatalogCredits() > 0 && !auto_have_skill($skill[Secret door awareness]) && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
@@ -481,7 +481,7 @@ void auto_buyFrom2002MrStore()
 	}
 	// meat butler on day 1 of run
 	itemConsidering = $item[meat butler];
-	if(remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
+	if(have_campground() && remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
