@@ -1,6 +1,6 @@
 # This Fork
 
-This is a fork of autoscend that is specifically tailored to run Zombie Slayer with the spcific goal of getting supplies for the clan photo booth. This is done by using the Photo Booth Supply List against the wandering hunter Deputy Nick Soames & Earl.
+This is a fork of autoscend that is specifically tailored to run Zombie Slayer with the single goal of getting supplies for the clan photo booth. This is done by using the Photo Booth Supply List against the wandering hunter Deputy Nick Soames & Earl, which appears once some time after reaching level 8.
 
 To kick this off, the Photo Booth Supply List must be picked up manually before running this script.
 
@@ -10,8 +10,11 @@ Since this is a complete fork af autoscend, it is of course possible to use it f
 
 The script currently as issues with 
 
-* Shadow Realm on day 1. Unless you have lots of zombie points it's hard to fight the tougher shadows. The script will exit when beaten up, and you might want to do the rest of the fights manually. If you have Bear Arms the Bar Hug is great for this.
+* Shadow Realm on day 1. Unless you have lots of zombie points it's hard to fight the tougher shadows. The script will exit when beaten up, and you might want to do the rest of the fights manually. If you have Bear Arms the Bear Hug is great for this.
 * Bear Arms. If you're shiny enough they aren't used at all, which is a shame.
+
+Could also have issues with:
+
 * Finishing the war. This fight is a bit though. Try to buff MUS and use some deleveler first (Everful Dart Holster is great for this) and then just bash him down.
 * Wall of Meat. Since the default combat tactic is to Plague Claw until we can do a killing blow, the script struggles with the wall of meat. Just heal up and kill it wit h brute force if that happens.
 
