@@ -1252,7 +1252,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 	if(pass())
 		return result();
 	
-	// don't craft equipment here. See how much +item we can get with gear on hand
+	// don't craft equipment here. See how much +meat we can get with gear on hand
 	if(doEverything)
 	{
 		string max = "500meat " + (amt + 100) + "max";
@@ -1497,7 +1497,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		}
 		if(pass())
 			return result();
-		if(auto_monkeyPawWishesLeft() + auto_wishesAvailable() > 0)
+		if(auto_totalEffectWishesAvailable() > 0)
 		{
 			boolean success = true;
 			int specwishes = 0;
@@ -1523,7 +1523,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 					if(!speculative)
 						success = auto_wishForEffect(eff);
 					specwishes +=1;
-					if(specwishes <= auto_monkeyPawWishesLeft() + auto_wishesAvailable())
+					if(specwishes <= auto_totalEffectWishesAvailable())
 					{
 						handleEffect(eff);
 						if(pass())
@@ -1614,7 +1614,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 	}
 
 	//see how much familiar will help
-	if(doEverything && pathHasFamiliar() && pathAllowsChangingFamiliar())
+	if(doEverything && canChangeFamiliar())
 	{
 		if(!speculative)
 		{
@@ -1666,13 +1666,14 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 
 	// unlimited skills
 	if(tryEffects($effects[
-		Fat Leon\'s Phat Loot Lyric,
-		Singer\'s Faithful Ocelot
+		Fat Leon\'s Phat Loot Lyric, //20% item
+		Singer\'s Faithful Ocelot //10% item
 	]))
 		return result();
 
 	if(canAsdonBuff($effect[Driving Observantly]))
 	{
+		//50% meat, 50% item, 50% booze drops
 		if(!speculative)
 			asdonBuff($effect[Driving Observantly]);
 		handleEffect($effect[Driving Observantly]);
@@ -1682,6 +1683,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 
 	if(!bat_wantHowl(loc) && bat_formBats(speculative))
 	{
+		//150% item, 150% init
 		handleEffect($effect[Bats Form]);
 	}
 	if(pass())
@@ -1689,33 +1691,39 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 
 	if(auto_birdModifier("Item Drop") > 0)
 	{
+		//Can be 10/20/30/40/50% meat drop
 		if(tryEffects($effects[Blessing of the Bird]))
 			return result();
 	}
 
 	if(auto_favoriteBirdModifier("Item Drop") > 0)
 	{
+		//Can be 10/20/30/40/50% meat drop
 		if(tryEffects($effects[Blessing of Your Favorite Bird]))
 			return result();
 	}
 
 	// items
 	if(tryEffects($effects[
-		Joyful Resolve,
-		Fortunate Resolve,
-		Human-Human Hybrid,
-		Unusual Perspective,
-		Eagle Eyes,
-		Heart of Lavender,
-		Five Sticky Fingers,
-		Wet and Greedy
+		Unusual Perspective, //50% item
+		Five Sticky Fingers, //50% item
+		Wet and Greedy, //25% item
+		Serendipi Tea, //25% item
+		Glowing Hands, //25% item
+		Eagle Eyes, //20% item
+		Juiced and Jacked, //20% item
+		The Grass... \ Is Blue..., //40% meat, 20% item
+		Joyful Resolve, //15% item
+		Fortunate Resolve, //10% item
+		Human-Human Hybrid, //10% item
+		Heart of Lavender, //10% item
 	]))
 		return result();
 	
 	if(!in_wereprof())
 	{
 		//wereprof doesn't like +ML effects outside of Werewolf
-		if(tryEffects($effects[Frosty]))
+		if(tryEffects($effects[Frosty])) //200% meat, 100% item, 100% init, 25 ML
 			return result();
 	}
 
@@ -1723,7 +1731,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 	{
 		if(!speculative)
 			cli_execute("make sugar fairy");
-		handleEffect($effect[Dance of the Sugar Fairy]);
+		handleEffect($effect[Dance of the Sugar Fairy]); //25% item
 		if(pass())
 			return result();
 	}
@@ -1731,7 +1739,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
 	{
 		if(!speculative)
-			auto_sourceTerminalEnhance("items");
+			auto_sourceTerminalEnhance("items"); //30% item
 		handleEffect($effect[items.enh]);
 		if(pass())
 			return result();
@@ -1805,6 +1813,84 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 			return result();
 	}
 
+	// Use limited resources like Inhaler
+	if(doEverything)
+	{
+		if(tryEffects($effects[
+		shadow waters, //200% meat, 100% item, 100% init, -10% combat
+		One Very Clear Eye, //100% item
+		Car-Charged, //100% meat, 100% item, 5-10MP, 50% init, 50% spell dmg, +3 stats per fight
+		Incredibly Well Lit //100% meat, 50% item
+		]))
+			if(pass())
+				return result();
+		if(zataraAvailable() && (0 == have_effect($effect[There\'s no N in Love])) & auto_is_valid($effect[There\'s no N in Love]))
+		{
+			if(!speculative)
+			{
+				zataraSeaside("item");
+			}
+			handleEffect($effect[There\'s no N in Love]); //50% booze/food/item
+			if(pass())
+				return result();			
+		}
+		if((get_property("sidequestArenaCompleted") == "hippy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Dilated Pupils]) == 0))
+		{
+			if(is_professor())
+			{
+				//Need to manually equip because professor
+				if(!have_equipped($item[reinforced beaded headband])) equip($item[reinforced beaded headband]);
+				if(!have_equipped($item[bullet-proof corduroys])) equip($item[bullet-proof corduroys]);
+				if(!have_equipped($item[round purple sunglasses])) equip($item[round purple sunglasses]);
+			}
+			else
+			{
+				outfit("War Hippy Fatigues");
+			}
+			if(!speculative)
+			{
+				cli_execute("concert 2"); //20% item
+			}
+			handleEffect($effect[Dilated Pupils]); //20% item
+			if(pass())
+				return result();
+		}
+		if(pass())
+			return result();
+		if(auto_totalEffectWishesAvailable() > 0)
+		{
+			boolean success = true;
+			int specwishes = 0;
+			foreach eff in $effects[Frosty, //200% meat, 100% item, 25 ML, 100% init
+			One Very Clear Eye, //100% item
+			Let's Go Shopping!,  //150% meat, 75% item, -300% myst
+			Always Be Collecting, //100% meat, 50% item
+			Incredibly Well Lit, //100% meat, 50% item
+			]{
+				if(eff == $effect[Frosty] && in_wereprof()) continue; //skip frosty in wereprof
+				if(have_effect(eff) == 0)
+				{
+					if(!speculative)
+						success = auto_wishForEffect(eff);
+					specwishes +=1;
+					if(specwishes <= auto_totalEffectWishesAvailable())
+					{
+						handleEffect(eff);
+						if(pass())
+							return result();
+					}
+					else
+					{
+						success = false;
+					}
+				}
+				if(!success) break;
+			}
+		}
+		auto_log_debug("With limited buffs we can get to " + result());
+		if(pass())
+			return result();
+	}
 	return result();
 }
 
