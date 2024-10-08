@@ -1551,7 +1551,7 @@ string horseNormalize(string horseText)
 
 boolean getHorse(string type)
 {
-	if(!get_property("horseryAvailable").to_boolean())
+	if(!get_property("horseryAvailable").to_boolean() || in_bad_moon())
 	{
 		return false;
 	}
