@@ -425,9 +425,9 @@ boolean autoChooseFamiliar(location place)
 		return handleFamiliar(familiar_target_100);		//do not break 100 familiar runs
 	}
 	
-	//Can only use burly bodyguard, except in non-adventure.php zones. In those, we want the Gelatinous Cubeling for Daily Dungeon drops
-	if(in_avantGuard()){
-		if(wantCubeling() && get_property("auto_nonAdvLoc").to_boolean())
+	// Can only use burly bodyguard, except in non-adventure.php zones. In those, we want the Gelatinous Cubeling for Daily Dungeon drops
+	if (in_avantGuard()) {
+		if (wantCubeling() && get_property("auto_nonAdvLoc").to_boolean() && in_hardcore())
 		{
 			return handleFamiliar($familiar[Gelatinous Cubeling]);
 		}
