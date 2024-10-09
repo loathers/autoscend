@@ -1,4 +1,4 @@
-since r28060;	// Avant Guard council text
+since r28082;	// Fixes for Avant Guard council text
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
