@@ -10,6 +10,7 @@ Since this is a complete fork af autoscend, it is of course possible to use it f
 
 The script currently as issues with 
 
+* Starting the Untinkerer quest. Just do it manually and restart.
 * Shadow Realm on day 1. Unless you have lots of zombie points it's hard to fight the tougher shadows. The script will exit when beaten up, and you might want to do the rest of the fights manually. If you have Bear Arms the Bear Hug is great for this.
 * Bear Arms. If you're shiny enough they aren't used at all, which is a shame.
 
