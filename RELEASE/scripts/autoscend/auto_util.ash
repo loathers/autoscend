@@ -4491,7 +4491,7 @@ boolean auto_wishForEffect(effect wish)
 	return false;
 }
 
-int auto_totalEffectWishesAvailable()()
+int auto_totalEffectWishesAvailable()
 {
 	return auto_monkeyPawWishesLeft() + auto_wishesAvailable();
 }
