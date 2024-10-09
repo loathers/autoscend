@@ -5,10 +5,17 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 	// Skip if have auto_skipStage2 is set
 	if(get_property("auto_skipStage2").to_boolean()) return "";
-	
+
+	//If in Avant Guard, want to make sure the enemy is set correctly to the bodyguard
+	monster guardee = $monster[none];
+	if(in_avantGuard() && ag_is_bodyguard())
+	{
+		guardee = to_monster(substring(get_property("lastEncounter"), index_of(get_property("lastEncounter"), " acting as the bodyguard to a ") + 30));
+	}
+
 	//if we want to olfact in stage 4 then we should delay stage 2 until we olfact.
 	//we do not want to olfact now because we should do stage 3 first to stun and/or debuff the enemy first before olfacting.
-	if(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
+	if(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none]  && !ag_is_bodyguard())
 	{
 		auto_log_debug("Skipping stage 2 of combat for now as we intend to olfact [" +enemy+ "]");
 		return "";
@@ -138,7 +145,29 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
-	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()))
+	// Free run in Avant Guard from Bodyguard before banishing for a few monsters
+	if(!combat_status_check("banishercheck") && auto_wantToBanish(guardee, my_location()))
+	{
+		string freeRunAction = freeRunCombatStringPreBanish(enemy, my_location(), true);
+		if(freeRunAction != "")
+		{
+			if(index_of(freeRunAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(freeRunAction, 6)), "auto_freeruns");
+			}
+			else if(index_of(freeRunAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(freeRunAction, 5)), "auto_freeruns");
+			}
+			else
+			{
+				auto_log_warning("Unable to track runaway behavior: " + freeRunAction, "red");
+			}
+			return freeRunAction;
+		}
+	}
+
+	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()) && !ag_is_bodyguard())
 	{
 		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
@@ -173,7 +202,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 
 	// Free run from monsters we want to banish but are unable to, or monsters on the free run list
-	if(!combat_status_check("freeruncheck") && (auto_wantToFreeRun(enemy, my_location()) || auto_wantToBanish(enemy, my_location())))
+	if(!combat_status_check("freeruncheck") && ((auto_wantToFreeRun(enemy, my_location()) || auto_wantToBanish(enemy, my_location())) || (auto_wantToFreeRun(guardee, my_location()) || auto_wantToBanish(guardee, my_location()))))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")

@@ -906,25 +906,25 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[Vanya\'s Castle]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && (get_property("8BitColor") == "black" || get_property("8BitColor") == ""))
+		if (possessEquipment($item[Continuum Transfunctioner]) && EightBitScore() < 10000 && (get_property("8BitColor") == "black" || get_property("8BitColor") == ""))
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[The Fungus Plains]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "red")
+		if (possessEquipment($item[Continuum Transfunctioner]) && EightBitScore() < 10000 && get_property("8BitColor") == "red")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[Megalo-City]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "blue")
+		if (possessEquipment($item[Continuum Transfunctioner]) && EightBitScore() < 10000 && get_property("8BitColor") == "blue")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[Hero\'s Field]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "green")
+		if (possessEquipment($item[Continuum Transfunctioner]) && EightBitScore() < 10000 && get_property("8BitColor") == "green")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
@@ -1691,7 +1691,7 @@ boolean zone_available(location loc)
 	// compare our result with Mafia's native function, log a warning if theres a difference. Ideally we can see if there are any differences between our code and Mafia's, and if not remove all of ours in favor of Mafia's
 	boolean canAdvRetval = can_adventure(loc);
 	if(canAdvRetval != retval){
-		auto_log_debug("Uh oh, autoscend and mafia's can_adventure() dont agree on whether we can adventure at " + loc + " (autoscend: "+retval+", can_adventure(): "+canAdvRetval+"). Will assume locaiton available if either is true.");
+		auto_log_debug("Uh oh, autoscend and mafia's can_adventure() dont agree on whether we can adventure at " + loc + " (autoscend: "+retval+", can_adventure(): "+canAdvRetval+"). Will assume location available if either is true.");
 		retval = retval || canAdvRetval;
 	}
 

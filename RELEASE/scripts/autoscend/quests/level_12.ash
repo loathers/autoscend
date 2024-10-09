@@ -1094,6 +1094,10 @@ boolean L12_orchardFinalize()
 void gremlinsFamiliar()
 {
 	//when fighting gremlins we want to minimize the familiar ability to cause damage.
+
+	if (in_avantGuard()) {
+		return;
+	}
 	
 	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 	boolean strip_familiar = true;
