@@ -198,6 +198,7 @@ boolean LX_steelOrgan()
 		auto_log_info("I am hungry for some steel.", "blue");
 	}
 
+	// typically getting steel organ means this is a long run, might as well use all options to get +item as sources refresh each day
 	provideItem(567, $location[The Laugh Floor], true);
 
 	if(get_property("questM10Azazel") == "unstarted")

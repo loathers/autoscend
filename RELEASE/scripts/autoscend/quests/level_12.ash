@@ -952,7 +952,7 @@ boolean L12_filthworms()
 
 		// filth worm glands have 10% drop rate
 		// getting here means we don't have a yellow ray, not delaying for the yr, and don't have enough +item yet
-		provideItem(900,$location[The Feeding Chamber], true);
+		provideItem(900,$location[The Feeding Chamber], false);
 
 		if(in_lar())
 		{

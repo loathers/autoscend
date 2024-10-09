@@ -1813,7 +1813,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 			return result();
 	}
 
-	// Use limited resources like Inhaler
+	// Use limited resources
 	if(doEverything)
 	{
 		if(tryEffects($effects[
