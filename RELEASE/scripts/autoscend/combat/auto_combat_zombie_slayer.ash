@@ -43,8 +43,8 @@ string auto_combatZombieSlayerStage2(int round, monster enemy, string text)
 	{
 		if (canUse($skill[check for photo booth supplies])) 
 		{
-			return useSkill($skill[check for photo booth supplies]);
 			set_property("auto_getSheriffBadgeSupplies", false);
+			return useSkill($skill[check for photo booth supplies]);
 		} 
 		else
 		{
