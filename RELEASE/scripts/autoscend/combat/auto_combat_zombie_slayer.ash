@@ -46,7 +46,7 @@ string auto_combatZombieSlayerStage2(int round, monster enemy, string text)
 			set_property("auto_getSheriffBadgeSupplies", false);
 			return useSkill($skill[check for photo booth supplies]);
 		} 
-		else
+		else if (get_property("auto_getSheriffBadgeSupplies").to_boolean())
 		{
 			abort("Could not get photo booth supplies from Nick Soames. Please lose this fight and try manually (and/or check the logs to see what went wrong).");
 		}
