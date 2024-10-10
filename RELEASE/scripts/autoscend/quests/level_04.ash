@@ -5,7 +5,7 @@ boolean provideGuanoStenchResistance()
 	// try to get the stench res without equipment, but use equipment if we must
 	if(!provideResistances(resGoal, $location[Guano Junction], false) && !provideResistances(resGoal, $location[Guano Junction], true))
 	{
-		auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
+		auto_log_warning("I cannae handle the stench of the Guano Junction!", "green");
 		return false;
 	}
 	return true;
