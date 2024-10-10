@@ -25,7 +25,7 @@ boolean L4_batCave()
 		if (!get_property("batWingsBatHoleEntrance").to_boolean() && zone_available($location[The Bat Hole Entrance]))
 		{
 			autoEquip($item[bat wings]);
-			auto_log_info("Wearing bat wings to get a free bat wing", "green"));
+			auto_log_info("Wearing bat wings to get a free bat wing", "green");
 			return autoAdv($location[The Bat Hole Entrance]);
 		}
 		else if (!get_property("batWingsGuanoJunction").to_boolean() && zone_available($location[Guano Junction]))
@@ -36,19 +36,19 @@ boolean L4_batCave()
 			}
 
 			autoEquip($item[bat wings]);
-			auto_log_info("Wearing bat wings to get a free sonar-in-a-biscuit", "green"));
+			auto_log_info("Wearing bat wings to get a free sonar-in-a-biscuit", "green");
 			return autoAdv($location[Guano Junction]);
 		}
 		else if (!get_property("batWingsBatratBurrow").to_boolean() && zone_available($location[The Batrat and Ratbat Burrow]))
 		{
 			autoEquip($item[bat wings]);
-			auto_log_info("Wearing bat wings to get another free sonar-in-a-biscuit", "green"));
+			auto_log_info("Wearing bat wings to get another free sonar-in-a-biscuit", "green");
 			return autoAdv($location[The Batrat and Ratbat Burrow]);
 		}
 		else if (!get_property("batWingsBeanbatChamber").to_boolean() && zone_available($location[The Beanbat Chamber]))
 		{
 			autoEquip($item[bat wings]);
-			auto_log_info("Wearing bat wings to get a free enchanted bean", "green"));
+			auto_log_info("Wearing bat wings to get a free enchanted bean", "green");
 			return autoAdv($location[The Beanbat Chamber]);
 		}
 	}
