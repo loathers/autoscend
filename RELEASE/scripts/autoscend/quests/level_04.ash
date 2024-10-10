@@ -1,3 +1,16 @@
+boolean provideGuanoStenchResistance()
+{
+	int [element] resGoal;
+	resGoal[$element[stench]] = 1;
+	// try to get the stench res without equipment, but use equipment if we must
+	if(!provideResistances(resGoal, $location[Guano Junction], false) && !provideResistances(resGoal, $location[Guano Junction], true))
+	{
+		auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
+		return false;
+	}
+	return true;
+}
+
 boolean L4_batCave()
 {
 	if(internalQuestStatus("questL04Bat") < 0 || internalQuestStatus("questL04Bat") > 4)
@@ -6,6 +19,39 @@ boolean L4_batCave()
 	}
 
 	auto_log_info("In the bat hole!", "blue");
+
+	if (possessEquipment($item[bat wings]) && auto_can_equip($item[bat wings]))
+	{
+		if (!get_property("batWingsBatHoleEntrance").to_boolean() && zone_available($location[The Bat Hole Entrance]))
+		{
+			autoEquip($item[bat wings]);
+			auto_log_info("Wearing bat wings to get a free bat wing", "green"));
+			return autoAdv($location[The Bat Hole Entrance]);
+		}
+		else if (!get_property("batWingsGuanoJunction").to_boolean() && zone_available($location[Guano Junction]))
+		{
+			if (!provideGuanoStenchResistance())
+			{
+				return false;
+			}
+
+			autoEquip($item[bat wings]);
+			auto_log_info("Wearing bat wings to get a free sonar-in-a-biscuit", "green"));
+			return autoAdv($location[Guano Junction]);
+		}
+		else if (!get_property("batWingsBatratBurrow").to_boolean() && zone_available($location[The Batrat and Ratbat Burrow]))
+		{
+			autoEquip($item[bat wings]);
+			auto_log_info("Wearing bat wings to get another free sonar-in-a-biscuit", "green"));
+			return autoAdv($location[The Batrat and Ratbat Burrow]);
+		}
+		else if (!get_property("batWingsBeanbatChamber").to_boolean() && zone_available($location[The Beanbat Chamber]))
+		{
+			autoEquip($item[bat wings]);
+			auto_log_info("Wearing bat wings to get a free enchanted bean", "green"));
+			return autoAdv($location[The Beanbat Chamber]);
+		}
+	}
 
 	if(considerGrimstoneGolem(true))
 	{
@@ -124,12 +170,8 @@ boolean L4_batCave()
 		return true;
 	}
 
-	int [element] resGoal;
-	resGoal[$element[stench]] = 1;
-	// try to get the stench res without equipment, but use equipment if we must
-	if(!provideResistances(resGoal, $location[Guano Junction], false) && !provideResistances(resGoal, $location[Guano Junction], true))
+	if (!provideGuanoStenchResistance())
 	{
-		auto_log_warning("I can nae handle the stench of the Guano Junction!", "green");
 		return false;
 	}
 
