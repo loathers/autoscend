@@ -29,13 +29,8 @@ boolean L4_batCave()
 			handleTracker($item[bat wings], $item[bat wing], "auto_otherstuff");
 			return autoAdv($location[The Bat Hole Entrance]);
 		}
-		else if (!get_property("batWingsGuanoJunction").to_boolean() && zone_available($location[Guano Junction]))
+		else if (!get_property("batWingsGuanoJunction").to_boolean() && zone_available($location[Guano Junction]) && provideGuanoStenchResistance()))
 		{
-			if (!provideGuanoStenchResistance())
-			{
-				return false;
-			}
-
 			autoForceEquip($item[bat wings]);
 			auto_log_info("Wearing bat wings to get a free sonar-in-a-biscuit", "green");
 			handleTracker($item[bat wings], $item[sonar-in-a-biscuit], "auto_otherstuff");
