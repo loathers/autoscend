@@ -568,6 +568,7 @@ boolean auto_MayamClaimBelt();
 boolean auto_MayamClaimWhatever();
 boolean auto_MayamClaimAll();
 boolean auto_haveRoman();
+boolean auto_haveBatWings();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

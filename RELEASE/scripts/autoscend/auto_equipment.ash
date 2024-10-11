@@ -810,6 +810,21 @@ void finalizeMaximize(boolean speculative)
 			addBonusToMaximize($item[spring shoes], 50);
 		}
 	}
+
+	if(auto_haveBatWings() && get_property("_batWingsFreeFights").to_int() < 5)
+	{
+		if(!nextMonsterIsFree)
+		{
+			addBonusToMaximize($item[bat wings], 200); // get the 5 free fights
+		}
+		else
+		{
+			// bat wings free fights can get swallowed by some free fights
+			// a doubly free fight doesn't help
+			addBonusToMaximize($item[bat wings], -200);
+		}
+	}
+
 	// We still need pixels in KoE, badly.
 	if(in_koe() && auto_hasPowerfulGlove())
 	{

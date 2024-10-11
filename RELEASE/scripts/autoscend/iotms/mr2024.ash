@@ -358,3 +358,12 @@ boolean auto_haveRoman()
 	}
 	return false;
 }
+
+boolean auto_haveBatWings()
+{
+	if(auto_is_valid($item[Bat Wings]) && possessEquipment($item[Bat Wings]))
+	{
+		return true;
+	}
+	return false;
+}
