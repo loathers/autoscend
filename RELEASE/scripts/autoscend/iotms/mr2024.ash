@@ -367,3 +367,21 @@ boolean auto_haveBatWings()
 	}
 	return false;
 }
+
+boolean canLeapBridge()
+{
+	// bat wings allow for us to leap bridge at 5/6 progress (25 of 30)
+	if(!auto_haveBatWings())
+	{
+		return false;
+	}
+	if(fastenerCount() < 25)
+	{
+		return false;
+	}
+	if(lumberCount() < 25)
+	{
+		return false;
+	}
+	return true;
+}
