@@ -1,7 +1,7 @@
 script "Autoscend-ZS";
 notify Tissen;
 
-since r28019;	// feat: add avant guard path
+since r28077;	// feat: various iotm improvements
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
