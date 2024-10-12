@@ -1,4 +1,4 @@
-since r28077;	// feat: various iotm improvements
+since r28084;	// feat: make bat wings rest always available
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
