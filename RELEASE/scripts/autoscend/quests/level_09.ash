@@ -996,7 +996,8 @@ boolean L9_highLandlord()
 	{
 		return false;
 	}
-	if(get_property("chasmBridgeProgress").to_int() < 30)
+	if(get_property("chasmBridgeProgress").to_int() < 30 && !auto_haveBatWings() ||
+		get_property("chasmBridgeProgress").to_int() < 25 && auto_haveBatWings())
 	{
 		return false;
 	}
