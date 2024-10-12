@@ -131,7 +131,7 @@ replace	34	trendy bugbear chef	path:Bugbear Invasion;loc:Galley
 sniff	0	pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed;prop:hiddenApartmentProgress<7
 sniff	1	Writing Desk	prop:writingDesksDefeated<4
 sniff	2	cabinet of Dr. Limpieza
-sniff	3	Dairy Goat	loc:The Goatlet
+sniff	3	Dairy Goat	loc:The Goatlet;item:goat cheese<3
 sniff	4	Pygmy Bowler
 sniff	5	Pygmy Witch Surgeon
 sniff	6	pygmy witch accountant	loc:The Hidden Office Building

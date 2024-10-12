@@ -1,7 +1,7 @@
 pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed;prop:hiddenApartmentProgress<7
 Writing Desk	prop:writingDesksDefeated<4
 cabinet of Dr. Limpieza
-Dairy Goat	loc:The Goatlet
+Dairy Goat	loc:The Goatlet;item:goat cheese<3
 Pygmy Bowler
 Pygmy Witch Surgeon
 pygmy witch accountant	loc:The Hidden Office Building
