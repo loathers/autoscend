@@ -20,7 +20,7 @@ boolean L4_batCave()
 
 	auto_log_info("In the bat hole!", "blue");
 
-	if (possessEquipment($item[bat wings]) && auto_can_equip($item[bat wings]))
+	if (auto_haveBatWings())
 	{
 		if (!get_property("batWingsBatHoleEntrance").to_boolean() && zone_available($location[The Bat Hole Entrance]))
 		{
