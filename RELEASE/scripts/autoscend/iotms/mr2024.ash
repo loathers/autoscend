@@ -375,11 +375,7 @@ boolean auto_canLeapBridge()
 	{
 		return false;
 	}
-	if(fastenerCount() < 25)
-	{
-		return false;
-	}
-	if(lumberCount() < 25)
+	if(fastenerCount() < 25 || lumberCount() < 25)
 	{
 		return false;
 	}
