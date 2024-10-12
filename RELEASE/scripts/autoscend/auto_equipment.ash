@@ -813,16 +813,7 @@ void finalizeMaximize(boolean speculative)
 
 	if(auto_haveBatWings() && get_property("_batWingsFreeFights").to_int() < 5)
 	{
-		if(!nextMonsterIsFree)
-		{
-			addBonusToMaximize($item[bat wings], 200); // get the 5 free fights
-		}
-		else
-		{
-			// bat wings free fights can get swallowed by some free fights
-			// a doubly free fight doesn't help
-			addToMaximize("-equip " + $item[bat wings].to_string());
-		}
+		addBonusToMaximize($item[bat wings], 200); // get the 5 free fights
 	}
 
 	// We still need pixels in KoE, badly.
