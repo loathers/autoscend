@@ -160,7 +160,7 @@ boolean finishBuildingSmutOrcBridge()
 	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
 	// finish chasm if we can
-	if(canLeapBridge())
+	if(auto_canLeapBridge())
 	{
 		autoForceEquip($item[bat wings]);
 		visit_url("place.php?whichplace=orc_chasm&action=bridge_jump");

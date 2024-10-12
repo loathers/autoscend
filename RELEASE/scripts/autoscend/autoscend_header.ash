@@ -569,7 +569,7 @@ boolean auto_MayamClaimWhatever();
 boolean auto_MayamClaimAll();
 boolean auto_haveRoman();
 boolean auto_haveBatWings();
-boolean canLeapBridge();
+boolean auto_canLeapBridge();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
