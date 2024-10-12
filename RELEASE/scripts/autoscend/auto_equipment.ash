@@ -821,7 +821,7 @@ void finalizeMaximize(boolean speculative)
 		{
 			// bat wings free fights can get swallowed by some free fights
 			// a doubly free fight doesn't help
-			addBonusToMaximize($item[bat wings], -200);
+			addToMaximize("-equip " + $item[bat wings].to_string());
 		}
 	}
 
