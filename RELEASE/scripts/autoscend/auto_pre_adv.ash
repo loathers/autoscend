@@ -521,7 +521,6 @@ boolean auto_pre_adventure()
 	{
 		// only here to get immateria. Get it faster with bat wings
 		autoEquip($item[Bat Wings]);
-		abort("test airship NC");
 	}
 
 

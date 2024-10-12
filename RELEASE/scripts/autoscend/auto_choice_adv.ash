@@ -188,6 +188,10 @@ boolean auto_run_choice(int choice, string page)
 			{
 				run_choice(4); // get the model airship
 			}
+			else if (options contains 6)
+			{
+				run_choice(6); // advance immateria quest
+			}
 			else if (options contains 5)
 			{
 				run_choice(5); // get titanium umbrella, metallic A, SGEEA and a penultimate fantasy chest
