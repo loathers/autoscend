@@ -163,6 +163,7 @@ boolean finishBuildingSmutOrcBridge()
 	if(canLeapBridge())
 	{
 		autoForceEquip($item[bat wings]);
+		visit_url("place.php?whichplace=orc_chasm&action=bridge_jump");
 		visit_url("place.php?whichplace=highlands&action=highlands_dude");
 		return true;
 	}
