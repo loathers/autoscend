@@ -173,7 +173,7 @@ generic_t zone_needItem(location loc)
 		value = 20.0;
 		break;
 	case $location[The Smut Orc Logging Camp]:
-		if(get_property("chasmBridgeProgress").to_int() < 30)
+		if(get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 		{
 			value = 10.0;
 		}
@@ -870,7 +870,7 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[The Smut Orc Logging Camp]:
-		if (shenZones contains loc && get_property("chasmBridgeProgress").to_int() >= 30)
+		if (shenZones contains loc && get_property("chasmBridgeProgress").to_int() >= bridgeGoal())
 		{
 			value = 3 - (loc.turns_spent - shenZones[loc]);
 		}

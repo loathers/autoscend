@@ -356,7 +356,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			}
 		}
 
-		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0) && get_property("chasmBridgeProgress").to_int() < 30)
+		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0) && get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 		{
 			boolean coldMortarShell = canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0;
 			skill coldSkillToUse;

@@ -93,7 +93,7 @@ boolean bond_buySkills()
 				points -= 1;
 			}
 		}
-		else if(!get_property("bondBridge").to_boolean() && (get_property("chasmBridgeProgress").to_int() < 28))
+		else if(!get_property("bondBridge").to_boolean() && (get_property("chasmBridgeProgress").to_int() < (bridgeGoal() - 2)))
 		{
 			if(points >= 3)
 			{

@@ -844,10 +844,10 @@ boolean LX_craftAcquireItems()
 			cli_execute("make 1 snow cleats");
 		}
 
-		if((item_amount($item[snow berries]) > 0) && (my_daycount() > 1) && (get_property("chasmBridgeProgress").to_int() >= 30) && (my_level() >= 9))
+		if((item_amount($item[snow berries]) > 0) && (my_daycount() > 1) && (get_property("chasmBridgeProgress").to_int() >= bridgeGoal()) && (my_level() >= 9))
 		{
 			visit_url("place.php?whichplace=orc_chasm");
-			if(get_property("chasmBridgeProgress").to_int() >= 30)
+			if(get_property("chasmBridgeProgress").to_int() >= bridgeGoal())
 			{
 				#if(in_hardcore() && isGuildClass())
 				if(isGuildClass())
