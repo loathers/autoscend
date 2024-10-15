@@ -1082,6 +1082,7 @@ boolean L8_trapperQuest();
 boolean LX_loggingHatchet();
 boolean L9_leafletQuest();
 void L9_chasmMaximizeForNoncombat();
+int bridgeGoal();
 int fastenerCount();
 int lumberCount();
 boolean finishBuildingSmutOrcBridge();
