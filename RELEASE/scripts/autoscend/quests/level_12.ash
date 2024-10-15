@@ -1268,7 +1268,7 @@ boolean L12_gremlins()
 
 	auto_log_info("Doing them gremlins", "blue");
 	// ideally we want to survive a single attack
-	addToMaximize("20dr,1da 1000max,-ml,-100avoid attack");
+	addToMaximize("20dr,1da 1000max,-ml,-1000avoid attack");
 	acquireHP();
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{
