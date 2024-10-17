@@ -4128,7 +4128,7 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "Apriling tuba");
 		return true;
 	}
-	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso())
+	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso() && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the spikes
 	{
 		if(speculative) return true;
 		// parka spikes require a combat to active
