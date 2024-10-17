@@ -79,6 +79,10 @@ string auto_combatHandler(int round, monster enemy, string text)
 {
 	if(round > 25 && !($monsters[The Man, The Big Wisniewski] contains enemy))	//war bosses can go to round 50
 	{
+		if (canUse($skill[Implode Universe]))
+		{
+			return useSkill($skill[Implode Universe], true);
+		}
 		abort("Some sort of problem occurred, it is past round 25 but we are still in non-gremlin combat...");
 	}
 

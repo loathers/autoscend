@@ -199,47 +199,25 @@ string useItems(item it1, item it2)
 
 boolean isSniffed(monster enemy, skill sk)
 {
-	//checks if the monster enemy is currently sniffed using the specific skill sk
-	boolean retval = false;
-	switch(sk)
-	{
-		case $skill[Transcendent Olfaction]:
-			retval = contains_text(get_property("olfactedMonster"), enemy);
-			break;
-		case $skill[Make Friends]:
-			retval = contains_text(get_property("makeFriendsMonster"), enemy);
-			break;
-		case $skill[Long Con]:
-			retval = contains_text(get_property("longConMonster"), enemy);
-			break;
-		case $skill[Perceive Soul]:
-			retval = contains_text(get_property("auto_bat_soulmonster"), enemy);
-			break;
-		case $skill[Gallapagosian Mating Call]:
-			retval = contains_text(get_property("_gallapagosMonster"), enemy);
-			break;
-		case $skill[Monkey Point]:
-			retval = contains_text(get_property("monkeyPointMonster"), enemy);
-			break;
-		case $skill[Get a Good Whiff of This Guy]:
-			retval = contains_text(get_property("nosyNoseMonster"), enemy) && my_familiar() == $familiar[Nosy Nose];
-			break;
-		case $skill[Offer Latte to Opponent]:
-			retval = contains_text(get_property("_latteMonster"), enemy);
-			break;
-		case $skill[Motif]:
-			retval = contains_text(get_property("motifMonster"), enemy);
-			break;
-		default:
-			abort("isSniffed was asked to check an unidentified skill: " +sk);
+	string search;
+	if (sk == $skill[Get a Good Whiff of This Guy]) {
+		search = "Nosy Nose";
+	} else {
+		search = sk.to_string();
 	}
-	return retval;
+	string[0] tracked = tracked_by(enemy);
+	foreach n in tracked {
+		if (tracked[n] == search) {
+			return true;
+		}
+	}
+	return false;
 }
 
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -259,11 +237,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Make Friends];		//avatar of sneaky pete specific skill
 	}
-	//commented out because Mafia doesn't track Hunt yet
-	/*if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
+	if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
 	{
 		return $skill[Hunt];				//WereProfessor Werewolf specific skill
-	}*/
+	}
 	if(canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5 && !isSniffed(enemy, $skill[Long Con]))
 	{
 		return $skill[Long Con];
@@ -302,6 +279,10 @@ skill getSniffer(monster enemy)
 
 skill getStunner(monster enemy)
 {
+	if(canUse($skill[Blow the Blue Candle\!]) && have_effect($effect[Everything Looks Blue]) == 0)
+	{
+		return $skill[Blow the Blue Candle\!]; //20 Turns
+	}
 	// Class specific
 	switch(my_class())
 	{
@@ -395,6 +376,12 @@ skill getStunner(monster enemy)
 		break;
 	}
 	
+	// From Designer Sweatpants. Use when have nearly full sweat or when losing combat
+	if(canUse($skill[Sweat Flood]) && (getSweat() > 98 || contains_text(get_property("_auto_combatState"), "last attempt")))
+	{
+		return $skill[Sweat Flood];
+	}
+
 	// Decreases in stun duration the more it's used
 	if(canUse($skill[Summon Love Gnats]))
 	{
@@ -804,6 +791,10 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "item " + $item[yellow rocket]; // 75 turns & 250 meat
 		}
+		if(inCombat ? have_skill($skill[Blow the Yellow Candle\!]) : auto_haveRoman() && auto_is_valid($skill[Blow the Yellow Candle\!]))
+		{
+			return "skill " + $skill[Blow the Yellow Candle\!]; //75 Turns
+		}
 		if(inCombat ? have_skill($skill[Unleash the Devil\'s Kiss]) : auto_hasRetrocape() && auto_is_valid($skill[Unleash the Devil\'s Kiss]))
 		{
 			return "skill " + $skill[Unleash the Devil\'s Kiss]; // 99 turns
@@ -997,7 +988,78 @@ boolean wantToForceDrop(monster enemy)
 			forceDrop = true;
 		}
 	}
+	
+	if(isActuallyEd() && my_location() == $location[The Secret Council Warehouse])
+	{
+		int progress = get_property("warehouseProgress").to_int();
+		if(enemy == $monster[Warehouse Guard])
+		{
+			int n_pages = item_amount($item[warehouse map page]);
+			int progress_with_pages = progress+n_pages*8;
+			if (progress_with_pages<39) // need 40 to "win", will get +1 for this combat
+			{
+				forceDrop = true;
+			}
+		}
+		else if(enemy == $monster[Warehouse Clerk])
+		{
+			int n_pages = item_amount($item[warehouse inventory page]);
+			int progress_with_pages = progress+n_pages*8;
+			if (progress_with_pages<39) // need 40 to "win", will get +1 for this combat
+			{
+				forceDrop = true;
+			}
+		}
+	} // ed warehouse
 
 	return forceDrop;
 }
 
+boolean canSurviveShootGhost(monster enemy, int shots) {
+	int damage;
+	switch(enemy)
+	{
+		case $monster[the ghost of Oily McBindle]:
+			damage = my_maxhp() * 0.4 * elemental_resistance($element[sleaze]) / 100;
+			break;
+		case $monster[boneless blobghost]:
+			damage = my_maxhp() * 0.45 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[the ghost of Monsieur Baguelle]:
+			damage = my_maxhp() * 0.5 * elemental_resistance($element[hot]) / 100;
+			break;
+		case $monster[The Headless Horseman]:
+			damage = my_maxhp() * 0.55 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The Icewoman]:
+			damage = my_maxhp() * 0.6 * elemental_resistance($element[cold]) / 100;
+			break;
+		case $monster[The ghost of Ebenoozer Screege]:
+			damage = my_maxhp() * 0.65 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The ghost of Lord Montague Spookyraven]:
+			damage = my_maxhp() * 0.7 * elemental_resistance($element[stench]) / 100;
+			break;
+		case $monster[The ghost of Vanillica "Trashblossom" Gorton]:
+			damage = my_maxhp() * 0.75 * elemental_resistance($element[stench]) / 100;
+			break;
+		case $monster[The ghost of Sam McGee]:
+			damage = my_maxhp() * 0.8 * elemental_resistance($element[hot]) / 100;
+			break;
+		case $monster[The ghost of Richard Cockingham]:
+			damage = my_maxhp() * 0.85 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The ghost of Waldo the Carpathian]:
+			damage = my_maxhp() * 0.9 * elemental_resistance($element[hot]) / 100;
+			break;
+		case $monster[Emily Koops, a spooky lime]:
+			damage = my_maxhp() * 0.95 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The ghost of Jim Unfortunato]:
+			damage = my_maxhp() * elemental_resistance($element[sleaze]) / 100;
+			break;
+		default:
+			damage = my_maxhp() * 0.3;
+	}
+	return my_hp() > damage * shots;
+}

@@ -485,6 +485,7 @@ boolean auto_sendAutumnaton(location loc);
 boolean auto_autumnatonQuest();
 boolean auto_hasSpeakEasy();
 int auto_remainingSpeakeasyFreeFights();
+boolean speakeasyCombat();
 
 
 boolean auto_haveTrainSet();
@@ -532,6 +533,7 @@ int auto_habitatFightsLeft();
 monster auto_habitatMonster();
 boolean auto_canCircadianRhythm();
 boolean auto_circadianRhythmTarget(monster target);
+boolean auto_circadianRhythmTarget(phylum target);
 boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
 boolean auto_haveBurningLeaves();
@@ -566,6 +568,7 @@ boolean auto_MayamClaimStinkBomb();
 boolean auto_MayamClaimBelt();
 boolean auto_MayamClaimWhatever();
 boolean auto_MayamClaimAll();
+boolean auto_haveRoman();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -598,6 +601,13 @@ boolean edAcquireHP();
 boolean edAcquireHP(int goal);
 boolean LM_edTheUndying();
 void edUnderworldChoiceHandler(int choice);
+
+########################################################################################################
+//Defined in autoscend/paths/avant_guard.ash
+boolean in_ag();
+void ag_initializeSettings();
+void ag_pulls();
+void ag_bgChat();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash
@@ -758,6 +768,14 @@ void heavyrains_doBedtime();
 boolean heavyrains_buySkills();
 boolean rainManSummon(monster target, boolean speculative);
 boolean L13_heavyrains_towerFinal();
+
+########################################################################################################
+//Defined in autoscend/paths/heavy_rains.ash
+boolean in_iluh();
+boolean iluh_foodConsumable(string str);
+boolean iluh_famAllowed(string fam);
+void iluh_buyEquiq();
+void iluh_pulls();
 
 ########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash
@@ -1181,6 +1199,7 @@ boolean L12_islandWar();
 //Defined in autoscend/quests/level_13.ash
 boolean needStarKey();
 boolean needDigitalKey();
+boolean need8BitPoints();
 int towerKeyCount();
 int towerKeyCount(boolean effective);
 int EightBitScore();
@@ -1427,6 +1446,7 @@ boolean auto_have_familiar(familiar fam);
 boolean canChangeFamiliar();
 boolean canChangeToFamiliar(familiar target);
 familiar findNonRockFamiliarInTerrarium();
+familiar findRockFamiliarInTerrarium();
 familiar lookupFamiliarDatafile(string type);
 boolean handleFamiliar(string type);
 boolean handleFamiliar(familiar fam);
@@ -1574,6 +1594,10 @@ float provideMoxie(int amt, location loc, boolean doEquips, boolean speculative)
 float provideMoxie(int amt, boolean doEquips, boolean speculative);
 boolean provideMoxie(int amt, location loc, boolean doEquips);
 boolean provideMoxie(int amt, boolean doEquips);
+float provideMeat(int amt, location loc, boolean doEverything, boolean speculative);
+float provideMeat(int amt, boolean doEverything, boolean speculative);
+boolean provideMeat(int amt, location loc, boolean doEverything);
+boolean provideMeat(int amt, boolean doEverything);
 
 ########################################################################################################
 //Defined in autoscend/auto_restore.ash
@@ -1846,3 +1870,6 @@ int meatReserve();
 boolean auto_wishForEffect(effect wish);
 item wrap_item(item it);
 boolean auto_burnMP(int mpToBurn);
+boolean can_read_skillbook(item it);
+boolean have_campground();
+boolean have_workshed();

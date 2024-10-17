@@ -17,6 +17,7 @@ boolean L10_plantThatBean()
 	{
 		if(auto_haveSpringShoes())
 		{
+			// shoes gives stats when planting bean, but must be equipped
 			equip($slot[acc3], $item[spring shoes]); //free stats
 		}
 		visit_url("place.php?whichplace=plains&action=garbage_grounds");
@@ -289,6 +290,10 @@ void castleTopFloorChoiceHandler(int choice)
 		if(internalQuestStatus("questL10Garbage") < 10 && item_amount($item[Drum \'n\' Bass \'n\' Drum \'n\' Bass Record]) > 0)
 		{
 			run_choice(2); // if quest not done and have the record, complete the quest
+		}
+		else if(in_koe() && item_amount($item[Model airship]) == 0)
+		{
+			run_choice(1); // if we're in koe we only want to go to Copper Feel if we can complete the quest, so fight a goth giant otherwise
 		}
 		else
 		{

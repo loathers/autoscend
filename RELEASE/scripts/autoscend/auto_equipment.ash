@@ -501,7 +501,7 @@ string defaultMaximizeStatement()
 
 	if(in_darkGyffte())
 	{
-		res += ",0.8hp,3hp regen";
+		res += ",0.8hp,4hp regen";
 	}
 	else
 	{
@@ -752,9 +752,10 @@ void finalizeMaximize(boolean speculative)
 			if(monseen == totalmob) nooculus = true;
 		}
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
+		//as we go through the hidden hospital we equip surgeon gear on the pants slot, so we can end up dying if we cast advanced research
 		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
-		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location())) nooculus = true;
+		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room, The Hidden Hospital] contains my_location())) nooculus = true;
 		if(!nooculus)
 		{
 			if(possessEquipment($item[biphasic molecular oculus]))
@@ -794,6 +795,10 @@ void finalizeMaximize(boolean speculative)
 	if(auto_haveSpringShoes())
 	{
 		if(item_amount($item[ultra-soft ferns])<4 || item_amount($item[crunchy brush])<4) // collect the spring shoes potions
+		{
+			addBonusToMaximize($item[spring shoes], 200);
+		}
+		else if(my_meat() < meatReserve()) // those fruit drops can autosell for a lot
 		{
 			addBonusToMaximize($item[spring shoes], 200);
 		}
@@ -998,6 +1003,10 @@ void equipMaximizedGear()
 			addToMaximize("2 dump"); // maximizer will dump a bunch of stuff to the session log with this
 			maximize(get_property("auto_maximize_current"), 2500, 0, false);
 			removeFromMaximize("2 dump");
+			if(get_property("auto_debug_maximizer").to_boolean())
+			{
+				abort("NO WEAPON WAS EQUIPPED BY THE MAXIMIZER. REPORT THIS IN DISCORD AND INCLUDE YOUR SESSION LOG! YOU CAN RE-RUN AUTOSCEND AND IT SHOULD RUN OK (possibly).");
+			}
 			if (equipped_item($slot[weapon]) == $item[none]) {
 				// workaround. equip a weapon & re-running maximizer appears to fix the issue.
 				equip(equippableWeapon);

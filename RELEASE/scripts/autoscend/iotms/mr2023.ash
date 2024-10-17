@@ -129,7 +129,7 @@ location auto_availableBrickRift()
 
 int auto_neededShadowBricks()
 {
-	if(!auto_havePayPhone())
+	if(!auto_havePayPhone() || in_ag())
 	{
 		return 0;
 	}
@@ -445,20 +445,20 @@ void auto_buyFrom2002MrStore()
 	auto_log_debug("Have " + remainingCatalogCredits() + " credit(s) to buy from Mr. Store 2002. Let's spend them!");
 	// meat butler on day 1 of run
 	item itemConsidering = $item[meat butler];
-	if(remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
+	if(have_campground() && remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
 	}
 	// manual of secret door detection. skill: Secret door awareness
 	itemConsidering = $item[manual of secret door detection];
-	if(remainingCatalogCredits() > 0 && !auto_have_skill($skill[Secret door awareness]) && auto_is_valid(itemConsidering))
+	if(can_read_skillbook(itemConsidering) && remainingCatalogCredits() > 0 && !auto_have_skill($skill[Secret door awareness]) && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
 	}
 	// giant black monlith. Mostly useful at low level for stats
-	if (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) {
+	if (have_campground() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
 		itemConsidering = $item[giant black monolith];
 		if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
 		{
@@ -529,13 +529,26 @@ void auto_scepterSkills()
 		{
 			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
 		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
+		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar())
 		{
-			if(!is100FamRun())
+			familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+			if(((in_ag() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
 			{
-				use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
+				use_familiar(findRockFamiliarInTerrarium());
+				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
 			}
-			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+			else if((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small())
+			{
+				if(!is100FamRun())
+				{
+					use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
+				}
+				else
+				{
+					use_familiar(hundred_fam); // assuming non-rock familiar
+				}
+				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
+			}
 		}
 	}
 	//Day 2+ skills
@@ -674,6 +687,19 @@ boolean auto_circadianRhythmTarget(monster target)
 	return true;
 }
 
+boolean auto_circadianRhythmTarget(phylum target)
+{
+	if (!auto_canCircadianRhythm())
+	{
+		return false;
+	}
+	if (!($phylums[Orc, Hippy] contains target) && $locations[The Battlefield (Hippy Uniform), The Battlefield (Frat Uniform)] contains my_location())
+	{
+		return false;
+	}
+	return true;
+}
+
 boolean auto_haveJillOfAllTrades()
 {
 	if(auto_have_familiar($familiar[Jill-of-All-Trades]))
@@ -730,6 +756,7 @@ void auto_handleJillOfAllTrades()
 		case "regen":
 		case "init":
 		case "gremlin":
+		case "gremlins":
 		case "yellowray":
 			cli_execute("jillcandle item");
 			break;
@@ -784,6 +811,10 @@ boolean auto_burnLeaves()
 		}
 		return false;
 	}
+	if(in_ag() && item_amount($item[inflammable leaf]) > 37 && item_amount($item[Autumnic bomb]) == 0)
+	{
+		create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
+	}
 	return false;
 }
 
@@ -827,7 +858,7 @@ boolean auto_handleCCSC()
 	   || (place == $location[The Defiled Cranny] && !get_property("candyCaneSwordDefiledCranny").to_boolean())
 	   || (place == $location[The Black Forest] && !get_property("candyCaneSwordBlackForest").to_boolean())
 	   || (place == $location[The Hidden Apartment Building] && !get_property("candyCaneSwordApartmentBuilding").to_boolean())
-	   || (place == $location[An Overgrown Shrine (Northeast)] && !get_property("_candyCaneSwordOvergrownShrine").to_boolean())
+	   || (place == $location[An Overgrown Shrine (Northeast)] && !get_property("_candyCaneSwordOvergrownShrine").to_boolean() && get_property("hiddenOfficeProgress").to_int() > 0)
 	   || (place == $location[The Overgrown Lot] && !get_property("_candyCaneSwordOvergrownLot").to_boolean())
 	   || (place == $location[The Penultimate Fantasy Airship] && (!possessEquipment($item[Amulet of Extreme Plot Significance]) || !possessEquipment($item[unbreakable umbrella]) || !possessEquipment($item[Titanium Assault Umbrella])))
 	   || ((place == $location[Wartime Frat House] && possessOutfit("War Hippy Fatigues")) || (place == $location[Wartime Hippy Camp] && possessOutfit("Frat Warrior Fatigues")))
