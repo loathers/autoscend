@@ -1,4 +1,4 @@
-since r28084;	// feat: make bat wings rest always available
+since r28092;	// feat: add 'avoid attack' modifier
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
