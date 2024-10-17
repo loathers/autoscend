@@ -754,6 +754,20 @@ int auto_remainingSpeakeasyFreeFights()
 	return max(3 - get_property("_speakeasyFreeFights").to_int(), 0);
 }
 
+boolean speakeasyCombat()
+{
+	if(!auto_hasSpeakEasy())
+	{
+		return false;
+	}
+	
+	if(auto_remainingSpeakeasyFreeFights()>0)
+	{
+		return autoAdv($location[An Unusually Quiet Barroom Brawl]);
+	}
+	return false;
+}
+
 boolean auto_haveTrainSet()
 {
 	return auto_get_campground() contains $item[model train set] && auto_is_valid($item[model train set]); //check if the model train set is in the campground
