@@ -569,6 +569,8 @@ boolean auto_MayamClaimBelt();
 boolean auto_MayamClaimWhatever();
 boolean auto_MayamClaimAll();
 boolean auto_haveRoman();
+boolean auto_haveBatWings();
+boolean auto_canLeapBridge();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1081,6 +1083,7 @@ boolean L8_trapperQuest();
 boolean LX_loggingHatchet();
 boolean L9_leafletQuest();
 void L9_chasmMaximizeForNoncombat();
+int bridgeGoal();
 int fastenerCount();
 int lumberCount();
 boolean finishBuildingSmutOrcBridge();

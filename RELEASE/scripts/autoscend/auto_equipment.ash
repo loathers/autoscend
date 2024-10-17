@@ -811,6 +811,12 @@ void finalizeMaximize(boolean speculative)
 			addBonusToMaximize($item[spring shoes], 50);
 		}
 	}
+
+	if(auto_haveBatWings() && get_property("_batWingsFreeFights").to_int() < 5)
+	{
+		addBonusToMaximize($item[bat wings], 200); // get the 5 free fights
+	}
+
 	// We still need pixels in KoE, badly.
 	if(in_koe() && auto_hasPowerfulGlove())
 	{

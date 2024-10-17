@@ -358,3 +358,26 @@ boolean auto_haveRoman()
 	}
 	return false;
 }
+
+boolean auto_haveBatWings()
+{
+	if(auto_is_valid($item[Bat Wings]) && possessEquipment($item[Bat Wings]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_canLeapBridge()
+{
+	// bat wings allow for us to leap bridge at 5/6 progress (25 of 30)
+	if(!auto_haveBatWings())
+	{
+		return false;
+	}
+	if(fastenerCount() < 25 || lumberCount() < 25)
+	{
+		return false;
+	}
+	return true;
+}

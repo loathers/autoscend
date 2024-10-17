@@ -933,6 +933,7 @@ boolean wantToForceDrop(monster enemy)
 	//skills that can be used on any combat round, repeatedly until an item is stolen
 	//take into account if a yellow ray has been used. Must have been one that doesn't insta-kill
 	boolean mildEvilAvailable = canUse($skill[Perpetrate Mild Evil],false) && get_property("_mildEvilPerpetrated").to_int() < 3;
+	boolean swoopAvailable = canUse($skill[Swoop like a Bat], true) && get_property("_batWingsSwoopUsed").to_int() < 11;
 
 	boolean forceDrop = false;
 
@@ -956,7 +957,7 @@ boolean wantToForceDrop(monster enemy)
 
 	// polar vortex/mild evil is more likely to pocket an item the higher the drop rate. Unlike XO which has equal chance for all drops
 	// reserve extinguisher 30 charge for filth worms
-	if(auto_fireExtinguisherCharges() > 20 || mildEvilAvailable)
+	if(auto_fireExtinguisherCharges() > 20 || mildEvilAvailable || swoopAvailable)
 	{
 		int dropsFromYR = 0;
 		if(combat_status_check("yellowray"))

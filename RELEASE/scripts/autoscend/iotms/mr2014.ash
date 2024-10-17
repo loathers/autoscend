@@ -69,12 +69,12 @@ boolean considerGrimstoneGolem(boolean bjornCrown)
 		return false;
 	}
 
-	if((get_property("desertExploration").to_int() >= 70) && (get_property("chasmBridgeProgress").to_int() >= 29))
+	if((get_property("desertExploration").to_int() >= 70) && (get_property("chasmBridgeProgress").to_int() >= (bridgeGoal() - 1)))
 	{
 		return false;
 	}
 
-	if(get_property("chasmBridgeProgress").to_int() >= 29)
+	if(get_property("chasmBridgeProgress").to_int() >= (bridgeGoal() - 1))
 	{
 		if(!get_property("auto_grimstoneOrnateDowsingRod").to_boolean())
 		{
@@ -407,7 +407,7 @@ boolean LX_ornateDowsingRod()
 
 boolean fancyOilPainting()
 {
-	if(get_property("chasmBridgeProgress").to_int() >= 30)
+	if(get_property("chasmBridgeProgress").to_int() >= bridgeGoal())
 	{
 		return false;
 	}

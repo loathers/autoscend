@@ -284,7 +284,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	
 	# Instakill handler
 	boolean couldInstaKill = true;
-	if($monsters[Smut Orc Pipelayer,Smut Orc Jacker,Smut Orc Screwer,Smut Orc Nailer] contains enemy && get_property("chasmBridgeProgress").to_int() < 30)
+	if($monsters[Smut Orc Pipelayer,Smut Orc Jacker,Smut Orc Screwer,Smut Orc Nailer] contains enemy && get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 	{
 		//want to do cold damage in stage3
 		if(my_adventures() > 6)
