@@ -677,13 +677,19 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		}
 		else if(metadata.type == "skill")
 		{
-			if(to_skill(metadata.name).dailylimit != -1)
+			int dailyLimit = to_skill(metadata.name).dailylimit;
+			int mpCost = mp_cost(to_skill(metadata.name));
+			if(dailyLimit != -1 && mpCost > 0)
 			{
-				available = to_skill(metadata.name).dailylimit;
+				available = min(dailyLimit, floor(get_value("mp_starting") / mpCost));
+			}
+			else if(dailyLimit != -1)
+			{
+				available = dailyLimit;
 			}
 			else
 			{
-				available = floor(get_value("mp_starting") / mp_cost(to_skill(metadata.name)));
+				available = floor(get_value("mp_starting") / mpCost);
 			}
 		}
 		else if(metadata.name == __HOT_TUB)
