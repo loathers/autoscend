@@ -322,6 +322,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
+	//yellowray instantly kills the enemy and makes them drop all items they can drop.
 	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()))
 	{
 		string combatAction = yellowRayCombatString(enemy, true, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains enemy);
@@ -354,25 +355,78 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()))
 	{
-		string combatAction = banisherCombatString(enemy, my_location(), true);
-		if(combatAction != "")
+		string banishAction = banisherCombatString(enemy, my_location(), true);
+		if(banishAction != "")
 		{
+			auto_log_info("Looking at banishAction: " + banishAction, "green");
 			combat_status_add("banisher");
-			if(index_of(combatAction, "skill") == 0)
+			if(index_of(banishAction, "skill") == 0)
 			{
-				handleTracker(enemy, to_skill(substring(combatAction, 6)), "auto_banishes");
+				handleTracker(enemy, to_skill(substring(banishAction, 6)), "auto_banishes");
 			}
-			else if(index_of(combatAction, "item") == 0)
+			else if(index_of(banishAction, "item") == 0)
 			{
-				handleTracker(enemy, to_item(substring(combatAction, 5)), "auto_banishes");
+				if(contains_text(banishAction, ", none"))
+				{
+					int commapos = index_of(banishAction, ", none");
+					handleTracker(enemy, to_item(substring(banishAction, 5, commapos)), "auto_banishes");
+				}
+				else
+				{
+					handleTracker(enemy, to_item(substring(banishAction, 5)), "auto_banishes");
+				}
 			}
 			else
 			{
-				auto_log_warning("Unable to track banisher behavior: " + combatAction, "red");
+				auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
 			}
-			return combatAction;
+			return banishAction;
 		}
+		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
 		combat_status_add("banishercheck");
+	}
+
+	// Free run from monsters we want to banish but are unable to, or monsters on the free run list
+	if(!combat_status_check("freeruncheck") && (auto_wantToFreeRun(enemy, my_location()) || auto_wantToBanish(enemy, my_location())))
+	{
+		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
+		if(freeRunAction != "")
+		{
+			if (index_of(freeRunAction, "runaway familiar") == 0)
+			{
+				handleTracker(enemy, to_familiar(substring(freeRunAction, 17)), "auto_freeruns");
+				freeRunAction = "runaway";
+			}
+			else if (index_of(freeRunAction, "runaway item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(freeRunAction, 13)), "auto_freeruns");
+				freeRunAction = "runaway";
+			}
+			else if(index_of(freeRunAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(freeRunAction, 6)), "auto_freeruns");
+			}
+			else if(index_of(freeRunAction, "item") == 0)
+			{
+				if(contains_text(freeRunAction, ", none"))
+				{
+					int commapos = index_of(freeRunAction, ", none");
+					handleTracker(enemy, to_item(substring(freeRunAction, 5, commapos)), "auto_freeruns");
+				}
+				else
+				{
+					handleTracker(enemy, to_item(substring(freeRunAction, 5)), "auto_freeruns");
+				}
+			}
+			else
+			{
+				auto_log_warning("Unable to track runaway behavior: " + freeRunAction, "red");
+			}
+			return freeRunAction;
+		}
+
+		//we wanted to free run an enemy and failed. set a property so we do not bother trying in subsequent rounds
+		combat_status_add("freeruncheck");
 	}
 
 	if (!combat_status_check("replacercheck") && auto_wantToReplace(enemy, my_location()))
@@ -438,7 +492,10 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	if (!get_property("edUsedLash").to_boolean() && canUse($skill[Lash of the Cobra]) && get_property("_edLashCount").to_int() < 30)
 	{
 		boolean doLash = false;
-
+		if(enemy == $monster[Shadow Slab])
+		{
+			doLash = true;
+		}
 		if((enemy == $monster[Big Wheelin\' Twins]) && !possessEquipment($item[Badge Of Authority]))
 		{
 			doLash = true;
@@ -584,14 +641,6 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	if (canUse($item[Tattered Scrap of Paper], false) && have_effect($effect[Everything Looks Green]) == 0)
-	{
-		if($monsters[Bubblemint Twins, Bunch of Drunken Rats, Coaltergeist, Creepy Ginger Twin, Demoninja, Drunk Goat, Drunken Rat, Fallen Archfiend, Hellion, Knob Goblin Elite Guard, L imp, Mismatched Twins, Sabre-Toothed Goat, W imp] contains enemy)
-		{
-			return useItem($item[Tattered Scrap Of Paper]);
-		}
-	}
-
 	if (!combat_status_check("talismanofrenenutet") && canUse($item[Talisman of Renenutet]))
 	{
 		boolean doRenenutet = false;
@@ -682,11 +731,27 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 	{
 		return useItem($item[Short Writ of Habeas Corpus]);
 	}
+	
+	if(canUse($skill[Darts: Aim for the Bullseye]) && have_effect($effect[Everything Looks Red]) == 0 && dartELRcd() <= 40)
+	{
+		set_property("auto_instakillSource", "darts bullseye");
+		set_property("auto_instakillSuccess", true);
+		loopHandlerDelayAll();
+		return useSkill($skill[Darts: Aim for the Bullseye]);
+	}
 
 	// use cosmic bowling ball iotm
 	if(auto_bowlingBallCombatString(my_location(), true) != "" && !enemy.boss)
 	{
 		return 	auto_bowlingBallCombatString(my_location(), false);
+	}
+	
+	// prep parka NC forcing if requested
+	if(canUse($skill[Launch spikolodon spikes]) && get_property("auto_forceNonCombatSource") == "jurassic parka"
+		&& !get_property("auto_parkaSpikesDeployed").to_boolean())
+	{
+		set_property("auto_parkaSpikesDeployed", true);
+		return useSkill($skill[Launch spikolodon spikes]);
 	}
 	
 	if(instakillable(enemy) && !isFreeMonster(enemy,my_location()) && doInstaKill)
@@ -706,6 +771,13 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 				loopHandlerDelayAll();
 				return "item " + $item[Replica Bat-oomerang];
 			}
+		}
+
+		if(canUse($item[shadow brick]) && (get_property("_shadowBricksUsed").to_int() < 13))
+		{
+			handleTracker(enemy, $item[shadow brick], "auto_instakill");
+			loopHandlerDelayAll();
+			return useItems($item[shadow brick], $item[none]);
 		}
 
 		if(!combat_status_check("jokesterGun") && (equipped_item($slot[Weapon]) == $item[The Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean() && auto_have_skill($skill[Fire the Jokester\'s Gun]))
@@ -744,6 +816,33 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		}
 
 		return "skill Mild Curse; repeat; ";
+	}
+	
+	//Everfull Dart Holder
+	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0)
+	{
+		return useSkill(dartSkill(), false);
+	}
+	
+	// Don't risk drop forcing if we've already been beaten up twice
+	if (get_property("_edDefeats").to_int()<2)
+	{
+		if(wantToForceDrop(enemy))
+		{
+			boolean polarVortexAvailable = canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10;
+			boolean mildEvilAvailable = canUse($skill[Perpetrate Mild Evil],false) && get_property("_mildEvilPerpetrated").to_int() < 3;
+			// mild evil only can pick pocket. Use it before fire extinguisher
+			if(mildEvilAvailable)
+			{
+				handleTracker(enemy, $skill[Perpetrate Mild Evil], "auto_otherstuff");
+				return useSkill($skill[Perpetrate Mild Evil]);	
+			}
+			if(polarVortexAvailable)
+			{
+				handleTracker(enemy, $skill[Fire Extinguisher: Polar Vortex], "auto_otherstuff");
+				return useSkill($skill[Fire Extinguisher: Polar Vortex]);	
+			}
+		}
 	}
 
 	// Actually killing stuff starts here

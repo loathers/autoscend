@@ -522,6 +522,12 @@ boolean auto_pre_adventure()
 		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 
 	}
 
+	if(place == $location[The Penultimate Fantasy Airship] && auto_haveBatWings())
+	{
+		// only here to get immateria. Get it faster with bat wings
+		autoEquip($item[Bat Wings]);
+	}
+
 
 	if(in_plumber())
 	{

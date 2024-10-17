@@ -1,4 +1,4 @@
-since r28082;	// Fixes for Avant Guard council text
+since r28084;	// feat: make bat wings rest always available
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
