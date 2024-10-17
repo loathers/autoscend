@@ -262,7 +262,7 @@ boolean auto_pre_adventure()
 	}
 	if(place == $location[The Fungus Plains])
 	{
-		buffMaintain($effect[Polka of Plenty], 30, 1, 1);
+		provideMeat(450, $location[The Fungus Plains], true);
 		addToMaximize("200meat drop 550max");
 	}
 	if(place == $location[Megalo-City])

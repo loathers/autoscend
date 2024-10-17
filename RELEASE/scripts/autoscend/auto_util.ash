@@ -1456,10 +1456,6 @@ boolean isGeneralStoreAvailable()
 	{
 		return false;
 	}
-	if(in_zombieSlayer())
-	{
-		return false;
-	}
 	if(is_werewolf())
 	{
 		return false;
@@ -2586,9 +2582,12 @@ boolean woods_questStart()
 	}
 	visit_url("place.php?whichplace=woods");
 	visit_url("place.php?whichplace=forestvillage&action=fv_mystic");
-	visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Sure%2C+old+man.++Tell+me+all+about+it.");
-	visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Against+my+better+judgment%2C+yes.");
-	visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Er,+sure,+I+guess+so...");
+	if (!in_zombieSlayer())
+	{
+		visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Sure%2C+old+man.++Tell+me+all+about+it.");
+		visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Against+my+better+judgment%2C+yes.");
+		visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Er,+sure,+I+guess+so...");
+	}
 	if(knoll_available())
 	{
 		visit_url("place.php?whichplace=knoll_friendly&action=dk_innabox");
@@ -4135,7 +4134,7 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "Apriling tuba");
 		return true;
 	}
-	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso())
+	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso() && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the spikes
 	{
 		if(speculative) return true;
 		// parka spikes require a combat to active
