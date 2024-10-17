@@ -1460,6 +1460,11 @@ boolean L13_towerNSTower()
 		equipBaseline();
 		provideMeat(626, true, false);
 
+		if(in_zombieSlayer())
+		{
+			acquireMP(30,0);
+		}
+
 		acquireHP();
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);
 		return true;
