@@ -199,47 +199,25 @@ string useItems(item it1, item it2)
 
 boolean isSniffed(monster enemy, skill sk)
 {
-	//checks if the monster enemy is currently sniffed using the specific skill sk
-	boolean retval = false;
-	switch(sk)
-	{
-		case $skill[Transcendent Olfaction]:
-			retval = contains_text(get_property("olfactedMonster"), enemy);
-			break;
-		case $skill[Make Friends]:
-			retval = contains_text(get_property("makeFriendsMonster"), enemy);
-			break;
-		case $skill[Long Con]:
-			retval = contains_text(get_property("longConMonster"), enemy);
-			break;
-		case $skill[Perceive Soul]:
-			retval = contains_text(get_property("auto_bat_soulmonster"), enemy);
-			break;
-		case $skill[Gallapagosian Mating Call]:
-			retval = contains_text(get_property("_gallapagosMonster"), enemy);
-			break;
-		case $skill[Monkey Point]:
-			retval = contains_text(get_property("monkeyPointMonster"), enemy);
-			break;
-		case $skill[Get a Good Whiff of This Guy]:
-			retval = contains_text(get_property("nosyNoseMonster"), enemy) && my_familiar() == $familiar[Nosy Nose];
-			break;
-		case $skill[Offer Latte to Opponent]:
-			retval = contains_text(get_property("_latteMonster"), enemy);
-			break;
-		case $skill[Motif]:
-			retval = contains_text(get_property("motifMonster"), enemy);
-			break;
-		default:
-			abort("isSniffed was asked to check an unidentified skill: " +sk);
+	string search;
+	if (sk == $skill[Get a Good Whiff of This Guy]) {
+		search = "Nosy Nose";
+	} else {
+		search = sk.to_string();
 	}
-	return retval;
+	string[0] tracked = tracked_by(enemy);
+	foreach n in tracked {
+		if (tracked[n] == search) {
+			return true;
+		}
+	}
+	return false;
 }
 
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -259,11 +237,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Make Friends];		//avatar of sneaky pete specific skill
 	}
-	//commented out because Mafia doesn't track Hunt yet
-	/*if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
+	if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
 	{
 		return $skill[Hunt];				//WereProfessor Werewolf specific skill
-	}*/
+	}
 	if(canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5 && !isSniffed(enemy, $skill[Long Con]))
 	{
 		return $skill[Long Con];
