@@ -13,7 +13,6 @@ void ag_initializeSettings()
 			visit_url("inv_familiar.php?pwd=&which=3&whichitem=11631");
 		}
 		//set_property("auto_100familiar", "Burly Bodyguard");
-		set_property("auto_skipNuns", true);
 		set_property("auto_skipUnlockGuild", true);
 		set_property("auto_nonAdvLoc", false);
 	}
@@ -27,6 +26,10 @@ void ag_pulls()
 		if(auto_is_valid($item[mini kiwi invisible dirigible]))
 		{
 			pullXWhenHaveY($item[mini kiwi invisible dirigible], 1, 0);
+		}
+		if(auto_is_valid($item[waffle]) && auto_haveAugustScepter()) //Only want waffles if we can summon them
+		{
+			pullXWhenHaveY($item[waffle],1,(my_daycount() - 1) * (3 + (my_daycount() > 1 ? 1 : 0))); //pull waffles everyday
 		}
 	}
 }

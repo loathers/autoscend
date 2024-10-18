@@ -810,6 +810,8 @@ int handlePulls(int day)
 		{
 			take_closet(1, $item[Fake Washboard]);
 		}
+		// pulls for Avant Guard path
+		ag_pulls();
 	}
 
 	// do this regardless of day if we still need to complete the bridge.

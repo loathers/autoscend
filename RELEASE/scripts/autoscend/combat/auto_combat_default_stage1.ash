@@ -39,6 +39,13 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	retval = auto_combatWereProfessorStage1(round, enemy, text);
 	if(retval != "") return retval;
 
+	//In Avant Guard, waffle the bodyguard in Themthar Hills ASAP to replace with the Dirty Thieving Brigand
+	if(in_avantGuard() && ag_is_bodyguard() && item_amount($item[waffle]) > 0 && my_location() == $location[The Themthar Hills] && enemy != $monster[Dirty Thieving Brigand])
+	{
+		handleTracker(enemy, $item[waffle], "auto_replaces");
+		return useItems($item[waffle], $item[none]);
+	}
+
 	if(enemy == $monster[Your Shadow])
 	{
 		if(in_plumber())

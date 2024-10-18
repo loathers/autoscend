@@ -119,7 +119,8 @@ string auto_combatHandler(int round, monster enemy, string text)
 	}
 
 	//If in Avant Guard, want to make sure the enemy is set correctly to the bodyguard
-	if(in_avantGuard() && ag_is_bodyguard())
+	//If waffle has been used ignore and just use enemy as set in combat handler
+	if(in_avantGuard() && ag_is_bodyguard() && get_property("_auto_combatState") != "(it11311)")
 	{
 		enemy = to_monster(substring(get_property("lastEncounter"), 0, index_of(get_property("lastEncounter"), " acting as")));
 	}

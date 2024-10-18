@@ -1749,6 +1749,54 @@ boolean L12_themtharHills()
 		auto_log_info("Themthar Nuns!", "blue");
 	}
 
+	//can only do this in Avant Guard in 6 turns in HC or 8 turns in Normal
+	set_property("auto_delayWar", false);
+	if(in_avantGuard())
+	{
+		auto_log_info("Checking how much meat drop we can get");
+		if((in_hardcore() && item_amount($item[waffle]) <= 6 && $location[The Themthar Hills].turns_spent + item_amount($item[waffle]) > 6) ||
+		(item_amount($item[waffle]) <= 8 && $location[The Themthar Hills].turns_spent + item_amount($item[waffle]) > 8))
+		{
+			return false;
+		}
+		int meatProvide = (in_hardcore() ? provideMeat(1800, true, true) : provideMeat(1600, true, true));
+		if((in_hardcore() && !(meatProvide >= 1800)) || !(meatProvide >= 1600))
+		{
+			int bonusMeat = 0;
+			boolean getInhaler = false;
+			boolean doRufus = false;
+			if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]) && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
+			{
+				bonusMeat += 200;
+				getInhaler = true;
+			}
+			if(auto_havePayPhone() && !(get_property("_shadowAffinityToday").to_boolean()) && item_amount($item[Rufus\'s shadow lodestone]) < 1 )
+			{
+				bonusMeat += 200;
+				doRufus = true;
+			}
+			int bonusMeatNeeded = (in_hardcore() ? (1800 - meatProvide) : (1600 - meatProvide));
+			if(bonusMeatNeeded - bonusMeat <= 0)
+			{
+				if(getInhaler)
+				{
+					auto_log_info("Getting Inhaler");
+					return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
+				}
+				if(doRufus)
+				{
+					auto_log_info("Doing Pay Phone Quest for Shadow Waters");
+					return auto_doPhoneQuest();
+				}
+			}
+			else
+			{
+				set_property("auto_delayWar", true);
+				return false;
+			}
+		}
+	}
+
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
 	//count inhaler if we have one or if we have a clover to obtain one and can use one
@@ -2356,6 +2404,11 @@ boolean L12_islandWar()
 	if(robot_delay("outfit"))
 	{
 		return false;	//delay for You, Robot path
+	}
+	if(get_property("auto_delayWar") == true)
+	{
+		set_property("auto_delayWar", false);
+		return false;	//delay war at Nuns so we can maybe get the Inhaler
 	}
 	if(L12_preOutfit() || L12_getOutfit() || L12_startWar())
 	{
