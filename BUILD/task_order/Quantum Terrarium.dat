@@ -18,6 +18,7 @@ LX_quantumTerrarium
 fancyOilPainting
 LX_ornateDowsingRod
 L11_shenStartQuest
+auto_earlyRoutingHandling
 LX_guildUnlock
 LX_unlockDesert
 LX_lockPicking
@@ -55,7 +56,6 @@ L11_defeatEd
 L5_slayTheGoblinKing
 L4_batCave
 L3_tavern
-setSoftblockDelay	allowSoftblockDelay
-setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 L13_towerAscent
+auto_softBlockHandler
 LX_attemptPowerLevel

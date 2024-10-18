@@ -204,7 +204,7 @@ boolean canChangeToFamiliar(familiar target)
 	{
 		return false;
 	}
-
+	
 	// You are allowed to change to a familiar if it is also the goal of the current 100% run.
 	if(get_property("auto_100familiar").to_familiar() == target)
 	{
@@ -220,6 +220,12 @@ boolean canChangeToFamiliar(familiar target)
 		{
 			return false;
 		}
+	}
+
+	//Avant Guard specific allowance of Gelatinous Cubeling for non-adv.php zones
+	if(in_avantGuard() && !($familiars[Burly Bodyguard, Gelatinous Cubeling] contains target))
+	{
+		return false;
 	}
 
 	// Don't allow switching to a target of none.
@@ -417,6 +423,18 @@ boolean autoChooseFamiliar(location place)
 	if(familiar_target_100 != $familiar[none])
 	{
 		return handleFamiliar(familiar_target_100);		//do not break 100 familiar runs
+	}
+	
+	// Can only use burly bodyguard, except in non-adventure.php zones. In those, we want the Gelatinous Cubeling for Daily Dungeon drops
+	if (in_avantGuard()) {
+		if (wantCubeling() && get_property("auto_nonAdvLoc").to_boolean() && in_hardcore())
+		{
+			return handleFamiliar($familiar[Gelatinous Cubeling]);
+		}
+		else
+		{
+			return handleFamiliar($familiar[Burly Bodyguard]);
+		}
 	}
 	
 	//High priority checks that are too complicated for the datafile
@@ -697,7 +715,7 @@ boolean haveSpleenFamiliar()
 boolean wantCubeling()
 {
 	//do we still want to use a gelatinous cubeling familiar specifically for it to drop the daily dungeon tools
-	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
+	if (!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 	{
 		return false;	//can not use it so we do not want it.
 	}
@@ -708,7 +726,8 @@ boolean wantCubeling()
 	
 	boolean need_lockpicks = item_amount($item[pick-o-matic lockpicks]) == 0 && item_amount($item[Platinum Yendorian Express Card]) == 0;
 	boolean need_ring = !possessEquipment($item[Ring of Detect Boring Doors]);	//do not try for a second one if you already have one
-	return item_amount($item[eleven-foot pole]) == 0 || need_ring || need_lockpicks;
+	boolean need_pole = !auto_haveCCSC() && item_amount($item[eleven-foot pole]) == 0;
+	return need_pole || need_ring || need_lockpicks;
 }
 
 void preAdvUpdateFamiliar(location place)

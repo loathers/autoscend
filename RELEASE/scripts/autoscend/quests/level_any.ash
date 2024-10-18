@@ -608,6 +608,11 @@ boolean LX_dailyDungeonToken()
 	{
 		return false;	//can switch to cubeling so wait until we have all the tool drops before doing daily dungeon
 	}
+
+	if(in_avantGuard() && !LX_agNonAdv())
+	{
+		return false; //have not done non-adventure.php zones yet in Avant Guard
+	}
 	
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
 	{
@@ -620,7 +625,10 @@ boolean LX_dailyDungeonToken()
 	}
 	
 	//if you can not use the cubeling then pull the missing tools if possible
-	pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
+	if (!auto_haveCCSC()) {
+		// don't need the Eleven-foot Pole if we have the Candy Cane Sword Cane as it adds turn free NCs.
+		pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
+	}
 	if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not pull a second one if already equipped
 	{
 		pullXWhenHaveY($item[Ring of Detect Boring Doors], 1, 0);
