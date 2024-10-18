@@ -715,13 +715,13 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 				return true;
 			}
 			// lodestene will be consumed for a free NC to get this buff
-			// save and restore nextAdventure as shadow rights has a large item penalty
+			// save and restore our location as shadow rights has a large item penalty
 			// don't want it unless actually going to a shadow rift
-			string savedLoc = get_property("nextAdventure");
+			location savedLoc = my_location();
 			set_property("auto_disableAdventureHandling", true);
 			autoAdv(auto_availableBrickRift());
 			set_property("auto_disableAdventureHandling", false);
-			set_property("nextAdventure", savedLoc);
+			set_location(savedLoc);
 		}
 		break;
 	case $effect[Shells of the Damned]:			useItem = $item[cyan seashell];					break;
