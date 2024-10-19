@@ -1323,7 +1323,7 @@ void robot_directive()
 	boolean desert_ready = internalQuestStatus("questL11Desert") == 0;
 	boolean desert_done = internalQuestStatus("questL11Desert") > 0;
 	boolean chasm_offhand_slot_needed = possessEquipment($item[Loadstone]) || canPull($item[Loadstone]);
-	boolean chasm_ready = internalQuestStatus("questL09Topping") == 0 && get_property("chasmBridgeProgress").to_int() < 30 && !shenShouldDelayZone($location[The Smut Orc Logging Camp]);
+	boolean chasm_ready = internalQuestStatus("questL09Topping") == 0 && get_property("chasmBridgeProgress").to_int() < bridgeGoal() && !shenShouldDelayZone($location[The Smut Orc Logging Camp]);
 	boolean chasm_done = internalQuestStatus("questL09Topping") > 0;
 	
 	if(directive == "chasm" && chasm_done)

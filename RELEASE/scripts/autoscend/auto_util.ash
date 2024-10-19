@@ -950,6 +950,13 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Peel Out];
 	}
+	
+	// Bowling ball is a banish as well, but is available enough that we want to use it as a free run source too
+	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
+	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]))
+	{
+		return "skill " + $skill[Bowl a Curveball];
+	}
 
 	//Non-standard free-runs
 	if(!inAftercore())
@@ -1446,10 +1453,6 @@ boolean isGalaktikAvailable()
 boolean isGeneralStoreAvailable()
 {
 	if(in_nuclear())
-	{
-		return false;
-	}
-	if(in_zombieSlayer())
 	{
 		return false;
 	}
@@ -2579,9 +2582,12 @@ boolean woods_questStart()
 	}
 	visit_url("place.php?whichplace=woods");
 	visit_url("place.php?whichplace=forestvillage&action=fv_mystic");
-	visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Sure%2C+old+man.++Tell+me+all+about+it.");
-	visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Against+my+better+judgment%2C+yes.");
-	visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Er,+sure,+I+guess+so...");
+	if (!in_zombieSlayer())
+	{
+		visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Sure%2C+old+man.++Tell+me+all+about+it.");
+		visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Against+my+better+judgment%2C+yes.");
+		visit_url("choice.php?pwd=&whichchoice=664&option=1&choiceform1=Er,+sure,+I+guess+so...");
+	}
 	if(knoll_available())
 	{
 		visit_url("place.php?whichplace=knoll_friendly&action=dk_innabox");
@@ -4128,7 +4134,7 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "Apriling tuba");
 		return true;
 	}
-	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso())
+	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso() && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the spikes
 	{
 		if(speculative) return true;
 		// parka spikes require a combat to active

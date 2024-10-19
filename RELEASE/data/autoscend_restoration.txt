@@ -117,4 +117,5 @@ skill	2	Shake it Off	ALL	0	0	0	All Negative	none
 skill	3	Gelatinous Reconstruction	13	0	0	0	Beaten Up	none
 skill	4	Disco Nap	20	0	0	0	none	none
 skill	5	Lasagna Bandages	20	0	0	0	none	none
+skill	6	Rest Upside Down	1000	1000	0	0	none	none
 

@@ -1,4 +1,4 @@
-since r28077;	// feat: various iotm improvements
+since r28092;	// feat: add 'avoid attack' modifier
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

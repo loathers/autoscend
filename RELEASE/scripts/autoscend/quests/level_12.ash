@@ -1153,7 +1153,14 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if(in_glover())
+	if (in_zombieSlayer())
+	{
+		if(!auto_have_skill($skill[Plague Claws]) && item_amount($item[Seal Tooth]) == 0)
+		{
+			return false;
+		}
+	}
+	else if(in_glover())
 	{
 		int need = 30 - item_amount($item[Doc Galaktik\'s Pungent Unguent]);
 		if((need > 0) && (item_amount($item[Molybdenum Pliers]) == 0))
@@ -1234,7 +1241,8 @@ boolean L12_gremlins()
 	gremlinsFamiliar();
 
 	auto_log_info("Doing them gremlins", "blue");
-	addToMaximize("20dr,1da 1000max,3hp,-3ml");
+	// ideally we want to survive a single attack
+	addToMaximize("20dr,1da 1000max,-ml,-1000avoid attack");
 	acquireHP();
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{

@@ -57,34 +57,9 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 		return useItem($item[Molybdenum Magnet]);
 	}
 
-	if (canUse($skill[Curse Of Weaksauce]))
-	{
-		return useSkill($skill[Curse Of Weaksauce]);
-	}
-
-	if (canUse($skill[Curse Of The Marshmallow]))
-	{
-		return useSkill($skill[Curse Of The Marshmallow]);
-	}
-
 	if (canUse($skill[Summon Love Scarabs]))
 	{
 		return useSkill($skill[Summon Love Scarabs]);
-	}
-
-	if (canUse($skill[Summon Love Gnats]))
-	{
-		return useSkill($skill[Summon Love Gnats]);
-	}
-	
-	if(canUse($skill[Beanscreen]))
-	{
-		return useSkill($skill[Beanscreen]);
-	}
-
-	if(canUse($skill[Bad Medicine]))
-	{
-		return useSkill($skill[Bad Medicine]);
 	}
 
 	if(canUse($skill[Good Medicine]) && canSurvive(2.1))
@@ -142,20 +117,11 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 		}
 	}
 	
-	if (get_property("auto_gremlinMoly").to_boolean() && !canSurvive(20) && !stunned && !staggeringFlyer)	//don't flyer tool gremlins if it's dangerous to survive them for long
+	if (get_property("auto_gremlinMoly").to_boolean())	//don't ever stun tool gremlins
 	{
-		if(monster_attack() > ( my_buffedstat($stat[moxie]) + 10) && !canSurvive(10) && haveUsed($skill[Curse Of Weaksauce]))
-		{
-			//if after all deleveling it's still too strong to safely stasis let weaksauce delevel it more in exchange for a few turns
-			//except if stuck with an attack familiar or unforeseen passive damage effects that can kill the gremlin
-			if(!gremlinTakesDamage && round < 10 && stunner != $skill[none])
-			{
-				combat_status_add("stunned");
-				return useSkill(stunner);
-			}
-		}
+		stunner = $skill[none];
 	}
-	else if (canUse(flyer) && get_property("flyeredML").to_int() < 10000 && !get_property("auto_ignoreFlyer").to_boolean())
+	if (canUse(flyer) && get_property("flyeredML").to_int() < 10000 && !get_property("auto_ignoreFlyer").to_boolean())
 	{
 		if(!staggeringFlyer && stunner != $skill[none] && !stunned)
 		{
@@ -222,5 +188,11 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	{
 		return useSkill($skill[Toss], false);
 	}
+	
+	if (canUse($skill[Plague Claws], false))
+	{
+		return useSkill($skill[Plague Claws], false);
+	}
+	
 	return "attack with weapon";
 }

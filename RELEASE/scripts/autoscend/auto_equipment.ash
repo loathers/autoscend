@@ -752,9 +752,10 @@ void finalizeMaximize(boolean speculative)
 			if(monseen == totalmob) nooculus = true;
 		}
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
+		//as we go through the hidden hospital we equip surgeon gear on the pants slot, so we can end up dying if we cast advanced research
 		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
-		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location())) nooculus = true;
+		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room, The Hidden Hospital] contains my_location())) nooculus = true;
 		if(!nooculus)
 		{
 			if(possessEquipment($item[biphasic molecular oculus]))
@@ -810,6 +811,12 @@ void finalizeMaximize(boolean speculative)
 			addBonusToMaximize($item[spring shoes], 50);
 		}
 	}
+
+	if(auto_haveBatWings() && get_property("_batWingsFreeFights").to_int() < 5)
+	{
+		addBonusToMaximize($item[bat wings], 200); // get the 5 free fights
+	}
+
 	// We still need pixels in KoE, badly.
 	if(in_koe() && auto_hasPowerfulGlove())
 	{
