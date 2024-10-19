@@ -153,6 +153,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		return false;
 	}
 
+	boolean ret = false;
 	switch(buff)
 	{
 	#Jalapeno Saucesphere
@@ -168,9 +169,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Amazing]:						useItem = $item[Pocket Maze];					break;
 	case $effect[Angry]:						useSkill = $skill[Anger Glands];					break;
 	case $effect[Angry like the Wolf]:
-		if(auto_have_familiar($familiar[Grim Brother]))
+		if(auto_have_familiar($familiar[Grim Brother]) && !get_property("_grimBuff").to_boolean())
 		{
 			visit_url("choice.php?pwd&whichchoice=835&option=2", true);
+			ret = true;
 		}																						break;
 	case $effect[Antibiotic Saucesphere]:		useSkill = $skill[Antibiotic Saucesphere];		break;
 	case $effect[Arched Eyebrow of the Archmage]:useSkill = $skill[Arched Eyebrow of the Archmage];break;
@@ -410,9 +412,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Gristlesphere]:				useSkill = $skill[Gristlesphere];				break;
 	case $effect[Gritty]:						useItem = $item[pile of gritty sand];			break;
 	case $effect[Grumpy and Ornery]:
-		if(auto_have_familiar($familiar[Grim Brother]))
+		if(auto_have_familiar($familiar[Grim Brother]) && !get_property("_grimBuff").to_boolean())
 		{
 			visit_url("choice.php?pwd&whichchoice=835&option=3", true);
+			ret = true;
 		}																							break;
 	case $effect[Gummed Shoes]:					useItem = $item[Shoe Gum];						break;
 	case $effect[Gummi-Grin]:					useItem = $item[Gummi Turtle];					break;
@@ -591,6 +594,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 				return true;
 			}
 			cli_execute("loathingidol pop");
+			ret = true;
 		}																						break;
 	case $effect[Power\, Man]:					useItem = $item[Power-Guy 2000 Holo-Record];	break;
 	case $effect[Power Ballad of the Arrowsmith]:useSkill = $skill[The Power Ballad of the Arrowsmith];break;
@@ -645,6 +649,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 				return true;
 			}
 			cli_execute("loathingidol ballad");
+			ret = true;
 		}																						break;
 	case $effect[A Rose by Any Other Material]:	useItem = $item[Squeaky Toy Rose];				break;
 	case $effect[Rosewater Mark]:				useItem = $item[Old Rosewater Cream];			break;
@@ -681,10 +686,11 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 			{
 				return true;
 			}
-			// lodestene will be consumed for a free NC to get this buff
-		set_property("auto_disableAdventureHandling", true);
-		autoAdv(auto_availableBrickRift());
-		set_property("auto_disableAdventureHandling", false);
+			// lodestone will be consumed for a free NC to get this buff
+			set_property("auto_disableAdventureHandling", true);
+			autoAdv(auto_availableBrickRift());
+			set_property("auto_disableAdventureHandling", false);
+			ret = true;
 		}
 		break;
 	case $effect[Shells of the Damned]:			useItem = $item[cyan seashell];					break;
@@ -718,9 +724,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Snow Shoes]:					useItem = $item[Snow Cleats];					break;
 	case $effect[So You Can Work More...]:		useItem = $item[Baggie of powdered sugar];		break;
 	case $effect[Soles of Glass]:
-		if(auto_have_familiar($familiar[Grim Brother]))
+		if(auto_have_familiar($familiar[Grim Brother]) && !get_property("_grimBuff").to_boolean())
 		{
 			visit_url("choice.php?pwd&whichchoice=835&option=1", true);
+			ret = true;
 		}																						break;
 	case $effect[Somewhat Poisoned]:			useSkill = $skill[Disco Nap];					break;
 	case $effect[Song of Accompaniment]:		useSkill = $skill[Song of Accompaniment];		break;
@@ -759,6 +766,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 				return true;
 			}
 			cli_execute("loathingidol rhyme");
+			ret = true;
 		}																						break;
 	case $effect[Spooky Hands]:					useItem = $item[Lotion of Spookiness];			break;
 	case $effect[Spooky Weapon]:				useItem = $item[Spooky Nuggets];				break;
@@ -825,6 +833,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 				return true;
 			}
 			cli_execute("loathingidol country");
+			ret = true;
 		}																						break;
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
@@ -1051,7 +1060,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	{
 		return buffMaintain(useSkill, buff, mustEquip, mp_min, casts, turns, speculative);
 	}
-	return false;
+	return ret;
 }
 
 boolean buffMaintain(effect buff, int mp_min, int casts, int turns)
