@@ -171,6 +171,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Angry like the Wolf]:
 		if(auto_have_familiar($familiar[Grim Brother]) && !get_property("_grimBuff").to_boolean())
 		{
+			if(speculative)
+			{
+				return true;
+			}
 			visit_url("choice.php?pwd&whichchoice=835&option=2", true);
 			ret = true;
 		}																						break;
@@ -414,6 +418,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Grumpy and Ornery]:
 		if(auto_have_familiar($familiar[Grim Brother]) && !get_property("_grimBuff").to_boolean())
 		{
+			if(speculative)
+			{
+				return true;
+			}
 			visit_url("choice.php?pwd&whichchoice=835&option=3", true);
 			ret = true;
 		}																							break;
@@ -726,6 +734,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Soles of Glass]:
 		if(auto_have_familiar($familiar[Grim Brother]) && !get_property("_grimBuff").to_boolean())
 		{
+			if(speculative)
+			{
+				return true;
+			}
 			visit_url("choice.php?pwd&whichchoice=835&option=1", true);
 			ret = true;
 		}																						break;
