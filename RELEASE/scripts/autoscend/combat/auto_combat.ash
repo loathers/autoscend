@@ -41,6 +41,7 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	{
 		case $monster[Government Agent]:
 			set_property("_portscanPending", false);
+			stop_counter("portscan.edu");
 			break;
 		case $monster[possessed wine rack]:
 			set_property("auto_wineracksencountered", get_property("auto_wineracksencountered").to_int() + 1);
