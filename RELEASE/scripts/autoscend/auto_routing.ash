@@ -178,6 +178,16 @@ boolean auto_earlyRoutingHandling()
 	// this function should go very high in task orders, potentially the first thing that spends adventures.
 	// ideally nothing called before this should spend an adventure, only update state or use turn free resources.
 
+	// force forcing non-combats.
+	if (auto_canForceNextNoncombat()) {
+		auto_log_debug("Forcing a non-combat somewhere. Strap yourselves in, kids.");
+		if (L6_friarsGetParts() || L10_basement() || L10_topFloor() || L10_holeInTheSkyUnlock())
+		{
+			// quests where we want to force non-combats
+			return true;
+		}
+	}
+
 	// CMC routing for Breathitins
 	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0)
 	{
@@ -262,4 +272,15 @@ boolean auto_softBlockHandler()
 		return true;
 	}
 	return false;
+}
+
+item[int] auto_workshedStrategy()
+{
+	// return the worksheds, in order, that we want to use today.
+	item[int] strat;
+	if (get_property("_workshedItemUsed").to_boolean()) {
+		// we already changed workshed today. Just return whatever is in our workshed currently.
+		strat[0] = get_workshed();
+	}
+	return strat;
 }
