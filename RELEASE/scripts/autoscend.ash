@@ -366,6 +366,7 @@ boolean LX_burnDelay()
 	boolean sausageGoblinAvailable = auto_sausageGoblin();
 	boolean backupTargetAvailable = auto_backupTarget();
 	boolean voidMonsterAvailable = auto_voidMonster();
+	boolean habitatingMonsters = auto_habitatMonster() != $monster[none];
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -467,7 +468,20 @@ boolean LX_burnDelay()
 			}
 		}
 	}
-	
+
+	if (habitatingMonsters)
+	{
+		location habitatZone = solveDelayZone(isFreeMonster(auto_habitatMonster()) && get_property("breathitinCharges").to_int() > 0);
+		if (habitatZone != $location[none])
+		{
+			auto_log_info(`Might be fighting a {auto_habitatMonster()} in {habitatZone.to_string()} to burn delay!`, "green");
+			if (autoAdv(habitatZone))
+			{
+				return true;
+			}
+		}
+	}
+
 	if (voteMonsterAvailable)
 	{
 		auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
@@ -483,6 +497,10 @@ boolean LX_burnDelay()
 	if (voidMonsterAvailable)
 	{
 		auto_log_warning("Cursed Magnifying Glass's void monster is next but couldn't find a zone to burn delay", "red");
+	}
+	if (habitatingMonsters)
+	{
+		auto_log_warning("Habitating a monster but couldn't find a zone to burn delay", "red");
 	}
 	return false;
 }
@@ -1303,7 +1321,8 @@ boolean councilMaintenance()
 boolean adventureFailureHandler()
 {
 	location place = my_location();
-	if(my_location().turns_spent > 52)
+	int limit = (in_avantGuard() ? 100 : 50);
+	if(place.turns_spent > limit)
 	{
 		boolean tooManyAdventures = true;
 		
@@ -1632,6 +1651,7 @@ void resetState() {
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
 	set_property("auto_nextEncounter", ""); // monster that was expected last turn
 	set_property("auto_habitatMonster", ""); // monster we want to cast Recall Facts: Monster Habitats
+	set_property("auto_nonAdvLoc", false); // location is a non-adventure.php location
 
 	if(doNotBuffFamiliar100Run())		//some familiars are always bad
 	{

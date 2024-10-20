@@ -815,7 +815,7 @@ boolean L11_blackMarket()
 		return false;
 	}
 
-	if($location[The Black Forest].turns_spent > 12 && !in_ag())
+	if ($location[The Black Forest].turns_spent > 12 && !in_avantGuard())
 	{
 		auto_log_warning("We have spent a bit many adventures in The Black Forest... manually checking", "red");
 		visit_url("place.php?whichplace=woods");
@@ -2292,6 +2292,7 @@ boolean L11_mauriceSpookyraven()
 		}
 		else
 		{
+			set_property("auto_nonAdvLoc", true);
 			autoAdv($location[Summoning Chamber]);
 		}
 		return true;
@@ -3158,7 +3159,7 @@ boolean L11_palindome()
 			auto_log_info("Attemping to use Map the Monsters to olfact a Bob Racecar.");
 		}
 		boolean advSpent = autoAdv($location[Inside the Palindome]);
-		if($location[Inside the Palindome].turns_spent > 30 && !in_pokefam() && !in_koe() && !in_ag() && auto_is_valid($item[Disposable Instant Camera]))
+		if ($location[Inside the Palindome].turns_spent > 30 && !in_pokefam() && !in_koe() && !in_avantGuard() && auto_is_valid($item[Disposable Instant Camera]))
 		{
 			abort("It appears that we've spent too many turns in the Palindome. If you run me again, I'll try one more time but many I failed finishing the Palindome");
 		}
@@ -3323,6 +3324,12 @@ boolean L11_unlockEd()
 		auto_log_info("Bringing the Grey Goose to emit some drones at some rat kings.");
 		handleFamiliar($familiar[Grey Goose]);
 	}
+
+	if(auto_can_equip($item[pro skateboard]) && equipmentAmount($item[pro skateboard]) > 0 && item_amount($item[Tangle of rat tails]) >= 1 && !get_property("_epicMcTwistUsed").to_boolean())
+	{
+		auto_log_info("Be like Tony Hawk on a Tomb Rat King!");
+		autoEquip($item[pro skateboard]);
+	}
 	
 	return autoAdv(1, $location[The Middle Chamber]);
 }
@@ -3382,6 +3389,7 @@ boolean L11_defeatEd()
 	auto_log_info("Time to waste all of Ed's Ka Coins :(", "blue");
 
 	set_property("auto_nextEncounter","Ed the Undying");
+	set_property("auto_nonAdvLoc", true);
 	autoAdv($location[The Lower Chambers]);
 	if(in_pokefam() || in_koe())
 	{

@@ -606,10 +606,13 @@ void edUnderworldChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
-boolean in_ag();
+boolean in_avantGuard();
 void ag_initializeSettings();
 void ag_pulls();
 void ag_bgChat();
+monster ag_bgToChat();
+boolean LX_agNonAdv();
+boolean ag_is_bodyguard();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash
@@ -1638,18 +1641,11 @@ boolean uneffect(effect toRemove);
 //Defined in autoscend/auto_routing.ash
 location solveDelayZone(boolean skipOutdoorZones);
 location solveDelayZone();
-boolean setSoftblockDelay();
-boolean allowSoftblockDelay();
-boolean setSoftblockDelay();
 boolean canBurnDelay(location loc);
 boolean allowSoftblockUndergroundAdvs();
-boolean setSoftblockUndergroundAdvs();
 boolean auto_reserveUndergroundAdventures();
-boolean LX_goingUnderground();
-boolean allowSoftblockOutdoorAdvs();
-boolean setSoftblockOutdoorAdvs();
-boolean auto_reserveOutdoorAdventures();
-boolean LX_useBreathitinCharges();
+boolean auto_earlyRoutingHandling();
+boolean auto_softBlockHandler();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
@@ -1753,6 +1749,9 @@ boolean adjustForReplaceIfPossible();
 boolean canSniff(monster enemy, location loc);
 boolean adjustForSniffingIfPossible(monster target);
 boolean adjustForSniffingIfPossible();
+boolean canCopy(monster enemy, location loc);
+boolean adjustForCopyIfPossible(monster target);
+boolean adjustForCopyIfPossible();
 boolean hasTorso();
 boolean isGuildClass();
 float elemental_resist_value(int resistance);
@@ -1849,6 +1848,8 @@ boolean [monster] auto_getMonsters(string category);
 boolean auto_wantToSniff(monster enemy, location loc);
 boolean auto_wantToYellowRay(monster enemy, location loc);
 boolean auto_wantToReplace(monster enemy, location loc);
+boolean auto_wantToCopy(monster enemy, location loc);
+boolean auto_wantToCopy(monster enemy);
 int total_items(boolean [item] items);
 boolean auto_badassBelt();
 void auto_interruptCheck(boolean debug);

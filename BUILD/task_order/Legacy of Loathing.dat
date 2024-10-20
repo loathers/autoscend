@@ -11,15 +11,13 @@ L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
 LX_summonMonster
-LM_edTheUndying
-LX_bugbearInvasion
-LX_lowkeySummer
 resolveSixthDMT
 L11_aridDesert	L11_hasUltrahydrated
 L12_flyerFinish
 L12_getOutfit
 L12_startWar
 LX_loggingHatchet
+auto_earlyRoutingHandling
 LX_guildUnlock
 LX_bitchinMeatcar	LX_bitchinMeatcar_condition
 LX_unlockDesert
@@ -88,8 +86,6 @@ L11_getBeehive
 L12_finalizeWar
 L12_clearBattlefield
 LX_koeInvaderHandler
-setSoftblockDelay	allowSoftblockDelay
-setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 L12_lastDitchFlyer
 LX_bugbearInvasionFinale
 L13_towerNSContests
@@ -98,4 +94,5 @@ L13_sorceressDoor
 L13_towerNSTower
 L13_towerNSNagamar
 L13_towerNSFinal
+auto_softBlockHandler
 LX_attemptPowerLevel
