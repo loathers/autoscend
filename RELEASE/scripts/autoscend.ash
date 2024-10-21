@@ -1177,6 +1177,7 @@ boolean dailyEvents()
 	auto_useBlackMonolith();
 	auto_scepterSkills();
 	auto_getAprilingBandItems();
+	auto_buyFromSeptEmberStore();
 	
 	return true;
 }
