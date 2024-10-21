@@ -24,6 +24,10 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	retval = auto_combatDarkGyffteStage2(round, enemy, text);
 	if(retval != "") return retval;
 
+	// Path = zombie slayer
+	retval = auto_combatZombieSlayerStage2(round, enemy, text);
+	if(retval != "") return retval;
+
 	//use industrial fire extinguisher zone specific skills
 	string extinguisherSkill = auto_FireExtinguisherCombatString(my_location());
 	if(extinguisherSkill != "" && have_equipped(wrap_item($item[industrial fire extinguisher]))

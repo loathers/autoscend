@@ -1,11 +1,13 @@
-since r28092;	// feat: add 'avoid attack' modifier
+script "Autoscend-ZS";
+notify Tissen;
+
+since r28092;	// feat: various iotm improvements
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
 
 	Accessory scripts can import autoscend.ash
 ***/
-
 
 import <autoscend/autoscend_header.ash>
 import <autoscend/combat/auto_combat.ash>		//this file contains its own header. so it needs to be imported early

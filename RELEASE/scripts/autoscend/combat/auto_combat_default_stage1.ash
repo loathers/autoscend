@@ -39,6 +39,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	retval = auto_combatWereProfessorStage1(round, enemy, text);
 	if(retval != "") return retval;
 
+	// Path = zombie slayer
+	retval = auto_combatZombieSlayerStage1(round, enemy, text);
+	if(retval != "") return retval;
+
 	if(enemy == $monster[Your Shadow])
 	{
 		if(in_plumber())

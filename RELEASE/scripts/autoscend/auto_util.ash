@@ -2590,6 +2590,9 @@ boolean woods_questStart()
 	}
 	if(knoll_available())
 	{
+		if (in_zombieSlayer()) {
+			visit_url("place.php?whichplace=forestvillage&preaction=screwquest&action=fv_untinker_quest", true);
+		}
 		visit_url("place.php?whichplace=knoll_friendly&action=dk_innabox");
 		visit_url("place.php?whichplace=forestvillage&action=fv_untinker");
 	}

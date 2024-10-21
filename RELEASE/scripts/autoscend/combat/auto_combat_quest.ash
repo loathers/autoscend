@@ -188,7 +188,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 	{
 		return useSkill($skill[Toss], false);
 	}
-	
+
 	if (canUse($skill[Plague Claws], false))
 	{
 		return useSkill($skill[Plague Claws], false);

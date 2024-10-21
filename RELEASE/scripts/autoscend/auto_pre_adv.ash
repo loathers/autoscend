@@ -577,6 +577,13 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	// To get photo booth supplies in Zombie Slayer, we need to have the photo booth supply list equipped
+	if (in_zombieSlayer()) {
+		if (my_level() >= 8 && get_property("auto_getSheriffBadgeSupplies").to_boolean()) {
+			autoForceEquip($item[photo booth supply list]);
+		}
+	}
+
 	// Use some instakills. Can't use Chest X-Ray in Pocket Familiars.
 	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
 	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && auto_is_valid($skill[Chest X-Ray]) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19 && !in_pokefam())

@@ -29,7 +29,40 @@ void zombieSlayer_initializeSettings()
 	{
 		// No Naughty Sorceress so no need for a wand.
 		set_property("auto_wandOfNagamar", false);
+		set_property("auto_getSheriffBadgeSupplies", false);
 	}
+
+	if (item_amount($item[clan vip lounge key]) > 0) {
+		if (item_amount($item[photo booth supply list]) == 0) 
+		{
+			buffer page = visit_url("clan_viplounge.php?action=photobooth");
+			if (!page.contains_text("Borrow a prop"))
+			{
+				abort("We can not borrow a prop right now, or clan does not have a photo booth");
+			}
+			else 
+			{
+				page = visit_url("choice.php?pwd&whichchoice=1533&option=2");
+				if (!page.contains_text("Borrow a photo booth supply list"))
+				{
+					abort("Can not borrow a photo booth supply list right now");
+				}
+				else {
+					auto_log_debug("We will borrow a supply list from the photo booth now.");
+					visit_url("choice.php?pwd&whichchoice=1535&option=1&avtion=Borrow a photo booth supply list");
+				}
+			}
+		}
+	}
+	else {
+		abort("You don't havea clan VIP lounge key. It's prabably better if you uninstallt this and install the regular autoscend instead.");
+	}
+
+	if (item_amount($item[photo booth supply list]) == 0) 
+	{
+		abort("Could not find a photo booth sullpy list. Without it this is useless.");
+	}
+
 }
 
 int last_zombie_fullness = -1;
@@ -175,6 +208,22 @@ boolean zombieSlayer_acquireMP(int goal)
 	return zombieSlayer_acquireMP(goal, meatReserve());
 }
 
+boolean isHavingHiddenApartmentCurse() {
+	boolean isCursed = false;
+	// We are only interested in this when the Hidden Apartment quest is active
+	if (get_property("questL11Curses") != "started") {
+		return false;
+	}
+	foreach eff in $effects[Once-Cursed, Thrice-Cursed, Twice-Cursed]
+	{
+		if(have_effect(eff) > 0)
+		{
+			isCursed = true;
+		}
+	}
+	return isCursed;
+}
+
 boolean zombieSlayer_acquireHP(int goal)
 {
 	if(!in_zombieSlayer())
@@ -185,8 +234,41 @@ boolean zombieSlayer_acquireHP(int goal)
 	if (my_hp() >= goal) return true;
 
 	int missingHP = goal - my_hp();
+	boolean failOut = false;
 
 	// Devour Minions if you need at least 4 casts of Bite Minion or if doing the Hidden Apartment Building
+	while ((missingHp > 0) && (!failOut)) 
+	{
+		// Devour Minions is less cost effective when we are under max 80hp 
+		// It is also less effective if we would heal less than 30% of max hp
+		// But if we have the hidden apartment curses we should always try to use it anyway
+		if ((my_maxhp() > 80 && missingHP > floor(my_maxhp() * 0.3)) || isHavingHiddenApartmentCurse())
+		{
+			if (auto_have_skill($skill[Devour Minions]) && zombieSlayer_acquireMP(mp_cost($skill[Devour Minions])))
+			{
+				auto_log_debug("Sacrificing 4 minions for HP");
+				use_skill(1, $skill[Devour Minions]);
+			}
+		} 
+		// Only use Bite Minions if it doesn't remove a hidden apartment curse (wich it can do if we have Devour Minion)
+		if (!(auto_have_skill($skill[Devour Minions]) && isHavingHiddenApartmentCurse())) 
+		{
+			if (auto_have_skill($skill[Bite Minion]) && zombieSlayer_acquireMP(mp_cost($skill[Bite Minion])))
+			{
+				auto_log_debug("Sacrificing 1 minion for HP");
+				use_skill(1, $skill[Bite Minion]);
+			}
+		}
+		if (missingHP == goal - my_hp()) 
+		{
+			auto_log_debug("Could not sacrifice minion(s) for HP", "red");
+			failOut = true; // Failed
+		} 
+		missingHP = goal - my_hp();
+	}
+
+/*
+	// Devour Minions if you need at least 4 casts of Bite Minion 
 	if (auto_have_skill($skill[Devour Minions]))
 	{
 		while ((missingHP > floor(my_maxhp() * 0.3) || ((have_effect($effect[Thrice-Cursed]) > 0 || have_effect($effect[Twice-Cursed]) > 0 || have_effect($effect[Once-Cursed]) > 0) && !(internalQuestStatus("questL11Curses") > 1 || item_amount($item[Moss-Covered Stone Sphere]) > 0))) && zombieSlayer_acquireMP(mp_cost($skill[Devour Minions])))
@@ -201,15 +283,18 @@ boolean zombieSlayer_acquireHP(int goal)
 
 	if (auto_have_skill($skill[Bite Minion]))
 	{
-		while (missingHp > 0 && zombieSlayer_acquireMP(mp_cost($skill[Bite Minion])))
-		{
-			use_skill(1, $skill[Bite Minion]);
-			if (my_hp() >= goal) break;
-			if (missingHP == goal - my_hp()) break; // Failed
-			missingHP = goal - my_hp();
+		// Dont use this if you have Devour minions and one of those n:th-cursed effects
+		if (!(auto_have_skill($skill[Devour Minions]) && isHavingHiddenApartmentCurse())) {
+			while (missingHp > 0 && zombieSlayer_acquireMP(mp_cost($skill[Bite Minion])))
+			{
+				use_skill(1, $skill[Bite Minion]);
+				if (my_hp() >= goal) break;
+				if (missingHP == goal - my_hp()) break; // Failed
+				missingHP = goal - my_hp();
+			}
 		}
 	}
-
+*/
 	return my_hp() >= goal;
 }
 
