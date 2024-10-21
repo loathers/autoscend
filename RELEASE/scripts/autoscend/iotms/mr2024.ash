@@ -434,6 +434,7 @@ void auto_buyFromSeptEmberStore()
 		int [element] resGoal;
 		resGoal[$element[cold]] = 100;
 		// get cold res. Use noob cave as generic place holder
+		auto_wishForEffect($effect[Fever From the Flavor]);
 		provideResistances(resGoal, $location[noob cave], true);
 		equipMaximizedGear();
 		// buy mouthwash and use it
