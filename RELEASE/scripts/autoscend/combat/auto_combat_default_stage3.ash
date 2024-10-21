@@ -177,7 +177,14 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	{
 		boolean polarVortexAvailable = canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10;
 		boolean mildEvilAvailable = canUse($skill[Perpetrate Mild Evil],false) && get_property("_mildEvilPerpetrated").to_int() < 3;
-		// mild evil only can pick pocket. Use it before fire extinguisher
+		boolean swoopAvailable = canUse($skill[Swoop like a Bat], true) && get_property("_batWingsSwoopUsed").to_int() < 11;
+
+		// mild evil and swoop can only pick pocket. Use them before fire extinguisher
+		if(swoopAvailable)
+		{
+			handleTracker(enemy, $skill[Swoop like a Bat], "auto_otherstuff");
+			return useSkill($skill[Swoop like a Bat]);	
+		}
 		if(mildEvilAvailable)
 		{
 			handleTracker(enemy, $skill[Perpetrate Mild Evil], "auto_otherstuff");
@@ -349,7 +356,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			}
 		}
 
-		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0) && get_property("chasmBridgeProgress").to_int() < 30)
+		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0) && get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 		{
 			boolean coldMortarShell = canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0;
 			skill coldSkillToUse;

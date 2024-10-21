@@ -1252,7 +1252,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 	if(pass())
 		return result();
 	
-	// don't craft equipment here. See how much +item we can get with gear on hand
+	// don't craft equipment here. See how much +meat we can get with gear on hand
 	if(doEverything)
 	{
 		string max = "500meat " + (amt + 100) + "max";
@@ -1497,7 +1497,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		}
 		if(pass())
 			return result();
-		if(auto_monkeyPawWishesLeft() + auto_wishesAvailable() > 0)
+		if(auto_totalEffectWishesAvailable() > 0)
 		{
 			boolean success = true;
 			int specwishes = 0;
@@ -1523,7 +1523,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 					if(!speculative)
 						success = auto_wishForEffect(eff);
 					specwishes +=1;
-					if(specwishes <= auto_monkeyPawWishesLeft() + auto_wishesAvailable())
+					if(specwishes <= auto_totalEffectWishesAvailable())
 					{
 						handleEffect(eff);
 						if(pass())
@@ -1549,11 +1549,362 @@ float provideMeat(int amt, boolean doEverything, boolean speculative)
 {
 	return provideMeat(amt, my_location(), doEverything, speculative);
 }
+
 boolean provideMeat(int amt, location loc, boolean doEverything)
 {
 	return provideMeat(amt, loc, doEverything, false) >= amt;
 }
+
 boolean provideMeat(int amt, boolean doEverything)
 {
 	return provideMeat(amt, my_location(), doEverything);
+}
+
+float provideItem(int amt, location loc, boolean doEverything, boolean speculative)
+{
+	//doEverything means use equipment, familiar slot, and limited buffs (ie steely eye squint)
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " item, " + (doEverything ? "with" : "without") + " equipment, familiar, and limited buffs", "blue");
+
+	float alreadyHave = numeric_modifier("Item Drop");
+	float need = amt - alreadyHave;
+
+	if(need > 0)
+	{
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	}
+	else
+	{
+		auto_log_debug("We already have enough +item!");
+		return alreadyHave;
+	}
+
+	float delta = 0;
+
+	float result()
+	{
+		return numeric_modifier("Item Drop") + delta;
+	}
+
+	boolean pass()
+	{
+		return result() >= amt;
+	}
+
+	if(pass())
+		return result();
+	
+	// don't craft equipment here. See how much +item we can get with gear on hand
+	if(doEverything)
+	{
+		string max = "500item " + (amt + 100) + "max";
+		if(speculative)
+		{
+			simMaximizeWith(loc, max);
+		}
+		else
+		{
+			addToMaximize(max);
+			simMaximize(loc);
+		}
+		delta = simValue("Item Drop") - numeric_modifier("Item Drop");
+		auto_log_debug("With existing gear we can get to " + result());
+
+		if(pass())
+			return result();
+	}
+
+	//see how much familiar will help
+	if(doEverything && canChangeFamiliar())
+	{
+		if(!speculative)
+		{
+			handleFamiliar("item");
+		}
+		// fam isn't equipped immediatly even if we aren't speculating
+		// so add bonus from fam regardless of speculation
+		familiar target = lookupFamiliarDatafile("item");
+		if(target != $familiar[none] && target != my_familiar())
+		{
+			int famWeight = familiar_weight(target) + weight_adjustment();
+			delta += numeric_modifier(target, "Item Drop",famWeight,$item[none]);
+			auto_log_debug("With using familiar: " + target + " we can get to " + result());
+		}
+		else
+		{
+			auto_log_debug("Already have desired familar, " + target + ", active.");
+		}
+
+		if(pass())
+			return result();
+	}
+
+	void handleEffect(effect eff)
+	{
+		if(speculative)
+		{
+			delta += numeric_modifier(eff, "Item Drop");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
+	}
+
+	boolean tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(buffMaintain(eff, 0, 1, 1, speculative))
+				handleEffect(eff);
+			if(pass())
+				return true;
+		}
+		return false;
+	}
+
+	if(in_heavyrains())
+	{
+		buffMaintain($effect[Fishy Whiskers]); // HR only
+	}
+
+	// unlimited skills
+	if(tryEffects($effects[
+		Fat Leon\'s Phat Loot Lyric, //20% item
+		Singer\'s Faithful Ocelot //10% item
+	]))
+		return result();
+
+	if(canAsdonBuff($effect[Driving Observantly]))
+	{
+		//50% meat, 50% item, 50% booze drops
+		if(!speculative)
+			asdonBuff($effect[Driving Observantly]);
+		handleEffect($effect[Driving Observantly]);
+	}
+	if(pass())
+		return result();
+
+	if(!bat_wantHowl(loc) && bat_formBats(speculative))
+	{
+		//150% item, 150% init
+		handleEffect($effect[Bats Form]);
+	}
+	if(pass())
+		return result();
+
+	if(auto_birdModifier("Item Drop") > 0)
+	{
+		//Can be 10/20/30/40/50% meat drop
+		if(tryEffects($effects[Blessing of the Bird]))
+			return result();
+	}
+
+	if(auto_favoriteBirdModifier("Item Drop") > 0)
+	{
+		//Can be 10/20/30/40/50% meat drop
+		if(tryEffects($effects[Blessing of Your Favorite Bird]))
+			return result();
+	}
+
+	// items
+	if(tryEffects($effects[
+		Unusual Perspective, //50% item
+		Five Sticky Fingers, //50% item
+		Wet and Greedy, //25% item
+		Serendipi Tea, //25% item
+		Glowing Hands, //25% item
+		Eagle Eyes, //20% item
+		Juiced and Jacked, //20% item
+		The Grass... \ Is Blue..., //40% meat, 20% item
+		Joyful Resolve, //15% item
+		Fortunate Resolve, //10% item
+		Human-Human Hybrid, //10% item
+		Heart of Lavender, //10% item
+	]))
+		return result();
+	
+	if(!in_wereprof())
+	{
+		//wereprof doesn't like +ML effects outside of Werewolf
+		if(tryEffects($effects[Frosty])) //200% meat, 100% item, 100% init, 25 ML
+			return result();
+	}
+
+	if((auto_is_valid($item[possessed sugar cube]) && item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
+	{
+		if(!speculative)
+			cli_execute("make sugar fairy");
+		handleEffect($effect[Dance of the Sugar Fairy]); //25% item
+		if(pass())
+			return result();
+	}
+	
+	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
+	{
+		if(!speculative)
+			auto_sourceTerminalEnhance("items"); //30% item
+		handleEffect($effect[items.enh]);
+		if(pass())
+			return result();
+	}
+
+	//check specific item drop bonus
+	generic_t itemFoodNeed = zone_needItemFood(loc);
+	generic_t itemBoozeNeed = zone_needItemBooze(loc);
+	float itemDropFood = result() + simValue("Food Drop");
+	float itemDropBooze = result() + simValue("Booze Drop");
+	if(itemFoodNeed._boolean && itemDropFood < itemFoodNeed._float)
+	{
+		auto_log_debug("Trying food drop supplements");
+		//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
+		addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
+		simMaximize();
+		itemDropFood = simValue("Item Drop") + simValue("Food Drop");
+	}
+	if(itemBoozeNeed._boolean && itemDropBooze < itemBoozeNeed._float)
+	{
+		auto_log_debug("Trying booze drop supplements");
+		addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
+		simMaximize();
+		itemDropBooze = simValue("Item Drop") + simValue("Booze Drop");
+		//no zone item yet needs both food and booze, bottle of Chateau de Vinegar exception is a cooking ingredient but doesn't use food drop bonus
+	}
+	if(pass())
+		return result();
+
+	// craft equipment, even limited use, here
+	if(doEverything)
+	{
+		//craft IOTM derivative that gives high item bonus
+		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0) && auto_is_valid($item[A Light That Never Goes Out]))
+		{
+			auto_buyUpTo(1, $item[third-hand lantern]);
+			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
+		}
+
+		if(auto_is_valid($item[Broken Champagne Bottle]) && get_property("garbageChampagneCharge").to_int() > 0) {
+			//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
+			januaryToteAcquire($item[Broken Champagne Bottle]);
+		}
+
+		string max = "500item " + (amt + 100) + "max";
+		if(speculative)
+		{
+			simMaximizeWith(loc, max);
+		}
+		else
+		{
+			addToMaximize(max);
+			simMaximize(loc);
+		}
+		delta = simValue("Item Drop") - numeric_modifier("Item Drop");
+		auto_log_debug("With existing and crafted gear we can get to " + result());
+
+		if(pass())
+			return result();
+	}
+
+	if(doEverything && amt >= 400)
+	{
+		if(!get_property("_steelyEyedSquintUsed").to_boolean() && buffMaintain($effect[Steely-Eyed Squint], 0, 1, 1, speculative))
+		{
+			if(speculative)
+				delta += delta + numeric_modifier("Item Drop");
+			auto_log_debug("With Steely Eyed Squint we " + (speculative ? "can get to" : "now have") + " " + result());
+		}
+		if(pass())
+			return result();
+	}
+
+	// Use limited resources
+	if(doEverything)
+	{
+		if(tryEffects($effects[
+		shadow waters, //200% meat, 100% item, 100% init, -10% combat
+		One Very Clear Eye, //100% item
+		Car-Charged, //100% meat, 100% item, 5-10MP, 50% init, 50% spell dmg, +3 stats per fight
+		Incredibly Well Lit //100% meat, 50% item
+		]))
+			if(pass())
+				return result();
+		if(zataraAvailable() && (0 == have_effect($effect[There\'s no N in Love])) & auto_is_valid($effect[There\'s no N in Love]))
+		{
+			if(!speculative)
+			{
+				zataraSeaside("item");
+			}
+			handleEffect($effect[There\'s no N in Love]); //50% booze/food/item
+			if(pass())
+				return result();			
+		}
+		if((get_property("sidequestArenaCompleted") == "hippy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Dilated Pupils]) == 0))
+		{
+			if(is_professor())
+			{
+				//Need to manually equip because professor
+				if(!have_equipped($item[reinforced beaded headband])) equip($item[reinforced beaded headband]);
+				if(!have_equipped($item[bullet-proof corduroys])) equip($item[bullet-proof corduroys]);
+				if(!have_equipped($item[round purple sunglasses])) equip($item[round purple sunglasses]);
+			}
+			else
+			{
+				outfit("War Hippy Fatigues");
+			}
+			if(!speculative)
+			{
+				cli_execute("concert 2"); //20% item
+			}
+			handleEffect($effect[Dilated Pupils]); //20% item
+			if(pass())
+				return result();
+		}
+		if(pass())
+			return result();
+		if(auto_totalEffectWishesAvailable() > 0)
+		{
+			boolean success = true;
+			int specwishes = 0;
+			foreach eff in $effects[Frosty, //200% meat, 100% item, 25 ML, 100% init
+			One Very Clear Eye, //100% item
+			Let's Go Shopping!,  //150% meat, 75% item, -300% myst
+			Always Be Collecting, //100% meat, 50% item
+			Incredibly Well Lit, //100% meat, 50% item
+			]{
+				if(eff == $effect[Frosty] && in_wereprof()) continue; //skip frosty in wereprof
+				if(have_effect(eff) == 0)
+				{
+					if(!speculative)
+						success = auto_wishForEffect(eff);
+					specwishes +=1;
+					if(specwishes <= auto_totalEffectWishesAvailable())
+					{
+						handleEffect(eff);
+						if(pass())
+							return result();
+					}
+					else
+					{
+						success = false;
+					}
+				}
+				if(!success) break;
+			}
+		}
+		auto_log_debug("With limited buffs we can get to " + result());
+		if(pass())
+			return result();
+	}
+	return result();
+}
+
+float provideItem(int amt, boolean doEverything, boolean speculative)
+{
+	return provideItem(amt, my_location(), doEverything, speculative);
+}
+
+boolean provideItem(int amt, location loc, boolean doEverything)
+{
+	return provideItem(amt, loc, doEverything, false) >= amt;
+}
+
+boolean provideItem(int amt, boolean doEverything)
+{
+	return provideItem(amt, my_location(), doEverything);
 }

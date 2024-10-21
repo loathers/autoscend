@@ -578,9 +578,9 @@ skill ed_nextUpgrade()
 	{
 		return $skill[Another Extra Spleen]; // 10 Ka
 	}
-	else if (!have_skill($skill[Replacement Stomach]))
+	else if (!have_skill($skill[Replacement Liver]))
 	{
-		return $skill[Replacement Stomach]; // 30 Ka
+		return $skill[Replacement Liver]; // 30 Ka
 	}
 	else if (!have_skill($skill[Upgraded Legs]))
 	{
@@ -602,9 +602,9 @@ skill ed_nextUpgrade()
 	{
 		return $skill[Just One More Extra Spleen]; // 25 Ka
 	}
-	else if (!have_skill($skill[Replacement Liver]))
+	else if (!have_skill($skill[Replacement Stomach]))
 	{
-		return $skill[Replacement Liver]; // 30 Ka
+		return $skill[Replacement Stomach]; // 30 Ka
 	}
 	else if (!have_skill($skill[Elemental Wards]))
 	{
@@ -1116,7 +1116,10 @@ boolean L1_ed_islandFallback()
 
 	//track that we are farming Ka as Ed
 	set_property("_auto_farmingKaAsEd", true);
-
+	if (auto_remainingSpeakeasyFreeFights() > 0)
+	{
+		return speakeasyCombat();
+	}
 	if (neverendingPartyAvailable())
 	{
 		return neverendingPartyCombat();
@@ -1448,8 +1451,10 @@ boolean LM_edTheUndying()
 
 	// we should open the manor second floor sooner rather than later as starting the level 11 quest
 	// ruins our pool skill and having delay burning zones open is nice.
-	if (LX_unlockManorSecondFloor() || LX_unlockHauntedLibrary() || LX_unlockHauntedBilliardsRoom(true)) {
-		return true;
+	if(my_level()<11) {
+		if (LX_unlockManorSecondFloor() || LX_unlockHauntedLibrary() || LX_unlockHauntedBilliardsRoom(true)) {
+			return true;
+		}
 	}
 	// as we do hippy side, the war is a 2 Ka quest (excluding sidequests but that shouldn't matter)
 	if (L12_islandWar())
@@ -1470,6 +1475,10 @@ boolean LM_edTheUndying()
 	// Castle zones are all 1 Ka so may as well finish it off
 	if (L10_plantThatBean() || L10_airship() || L10_basement() || L10_ground() || L10_topFloor())
 	{
+		return true;
+	}
+	// If we didn't get the Spookyraven unlock done before level 11, do it now since airship is done and we want more delay zones open
+	if (LX_unlockManorSecondFloor() || LX_unlockHauntedLibrary() || LX_unlockHauntedBilliardsRoom(true)) {
 		return true;
 	}
 	// Smut Orcs are 1 Ka so build the bridge.

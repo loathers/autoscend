@@ -89,6 +89,17 @@ freerun	29	animated rustic nightstand
 freerun	30	Wardröb nightstand
 freerun	31	drunken rat
 freerun	32	bunch of drunken rats
+freerun	33	tapdancing skeleton
+freerun	34	floating platter of hors d'oeuvres
+freerun	35	boaraffe
+freerun	36	pygmy assault squad
+freerun	37	pygmy blowgunner
+freerun	38	Copperhead Club bartender
+freerun	39	fan dancer
+freerun	40	Mob Penguin Capo
+freerun	41	ninja snowman (chopsticks)
+freerun	42	ninja snowman janitor
+freerun	43	ninja snowman weaponmaster
 
 replace	0	Banshee Librarian	item:Killing Jar>0
 replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber;!pathid:41;!path:Wildfire;!path:Fall of the Dinosaurs;!path:Avatar of Shadows Over Loathing;!path:Legacy of Loathing;!path:WereProfessor
@@ -131,7 +142,7 @@ replace	34	trendy bugbear chef	path:Bugbear Invasion;loc:Galley
 sniff	0	pygmy shaman	loc:The Hidden Apartment Building;!effect:Thrice-Cursed;prop:hiddenApartmentProgress<7
 sniff	1	Writing Desk	prop:writingDesksDefeated<4
 sniff	2	cabinet of Dr. Limpieza
-sniff	3	Dairy Goat	loc:The Goatlet
+sniff	3	Dairy Goat	loc:The Goatlet;item:goat cheese<3
 sniff	4	Pygmy Bowler
 sniff	5	Pygmy Witch Surgeon
 sniff	6	pygmy witch accountant	loc:The Hidden Office Building

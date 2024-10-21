@@ -120,6 +120,11 @@ void L9_chasmMaximizeForNoncombat()
 	}
 }
 
+int bridgeGoal()
+{
+	return (!auto_haveBatWings() ? 30 : 25);
+}
+
 int fastenerCount()
 {
 	int base = get_property("chasmBridgeProgress").to_int();
@@ -144,7 +149,7 @@ int lumberCount()
 
 boolean finishBuildingSmutOrcBridge()
 {
-	if (internalQuestStatus("questL09Topping") != 0 || get_property("chasmBridgeProgress").to_int() >= 30)
+	if (internalQuestStatus("questL09Topping") != 0 || get_property("chasmBridgeProgress").to_int() >= bridgeGoal())
 	{
 		return false;
 	}
@@ -160,6 +165,13 @@ boolean finishBuildingSmutOrcBridge()
 	visit_url("place.php?whichplace=orc_chasm&action=bridge"+(to_int(get_property("chasmBridgeProgress"))));
 
 	// finish chasm if we can
+	if(auto_canLeapBridge())
+	{
+		autoForceEquip($item[bat wings]);
+		visit_url("place.php?whichplace=orc_chasm&action=bridge_jump");
+		visit_url("place.php?whichplace=highlands&action=highlands_dude");
+		return true;
+	}
 	if(get_property("chasmBridgeProgress").to_int() >= 30)
 	{
 		visit_url("place.php?whichplace=highlands&action=highlands_dude");
@@ -173,7 +185,7 @@ boolean finishBuildingSmutOrcBridge()
 void prepareForSmutOrcs()
 {
 
-	if(lumberCount() >= 30 && fastenerCount() >= 30)
+	if(lumberCount() >= bridgeGoal() && fastenerCount() >= bridgeGoal())
 	{
 		// must be here for shen snake and quest objective is already done
 		// set blech NC and don't bother prepping for the zone
@@ -270,11 +282,11 @@ void prepareForSmutOrcs()
 			}
 		}
 
-		if(fastenerCount() < 30)
+		if(fastenerCount() < bridgeGoal())
 		{
 			autoEquip($item[Loadstone]);
 		}
-		if(lumberCount() < 30)
+		if(lumberCount() < bridgeGoal())
 		{
 			autoEquip($item[Logging Hatchet]);
 		}
@@ -282,7 +294,7 @@ void prepareForSmutOrcs()
 		return;
 	}
 
-	int need = (30 - get_property("chasmBridgeProgress").to_int()) / 5;
+	int need = (bridgeGoal() - get_property("chasmBridgeProgress").to_int()) / 5;
 	if(need > 0)
 	{
 		while((need > 0) && (item_amount($item[Snow Berries]) >= 2))
@@ -293,13 +305,13 @@ void prepareForSmutOrcs()
 		}
 	}
 
-	if (get_property("chasmBridgeProgress").to_int() < 30)
+	if (get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 	{
-		if(fastenerCount() < 30)
+		if(fastenerCount() < bridgeGoal())
 		{
 			autoEquip($item[Loadstone]);
 		}
-		if(lumberCount() < 30)
+		if(lumberCount() < bridgeGoal())
 		{
 			autoEquip($item[Logging Hatchet]);
 		}
@@ -310,7 +322,7 @@ void prepareForSmutOrcs()
 
 boolean L9_chasmBuild()
 {
-	if (internalQuestStatus("questL09Topping") != 0 || get_property("chasmBridgeProgress").to_int() >= 30)
+	if (internalQuestStatus("questL09Topping") != 0 || get_property("chasmBridgeProgress").to_int() >= bridgeGoal())
 	{
 		return false;
 	}
@@ -330,7 +342,7 @@ boolean L9_chasmBuild()
 		return false;	//delay for You, Robot path
 	}
 	if(auto_hasAutumnaton() && !isAboutToPowerlevel() && $location[The Smut Orc Logging Camp].turns_spent > 0 
-		&& (fastenerCount() < 30 || lumberCount() < 30))
+		&& (fastenerCount() < bridgeGoal() || lumberCount() < bridgeGoal()))
 	{
 		// delay zone to allow autumnaton to grab bridge parts
 		// unless we have ran out of other stuff to do
@@ -381,7 +393,8 @@ boolean L9_aBooPeak()
 
 		if (clueAmt < 3)
 		{
-			januaryToteAcquire($item[Broken Champagne Bottle]);
+			// boo clues have 15% drop
+			provideItem(567, $location[A-Boo Peak], false);
 		}
 
 		return autoAdv(1, $location[A-Boo Peak]);
@@ -663,7 +676,8 @@ boolean L9_aBooPeak()
 	{
 		if ($location[A-Boo Peak].turns_spent < 10)
 		{
-			januaryToteAcquire($item[Broken Champagne Bottle]);
+			// boo clues have 15% drop
+			provideItem(567, $location[A-Boo Peak], false);
 		}
 
 		autoAdv(1, $location[A-Boo Peak]);
@@ -895,7 +909,7 @@ boolean L9_oilPeak()
 		{
 			return false;
 		}
-		else if(item_amount($item[Bubblin' Crude]) >= 12)
+		else if(item_amount($item[Bubblin\' Crude]) >= 12)
 		{
 			if(in_glover())
 			{
@@ -916,7 +930,7 @@ boolean L9_oilPeak()
 					}
 				}
 			}
-			else if(auto_is_valid($item[Bubblin' Crude]) && creatable_amount($item[Jar Of Oil]) > 0)
+			else if(auto_is_valid($item[Bubblin\' Crude]) && creatable_amount($item[Jar Of Oil]) > 0)
 			{
 				create(1, $item[Jar Of Oil]);
 			}
@@ -989,7 +1003,7 @@ boolean L9_highLandlord()
 	{
 		return false;
 	}
-	if(get_property("chasmBridgeProgress").to_int() < 30)
+	if(get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 	{
 		return false;
 	}
