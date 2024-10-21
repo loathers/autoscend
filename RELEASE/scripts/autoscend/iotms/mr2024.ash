@@ -438,6 +438,7 @@ void auto_buyFromSeptEmberStore()
 		equipMaximizedGear();
 		// buy mouthwash and use it
 		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
+		auto_log_debug(`Using mouthwash with {numeric_modifier("cold Resistance")} cold resistance`);
 		use(itemConsidering);
 	}
 	// if still have embers, get hat for mp regen
