@@ -611,7 +611,7 @@ void ag_initializeSettings();
 void ag_pulls();
 void ag_bgChat();
 monster ag_bgToChat();
-boolean LX_agNonAdv();
+boolean LM_avantGuard();
 boolean ag_is_bodyguard();
 
 ########################################################################################################

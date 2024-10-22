@@ -2566,10 +2566,7 @@ int doNumberology(string goal, boolean doIt, string option)
 
 		if(goal == "battlefield")
 		{
-			if(in_avantGuard() && !LX_agNonAdv() && in_hardcore())
-			{
-				handleFamiliar($familiar[Gelatinous Cubeling]);
-			}
+			set_property("auto_nonAdvLoc", true);
 			string[int] pages;
 			pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1";
 			pages[1] = "choice.php?whichchoice=1103&pwd=&option=1&num=" + numberology[numberwang];

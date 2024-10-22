@@ -192,21 +192,19 @@ monster ag_bgToChat()
 	return mon;
 }
 
-boolean LX_agNonAdv()
+boolean LM_avantGuard()
 {
 	if (!in_avantGuard())
 	{
-		return true;
-	}
-	//no longer need to use Cubeling/don't have own
-	if(!wantCubeling() || !canChangeToFamiliar($familiar[Gelatinous Cubeling]))
-	{
-		return true;
+		return false;
 	}
 
-	//want these to all be true in order to not come here. !wantCubeling above will skip this if we have all 3 cubeling items
-	if(LX_summonMonster() && L3_tavern() && L5_goblinKing() && L7_crypt() && L8_trapperGroar())
+	if (LX_summonMonster() || L3_tavern() || L5_goblinKing() || L7_crypt() || L8_trapperGroar() || L11_defeatEd())
 	{
+		// functions which spend adventures in non-adv.php locations.
+		// Do these with high priority so we get the cubeling drops in HC and/or farm consumables with CBB/Mini Kiwi
+		// these require auto_nonAdvLoc to be set appropriately before adventuring.
+		// TODO: separate out Bonerdagon handling from L7_crypt()
 		return true;
 	}
 

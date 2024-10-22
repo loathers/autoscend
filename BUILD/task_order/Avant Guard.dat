@@ -11,10 +11,7 @@ L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
 LX_summonMonster
-# path handling which should be in it's own task order but pre-dates task order functionality (tech debt FTW).
-LM_edTheUndying
-LX_bugbearInvasion
-LX_lowkeySummer
+LM_avantGuard
 # make sure we don't waste turns of Ultrahydrated doing something else.
 L11_aridDesert	L11_hasUltrahydrated
 # Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
@@ -40,15 +37,15 @@ L5_findKnob
 #	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
 L12_islandWar
 # Fix that dripping tap.
-L3_tavern	LX_agNonAdv
+L3_tavern
 #	Finish off the Goblin King.
-L5_slayTheGoblinKing	LX_agNonAdv
+L5_slayTheGoblinKing
 # Kill the undead? Is this an oxymoron?
-L7_crypt	LX_agNonAdv
+L7_crypt
 #  Kill Groar because *we* are the monsters.
-L8_trapperQuest	LX_agNonAdv
-L11_mauriceSpookyraven	LX_agNonAdv
-L11_defeatEd	LX_agNonAdv
+L8_trapperQuest
+L11_mauriceSpookyraven
+L11_defeatEd
 # Start the macguffin quest
 L11_blackMarket
 L11_forgedDocuments

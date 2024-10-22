@@ -222,9 +222,24 @@ boolean canChangeToFamiliar(familiar target)
 		}
 	}
 
-	//Avant Guard specific allowance of Gelatinous Cubeling for non-adv.php zones
-	if(in_avantGuard() && !($familiars[Burly Bodyguard, Gelatinous Cubeling] contains target))
+	// Avant Guard specific allowance of familiars for non-adv.php zones
+	if (in_avantGuard())
 	{
+		if ($familiar[Burly Bodyguard] == target)
+		{
+			return true; // always allowed
+		}
+		else if (get_property("auto_nonAdvLoc").to_boolean())
+		{
+			if ($familiar[Gelatinous Cubeling] == target && in_hardcore())
+			{
+				return true; // don't need Gel Cube in Normal
+			}
+			else if ($familiars[Cookbookbat, Mini Kiwi] contains target)
+			{
+				return true; // might be worth farming some of these drops if we can?
+			}
+		}
 		return false;
 	}
 
@@ -426,15 +441,26 @@ boolean autoChooseFamiliar(location place)
 	}
 	
 	// Can only use burly bodyguard, except in non-adventure.php zones. In those, we want the Gelatinous Cubeling for Daily Dungeon drops
-	if (in_avantGuard()) {
-		if (wantCubeling() && get_property("auto_nonAdvLoc").to_boolean() && in_hardcore())
+	if (in_avantGuard())
+	{
+		if (get_property("auto_nonAdvLoc").to_boolean())
 		{
-			return handleFamiliar($familiar[Gelatinous Cubeling]);
+  		if (wantCubeling())
+			{
+				return handleFamiliar($familiar[Gelatinous Cubeling]);
+			}
+			else
+			{
+				foreach fam in $familiars[Mini Kiwi, Cookbookbat]
+				{
+					if (canChangeToFamiliar(fam))
+					{
+						return handleFamiliar(fam);
+					}
+				}
+			}
 		}
-		else
-		{
-			return handleFamiliar($familiar[Burly Bodyguard]);
-		}
+		return handleFamiliar($familiar[Burly Bodyguard]);
 	}
 	
 	//High priority checks that are too complicated for the datafile
