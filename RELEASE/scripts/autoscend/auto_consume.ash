@@ -854,7 +854,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	{
 		blacklist[it] = true;
 	}
-	if(!in_small())
+	if (get_property("auto_dontConsumeLegendPizzas").to_boolean() && !in_small())
 	{
 		foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
 		{
