@@ -445,13 +445,13 @@ boolean autoChooseFamiliar(location place)
 	{
 		if (get_property("auto_nonAdvLoc").to_boolean())
 		{
-  		if (wantCubeling())
+			if (wantCubeling())
 			{
 				return handleFamiliar($familiar[Gelatinous Cubeling]);
 			}
 			else
 			{
-				foreach fam in $familiars[Mini Kiwi, Cookbookbat]
+				foreach fam in $familiars[Mini Kiwi, Cookbookbat, Hobo in Sheep's Clothing]
 				{
 					if (canChangeToFamiliar(fam))
 					{
