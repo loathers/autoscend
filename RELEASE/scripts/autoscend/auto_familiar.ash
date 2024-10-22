@@ -451,7 +451,7 @@ boolean autoChooseFamiliar(location place)
 			}
 			else
 			{
-				foreach fam in $familiars[Mini Kiwi, Cookbookbat, Hobo in Sheep's Clothing]
+				foreach fam in $familiars[Cookbookbat, Mini Kiwi, Hobo in Sheep's Clothing]
 				{
 					if (canChangeToFamiliar(fam))
 					{
