@@ -1691,14 +1691,14 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 
 	if(auto_birdModifier("Item Drop") > 0)
 	{
-		//Can be 10/20/30/40/50% meat drop
+		//Can be 10/20/30/40/50% item drop
 		if(tryEffects($effects[Blessing of the Bird]))
 			return result();
 	}
 
 	if(auto_favoriteBirdModifier("Item Drop") > 0)
 	{
-		//Can be 10/20/30/40/50% meat drop
+		//Can be 10/20/30/40/50% item drop
 		if(tryEffects($effects[Blessing of Your Favorite Bird]))
 			return result();
 	}
@@ -1707,9 +1707,11 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 	if(tryEffects($effects[
 		Unusual Perspective, //50% item
 		Five Sticky Fingers, //50% item
+		Spitting Rhymes, //50% item
 		Wet and Greedy, //25% item
 		Serendipi Tea, //25% item
 		Glowing Hands, //25% item
+		Crunching Leaves, //25% item, +5 combat
 		Eagle Eyes, //20% item
 		Juiced and Jacked, //20% item
 		The Grass... \ Is Blue..., //40% meat, 20% item
