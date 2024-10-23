@@ -143,6 +143,7 @@ boolean auto_tavern()
 		{
 			int actual = loc + 1;
 			boolean needReset = false;
+			set_property("auto_nonAdvLoc", true);
 
 			if(autoAdvBypass("cellar.php?action=explore&whichspot=" + actual, $location[The Typical Tavern Cellar]))
 			{
