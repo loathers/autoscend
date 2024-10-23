@@ -85,6 +85,7 @@ void print_footer()
 		}
 	}
 	auto_log_info(next_line, "blue");
+	
 }
 
 void auto_ghost_prep(location place)
@@ -274,8 +275,7 @@ boolean auto_pre_adventure()
 	}
 	if(place == $location[Hero\'s Field])
 	{
-		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
-		buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
+		provideItem(400, $location[Hero\'s Field], true);
 		addToMaximize("200item 500max");
 	}
 
@@ -679,61 +679,7 @@ boolean auto_pre_adventure()
 	generic_t itemNeed = zone_needItem(place);
 	if(mayNeedItem && itemNeed._boolean)
 	{
-		addToMaximize("50item " + (ceil(itemNeed._float) + 100.0) + "max"); // maximizer treats item drop as 100 higher than it actually is for some reason.
-		simMaximize();
-		float itemDrop = simValue("Item Drop");
-		if(itemDrop < itemNeed._float)
-		{
-			if (buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 20, 1, 10))
-			{
-				itemDrop += 20.0;
-			}
-			if (buffMaintain($effect[Singer\'s Faithful Ocelot], 35, 1, 10))
-			{
-				itemDrop += 10.0;
-			}
-		}
-		if(itemDrop < itemNeed._float && !haveAsdonBuff())
-		{
-			asdonAutoFeed(37);
-			if(asdonBuff($effect[Driving Observantly]))
-			{
-				itemDrop += 50.0;
-			}
-		}
-		if(itemDrop < itemNeed._float)
-		{
-			//if general item modifier isn't enough check specific item drop bonus
-			generic_t itemFoodNeed = zone_needItemFood(place);
-			generic_t itemBoozeNeed = zone_needItemBooze(place);
-			float itemDropFood = itemDrop + simValue("Food Drop");
-			float itemDropBooze = itemDrop + simValue("Booze Drop");
-			if(itemFoodNeed._boolean && itemDropFood < itemFoodNeed._float)
-			{
-				auto_log_debug("Trying food drop supplements");
-				//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
-				addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
-				simMaximize();
-				itemDropFood = simValue("Item Drop") + simValue("Food Drop");
-			}
-			if(itemBoozeNeed._boolean && itemDropBooze < itemBoozeNeed._float)
-			{
-				auto_log_debug("Trying booze drop supplements");
-				addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
-				simMaximize();
-				itemDropBooze = simValue("Item Drop") + simValue("Booze Drop");
-				//no zone item yet needs both food and booze, bottle of Chateau de Vinegar exception is a cooking ingredient but doesn't use food drop bonus
-			}
-			if((itemFoodNeed._boolean && itemDropFood >= itemFoodNeed._float) ||
-			(itemBoozeNeed._boolean && itemDropBooze >= itemBoozeNeed._float))
-			{
-				//the needed item was Food/Booze and need has been met with specific bonus
-			}
-			else
-			{
-				auto_log_debug("We can't cap this drop bear!", "purple");
-			}
-		}
+		provideItem(ceil(itemNeed._float),place,false);
 	}
 
 

@@ -3302,25 +3302,8 @@ boolean L11_unlockEd()
 	}
 	if(total < 10)
 	{
-		buffMaintain($effect[Joyful Resolve]);
-		buffMaintain($effect[One Very Clear Eye]);
-		buffMaintain($effect[Fishy Whiskers]);
-		buffMaintain($effect[Human-Fish Hybrid]);
-		buffMaintain($effect[Human-Human Hybrid]);
-		buffMaintain($effect[Unusual Perspective]);
-		if(!bat_wantHowl($location[The Middle Chamber]))
-		{
-			bat_formBats();
-		}
-		if((auto_is_valid($item[possessed sugar cube]) && item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
-		{
-			cli_execute("make sugar fairy");
-			buffMaintain($effect[Dance of the Sugar Fairy]);
-		}
-		if(have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
-		{
-			auto_sourceTerminalEnhance("items");
-		}
+		// tomb ratchets have 20% drop rate
+		provideItem(400, $location[The Middle Chamber], true);
 	}
 
 	if(get_property("controlRoomUnlock").to_boolean())

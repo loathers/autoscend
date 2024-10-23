@@ -4549,6 +4549,11 @@ boolean auto_wishForEffect(effect wish)
 	return false;
 }
 
+int auto_totalEffectWishesAvailable()
+{
+	return auto_monkeyPawWishesLeft() + auto_wishesAvailable();
+}
+
 item wrap_item(item it) // convert an item into another item, used for replicas in LoL
 {
 	if (in_lol())

@@ -381,3 +381,72 @@ boolean auto_canLeapBridge()
 	}
 	return true;
 }
+
+boolean auto_haveSeptEmberCenser()
+{
+	if(auto_is_valid($item[Sept-Ember Censer]) && available_amount($item[Sept-Ember Censer]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
+
+int remainingEmbers()
+{
+	if(!auto_haveSeptEmberCenser())
+	{
+		return 0;
+	}
+	if(!get_property("_septEmberBalanceChecked").to_boolean())
+	{
+		// go to ember shop to check our balance
+		use($item[Sept-Ember Censer]);
+	}
+	return get_property("availableSeptEmbers").to_int();
+}
+
+void auto_buyFromSeptEmberStore()
+{
+	if(remainingEmbers() == 0)
+	{
+		return;
+	}
+	auto_log_debug("Have " + remainingEmbers() + " embers(s) to buy from Sept-Ember Censer. Let's spend them!");
+	// get structural ember if can't cross bridge
+	item itemConsidering = $item[Structural ember];
+	if(remainingEmbers() >= 4 && get_property("chasmBridgeProgress").to_int() < bridgeGoal() && 
+		!get_property("_structuralEmberUsed").to_boolean() && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
+		use(itemConsidering);
+	}
+	// get 1 bembershoot to support mouthwash leveling or general quest help
+	itemConsidering = $item[bembershoot];
+	if(remainingEmbers() >= 1 && !possessEquipment(itemConsidering) && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
+	}
+	// mouthwash for leveling
+	itemConsidering = $item[Mmm-brr! brand mouthwash];
+	if(remainingEmbers() >= 2 && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && auto_is_valid(itemConsidering))
+	{
+		// get as much cold res as possible
+		int [element] resGoal;
+		resGoal[$element[cold]] = 100;
+		// get cold res. Use noob cave as generic place holder
+		auto_wishForEffect($effect[Fever From the Flavor]);
+		provideResistances(resGoal, $location[noob cave], true);
+		equipMaximizedGear();
+		// buy mouthwash and use it
+		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
+		auto_log_debug(`Using mouthwash with {numeric_modifier("cold Resistance")} cold resistance`);
+		use(itemConsidering);
+	}
+	// if still have embers, get hat for mp regen
+	itemConsidering = $item[Hat of remembering];
+	if(remainingEmbers() >= 1 && !possessEquipment(itemConsidering) && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
+	}
+	// consider throwin' ember for banish or summoning charm for pickpocket in future PR
+}
