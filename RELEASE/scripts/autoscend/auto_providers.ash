@@ -1711,7 +1711,6 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		Wet and Greedy, //25% item
 		Serendipi Tea, //25% item
 		Glowing Hands, //25% item
-		Crunching Leaves, //25% item, +5 combat
 		Eagle Eyes, //20% item
 		Juiced and Jacked, //20% item
 		The Grass... \ Is Blue..., //40% meat, 20% item
@@ -1822,7 +1821,8 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		shadow waters, //200% meat, 100% item, 100% init, -10% combat
 		One Very Clear Eye, //100% item
 		Car-Charged, //100% meat, 100% item, 5-10MP, 50% init, 50% spell dmg, +3 stats per fight
-		Incredibly Well Lit //100% meat, 50% item
+		Incredibly Well Lit, //100% meat, 50% item
+		Crunching Leaves //25% item, +5 combat
 		]))
 			if(pass())
 				return result();
