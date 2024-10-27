@@ -571,6 +571,9 @@ boolean auto_MayamClaimAll();
 boolean auto_haveRoman();
 boolean auto_haveBatWings();
 boolean auto_canLeapBridge();
+boolean auto_haveSeptEmberCenser();
+int remainingEmbers();
+void auto_buyFromSeptEmberStore();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
