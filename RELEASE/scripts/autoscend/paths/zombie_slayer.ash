@@ -30,39 +30,39 @@ void zombieSlayer_initializeSettings()
 		// No Naughty Sorceress so no need for a wand.
 		set_property("auto_wandOfNagamar", false);
 		set_property("auto_getSheriffBadgeSupplies", false);
-	}
 
-	if (item_amount($item[clan vip lounge key]) > 0) {
-		if (item_amount($item[photo booth supply list]) == 0) 
-		{
-			buffer page = visit_url("clan_viplounge.php?action=photobooth");
-			if (!page.contains_text("Borrow a prop"))
+		if (item_amount($item[clan vip lounge key]) > 0) {
+			if (item_amount($item[photo booth supply list]) == 0) 
 			{
-				abort("We can not borrow a prop right now, or clan does not have a photo booth");
-			}
-			else 
-			{
-				page = visit_url("choice.php?pwd&whichchoice=1533&option=2");
-				if (!page.contains_text("Borrow a photo booth supply list"))
+				buffer page = visit_url("clan_viplounge.php?action=photobooth");
+				if (!page.contains_text("Borrow a prop"))
 				{
-					abort("Can not borrow a photo booth supply list right now");
+					abort("We can not borrow a prop right now, or clan does not have a photo booth");
 				}
-				else {
-					auto_log_debug("We will borrow a supply list from the photo booth now.");
-					visit_url("choice.php?pwd&whichchoice=1535&option=1&avtion=Borrow a photo booth supply list");
+				else 
+				{
+					page = visit_url("choice.php?pwd&whichchoice=1533&option=2");
+					if (!page.contains_text("Borrow a photo booth supply list"))
+					{
+						abort("Can not borrow a photo booth supply list right now");
+					}
+					else {
+						auto_log_debug("We will borrow a supply list from the photo booth now.");
+						visit_url("choice.php?pwd&whichchoice=1535&option=1&avtion=Borrow a photo booth supply list");
+					}
 				}
 			}
 		}
-	}
-	else {
-		abort("You don't havea clan VIP lounge key. It's prabably better if you uninstallt this and install the regular autoscend instead.");
-	}
+		else {
+			abort("You don't havea clan VIP lounge key. It's prabably better if you uninstallt this and install the regular autoscend instead.");
+		}
 
-	if (item_amount($item[photo booth supply list]) == 0) 
-	{
-		abort("Could not find a photo booth sullpy list. Without it this is useless.");
-	}
+		if (item_amount($item[photo booth supply list]) == 0) 
+		{
+			abort("Could not find a photo booth sullpy list. Without it this is useless.");
+		}
 
+	}
 }
 
 int last_zombie_fullness = -1;
