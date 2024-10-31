@@ -426,7 +426,14 @@ int remainingCatalogCredits()
 	if(!get_property("_2002MrStoreCreditsCollected").to_boolean())
 	{
 		// using item collects credits
-		use($item[2002 Mr. Store Catalog]);
+		if(in_lol())
+		{	//autoscend doesn't always trigger in LoL, switching to specify Replica
+			use($item[Replica 2002 Mr. Store Catalog]);
+		}
+		else
+		{
+			use($item[2002 Mr. Store Catalog]);
+		}
 	}
 	return get_property("availableMrStore2002Credits").to_int();
 }
