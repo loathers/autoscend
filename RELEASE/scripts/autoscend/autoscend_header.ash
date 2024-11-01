@@ -1373,6 +1373,7 @@ boolean autoEat(int howMany, item toEat);
 boolean autoEat(int howMany, item toEat, boolean silent);
 boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);
 boolean consumeMilkOfMagnesiumIfUnused();
+boolean wantDietPill(item toEat);
 boolean canDrink(item toDrink);
 boolean canEat(item toEat);
 boolean canChew(item toChew);

@@ -351,6 +351,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	int expectedFullness = toEat.fullness * howMany;
 	acquireMilkOfMagnesiumIfUnused(true);
 	consumeMilkOfMagnesiumIfUnused();
+	wantDietPill(toEat);
 
 	if(possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
@@ -397,10 +398,20 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		}
 		if(retval)
 		{
+			string detail;
 			if(wasReadyToEat && have_effect($effect[Ready to Eat]) <= 0)
 			{
-				handleTracker(toEat,"Red Rocketed!", "auto_eaten");
+				detail = (detail != "" ? detail + ", Red Rocketed!" : "Red Rocketed!");
 				wasReadyToEat = false;
+			}
+			if(get_property("auto_dietpills").to_int() > 0)
+			{
+				detail = (detail != "" ? detail + ", Dieting Pilled!" : "Dieting Pilled!");
+				set_property("auto_dietpills", get_property("auto_dietpills").to_int() - 1);
+			}
+			if(detail != "")
+			{
+				handleTracker(toEat, detail, "auto_eaten");
 			}
 			else
 			{
@@ -466,6 +477,34 @@ boolean consumeMilkOfMagnesiumIfUnused()
 		return false;
 	}
 	return use(1, $item[Milk of Magnesium]);
+}
+
+boolean wantDietPill(item toEat)
+{
+	item pill = $item[Dieting Pill];
+	if(!auto_is_valid(pill) || !auto_is_valid(toEat))
+	{
+		return false;
+	}
+	int minAdv = substring(toEat.adventures, 0, index_of(toEat.adventures, "-")).to_int();
+	int size = toEat.fullness;
+	//Use a dieting pill on only high adv/full foods
+	if(minAdv/size > 8.5)
+	{
+		//Only want a dieting pill if we can use it successfully
+		if(fullness_left() > 2 * size && spleen_left() >= 3)
+		{
+			pullXWhenHaveY(pill, 1, 0);
+			if(item_amount(pill) > 0)
+			{
+				handleTracker(pill, "auto_chewed");
+				set_property("auto_dietpills", get_property("auto_dietpills").to_int() + 1); //Track how many dieting pills we have consumed this ascension
+				return chew(1, pill);
+			}
+		}
+		return false;
+	}
+	return false;
 }
 
 boolean canDrink(item toDrink, boolean checkValidity)
