@@ -72,7 +72,7 @@ monster ag_bgToChat()
 			surgeonGearWanted += 1;
 		}
 	}
-	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !(internalQuestStatus("questL11Palindome") < 0 || internalQuestStatus("questL11Palindome") > 5))
+	if(item_amount($item[Wet Stunt Nut Stew]) == 0 && !(internalQuestStatus("questL11Palindome") > 4))
 	{
 		if(item_amount($item[Bird Rib]) == 0)
 		{
