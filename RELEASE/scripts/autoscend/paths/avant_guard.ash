@@ -98,13 +98,9 @@ monster ag_bgToChat()
 	{
 		mon = $monster[Astronomer];
 	}
-	else if(item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 2)
+	else if(item_amount($item[Enchanted Bean]) == 0 && internalQuestStatus("questL10Garbage") < 2 && !auto_haveBatWings())
 	{
 		mon = $monster[beanbat];
-	}
-	else if(internalQuestStatus("questL12War") == 1 && !get_property("auto_hippyInstead").to_boolean())
-	{
-		mon = $monster[Green Ops Soldier];
 	}
 	else if(item_amount($item[molybdenum magnet]) > 0 && get_property("sidequestJunkyardCompleted") == "none")
 	{
@@ -132,18 +128,6 @@ monster ag_bgToChat()
 	else if(surgeonGearWanted > 0 && internalQuestStatus("questL11Doctor") < 2)
 	{
 		mon = $monster[pygmy witch surgeon];
-	}
-	else if(!get_property("auto_hippyInstead").to_boolean() && !have_outfit("frat warrior fatigures") && internalQuestStatus("questL12War") < 1)
-	{
-		{
-			mon = $monster[War Frat 151st Infantryman];
-		}
-	}
-	else if(get_property("auto_hippyInstead").to_boolean() && !have_outfit("war hippy fatigues") && internalQuestStatus("questL12War") < 1)
-	{
-		{
-			mon = $monster[War Hippy Airborne Commander];
-		}
 	}
 	else if(needOre())
 	{
@@ -187,6 +171,22 @@ monster ag_bgToChat()
 	else if(item_amount($item[bowling ball]) < 5 && internalQuestStatus("hiddenBowlingAlleyProgress") < 5)
 	{
 		mon = $monster[pygmy bowler];
+	}
+	else if(internalQuestStatus("questL12War") == 1 && !get_property("auto_hippyInstead").to_boolean())
+	{
+		mon = $monster[Green Ops Soldier];
+	}
+	else if(!get_property("auto_hippyInstead").to_boolean() && !have_outfit("frat warrior fatigures") && internalQuestStatus("questL12War") < 1)
+	{
+		{
+			mon = $monster[War Frat 151st Infantryman];
+		}
+	}
+	else if(get_property("auto_hippyInstead").to_boolean() && !have_outfit("war hippy fatigues") && internalQuestStatus("questL12War") < 1)
+	{
+		{
+			mon = $monster[War Hippy Airborne Commander];
+		}
 	}
 	
 	return mon;
