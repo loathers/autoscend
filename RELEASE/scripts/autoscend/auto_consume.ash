@@ -486,7 +486,15 @@ boolean wantDietPill(item toEat)
 	{
 		return false;
 	}
-	int minAdv = substring(toEat.adventures, 0, index_of(toEat.adventures, "-")).to_int();
+	int minAdv;
+	if(index_of(toEat.adventures, "-") < 0)
+	{
+		minAdv = toEat.adventures.to_int();
+	}
+	else
+	{
+		minAdv = substring(toEat.adventures, 0, index_of(toEat.adventures, "-")).to_int();
+	}
 	int size = toEat.fullness;
 	//Use a dieting pill on only high adv/full foods
 	if(minAdv/size > 8.5)
