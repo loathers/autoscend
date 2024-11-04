@@ -696,6 +696,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 	}
 
+	//If you have tearaway pants equipped, use its skill
+	if(canUse($skill[Tear Away your Pants!]))
+	{
+		return useSkill($skill[Tear Away your Pants!]);
+	}
+
 	// Multi-round stuns
 	if(canUse($skill[Thunderstrike]) && enemy_la <= 150 && !canSurvive(5.0))
 	{

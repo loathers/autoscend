@@ -365,6 +365,14 @@ boolean LX_guildUnlock()
 	string pref;
 	location loc = $location[None];
 	item goal = $item[none];
+	if(my_primestat() == $stat[Moxie] && auto_haveTearawayPants())
+	{
+		//Can bypass moxie test if we have the Tearaway Pants
+		if(autoForceEquip($item[Tearaway Pants]))
+		{
+			visit_url("guild.php?place=challenge");
+		}
+	}
 	switch(my_primestat())
 	{
 		case $stat[Muscle]:

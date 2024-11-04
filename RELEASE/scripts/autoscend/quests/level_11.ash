@@ -2129,6 +2129,10 @@ boolean L11_hiddenCityZones()
 
 	boolean equipMachete()
 	{
+		if(in_avantGuard())
+		{
+			return false; //combats aren't free so no point in equipping a Machete
+		}
 		if (auto_can_equip($item[Antique Machete]))
 		{
 			if (possessEquipment($item[Antique Machete]))
@@ -2151,10 +2155,22 @@ boolean L11_hiddenCityZones()
 		}
 		return false;
 	}
+	boolean equipTearawayPants()
+	{
+		if(in_avantGuard() || is_boris() || in_wotsf())
+		{
+			//Since we won't have a machete equipped, we can actually use the Tearaway Pants skill and maybe get some adventures
+			if(auto_haveTearawayPants())
+			{
+				return autoForceEquip($item[Tearaway Pants]);
+			}
+		}
+		return false;
+	}
 
 	L11_hiddenTavernUnlock();
 
-	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam();
+	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam() && !in_avantGuard();
 	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && (in_hardcore() || in_lol());
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
@@ -2181,11 +2197,19 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
+		if(!canUseMachete && !equipTearawayPants())
+		{
+			return false;
+		}
 		return autoAdv($location[An Overgrown Shrine (Northwest)]);
 	}
 
 	if (get_property("hiddenOfficeProgress").to_int() == 0) {
 		if (canUseMachete && !equipMachete()) {
+			return false;
+		}
+		if(!canUseMachete && !equipTearawayPants())
+		{
 			return false;
 		}
 		return autoAdv($location[An Overgrown Shrine (Northeast)]);
@@ -2195,6 +2219,10 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
+		if(!canUseMachete && !equipTearawayPants())
+		{
+			return false;
+		}
 		return autoAdv($location[An Overgrown Shrine (Southwest)]);
 	}
 
@@ -2202,11 +2230,19 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
+		if(!canUseMachete && !equipTearawayPants())
+		{
+			return false;
+		}
 		return autoAdv($location[An Overgrown Shrine (Southeast)]);
 	}
 
 	if (!get_property("auto_openedziggurat").to_boolean()) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
+			return false;
+		}
+		if(!canUseMachete && !equipTearawayPants())
+		{
 			return false;
 		}
 		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
