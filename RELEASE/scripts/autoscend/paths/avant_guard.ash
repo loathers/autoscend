@@ -15,6 +15,10 @@ void ag_initializeSettings()
 		//set_property("auto_100familiar", "Burly Bodyguard");
 		set_property("auto_skipUnlockGuild", true);
 		set_property("auto_nonAdvLoc", false);
+		if(auto_turbo())
+		{
+			set_property("auto_skipNuns", "true");
+		}
 	}
 }
 
@@ -22,12 +26,7 @@ void ag_pulls()
 {
 	if (in_avantGuard())
 	{
-		//SUPER helpful for gremlins
-		if(auto_is_valid($item[mini kiwi invisible dirigible]))
-		{
-			pullXWhenHaveY($item[mini kiwi invisible dirigible], 1, 0);
-		}
-		if(auto_is_valid($item[waffle]) && auto_haveAugustScepter()) //Only want waffles if we can summon them
+		if(auto_is_valid($item[waffle]) && auto_haveAugustScepter() && !(auto_turbo())) //Only want waffles if we can summon them and not going for a 1 day
 		{
 			pullXWhenHaveY($item[waffle],1,(my_daycount() - 1) * (3 + (my_daycount() > 1 ? 1 : 0))); //pull waffles everyday
 		}

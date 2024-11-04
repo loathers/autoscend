@@ -21,19 +21,45 @@ void cyrptChoiceHandler(int choice)
 	}
 	else if(choice == 523) // Death Rattlin' (The Defiled Cranny)
 	{
-		if(in_darkGyffte() && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
+		if((in_darkGyffte() && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes])) || auto_turbo())
 		{
-			int desired_pills = in_hardcore() ? 6 : 4;
-			desired_pills -= my_fullness()/2;
-			auto_log_info("We want " + desired_pills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
-			if(item_amount($item[dieting pill]) < desired_pills)
+			int desiredPills = in_hardcore() ? 6 : (auto_turbo() ? 3 : 4);
+			int dietingPillsUsed;
+			if(get_property("auto_chewed") == "")
 			{
-				if(!bat_wantHowl($location[The Defiled Cranny]))
+				dietingPillsUsed = 0;
+			}
+			else
+			{
+				foreach str in split_string(get_property("auto_chewed"), ",")
 				{
-					bat_formBats();
+					if(contains_text(str.to_lower_case(), "dieting pill"))
+					{
+						dietingPillsUsed += 1;
+					}
 				}
 			}
-			run_choice(6); // if meets thresholds, skip to farm more dieting pills in DG
+			if(!(auto_turbo()))
+			{
+				desiredPills -= my_fullness()/2;
+			}
+			else
+			{
+				desiredPills -= dietingPillsUsed;
+			}
+			auto_log_info("We want " + desiredPills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
+			if(item_amount($item[dieting pill]) < desiredPills)
+			{
+				run_choice(6); // if meets thresholds, skip to farm more dieting pills in DG
+			}
+			else if(available_choice_options() contains 5)
+			{
+				run_choice(5); // -11 evil, +50 each substat with Candy Cane Sword Cane
+			}
+			else
+			{
+				run_choice(4); // fight swarm of ghuol whelps
+			}
 		}
 		else if(available_choice_options() contains 5)
 		{
@@ -297,6 +323,40 @@ boolean L7_defiledCranny()
 		if(get_property("cyrptCrannyEvilness").to_int() >= (17 + evilBonus))
 		{
 			useNightmareFuelIfPossible();
+		}
+
+		if((in_darkGyffte() && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes])) || auto_turbo())
+		{
+			int desiredPills = in_hardcore() ? 6 : (auto_turbo() ? 3 : 4);
+			int dietingPillsUsed;
+			if(get_property("auto_chewed") == "")
+			{
+				dietingPillsUsed = 0;
+			}
+			else
+			{
+				foreach str in split_string(get_property("auto_chewed"), ",")
+				{
+					if(contains_text(str.to_lower_case(), "dieting pill"))
+					{
+						dietingPillsUsed += 1;
+					}
+				}
+			}
+			if(!(auto_turbo()))
+			{
+				desiredPills -= my_fullness()/2;
+			}
+			else
+			{
+				desiredPills -= dietingPillsUsed;
+			}
+			auto_log_info("We want " + desiredPills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
+			if(item_amount($item[dieting pill]) < desiredPills)
+			{
+				//dieting pills have 10% drop rate
+				provideItem(900, $location[The Defiled Cranny], false);
+			}
 		}
 
 		auto_MaxMLToCap(auto_convertDesiredML(149), true);

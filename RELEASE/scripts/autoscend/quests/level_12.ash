@@ -1723,9 +1723,9 @@ boolean L12_themtharHills()
 		auto_log_info("Themthar Nuns!", "blue");
 	}
 
-	//can only do this in Avant Guard in 6 turns in HC or 8 turns in Normal. Need the August Scepter
+	//can only do this in Avant Guard in 6 turns in HC or 8 turns in Normal. Need the August Scepter. If going turbo, can't get enough waffles so don't even bother with this
 	set_property("auto_delayWar", false);
-	if(in_avantGuard() && auto_haveAugustScepter())
+	if(in_avantGuard() && auto_haveAugustScepter() && !(auto_turbo()))
 	{
 		auto_log_info("Checking how much meat drop we can get");
 		if((in_hardcore() && item_amount($item[waffle]) <= 6 && $location[The Themthar Hills].turns_spent + item_amount($item[waffle]) > 6) ||

@@ -3166,6 +3166,11 @@ void auto_log_debug(string s)
 	auto_log(s, "black", 3);
 }
 
+boolean auto_turbo()
+{
+	return get_property("auto_turbo").to_boolean();
+}
+
 boolean auto_can_equip(item it)
 {
 	return auto_can_equip(it, it.to_slot());

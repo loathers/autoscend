@@ -620,6 +620,32 @@ int handlePulls(int day)
 			auto_log_info("I assume you've handled your pulls yourself... who knows.");
 			return 0;
 		}
+		if(auto_turbo())
+		{
+			//Pull expensive organ cleansers first if you are running turbo and you own them
+			foreach it in $items[Spice Melange, Ultra Mega Sour Ball, Alien plant pod, Alien animal milk]
+			{
+				if(storage_amount(it) > 0 && auto_is_valid(it) && !pulledToday(it))
+				{
+					user_confirm("Pulling a " + it + ". If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+					{
+						pullXWhenHaveY(it, 1, 0);
+					}
+				}
+			}
+			pullXWhenHaveY($item[Dieting Pill], 1, 0);
+			//Make sure we have the legendary pizzas if we want to/can consume them so we take full advantage of the dieting pills
+			if(!get_property("auto_dontConsumeLegendPizzas").to_boolean())
+			{
+				foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
+				{
+					if(auto_is_valid(it) && !pulledToday(it))
+					{
+						pullXWhenHaveY(it, 1, 0);
+					}
+				}
+			}
+		}
 
 		// pulls for small path
 		auto_SmallPulls();

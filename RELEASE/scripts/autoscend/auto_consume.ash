@@ -86,6 +86,54 @@ boolean canOde(item toDrink)
 	return true;
 }
 
+boolean autoCleanse()
+{
+	if(!(auto_turbo()))
+	{
+		return false;
+	}
+
+	boolean wantToCleanseStomach = false;
+	boolean wantToCleanseLiver = false;
+
+	if(my_fullness() > 3 && fullness_left() < 4)
+	{
+		wantToCleanseStomach = true;
+	}
+	if(my_inebriety() > 3 && inebriety_left() < 4)
+	{
+		wantToCleanseLiver = true;
+	}
+
+	boolean wantToCleanse = wantToCleanseLiver && wantToCleanseStomach; //want to cleanse both
+
+	if(wantToCleanse && item_amount($item[Spice Melange]) > 0 && !(get_property("spiceMelangeUsed").to_boolean()))
+	{
+		handleTracker("Cleansed with " + $item[Spice Melange], "auto_otherstuff");
+		return use(1, $item[Spice Melange]);
+	}
+
+	if(wantToCleanse && item_amount($item[Ultra Mega Sour Ball]) > 0 && !(get_property("_ultraMegaSourBallUsed").to_boolean()))
+	{
+		handleTracker("Cleansed with " + $item[Ultra Mega Sour Ball], "auto_otherstuff");
+		return use(1, $item[Ultra Mega Sour Ball]);
+	}
+
+	if(wantToCleanseLiver && item_amount($item[Alien plant pod]) > 0 && !(get_property("_alienPlantPodUsed").to_boolean()))
+	{
+		handleTracker("Cleansed with " + $item[Alien plant pod], "auto_otherstuff");
+		return use(1, $item[Alien plant pod]);
+	}
+
+	if(wantToCleanseStomach && item_amount($item[Alien animal milk]) > 0 && !(get_property("_alienAnimalMilkUsed").to_boolean()))
+	{
+		handleTracker("Cleansed with " + $item[Alien animal milk], "auto_otherstuff");
+		return use(1, $item[Alien animal milk]);
+	}
+
+	return false;
+}
+
 boolean autoDrink(int howMany, item toDrink)
 {
 	return autoDrink(howMany, toDrink, false);

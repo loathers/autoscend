@@ -252,6 +252,7 @@ void initializeSettings() {
 	remove_property("auto_saveSausage");
 	remove_property("auto_saveVintage");
 	set_property("auto_dontUseCookBookBat", false);
+	set_property("auto_turbo", false);
 	set_property("auto_dietpills", 0);
 	beehiveConsider();
 
@@ -1956,6 +1957,7 @@ boolean doTasks()
 	if(auto_autumnatonQuest())			return true;
 	if(auto_smallCampgroundGear())		return true;
 	auto_lostStomach(false);
+	autoCleanse(); //running turbo only
 	if(auto_doPhoneQuest())				return true;
 	
 	if(auto_doTempleSummit())		return true;
@@ -2132,11 +2134,25 @@ void main(string... input)
 	backupSetting("printStackOnAbort", true);
 
 	// parse input
-	if(count(input) > 0 && input[0] == "sim")
+	switch(input[0])
 	{
-		// display useful items/skills/perms/etc and if the user has them
-		printSim();
-		return;
+		case "sim":
+			// display useful items/skills/perms/etc and if the user has them
+			printSim();
+			return;
+		case "turbo":
+		// gotta go faaaaaast. Doing a double confirm because of the nature of this parameter.
+			user_confirm("This will get expensive for you. This should only be used if you are trying to go for a 1-day and don't care about expenses. Do you really want to do this? Will default to 'No' in 15 seconds.", 15000, false);
+			{
+				user_confirm("This will use UMSBs and Spice Melanges if you have them. If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+				{
+					set_property("auto_turbo", true);
+					auto_log_info("Ka-chow! Gotta go fast.");
+					break;
+				}
+			}
+		default:
+			auto_log_info("Running normal autoscend because you didn't enter in a valid parameter");
 	}
 
 	print_help_text();

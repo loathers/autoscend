@@ -541,9 +541,9 @@ boolean LX_fatLootToken()
 		//wait until daily dungeon is done before considering doing fantasy realm
 		if(fantasyRealmToken()) return true;
 	}
-	if(internalQuestStatus("questL13Final") == 5)
+	if(internalQuestStatus("questL13Final") == 5 || auto_turbo())
 	{
-		// at NS tower door and still need hero keys
+		// at NS tower door and still need hero keys or going for turbo
 
 		// summon and copy fantasy realm bandit. Allows for getting fantasy realm token without having FR available
 		if(!acquiredFantasyRealmToken() && ((auto_haveBackupCamera() && auto_backupUsesLeft() >= (4 - fantasyBanditsFought())) || auto_canHabitat()) && canSummonMonster($monster[fantasy bandit]))
