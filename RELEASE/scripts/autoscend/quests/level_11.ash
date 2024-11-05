@@ -2129,7 +2129,7 @@ boolean L11_hiddenCityZones()
 
 	boolean equipMachete()
 	{
-		if(in_avantGuard())
+		if(in_ag())
 		{
 			return false; //combats aren't free so no point in equipping a Machete
 		}
@@ -2157,7 +2157,7 @@ boolean L11_hiddenCityZones()
 	}
 	boolean equipTearawayPants()
 	{
-		if(in_avantGuard() || is_boris() || in_wotsf())
+		if(in_ag() || is_boris() || in_wotsf())
 		{
 			//Since we won't have a machete equipped, we can actually use the Tearaway Pants skill and maybe get some adventures
 			if(auto_haveTearawayPants())
@@ -2170,7 +2170,7 @@ boolean L11_hiddenCityZones()
 
 	L11_hiddenTavernUnlock();
 
-	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam() && !in_avantGuard();
+	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam() && !in_ag();
 	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && (in_hardcore() || in_lol());
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
