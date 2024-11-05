@@ -45,6 +45,21 @@ boolean wantToThrowGravel(location loc, monster enemy)
 	// prevent overuse after breaking ronin or in casual
 	if(can_interact()) return false;
 
+	// only want certain enemies to free-kill in Avant Guard
+	if(in_avantGuard())
+	{
+		if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
+		{
+			return true;
+		}
+		//This is called in stage2 and auto_purple_candled is set in stage 4 so this should only ever show up on the purple candled enemy
+		if(get_property("auto_purple_candled").to_monster() == enemy)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	// many monsters in these zones with similar names
 	if(loc == $location[The Battlefield (Frat Uniform)] && 
 		(contains_text(enemy.to_string(), "War Hippy")) ||

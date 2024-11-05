@@ -1654,6 +1654,7 @@ void resetState() {
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
 	set_property("auto_nextEncounter", ""); // monster that was expected last turn
 	set_property("auto_habitatMonster", ""); // monster we want to cast Recall Facts: Monster Habitats
+	set_property("auto_purple_candled", ""); //monster we want to cast Blow the Purple Candle
 	set_property("auto_nonAdvLoc", false); // location is a non-adventure.php location
 
 	if(doNotBuffFamiliar100Run())		//some familiars are always bad
