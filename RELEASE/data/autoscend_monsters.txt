@@ -15,46 +15,47 @@ banish	9	Evil Olive
 banish	10	Empty suit of armor	class:Ed the Undying
 banish	11	Flock Of Stab-Bats
 banish	12	Gluttonous Ghuol	class:Vampyre
-banish	13	Knob Goblin Harem Guard
-banish	14	Knob Goblin Madam	item:Knob Goblin Perfume>0
-banish	15	Mad Wino	!class:Ed the Undying
-banish	16	MagiMechTech MechaMech	class:Ed the Undying
-banish	17	Mob Penguin Capo	class:Ed the Undying
-banish	18	Mismatched Twins
-banish	19	Natural Spider
-banish	20	Plaid Ghost
-banish	21	Possessed Laundry Press
-banish	22	Procrastination Giant
-banish	23	Protagonist	!class:Ed the Undying;!familiar:Red-Nosed Snapper
-banish	24	Pygmy Headhunter
-banish	25	Pygmy Janitor	tavern:true
-banish	26	Pygmy Orderlies
-banish	27	Pygmy Witch Lawyer
-banish	28	Pygmy Witch Nurse
-banish	29	Red Herring
-banish	30	Red Snapper
-banish	31	Sabre-Toothed Goat
-banish	32	Senile Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
-banish	33	Slick Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
-banish	34	Skeletal Sommelier
-banish	35	Spooky mummy	class:Ed the Undying
-banish	36	Spooky vampire	class:Ed the Undying
-banish	37	Steam Elemental
-banish	38	Taco Cat
-banish	39	Tan Gnat
-banish	40	Tomb Asp
-banish	41	Tomb Servant
-banish	42	Triffid	class:Ed the Undying
-banish	43	Wardr&ouml;b Nightstand
-banish	44	Warehouse Janitor
-banish	45	party skelteon	loc:The Defiled Nook;prop:cyrptNookEvilness>14
-banish	46	basic lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
+banish	13	Gluttonous Ghoul	prop:auto_turbo==true
+banish	14	Knob Goblin Harem Guard
+banish	15	Knob Goblin Madam	item:Knob Goblin Perfume>0
+banish	16	Mad Wino	!class:Ed the Undying
+banish	17	MagiMechTech MechaMech	class:Ed the Undying
+banish	18	Mob Penguin Capo	class:Ed the Undying
+banish	19	Mismatched Twins
+banish	20	Natural Spider
+banish	21	Plaid Ghost
+banish	22	Possessed Laundry Press
+banish	23	Procrastination Giant
+banish	24	Protagonist	!class:Ed the Undying;!familiar:Red-Nosed Snapper
+banish	25	Pygmy Headhunter
+banish	26	Pygmy Janitor	tavern:true
+banish	27	Pygmy Orderlies
+banish	28	Pygmy Witch Lawyer
+banish	29	Pygmy Witch Nurse
+banish	30	Red Herring
+banish	31	Red Snapper
+banish	32	Sabre-Toothed Goat
+banish	33	Senile Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
+banish	34	Slick Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
+banish	35	Skeletal Sommelier
+banish	36	Spooky mummy	class:Ed the Undying
+banish	37	Spooky vampire	class:Ed the Undying
+banish	38	Steam Elemental
+banish	39	Taco Cat
+banish	40	Tan Gnat
+banish	41	Tomb Asp
+banish	42	Tomb Servant
+banish	43	Triffid	class:Ed the Undying
+banish	44	Wardr&ouml;b Nightstand
+banish	45	Warehouse Janitor
+banish	46	party skelteon	loc:The Defiled Nook;prop:cyrptNookEvilness>14
+banish	47	basic lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 # Bugbear Invasion Mothership
-banish	47	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing;!sniffed:scavenger bugbear
-banish	48	bugaboo	path:Bugbear Invasion;loc:Morgue;!sniffed:bugaboo
-banish	49	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering;!sniffed:Battlesuit Bugbear Type
-banish	50	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation;!sniffed:ancient unspeakable bugbear
-banish	51	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!sniffed:trendy bugbear chef
+banish	48	scavenger bugbear	path:Bugbear Invasion;loc:Waste Processing;!sniffed:scavenger bugbear
+banish	49	bugaboo	path:Bugbear Invasion;loc:Morgue;!sniffed:bugaboo
+banish	50	Battlesuit Bugbear Type	path:Bugbear Invasion:loc:Engineering;!sniffed:Battlesuit Bugbear Type
+banish	51	ancient unspeakable bugbear	path:Bugbear Invasion;loc:Navigation;!sniffed:ancient unspeakable bugbear
+banish	52	trendy bugbear chef	path:Bugbear Invasion;loc:Galley;loc:Gallery;!sniffed:trendy bugbear chef
 
 copy	0	Ninja Snowman Assassin	item:ninja carabiner<1;item:ninja rope<1;item:ninja crampons<1
 copy	1	Pygmy Bowler	prop:hiddenBowlingAlleyProgress<4
