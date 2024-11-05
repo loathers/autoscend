@@ -2146,7 +2146,7 @@ void main(string... input)
 			{
 				user_confirm("This will use UMSBs and Spice Melanges if you have them. If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
 				{
-					set_property("auto_turbo", true);
+					set_property("auto_turbo", "true");
 					auto_log_info("Ka-chow! Gotta go fast.");
 					break;
 				}
