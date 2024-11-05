@@ -744,7 +744,7 @@ boolean auto_autumnatonQuest()
 	if(get_property("shadowRiftIngress") == "")
 	{
 		//Cookbookbat materials if you have a Cookbookbat and Autumn Fest Ale+stone wool or Autumn Leaves
-		if(item_amount($item[Stone Wool]) == 0 && !(get_property("auto_topofthetemple").to_boolean()))
+		if(item_amount($item[Stone Wool]) == 0 && get_property("lastTempleAdventures").to_int() < my_ascensions())
 		{
 			if(auto_sendAutumnaton($location[The Hidden Temple])) return false;
 		}

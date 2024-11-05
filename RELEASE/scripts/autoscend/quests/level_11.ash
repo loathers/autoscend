@@ -1503,7 +1503,6 @@ void hiddenTempleChoiceHandler(int choice, string page) {
 		if (item_amount($item[The Nostril of the Serpent]) == 0 && internalQuestStatus("questL11Worship") < 3) {
 			run_choice(2); // Get The Nostril of the Serpent
 		} else {
-			if(auto_haveMayamCalendar()) set_property("auto_topofthetemple", "true");
 			run_choice(3); // +3 adventures and extend 10 effects (first time) or skip
 		}
 	} else if (choice == 580) { // The Hidden Heart of the Hidden Temple
