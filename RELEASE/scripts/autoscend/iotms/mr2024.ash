@@ -337,10 +337,6 @@ boolean auto_MayamClaimAll()
 	{
 		return false;
 	}
-	if(!(auto_MayamReset()))
-	{
-		return false;
-	}
 	if(auto_MayamAllUsed())
 	{
 		return false;
@@ -352,21 +348,6 @@ boolean auto_MayamClaimAll()
 	auto_MayamClaimWhatever();
 	auto_MayamClaimWhatever();
 	return true;
-}
-
-boolean auto_MayamReset()
-{
-	if(get_property("auto_mayamReset").to_boolean())
-	{
-		return false;
-	}
-	//Head towards the top of the temple if we've already opened the city
-	if(item_amount($item[stone wool]) > 0  && internalQuestStatus("questL11Worship") > 4)
-	{
-		use(1, $item[stone wool]);
-		return autoAdv($location[The Hidden Temple]);
-	}
-	return false;
 }
 
 boolean auto_haveRoman()

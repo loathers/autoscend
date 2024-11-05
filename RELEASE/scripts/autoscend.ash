@@ -254,7 +254,7 @@ void initializeSettings() {
 	set_property("auto_dontUseCookBookBat", false);
 	set_property("auto_turbo", "false");
 	set_property("auto_dietpills", 0);
-	set_property("auto_mayamReset", "false");
+	set_property("auto_topofthetemple", "false");
 	beehiveConsider();
 
 	eudora_initializeSettings();

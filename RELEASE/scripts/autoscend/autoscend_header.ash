@@ -568,7 +568,6 @@ boolean auto_MayamClaimStinkBomb();
 boolean auto_MayamClaimBelt();
 boolean auto_MayamClaimWhatever();
 boolean auto_MayamClaimAll();
-boolean auto_MayamReset();
 boolean auto_haveRoman();
 boolean auto_haveBatWings();
 boolean auto_canLeapBridge();
