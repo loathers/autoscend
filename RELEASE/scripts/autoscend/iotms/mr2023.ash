@@ -56,6 +56,10 @@ boolean wantToThrowGravel(location loc, monster enemy)
 	{
 		return true;
 	}
+	if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
+	{
+		return true;
+	}
 
 	// look for specific monsters in zones where some monsters we do care about
 	static boolean[string] gravelTargets = $strings[
