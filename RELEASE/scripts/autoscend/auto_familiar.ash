@@ -514,7 +514,7 @@ boolean autoChooseFamiliar(location place)
 	if (place == auto_availableBrickRift()) {
 		famChoice = lookupFamiliarDatafile("item"); // get more shadow bricks
 	}
-	if ($location[The Defiled Cranny] == place && auto_turbo() && item_amount($item[dieting pills]) + get_property("auto_dietpills").to_int() < 3)
+	if ($location[The Defiled Cranny] == place && auto_turbo() && item_amount($item[dieting pill]) + get_property("auto_dietpills").to_int() < 3)
 	{
 		famChoice = lookupFamiliarDatafile("item"); // get dieting pills faster if in turbo
 	}
