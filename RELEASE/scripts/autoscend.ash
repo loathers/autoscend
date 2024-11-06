@@ -1,4 +1,4 @@
-since r28092;	// feat: add 'avoid attack' modifier
+since r28110;	// Add the NC rate for Peace Turkey consistent with spading
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

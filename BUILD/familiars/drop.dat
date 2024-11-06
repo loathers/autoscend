@@ -67,3 +67,5 @@ Green Pixie	prop:_absintheDrops<5
 Galloping Grill	prop:_hotAshesDrops<5
 # If all else fails, keep generating CBB ingredients
 Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
+# use a Peace turkey if all else fails
+Peace Turkey
