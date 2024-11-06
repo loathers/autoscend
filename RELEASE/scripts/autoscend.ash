@@ -2135,25 +2135,28 @@ void main(string... input)
 	backupSetting("printStackOnAbort", true);
 
 	// parse input
-	switch(input[0])
+	if(count(input) > 0)
 	{
-		case "sim":
-			// display useful items/skills/perms/etc and if the user has them
-			printSim();
-			return;
-		case "turbo":
-		// gotta go faaaaaast. Doing a double confirm because of the nature of this parameter.
-			user_confirm("This will get expensive for you. This should only be used if you are trying to go for a 1-day and don't care about expenses. Do you really want to do this? Will default to 'No' in 15 seconds.", 15000, false);
-			{
-				user_confirm("This will use UMSBs and Spice Melanges if you have them. If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+		switch(input[0])
+		{
+			case "sim":
+				// display useful items/skills/perms/etc and if the user has them
+				printSim();
+				return;
+			case "turbo":
+			// gotta go faaaaaast. Doing a double confirm because of the nature of this parameter.
+				user_confirm("This will get expensive for you. This should only be used if you are trying to go for a 1-day and don't care about expenses. Do you really want to do this? Will default to 'No' in 15 seconds.", 15000, false);
 				{
-					set_property("auto_turbo", "true");
-					auto_log_info("Ka-chow! Gotta go fast.");
-					break;
+					user_confirm("This will use UMSBs and Spice Melanges if you have them. If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+					{
+						set_property("auto_turbo", "true");
+						auto_log_info("Ka-chow! Gotta go fast.");
+						break;
+					}
 				}
-			}
-		default:
-			auto_log_info("Running normal autoscend because you didn't enter in a valid parameter");
+			default:
+				auto_log_info("Running normal autoscend because you didn't enter in a valid parameter");
+		}
 	}
 
 	print_help_text();

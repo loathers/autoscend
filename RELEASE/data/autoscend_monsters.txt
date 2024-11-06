@@ -15,7 +15,7 @@ banish	9	Evil Olive
 banish	10	Empty suit of armor	class:Ed the Undying
 banish	11	Flock Of Stab-Bats
 banish	12	Gluttonous Ghuol	class:Vampyre
-banish	13	Gluttonous Ghoul	prop:auto_turbo==true
+banish	13	Gluttonous Ghuol	prop:auto_turbo==true
 banish	14	Knob Goblin Harem Guard
 banish	15	Knob Goblin Madam	item:Knob Goblin Perfume>0
 banish	16	Mad Wino	!class:Ed the Undying
