@@ -514,6 +514,10 @@ boolean autoChooseFamiliar(location place)
 	if (place == auto_availableBrickRift()) {
 		famChoice = lookupFamiliarDatafile("item"); // get more shadow bricks
 	}
+	if ($location[The Defiled Cranny] == place && auto_turbo() && item_amount($item[dieting pills]) + get_property("auto_dietpills").to_int() < 3)
+	{
+		famChoice = lookupFamiliarDatafile("item"); // get dieting pills faster if in turbo
+	}
 
 	// If we're down to 1 evilness left before the boss in the Nook, it doesn't matter if we get an Evil Eye or not.
 	if ($location[The Defiled Nook] == place && get_property("cyrptNookEvilness").to_int() > 14)
