@@ -148,9 +148,14 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 
 	if (!speculative)
 	{
-		handleFamiliar($familiar[Jumpsuited Hound Dog]);
-		if(pass()) {
-			return result();
+		//Prep for if other +combat familiars are added
+		foreach fam in $familiars[Jumpsuited Hound Dog]
+		{
+			if(auto_have_familiar(fam))
+			{
+				handleFamiliar(fam);
+				return result();
+			}
 		}
 	}
 
