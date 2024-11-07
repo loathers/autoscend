@@ -1831,6 +1831,7 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
 
