@@ -2155,18 +2155,6 @@ boolean L11_hiddenCityZones()
 		}
 		return false;
 	}
-	boolean equipTearawayPants()
-	{
-		if(in_ag() || is_boris() || in_wotsf())
-		{
-			//Since we won't have a machete equipped, we can actually use the Tearaway Pants skill and maybe get some adventures
-			if(auto_haveTearawayPants())
-			{
-				return autoForceEquip($item[Tearaway Pants]);
-			}
-		}
-		return false;
-	}
 
 	L11_hiddenTavernUnlock();
 
@@ -2197,9 +2185,9 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
-		if(!canUseMachete && !equipTearawayPants())
+		if(!canUseMachete && auto_haveTearawayPants())
 		{
-			return false;
+			autoForceEquip($item[Tearaway Pants]);
 		}
 		return autoAdv($location[An Overgrown Shrine (Northwest)]);
 	}
@@ -2208,9 +2196,9 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
-		if(!canUseMachete && !equipTearawayPants())
+		if(!canUseMachete && auto_haveTearawayPants())
 		{
-			return false;
+			autoForceEquip($item[Tearaway Pants]);
 		}
 		return autoAdv($location[An Overgrown Shrine (Northeast)]);
 	}
@@ -2219,9 +2207,9 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
-		if(!canUseMachete && !equipTearawayPants())
+		if(!canUseMachete && auto_haveTearawayPants())
 		{
-			return false;
+			autoForceEquip($item[Tearaway Pants]);
 		}
 		return autoAdv($location[An Overgrown Shrine (Southwest)]);
 	}
@@ -2230,9 +2218,9 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
-		if(!canUseMachete && !equipTearawayPants())
+		if(!canUseMachete && auto_haveTearawayPants())
 		{
-			return false;
+			autoForceEquip($item[Tearaway Pants]);
 		}
 		return autoAdv($location[An Overgrown Shrine (Southeast)]);
 	}
@@ -2241,9 +2229,9 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
-		if(!canUseMachete && !equipTearawayPants())
+		if(!canUseMachete && auto_haveTearawayPants())
 		{
-			return false;
+			autoForceEquip($item[Tearaway Pants]);
 		}
 		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
 		if (get_property("lastEncounter") == "Legend of the Temple in the Hidden City" || (isActuallyEd() && get_property("lastEncounter") == "Temple of the Legend in the Hidden City")) {

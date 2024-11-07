@@ -761,7 +761,7 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[cursed monkey\'s paw]);
 	}
-	if(combat_string == "item " + $item[Handful of split pea soup])
+	if(combat_string == "item " + $item[Handful of split pea soup] && item_amount($item[Handful of split pea soup]) == 0)
 	{
 		return create(1, $item[Handful of split pea soup]);
 	}

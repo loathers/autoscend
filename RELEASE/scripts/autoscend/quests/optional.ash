@@ -353,7 +353,7 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	if(!(in_picky() || in_lowkeysummer()) && get_property('auto_skipUnlockGuild').to_boolean())
+	if(!(in_picky() || in_lowkeysummer()) && get_property('auto_skipUnlockGuild').to_boolean() && !(my_primestat() == $stat[Moxie] && auto_haveTearawayPants()))
 	{
 		return false;
 	}

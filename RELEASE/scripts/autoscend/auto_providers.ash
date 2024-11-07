@@ -146,6 +146,14 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		return result();
 	}
 
+	if (!speculative)
+	{
+		handleFamiliar($familiar[Jumpsuited Hound Dog]);
+		if(pass()) {
+			return result();
+		}
+	}
+
 	return result();
 }
 
@@ -353,6 +361,18 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 	// Glove charges are a limited per-day resource, lets do this last so we don't waste possible uses of Replace Enemy
 	if (auto_hasPowerfulGlove() && tryEffects($effects[Invisible Avatar])) {
 		return result();
+	}
+
+	if (!speculative)
+	{
+		foreach fam in $familiars[Peace Turkey, Disgeist]
+		{
+			if(auto_have_familiar(fam))
+			{
+				handleFamiliar(fam);
+				return result();
+			}
+		}
 	}
 
 	return result();
