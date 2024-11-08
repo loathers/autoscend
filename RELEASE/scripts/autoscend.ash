@@ -1,4 +1,4 @@
-since r28092;	// feat: add 'avoid attack' modifier
+since r28114;	// feat: track split pea soup banish
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1854,6 +1854,7 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
 

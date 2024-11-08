@@ -574,6 +574,7 @@ boolean auto_canLeapBridge();
 boolean auto_haveSeptEmberCenser();
 int remainingEmbers();
 void auto_buyFromSeptEmberStore();
+boolean auto_haveTearawayPants();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -918,6 +919,7 @@ boolean LX_quantumTerrarium();
 void qt_initializeSettings();
 boolean qt_FamiliarAvailable (familiar fam);
 boolean qt_FamiliarSwap (familiar fam);
+void auto_refreshQTFam();
 
 ########################################################################################################
 //Defined in autoscend/paths/the_source.ash

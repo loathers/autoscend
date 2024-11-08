@@ -256,6 +256,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Bram\'s Bloody Bagatelle]:		useSkill = $skill[Bram\'s Bloody Bagatelle];		break;
 	case $effect[Brawnee\'s Anthem of Absorption]:useSkill = $skill[Brawnee\'s Anthem of Absorption];break;
 	case $effect[Brilliant Resolve]:			useItem = $item[Resolution: Be Smarter];		break;
+	case $effect[Brittled]:						useItem = $item[pea brittle];					break;
 	case $effect[Brooding]:						useSkill = $skill[Brood];						break;
 	case $effect[Browbeaten]:					useItem = $item[Old Eyebrow Pencil];			break;
 	case $effect[Burning Hands]:				useItem = $item[sticky lava globs];				break;

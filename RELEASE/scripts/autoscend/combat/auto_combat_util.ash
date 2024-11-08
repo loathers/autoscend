@@ -592,6 +592,10 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Howl of the Alpha];
 	}
 
+	if(inCombat ? item_amount($item[Handful of split pea soup]) > 0 && (!(used contains "Handful of split pea soup")) && auto_is_valid($item[Handful of split pea soup]) && useFree : (item_amount($item[Handful of split pea soup]) > 0 || item_amount($item[Whirled peas]) >= 2))
+	{
+		return "item " + $item[Handful of split pea soup];
+	}
 	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && auto_is_valid($skill[Throw Latte On Opponent]) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent") && useFree)
 	{
 		return "skill " + $skill[Throw Latte on Opponent];

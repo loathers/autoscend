@@ -490,11 +490,6 @@ boolean autoChooseFamiliar(location place)
 	if ($locations[Next to that Barrel with Something Burning in it, Out By that Rusted-Out Car, Over Where the Old Tires Are, Near an Abandoned Refrigerator] contains place) {
 		famChoice = lookupFamiliarDatafile("gremlins");
 	}
-
-	// places that benefit from + combat rate
-	if ($locations[Sonofa Beach, Lair of the Ninja Snowmen] contains place && zone_combatMod(place)._int > 0 && canChangeToFamiliar($familiar[Jumpsuited Hound Dog])) {
-		famChoice = $familiar[Jumpsuited Hound Dog];
-	}
 	
 	// places where item drop is required to help save adventures.
 	if ($locations[Guano Junction, The Beanbat Chamber, Cobb's Knob Harem, The Goatlet, Itznotyerzitz Mine,
