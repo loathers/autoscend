@@ -2129,7 +2129,7 @@ boolean L11_hiddenCityZones()
 
 	boolean equipMachete()
 	{
-		if(in_ag())
+		if(in_avantGuard())
 		{
 			return false; //combats aren't free so no point in equipping a Machete
 		}
@@ -2158,7 +2158,7 @@ boolean L11_hiddenCityZones()
 
 	L11_hiddenTavernUnlock();
 
-	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam() && !in_ag();
+	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam() && !in_avantGuard();
 	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && (in_hardcore() || in_lol());
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
