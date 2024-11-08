@@ -151,10 +151,12 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		//Prep for if other +combat familiars are added
 		foreach fam in $familiars[Jumpsuited Hound Dog]
 		{
-			if(auto_have_familiar(fam))
+			if(canChangeToFamiliar(fam))
 			{
 				handleFamiliar(fam);
-				return result();
+				if(pass()){
+					return result();
+				}
 			}
 		}
 	}
@@ -372,10 +374,12 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 	{
 		foreach fam in $familiars[Peace Turkey, Disgeist]
 		{
-			if(auto_have_familiar(fam))
+			if(canChangeToFamiliar(fam))
 			{
 				handleFamiliar(fam);
-				return result();
+				if(pass()){
+					return result();
+				}
 			}
 		}
 	}

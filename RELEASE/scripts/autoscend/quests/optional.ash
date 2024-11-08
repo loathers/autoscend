@@ -370,7 +370,11 @@ boolean LX_guildUnlock()
 		//Can bypass moxie test if we have the Tearaway Pants
 		if(autoForceEquip($item[Tearaway Pants]))
 		{
-			visit_url("guild.php?place=challenge");
+			if (internalQuestStatus("questG08Moxie") < 1)
+			{
+				visit_url("guild.php?place=challenge");
+			}
+			return true;
 		}
 	}
 	switch(my_primestat())
