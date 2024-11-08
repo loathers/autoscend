@@ -574,6 +574,7 @@ boolean auto_canLeapBridge();
 boolean auto_haveSeptEmberCenser();
 int remainingEmbers();
 void auto_buyFromSeptEmberStore();
+boolean auto_haveTearawayPants();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

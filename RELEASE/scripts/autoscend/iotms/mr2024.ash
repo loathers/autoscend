@@ -450,3 +450,12 @@ void auto_buyFromSeptEmberStore()
 	}
 	// consider throwin' ember for banish or summoning charm for pickpocket in future PR
 }
+
+boolean auto_haveTearawayPants()
+{
+	if(auto_is_valid($item[Tearaway Pants]) && available_amount($item[Tearaway Pants]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
