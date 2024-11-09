@@ -1831,7 +1831,7 @@ boolean L13_towerNSFinal()
 	}
 
 	// It is possible to keep your Yearbook Club Camera in KOLHS by having it equipped before breaking the prism
-	if (in_kolhs() && !have_equipped($item[Yearbook Club Camera] && item_amount($item[Yearbook Club Camera]) > 0))
+	if (in_kolhs() && !have_equipped($item[Yearbook Club Camera]) && (item_amount($item[Yearbook Club Camera]) > 0))
 	{
 		equip($slot[acc3], $item[Yearbook Club Camera]);
 	}
