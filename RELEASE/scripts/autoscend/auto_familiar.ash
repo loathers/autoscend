@@ -646,9 +646,13 @@ boolean autoChooseFamiliar(location place)
 	{
 		poor = my_meat() < 7000;
 	}
-	if(famChoice == $familiar[none] && 	my_maxmp() > 50 && 	my_mp()*5 < my_maxmp() && poor)
+	// See if we need MP. MP doesn't matter in Zombie Slayer.
+	if (!in_zombieSlayer()) 
 	{
-		famChoice = lookupFamiliarDatafile("regen");
+		if(famChoice == $familiar[none] && 	my_maxmp() > 50 && 	my_mp()*5 < my_maxmp() && poor)
+		{
+			famChoice = lookupFamiliarDatafile("regen");
+		}
 	}
 	
 	//select the best familiar that drops items directly. Will prioritize useful items and awesome+ food and drink and then other drops.
