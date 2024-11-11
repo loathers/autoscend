@@ -19,6 +19,9 @@ boss	4	Warbear Drone
 boss	5	Vampire Vintner
 boss	6	Jill-of-All-Trades
 boss	7	Mosquito
+boss    8   Ghost Pickle on a Stick
+boss    9   Spooky Pirate Skeleton
+boss    10  Baby Z-Rex
 
 # "drop" type is used when we want to grab a familiar that drops items themselves rather than boosting the odds of the enemy dropping items.
 #
@@ -367,6 +370,7 @@ stat	32	Lil' Barrel Mimic
 stat	33	Piranha Plant
 stat	34	Antique Nutcracker
 stat	35	Jill-O-Lantern
+stat    36  Baby Z-Rex
 # Fancy
 stat	36	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
