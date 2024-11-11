@@ -31,6 +31,10 @@ void zombieSlayer_initializeSettings()
 		set_property("auto_wandOfNagamar", false);
 		set_property("auto_getSheriffBadgeSupplies", false);
 
+		// Coocbookbat is awesome, but we don't need the food drops. 
+		// (ok, the beer is good to, but not that good)
+		set_property("auto_dontUseCookBookBat", true);
+
 		if (item_amount($item[clan vip lounge key]) > 0) {
 			if (item_amount($item[photo booth supply list]) == 0) 
 			{
