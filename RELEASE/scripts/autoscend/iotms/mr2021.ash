@@ -809,7 +809,7 @@ string auto_FireExtinguisherCombatString(location place)
 		return "skill " + $skill[Fire Extinguisher: Zone Specific];
 	}
 
-	if(place == $location[The Smut Orc Logging Camp] && !get_property("fireExtinguisherChasmUsed").to_boolean() && get_property("chasmBridgeProgress").to_int() < 30 && !auto_hasAutumnaton())
+	if(place == $location[The Smut Orc Logging Camp] && !get_property("fireExtinguisherChasmUsed").to_boolean() && get_property("chasmBridgeProgress").to_int() < bridgeGoal() && !auto_hasAutumnaton())
 	{
 		return "skill " + $skill[Fire Extinguisher: Zone Specific];
 	}

@@ -410,7 +410,14 @@ int remainingCatalogCredits()
 	if(!get_property("_2002MrStoreCreditsCollected").to_boolean())
 	{
 		// using item collects credits
-		use($item[2002 Mr. Store Catalog]);
+		if(in_lol())
+		{	//autoscend doesn't always trigger in LoL, switching to specify Replica
+			use($item[Replica 2002 Mr. Store Catalog]);
+		}
+		else
+		{
+			use($item[2002 Mr. Store Catalog]);
+		}
 	}
 	return get_property("availableMrStore2002Credits").to_int();
 }
@@ -458,7 +465,7 @@ void auto_buyFrom2002MrStore()
 		use(itemConsidering);
 	}
 	// giant black monlith. Mostly useful at low level for stats
-	if (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) {
+	if (have_campground() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
 		itemConsidering = $item[giant black monolith];
 		if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
 		{

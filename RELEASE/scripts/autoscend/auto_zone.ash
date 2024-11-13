@@ -173,7 +173,7 @@ generic_t zone_needItem(location loc)
 		value = 20.0;
 		break;
 	case $location[The Smut Orc Logging Camp]:
-		if(get_property("chasmBridgeProgress").to_int() < 30)
+		if(get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 		{
 			value = 10.0;
 		}
@@ -870,7 +870,7 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[The Smut Orc Logging Camp]:
-		if (shenZones contains loc && get_property("chasmBridgeProgress").to_int() >= 30)
+		if (shenZones contains loc && get_property("chasmBridgeProgress").to_int() >= bridgeGoal())
 		{
 			value = 3 - (loc.turns_spent - shenZones[loc]);
 		}
@@ -906,25 +906,25 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[Vanya\'s Castle]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && (get_property("8BitColor") == "black" || get_property("8BitColor") == ""))
+		if (need8BitPoints() && possessEquipment($item[Continuum Transfunctioner]) && (get_property("8BitColor") == "black" || get_property("8BitColor") == ""))
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[The Fungus Plains]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "red")
+		if (need8BitPoints() && possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "red")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[Megalo-City]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "blue")
+		if (need8BitPoints() && possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "blue")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[Hero\'s Field]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "green")
+		if (need8BitPoints() && possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "green")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}

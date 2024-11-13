@@ -111,3 +111,12 @@ boolean qt_FamiliarSwap (familiar fam)
 		return false;
 	}
 }
+
+void auto_refreshQTFam()
+{
+	if(in_quantumTerrarium())
+	{
+		// go to familiar page to ensure QT mafia prefs are up to date
+		visit_url("familiar.php");
+	}
+}

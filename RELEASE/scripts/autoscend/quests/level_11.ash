@@ -551,7 +551,7 @@ void hauntedBedroomChoiceHandler(int choice, string[int] options)
 	else if(choice == 878) // One Ornate Nightstand (The Haunted Bedroom)
 	{
 		boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
-		if(is_boris() || in_wotsf() || (in_zombieSlayer() && in_hardcore()) || (in_nuclear() && in_hardcore()))
+		if(is_boris() || in_wotsf() || (in_nuclear() && in_hardcore()))
 		{
 			needSpectacles = false;
 		}
@@ -621,7 +621,7 @@ boolean LX_getLadySpookyravensFinestGown() {
 	// Might not be worth it since we need to fight ornate nightstands for the spectacles and camera
 	boolean needSpectacles = !possessEquipment($item[Lord Spookyraven\'s Spectacles]) && internalQuestStatus("questL11Manor") < 2;
 	boolean needCamera = (item_amount($item[disposable instant camera]) == 0 && internalQuestStatus("questL11Palindome") < 1);
-	if (is_boris() || in_wotsf() || (in_zombieSlayer() && in_hardcore()) || (in_nuclear() && in_hardcore())) {
+	if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 		needSpectacles = false;
 	}
 	else if(needCamera && needSpectacles) {
@@ -1800,7 +1800,7 @@ boolean L11_hiddenCity()
 		return false;
 	}	
 
-	if (internalQuestStatus("questL11Curses") < 2 && have_effect($effect[Ancient Fortitude]) == 0)
+	if (internalQuestStatus("questL11Curses") == 0 && have_effect($effect[Ancient Fortitude]) == 0)
 	{
 		auto_log_info("The idden [sic] apartment!", "blue");
 
@@ -1937,7 +1937,7 @@ boolean L11_hiddenCity()
 		}
 	}
 
-	if (internalQuestStatus("questL11Business") < 2 && (my_adventures() + $location[The Hidden Office Building].turns_spent) >= 11)
+	if (internalQuestStatus("questL11Business") == 0 && (my_adventures() + $location[The Hidden Office Building].turns_spent) >= 11)
 	{
 		auto_log_info("The idden [sic] office!", "blue");
 
@@ -2008,7 +2008,7 @@ boolean L11_hiddenCity()
 		return autoAdv($location[The Hidden Office Building]);
 	}
 
-	if (internalQuestStatus("questL11Spare") < 2)
+	if (internalQuestStatus("questL11Spare") == 0)
 	{
 		auto_log_info("The idden [sic] bowling alley!", "blue");
 		L11_hiddenTavernUnlock(true);
@@ -2047,7 +2047,7 @@ boolean L11_hiddenCity()
 		return autoAdv($location[The Hidden Bowling Alley]);
 	}
 
-	if (internalQuestStatus("questL11Doctor") < 2)
+	if (internalQuestStatus("questL11Doctor") == 0)
 	{
 		if(item_amount($item[Dripping Stone Sphere]) > 0)
 		{
@@ -2135,6 +2135,10 @@ boolean L11_hiddenCityZones()
 
 	boolean equipMachete()
 	{
+		if(in_ag())
+		{
+			return false; //combats aren't free so no point in equipping a Machete
+		}
 		if (auto_can_equip($item[Antique Machete]))
 		{
 			if (possessEquipment($item[Antique Machete]))
@@ -2160,7 +2164,7 @@ boolean L11_hiddenCityZones()
 
 	L11_hiddenTavernUnlock();
 
-	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam();
+	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam() && !in_ag();
 	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && (in_hardcore() || in_lol());
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
@@ -2187,12 +2191,20 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
+		if(!canUseMachete && auto_haveTearawayPants())
+		{
+			autoForceEquip($item[Tearaway Pants]);
+		}
 		return autoAdv($location[An Overgrown Shrine (Northwest)]);
 	}
 
 	if (get_property("hiddenOfficeProgress").to_int() == 0) {
 		if (canUseMachete && !equipMachete()) {
 			return false;
+		}
+		if(!canUseMachete && auto_haveTearawayPants())
+		{
+			autoForceEquip($item[Tearaway Pants]);
 		}
 		return autoAdv($location[An Overgrown Shrine (Northeast)]);
 	}
@@ -2201,6 +2213,10 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
+		if(!canUseMachete && auto_haveTearawayPants())
+		{
+			autoForceEquip($item[Tearaway Pants]);
+		}
 		return autoAdv($location[An Overgrown Shrine (Southwest)]);
 	}
 
@@ -2208,12 +2224,20 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
+		if(!canUseMachete && auto_haveTearawayPants())
+		{
+			autoForceEquip($item[Tearaway Pants]);
+		}
 		return autoAdv($location[An Overgrown Shrine (Southeast)]);
 	}
 
 	if (!get_property("auto_openedziggurat").to_boolean()) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
+		}
+		if(!canUseMachete && auto_haveTearawayPants())
+		{
+			autoForceEquip($item[Tearaway Pants]);
 		}
 		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
 		if (get_property("lastEncounter") == "Legend of the Temple in the Hidden City" || (isActuallyEd() && get_property("lastEncounter") == "Temple of the Legend in the Hidden City")) {
@@ -2321,7 +2345,7 @@ boolean L11_mauriceSpookyraven()
 		}
 	}
 
-	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_zombieSlayer() || in_wotsf() || in_bhy() || in_robot() || (in_nuclear() && !get_property("auto_haveoven").to_boolean()))
+	if(!possessEquipment($item[Lord Spookyraven\'s Spectacles]) || is_boris() || in_wotsf() || in_bhy() || in_robot() || (in_nuclear() && !get_property("auto_haveoven").to_boolean()))
 	{
 		auto_log_warning("Alternate fulminate pathway... how sad :(", "red");
 		# I suppose we can let anyone in without the Spectacles.
@@ -3324,25 +3348,8 @@ boolean L11_unlockEd()
 	}
 	if(total < 10)
 	{
-		buffMaintain($effect[Joyful Resolve]);
-		buffMaintain($effect[One Very Clear Eye]);
-		buffMaintain($effect[Fishy Whiskers]);
-		buffMaintain($effect[Human-Fish Hybrid]);
-		buffMaintain($effect[Human-Human Hybrid]);
-		buffMaintain($effect[Unusual Perspective]);
-		if(!bat_wantHowl($location[The Middle Chamber]))
-		{
-			bat_formBats();
-		}
-		if((auto_is_valid($item[possessed sugar cube]) && item_amount($item[possessed sugar cube]) > 0) && (have_effect($effect[Dance of the Sugar Fairy]) == 0))
-		{
-			cli_execute("make sugar fairy");
-			buffMaintain($effect[Dance of the Sugar Fairy]);
-		}
-		if(have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
-		{
-			auto_sourceTerminalEnhance("items");
-		}
+		// tomb ratchets have 20% drop rate
+		provideItem(400, $location[The Middle Chamber], true);
 	}
 
 	if(get_property("controlRoomUnlock").to_boolean())

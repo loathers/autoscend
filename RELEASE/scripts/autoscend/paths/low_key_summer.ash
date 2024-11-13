@@ -308,7 +308,7 @@ boolean LX_findHelpfulLowKey()
 	}
 
 	// cold spell damage before orcs. Ice Key needs The Icy Peak access
-	if (internalQuestStatus("questL09Topping") == 0 && get_property("chasmBridgeProgress").to_int() < 30)
+	if (internalQuestStatus("questL09Topping") == 0 && get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 	{
 		if (lowkey_keyAdv($item[Ice Key])) { return true; }
 	}

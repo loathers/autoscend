@@ -943,42 +943,16 @@ boolean L12_filthworms()
 				}
 			}
 			
-			//todo check if provide item can simulate enough not to bother with delaying?
-			
 			if(delayFilthworms)
 			{
 				auto_log_info("Delaying filthworms because Everything Looks Yellow");
 				return false;
 			}
 		}
-	
-		buffMaintain($effect[Joyful Resolve]);
-		buffMaintain($effect[Kindly Resolve]);
-		buffMaintain($effect[Fortunate Resolve]);
-		buffMaintain($effect[One Very Clear Eye]);
-		buffMaintain($effect[Human-Fish Hybrid]);
-		buffMaintain($effect[Human-Human Hybrid]);
-		buffMaintain($effect[Human-Machine Hybrid]);
-		buffMaintain($effect[Unusual Perspective]);
-		buffMaintain($effect[Eagle Eyes]);
-		buffMaintain($effect[Heart of Lavender]);
-		buffMaintain($effect[Five Sticky Fingers]);
-		asdonBuff($effect[Driving Observantly]);
-		bat_formBats();
 
-		if(!in_wereprof()) buffMaintain($effect[Frosty]); //wereprof doesn't like +ML effects outside of Werewolf
-		
-		//craft IOTM derivative that gives high item bonus
-		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
-		{
-			auto_buyUpTo(1, $item[third-hand lantern]);
-			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
-		}
-
-		if(!canChangeToFamiliar($familiar[XO Skeleton]) && catBurglarHeistsLeft() < 1) {
-			//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
-			januaryToteAcquire($item[Broken Champagne Bottle]);
-		}
+		// filth worm glands have 10% drop rate
+		// getting here means we don't have a yellow ray, not delaying for the yr, and don't have enough +item yet
+		provideItem(900,$location[The Feeding Chamber], false);
 
 		if(in_lar())
 		{
@@ -1179,7 +1153,14 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if(in_glover())
+	if (in_zombieSlayer())
+	{
+		if(!auto_have_skill($skill[Plague Claws]) && item_amount($item[Seal Tooth]) == 0)
+		{
+			return false;
+		}
+	}
+	else if(in_glover())
 	{
 		int need = 30 - item_amount($item[Doc Galaktik\'s Pungent Unguent]);
 		if((need > 0) && (item_amount($item[Molybdenum Pliers]) == 0))
@@ -1260,7 +1241,8 @@ boolean L12_gremlins()
 	gremlinsFamiliar();
 
 	auto_log_info("Doing them gremlins", "blue");
-	addToMaximize("20dr,1da 1000max,3hp,-3ml");
+	// ideally we want to survive a single attack
+	addToMaximize("20dr,1da 1000max,-ml,-1000avoid attack");
 	acquireHP();
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{

@@ -80,7 +80,7 @@ boolean canPull(item it, boolean historical)
 		return false;	//we do not have it in storage and we can not trade for it. gifts currently not handled
 	}
 
-	if (!auto_is_valid(it))
+	if(!auto_is_valid(it))
 	{
 		return false;
 	}
@@ -99,11 +99,11 @@ boolean canPull(item it, boolean historical)
 	{
 		return false;	//a 0 or a -1 indicates the item is not available.
 	}
-	if (curPrice > get_property("autoBuyPriceLimit").to_int())
+	if(curPrice > get_property("autoBuyPriceLimit").to_int())
 	{
 		return false;
 	}
-	else if (curPrice < meat)
+	else if(curPrice < meat)
 	{
 		return true;
 	}
@@ -186,7 +186,7 @@ boolean pullXWhenHaveYCasual(item it, int howMany, int whenHave)
 	{
 		return false;
 	}
-	if (!auto_is_valid(it))
+	if(!auto_is_valid(it))
 	{
 		return false;
 	}
@@ -247,7 +247,7 @@ boolean pullXWhenHaveY(item it, int howMany, int whenHave)
 				meat = my_meat() - 5000;
 				getFromStorage = false;
 			}
-			if (curPrice >= priceLimit)
+			if(curPrice >= priceLimit)
 			{
 				auto_log_warning(it + " is too expensive at " + curPrice + " meat, we're gonna skip buying one in the mall.", "red");
 				break;
@@ -443,11 +443,11 @@ boolean acquireTotem()
 	
 	foreach totem in $items[primitive alien totem, flail of the seven aspects, chelonian morningstar, mace of the tortoise, ouija board\, ouija board, turtle totem]
 	{
-		if (possessEquipment(totem))
+		if(possessEquipment(totem))
 		{
 			return true;
 		}
-		if (0 < closet_amount(totem))
+		if(0 < closet_amount(totem))
 		{
 			take_closet(1, totem);
 			return true;
@@ -510,7 +510,7 @@ boolean acquireHermitItem(item it)
 	{
 		return false;
 	}
-	if (it == $item[11-leaf clover] && get_property("_cloversPurchased") >= 3) {
+	if(it == $item[11-leaf clover] && get_property("_cloversPurchased") >= 3) {
 		return false;
 	}
 	if(!isGeneralStoreAvailable())
@@ -628,97 +628,106 @@ int handlePulls(int day)
 		// pulls for Avant Guard path
 		ag_pulls();
 
-		if((storage_amount($item[etched hourglass]) > 0) && auto_is_valid($item[etched hourglass]))
+		// generic pulls for any path are below
+		if(auto_is_valid($item[etched hourglass]))
 		{
 			pullXWhenHaveY($item[etched hourglass], 1, 0);
 		}
-
-		if((storage_amount($item[mafia thumb ring]) > 0) && auto_is_valid($item[mafia thumb ring]))
+		if(auto_is_valid($item[Infinite BACON Machine]))
 		{
-			pullXWhenHaveY($item[mafia thumb ring], 1, 0);
+			pullXWhenHaveY($item[Infinite BACON Machine], 1, 0);
 		}
 
-		if((storage_amount($item[can of rain-doh]) > 0) && auto_is_valid($item[Can Of Rain-Doh]) && (pullXWhenHaveY($item[can of Rain-doh], 1, 0)))
+		// things we would always pull but cannot pull due to LoL usage restrictions
+		if(!in_lol())
 		{
-			if(item_amount($item[Can of Rain-doh]) > 0)
+			if((storage_amount($item[mafia thumb ring]) > 0) && auto_is_valid($item[mafia thumb ring]))
 			{
-				use(1, $item[can of Rain-doh]);
-				put_closet(1, $item[empty rain-doh can]);
+				pullXWhenHaveY($item[mafia thumb ring], 1, 0);
 			}
-		}
-		if(storage_amount($item[Buddy Bjorn]) > 0 && auto_is_valid($item[Buddy Bjorn]) && pathHasFamiliar())
-		{
-			pullXWhenHaveY($item[Buddy Bjorn], 1, 0);
-		}
-		if((storage_amount($item[Camp Scout Backpack]) > 0) && !possessEquipment($item[Buddy Bjorn]) && auto_is_valid($item[Camp Scout Backpack]))
-		{
-			pullXWhenHaveY($item[Camp Scout Backpack], 1, 0);
-		}
-
-		if(in_wotsf())
-		{
-			pullXWhenHaveY($item[Bittycar Meatcar], 1, 0);
-		}
-
-		if(!possessEquipment($item[Astral Shirt]))
-		{
-			boolean getPeteShirt = true;
-			if(!hasTorso())
+			if((storage_amount($item[can of rain-doh]) > 0) && auto_is_valid($item[Can Of Rain-Doh]) && (pullXWhenHaveY($item[can of Rain-doh], 1, 0)))
 			{
-				getPeteShirt = false;
-			}
-			if((my_primestat() == $stat[Muscle]) && get_property("loveTunnelAvailable").to_boolean())
-			{
-				getPeteShirt = false;
-			}
-			if(in_glover())
-			{
-				getPeteShirt = false;
-			}
-			if (storage_amount($item[Sneaky Pete\'s Leather Jacket]) == 0 && storage_amount($item[Sneaky Pete\'s Leather Jacket (Collar Popped)]) == 0)
-			{
-				getPeteShirt = false;
-			}
-
-			if(getPeteShirt)
-			{
-				pullXWhenHaveY($item[Sneaky Pete\'s Leather Jacket], 1, 0);
-				if(item_amount($item[Sneaky Pete\'s Leather Jacket]) == 0)
+				if(item_amount($item[Can of Rain-doh]) > 0)
 				{
-					pullXWhenHaveY($item[Sneaky Pete\'s Leather Jacket (Collar Popped)], 1, 0);
-				}
-				else
-				{
-					auto_fold($item[Sneaky Pete\'s Leather Jacket (Collar Popped)]);
+					use(1, $item[can of Rain-doh]);
+					put_closet(1, $item[empty rain-doh can]);
 				}
 			}
+			if(storage_amount($item[Buddy Bjorn]) > 0 && auto_is_valid($item[Buddy Bjorn]) && pathHasFamiliar())
+			{
+				pullXWhenHaveY($item[Buddy Bjorn], 1, 0);
+			}
+			if((storage_amount($item[Camp Scout Backpack]) > 0) && !possessEquipment($item[Buddy Bjorn]) && auto_is_valid($item[Camp Scout Backpack]))
+			{
+				pullXWhenHaveY($item[Camp Scout Backpack], 1, 0);
+			}
+			if(!possessEquipment($item[Astral Shirt]))
+			{
+				boolean getPeteShirt = true;
+				if(!hasTorso())
+				{
+					getPeteShirt = false;
+				}
+				if((my_primestat() == $stat[Muscle]) && get_property("loveTunnelAvailable").to_boolean())
+				{
+					getPeteShirt = false;
+				}
+				if(in_glover())
+				{
+					getPeteShirt = false;
+				}
+				if(storage_amount($item[Sneaky Pete\'s Leather Jacket]) == 0 && storage_amount($item[Sneaky Pete\'s Leather Jacket (Collar Popped)]) == 0)
+				{
+					getPeteShirt = false;
+				}
+				if(getPeteShirt)
+				{
+					pullXWhenHaveY($item[Sneaky Pete\'s Leather Jacket], 1, 0);
+					if(item_amount($item[Sneaky Pete\'s Leather Jacket]) == 0)
+					{
+						pullXWhenHaveY($item[Sneaky Pete\'s Leather Jacket (Collar Popped)], 1, 0);
+					}
+					else
+					{
+						auto_fold($item[Sneaky Pete\'s Leather Jacket (Collar Popped)]);
+					}
+				}
+			}
+			if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && auto_is_valid(wrap_item($item[Over-The-Shoulder Folder Holder])))
+			{
+				pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
+			}
+			if(auto_have_skill($skill[Summon Smithsness]))
+			{
+				pullXWhenHaveY($item[hand in glove], 1, 0);
+			}
+			pullLegionKnife();
 		}
 
-		if((in_picky() || !canChangeFamiliar()) && (item_amount(wrap_item($item[Deck of Every Card])) == 0) && (fullness_left() >= 4))
-		{
-			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
+		// pulls excluding a handful of paths are below
+		if(!in_heavyrains() && pathHasFamiliar())
+		{	// heavy rains familiars largely need miniature life preserver
+			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && auto_is_valid($item[Snow Suit]))
 			{
-				pullXWhenHaveY($item[Boris\'s Key Lime Pie], 1, 0);
+				pullXWhenHaveY($item[snow suit], 1, 0);
 			}
-			if((item_amount($item[Sneaky Pete\'s Key]) == 0) && canEat($item[Sneaky Pete\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Sneaky Pete\'s Key]))
+			boolean famStatEq = possessEquipment($item[fuzzy polar bear ears]) || possessEquipment($item[miniature goose mask]) || possessEquipment($item[tiny glowing red nose]);
+			
+			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) &&
+			!famStatEq && auto_is_valid($item[Filthy Child Leash]))
 			{
-				pullXWhenHaveY($item[Sneaky Pete\'s Key Lime Pie], 1, 0);
-			}
-			if((item_amount($item[Jarlsberg\'s Key]) == 0) && canEat($item[Jarlsberg\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Jarlsberg\'s Key]))
-			{
-				pullXWhenHaveY($item[Jarlsberg\'s Key Lime Pie], 1, 0);
+				pullXWhenHaveY($item[Filthy Child Leash], 1, 0);
 			}
 		}
-
-		if((equipped_item($slot[folder1]) == $item[folder (tranquil landscape)]) && (equipped_item($slot[folder2]) == $item[folder (skull and crossbones)]) && (equipped_item($slot[folder3]) == $item[folder (Jackass Plumber)]) && auto_is_valid(wrap_item($item[Over-The-Shoulder Folder Holder])))
-		{
-			pullXWhenHaveY($item[over-the-shoulder folder holder], 1, 0);
+		if(!in_pokefam() && auto_is_valid($item[Replica Bat-oomerang]))
+		{	// cannot use combat items in pokefam
+			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
 		}
-		if((my_primestat() == $stat[Muscle]) && !in_heavyrains() && !in_wotsf()) // no need for shields in way of the surprising fist
-		{
+		if((my_primestat() == $stat[Muscle]) && !in_wotsf() && !in_heavyrains() && !in_lol())
+		{	// no need for shields in WotSF; cannot pull them in LoL
 			if(possessEquipment($item[familiar scrapbook]) && auto_is_valid($item[familiar scrapbook]) && my_class() != $class[Turtle Tamer])
 			{
-				//familiar scrapbook will probably be equipped in preference to Fake Washboard
+				// familiar scrapbook will probably be equipped in preference to Fake Washboard
 			}
 			else if((closet_amount($item[Fake Washboard]) == 0) && auto_is_valid($item[Fake Washboard]))
 			{
@@ -740,15 +749,8 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[Numberwang], 1, 0);
 		}
-		if(in_pokefam())
-		{
-			pullXWhenHaveY($item[Ring Of Detect Boring Doors], 1, 0);
-			pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
-			pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
-		}
-
-		if(((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer])) && !in_wotsf()) // no need for offhands in way of the surprising fist
-		{
+		if(((my_class() == $class[Sauceror]) || (my_class() == $class[Pastamancer])) && !in_wotsf() && !in_lol())
+		{	// no need for offhands in WotSF; cannot pull items in LoL
 			if((item_amount(wrap_item($item[Deck of Every Card])) == 0) && !auto_have_skill($skill[Summon Smithsness]))
 			{
 				pullXWhenHaveY($item[Thor\'s Pliers], 1, 0);
@@ -759,49 +761,46 @@ int handlePulls(int day)
 			}
 		}
 
+// path specific pulls are below
+		if(in_wotsf())
+		{
+			pullXWhenHaveY($item[Bittycar Meatcar], 1, 0);
+		}
+		if((in_picky() || !canChangeFamiliar()) && (item_amount(wrap_item($item[Deck of Every Card])) == 0) && (fullness_left() >= 4))
+		{
+			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
+			{
+				pullXWhenHaveY($item[Boris\'s Key Lime Pie], 1, 0);
+			}
+			if((item_amount($item[Sneaky Pete\'s Key]) == 0) && canEat($item[Sneaky Pete\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Sneaky Pete\'s Key]))
+			{
+				pullXWhenHaveY($item[Sneaky Pete\'s Key Lime Pie], 1, 0);
+			}
+			if((item_amount($item[Jarlsberg\'s Key]) == 0) && canEat($item[Jarlsberg\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Jarlsberg\'s Key]))
+			{
+				pullXWhenHaveY($item[Jarlsberg\'s Key Lime Pie], 1, 0);
+			}
+		}
 		if(in_picky())
 		{
 			pullXWhenHaveY($item[gumshoes], 1, 0);
 		}
-		if(auto_have_skill($skill[Summon Smithsness]))
+		if(in_pokefam())
 		{
-			pullXWhenHaveY($item[hand in glove], 1, 0);
+			pullXWhenHaveY($item[Ring Of Detect Boring Doors], 1, 0);
+			pullXWhenHaveY($item[Pick-O-Matic Lockpicks], 1, 0);
+			pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
 		}
-
-		if(!in_heavyrains() && pathHasFamiliar())
-		{
-			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Astral Pet Sweater]) && auto_is_valid($item[Snow Suit]))
-			{
-				pullXWhenHaveY($item[snow suit], 1, 0);
-			}
-			boolean famStatEq = possessEquipment($item[fuzzy polar bear ears]) || possessEquipment($item[miniature goose mask]) || possessEquipment($item[tiny glowing red nose]);
-			
-			if(!possessEquipment($item[Snow Suit]) && !possessEquipment($item[Filthy Child Leash]) && !possessEquipment($item[Astral Pet Sweater]) &&
-			!famStatEq && auto_is_valid($item[Filthy Child Leash]))
-			{
-				pullXWhenHaveY($item[Filthy Child Leash], 1, 0);
-			}
-		}
-
-		if(auto_is_valid($item[Infinite BACON Machine]))
-		{
-			pullXWhenHaveY($item[Infinite BACON Machine], 1, 0);
-		}
-
-		if(!in_pokefam() && auto_is_valid($item[Replica Bat-oomerang]))
-		{
-			pullXWhenHaveY($item[Replica Bat-oomerang], 1, 0);
-		}
-		
-		pullLegionKnife();
-
 		if(in_darkGyffte())
 		{
 			auto_log_info("You are a powerful vampire who is doing a softcore run. Turngen is busted in this path, so let's see how much we can get.", "blue");
-			if((storage_amount($item[mime army shotglass]) > 0) && is_unrestricted($item[mime army shotglass]))
-			{
-				pullXWhenHaveY($item[mime army shotglass], 1, 0);
-			}
+			pullXWhenHaveY($item[mime army shotglass], 1, 0);
+		}
+		if(in_lol())
+		{	// some items that can be pulled to help accelerate runs
+			pullXWhenHaveY($item[portable pantogram], 1, 0);
+			pullXWhenHaveY($item[SpinMaster&trade; lathe], 1, 0);
+			pullXWhenHaveY($item[Asdon Martin keyfob (on ring)], 1, 0);		
 		}
 	}
 	else if(day == 2)
@@ -813,9 +812,9 @@ int handlePulls(int day)
 	}
 
 	// do this regardless of day if we still need to complete the bridge.
-	if (canPull($item[smut orc keepsake box]) && lumberCount() < 26 && fastenerCount() < 26)
+	if(canPull($item[smut orc keepsake box]) && (lumberCount() + 5 <= bridgeGoal()) && (fastenerCount() + 5 <= bridgeGoal()))
 	{
-		if (pullXWhenHaveY($item[smut orc keepsake box], 1, 0))
+		if(pullXWhenHaveY($item[smut orc keepsake box], 1, 0))
 		{
 			use(1, $item[smut orc keepsake box]);
 		}
@@ -844,10 +843,10 @@ boolean LX_craftAcquireItems()
 			cli_execute("make 1 snow cleats");
 		}
 
-		if((item_amount($item[snow berries]) > 0) && (my_daycount() > 1) && (get_property("chasmBridgeProgress").to_int() >= 30) && (my_level() >= 9))
+		if((item_amount($item[snow berries]) > 0) && (my_daycount() > 1) && (get_property("chasmBridgeProgress").to_int() >= bridgeGoal()) && (my_level() >= 9))
 		{
 			visit_url("place.php?whichplace=orc_chasm");
-			if(get_property("chasmBridgeProgress").to_int() >= 30)
+			if(get_property("chasmBridgeProgress").to_int() >= bridgeGoal())
 			{
 				#if(in_hardcore() && isGuildClass())
 				if(isGuildClass())
@@ -975,7 +974,7 @@ boolean LX_craftAcquireItems()
 
 	if(in_koe())
 	{
-		if ((creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion])) && auto_predictAccordionTurns() < 10)
+		if((creatable_amount($item[Antique Accordion]) > 0 && !possessEquipment($item[Antique Accordion])) && auto_predictAccordionTurns() < 10)
 		{
 			retrieve_item(1, $item[Antique Accordion]);
 		}

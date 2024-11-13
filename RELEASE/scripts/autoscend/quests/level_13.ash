@@ -13,6 +13,10 @@ boolean needStarKey()
 
 boolean needDigitalKey()
 {
+	if(isActuallyEd())
+	{
+		return false;
+	}
 	if(contains_text(get_property("nsTowerDoorKeysUsed"),"digital key"))
 	{
 		return false;
@@ -21,8 +25,17 @@ boolean needDigitalKey()
 	{
 		return false;
 	}
-
+	
 	return true;
+}
+
+boolean need8BitPoints()
+{
+	if(get_property("8BitScore").to_int() >= 10000)
+	{
+		return false;
+	}
+	return needDigitalKey();
 }
 
 int towerKeyCount()
@@ -1467,6 +1480,11 @@ boolean L13_towerNSTower()
 		provideMeat(626, true, false);
 		if(meat_drop_modifier() < 475){
 			auto_getCitizenZone("meat");
+		}
+
+		if(in_zombieSlayer())
+		{
+			acquireMP(30,0);
 		}
 
 		acquireHP();

@@ -1,4 +1,4 @@
-since r28019;	// feat: add avant guard path
+since r28114;	// feat: track split pea soup banish
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1177,6 +1177,7 @@ boolean dailyEvents()
 	auto_useBlackMonolith();
 	auto_scepterSkills();
 	auto_getAprilingBandItems();
+	auto_buyFromSeptEmberStore();
 	
 	return true;
 }
@@ -1830,6 +1831,7 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
 
