@@ -23,7 +23,7 @@ string auto_combatZombieSlayerStage1(int round, monster enemy, string text)
 	}
 
 	// Check to see if we are fighting the Angry Space Marine, bucause in that case the next zombie hunter will be Nick Soames
-	if ((enemy == $monster[Angry Space Marine]) && (item_amount($item[photo booth supply list]) > 0)) {
+	if ((enemy == $monster[Angry Space Marine]) && (item_amount($item[clan vip lounge key]) > 0)) {
 		set_property("auto_getSheriffBadgeSupplies", true);
 	}
 

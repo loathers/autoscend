@@ -58,12 +58,12 @@ void zombieSlayer_initializeSettings()
 			}
 		}
 		else {
-			abort("You don't havea clan VIP lounge key. It's prabably better if you uninstallt this and install the regular autoscend instead.");
+			abort("You don't have a clan VIP lounge key. It's probably better if you uninstall this and install the regular autoscend instead.");
 		}
 
 		if (item_amount($item[photo booth supply list]) == 0) 
 		{
-			abort("Could not find a photo booth sullpy list. Without it this is useless.");
+			abort("Could not find a photo booth supply list. Without it this is useless.");
 		}
 
 	}
