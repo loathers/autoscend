@@ -12,7 +12,6 @@ void ag_initializeSettings()
 			// No I don't care about that guy who never binds familiars for <reasons>. He can write & maintain his own ascension script.
 			visit_url("inv_familiar.php?pwd=&which=3&whichitem=11631");
 		}
-		//set_property("auto_100familiar", "Burly Bodyguard");
 		set_property("auto_skipUnlockGuild", true);
 		set_property("auto_nonAdvLoc", false);
 		if(auto_turbo())
