@@ -506,8 +506,9 @@ void auto_buyFrom2002MrStore()
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
 	}
-	/*// giant black monlith. Mostly useful at low level for stats
-	if (have_campground() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
+	// giant black monolith. Mostly useful at low level for stats
+	if (have_campground() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) &&
+	!(auto_haveSeptEmberCenser() || auto_haveTrainSet())) {
 		itemConsidering = $item[giant black monolith];
 		if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
 		{
@@ -515,7 +516,7 @@ void auto_buyFrom2002MrStore()
 			use(itemConsidering);
 			visit_url("campground.php?action=monolith");
 		}
-	}*/
+	}
 	// crimbo cookie. Should we expand to buy more or use in more paths beyond HC LoL?
 	itemConsidering = $item[Crimbo cookie sheet];
 	if(remainingCatalogCredits() > 0 && in_hardcore() && my_daycount() == 1 && in_lol())
