@@ -114,6 +114,10 @@ Tokoeka (IGN: Asmodais (#2071543))
 
 Alium (IGN: Alium (#1933235))
 
+dsimich (IGN: erct657 (#584803))
+
+HippoKingKoL (IGN: HippoKing (#1716533))
+
 ## Special Thanks
 
 This script would obviously not be possible without the work of Cheesecookie and soolar.
