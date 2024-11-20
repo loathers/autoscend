@@ -434,5 +434,26 @@ boolean LX_freeCombatsTask()
 int auto_levellingScore()
 {
 	int score = 0;
+	int maxSubstatsTo13 = 21904;
+	if(my_level() >= 13)
+	{
+		return 0; //no need to level
+	}
+	stat mySubStat;
+	if(my_primestat() == $stat[Muscle])
+	{
+		mySubStat = $stat[submuscle];
+	}
+	else if(my_primestat() == $stat[Mysticality])
+	{
+		mySubStat = $stat[submysticality];
+	}
+	else
+	{
+		mySubStat = $stat[submoxie];
+	}
+	int currentSubstatsAfterLevel = modifier_eval(my_basestat(mySubStat) + "-((" + my_level() + ")-1)^2+4)^2").to_int();
+	int substatsToNextLevel = modifier_eval("4*(" + my_level() + ")^3-6*(" + my_level() + ")^2+20*" + my_level() + "-9-" + currentSubstatsAfterLevel).to_int();
+	
 	return score;
 }
