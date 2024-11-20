@@ -3085,6 +3085,20 @@ boolean L11_palindome()
 	}
 	else
 	{
+		if(!in_hardcore() && pulls_remaining() == 0)
+		{
+			// used our pulls today before getting to palindrome. Delay until next day or run out of other stuff to do
+			if(!isAboutToPowerlevel())
+			{
+				auto_log_debug("Delaying palindrome. In a normal run and don't have enough pulls to create wet stunt nut stew.");
+				return false;
+			}
+			else
+			{
+				// ran out of things to do, brute force it
+				set_property("auto_bruteForcePalindome",true);
+			}
+		}
 		if((my_mp() > 60) || considerGrimstoneGolem(true))
 		{
 			handleBjornify($familiar[Grimstone Golem]);
