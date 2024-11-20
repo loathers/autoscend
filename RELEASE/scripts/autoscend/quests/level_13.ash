@@ -101,6 +101,9 @@ boolean EightBitRealmHandler()
 		case "red":
 			// limited buff that is helpful for 3 of 4 8-bit zones
 			buffMaintain($effect[shadow waters]);
+			if(meat_drop_modifier() < 395){
+				auto_getCitizenZone("meat");
+			}
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
@@ -109,6 +112,9 @@ boolean EightBitRealmHandler()
 		case "green":
 			// limited buff that is helpful for 3 of 4 8-bit zones
 			buffMaintain($effect[shadow waters]);
+			/*if(item_drop_modifier() < 370){
+				auto_getCitizenZone("item");
+			}*/
 			adv_spent = autoAdv($location[Hero\'s Field]);
 			break;
 		default:
@@ -1472,6 +1478,9 @@ boolean L13_towerNSTower()
 		}
 		equipBaseline();
 		provideMeat(626, true, false);
+		if(meat_drop_modifier() < 475){
+			auto_getCitizenZone("meat");
+		}
 
 		if(in_zombieSlayer())
 		{

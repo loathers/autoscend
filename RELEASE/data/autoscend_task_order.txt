@@ -94,8 +94,10 @@ A Shrunken Adventurer am I	56	setSoftblockDelay	allowSoftblockDelay
 A Shrunken Adventurer am I	57	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 A Shrunken Adventurer am I	58	L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+A Shrunken Adventurer am I	59	LX_lastChance
 # if all else fails, powerlevel like there's no tomorrow.
-A Shrunken Adventurer am I	59	LX_attemptPowerLevel
+A Shrunken Adventurer am I	60	LX_attemptPowerLevel
 
 Avatar of Jarlsberg	0	LM_jarlsberg
 Avatar of Jarlsberg	1	LX_freeCombatsTask
@@ -153,7 +155,8 @@ Avatar of Jarlsberg	52	L3_tavern
 Avatar of Jarlsberg	53	setSoftblockDelay	allowSoftblockDelay
 Avatar of Jarlsberg	54	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 Avatar of Jarlsberg	55	L13_towerAscent
-Avatar of Jarlsberg	56	LX_attemptPowerLevel
+Avatar of Jarlsberg	56	LX_lastChance
+Avatar of Jarlsberg	57	LX_attemptPowerLevel
 
 Legacy of Loathing	0	LX_freeCombatsTask
 Legacy of Loathing	1	woods_questStart
@@ -255,7 +258,8 @@ Legacy of Loathing	88	L13_sorceressDoor
 Legacy of Loathing	89	L13_towerNSTower
 Legacy of Loathing	90	L13_towerNSNagamar
 Legacy of Loathing	91	L13_towerNSFinal
-Legacy of Loathing	92	LX_attemptPowerLevel
+Legacy of Loathing	92	LX_lastChance
+Legacy of Loathing	93	LX_attemptPowerLevel
 
 Quantum Terrarium	0	LX_freeCombatsTask
 Quantum Terrarium	1	woods_questStart
@@ -317,7 +321,9 @@ Quantum Terrarium	56	L3_tavern
 Quantum Terrarium	57	setSoftblockDelay	allowSoftblockDelay
 Quantum Terrarium	58	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 Quantum Terrarium	59	L13_towerAscent
-Quantum Terrarium	60	LX_attemptPowerLevel
+# not powerlevelling but something that needs to be done if nothing else is available
+Quantum Terrarium	60	LX_lastChance
+Quantum Terrarium	61	LX_attemptPowerLevel
 
 WereProfessor	0	LM_wereprof
 WereProfessor	1	LX_freeCombatsTask
@@ -425,8 +431,10 @@ WereProfessor	68	LX_getStarKey
 WereProfessor	69	LX_getDigitalKey
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 WereProfessor	70	L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+WereProfessor	71	LX_lastChance
 # if all else fails, powerlevel like there's no tomorrow.
-WereProfessor	71	LX_attemptPowerLevel
+WereProfessor	72	LX_attemptPowerLevel
 
 Zombie Slayer	0	LM_zombieSlayer
 Zombie Slayer	1	woods_questStart
@@ -484,7 +492,9 @@ Zombie Slayer	52	L3_tavern
 Zombie Slayer	53	setSoftblockDelay	allowSoftblockDelay
 Zombie Slayer	54	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 Zombie Slayer	55	L13_towerAscent
-Zombie Slayer	56	LX_attemptPowerLevel
+# not powerlevelling but something that needs to be done if nothing else is available
+Zombie Slayer	56	LX_lastChance
+Zombie Slayer	57	LX_attemptPowerLevel
 
 default	0	LX_freeCombatsTask
 default	1	woods_questStart
@@ -582,6 +592,8 @@ default	60	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 default	61	LX_koeInvaderHandler
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 default	62	L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+default	63	LX_lastChance
 # if all else fails, powerlevel like there's no tomorrow.
-default	63	LX_attemptPowerLevel
+default	64	LX_attemptPowerLevel
 
