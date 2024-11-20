@@ -1839,6 +1839,12 @@ boolean L13_towerNSFinal()
 		abort("Freeing the king will result in a path change. Go howl at the moon some more if you want.");
 	}
 
+	// It is possible to keep your Yearbook Club Camera in KOLHS by having it equipped before breaking the prism
+	if (in_kolhs() && !have_equipped($item[Yearbook Club Camera]) && (item_amount($item[Yearbook Club Camera]) > 0))
+	{
+		equip($slot[acc3], $item[Yearbook Club Camera]);
+	}
+
 	if(!($classes[Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief] contains my_class()))
 	{
 		abort("Freeing the king will result in a path change and we can barely handle The Sleazy Back Alley. Aborting, run the script again after selecting your aftercore path in order for it to clean up.");

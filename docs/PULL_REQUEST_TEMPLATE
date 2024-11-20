@@ -16,3 +16,4 @@ Testing ASH scripts is tricky and generally involves you doing multiple runs wit
 - [ ] I have performed a self-review of my own code.
 - [ ] I have commented my code, particularly in hard-to-understand areas.
 - [ ] I have based my pull request against the [main branch](https://github.com/loathers/autoscend/tree/main) or have a good reason not to.
+- [ ] I have updated the GitHub wiki [path](https://github.com/loathers/autoscend/wiki/Path-Support) or [IOTM](https://github.com/loathers/autoscend/wiki/IOTM-Support) support pages, as appropriate.
