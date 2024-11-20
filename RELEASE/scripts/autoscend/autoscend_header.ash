@@ -1563,6 +1563,7 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights);
 boolean LX_freeCombats();
 boolean LX_freeCombats(boolean powerlevel);
 boolean LX_freeCombatsTask();
+int auto_levellingScore()
 
 ########################################################################################################
 //Defined in autoscend/auto_providers.ash

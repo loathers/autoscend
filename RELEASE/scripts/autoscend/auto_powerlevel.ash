@@ -430,3 +430,9 @@ boolean LX_freeCombatsTask()
 	}
 	return false;
 }
+
+int auto_levellingScore()
+{
+	int score = 0;
+	return score;
+}
