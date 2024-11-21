@@ -370,16 +370,18 @@ stat	32	Lil' Barrel Mimic
 stat	33	Piranha Plant
 stat	34	Antique Nutcracker
 stat	35	Jill-O-Lantern
-stat    36  Baby Z-Rex
+stat	36	Baby Z-Rex
+stat	37	Hovering skull
+
 # Fancy
-stat	36	Miniature Sword &amp; Martini Guy
+stat	38	Miniature Sword &amp; Martini Guy
 #Baby Mutant Rattlesnake	grimdark:2
 # Turtles are cute
-stat	37	Grinning Turtle
+stat	39	Grinning Turtle
 # His winning smile
-stat	38	Smiling Rat
+stat	40	Smiling Rat
 # The original
-stat	39	Blood-Faced Volleyball
+stat	41	Blood-Faced Volleyball
 
 yellowray	0	Crimbo Shrub
 # Nanorhino and He-Boulder would require a bit of extra doing to make work
