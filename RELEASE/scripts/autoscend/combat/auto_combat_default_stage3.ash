@@ -583,6 +583,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			return useItem($item[Tomayohawk-Style Reflex Hammer]);
 		}
 
+		//If you have tearaway pants equipped, use its skill
+		if(canUse($skill[Tear Away your Pants!]))
+		{
+			return useSkill($skill[Tear Away your Pants!]);
+		}
+
 		// skills from Lathe weapons
 		// Ebony Epee
 		if(canUse($skill[Disarming Thrust]))

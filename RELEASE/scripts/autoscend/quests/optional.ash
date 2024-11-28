@@ -353,7 +353,7 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	if(!(in_picky() || in_lowkeysummer()) && get_property('auto_skipUnlockGuild').to_boolean())
+	if(!(in_picky() || in_lowkeysummer()) && get_property('auto_skipUnlockGuild').to_boolean() && !(my_primestat() == $stat[Moxie] && auto_haveTearawayPants()))
 	{
 		return false;
 	}
@@ -365,6 +365,18 @@ boolean LX_guildUnlock()
 	string pref;
 	location loc = $location[None];
 	item goal = $item[none];
+	if(my_primestat() == $stat[Moxie] && auto_haveTearawayPants())
+	{
+		//Can bypass moxie test if we have the Tearaway Pants
+		if(autoForceEquip($item[Tearaway Pants]))
+		{
+			if (internalQuestStatus("questG08Moxie") < 1)
+			{
+				visit_url("guild.php?place=challenge");
+			}
+			return true;
+		}
+	}
 	switch(my_primestat())
 	{
 		case $stat[Muscle]:

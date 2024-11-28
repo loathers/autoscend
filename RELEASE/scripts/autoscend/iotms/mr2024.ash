@@ -230,7 +230,7 @@ boolean dartEleDmg()
 
 boolean auto_haveMayamCalendar()
 {
-	if(auto_is_valid($item[Mayam Calendar]) && available_amount($item[Mayam Calendar]) > 0 )
+	if(!in_lol() && auto_is_valid($item[Mayam Calendar]) && available_amount($item[Mayam Calendar]) > 0 )
 	{
 		return true;
 	}
@@ -449,4 +449,13 @@ void auto_buyFromSeptEmberStore()
 		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
 	}
 	// consider throwin' ember for banish or summoning charm for pickpocket in future PR
+}
+
+boolean auto_haveTearawayPants()
+{
+	if(auto_is_valid($item[Tearaway Pants]) && available_amount($item[Tearaway Pants]) > 0 )
+	{
+		return true;
+	}
+	return false;
 }

@@ -1794,7 +1794,7 @@ boolean L11_hiddenCity()
 		return false;
 	}	
 
-	if (internalQuestStatus("questL11Curses") < 2 && have_effect($effect[Ancient Fortitude]) == 0)
+	if (internalQuestStatus("questL11Curses") == 0 && have_effect($effect[Ancient Fortitude]) == 0)
 	{
 		auto_log_info("The idden [sic] apartment!", "blue");
 
@@ -1931,7 +1931,7 @@ boolean L11_hiddenCity()
 		}
 	}
 
-	if (internalQuestStatus("questL11Business") < 2 && (my_adventures() + $location[The Hidden Office Building].turns_spent) >= 11)
+	if (internalQuestStatus("questL11Business") == 0 && (my_adventures() + $location[The Hidden Office Building].turns_spent) >= 11)
 	{
 		auto_log_info("The idden [sic] office!", "blue");
 
@@ -2002,7 +2002,7 @@ boolean L11_hiddenCity()
 		return autoAdv($location[The Hidden Office Building]);
 	}
 
-	if (internalQuestStatus("questL11Spare") < 2)
+	if (internalQuestStatus("questL11Spare") == 0)
 	{
 		auto_log_info("The idden [sic] bowling alley!", "blue");
 		L11_hiddenTavernUnlock(true);
@@ -2041,7 +2041,7 @@ boolean L11_hiddenCity()
 		return autoAdv($location[The Hidden Bowling Alley]);
 	}
 
-	if (internalQuestStatus("questL11Doctor") < 2)
+	if (internalQuestStatus("questL11Doctor") == 0)
 	{
 		if(item_amount($item[Dripping Stone Sphere]) > 0)
 		{
@@ -2129,6 +2129,10 @@ boolean L11_hiddenCityZones()
 
 	boolean equipMachete()
 	{
+		if(in_ag())
+		{
+			return false; //combats aren't free so no point in equipping a Machete
+		}
 		if (auto_can_equip($item[Antique Machete]))
 		{
 			if (possessEquipment($item[Antique Machete]))
@@ -2154,7 +2158,7 @@ boolean L11_hiddenCityZones()
 
 	L11_hiddenTavernUnlock();
 
-	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam();
+	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam() && !in_ag();
 	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && (in_hardcore() || in_lol());
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
@@ -2181,12 +2185,20 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
+		if(!canUseMachete && auto_haveTearawayPants())
+		{
+			autoForceEquip($item[Tearaway Pants]);
+		}
 		return autoAdv($location[An Overgrown Shrine (Northwest)]);
 	}
 
 	if (get_property("hiddenOfficeProgress").to_int() == 0) {
 		if (canUseMachete && !equipMachete()) {
 			return false;
+		}
+		if(!canUseMachete && auto_haveTearawayPants())
+		{
+			autoForceEquip($item[Tearaway Pants]);
 		}
 		return autoAdv($location[An Overgrown Shrine (Northeast)]);
 	}
@@ -2195,6 +2207,10 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
+		if(!canUseMachete && auto_haveTearawayPants())
+		{
+			autoForceEquip($item[Tearaway Pants]);
+		}
 		return autoAdv($location[An Overgrown Shrine (Southwest)]);
 	}
 
@@ -2202,12 +2218,20 @@ boolean L11_hiddenCityZones()
 		if (canUseMachete && !equipMachete()) {
 			return false;
 		}
+		if(!canUseMachete && auto_haveTearawayPants())
+		{
+			autoForceEquip($item[Tearaway Pants]);
+		}
 		return autoAdv($location[An Overgrown Shrine (Southeast)]);
 	}
 
 	if (!get_property("auto_openedziggurat").to_boolean()) {
-		if (!equipMachete()) {
+		if (canUseMachete && !equipMachete()) {
 			return false;
+		}
+		if(!canUseMachete && auto_haveTearawayPants())
+		{
+			autoForceEquip($item[Tearaway Pants]);
 		}
 		boolean advSpent = autoAdv($location[A Massive Ziggurat]);
 		if (get_property("lastEncounter") == "Legend of the Temple in the Hidden City" || (isActuallyEd() && get_property("lastEncounter") == "Temple of the Legend in the Hidden City")) {
