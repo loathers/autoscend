@@ -19,7 +19,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	// Path = zombie slayer
 	retval = auto_combatZombieSlayerStage3(round, enemy, text);
 	if(retval != "") return retval;
-	
+
 	//delevel (10 + medicine_level)% in avatar of west of loathing path
 	if(canUse($skill[Bad Medicine]) && (my_mp() >= (3 * mp_cost($skill[Bad Medicine]))))
 	{
@@ -136,6 +136,13 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			return useSkill($skill[Emit Matter Duplicating Drones]);			
 		}
 	}
+
+	//Dupe Tomb Rat King with pro skateboard
+	if(enemy == $monster[Tomb Rat King] && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
+	{
+		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
+		return useSkill($skill[Do an epic McTwist!]);
+	}
 	
 	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
 	if(canUse($skill[Hugs and Kisses!]) && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
@@ -249,7 +256,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 
 		//HP reduction if the monster has high HP
-		if(monster_hp() > 1500)
+		if(monster_hp() > 1500 || enemy.physical_resistance > 90)
 		{
 			if(canUse($skill[Surprisingly Sweet Slash])) //75% less HP
 			{
@@ -263,7 +270,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 		// delevel and 75% less HP if you have a candy cane sword cane
 		// Need this separate because want to reserve the Slash in Avant Guard for high HP bodyguards
-		if(canUse($skill[Surprisingly Sweet Slash]) && !in_ag())
+		if (canUse($skill[Surprisingly Sweet Slash]) && !in_avantGuard())
 		{
 			return useSkill($skill[Surprisingly Sweet Slash]);
 		}

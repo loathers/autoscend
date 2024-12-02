@@ -740,6 +740,20 @@ boolean auto_autumnatonQuest()
 		}
 	}
 
+	// a location of last resort for those without shadow rifts
+	if(get_property("shadowRiftIngress") == "")
+	{
+		//Cookbookbat materials if you have a Cookbookbat and Autumn Fest Ale+stone wool or Autumn Leaves
+		if(item_amount($item[Stone Wool]) == 0 && get_property("lastTempleAdventures").to_int() < my_ascensions())
+		{
+			if(auto_sendAutumnaton($location[The Hidden Temple])) return false;
+		}
+		else
+		{
+			if(auto_sendAutumnaton($location[The Outskirts of Cobb's Knob])) return false;
+		}
+	}
+
 	return false;
 }
 

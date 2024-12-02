@@ -610,10 +610,13 @@ void edUnderworldChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
-boolean in_ag();
+boolean in_avantGuard();
 void ag_initializeSettings();
 void ag_pulls();
 void ag_bgChat();
+monster ag_bgToChat();
+boolean LM_avantGuard();
+boolean ag_is_bodyguard();
 
 ########################################################################################################
 //Defined in autoscend/paths/avatar_of_boris.ash
@@ -1360,6 +1363,7 @@ int inebriety_left();
 boolean saucemavenApplies(item it);
 float expectedAdventuresFrom(item it);
 boolean canOde(item toDrink);
+boolean autoCleanse();
 boolean autoDrink(int howMany, item toDrink);
 boolean autoDrink(int howMany, item toDrink, boolean silent);
 boolean autoOverdrink(int howMany, item toOverdrink);
@@ -1372,6 +1376,7 @@ boolean autoEat(int howMany, item toEat);
 boolean autoEat(int howMany, item toEat, boolean silent);
 boolean acquireMilkOfMagnesiumIfUnused(boolean useAdv);
 boolean consumeMilkOfMagnesiumIfUnused();
+boolean wantDietPill(item toEat);
 boolean canDrink(item toDrink);
 boolean canEat(item toEat);
 boolean canChew(item toChew);
@@ -1643,18 +1648,11 @@ boolean uneffect(effect toRemove);
 //Defined in autoscend/auto_routing.ash
 location solveDelayZone(boolean skipOutdoorZones);
 location solveDelayZone();
-boolean setSoftblockDelay();
-boolean allowSoftblockDelay();
-boolean setSoftblockDelay();
 boolean canBurnDelay(location loc);
 boolean allowSoftblockUndergroundAdvs();
-boolean setSoftblockUndergroundAdvs();
 boolean auto_reserveUndergroundAdventures();
-boolean LX_goingUnderground();
-boolean allowSoftblockOutdoorAdvs();
-boolean setSoftblockOutdoorAdvs();
-boolean auto_reserveOutdoorAdventures();
-boolean LX_useBreathitinCharges();
+boolean auto_earlyRoutingHandling();
+boolean auto_softBlockHandler();
 
 ########################################################################################################
 //Defined in autoscend/auto_settings.ash
@@ -1758,6 +1756,9 @@ boolean adjustForReplaceIfPossible();
 boolean canSniff(monster enemy, location loc);
 boolean adjustForSniffingIfPossible(monster target);
 boolean adjustForSniffingIfPossible();
+boolean canCopy(monster enemy, location loc);
+boolean adjustForCopyIfPossible(monster target);
+boolean adjustForCopyIfPossible();
 boolean hasTorso();
 boolean isGuildClass();
 float elemental_resist_value(int resistance);
@@ -1847,6 +1848,7 @@ void auto_log_info(string s, string color);
 void auto_log_info(string s);
 void auto_log_debug(string s, string color);
 void auto_log_debug(string s);
+boolean auto_turbo();
 boolean auto_can_equip(item it);
 boolean auto_can_equip(item it, slot s);
 boolean auto_check_conditions(string conds);
@@ -1854,6 +1856,8 @@ boolean [monster] auto_getMonsters(string category);
 boolean auto_wantToSniff(monster enemy, location loc);
 boolean auto_wantToYellowRay(monster enemy, location loc);
 boolean auto_wantToReplace(monster enemy, location loc);
+boolean auto_wantToCopy(monster enemy, location loc);
+boolean auto_wantToCopy(monster enemy);
 int total_items(boolean [item] items);
 boolean auto_badassBelt();
 void auto_interruptCheck(boolean debug);

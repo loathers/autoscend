@@ -11,6 +11,7 @@ Evil Olive
 Empty suit of armor	class:Ed the Undying
 Flock Of Stab-Bats
 Gluttonous Ghuol	class:Vampyre
+Gluttonous Ghuol	prop:auto_turbo==true
 Knob Goblin Harem Guard
 Knob Goblin Madam	item:Knob Goblin Perfume>0
 Mad Wino	!class:Ed the Undying

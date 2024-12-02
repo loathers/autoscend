@@ -1798,6 +1798,11 @@ boolean L13_towerNSFinal()
 		remove_property("auto_disregardInstantKarmaBackup");
 	}
 
+	if(auto_turbo())
+	{
+		set_property("auto_turbo", "false");
+	}
+
 
 	if(get_property("auto_stayInRun").to_boolean())
 	{

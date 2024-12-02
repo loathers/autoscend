@@ -45,6 +45,21 @@ boolean wantToThrowGravel(location loc, monster enemy)
 	// prevent overuse after breaking ronin or in casual
 	if(can_interact()) return false;
 
+	// only want certain enemies to free-kill in Avant Guard
+	if(in_avantGuard())
+	{
+		if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
+		{
+			return true;
+		}
+		//This is called in stage2 and auto_purple_candled is set in stage 4 so this should only ever show up on the purple candled enemy
+		if(get_property("auto_purple_candled").to_monster() == enemy)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	// many monsters in these zones with similar names
 	if(loc == $location[The Battlefield (Frat Uniform)] && 
 		(contains_text(enemy.to_string(), "War Hippy")) ||
@@ -53,6 +68,10 @@ boolean wantToThrowGravel(location loc, monster enemy)
 		return true;
 	}
 	if(loc == $location[The Battlefield (Hippy Uniform)] && contains_text(enemy.to_string(), "War Frat"))
+	{
+		return true;
+	}
+	if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
 	{
 		return true;
 	}
@@ -119,6 +138,11 @@ location auto_availableBrickRift()
 		return $location[none];
 	}
 
+	if (in_avantGuard() && !auto_haveQueuedForcedNonCombat()) //if no NC forced, don't adventure in zone
+	{
+		return $location[none];
+	}
+
 	boolean[location] riftsWithBricks = $locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)];
 	foreach loc in riftsWithBricks
 	{
@@ -129,7 +153,7 @@ location auto_availableBrickRift()
 
 int auto_neededShadowBricks()
 {
-	if(!auto_havePayPhone() || in_ag())
+	if (!auto_havePayPhone() || in_avantGuard())
 	{
 		return 0;
 	}
@@ -165,8 +189,8 @@ boolean auto_doPhoneQuest()
 	{
 		return false;
 	}
-	// only accept and do quest if we can get bricks
-	if(auto_availableBrickRift() == $location[none])
+	// only accept and do quest if we can get bricks or force a noncombat
+	if(auto_availableBrickRift() == $location[none] || !auto_canForceNextNoncombat())
 	{
 		return false;
 	}
@@ -201,6 +225,17 @@ boolean auto_doPhoneQuest()
 			abort("Failed to finish Rufus quest from cursed phone.");
 		}
 		return true;
+	}
+
+	//Force a non combat instead of adventuring there to save turns, especially in AG
+	if(auto_haveQueuedForcedNonCombat())
+	{
+		return autoAdv(auto_availableBrickRift());
+	}
+
+	if (auto_canForceNextNoncombat() && in_avantGuard()) //in avant guard, want to avoid adventuring here unless you can force an NC
+	{
+		return auto_forceNextNoncombat(auto_availableBrickRift());
 	}
 
 	backupSetting("shadowLabyrinthGoal", "browser"); // use mafia's automation handling for the Shadow Rift NC.
@@ -450,22 +485,30 @@ void auto_buyFrom2002MrStore()
 		return;
 	}
 	auto_log_debug("Have " + remainingCatalogCredits() + " credit(s) to buy from Mr. Store 2002. Let's spend them!");
-	// meat butler on day 1 of run
-	item itemConsidering = $item[meat butler];
-	if(have_campground() && remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
-	{
-		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
-		use(itemConsidering);
-	}
+
 	// manual of secret door detection. skill: Secret door awareness
-	itemConsidering = $item[manual of secret door detection];
+	item itemConsidering = $item[manual of secret door detection];
 	if(can_read_skillbook(itemConsidering) && remainingCatalogCredits() > 0 && !auto_have_skill($skill[Secret door awareness]) && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
 	}
-	// giant black monlith. Mostly useful at low level for stats
-	if (have_campground() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
+	//Pro skateboard to dupe tomb rat king drops
+	itemConsidering = $item[pro skateboard];
+	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering) && !possessEquipment(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+	}
+	// meat butler on day 1 of run
+	itemConsidering = $item[meat butler];
+	if(have_campground() && remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+		use(itemConsidering);
+	}
+	// giant black monolith. Mostly useful at low level for stats
+	if (have_campground() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) &&
+	!(auto_haveSeptEmberCenser() || auto_haveTrainSet())) {
 		itemConsidering = $item[giant black monolith];
 		if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
 		{
@@ -539,7 +582,7 @@ void auto_scepterSkills()
 		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar())
 		{
 			familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
-			if(((in_ag() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
+			if (((in_avantGuard() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
 			{
 				use_familiar(findRockFamiliarInTerrarium());
 				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
@@ -621,6 +664,8 @@ boolean auto_canHabitat()
 				return (fantasyBanditsFought() < 5);
 			case $monster[modern zmobie]:
 				return get_property("cyrptAlcoveEvilness").to_int() > 13;
+			case $monster[dirty old lihc]:
+				return get_property("cyrptNicheEvilness").to_int() > 13;
 			default:
 				return false;
 		}
@@ -645,9 +690,14 @@ boolean auto_habitatTarget(monster target)
 			return (fantasyBanditsFought() == 0);
 		case $monster[modern zmobie]:
 		 	// only worth it if we need 30 or more evilness reduced.
-			return (get_property("cyrptAlcoveEvilness").to_int() > 42);
+			return ((get_property("cyrptAlcoveEvilness").to_int() - (5 * (5 + cyrptEvilBonus()))) > 13);
+		case $monster[dirty old lihc]:
+		 	// only worth it if we need 18 or more evilness reduced.
+			// avant guard makes free fights cost a turn. Use DOL in place of tentacle
+			return (in_avantGuard() && (get_property("cyrptNicheEvilness").to_int() - (5 * (3 + cyrptEvilBonus()))) > 13);
 		case $monster[eldritch tentacle]:
-			return (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0));
+			// don't habitat free fights in avant guard
+			return (!in_avantGuard() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
 		default:
 			return (get_property("auto_habitatMonster").to_monster() == target);
 	}
@@ -818,7 +868,7 @@ boolean auto_burnLeaves()
 		}
 		return false;
 	}
-	if(in_ag() && item_amount($item[inflammable leaf]) > 37 && item_amount($item[Autumnic bomb]) == 0)
+	if (in_avantGuard() && item_amount($item[inflammable leaf]) > 86 && item_amount($item[Autumnic bomb]) == 0)
 	{
 		create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
 	}

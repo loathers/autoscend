@@ -541,9 +541,9 @@ boolean LX_fatLootToken()
 		//wait until daily dungeon is done before considering doing fantasy realm
 		if(fantasyRealmToken()) return true;
 	}
-	if(internalQuestStatus("questL13Final") == 5)
+	if(internalQuestStatus("questL13Final") == 5 || auto_turbo())
 	{
-		// at NS tower door and still need hero keys
+		// at NS tower door and still need hero keys or going for turbo
 
 		// summon and copy fantasy realm bandit. Allows for getting fantasy realm token without having FR available
 		if(!acquiredFantasyRealmToken() && ((auto_haveBackupCamera() && auto_backupUsesLeft() >= (4 - fantasyBanditsFought())) || auto_canHabitat()) && canSummonMonster($monster[fantasy bandit]))
@@ -608,7 +608,7 @@ boolean LX_dailyDungeonToken()
 	{
 		return false;	//can switch to cubeling so wait until we have all the tool drops before doing daily dungeon
 	}
-	
+
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
 	{
 		auto_buyUpTo(1, $item[Eleven-Foot Pole]);
@@ -620,7 +620,10 @@ boolean LX_dailyDungeonToken()
 	}
 	
 	//if you can not use the cubeling then pull the missing tools if possible
-	pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
+	if (!auto_haveCCSC() && item_amount($item[Eleven-Foot Pole]) == 0) {
+		// don't need the Eleven-foot Pole if we have the Candy Cane Sword Cane as it adds turn free NCs.
+		pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
+	}
 	if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not pull a second one if already equipped
 	{
 		pullXWhenHaveY($item[Ring of Detect Boring Doors], 1, 0);

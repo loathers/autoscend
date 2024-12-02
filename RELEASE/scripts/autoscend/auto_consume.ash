@@ -86,6 +86,54 @@ boolean canOde(item toDrink)
 	return true;
 }
 
+boolean autoCleanse()
+{
+	if(!(auto_turbo()))
+	{
+		return false;
+	}
+
+	boolean wantToCleanseStomach = false;
+	boolean wantToCleanseLiver = false;
+
+	if(my_fullness() > 3 && fullness_left() < 4)
+	{
+		wantToCleanseStomach = true;
+	}
+	if(my_inebriety() > 3 && inebriety_left() < 4)
+	{
+		wantToCleanseLiver = true;
+	}
+
+	boolean wantToCleanse = wantToCleanseLiver && wantToCleanseStomach; //want to cleanse both
+
+	if(wantToCleanse && item_amount($item[Spice Melange]) > 0 && !(get_property("spiceMelangeUsed").to_boolean()))
+	{
+		handleTracker("Cleansed with " + $item[Spice Melange], "auto_otherstuff");
+		return use(1, $item[Spice Melange]);
+	}
+
+	if(wantToCleanse && item_amount($item[Ultra Mega Sour Ball]) > 0 && !(get_property("_ultraMegaSourBallUsed").to_boolean()))
+	{
+		handleTracker("Cleansed with " + $item[Ultra Mega Sour Ball], "auto_otherstuff");
+		return use(1, $item[Ultra Mega Sour Ball]);
+	}
+
+	if(wantToCleanseLiver && item_amount($item[Alien plant pod]) > 0 && !(get_property("_alienPlantPodUsed").to_boolean()))
+	{
+		handleTracker("Cleansed with " + $item[Alien plant pod], "auto_otherstuff");
+		return use(1, $item[Alien plant pod]);
+	}
+
+	if(wantToCleanseStomach && item_amount($item[Alien animal milk]) > 0 && !(get_property("_alienAnimalMilkUsed").to_boolean()))
+	{
+		handleTracker("Cleansed with " + $item[Alien animal milk], "auto_otherstuff");
+		return use(1, $item[Alien animal milk]);
+	}
+
+	return false;
+}
+
 boolean autoDrink(int howMany, item toDrink)
 {
 	return autoDrink(howMany, toDrink, false);
@@ -351,6 +399,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	int expectedFullness = toEat.fullness * howMany;
 	acquireMilkOfMagnesiumIfUnused(true);
 	consumeMilkOfMagnesiumIfUnused();
+	wantDietPill(toEat);
 
 	if(possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
@@ -397,10 +446,20 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		}
 		if(retval)
 		{
+			string detail;
 			if(wasReadyToEat && have_effect($effect[Ready to Eat]) <= 0)
 			{
-				handleTracker(toEat,"Red Rocketed!", "auto_eaten");
+				detail = (detail != "" ? detail + ", Red Rocketed!" : "Red Rocketed!");
 				wasReadyToEat = false;
+			}
+			if(get_property("auto_dietpills").to_int() > 0)
+			{
+				detail = (detail != "" ? detail + ", Dieting Pilled!" : "Dieting Pilled!");
+				set_property("auto_dietpills", get_property("auto_dietpills").to_int() - 1);
+			}
+			if(detail != "")
+			{
+				handleTracker(toEat, detail, "auto_eaten");
 			}
 			else
 			{
@@ -466,6 +525,42 @@ boolean consumeMilkOfMagnesiumIfUnused()
 		return false;
 	}
 	return use(1, $item[Milk of Magnesium]);
+}
+
+boolean wantDietPill(item toEat)
+{
+	item pill = $item[Dieting Pill];
+	if(!auto_is_valid(pill) || !auto_is_valid(toEat))
+	{
+		return false;
+	}
+	int minAdv;
+	if(index_of(toEat.adventures, "-") < 0)
+	{
+		minAdv = toEat.adventures.to_int();
+	}
+	else
+	{
+		minAdv = substring(toEat.adventures, 0, index_of(toEat.adventures, "-")).to_int();
+	}
+	int size = toEat.fullness;
+	//Use a dieting pill on only high adv/full foods
+	if(minAdv/size > 8.5)
+	{
+		//Only want a dieting pill if we can use it successfully
+		if(fullness_left() > 2 * size && spleen_left() >= 3)
+		{
+			pullXWhenHaveY(pill, 1, 0);
+			if(item_amount(pill) > 0)
+			{
+				handleTracker(pill, "auto_chewed");
+				set_property("auto_dietpills", get_property("auto_dietpills").to_int() + 1); //Track how many dieting pills we have consumed this ascension
+				return chew(1, pill);
+			}
+		}
+		return false;
+	}
+	return false;
 }
 
 boolean canDrink(item toDrink, boolean checkValidity)
@@ -854,7 +949,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	{
 		blacklist[it] = true;
 	}
-	if(!in_small())
+	if ((get_property("auto_dontConsumeLegendPizzas").to_boolean() && !in_small()) || (auto_turbo() && get_property("cyrptCrannyEvilness").to_int() > 0))
 	{
 		foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
 		{

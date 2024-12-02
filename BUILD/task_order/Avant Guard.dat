@@ -1,4 +1,3 @@
-LM_wereprof
 LX_freeCombatsTask
 woods_questStart
 LX_unlockPirateRealm
@@ -12,25 +11,21 @@ L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
 LX_summonMonster
-# Get Smashed Scientific Equipment ASAP
-LX_wereprof_getSmashedEquip
+LM_avantGuard
 # make sure we don't waste turns of Ultrahydrated doing something else.
 L11_aridDesert	L11_hasUltrahydrated
 # Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
-L11_shenStartQuest	is_werewolf
+L11_shenStartQuest
 # Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
 finishBuildingSmutOrcBridge
 # Call quest handlers based on current state if applicable
 auto_earlyRoutingHandling
 # Guild access.
 LX_guildUnlock
-LX_bitchinMeatcar	LX_bitchinMeatcar_condition
 #	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
 LX_unlockDesert
 LX_lockPicking
 LX_fatLootToken
-# Get access to the island access ASAP because only Professor can do it
-LX_islandAccess
 #	Get the Steel Organ if the user wants it (needs L6 quest complete)
 LX_steelOrgan
 # open up delay zones.
@@ -39,22 +34,22 @@ LX_spookyravenManorFirstFloor
 # Open up underground zones so they are available for Breathitin.
 L5_getEncryptionKey
 L5_findKnob
-# Quests with Werewolf/Professor specific limitations should have higher priority so we do those when we can
-L12_Gremlins	is_werewolf
-L11_forgedDocuments	is_professor
-L11_mcmuffinDiary	is_professor
-L11_getUVCompass	is_professor
-# Putting Lord Spookyraven here because he is limited but to get to him isn't
-L11_mauriceSpookyraven
-L11_shenCopperhead	is_werewolf
-L9_aBooPeak
-L9_oilPeak
-L8_trapperGroar
-L7_crypt
 #	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
 L12_islandWar
+# Fix that dripping tap.
+L3_tavern
+#	Finish off the Goblin King.
+L5_slayTheGoblinKing
+# Kill the undead? Is this an oxymoron?
+L7_crypt
+#  Kill Groar because *we* are the monsters.
+L8_trapperQuest
+L11_mauriceSpookyraven
+L11_defeatEd
 # Start the macguffin quest
 L11_blackMarket
+L11_forgedDocuments
+L11_mcmuffinDiary
 L11_getBeehive
 # open the hidden city up (delay zones)
 L2_mosquito
@@ -66,6 +61,7 @@ L11_hiddenCityZones
 L11_hiddenCity
 # Dance with lady spookyraven so we can go murder her undead husband and take the Eye of Ed
 LX_spookyravenManorSecondFloor
+L11_mauriceSpookyraven
 # Lay the smack down on those Jerk Copperhead twins
 L11_talismanOfNam
 # Open up the top of the beanstalk.
@@ -77,6 +73,8 @@ L9_chasmBuild
 L9_highLandlord
 #  Kill Groar because *we* are the monsters.
 L8_trapperQuest
+# Kill the undead? Is this an oxymoron?
+L7_crypt
 # Cleanse the taint.
 L6_friarsGetParts
 # Finish the other Macguffin zones so we can beat Ed to death repeatedly and waste all his Ka coins.
@@ -93,9 +91,8 @@ L4_batCave
 L3_tavern
 # Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
 L2_mosquito
-# want to do these before we start the tower so we can make sure we have as much werewolf as possible
-LX_getStarKey
-LX_getDigitalKey
+# There's an extra task in KoE
+LX_koeInvaderHandler
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 L13_towerAscent
 # release the hounds!
