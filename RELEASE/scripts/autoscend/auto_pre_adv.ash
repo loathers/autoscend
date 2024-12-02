@@ -513,7 +513,7 @@ boolean auto_pre_adventure()
 	{
 		autoEquip(exting);
 	}
-	else if(auto_availableBrickRift() == place)
+	else if(auto_availableBrickRift() == place && auto_fireExtinguisherCharges() > 20)
 	{
 		autoEquip(exting); // polar vortex for shadow bricks
 	}
