@@ -2972,7 +2972,7 @@ boolean L11_palindome()
 		return false;
 	}
 
-	if(item_amount($item[wet stunt nut stew]) == 0 && internalQuestStatus("questL11Palindome") > 3)
+	if(item_amount($item[wet stunt nut stew]) == 0 && internalQuestStatus("questL11Palindome") >= 3)
 	{
 		return makeWetStuntNutStew();
 	}
