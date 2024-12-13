@@ -513,9 +513,9 @@ boolean auto_pre_adventure()
 	{
 		autoEquip(exting);
 	}
-	else if(auto_availableBrickRift() == place && auto_fireExtinguisherCharges() > 20)
+	else if(auto_availableBrickRift() == place && auto_fireExtinguisherCharges() >= 30)
 	{
-		autoEquip(exting); // polar vortex for shadow bricks
+		autoEquip(exting); // Can do at least 1 polar vortex for shadow bricks while keeping 20 for a zone specific skill
 	}
 	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
 	{
