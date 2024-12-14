@@ -23,79 +23,177 @@ A Shrunken Adventurer am I	13	L11_aridDesert	L11_hasUltrahydrated
 A Shrunken Adventurer am I	14	L11_shenStartQuest
 # Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
 A Shrunken Adventurer am I	15	finishBuildingSmutOrcBridge
-# Underground Adventuring for CMC/Breathitin.
-A Shrunken Adventurer am I	16	LX_goingUnderground
-# Burn Breathitin charges
-A Shrunken Adventurer am I	17	LX_useBreathitinCharges
+# Call quest handlers based on current state if applicable
+A Shrunken Adventurer am I	16	auto_earlyRoutingHandling
 # Guild access.
-A Shrunken Adventurer am I	18	LX_guildUnlock
+A Shrunken Adventurer am I	17	LX_guildUnlock
 #	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
-A Shrunken Adventurer am I	19	LX_unlockDesert
-A Shrunken Adventurer am I	20	LX_lockPicking
-A Shrunken Adventurer am I	21	LX_fatLootToken
+A Shrunken Adventurer am I	18	LX_unlockDesert
+A Shrunken Adventurer am I	19	LX_lockPicking
+A Shrunken Adventurer am I	20	LX_fatLootToken
 #	Get the Steel Organ if the user wants it (needs L6 quest complete)
-A Shrunken Adventurer am I	22	LX_steelOrgan
+A Shrunken Adventurer am I	21	LX_steelOrgan
 # open up delay zones.
-A Shrunken Adventurer am I	23	LX_spookyravenManorFirstFloor
+A Shrunken Adventurer am I	22	LX_spookyravenManorFirstFloor
 # open up zones where we want to force non-combats.
 # Open up underground zones so they are available for Breathitin.
-A Shrunken Adventurer am I	24	L5_getEncryptionKey
-A Shrunken Adventurer am I	25	L5_findKnob
+A Shrunken Adventurer am I	23	L5_getEncryptionKey
+A Shrunken Adventurer am I	24	L5_findKnob
 #	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
-A Shrunken Adventurer am I	26	L12_islandWar
+A Shrunken Adventurer am I	25	L12_islandWar
 # Start the macguffin quest
-A Shrunken Adventurer am I	27	L11_blackMarket
-A Shrunken Adventurer am I	28	L11_forgedDocuments
-A Shrunken Adventurer am I	29	L11_mcmuffinDiary
-A Shrunken Adventurer am I	30	L11_getBeehive
+A Shrunken Adventurer am I	26	L11_blackMarket
+A Shrunken Adventurer am I	27	L11_forgedDocuments
+A Shrunken Adventurer am I	28	L11_mcmuffinDiary
+A Shrunken Adventurer am I	29	L11_getBeehive
 # open the hidden city up (delay zones)
-A Shrunken Adventurer am I	31	L2_mosquito
-A Shrunken Adventurer am I	32	LX_unlockHiddenTemple
-A Shrunken Adventurer am I	33	L6_dakotaFanning
-A Shrunken Adventurer am I	34	L11_unlockHiddenCity
+A Shrunken Adventurer am I	30	L2_mosquito
+A Shrunken Adventurer am I	31	LX_unlockHiddenTemple
+A Shrunken Adventurer am I	32	L6_dakotaFanning
+A Shrunken Adventurer am I	33	L11_unlockHiddenCity
 # Murder pygmies for the ancient amulet.
-A Shrunken Adventurer am I	35	L11_hiddenCityZones
-A Shrunken Adventurer am I	36	L11_hiddenCity
+A Shrunken Adventurer am I	34	L11_hiddenCityZones
+A Shrunken Adventurer am I	35	L11_hiddenCity
 # Dance with lady spookyraven so we can go murder her undead husband and take the Eye of Ed
-A Shrunken Adventurer am I	37	LX_spookyravenManorSecondFloor
-A Shrunken Adventurer am I	38	L11_mauriceSpookyraven
+A Shrunken Adventurer am I	36	LX_spookyravenManorSecondFloor
+A Shrunken Adventurer am I	37	L11_mauriceSpookyraven
 # Lay the smack down on those Jerk Copperhead twins
-A Shrunken Adventurer am I	39	L11_talismanOfNam
+A Shrunken Adventurer am I	38	L11_talismanOfNam
 # Open up the top of the beanstalk.
-A Shrunken Adventurer am I	40	L10_plantThatBean
+A Shrunken Adventurer am I	39	L10_plantThatBean
 # Clean up the plains
-A Shrunken Adventurer am I	41	L10_rainOnThePlains
+A Shrunken Adventurer am I	40	L10_rainOnThePlains
 # Get Black Angus his pizza
-A Shrunken Adventurer am I	42	L9_chasmBuild
-A Shrunken Adventurer am I	43	L9_highLandlord
+A Shrunken Adventurer am I	41	L9_chasmBuild
+A Shrunken Adventurer am I	42	L9_highLandlord
 #  Kill Groar because *we* are the monsters.
-A Shrunken Adventurer am I	44	L8_trapperQuest
+A Shrunken Adventurer am I	43	L8_trapperQuest
 # Kill the undead? Is this an oxymoron?
-A Shrunken Adventurer am I	45	L7_crypt
+A Shrunken Adventurer am I	44	L7_crypt
 # Cleanse the taint.
-A Shrunken Adventurer am I	46	L6_friarsGetParts
+A Shrunken Adventurer am I	45	L6_friarsGetParts
 # Finish the other Macguffin zones so we can beat Ed to death repeatedly and waste all his Ka coins.
-A Shrunken Adventurer am I	47	L11_palindome
-A Shrunken Adventurer am I	48	L11_aridDesert
-A Shrunken Adventurer am I	49	L11_unlockPyramid
-A Shrunken Adventurer am I	50	L11_unlockEd
-A Shrunken Adventurer am I	51	L11_defeatEd
+A Shrunken Adventurer am I	46	L11_palindome
+A Shrunken Adventurer am I	47	L11_aridDesert
+A Shrunken Adventurer am I	48	L11_unlockPyramid
+A Shrunken Adventurer am I	49	L11_unlockEd
+A Shrunken Adventurer am I	50	L11_defeatEd
 #	Finish off the Goblin King.
-A Shrunken Adventurer am I	52	L5_slayTheGoblinKing
+A Shrunken Adventurer am I	51	L5_slayTheGoblinKing
 # Show the Boss bat who's boss.
-A Shrunken Adventurer am I	53	L4_batCave
+A Shrunken Adventurer am I	52	L4_batCave
 # Fix that dripping tap.
-A Shrunken Adventurer am I	54	L3_tavern
+A Shrunken Adventurer am I	53	L3_tavern
 # Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
-A Shrunken Adventurer am I	55	L2_mosquito
-# release the softblock on delay burning
-A Shrunken Adventurer am I	56	setSoftblockDelay	allowSoftblockDelay
-# release the softblock on Underground Adventures
-A Shrunken Adventurer am I	57	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
+A Shrunken Adventurer am I	54	L2_mosquito
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
-A Shrunken Adventurer am I	58	L13_towerAscent
+A Shrunken Adventurer am I	55	L13_towerAscent
+# release the hounds!
+A Shrunken Adventurer am I	56	auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.
-A Shrunken Adventurer am I	59	LX_attemptPowerLevel
+A Shrunken Adventurer am I	57	LX_attemptPowerLevel
+
+Avant Guard	0	LX_freeCombatsTask
+Avant Guard	1	woods_questStart
+Avant Guard	2	LX_unlockPirateRealm
+Avant Guard	3	catBurglarHeist
+Avant Guard	4	auto_breakfastCounterVisit
+Avant Guard	5	chateauPainting
+Avant Guard	6	LX_setWorkshed
+Avant Guard	7	LX_galaktikSubQuest
+Avant Guard	8	L9_leafletQuest
+Avant Guard	9	L5_findKnob
+Avant Guard	10	L12_sonofaPrefix
+Avant Guard	11	LX_burnDelay
+Avant Guard	12	LX_summonMonster
+Avant Guard	13	LM_avantGuard
+# make sure we don't waste turns of Ultrahydrated doing something else.
+Avant Guard	14	L11_aridDesert	L11_hasUltrahydrated
+# Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
+Avant Guard	15	L11_shenStartQuest
+# Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
+Avant Guard	16	finishBuildingSmutOrcBridge
+# Call quest handlers based on current state if applicable
+Avant Guard	17	auto_earlyRoutingHandling
+# Guild access.
+Avant Guard	18	LX_guildUnlock
+#	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
+Avant Guard	19	LX_unlockDesert
+Avant Guard	20	LX_lockPicking
+Avant Guard	21	LX_fatLootToken
+#	Get the Steel Organ if the user wants it (needs L6 quest complete)
+Avant Guard	22	LX_steelOrgan
+# open up delay zones.
+Avant Guard	23	LX_spookyravenManorFirstFloor
+# open up zones where we want to force non-combats.
+# Open up underground zones so they are available for Breathitin.
+Avant Guard	24	L5_getEncryptionKey
+Avant Guard	25	L5_findKnob
+#	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
+Avant Guard	26	L12_islandWar
+# Fix that dripping tap.
+Avant Guard	27	L3_tavern
+#	Finish off the Goblin King.
+Avant Guard	28	L5_slayTheGoblinKing
+# Kill the undead? Is this an oxymoron?
+Avant Guard	29	L7_crypt
+#  Kill Groar because *we* are the monsters.
+Avant Guard	30	L8_trapperQuest
+Avant Guard	31	L11_mauriceSpookyraven
+Avant Guard	32	L11_defeatEd
+# Start the macguffin quest
+Avant Guard	33	L11_blackMarket
+Avant Guard	34	L11_forgedDocuments
+Avant Guard	35	L11_mcmuffinDiary
+Avant Guard	36	L11_getBeehive
+# open the hidden city up (delay zones)
+Avant Guard	37	L2_mosquito
+Avant Guard	38	LX_unlockHiddenTemple
+Avant Guard	39	L6_dakotaFanning
+Avant Guard	40	L11_unlockHiddenCity
+# Murder pygmies for the ancient amulet.
+Avant Guard	41	L11_hiddenCityZones
+Avant Guard	42	L11_hiddenCity
+# Dance with lady spookyraven so we can go murder her undead husband and take the Eye of Ed
+Avant Guard	43	LX_spookyravenManorSecondFloor
+Avant Guard	44	L11_mauriceSpookyraven
+# Lay the smack down on those Jerk Copperhead twins
+Avant Guard	45	L11_talismanOfNam
+# Open up the top of the beanstalk.
+Avant Guard	46	L10_plantThatBean
+# Clean up the plains
+Avant Guard	47	L10_rainOnThePlains
+# Get Black Angus his pizza
+Avant Guard	48	L9_chasmBuild
+Avant Guard	49	L9_highLandlord
+#  Kill Groar because *we* are the monsters.
+Avant Guard	50	L8_trapperQuest
+# Kill the undead? Is this an oxymoron?
+Avant Guard	51	L7_crypt
+# Cleanse the taint.
+Avant Guard	52	L6_friarsGetParts
+# Finish the other Macguffin zones so we can beat Ed to death repeatedly and waste all his Ka coins.
+Avant Guard	53	L11_palindome
+Avant Guard	54	L11_aridDesert
+Avant Guard	55	L11_unlockPyramid
+Avant Guard	56	L11_unlockEd
+Avant Guard	57	L11_defeatEd
+#	Finish off the Goblin King.
+Avant Guard	58	L5_slayTheGoblinKing
+# Show the Boss bat who's boss.
+Avant Guard	59	L4_batCave
+# Fix that dripping tap.
+Avant Guard	60	L3_tavern
+# Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
+Avant Guard	61	L2_mosquito
+# There's an extra task in KoE
+Avant Guard	62	LX_koeInvaderHandler
+# "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
+Avant Guard	63	L13_towerAscent
+# release the hounds!
+Avant Guard	64	auto_softBlockHandler
+# if all else fails, powerlevel like there's no tomorrow.
+Avant Guard	65	LX_attemptPowerLevel
 
 Avatar of Jarlsberg	0	LM_jarlsberg
 Avatar of Jarlsberg	1	LX_freeCombatsTask
@@ -113,46 +211,46 @@ Avatar of Jarlsberg	12	LX_summonMonster
 Avatar of Jarlsberg	13	L11_aridDesert	L11_hasUltrahydrated
 Avatar of Jarlsberg	14	handleRainDoh
 Avatar of Jarlsberg	15	L11_shenStartQuest
-Avatar of Jarlsberg	16	LX_guildUnlock
-Avatar of Jarlsberg	17	LX_unlockDesert
-Avatar of Jarlsberg	18	LX_lockPicking
-Avatar of Jarlsberg	19	LX_fatLootToken
-Avatar of Jarlsberg	20	L5_getEncryptionKey
-Avatar of Jarlsberg	21	L5_findKnob
-Avatar of Jarlsberg	22	L2_mosquito
-Avatar of Jarlsberg	23	LX_unlockHiddenTemple
-Avatar of Jarlsberg	24	L6_dakotaFanning
-Avatar of Jarlsberg	25	LX_steelOrgan
-Avatar of Jarlsberg	26	L12_islandWar
-Avatar of Jarlsberg	27	LX_spookyravenManorFirstFloor
-Avatar of Jarlsberg	28	L11_blackMarket
-Avatar of Jarlsberg	29	L11_forgedDocuments
-Avatar of Jarlsberg	30	L11_mcmuffinDiary
-Avatar of Jarlsberg	31	L11_getBeehive
-Avatar of Jarlsberg	32	L11_unlockHiddenCity
-Avatar of Jarlsberg	33	L11_hiddenCityZones
-Avatar of Jarlsberg	34	L11_hiddenCity
-Avatar of Jarlsberg	35	LX_spookyravenManorSecondFloor
-Avatar of Jarlsberg	36	L11_mauriceSpookyraven
-Avatar of Jarlsberg	37	L11_talismanOfNam
-Avatar of Jarlsberg	38	L10_plantThatBean
-Avatar of Jarlsberg	39	L10_rainOnThePlains
-Avatar of Jarlsberg	40	L9_chasmBuild
-Avatar of Jarlsberg	41	L9_highLandlord
-Avatar of Jarlsberg	42	L8_trapperQuest
-Avatar of Jarlsberg	43	L6_friarsGetParts
-Avatar of Jarlsberg	44	L7_crypt
-Avatar of Jarlsberg	45	L11_palindome
-Avatar of Jarlsberg	46	L11_aridDesert
-Avatar of Jarlsberg	47	L11_unlockPyramid
-Avatar of Jarlsberg	48	L11_unlockEd
-Avatar of Jarlsberg	49	L11_defeatEd
-Avatar of Jarlsberg	50	L5_slayTheGoblinKing
-Avatar of Jarlsberg	51	L4_batCave
-Avatar of Jarlsberg	52	L3_tavern
-Avatar of Jarlsberg	53	setSoftblockDelay	allowSoftblockDelay
-Avatar of Jarlsberg	54	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
-Avatar of Jarlsberg	55	L13_towerAscent
+Avatar of Jarlsberg	16	auto_earlyRoutingHandling
+Avatar of Jarlsberg	17	LX_guildUnlock
+Avatar of Jarlsberg	18	LX_unlockDesert
+Avatar of Jarlsberg	19	LX_lockPicking
+Avatar of Jarlsberg	20	LX_fatLootToken
+Avatar of Jarlsberg	21	L5_getEncryptionKey
+Avatar of Jarlsberg	22	L5_findKnob
+Avatar of Jarlsberg	23	L2_mosquito
+Avatar of Jarlsberg	24	LX_unlockHiddenTemple
+Avatar of Jarlsberg	25	L6_dakotaFanning
+Avatar of Jarlsberg	26	LX_steelOrgan
+Avatar of Jarlsberg	27	L12_islandWar
+Avatar of Jarlsberg	28	LX_spookyravenManorFirstFloor
+Avatar of Jarlsberg	29	L11_blackMarket
+Avatar of Jarlsberg	30	L11_forgedDocuments
+Avatar of Jarlsberg	31	L11_mcmuffinDiary
+Avatar of Jarlsberg	32	L11_getBeehive
+Avatar of Jarlsberg	33	L11_unlockHiddenCity
+Avatar of Jarlsberg	34	L11_hiddenCityZones
+Avatar of Jarlsberg	35	L11_hiddenCity
+Avatar of Jarlsberg	36	LX_spookyravenManorSecondFloor
+Avatar of Jarlsberg	37	L11_mauriceSpookyraven
+Avatar of Jarlsberg	38	L11_talismanOfNam
+Avatar of Jarlsberg	39	L10_plantThatBean
+Avatar of Jarlsberg	40	L10_rainOnThePlains
+Avatar of Jarlsberg	41	L9_chasmBuild
+Avatar of Jarlsberg	42	L9_highLandlord
+Avatar of Jarlsberg	43	L8_trapperQuest
+Avatar of Jarlsberg	44	L6_friarsGetParts
+Avatar of Jarlsberg	45	L7_crypt
+Avatar of Jarlsberg	46	L11_palindome
+Avatar of Jarlsberg	47	L11_aridDesert
+Avatar of Jarlsberg	48	L11_unlockPyramid
+Avatar of Jarlsberg	49	L11_unlockEd
+Avatar of Jarlsberg	50	L11_defeatEd
+Avatar of Jarlsberg	51	L5_slayTheGoblinKing
+Avatar of Jarlsberg	52	L4_batCave
+Avatar of Jarlsberg	53	L3_tavern
+Avatar of Jarlsberg	54	L13_towerAscent
+Avatar of Jarlsberg	55	auto_softBlockHandler
 Avatar of Jarlsberg	56	LX_attemptPowerLevel
 
 Legacy of Loathing	0	LX_freeCombatsTask
@@ -168,94 +266,91 @@ Legacy of Loathing	9	L5_findKnob
 Legacy of Loathing	10	L12_sonofaPrefix
 Legacy of Loathing	11	LX_burnDelay
 Legacy of Loathing	12	LX_summonMonster
-Legacy of Loathing	13	LM_edTheUndying
-Legacy of Loathing	14	LX_bugbearInvasion
-Legacy of Loathing	15	LX_lowkeySummer
-Legacy of Loathing	16	resolveSixthDMT
-Legacy of Loathing	17	L11_aridDesert	L11_hasUltrahydrated
-Legacy of Loathing	18	L12_flyerFinish
-Legacy of Loathing	19	L12_getOutfit
-Legacy of Loathing	20	L12_startWar
-Legacy of Loathing	21	LX_loggingHatchet
-Legacy of Loathing	22	LX_guildUnlock
-Legacy of Loathing	23	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
-Legacy of Loathing	24	LX_unlockDesert
-Legacy of Loathing	25	handleRainDoh
-Legacy of Loathing	26	LX_spookyravenManorFirstFloor
-Legacy of Loathing	27	L6_friarsGetParts	LX_steelOrgan_condition_slow
-Legacy of Loathing	28	LX_steelOrgan	LX_steelOrgan_condition_slow
+Legacy of Loathing	13	resolveSixthDMT
+Legacy of Loathing	14	L11_aridDesert	L11_hasUltrahydrated
+Legacy of Loathing	15	L12_flyerFinish
+Legacy of Loathing	16	L12_getOutfit
+Legacy of Loathing	17	L12_startWar
+Legacy of Loathing	18	LX_loggingHatchet
+Legacy of Loathing	19	auto_earlyRoutingHandling
+Legacy of Loathing	20	LX_guildUnlock
+Legacy of Loathing	21	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+Legacy of Loathing	22	LX_unlockDesert
+Legacy of Loathing	23	handleRainDoh
+Legacy of Loathing	24	LX_spookyravenManorFirstFloor
+Legacy of Loathing	25	L6_friarsGetParts	LX_steelOrgan_condition_slow
+Legacy of Loathing	26	LX_steelOrgan	LX_steelOrgan_condition_slow
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	29	L4_batCave
-Legacy of Loathing	30	L2_mosquito
-Legacy of Loathing	31	LX_unlockHiddenTemple
-Legacy of Loathing	32	L6_dakotaFanning
-Legacy of Loathing	33	LX_lockPicking
-Legacy of Loathing	34	LX_fatLootToken
+Legacy of Loathing	27	L4_batCave
+Legacy of Loathing	28	L2_mosquito
+Legacy of Loathing	29	LX_unlockHiddenTemple
+Legacy of Loathing	30	L6_dakotaFanning
+Legacy of Loathing	31	LX_lockPicking
+Legacy of Loathing	32	LX_fatLootToken
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	35	L5_slayTheGoblinKing
+Legacy of Loathing	33	L5_slayTheGoblinKing
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	36	L8_trapperQuest
+Legacy of Loathing	34	L8_trapperQuest
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	37	L7_crypt
-Legacy of Loathing	38	LX_islandAccess
-Legacy of Loathing	39	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
-Legacy of Loathing	40	LX_spookyravenManorSecondFloor
-Legacy of Loathing	41	L3_tavern
-Legacy of Loathing	42	L6_friarsGetParts
-Legacy of Loathing	43	LX_steelOrgan	in_hardcore
-Legacy of Loathing	44	fancyOilPainting
-Legacy of Loathing	45	LX_steelOrgan
-Legacy of Loathing	46	L10_plantThatBean
-Legacy of Loathing	47	L12_preOutfit
-Legacy of Loathing	48	L10_airship
-Legacy of Loathing	49	L10_basement
-Legacy of Loathing	50	L10_ground
-Legacy of Loathing	51	L11_blackMarket
-Legacy of Loathing	52	L11_forgedDocuments
-Legacy of Loathing	53	L11_mcmuffinDiary
-Legacy of Loathing	54	L10_topFloor
-Legacy of Loathing	55	L10_holeInTheSkyUnlock
-Legacy of Loathing	56	L9_chasmBuild
-Legacy of Loathing	57	L9_highLandlord
-Legacy of Loathing	58	L12_flyerBackup
-Legacy of Loathing	59	Lsc_flyerSeals
+Legacy of Loathing	35	L7_crypt
+Legacy of Loathing	36	LX_islandAccess
+Legacy of Loathing	37	L6_friarsGetParts	L6_friarsGetParts_condition_hardcore
+Legacy of Loathing	38	LX_spookyravenManorSecondFloor
+Legacy of Loathing	39	L3_tavern
+Legacy of Loathing	40	L6_friarsGetParts
+Legacy of Loathing	41	LX_steelOrgan	in_hardcore
+Legacy of Loathing	42	fancyOilPainting
+Legacy of Loathing	43	LX_steelOrgan
+Legacy of Loathing	44	L10_plantThatBean
+Legacy of Loathing	45	L12_preOutfit
+Legacy of Loathing	46	L10_airship
+Legacy of Loathing	47	L10_basement
+Legacy of Loathing	48	L10_ground
+Legacy of Loathing	49	L11_blackMarket
+Legacy of Loathing	50	L11_forgedDocuments
+Legacy of Loathing	51	L11_mcmuffinDiary
+Legacy of Loathing	52	L10_topFloor
+Legacy of Loathing	53	L10_holeInTheSkyUnlock
+Legacy of Loathing	54	L9_chasmBuild
+Legacy of Loathing	55	L9_highLandlord
+Legacy of Loathing	56	L12_flyerBackup
+Legacy of Loathing	57	Lsc_flyerSeals
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	60	L11_mauriceSpookyraven
-Legacy of Loathing	61	L11_unlockHiddenCity
-Legacy of Loathing	62	L11_hiddenCityZones
-Legacy of Loathing	63	LX_ornateDowsingRod
-Legacy of Loathing	64	L11_aridDesert
+Legacy of Loathing	58	L11_mauriceSpookyraven
+Legacy of Loathing	59	L11_unlockHiddenCity
+Legacy of Loathing	60	L11_hiddenCityZones
+Legacy of Loathing	61	LX_ornateDowsingRod
+Legacy of Loathing	62	L11_aridDesert
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	65	L11_hiddenCity
-Legacy of Loathing	66	L11_talismanOfNam
+Legacy of Loathing	63	L11_hiddenCity
+Legacy of Loathing	64	L11_talismanOfNam
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	67	L11_palindome
-Legacy of Loathing	68	L11_unlockPyramid
-Legacy of Loathing	69	L11_unlockEd
-Legacy of Loathing	70	L11_defeatEd
-Legacy of Loathing	71	L12_gremlins
-Legacy of Loathing	72	L12_sonofaFinish
-Legacy of Loathing	73	L12_sonofaBeach
-Legacy of Loathing	74	L12_filthworms
-Legacy of Loathing	75	L12_orchardFinalize
-Legacy of Loathing	76	L12_themtharHills
-Legacy of Loathing	77	L12_farm
-Legacy of Loathing	78	L11_getBeehive
+Legacy of Loathing	65	L11_palindome
+Legacy of Loathing	66	L11_unlockPyramid
+Legacy of Loathing	67	L11_unlockEd
+Legacy of Loathing	68	L11_defeatEd
+Legacy of Loathing	69	L12_gremlins
+Legacy of Loathing	70	L12_sonofaFinish
+Legacy of Loathing	71	L12_sonofaBeach
+Legacy of Loathing	72	L12_filthworms
+Legacy of Loathing	73	L12_orchardFinalize
+Legacy of Loathing	74	L12_themtharHills
+Legacy of Loathing	75	L12_farm
+Legacy of Loathing	76	L11_getBeehive
 # *************Following task gives replica Mr A********************
-Legacy of Loathing	79	L12_finalizeWar
-Legacy of Loathing	80	L12_clearBattlefield
-Legacy of Loathing	81	LX_koeInvaderHandler
-Legacy of Loathing	82	setSoftblockDelay	allowSoftblockDelay
-Legacy of Loathing	83	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
-Legacy of Loathing	84	L12_lastDitchFlyer
-Legacy of Loathing	85	LX_bugbearInvasionFinale
-Legacy of Loathing	86	L13_towerNSContests
-Legacy of Loathing	87	L13_towerNSHedge
-Legacy of Loathing	88	L13_sorceressDoor
-Legacy of Loathing	89	L13_towerNSTower
-Legacy of Loathing	90	L13_towerNSNagamar
-Legacy of Loathing	91	L13_towerNSFinal
-Legacy of Loathing	92	LX_attemptPowerLevel
+Legacy of Loathing	77	L12_finalizeWar
+Legacy of Loathing	78	L12_clearBattlefield
+Legacy of Loathing	79	LX_koeInvaderHandler
+Legacy of Loathing	80	L12_lastDitchFlyer
+Legacy of Loathing	81	LX_bugbearInvasionFinale
+Legacy of Loathing	82	L13_towerNSContests
+Legacy of Loathing	83	L13_towerNSHedge
+Legacy of Loathing	84	L13_sorceressDoor
+Legacy of Loathing	85	L13_towerNSTower
+Legacy of Loathing	86	L13_towerNSNagamar
+Legacy of Loathing	87	L13_towerNSFinal
+Legacy of Loathing	88	auto_softBlockHandler
+Legacy of Loathing	89	LX_attemptPowerLevel
 
 Quantum Terrarium	0	LX_freeCombatsTask
 Quantum Terrarium	1	woods_questStart
@@ -277,46 +372,46 @@ Quantum Terrarium	16	LX_quantumTerrarium
 Quantum Terrarium	17	fancyOilPainting
 Quantum Terrarium	18	LX_ornateDowsingRod
 Quantum Terrarium	19	L11_shenStartQuest
-Quantum Terrarium	20	LX_guildUnlock
-Quantum Terrarium	21	LX_unlockDesert
-Quantum Terrarium	22	LX_lockPicking
-Quantum Terrarium	23	LX_fatLootToken
-Quantum Terrarium	24	L5_getEncryptionKey
-Quantum Terrarium	25	L5_findKnob
-Quantum Terrarium	26	L2_mosquito
-Quantum Terrarium	27	LX_unlockHiddenTemple
-Quantum Terrarium	28	L6_dakotaFanning
-Quantum Terrarium	29	LX_steelOrgan
-Quantum Terrarium	30	L12_islandWar
-Quantum Terrarium	31	LX_spookyravenManorFirstFloor
-Quantum Terrarium	32	L11_blackMarket
-Quantum Terrarium	33	L11_forgedDocuments
-Quantum Terrarium	34	L11_mcmuffinDiary
-Quantum Terrarium	35	L11_getBeehive
-Quantum Terrarium	36	L11_unlockHiddenCity
-Quantum Terrarium	37	L11_hiddenCityZones
-Quantum Terrarium	38	L11_hiddenCity
-Quantum Terrarium	39	LX_spookyravenManorSecondFloor
-Quantum Terrarium	40	L11_mauriceSpookyraven
-Quantum Terrarium	41	L11_talismanOfNam
-Quantum Terrarium	42	L10_plantThatBean
-Quantum Terrarium	43	L10_rainOnThePlains
-Quantum Terrarium	44	L9_chasmBuild
-Quantum Terrarium	45	L9_highLandlord
-Quantum Terrarium	46	L8_trapperQuest
-Quantum Terrarium	47	L6_friarsGetParts
-Quantum Terrarium	48	L7_crypt
-Quantum Terrarium	49	L11_palindome
-Quantum Terrarium	50	L11_aridDesert
-Quantum Terrarium	51	L11_unlockPyramid
-Quantum Terrarium	52	L11_unlockEd
-Quantum Terrarium	53	L11_defeatEd
-Quantum Terrarium	54	L5_slayTheGoblinKing
-Quantum Terrarium	55	L4_batCave
-Quantum Terrarium	56	L3_tavern
-Quantum Terrarium	57	setSoftblockDelay	allowSoftblockDelay
-Quantum Terrarium	58	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
-Quantum Terrarium	59	L13_towerAscent
+Quantum Terrarium	20	auto_earlyRoutingHandling
+Quantum Terrarium	21	LX_guildUnlock
+Quantum Terrarium	22	LX_unlockDesert
+Quantum Terrarium	23	LX_lockPicking
+Quantum Terrarium	24	LX_fatLootToken
+Quantum Terrarium	25	L5_getEncryptionKey
+Quantum Terrarium	26	L5_findKnob
+Quantum Terrarium	27	L2_mosquito
+Quantum Terrarium	28	LX_unlockHiddenTemple
+Quantum Terrarium	29	L6_dakotaFanning
+Quantum Terrarium	30	LX_steelOrgan
+Quantum Terrarium	31	L12_islandWar
+Quantum Terrarium	32	LX_spookyravenManorFirstFloor
+Quantum Terrarium	33	L11_blackMarket
+Quantum Terrarium	34	L11_forgedDocuments
+Quantum Terrarium	35	L11_mcmuffinDiary
+Quantum Terrarium	36	L11_getBeehive
+Quantum Terrarium	37	L11_unlockHiddenCity
+Quantum Terrarium	38	L11_hiddenCityZones
+Quantum Terrarium	39	L11_hiddenCity
+Quantum Terrarium	40	LX_spookyravenManorSecondFloor
+Quantum Terrarium	41	L11_mauriceSpookyraven
+Quantum Terrarium	42	L11_talismanOfNam
+Quantum Terrarium	43	L10_plantThatBean
+Quantum Terrarium	44	L10_rainOnThePlains
+Quantum Terrarium	45	L9_chasmBuild
+Quantum Terrarium	46	L9_highLandlord
+Quantum Terrarium	47	L8_trapperQuest
+Quantum Terrarium	48	L6_friarsGetParts
+Quantum Terrarium	49	L7_crypt
+Quantum Terrarium	50	L11_palindome
+Quantum Terrarium	51	L11_aridDesert
+Quantum Terrarium	52	L11_unlockPyramid
+Quantum Terrarium	53	L11_unlockEd
+Quantum Terrarium	54	L11_defeatEd
+Quantum Terrarium	55	L5_slayTheGoblinKing
+Quantum Terrarium	56	L4_batCave
+Quantum Terrarium	57	L3_tavern
+Quantum Terrarium	58	L13_towerAscent
+Quantum Terrarium	59	auto_softBlockHandler
 Quantum Terrarium	60	LX_attemptPowerLevel
 
 WereProfessor	0	LM_wereprof
@@ -341,92 +436,88 @@ WereProfessor	15	L11_aridDesert	L11_hasUltrahydrated
 WereProfessor	16	L11_shenStartQuest	is_werewolf
 # Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
 WereProfessor	17	finishBuildingSmutOrcBridge
-# Underground Adventuring for CMC/Breathitin.
-WereProfessor	18	LX_goingUnderground
-# Burn Breathitin charges
-WereProfessor	19	LX_useBreathitinCharges
+# Call quest handlers based on current state if applicable
+WereProfessor	18	auto_earlyRoutingHandling
 # Guild access.
-WereProfessor	20	LX_guildUnlock
-WereProfessor	21	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
+WereProfessor	19	LX_guildUnlock
+WereProfessor	20	LX_bitchinMeatcar	LX_bitchinMeatcar_condition
 #	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
-WereProfessor	22	LX_unlockDesert
-WereProfessor	23	LX_lockPicking
-WereProfessor	24	LX_fatLootToken
+WereProfessor	21	LX_unlockDesert
+WereProfessor	22	LX_lockPicking
+WereProfessor	23	LX_fatLootToken
 # Get access to the island access ASAP because only Professor can do it
-WereProfessor	25	LX_islandAccess
+WereProfessor	24	LX_islandAccess
 #	Get the Steel Organ if the user wants it (needs L6 quest complete)
-WereProfessor	26	LX_steelOrgan
+WereProfessor	25	LX_steelOrgan
 # open up delay zones.
-WereProfessor	27	LX_spookyravenManorFirstFloor
+WereProfessor	26	LX_spookyravenManorFirstFloor
 # open up zones where we want to force non-combats.
 # Open up underground zones so they are available for Breathitin.
-WereProfessor	28	L5_getEncryptionKey
-WereProfessor	29	L5_findKnob
+WereProfessor	27	L5_getEncryptionKey
+WereProfessor	28	L5_findKnob
 # Quests with Werewolf/Professor specific limitations should have higher priority so we do those when we can
-WereProfessor	30	L12_Gremlins	is_werewolf
-WereProfessor	31	L11_forgedDocuments	is_professor
-WereProfessor	32	L11_mcmuffinDiary	is_professor
-WereProfessor	33	L11_getUVCompass	is_professor
+WereProfessor	29	L12_Gremlins	is_werewolf
+WereProfessor	30	L11_forgedDocuments	is_professor
+WereProfessor	31	L11_mcmuffinDiary	is_professor
+WereProfessor	32	L11_getUVCompass	is_professor
 # Putting Lord Spookyraven here because he is limited but to get to him isn't
-WereProfessor	34	L11_mauriceSpookyraven
-WereProfessor	35	L11_shenCopperhead	is_werewolf
-WereProfessor	36	L9_aBooPeak
-WereProfessor	37	L9_oilPeak
-WereProfessor	38	L8_trapperGroar
-WereProfessor	39	L7_crypt
+WereProfessor	33	L11_mauriceSpookyraven
+WereProfessor	34	L11_shenCopperhead	is_werewolf
+WereProfessor	35	L9_aBooPeak
+WereProfessor	36	L9_oilPeak
+WereProfessor	37	L8_trapperGroar
+WereProfessor	38	L7_crypt
 #	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
-WereProfessor	40	L12_islandWar
+WereProfessor	39	L12_islandWar
 # Start the macguffin quest
-WereProfessor	41	L11_blackMarket
-WereProfessor	42	L11_getBeehive
+WereProfessor	40	L11_blackMarket
+WereProfessor	41	L11_getBeehive
 # open the hidden city up (delay zones)
-WereProfessor	43	L2_mosquito
-WereProfessor	44	LX_unlockHiddenTemple
-WereProfessor	45	L6_dakotaFanning
-WereProfessor	46	L11_unlockHiddenCity
+WereProfessor	42	L2_mosquito
+WereProfessor	43	LX_unlockHiddenTemple
+WereProfessor	44	L6_dakotaFanning
+WereProfessor	45	L11_unlockHiddenCity
 # Murder pygmies for the ancient amulet.
-WereProfessor	47	L11_hiddenCityZones
-WereProfessor	48	L11_hiddenCity
+WereProfessor	46	L11_hiddenCityZones
+WereProfessor	47	L11_hiddenCity
 # Dance with lady spookyraven so we can go murder her undead husband and take the Eye of Ed
-WereProfessor	49	LX_spookyravenManorSecondFloor
+WereProfessor	48	LX_spookyravenManorSecondFloor
 # Lay the smack down on those Jerk Copperhead twins
-WereProfessor	50	L11_talismanOfNam
+WereProfessor	49	L11_talismanOfNam
 # Open up the top of the beanstalk.
-WereProfessor	51	L10_plantThatBean
+WereProfessor	50	L10_plantThatBean
 # Clean up the plains
-WereProfessor	52	L10_rainOnThePlains
+WereProfessor	51	L10_rainOnThePlains
 # Get Black Angus his pizza
-WereProfessor	53	L9_chasmBuild
-WereProfessor	54	L9_highLandlord
+WereProfessor	52	L9_chasmBuild
+WereProfessor	53	L9_highLandlord
 #  Kill Groar because *we* are the monsters.
-WereProfessor	55	L8_trapperQuest
+WereProfessor	54	L8_trapperQuest
 # Cleanse the taint.
-WereProfessor	56	L6_friarsGetParts
+WereProfessor	55	L6_friarsGetParts
 # Finish the other Macguffin zones so we can beat Ed to death repeatedly and waste all his Ka coins.
-WereProfessor	57	L11_palindome
-WereProfessor	58	L11_aridDesert
-WereProfessor	59	L11_unlockPyramid
-WereProfessor	60	L11_unlockEd
-WereProfessor	61	L11_defeatEd
+WereProfessor	56	L11_palindome
+WereProfessor	57	L11_aridDesert
+WereProfessor	58	L11_unlockPyramid
+WereProfessor	59	L11_unlockEd
+WereProfessor	60	L11_defeatEd
 #	Finish off the Goblin King.
-WereProfessor	62	L5_slayTheGoblinKing
+WereProfessor	61	L5_slayTheGoblinKing
 # Show the Boss bat who's boss.
-WereProfessor	63	L4_batCave
+WereProfessor	62	L4_batCave
 # Fix that dripping tap.
-WereProfessor	64	L3_tavern
+WereProfessor	63	L3_tavern
 # Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
-WereProfessor	65	L2_mosquito
-# release the softblock on delay burning
-WereProfessor	66	setSoftblockDelay	allowSoftblockDelay
-# release the softblock on Underground Adventures
-WereProfessor	67	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
+WereProfessor	64	L2_mosquito
 # want to do these before we start the tower so we can make sure we have as much werewolf as possible
-WereProfessor	68	LX_getStarKey
-WereProfessor	69	LX_getDigitalKey
+WereProfessor	65	LX_getStarKey
+WereProfessor	66	LX_getDigitalKey
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
-WereProfessor	70	L13_towerAscent
+WereProfessor	67	L13_towerAscent
+# release the hounds!
+WereProfessor	68	auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.
-WereProfessor	71	LX_attemptPowerLevel
+WereProfessor	69	LX_attemptPowerLevel
 
 Zombie Slayer	0	LM_zombieSlayer
 Zombie Slayer	1	woods_questStart
@@ -444,46 +535,46 @@ Zombie Slayer	12	LX_summonMonster
 Zombie Slayer	13	L11_aridDesert	L11_hasUltrahydrated
 Zombie Slayer	14	handleRainDoh
 Zombie Slayer	15	L11_shenStartQuest
-Zombie Slayer	16	LX_guildUnlock
-Zombie Slayer	17	LX_unlockDesert
-Zombie Slayer	18	LX_lockPicking
-Zombie Slayer	19	LX_fatLootToken
-Zombie Slayer	20	L5_getEncryptionKey
-Zombie Slayer	21	L5_findKnob
-Zombie Slayer	22	L2_mosquito
-Zombie Slayer	23	LX_unlockHiddenTemple
-Zombie Slayer	24	L6_dakotaFanning
-Zombie Slayer	25	LX_steelOrgan
-Zombie Slayer	26	L12_islandWar
-Zombie Slayer	27	LX_spookyravenManorFirstFloor
-Zombie Slayer	28	L11_blackMarket
-Zombie Slayer	29	L11_forgedDocuments
-Zombie Slayer	30	L11_mcmuffinDiary
-Zombie Slayer	31	L11_getBeehive
-Zombie Slayer	32	L11_unlockHiddenCity
-Zombie Slayer	33	L11_hiddenCityZones
-Zombie Slayer	34	L11_hiddenCity
-Zombie Slayer	35	LX_spookyravenManorSecondFloor
-Zombie Slayer	36	L11_mauriceSpookyraven
-Zombie Slayer	37	L11_talismanOfNam
-Zombie Slayer	38	L10_plantThatBean
-Zombie Slayer	39	L10_rainOnThePlains
-Zombie Slayer	40	L9_chasmBuild
-Zombie Slayer	41	L9_highLandlord
-Zombie Slayer	42	L8_trapperQuest
-Zombie Slayer	43	L6_friarsGetParts
-Zombie Slayer	44	L7_crypt
-Zombie Slayer	45	L11_palindome
-Zombie Slayer	46	L11_aridDesert
-Zombie Slayer	47	L11_unlockPyramid
-Zombie Slayer	48	L11_unlockEd
-Zombie Slayer	49	L11_defeatEd
-Zombie Slayer	50	L5_slayTheGoblinKing
-Zombie Slayer	51	L4_batCave
-Zombie Slayer	52	L3_tavern
-Zombie Slayer	53	setSoftblockDelay	allowSoftblockDelay
-Zombie Slayer	54	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
-Zombie Slayer	55	L13_towerAscent
+Zombie Slayer	16	auto_earlyRoutingHandling
+Zombie Slayer	17	LX_guildUnlock
+Zombie Slayer	18	LX_unlockDesert
+Zombie Slayer	19	LX_lockPicking
+Zombie Slayer	20	LX_fatLootToken
+Zombie Slayer	21	L5_getEncryptionKey
+Zombie Slayer	22	L5_findKnob
+Zombie Slayer	23	L2_mosquito
+Zombie Slayer	24	LX_unlockHiddenTemple
+Zombie Slayer	25	L6_dakotaFanning
+Zombie Slayer	26	LX_steelOrgan
+Zombie Slayer	27	L12_islandWar
+Zombie Slayer	28	LX_spookyravenManorFirstFloor
+Zombie Slayer	29	L11_blackMarket
+Zombie Slayer	30	L11_forgedDocuments
+Zombie Slayer	31	L11_mcmuffinDiary
+Zombie Slayer	32	L11_getBeehive
+Zombie Slayer	33	L11_unlockHiddenCity
+Zombie Slayer	34	L11_hiddenCityZones
+Zombie Slayer	35	L11_hiddenCity
+Zombie Slayer	36	LX_spookyravenManorSecondFloor
+Zombie Slayer	37	L11_mauriceSpookyraven
+Zombie Slayer	38	L11_talismanOfNam
+Zombie Slayer	39	L10_plantThatBean
+Zombie Slayer	40	L10_rainOnThePlains
+Zombie Slayer	41	L9_chasmBuild
+Zombie Slayer	42	L9_highLandlord
+Zombie Slayer	43	L8_trapperQuest
+Zombie Slayer	44	L6_friarsGetParts
+Zombie Slayer	45	L7_crypt
+Zombie Slayer	46	L11_palindome
+Zombie Slayer	47	L11_aridDesert
+Zombie Slayer	48	L11_unlockPyramid
+Zombie Slayer	49	L11_unlockEd
+Zombie Slayer	50	L11_defeatEd
+Zombie Slayer	51	L5_slayTheGoblinKing
+Zombie Slayer	52	L4_batCave
+Zombie Slayer	53	L3_tavern
+Zombie Slayer	54	L13_towerAscent
+Zombie Slayer	55	auto_softBlockHandler
 Zombie Slayer	56	LX_attemptPowerLevel
 
 default	0	LX_freeCombatsTask
@@ -509,79 +600,75 @@ default	16	L11_aridDesert	L11_hasUltrahydrated
 default	17	L11_shenStartQuest
 # Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
 default	18	finishBuildingSmutOrcBridge
-# Underground Adventuring for CMC/Breathitin.
-default	19	LX_goingUnderground
-# Burn Breathitin charges
-default	20	LX_useBreathitinCharges
+# Call quest handlers based on current state if applicable
+default	19	auto_earlyRoutingHandling
 # Guild access.
-default	21	LX_guildUnlock
+default	20	LX_guildUnlock
 #	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
-default	22	LX_unlockDesert
-default	23	LX_lockPicking
-default	24	LX_fatLootToken
+default	21	LX_unlockDesert
+default	22	LX_lockPicking
+default	23	LX_fatLootToken
 #	Get the Steel Organ if the user wants it (needs L6 quest complete)
-default	25	LX_steelOrgan
+default	24	LX_steelOrgan
 # open up delay zones.
-default	26	LX_spookyravenManorFirstFloor
+default	25	LX_spookyravenManorFirstFloor
 # open up zones where we want to force non-combats.
 # Open up underground zones so they are available for Breathitin.
-default	27	L5_getEncryptionKey
-default	28	L5_findKnob
+default	26	L5_getEncryptionKey
+default	27	L5_findKnob
 #	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
-default	29	L12_islandWar
+default	28	L12_islandWar
 # Start the macguffin quest
-default	30	L11_blackMarket
-default	31	L11_forgedDocuments
-default	32	L11_mcmuffinDiary
-default	33	L11_getBeehive
+default	29	L11_blackMarket
+default	30	L11_forgedDocuments
+default	31	L11_mcmuffinDiary
+default	32	L11_getBeehive
 # open the hidden city up (delay zones)
-default	34	L2_mosquito
-default	35	LX_unlockHiddenTemple
-default	36	L6_dakotaFanning
-default	37	L11_unlockHiddenCity
+default	33	L2_mosquito
+default	34	LX_unlockHiddenTemple
+default	35	L6_dakotaFanning
+default	36	L11_unlockHiddenCity
 # Murder pygmies for the ancient amulet.
-default	38	L11_hiddenCityZones
-default	39	L11_hiddenCity
+default	37	L11_hiddenCityZones
+default	38	L11_hiddenCity
 # Dance with lady spookyraven so we can go murder her undead husband and take the Eye of Ed
-default	40	LX_spookyravenManorSecondFloor
-default	41	L11_mauriceSpookyraven
+default	39	LX_spookyravenManorSecondFloor
+default	40	L11_mauriceSpookyraven
 # Lay the smack down on those Jerk Copperhead twins
-default	42	L11_talismanOfNam
+default	41	L11_talismanOfNam
 # Open up the top of the beanstalk.
-default	43	L10_plantThatBean
+default	42	L10_plantThatBean
 # Clean up the plains
-default	44	L10_rainOnThePlains
+default	43	L10_rainOnThePlains
 # Get Black Angus his pizza
-default	45	L9_chasmBuild
-default	46	L9_highLandlord
+default	44	L9_chasmBuild
+default	45	L9_highLandlord
 #  Kill Groar because *we* are the monsters.
-default	47	L8_trapperQuest
+default	46	L8_trapperQuest
 # Kill the undead? Is this an oxymoron?
-default	48	L7_crypt
+default	47	L7_crypt
 # Cleanse the taint.
-default	49	L6_friarsGetParts
+default	48	L6_friarsGetParts
 # Finish the other Macguffin zones so we can beat Ed to death repeatedly and waste all his Ka coins.
-default	50	L11_palindome
-default	51	L11_aridDesert
-default	52	L11_unlockPyramid
-default	53	L11_unlockEd
-default	54	L11_defeatEd
+default	49	L11_palindome
+default	50	L11_aridDesert
+default	51	L11_unlockPyramid
+default	52	L11_unlockEd
+default	53	L11_defeatEd
 #	Finish off the Goblin King.
-default	55	L5_slayTheGoblinKing
+default	54	L5_slayTheGoblinKing
 # Show the Boss bat who's boss.
-default	56	L4_batCave
+default	55	L4_batCave
 # Fix that dripping tap.
-default	57	L3_tavern
+default	56	L3_tavern
 # Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
-default	58	L2_mosquito
-# release the softblock on delay burning
-default	59	setSoftblockDelay	allowSoftblockDelay
-# release the softblock on Underground Adventures
-default	60	setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
+default	57	L2_mosquito
 # There's an extra task in KoE
-default	61	LX_koeInvaderHandler
+default	58	LX_koeInvaderHandler
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
-default	62	L13_towerAscent
+default	59	L13_towerAscent
+# release the hounds!
+default	60	auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.
-default	63	LX_attemptPowerLevel
+default	61	LX_attemptPowerLevel
 

@@ -17,10 +17,8 @@ L11_aridDesert	L11_hasUltrahydrated
 L11_shenStartQuest
 # Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
 finishBuildingSmutOrcBridge
-# Underground Adventuring for CMC/Breathitin.
-LX_goingUnderground
-# Burn Breathitin charges
-LX_useBreathitinCharges
+# Call quest handlers based on current state if applicable
+auto_earlyRoutingHandling
 # Guild access.
 LX_guildUnlock
 #	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
@@ -82,11 +80,9 @@ L4_batCave
 L3_tavern
 # Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
 L2_mosquito
-# release the softblock on delay burning
-setSoftblockDelay	allowSoftblockDelay
-# release the softblock on Underground Adventures
-setSoftblockUndergroundAdvs	allowSoftblockUndergroundAdvs
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 L13_towerAscent
+# release the hounds!
+auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.
 LX_attemptPowerLevel

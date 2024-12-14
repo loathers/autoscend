@@ -253,6 +253,7 @@ void initializeSettings() {
 	remove_property("auto_saveSausage");
 	remove_property("auto_saveVintage");
 	set_property("auto_dontUseCookBookBat", false);
+	set_property("auto_dietpills", 0);
 	beehiveConsider();
 
 	eudora_initializeSettings();
@@ -367,6 +368,7 @@ boolean LX_burnDelay()
 	boolean sausageGoblinAvailable = auto_sausageGoblin();
 	boolean backupTargetAvailable = auto_backupTarget();
 	boolean voidMonsterAvailable = auto_voidMonster();
+	boolean habitatingMonsters = auto_habitatMonster() != $monster[none];
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -468,7 +470,20 @@ boolean LX_burnDelay()
 			}
 		}
 	}
-	
+
+	if (habitatingMonsters)
+	{
+		location habitatZone = solveDelayZone(isFreeMonster(auto_habitatMonster()) && get_property("breathitinCharges").to_int() > 0);
+		if (habitatZone != $location[none])
+		{
+			auto_log_info(`Might be fighting a {auto_habitatMonster()} in {habitatZone.to_string()} to burn delay!`, "green");
+			if (autoAdv(habitatZone))
+			{
+				return true;
+			}
+		}
+	}
+
 	if (voteMonsterAvailable)
 	{
 		auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
@@ -484,6 +499,10 @@ boolean LX_burnDelay()
 	if (voidMonsterAvailable)
 	{
 		auto_log_warning("Cursed Magnifying Glass's void monster is next but couldn't find a zone to burn delay", "red");
+	}
+	if (habitatingMonsters)
+	{
+		auto_log_warning("Habitating a monster but couldn't find a zone to burn delay", "red");
 	}
 	return false;
 }
@@ -1305,7 +1324,8 @@ boolean councilMaintenance()
 boolean adventureFailureHandler()
 {
 	location place = my_location();
-	if(my_location().turns_spent > 52)
+	int limit = (in_avantGuard() ? 100 : 50);
+	if(place.turns_spent > limit)
 	{
 		boolean tooManyAdventures = true;
 		
@@ -1634,6 +1654,8 @@ void resetState() {
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
 	set_property("auto_nextEncounter", ""); // monster that was expected last turn
 	set_property("auto_habitatMonster", ""); // monster we want to cast Recall Facts: Monster Habitats
+	set_property("auto_purple_candled", ""); //monster we want to cast Blow the Purple Candle
+	set_property("auto_nonAdvLoc", false); // location is a non-adventure.php location
 
 	if(doNotBuffFamiliar100Run())		//some familiars are always bad
 	{
@@ -1937,6 +1959,7 @@ boolean doTasks()
 	if(auto_autumnatonQuest())			return true;
 	if(auto_smallCampgroundGear())		return true;
 	auto_lostStomach(false);
+	autoCleanse(); //running turbo only
 	if(auto_doPhoneQuest())				return true;
 	
 	if(auto_doTempleSummit())		return true;
@@ -2113,11 +2136,28 @@ void main(string... input)
 	backupSetting("printStackOnAbort", true);
 
 	// parse input
-	if(count(input) > 0 && input[0] == "sim")
+	if(count(input) > 0)
 	{
-		// display useful items/skills/perms/etc and if the user has them
-		printSim();
-		return;
+		switch(input[0])
+		{
+			case "sim":
+				// display useful items/skills/perms/etc and if the user has them
+				printSim();
+				return;
+			case "turbo":
+			// gotta go faaaaaast. Doing a double confirm because of the nature of this parameter.
+				user_confirm("This will get expensive for you. This should only be used if you are trying to go for a 1-day and don't care about expenses. Do you really want to do this? Will default to 'No' in 15 seconds.", 15000, false);
+				{
+					user_confirm("This will use UMSBs and Spice Melanges if you have them. If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+					{
+						set_property("auto_turbo", "true");
+						auto_log_info("Ka-chow! Gotta go fast.");
+						break;
+					}
+				}
+			default:
+				auto_log_info("Running normal autoscend because you didn't enter in a valid parameter");
+		}
 	}
 
 	print_help_text();
