@@ -53,5 +53,7 @@ L5_slayTheGoblinKing
 L4_batCave
 L3_tavern
 L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+LX_lastChance
 auto_softBlockHandler
 LX_attemptPowerLevel

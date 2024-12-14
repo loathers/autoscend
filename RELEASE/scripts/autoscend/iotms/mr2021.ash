@@ -62,7 +62,7 @@ boolean auto_allowCrystalBall(monster predicted_monster, location loc)
 	//if already forced by something else, no need to handle your ball
 	//pre_adv, or simulatePreAdvForCrystalBall, handles this as it already tracks burningDelay and forced encounters
 	
-	if(is_banished(predicted_monster) || auto_wantToReplace(predicted_monster,loc) || auto_wantToBanish(predicted_monster,loc))
+	if(is_banished(predicted_monster) || auto_wantToReplace(predicted_monster,loc) || auto_wantToBanish(predicted_monster,loc) || auto_wantToBanish(monster_phylum(predicted_monster), loc))
 	{
 		// next prediction is unwanted, do not allow
 		return false;
@@ -114,10 +114,10 @@ void simulatePreAdvForCrystalBall(location place)
 	// used only when simulating maximizer equipment
 	// replicates most of pre_adv monster queue checks in order to know if miniature crystal ball will be allowed
 	
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
-	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
+	boolean burningDelay = auto_burningDelay();
+	boolean gettingLucky = auto_gettingLucky();
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
-	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
+	boolean zoneQueueIgnored = auto_queueIgnore();
 
 	boolean considerCrystalBallBonus;
 	if(!zoneQueueIgnored && get_property("auto_nextEncounter").to_monster() == $monster[none] && 

@@ -725,6 +725,7 @@ boolean doBedtime()
 	}
 
 	//We are committing to end of day now...
+	auto_scepterRollover(); //Use the rest of the August Scepter's charges
 	getSpaceJelly();
 	while(acquireHermitItem($item[11-leaf Clover]));
 

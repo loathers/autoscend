@@ -492,6 +492,7 @@ boolean LX_unlockManorSecondFloor() {
 			auto_log_info("Attemping to use Map the Monsters to olfact a writing desk.");
 		}
 	}
+	auto_getCitizenZone($location[The Haunted Library]); //since want to adventure in the Haunted Library anyway
 	return autoAdv($location[The Haunted Library]);
 }
 
@@ -813,6 +814,11 @@ boolean L11_blackMarket()
 	if ((possessEquipment($item[Blackberry Galoshes]) && !auto_can_equip($item[Blackberry Galoshes])) && !isAboutToPowerlevel())
 	{
 		return false;
+	}
+	if (isBanishedPhyla($phylum[beast]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; // Can't get the reassembled blackbird if beasts are banished
 	}
 
 	if ($location[The Black Forest].turns_spent > 12 && !in_avantGuard())
@@ -2758,6 +2764,12 @@ boolean L11_shenCopperhead()
 		return false;
 	}
 
+	if (isBanishedPhyla($phylum[dude])) // No need to check for Screech Combats because there's nothing in here we want to screech away
+	{
+		set_property("screechDelay", true);
+		return false; //Probably should delay the Copperhead Club because dudes are important here
+	}
+
 	if (internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
 	{
 		if(is_professor())
@@ -2913,6 +2925,12 @@ boolean L11_palindome()
 	total = total + item_amount($item[Photograph Of God]);
 	total = total + item_amount($item[Photograph Of A Dog]);
 
+	if(isBanishedPhyla($phylum[dude]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; //If new phylum banishers come out, this should be updated.
+	}
+
 	boolean lovemeDone = hasILoveMeVolI() || (internalQuestStatus("questL11Palindome") >= 1);
 	if(!lovemeDone && (get_property("palindomeDudesDefeated").to_int() >= 5))
 	{
@@ -2968,6 +2986,11 @@ boolean L11_palindome()
 					if(autoAdvBypass(0, pages, $location[Whitey\'s Grove], "")) {}
 					restoreSetting("lastGuildStoreOpen");
 					return true;
+				}
+				if(isBanishedPhyla($phylum[beast]) && get_property("screechCombats").to_int() > 0)
+				{
+					set_property("screechDelay", true);
+					return false; //If new phylum banishers come out, this should be updated.
 				}
 				// +item is nice to get that food
 				bat_formBats();
