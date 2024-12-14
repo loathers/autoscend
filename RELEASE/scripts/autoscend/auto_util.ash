@@ -1184,6 +1184,30 @@ boolean adjustForSniffingIfPossible()
 	return adjustForSniffingIfPossible($monster[none]);
 }
 
+boolean canCopy(monster enemy, location loc)
+{
+	if(!auto_wantToCopy(enemy, loc))
+	{
+		return false;
+	}
+	return getCopier(enemy, false) != $skill[none];
+}
+
+boolean adjustForCopyIfPossible(monster target)
+{
+	skill copier = getCopier(target, false);
+	if(copier == $skill[Blow the Purple Candle\!])
+	{
+		return autoEquip($item[Roman Candelabra]);
+	}
+	return false;
+}
+
+boolean adjustForCopyIfPossible()
+{
+	return adjustForCopyIfPossible($monster[none]);
+}
+
 boolean hasTorso()
 {
 	return have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed]) || robot_cpu(9,false);
@@ -1799,7 +1823,7 @@ boolean isFreeMonster(monster mon)
 boolean isFreeMonster(monster mon, location loc)
 {
 	//No free fights in Avant Guard. Well, there are, but they now have non-free bodyguards so anything that is free now costs a turn
-	if(in_ag())
+	if (in_avantGuard())
 	{
 		return false;
 	}
@@ -1843,7 +1867,7 @@ boolean isFreeMonster(monster mon, location loc)
 	}
 
 	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)] contains loc
-		&& have_effect($effect[shadow affinity]) > 0 && !in_ag())
+		&& have_effect($effect[shadow affinity]) > 0 && !in_avantGuard())
 	{
 		return true;
 	}
@@ -1938,7 +1962,7 @@ boolean LX_summonMonster()
 	// summon mountain man if we know the ore we need and still need 2 or more
 	// don't summon if we have model train set as it is an easy source of ore
 	item oreGoal = to_item(get_property("trapperOre"));
-	if(internalQuestStatus("questL08Trapper") < 2 && get_workshed() != $item[model train set] && oreGoal != $item[none] && 
+	if(internalQuestStatus("questL08Trapper") < 2 && auto_haveTrainSet() && oreGoal != $item[none] && 
 		item_amount(oreGoal) < 2 && canYellowRay() && canSummonMonster($monster[mountain man]))
 	{
 		adjustForYellowRayIfPossible();
@@ -2051,6 +2075,11 @@ boolean summonMonster(monster mon, boolean speculative)
 {
 	auto_log_debug((speculative ? "Checking if we can" : "Trying to") + " summon " + mon, "blue");
 
+	if(!speculative)
+	{
+		set_property("auto_nonAdvLoc", true);
+	}
+
 	if (!speculative)
 	{
 		// Equip the combat lover's locket if we're missing a monster about to be summoned
@@ -2058,6 +2087,12 @@ boolean summonMonster(monster mon, boolean speculative)
 		{
 			auto_log_info('We want to get the "' + mon + '" monster into the combat lover\'s locket from summoning, so we\'re bringing it along.', "blue");
 			autoEquip($item[combat lover\'s locket]);
+		}
+		// Equip a copier if we want to copy it
+		if(auto_wantToCopy(mon))
+		{
+			auto_log_info("We want to copy the " + mon + " so adjusting for our equipment if possible.");
+			adjustForCopyIfPossible(mon);
 		}
 	}
 	// methods which require specific circumstances
@@ -2347,7 +2382,7 @@ boolean evokeEldritchHorror()
 
 boolean fightScienceTentacle()
 {
-	if(in_koe())
+	if (in_koe() || in_avantGuard())
 	{
 		return false;
 	}
@@ -2381,6 +2416,7 @@ boolean fightScienceTentacle()
 		return false;
 	}
 
+	set_property("auto_nonAdvLoc", true);
 	temp = visit_url("choice.php?whichchoice=1201&pwd=&option=" + abortChoice);
 	set_property("auto_nextEncounter","Eldritch Tentacle");
 	string[int] pages;
@@ -2632,6 +2668,7 @@ int doNumberology(string goal, boolean doIt, string option)
 
 		if(goal == "battlefield")
 		{
+			set_property("auto_nonAdvLoc", true);
 			string[int] pages;
 			pages[0] = "runskillz.php?pwd&action=Skillz&whichskill=144&quantity=1";
 			pages[1] = "choice.php?whichchoice=1103&pwd=&option=1&num=" + numberology[numberwang];
@@ -3231,6 +3268,11 @@ void auto_log_debug(string s)
 	auto_log(s, "black", 3);
 }
 
+boolean auto_turbo()
+{
+	return get_property("auto_turbo").to_boolean();
+}
+
 boolean auto_can_equip(item it)
 {
 	return auto_can_equip(it, it.to_slot());
@@ -3591,6 +3633,21 @@ boolean auto_wantToReplace(monster enemy, location loc)
 	boolean [monster] toReplace = auto_getMonsters("replace");
 	set_location(locCache);
 	return toReplace[enemy];
+}
+
+boolean auto_wantToCopy(monster enemy, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [monster] toCopy = auto_getMonsters("copy");
+	set_location(locCache);
+	return toCopy[enemy];
+}
+
+boolean auto_wantToCopy(monster enemy)
+{
+	boolean [monster] toCopy = auto_getMonsters("copy");
+	return toCopy[enemy];
 }
 
 int total_items(boolean [item] items)

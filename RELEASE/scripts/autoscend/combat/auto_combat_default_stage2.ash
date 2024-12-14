@@ -5,10 +5,17 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 	// Skip if have auto_skipStage2 is set
 	if(get_property("auto_skipStage2").to_boolean()) return "";
-	
+
+	//If in Avant Guard, want to make sure the enemy is set correctly to the bodyguard
+	monster guardee = $monster[none];
+	if(in_avantGuard() && ag_is_bodyguard())
+	{
+		guardee = to_monster(substring(get_property("lastEncounter"), index_of(get_property("lastEncounter"), " acting as the bodyguard to a ") + 30));
+	}
+
 	//if we want to olfact in stage 4 then we should delay stage 2 until we olfact.
 	//we do not want to olfact now because we should do stage 3 first to stun and/or debuff the enemy first before olfacting.
-	if(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
+	if(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none]  && !ag_is_bodyguard())
 	{
 		auto_log_debug("Skipping stage 2 of combat for now as we intend to olfact [" +enemy+ "]");
 		return "";
@@ -163,7 +170,54 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		combat_status_add("phylumbanishercheck");
 	}
 
-	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()))
+	if(!combat_status_check("banishercheck") && auto_wantToBanish(monster_phylum(enemy), my_location()))
+	{
+		string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
+		if(banishAction != "")
+		{
+			auto_log_info("Looking at banishAction: " + banishAction, "green");
+			combat_status_add("banisher");
+			if(index_of(banishAction, "skill") == 0)
+			{
+				handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
+			}
+			else if(index_of(banishAction, "item") == 0)
+			{
+				handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
+			}
+			else
+			{
+				auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
+			}
+			return banishAction;
+		}
+		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
+		combat_status_add("phylumbanishercheck");
+	}
+
+	// Free run in Avant Guard from Bodyguard before banishing for a few monsters
+	if(!combat_status_check("banishercheck") && auto_wantToBanish(guardee, my_location()))
+	{
+		string freeRunAction = freeRunCombatStringPreBanish(enemy, my_location(), true);
+		if(freeRunAction != "")
+		{
+			if(index_of(freeRunAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(freeRunAction, 6)), "auto_freeruns");
+			}
+			else if(index_of(freeRunAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(freeRunAction, 5)), "auto_freeruns");
+			}
+			else
+			{
+				auto_log_warning("Unable to track runaway behavior: " + freeRunAction, "red");
+			}
+			return freeRunAction;
+		}
+	}
+
+	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()) && !ag_is_bodyguard())
 	{
 		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
@@ -198,7 +252,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 
 	// Free run from monsters we want to banish/phylumbanish but are unable to, or monsters on the free run list
-	if(!combat_status_check("freeruncheck") && (auto_wantToFreeRun(enemy, my_location()) || auto_forceFreeRun(true) || auto_wantToBanish(enemy, my_location()) || auto_wantToBanish(monster_phylum(enemy), my_location())))
+	if(!combat_status_check("freeruncheck") && ((auto_wantToFreeRun(enemy, my_location()) || auto_forceFreeRun(true) || auto_wantToBanish(enemy, my_location()) || auto_wantToBanish(monster_phylum(enemy), my_location())) || (auto_wantToFreeRun(guardee, my_location()) || auto_wantToBanish(guardee, my_location()))))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")

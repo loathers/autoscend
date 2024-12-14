@@ -317,6 +317,11 @@ boolean L8_getMineOres()
 			return true;// pulled successfully the last ore
 		}
 	}
+
+	if(auto_haveTrainSet() && item_amount(oreGoal) < 3)
+	{
+		return false; //will get ore organically through the train set so no need to adventure for it
+	}
 	
 	// use a summon if we can guarentee it will be enough via cat burglar
 	if(canSummonMonster($monster[mountain man]) && catBurglarHeistsLeft() > 1)
@@ -728,6 +733,7 @@ boolean L8_trapperGroar()
 		{
 			set_property("auto_nextEncounter","panicking Knott Yeti");
 		}
+		set_property("auto_nonAdvLoc", true);
 		retval = autoAdv($location[Mist-shrouded Peak]);
 	}
 	if(retval && initial_adv == my_session_adv())

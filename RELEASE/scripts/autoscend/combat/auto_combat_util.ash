@@ -281,6 +281,45 @@ skill getSniffer(monster enemy)
 	return getSniffer(enemy, true);
 }
 
+boolean isCopied(monster enemy, skill sk)
+{
+	//checks if the monster enemy is currently copied using the specific skill sk
+	boolean retval = false;
+	switch(sk)
+	{
+		case $skill[Blow the Purple Candle\!]:
+			retval = contains_text(get_property("auto_purple_candled"), enemy);
+			break;
+		default:
+			abort("isCopied was asked to check an unidentified skill: " +sk);
+	}
+	return retval;
+}
+
+boolean isCopied(monster enemy)
+{
+	//checks if the monster enemy is currently copied using any of the copy skills
+	foreach sk in $skills[Blow the Purple Candle\!]
+	{
+		if(isCopied(enemy, sk)) return true;
+	}
+	return false;
+}
+
+skill getCopier(monster enemy, boolean inCombat)
+{
+	if((auto_haveRoman() && have_effect($effect[Everything Looks Purple]) == 0) || (have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0))
+	{
+		return $skill[Blow the Purple Candle\!];
+	}
+	return $skill[none];
+}
+
+skill getCopier(monster enemy)
+{
+	return getCopier(enemy, true);
+}
+
 skill getStunner(monster enemy)
 {
 	if(canUse($skill[Blow the Blue Candle\!]) && have_effect($effect[Everything Looks Blue]) == 0)
@@ -952,7 +991,7 @@ string replaceMonsterCombatString(monster target, boolean inCombat)
 	{
 		return "skill " + $skill[CHEAT CODE: Replace Enemy];
 	}
-	if(canUse($item[waffle]))
+	if (canUse($item[waffle]) && !in_avantGuard())
 	{
 		return useItems($item[waffle], $item[none]);
 	}
