@@ -623,7 +623,7 @@ boolean doBedtime()
 	while(LX_freeCombats());
 
 	// although seals can be fought drunk, it complicates code without a meaningful benefit
-	if((my_class() == $class[Seal Clubber]) && guild_store_available() && my_inebriety() <= inebriety_limit())
+	if (my_class() == $class[Seal Clubber] && guild_store_available() && my_inebriety() <= inebriety_limit() && !in_avantGuard())
 	{
 		handleFamiliar("stat");
 		int oldSeals = get_property("_sealsSummoned").to_int();

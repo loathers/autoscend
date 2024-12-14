@@ -2,24 +2,13 @@ void cyrptChoiceHandler(int choice)
 {
 	if(choice == 153) // Turn Your Head and Coffin (The Defiled Alcove)
 	{
-		if(my_meat() < 1000 + meatReserve())
-		{
-			run_choice(2); // get meat if needed
-		}
-		else
-		{
-			run_choice(4); // skip
-		}
+		run_choice(4); // skip
 	}
 	else if(choice == 155) // Skull, Skull, Skull (The Defiled Nook)
 	{
 		if(in_zombieSlayer() && (item_amount($item[talkative skull]) == 0 || !have_familiar($familiar[Hovering Skull])))
 		{
 			run_choice(1); // get talkative skull
-		}
-		else if(my_meat() < 1000 + meatReserve())
-		{
-			run_choice(2); // get meat if needed
 		}
 		else
 		{
@@ -28,30 +17,49 @@ void cyrptChoiceHandler(int choice)
 	}
 	else if(choice == 157) // Urning Your Keep (The Defiled Niche)
 	{
-		if(my_meat() < 1000 + meatReserve())
-		{
-			run_choice(3); // get meat if needed
-		}
-		else
-		{
-			run_choice(4); // skip
-		}
+		run_choice(4); // skip
 	}
 	else if(choice == 523) // Death Rattlin' (The Defiled Cranny)
 	{
-		if(in_darkGyffte() && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes]))
+		if((in_darkGyffte() && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes])) || auto_turbo())
 		{
-			int desired_pills = in_hardcore() ? 6 : 4;
-			desired_pills -= my_fullness()/2;
-			auto_log_info("We want " + desired_pills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
-			if(item_amount($item[dieting pill]) < desired_pills)
+			int desiredPills = in_hardcore() ? 6 : (auto_turbo() ? 3 : 4);
+			int dietingPillsUsed;
+			if(get_property("auto_chewed") == "")
 			{
-				if(!bat_wantHowl($location[The Defiled Cranny]))
+				dietingPillsUsed = 0;
+			}
+			else
+			{
+				foreach str in split_string(get_property("auto_chewed"), ",")
 				{
-					bat_formBats();
+					if(contains_text(str.to_lower_case(), "dieting pill"))
+					{
+						dietingPillsUsed += 1;
+					}
 				}
 			}
-			run_choice(6); // if meets thresholds, skip to farm more dieting pills in DG
+			if(!(auto_turbo()))
+			{
+				desiredPills -= my_fullness()/2;
+			}
+			else
+			{
+				desiredPills -= dietingPillsUsed;
+			}
+			auto_log_info("We want " + desiredPills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
+			if(item_amount($item[dieting pill]) < desiredPills)
+			{
+				run_choice(6); // if meets thresholds, skip to farm more dieting pills in DG
+			}
+			else if(available_choice_options() contains 5)
+			{
+				run_choice(5); // -11 evil, +50 each substat with Candy Cane Sword Cane
+			}
+			else
+			{
+				run_choice(4); // fight swarm of ghuol whelps
+			}
 		}
 		else if(available_choice_options() contains 5)
 		{
@@ -124,6 +132,8 @@ void knockOffCapePrep()
 
 boolean L7_defiledAlcove()
 {
+	int evilBonus = cyrptEvilBonus();
+
 	if (internalQuestStatus("questL07Cyrptic") != 0 || get_property("cyrptAlcoveEvilness").to_int() == 0)
 	{
 		return false;
@@ -149,8 +159,6 @@ boolean L7_defiledAlcove()
 		return false;
 	}
 
-	int evilBonus = cyrptEvilBonus();
-
 	if (get_property("cyrptAlcoveEvilness").to_int() > (14 + evilBonus))
 	{
 		provideInitiative(850, $location[The Defiled Alcove], true);
@@ -173,38 +181,9 @@ boolean L7_defiledAlcove()
 	return autoAdv($location[The Defiled Alcove]);
 }
 
-boolean L7_crypt()
+boolean L7_defiledNook()
 {
-	if (internalQuestStatus("questL07Cyrptic") != 0)
-	{
-		return false;
-	}
-	if (item_amount($item[chest of the bonerdagon]) == 1)
-	{
-		equipStatgainIncreasers();
-		use(1, $item[chest of the bonerdagon]);
-		return false;
-	}
-
-	// make sure quest status is correct before we attempt to adventure.
-	visit_url("crypt.php");
-	use(1, $item[Evilometer]);
-
 	int evilBonus = cyrptEvilBonus();
-
-	if (L7_defiledAlcove())
-	{
-		return true;
-	}
-
-	// delay remaining crypt zones for cold medicine cabinet usage unless we have run out of other stuff to do
-	// crypt is underground so it will generate breathitins, 5 turns free outside
-	// allow adventuring in Alcove (above) since many backup charges get used for modern zmobies
-	// not delaying better distributes these charges across days
-	if (auto_reserveUndergroundAdventures())
-	{
-		return false;
-	}
 
 	// current mafia bug causes us to lose track of the amount of Evil Eyes in inventory so adding a refresh here
 	cli_execute("refresh inv");
@@ -239,6 +218,21 @@ boolean L7_crypt()
 	else if(skip_in_koe)
 	{
 		auto_log_debug("In Exploathing, skipping Defiled Nook until we get more evil eyes.");
+	}
+	return false;
+}
+
+boolean L7_defiledNiche()
+{
+	int evilBonus = cyrptEvilBonus();
+
+	if (get_property("cyrptNicheEvilness").to_int() > 13 && auto_habitatMonster() == $monster[dirty old lihc])
+	{
+		if (get_property("cyrptNicheEvilness").to_int() <= (13 + (auto_habitatFightsLeft() * (cyrptEvilBonus() + 3))))
+		{
+			// we have enough Habitants to get to 13 or less evilness. Don't need to adventure in this zone.
+			return false;
+		}
 	}
 
 	if((get_property("cyrptNicheEvilness").to_int() > 0) && lar_repeat($location[The Defiled Niche]))
@@ -293,6 +287,12 @@ boolean L7_crypt()
 		}
 		return autoAdv($location[The Defiled Niche]);
 	}
+	return false;
+}
+
+boolean L7_defiledCranny()
+{
+	int evilBonus = cyrptEvilBonus();
 
 	if(get_property("cyrptCrannyEvilness").to_int() > 0)
 	{
@@ -325,6 +325,40 @@ boolean L7_crypt()
 			useNightmareFuelIfPossible();
 		}
 
+		if((in_darkGyffte() && have_skill($skill[Flock of Bats Form]) && have_skill($skill[Sharp Eyes])) || auto_turbo())
+		{
+			int desiredPills = in_hardcore() ? 6 : (auto_turbo() ? 3 : 4);
+			int dietingPillsUsed;
+			if(get_property("auto_chewed") == "")
+			{
+				dietingPillsUsed = 0;
+			}
+			else
+			{
+				foreach str in split_string(get_property("auto_chewed"), ",")
+				{
+					if(contains_text(str.to_lower_case(), "dieting pill"))
+					{
+						dietingPillsUsed += 1;
+					}
+				}
+			}
+			if(!(auto_turbo()))
+			{
+				desiredPills -= my_fullness()/2;
+			}
+			else
+			{
+				desiredPills -= dietingPillsUsed;
+			}
+			auto_log_info("We want " + desiredPills + " dieting pills and have " + item_amount($item[dieting pill]), "blue");
+			if(item_amount($item[dieting pill]) < desiredPills)
+			{
+				//dieting pills have 10% drop rate
+				provideItem(900, $location[The Defiled Cranny], false);
+			}
+		}
+
 		auto_MaxMLToCap(auto_convertDesiredML(149), true);
 
 		addToMaximize("200ml " + auto_convertDesiredML(149) + "max");
@@ -335,7 +369,58 @@ boolean L7_crypt()
 		}
 		return autoAdv($location[The Defiled Cranny]);
 	}
+	return false;
+}
 
+boolean L7_crypt()
+{
+	if (internalQuestStatus("questL07Cyrptic") != 0)
+	{
+		return false;
+	}
+	if (item_amount($item[chest of the bonerdagon]) == 1)
+	{
+		equipStatgainIncreasers();
+		use(1, $item[chest of the bonerdagon]);
+		return false;
+	}
+
+	// make sure quest status is correct before we attempt to adventure.
+	visit_url("crypt.php");
+	use(1, $item[Evilometer]);
+
+	int evilBonus = cyrptEvilBonus();
+
+	if (L7_defiledAlcove())
+	{
+		return true;
+	}
+
+	// delay remaining crypt zones for cold medicine cabinet usage unless we have run out of other stuff to do
+	// crypt is underground so it will generate breathitins, 5 turns free outside
+	// allow adventuring in Alcove (above) since many backup charges get used for modern zmobies
+	// not delaying better distributes these charges across days
+	if (auto_reserveUndergroundAdventures())
+	{
+		return false;
+	}
+
+	if (L7_defiledNook())
+	{
+		return true;
+	}
+
+	if (L7_defiledNiche())
+	{
+		return true;
+	}
+
+	if (L7_defiledCranny())
+	{
+		return true;
+	}
+
+	// handle crypt boss
 	if( (get_property("cyrptTotalEvilness").to_int() <= 0) || (get_property("cyrptTotalEvilness").to_int() == 999) )
 	{
 		if(my_class() == $class[seal clubber] && auto_have_skill($skill[Iron Palm Technique]) && (have_effect($effect[Iron Palms]) == 0))
@@ -368,6 +453,7 @@ boolean L7_crypt()
 		}
 		auto_change_mcd(10); // get vertebra to make the necklace.
 		set_property("auto_nextEncounter","Bonerdagon");
+		set_property("auto_nonAdvLoc", true);
 		boolean tryBoner = autoAdv(1, $location[Haert of the Cyrpt]);
 		council();
 		cli_execute("refresh quests");
