@@ -182,7 +182,6 @@ void write_locations_visited()
 	writeln("<tr><th>Location</th> <th>Turns</th></tr>");
 	foreach i,loc in ranked_list
 	{
-		print(loc.to_string()+"\t"+loc.turns_spent);
 		writeln("<tr><td>"+loc.to_string()+"</td><td>"+loc.turns_spent+"</td></tr>");
 	}
 	writeln("</table>");
