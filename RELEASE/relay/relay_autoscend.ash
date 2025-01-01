@@ -166,26 +166,24 @@ void write_locations_visited()
 	// Display the locations we've spent turns
 	
 	// Make a list of the locations we've visited
-	//~ location[int] locs;
-	int[location] locs;
-	foreach l in $locations[]
+	location[int] ranked_list;
+	foreach loc in $locations[]
 	{
-		int turns = l.turns_spent;
-		if (turns!=0)
+		if (loc.turns_spent > 0)
 		{
-			locs[l] = turns;
+			ranked_list[count(ranked_list)] = loc;
 		}
 	}
 	// Sort in descending order
-	sort locs by -value;
+	sort ranked_list by -value.turns_spent;
 	
 	// Write the table
 	writeln("<table style=\"margin-left:auto;margin-right:auto;\">");
 	writeln("<tr><th>Location</th> <th>Turns</th></tr>");
-	foreach l,turns in locs
+	foreach i,loc in ranked_list
 	{
-		print(l.to_string()+"\t"+turns);
-		writeln("<tr><td>"+l.to_string()+"</td><td>"+turns+"</td></tr>");
+		print(loc.to_string()+"\t"+loc.turns_spent);
+		writeln("<tr><td>"+loc.to_string()+"</td><td>"+loc.turns_spent+"</td></tr>");
 	}
 	writeln("</table>");
 }
