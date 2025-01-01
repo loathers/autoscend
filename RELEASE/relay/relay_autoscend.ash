@@ -161,6 +161,35 @@ void write_settings_key()
 	writeln("</table>");
 }
 
+void write_locations_visited()
+{
+	// Display the locations we've spent turns
+	
+	// Make a list of the locations we've visited
+	//~ location[int] locs;
+	int[location] locs;
+	foreach l in $locations[]
+	{
+		int turns = l.turns_spent;
+		if (turns!=0)
+		{
+			locs[l] = turns;
+		}
+	}
+	// Sort in descending order
+	sort locs by -value;
+	
+	// Write the table
+	writeln("<table style=\"margin-left:auto;margin-right:auto;\">");
+	writeln("<tr><th>Location</th> <th>Turns</th></tr>");
+	foreach l,turns in locs
+	{
+		print(l.to_string()+"\t"+turns);
+		writeln("<tr><td>"+l.to_string()+"</td><td>"+turns+"</td></tr>");
+	}
+	writeln("</table>");
+}
+
 void main()
 {
 	auto_settings();			//runs every time. upgrades old settings to newest format, delete obsolete settings, and configures defaults.
@@ -345,6 +374,9 @@ void main()
 
 	//TODO: need way to track version independent of svn branch since you can have different branches checked out
 	writeln("Autoscend Version: " + autoscend_current_version() + "<br>");
+	
+	writeln("<h2>Locations visited</h2>");
+	write_locations_visited();
 
 	writeln("<br>");
 	writeln("</body></html>");
