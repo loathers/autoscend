@@ -1019,7 +1019,7 @@ boolean adjustForYellowRay(string combat_string)
 	}
 	if(combat_string == ("skill " + $skill[Blow the Yellow Candle\!]))
 	{
-		return autoEquip($slot[weapon], wrap_item($item[Roman candelabra]));
+		return autoEquip($slot[off-hand], wrap_item($item[Roman candelabra]));
 	}
 	// craft and consume 9-volt battery if we are using shocking lick and don't have any charges already
 	if(combat_string == ("skill " + $skill[Shocking Lick]) && get_property("shockingLickCharges").to_int() < 1)
