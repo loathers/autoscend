@@ -127,7 +127,7 @@ item	4	Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
 item	5	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
 # fairies with useful special powers above a certain weight so we want to preload it
 item	6	Grey Goose	prop_boolean:auto_prioritizeGoose
-item	7	Chest Mimic prop_boolean:auto_prioritizeChestMimic
+item	7	Chest Mimic	prop_boolean:auto_prioritizeChestMimic
 # fairy that generates extra adventures
 item	8	Reagnimated Gnome	!path:Heavy Rains
 # Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
@@ -221,7 +221,7 @@ meat	11	Jill-of-All-Trades	item:LED candle>0
 meat	12	Hobo Monkey
 #Mutant Cactus Bud	grimdark:1
 # fairies with useful special powers above a certain weight so we want to preload it
-meat	13	Chest Mimic prop_boolean:auto_prioritizeChestMimic
+meat	13	Chest Mimic	prop_boolean:auto_prioritizeChestMimic
 # Does everything
 meat	14	Jill-of-All-Trades
 # Volleychauns
