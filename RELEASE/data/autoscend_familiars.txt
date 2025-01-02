@@ -112,22 +112,22 @@ init	3	Happy Medium
 #
 # exempt from 10 lbs restriction in KOLHS path
 item	0	Steam-Powered Cheerleader	path:KOLHS
+# fairies with useful special powers above a certain weight so we want to preload it
+item	1	Grey Goose	prop_boolean:auto_prioritizeGoose
+item	2	Chest Mimic	prop_boolean:auto_prioritizeChestMimic
 # Fairies with a multiplier
 # 1.5x multiplier fairy
-item	1	Jill-of-All-Trades	item:LED candle>0
+item	3	Jill-of-All-Trades	item:LED candle>0
 # 1.4x multiplier fairy
-item	2	Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
+item	4	Steam-Powered Cheerleader	prop:_cheerleaderSteam>150
 # 1.3x multiplier fairy
-item	3	Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
+item	5	Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
 # Jumpsuited Hound Dog is a 1.25x multiplier fairy that provides +combat.
 # Jumpsuited Hound Dog DELIBERATELY not included because it provides usually unwanted +combat
 # 1.2x multiplier fairy
-item	4	Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
+item	6	Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
 # 1.1x multiplier fairy
-item	5	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
-# fairies with useful special powers above a certain weight so we want to preload it
-item	6	Grey Goose	prop_boolean:auto_prioritizeGoose
-item	7	Chest Mimic	prop_boolean:auto_prioritizeChestMimic
+item	7	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
 # fairy that generates extra adventures
 item	8	Reagnimated Gnome	!path:Heavy Rains
 # Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
@@ -214,14 +214,14 @@ meat	8	Robortender
 meat	9	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # Might as well get devilish folios
 meat	10	Blavious Kloop	prop:_kloopDrops<3
+# fairies with useful special powers above a certain weight so we want to preload it
+meat	11	Chest Mimic	prop_boolean:auto_prioritizeChestMimic
 # Leprechauns with a >1 multiplier
 # 1.5x multiplier leprechaun
-meat	11	Jill-of-All-Trades	item:LED candle>0
+meat	12	Jill-of-All-Trades	item:LED candle>0
 #Mutant Cactus Bud	grimdark:0
-meat	12	Hobo Monkey
+meat	13	Hobo Monkey
 #Mutant Cactus Bud	grimdark:1
-# fairies with useful special powers above a certain weight so we want to preload it
-meat	13	Chest Mimic	prop_boolean:auto_prioritizeChestMimic
 # Does everything
 meat	14	Jill-of-All-Trades
 # Volleychauns

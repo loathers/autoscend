@@ -17,14 +17,14 @@ Robortender
 Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # Might as well get devilish folios
 Blavious Kloop	prop:_kloopDrops<3
+# fairies with useful special powers above a certain weight so we want to preload it
+Chest Mimic	prop_boolean:auto_prioritizeChestMimic
 # Leprechauns with a >1 multiplier
 # 1.5x multiplier leprechaun
 Jill-of-All-Trades	item:LED candle>0
 #Mutant Cactus Bud	grimdark:0
 Hobo Monkey
 #Mutant Cactus Bud	grimdark:1
-# fairies with useful special powers above a certain weight so we want to preload it
-Chest Mimic	prop_boolean:auto_prioritizeChestMimic
 # Does everything
 Jill-of-All-Trades
 # Volleychauns
