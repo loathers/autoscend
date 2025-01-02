@@ -1,6 +1,7 @@
 # This is meant for items that have a date of 2024
 
 import <c2t_apron.ash>// used in consumeBlackAndWhiteApronKit()
+import <c2t_megg.ash>// used in chest mimic
 
 boolean consumeBlackAndWhiteApronKit()
 {
@@ -458,4 +459,62 @@ boolean auto_haveTearawayPants()
 		return true;
 	}
 	return false;
+}
+
+boolean auto_haveChestMimic()
+{
+	if(auto_have_familiar($familiar[chest mimic]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_haveMeggEgg(monster mon)
+{
+	foreach megg_mon, i in c2t_megg_eggs()
+		{
+			if (megg_mon == mon)
+			{
+				return true;
+			}
+		}
+	return false;
+}
+
+
+boolean auto_meggFight(monster mon, boolean speculative)
+{
+	if(item_amount($item[mimic egg]) < 1)
+	{
+		return false;
+	}
+	if(!auto_haveMeggEgg(mon))
+	{
+		return false;
+	}
+
+	if(speculative)
+	{
+		return true;
+	}
+	
+	return c2t_megg_fight(mon);
+}
+
+void prioritizeChestMimic() //prioritize Chest Mimic only if it has less than 100 exp
+{
+	if(!auto_haveChestMimic())
+	{
+		return;
+	}
+
+	if($familiar[Chest Mimic].experience < 100)
+	{
+		set_property("auto_prioritizeChestMimic", true);
+		return;
+	}
+
+	set_property("auto_prioritizeChestMimic", false);
+	return;
 }

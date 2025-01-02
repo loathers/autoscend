@@ -125,73 +125,75 @@ item	3	Steam-Powered Cheerleader	prop:_cheerleaderSteam>100
 item	4	Steam-Powered Cheerleader	prop:_cheerleaderSteam>50
 # 1.1x multiplier fairy
 item	5	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
-# fairy with useful special powers above a certain weight so we want to preload it
+# fairies with useful special powers above a certain weight so we want to preload it
 item	6	Grey Goose	prop_boolean:auto_prioritizeGoose
+item	7	Chest Mimic prop_boolean:auto_prioritizeChestMimic
 # fairy that generates extra adventures
-item	7	Reagnimated Gnome	!path:Heavy Rains
+item	8	Reagnimated Gnome	!path:Heavy Rains
 # Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
-item	8	XO Skeleton
+item	9	XO Skeleton
 # Fairy that drops bacon with no limit. 1 per combat
-item	9	Intergnat
+item	10	Intergnat
 # Fairyeverything
-item	10	Jill-of-All-Trades
+item	11	Jill-of-All-Trades
 # Fairyballs
-item	11	Elf Operative
-item	12	Optimistic Candle
-item	13	Rockin' Robin
-item	14	God Lobster	item:God Lobster's Crown>0
-item	15	Hobo in Sheep's Clothing
+item	12	Elf Operative
+item	13	Optimistic Candle
+item	14	Rockin' Robin
+item	15	God Lobster	item:God Lobster's Crown>0
+item	16	Hobo in Sheep's Clothing
 # Fairywhelps
-item	16	Pocket Professor
-item	17	Garbage Fire
-item	18	Dandy Lion
-item	19	Choctopus
+item	17	Pocket Professor
+item	18	Garbage Fire
+item	19	Dandy Lion
+item	20	Choctopus
 # Fairychauns
-item	20	Fist Turkey
-item	21	Cat Burglar
-item	22	Angry Jung Man
-item	23	Grimstone Golem
-item	24	Adventurous Spelunker
-item	25	Blavious Kloop
-item	26	Hippo Ballerina
-item	27	Dancing Frog
-item	28	Coffee Pixie
-item	29	Attention-Deficit Demon
-item	30	Jitterbug
-item	31	Casagnova Gnome
-item	32	Psychedelic Bear
-item	33	Piano Cat
+item	21	Fist Turkey
+item	22	Cat Burglar
+item	23	Angry Jung Man
+item	24	Grimstone Golem
+item	25	Adventurous Spelunker
+item	26	Blavious Kloop
+item	27	Hippo Ballerina
+item	28	Dancing Frog
+item	29	Coffee Pixie
+item	30	Attention-Deficit Demon
+item	31	Jitterbug
+item	32	Casagnova Gnome
+item	33	Psychedelic Bear
+item	34	Piano Cat
 # Slightly special fairies
-item	34	Grey Goose
-item	35	Ghost of Crimbo Carols
-item	36	Red-Nosed Snapper
-item	37	Pair of Stomping Boots	!path:G-Lover
-item	38	Gelatinous Cubeling
-item	39	Steam-Powered Cheerleader
-item	40	Obtuse Angel
-item	41	Green Pixie
+item	35	Grey Goose
+item	36	Chest Mimic
+item	37	Ghost of Crimbo Carols
+item	38	Red-Nosed Snapper
+item	39	Pair of Stomping Boots	!path:G-Lover
+item	40	Gelatinous Cubeling
+item	41	Steam-Powered Cheerleader
+item	42	Obtuse Angel
+item	43	Green Pixie
 # Elemental fairies
-item	42	Sleazy Gravy Fairy
-item	43	Stinky Gravy Fairy
-item	44	Flaming Gravy Fairy
-item	45	Frozen Gravy Fairy
-item	46	Spooky Gravy Fairy
+item	44	Sleazy Gravy Fairy
+item	45	Stinky Gravy Fairy
+item	46	Flaming Gravy Fairy
+item	47	Frozen Gravy Fairy
+item	48	Spooky Gravy Fairy
 # Physical damage fairy
-item	47	Bowlet
-item	48	Crimbo Elf
+item	49	Bowlet
+item	50	Crimbo Elf
 # Barely special fairies
-item	49	Mechanical Songbird
-item	50	Grouper Groupie
-item	51	Peppermint Rhino
+item	51	Mechanical Songbird
+item	52	Grouper Groupie
+item	53	Peppermint Rhino
 # Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
-item	52	Slimeling
+item	54	Slimeling
 # Turtles are cute
-item	53	Syncopated Turtle
+item	55	Syncopated Turtle
 # The original
-item	54	Baby Gravy Fairy
+item	56	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
-item	55	Mutant Fire Ant
+item	57	Mutant Fire Ant
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
@@ -218,47 +220,50 @@ meat	11	Jill-of-All-Trades	item:LED candle>0
 #Mutant Cactus Bud	grimdark:0
 meat	12	Hobo Monkey
 #Mutant Cactus Bud	grimdark:1
+# fairies with useful special powers above a certain weight so we want to preload it
+meat	13	Chest Mimic prop_boolean:auto_prioritizeChestMimic
 # Does everything
-meat	13	Jill-of-All-Trades
+meat	14	Jill-of-All-Trades
 # Volleychauns
-meat	14	Golden Monkey
-meat	15	Bloovian Groose
-meat	16	Unconscious Collective
-meat	17	Grim Brother
-meat	18	Mini Kiwi
-meat	19	Dramatic Hedgehog
-meat	20	Chauvinist Pig
-meat	21	Uniclops
-meat	22	Hunchbacked Minion
-meat	23	Nervous Tick
-meat	24	Cymbal-Playing Monkey
-meat	25	Cheshire Bat
+meat	15	Golden Monkey
+meat	16	Bloovian Groose
+meat	17	Unconscious Collective
+meat	18	Grim Brother
+meat	19	Mini Kiwi
+meat	20	Dramatic Hedgehog
+meat	21	Chauvinist Pig
+meat	22	Uniclops
+meat	23	Hunchbacked Minion
+meat	24	Nervous Tick
+meat	25	Cymbal-Playing Monkey
+meat	26	Cheshire Bat
 # Fairychauns
-meat	26	Cat Burglar
-meat	27	Blavious Kloop
-meat	28	Adventurous Spelunker
-meat	29	Hippo Ballerina
-meat	30	Dancing Frog
-meat	31	Cheshire Bat
-meat	32	Piano Cat
-meat	33	Psychedelic Bear
-meat	34	Casagnova Gnome
-meat	35	Jitterbug
-meat	36	Attention-Deficit Demon
-meat	37	Coffee Pixie
+meat	27	Chest Mimic
+meat	28	Cat Burglar
+meat	29	Blavious Kloop
+meat	30	Adventurous Spelunker
+meat	31	Hippo Ballerina
+meat	32	Dancing Frog
+meat	33	Cheshire Bat
+meat	34	Piano Cat
+meat	35	Psychedelic Bear
+meat	36	Casagnova Gnome
+meat	37	Jitterbug
+meat	38	Attention-Deficit Demon
+meat	39	Coffee Pixie
 # Wowee
-meat	38	Hand Turkey
+meat	40	Hand Turkey
 # Sorry, we don't use him for yellow rays but we can at least use him for meat I guess
-meat	39	He-Boulder
+meat	41	He-Boulder
 # Marginally special leprechauns
-meat	40	Ghost of Crimbo Commerce
-meat	41	Knob Goblin Organ Grinder
+meat	42	Ghost of Crimbo Commerce
+meat	43	Knob Goblin Organ Grinder
 #Mutant Cactus Bud	grimdark:2
-meat	42	Urchin Urchin
+meat	44	Urchin Urchin
 # Memes, doesn't actually give substats apparently
-meat	43	Cornbeefadon
+meat	45	Cornbeefadon
 # The original
-meat	44	Leprechaun
+meat	46	Leprechaun
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)

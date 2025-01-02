@@ -1879,6 +1879,7 @@ boolean doTasks()
 	auto_CMCconsult();
 	auto_checkTrainSet();
 	prioritizeGoose();
+	prioritizeChestMimic();
 	auto_useWardrobe();
 	auto_MayamClaimAll();
 	

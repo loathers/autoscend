@@ -575,6 +575,10 @@ boolean auto_haveSeptEmberCenser();
 int remainingEmbers();
 void auto_buyFromSeptEmberStore();
 boolean auto_haveTearawayPants();
+boolean auto_haveChestMimic();
+boolean auto_haveMeggEgg(monster mon);
+boolean auto_meggFight(monster mon, boolean speculative);
+void prioritizeChestMimic();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
