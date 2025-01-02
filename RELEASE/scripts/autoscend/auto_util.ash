@@ -579,7 +579,7 @@ boolean canYellowRay(monster target)
 		}
 		
 		// roman candelabra, also a 75 turn cooldown
-		if(auto_haveRoman())
+		if(auto_haveRoman() && auto_is_valid($skill[Blow the Yellow Candle\!]))
 		{
 			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 		}
