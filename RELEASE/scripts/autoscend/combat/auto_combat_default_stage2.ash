@@ -328,6 +328,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			couldInstaKill = false;
 		}
 	}
+	else if($monsters[Racecar Bob, Bob Racecar] contains enemy && item_amount($item[photograph of a dog]) == 0 && internalQuestStatus("questL11Palindome") < 2)
+	{
+		//don't want to instakill if we haven't used the disposable camera yet
+		couldInstaKill = false;
+	}
 	else if(wantToForceDrop(enemy))
 	{
 		//want drops from this enemy
