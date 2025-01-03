@@ -755,6 +755,17 @@ boolean wantCubeling()
 	return need_pole || need_ring || need_lockpicks;
 }
 
+boolean addFamExp(familiar fam)
+{
+	//get/use items that add experience to your familiar, if we want to prioritize a fam
+	if(fam contains $familiars[grey goose, chest mimic] &&
+	(get_property("auto_prioritizeChestMimic").to_boolean() || get_property("auto_prioritizeGoose").to_boolean()))
+	{
+		return true;
+	}
+	return false;
+}
+
 void preAdvUpdateFamiliar(location place)
 {
 	if(get_property("auto_disableFamiliarChanging").to_boolean())

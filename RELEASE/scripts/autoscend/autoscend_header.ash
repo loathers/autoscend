@@ -1470,6 +1470,7 @@ boolean handleFamiliar(familiar fam);
 boolean autoChooseFamiliar(location place);
 boolean haveSpleenFamiliar();
 boolean wantCubeling();
+boolean addFamExp(familiar fam);
 void preAdvUpdateFamiliar(location place);
 
 ########################################################################################################

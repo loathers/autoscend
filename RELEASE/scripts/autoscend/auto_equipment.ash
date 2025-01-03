@@ -534,6 +534,10 @@ string defaultMaximizeStatement()
 		{
 			res += ",5familiar exp";
 		}
+		if(get_property("auto_prioritizeChestMimic").to_boolean() || get_property("auto_prioritizeGoose").to_boolean())
+		{
+			res += ",10familiar exp";
+		}
 	}
 	if(in_wildfire())
 	{
