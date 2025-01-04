@@ -577,6 +577,12 @@ boolean canYellowRay(monster target)
 		{
 			return true;
 		}
+		
+		// roman candelabra, also a 75 turn cooldown
+		if(auto_haveRoman() && auto_can_equip($item[Roman Candelabra]) && auto_is_valid($skill[Blow the Yellow Candle\!]))
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
+		}
 
 		if(auto_hasRetrocape())
 		{
@@ -1010,6 +1016,10 @@ boolean adjustForYellowRay(string combat_string)
 	if(combat_string == ("skill " + $skill[Unleash the Devil\'s Kiss]))
 	{
 		auto_configureRetrocape("heck", "kiss");
+	}
+	if(combat_string == ("skill " + $skill[Blow the Yellow Candle\!]))
+	{
+		return autoEquip($slot[off-hand], wrap_item($item[Roman candelabra]));
 	}
 	// craft and consume 9-volt battery if we are using shocking lick and don't have any charges already
 	if(combat_string == ("skill " + $skill[Shocking Lick]) && get_property("shockingLickCharges").to_int() < 1)
