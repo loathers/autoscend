@@ -1,4 +1,4 @@
-since r28114;	// feat: track split pea soup banish
+since r28233;	// fix: refresh concoctions on takerspace visit
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
