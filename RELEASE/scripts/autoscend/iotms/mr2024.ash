@@ -468,6 +468,10 @@ boolean auto_haveTakerSpace()
 void auto_checkTakerSpace()
 {
 	if(!auto_haveTakerSpace()) return;
+	if(!get_property("_takerSpaceSuppliesDelivered").to_boolean()) {
+		// visit the workshed to get the supplies
+		visit_url("campground.php?action=workshed");
+	}
 	// unlock the island if we can (6 turn save)
 	if(get_property("lastIslandUnlock").to_int() < my_ascensions() && item_amount($item[pirate dinghy]) == 0 && creatable_amount($item[pirate dinghy]) > 0) {
 		create(1, $item[pirate dinghy]);
