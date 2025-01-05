@@ -577,6 +577,12 @@ void auto_buyFromSeptEmberStore();
 boolean auto_haveTearawayPants();
 
 ########################################################################################################
+//Defined in autoscend/iotms/mr2025.ash
+boolean auto_haveMcHugeLargeSkis();
+boolean auto_equipAllMcHugeLarge();
+boolean auto_openMcLargeHugeSkis();
+
+########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
 boolean isActuallyEd();
 int ed_spleen_limit();
@@ -1078,7 +1084,6 @@ boolean L8_getMineOres();
 void itznotyerzitzMineChoiceHandler(int choice);
 boolean L8_trapperExtreme();
 void theeXtremeSlopeChoiceHandler(int choice);
-boolean L8_trapperSlopeSoftcore();
 boolean L8_trapperNinjaLair();
 boolean L8_trapperGroar();
 boolean L8_trapperPeak();
