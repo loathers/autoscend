@@ -265,6 +265,11 @@ boolean LX_islandAccess()
 		return LX_hippyBoatman();
 	}
 
+	if (get_property("lastIslandUnlock").to_int() < my_ascensions() && item_amount($item[pirate dinghy]) > 0 && !get_property("_pirateDinghyUsed").to_boolean()) {
+		use(1, $item[pirate dinghy]);
+		return true;
+	}
+
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
 
 	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (get_property("lastIslandUnlock").to_int() != my_ascensions()) && (my_meat() >= npc_price($item[dingy planks])) && isGeneralStoreAvailable())
@@ -280,7 +285,7 @@ boolean LX_islandAccess()
 		if(get_property("lastIslandUnlock").to_int() == my_ascensions())
 		{
 			boolean reallyUnlocked = false;
-			foreach it in $items[Dingy Dinghy, Skeletal Skiff, Yellow Submarine]
+			foreach it in $items[Dingy Dinghy, Skeletal Skiff, Yellow Submarine, pirate dinghy]
 			{
 				if(item_amount(it) > 0)
 				{
