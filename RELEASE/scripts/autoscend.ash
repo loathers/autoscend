@@ -1,4 +1,4 @@
-since r28233;	// fix: refresh concoctions on takerspace visit
+since r28235;	// fix: pirate dinghy unlocks island on use, not on obtain
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
