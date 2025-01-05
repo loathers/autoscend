@@ -1881,19 +1881,6 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[mountain man])) return true;
 	}
 
-	// only summon NSA if in hardcore as we will pull items in normal runs
-	if(internalQuestStatus("questL08Trapper") < 3 && in_hardcore() && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean())
-	{
-		auto_log_debug("Thinking about summoning ninja snowman assassin");
-		boolean wantSummonNSA = item_amount($item[ninja rope]) < 1 || 
-			item_amount($item[ninja carabiner]) < 1 || 
-			item_amount($item[ninja crampons]) < 1;
-		if(wantSummonNSA && canSummonMonster($monster[Ninja Snowman Assassin]))
-		{
-			if(summonMonster($monster[Ninja Snowman Assassin])) return true;
-		}
-	}
-
 	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && my_level() >= 9 && 
 		(lumberCount() < 30 || fastenerCount() < 30) && canSummonMonster($monster[smut orc pervert]))
 	{
@@ -4203,6 +4190,16 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 			abort("Attempted to force a noncombat with [Apriling tuba] but was unable to.");
 		}
 		set_property("auto_forceNonCombatSource", "Apriling tuba");
+		return true;
+	}
+	else if(auto_haveMcHugeLargeSkis() && get_property("_mcHugeLargeAvalancheUses") < 3 && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the spikes
+	{
+		if(speculative) return true;
+		// avalanche require a combat to active
+		// this property will cause the left ski to be eqipped and avalanche deployed next combat
+		set_property("auto_forceNonCombatSource", "McHugeLarge left ski");
+		// track desired NC location so we know where to go when avalanche is ready
+		set_property("auto_forceNonCombatLocation", loc);
 		return true;
 	}
 	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso() && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the spikes

@@ -77,7 +77,8 @@ boolean auto_post_adventure()
 
 	if(get_property("auto_forceNonCombatSource") != "" && !auto_haveQueuedForcedNonCombat())
 	{
-		// possible to get desired NC when preparing spikes. Only log usage if NC was actually forced
+		// possible to get desired NC when preparing spikes/avalanche. Only log usage if NC was actually forced
+		// I have no idea how to make this check work for avalanche too?
 		if(get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean())
 		{
 			auto_log_info("Encountered forced noncombat: " + get_property("lastEncounter"), "blue");
@@ -86,6 +87,7 @@ boolean auto_post_adventure()
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatLocation", "");
 		set_property("auto_parkaSpikesDeployed", false);
+		set_property("auto_avalancheDeployed", false);
 	}
 
 	if(get_property("auto_instakillSource") != "" && get_property("auto_instakillSuccess").to_boolean())
