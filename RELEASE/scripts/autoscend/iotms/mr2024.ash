@@ -459,3 +459,27 @@ boolean auto_haveTearawayPants()
 	}
 	return false;
 }
+
+boolean auto_haveTakerSpace()
+{
+	return auto_get_campground() contains $item[TakerSpace letter of Marque] && auto_is_valid($item[TakerSpace letter of Marque]);
+}
+
+void auto_checkTakerSpace()
+{
+	if(!auto_haveTakerSpace()) return;
+	// unlock the island if we can (6 turn save)
+	if(get_property("lastIslandUnlock").to_int() < my_ascensions() && item_amount($item[pirate dinghy]) == 0 && creatable_amount($item[pirate dinghy]) > 0) {
+		create(1, $item[pirate dinghy]);
+	}
+	// deft pirate hook would be worth it but hard for autoscend to use
+	// anchor bomb is a free banish but only for 30 turns
+	if(creatable_amount($item[anchor bomb]) > 0) {
+		create(1, $item[anchor bomb]);
+	}
+	// goldschlepper is EPIC booze
+	int creatableGold = creatable_amount($item[tankard of spiced Goldschlepper]);
+	if(creatableGold > 0) {
+		create(creatableGold, $item[tankard of spiced Goldschlepper]);
+	}
+}

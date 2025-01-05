@@ -487,7 +487,6 @@ boolean auto_hasSpeakEasy();
 int auto_remainingSpeakeasyFreeFights();
 boolean speakeasyCombat();
 
-
 boolean auto_haveTrainSet();
 void auto_modifyTrainSet(int one, int two, int three, int four, int five, int six, int seven, int eight);
 void auto_checkTrainSet();
@@ -575,6 +574,8 @@ boolean auto_haveSeptEmberCenser();
 int remainingEmbers();
 void auto_buyFromSeptEmberStore();
 boolean auto_haveTearawayPants();
+boolean auto_haveTakerSpace();
+void auto_checkTakerSpace();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1256,6 +1257,7 @@ boolean LX_dolphinKingMap();
 boolean LX_meatMaid();
 item LX_getDesiredWorkshed();
 boolean LX_setWorkshed();
+boolean canSetWorkshed(item it);
 boolean LX_dronesOut();
 
 ########################################################################################################

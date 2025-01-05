@@ -573,6 +573,8 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		Beancannon: item, no turn limit, no limit
 		Tennis Ball: item, no turn limit
 
+		anchor bomb: item, 30 turns
+
 		Breathe Out: per hot jelly usage
 	*/
 
@@ -782,6 +784,10 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if((item_amount($item[divine champagne popper]) > keep) && (!(used contains "divine champagne popper"))&& auto_is_valid($item[divine champagne popper]) && useFree)
 	{
 		return "item " + $item[divine champagne popper];
+	}
+	if((item_amount($item[anchor bomb]) > keep) && (!(used contains "anchor bomb"))&& auto_is_valid($item[anchor bomb]) && useFree)
+	{
+		return "item " + $item[anchor bomb];
 	}
 
 	return "";
