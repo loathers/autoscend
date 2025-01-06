@@ -499,6 +499,12 @@ void auto_buyFrom2002MrStore()
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 	}
+	//FLUDA is +25% item, and a pickpocket
+	itemConsidering = $item[Flash Liquidizer Ultra Dousing Accessory];
+	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering) && !possessEquipment(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+	}
 	// meat butler on day 1 of run
 	itemConsidering = $item[meat butler];
 	if(have_campground() && remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
@@ -910,7 +916,7 @@ boolean auto_handleCCSC()
 
 	if((place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5 && !get_property("candyCaneSwordBowlingAlley").to_boolean())
 	   || (place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0 && !get_property("candyCaneSwordShore").to_boolean())
-	   || (place == $location[The eXtreme Slope] && (!possessEquipment($item[eXtreme scarf]) && !possessEquipment($item[snowboarder pants])))
+	   || (place == $location[The eXtreme Slope] && (!possessEquipment($item[eXtreme scarf]) && !possessEquipment($item[snowboarder pants]) && !auto_haveMcHugeLargeSkis()))
 	   || (place == $location[The Copperhead Club] && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0) && !get_property("candyCaneSwordCopperheadClub").to_boolean())
 	   || (place == $location[The Defiled Cranny] && !get_property("candyCaneSwordDefiledCranny").to_boolean())
 	   || (place == $location[The Black Forest] && !get_property("candyCaneSwordBlackForest").to_boolean())
