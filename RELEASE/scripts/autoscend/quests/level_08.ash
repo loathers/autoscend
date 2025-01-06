@@ -772,6 +772,16 @@ boolean L8_trapperPeak()
 	// unlock peak using extremeness
 	if(get_property("currentExtremity").to_int() >= 3)
 	{
+		if (auto_haveMcHugeLargeSkis())
+		{
+			equip($slot[back]    , $item[McHugeLarge duffel bag]);
+			equip($slot[weapon]  , $item[McHugeLarge right pole]);
+			equip($slot[off-hand], $item[McHugeLarge left pole]);
+			equip($slot[acc1]    , $item[McHugeLarge left ski]);
+			equip($slot[acc2]    , $item[McHugeLarge right ski]);
+			visit_url("place.php?whichplace=mclargehuge&action=cloudypeak");
+			return true;
+		}
 		// TODO: There are some reports of this breaking in TCRS, when cold-weather
 		// gear is not sufficient to have 5 cold resistance. Use a maximizer statement?
 		if(outfit("eXtreme Cold-Weather Gear"))
