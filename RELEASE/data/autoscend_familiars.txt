@@ -89,8 +89,10 @@ drop	29	Green Pixie	prop:_absintheDrops<5
 drop	30	Galloping Grill	prop:_hotAshesDrops<5
 # If all else fails, keep generating CBB ingredients
 drop	31	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
+# build up a few mini kiwis
+drop	32	Mini Kiwi	item:mini kiwi<5
 # use a Peace turkey if all else fails
-drop	32	Peace Turkey
+drop	33	Peace Turkey
 
 # We want to delevel, but don't want to deal damage
 gremlins	0	Nosy Nose
