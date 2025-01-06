@@ -104,6 +104,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	if (tryEffects($effects[
 		Musk of the Moose,
 		Carlweather's Cantata of Confrontation,
+		Attracting Snakes,
 		Blinking Belly,
 		Song of Battle,
 		Frown,
@@ -301,6 +302,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Muffled,
 		Smooth Movements,
 		The Sonata of Sneakiness,
+		Hiding From Seekers,
 		Song of Solitude,
 		Inked Well,
 		Bent Knees,
