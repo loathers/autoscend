@@ -1105,6 +1105,10 @@ boolean canSniff(monster enemy, location loc)
 boolean adjustForSniffingIfPossible(monster target)
 {
 	skill sniffer = getSniffer(target, false);
+	if(sniffer == $skill[McHugeLarge Slash])
+	{
+		return autoEquip($item[McHugeLarge left pole]);
+	}
 	if(sniffer == $skill[Monkey Point])
 	{
 		return autoEquip($item[cursed monkey\'s paw]);
