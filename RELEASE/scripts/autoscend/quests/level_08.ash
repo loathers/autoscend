@@ -809,6 +809,10 @@ boolean L8_trapperSlope()
 	{
 		if(L8_trapperExtreme()) return true; // try to climb slope via extreme path
 	}
+	if(auto_haveMcHugeLargeSkis()) // it's faster to do the extreme path with skis
+	{
+		if(L8_trapperExtreme()) return true; // try to climb slope via extreme path with skis
+	}
 	if(L8_trapperNinjaLair()) return true; // try to climb slope via ninja path
 	
 	return false;
