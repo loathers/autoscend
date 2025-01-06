@@ -477,8 +477,8 @@ void auto_checkTakerSpace()
 		create(1, $item[pirate dinghy]);
 	}
 	// deft pirate hook would be worth it but hard for autoscend to use
-	// anchor bomb is a free banish but only for 30 turns
-	if(creatable_amount($item[anchor bomb]) > 0) {
+	// anchor bomb is a free banish but only for 30 turns, if we have Spring Kick we won't use it
+	if(!(auto_haveSpringShoes() && auto_is_valid($skill[Spring Kick])) && creatable_amount($item[anchor bomb]) > 0) {
 		create(1, $item[anchor bomb]);
 	}
 	// goldschlepper is EPIC booze
