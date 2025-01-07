@@ -760,7 +760,7 @@ boolean auto_circadianRhythmTarget(phylum target)
 	{
 		return false;
 	}
-	if (!($phylums[Orc, Hippy] contains target) && $locations[The Battlefield (Hippy Uniform), The Battlefield (Frat Uniform)] contains my_location())
+	if (!($phylums[Orc, Hippy] contains target && $locations[The Battlefield (Hippy Uniform), The Battlefield (Frat Uniform)] contains my_location()))
 	{
 		return false;
 	}

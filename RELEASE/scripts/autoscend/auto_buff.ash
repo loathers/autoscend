@@ -188,6 +188,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		{
 			useSkill = $skill[Astral Shell];
 		}																						break;
+	case $effect[Attracting Snakes]:		useSkill = $skill[Attract Snakes];			break;
 	case $effect[Attractive to Fire Ants]:		useItem = $item[fire ant pheromones];			break;
 	case $effect[Aware of Bees]:
 		if(!get_property("_aug19Cast").to_boolean())
@@ -460,6 +461,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Heart of White]:				useItem = $item[white candy heart];				break;
 	case $effect[Heart of Yellow]:				useItem = $item[yellow candy heart];			break;
 	case $effect[Hide of Sobek]:				useSkill = $skill[Hide of Sobek];				break;
+	case $effect[Hiding From Seekers]:			useSkill = $skill[Hide From Seekers];				break;
 	case $effect[High Colognic]:				useItem = $item[Musk Turtle];					break;
 	case $effect[Hippy Antimilitarism]:			useItem = $item[mini kiwi antimilitaristic hippy petition];	break;
 	case $effect[Hippy Stench]:					useItem = $item[reodorant];						break;
