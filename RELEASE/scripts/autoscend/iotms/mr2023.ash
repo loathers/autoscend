@@ -907,6 +907,7 @@ boolean auto_getCitizenZone(location loc)
 	boolean[location] mpZones = $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp,
 	Megalo-City, Shadow Rift, Vanya's Castle, The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,
 	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
+	boolean[location] specZones = $locations[The Outskirts of Cobb\'s Knob];
 	string activeCitZoneMod = activeCitZoneMod();
 	string goal;
 	
@@ -915,6 +916,13 @@ boolean auto_getCitizenZone(location loc)
 		return false;
 	}
 	//set goal for tracking
+	if(specZones contains loc)
+	{
+		if(auto_haveSeptEmberCenser() && turns_played() == 0) //ideally also have spring away
+		{
+			goal = "spec";
+		}
+	}
 	if(meatZones contains loc)
 	{
 		goal = "meat";
@@ -945,7 +953,7 @@ boolean auto_getCitizenZone(location loc)
 	if(autoAdv(loc))
 	{
 		activeCitZoneMod = activeCitZoneMod();
-		if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+		if(contains_text(activeCitZoneMod, goal) || (goal == "spec" && contains_text(activeCitZoneMod, "cold"))) //need this if statement separate in case we hit a non-combat
 		{
 			handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
 			return true;
@@ -977,6 +985,7 @@ boolean auto_getCitizenZone(string goal)
 	boolean[location] mpZones = $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp,
 	Megalo-City, Shadow Rift, Vanya's Castle, The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,
 	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
+	boolean[location] specZones = $locations[The Outskirts of Cobb\'s Knob];
 	string activeCitZoneMod = activeCitZoneMod();
 	
 	if(!auto_citizenZonePrep(goal))
@@ -985,6 +994,36 @@ boolean auto_getCitizenZone(string goal)
 	}
 	switch(goal)
 	{
+		case "spec": //Special handling for zones that depend on other IOTMs to be useful
+			foreach loc in specZones
+			{
+				if(!can_adventure(loc))
+				{
+					continue;
+				}
+				handleFamiliar(eagle);
+				set_property("auto_forceFreeRun", true);
+				if(autoAdv(loc))
+				{
+					activeCitZoneMod = activeCitZoneMod();
+					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
+					{
+						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+						return true;
+					}
+					else
+					{
+						auto_log_debug("Attempted to get citizen of a zone buff for a special goal however we failed.");
+						return false;
+					}
+				}
+				else
+				{
+					auto_log_debug("Attempted to get citizen of a zone buff for a special goal however we failed.");
+					return false;
+				}
+			}
+			break;
 		case "meat": //Get +50% meat
 			foreach loc in meatZones
 			{
