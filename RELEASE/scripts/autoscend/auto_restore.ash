@@ -1708,6 +1708,18 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 
 		if(!success)
 		{
+			// did we have exactly one option and fail to cast rest upside down because we have a back item with +HP/MP?
+			if (count(options) == 1 && options[0].metadata.name == "Rest upside down") {
+				item current_back = equipped_item($slot[back]);
+				// do we have less than max minus what the back item provides
+				if (current_resource() < max_resource() - numeric_modifier(current_back, "Maximum " + resource_type))
+				{
+					auto_log_info("Manually equipping the bat wings");
+					equip($item[bat wings]);
+					recover_discount_pants();
+					return use_skill(1, $skill[rest upside down]);
+				}
+			}
 			auto_log_warning("Target "+resource_type+" => " + goal + " - Uh oh. All restore options tried ("+count(options)+") failed. Sorry.", "red");
 			recover_discount_pants();
 			return false;
