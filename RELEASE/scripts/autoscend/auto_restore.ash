@@ -1717,7 +1717,9 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 					auto_log_info("Manually equipping the bat wings");
 					equip($item[bat wings]);
 					recover_discount_pants();
-					return use_skill(1, $skill[rest upside down]);
+					success = use_skill(1, $skill[rest upside down]);
+					equip(current_back);
+					return success;
 				}
 			}
 			auto_log_warning("Target "+resource_type+" => " + goal + " - Uh oh. All restore options tried ("+count(options)+") failed. Sorry.", "red");
