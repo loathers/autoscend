@@ -423,6 +423,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		if(item_amount($item[whet stone]) > 0) //use whet stone if we got one from the rock garden
 		{
 			use(1, $item[whet stone]);
+			handleTracker("Used " + $item[whet stone], "auto_otherstuff");
 		}
 		if(item_amount($item[mini kiwi aioli]) > 0 || (item_amount($item[mini kiwi]) >= 5 && item_amount($item[mini kiwi aioli]) == 0)) //use mini kiwi aioli if we got one from the mini kiwi
 		{
@@ -431,6 +432,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 				create(1, $item[mini kiwi aioli]); //create the aioli to actually use it
 			}
 			use(1, $item[mini kiwi aioli]);
+			handleTracker("Used " + $item[mini kiwi aioli], "auto_otherstuff");
 		}
 		if(have_effect($effect[Ready to Eat]) > 0)
 		{

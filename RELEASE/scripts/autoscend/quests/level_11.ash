@@ -2546,15 +2546,7 @@ boolean L11_redZeppelin()
 		}
 	}
 
-	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
-	{
-		if(possessEquipment(it) && auto_can_equip(it) &&
-		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze damage") < 5) &&
-		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell damage") < 5))
-		{
-			autoEquip(it);
-		}
-	}
+	equipMaximizedGear();
 
 	if(auto_is_valid($item[lynyrd snare]) && item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
 	{
@@ -2567,7 +2559,13 @@ boolean L11_redZeppelin()
 		{
 			foreach ef in $effects[Dirty Pear, Fifty Ways to Bereave Your Lover] // double sleaze dmg, +100 sleaze dmg, 
 			{
-				if (numeric_modifier("sleaze_damage")+numeric_modifier("sleaze spell damage") < 400)
+				float target_sleaze = 400;
+				float current_sleaze = numeric_modifier($modifier[sleaze damage])+numeric_modifier($modifier[sleaze spell damage]);
+				if(possessEquipment($item[candy cane sword cane]) && auto_is_valid($item[candy cane sword cane]))
+				{
+					target_sleaze = 190; // We need so much less sleaze damage with the candy cane sword doubling
+				}
+				if (current_sleaze < target_sleaze)
 				{
 					if (have_effect(ef)==0)
 					{
@@ -2927,13 +2925,57 @@ boolean L11_palindome()
 	#	In hardcore, guild-class, the right side of the or doesn't happen properly due us farming the
 	#	Mega Gem within the if, with pulls, it works fine. Need to fix this. This is bad.
 	#
-	if((item_amount($item[Bird Rib]) > 0) && (item_amount($item[Lion Oil]) > 0) && (item_amount($item[Wet Stew]) == 0))
+	boolean doWhiteys()
 	{
-		autoCraft("cook", 1, $item[Bird Rib], $item[Lion Oil]);
+		if(item_amount($item[white page]) > 0)
+		{
+			set_property("choiceAdventure940", 1);
+			if(item_amount($item[Bird Rib]) > 0)
+			{
+				set_property("choiceAdventure940", 2);
+			}
+
+			if(get_property("lastGuildStoreOpen").to_int() < my_ascensions())
+			{
+				auto_log_warning("This is probably no longer needed as of r16907. Please remove me", "blue");
+				auto_log_warning("Going to pretend we have unlocked the Guild because Mafia will assume we need to do that before going to Whitey's Grove and screw up us. We'll fix it afterwards.", "red");
+			}
+			backupSetting("lastGuildStoreOpen", my_ascensions());
+			string[int] pages;
+			pages[0] = "inv_use.php?pwd&which=3&whichitem=7555";
+			pages[1] = "choice.php?pwd&whichchoice=940&option=" + get_property("choiceAdventure940");
+			if(autoAdvBypass(0, pages, $location[Whitey\'s Grove], "")) {}
+			restoreSetting("lastGuildStoreOpen");
+			return true;
+		}
+		// +item is nice to get that food
+		bat_formBats();
+		auto_lostStomach(true);
+		auto_log_info("Off to the grove for some doofy food!", "blue");
+		return autoAdv(1, $location[Whitey\'s Grove]);
 	}
-	if((item_amount($item[Stunt Nuts]) > 0) && (item_amount($item[Wet Stew]) > 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0))
+
+	boolean makeWetStuntNutStew()
 	{
-		autoCraft("cook", 1, $item[wet stew], $item[stunt nuts]);
+		 if((item_amount($item[Bird Rib]) > 0) && (item_amount($item[Lion Oil]) > 0) && (item_amount($item[Wet Stew]) == 0))
+		{
+			autoCraft("cook", 1, $item[Bird Rib], $item[Lion Oil]);
+		}
+
+		if((item_amount($item[Stunt Nuts]) > 0) && (item_amount($item[Wet Stew]) > 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0))
+		{
+			autoCraft("cook", 1, $item[wet stew], $item[stunt nuts]);
+		}
+		if(item_amount($item[wet stunt nut stew]) > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	if(item_amount($item[wet stunt nut stew]) == 0 && internalQuestStatus("questL11Palindome") >= 3)
+	{
+		return makeWetStuntNutStew();
 	}
 
 	if((item_amount($item[Wet Stunt Nut Stew]) > 0) && !possessEquipment($item[Mega Gem]))
@@ -2943,39 +2985,14 @@ boolean L11_palindome()
 		visit_url("place.php?whichplace=palindome&action=pal_mrlabel");
 	}
 
-	if((total == 0) && !possessEquipment($item[Mega Gem]) && lovemeDone && in_hardcore() && (item_amount($item[Wet Stunt Nut Stew]) == 0) && ((internalQuestStatus("questL11Palindome") >= 3) || isGuildClass()) && !get_property("auto_bruteForcePalindome").to_boolean())
+	if((total == 0) && !possessEquipment($item[Mega Gem]) && lovemeDone && (in_hardcore() || get_property("auto_doWhiteys").to_boolean()) && (item_amount($item[Wet Stunt Nut Stew]) == 0) && ((internalQuestStatus("questL11Palindome") >= 3) || isGuildClass()) && !get_property("auto_bruteForcePalindome").to_boolean())
 	{
 		if(item_amount($item[Wet Stunt Nut Stew]) == 0)
 		{
 			equipBaseline();
 			if((item_amount($item[Bird Rib]) == 0) || (item_amount($item[Lion Oil]) == 0))
 			{
-				if(item_amount($item[white page]) > 0)
-				{
-					set_property("choiceAdventure940", 1);
-					if(item_amount($item[Bird Rib]) > 0)
-					{
-						set_property("choiceAdventure940", 2);
-					}
-
-					if(get_property("lastGuildStoreOpen").to_int() < my_ascensions())
-					{
-						auto_log_warning("This is probably no longer needed as of r16907. Please remove me", "blue");
-						auto_log_warning("Going to pretend we have unlocked the Guild because Mafia will assume we need to do that before going to Whitey's Grove and screw up us. We'll fix it afterwards.", "red");
-					}
-					backupSetting("lastGuildStoreOpen", my_ascensions());
-					string[int] pages;
-					pages[0] = "inv_use.php?pwd&which=3&whichitem=7555";
-					pages[1] = "choice.php?pwd&whichchoice=940&option=" + get_property("choiceAdventure940");
-					if(autoAdvBypass(0, pages, $location[Whitey\'s Grove], "")) {}
-					restoreSetting("lastGuildStoreOpen");
-					return true;
-				}
-				// +item is nice to get that food
-				bat_formBats();
-				auto_lostStomach(true);
-				auto_log_info("Off to the grove for some doofy food!", "blue");
-				autoAdv(1, $location[Whitey\'s Grove]);
+				doWhiteys();
 			}
 			else if(item_amount($item[Stunt Nuts]) == 0)
 			{
@@ -3044,16 +3061,6 @@ boolean L11_palindome()
 			}
 		}
 
-		if((item_amount($item[Bird Rib]) > 0) && (item_amount($item[Lion Oil]) > 0) && (item_amount($item[Wet Stew]) == 0))
-		{
-			autoCraft("cook", 1, $item[Bird Rib], $item[Lion Oil]);
-		}
-
-		if((item_amount($item[Stunt Nuts]) > 0) && (item_amount($item[Wet Stew]) > 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0))
-		{
-			autoCraft("cook", 1, $item[wet stew], $item[stunt nuts]);
-		}
-
 		if(!possessEquipment($item[Mega Gem]))
 		{
 			if (equipped_amount($item[Talisman o\' Namsilat]) == 0)
@@ -3088,6 +3095,48 @@ boolean L11_palindome()
 	}
 	else
 	{
+		if(!in_hardcore() && pulls_remaining() == 0)
+		{
+			// used our pulls today before getting to palindrome. Delay until next day or run out of other stuff to do
+			if(!isAboutToPowerlevel())
+			{
+				auto_log_debug("Delaying palindrome. In a normal run and don't have enough pulls to create wet stunt nut stew.");
+				return false;
+			}
+			else
+			{
+				//After we get the photos
+				//First try wishing, then try Whitey's if we have enough +item, then brute force.
+				//If we hit this, we should only need to finish the L11 quest so it won't hurt to do everything in provideItem
+				//since we will need +item for tomb rats in ~15 turns anyway. Buffs from wishes should still be active
+				//since they are 30 turns from monkey paw wishes and 20 turns from pocket/genie wishes.
+				if (internalQuestStatus("questL11Palindome") > 2)
+				{
+					if(auto_monkeyPawWishesLeft() > 0)
+					{
+						foreach it in $items[Lion Oil, Bird Rib]
+						{
+							if(item_amount(it) > 0) continue;
+							auto_makeMonkeyPawWish(it);
+						}
+						if(item_amount($item[Lion Oil]) > 0 && item_amount($item[Bird Rib]) > 0)
+						{
+							return makeWetStuntNutStew();
+						}
+						return false; //wasn't able to make the stew
+					}
+					else if(provideItem(300, $location[Whitey's Grove], true, true) >= 300)
+					{
+						set_property("auto_doWhiteys", true);
+						return doWhiteys(); //Initial call to do Whitey's Grove
+					}
+					else
+					{
+						set_property("auto_bruteForcePalindome",true);
+					}
+				}
+			}
+		}
 		if((my_mp() > 60) || considerGrimstoneGolem(true))
 		{
 			handleBjornify($familiar[Grimstone Golem]);

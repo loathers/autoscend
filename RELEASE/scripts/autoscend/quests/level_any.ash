@@ -964,6 +964,10 @@ boolean canSetWorkshed(item it) {
 
 boolean LX_ForceNC()
 {
+	if(get_property("auto_forceNonCombatSource") != "McHugeLarge left ski" || !get_property("auto_avalancheDeployed").to_boolean())
+	{
+		return false;
+	}
 	if(get_property("auto_forceNonCombatSource") != "jurassic parka" || !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		return false;
