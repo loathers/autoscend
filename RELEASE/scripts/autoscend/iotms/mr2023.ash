@@ -727,7 +727,7 @@ boolean auto_habitatTarget(monster target)
 			return (in_avantGuard() && (get_property("cyrptNicheEvilness").to_int() - (5 * (3 + cyrptEvilBonus()))) > 13);
 		case $monster[lobsterfrogman]:
 		 	// only worth it if we need 3+ barrels
-		 	boolean sonofa_complete = get_property("sidequestJunkyardCompleted") == "hippy" || get_property("sidequestJunkyardCompleted") == "fratboy";
+		 	boolean sonofa_complete = get_property("sidequestLighthouseCompleted") == "hippy" || get_property("sidequestLighthouseCompleted") == "fratboy";
 			return (!sonofa_complete && item_amount($item[barrel of gunpowder])<4);
 		case $monster[eldritch tentacle]:
 			// don't habitat free fights in avant guard
