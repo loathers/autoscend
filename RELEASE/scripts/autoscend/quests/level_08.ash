@@ -464,6 +464,14 @@ boolean L8_trapperExtreme()
 		return false;
 	}
 	
+	// We don't need to force the first NC, it''s superlikely. The other two we can.
+	int currentExtremity = get_property("currentExtremity").to_int();
+	if (currentExtremity == 1 || currentExtremity == 2)
+	{
+		boolean NCForced = auto_forceNextNoncombat($location[The eXtreme Slope]);
+		auto_log_info("Trying to force NC at extreme slope: "+NCForced.to_string(), "blue");
+	}
+	
 	// try to get extreme points
 	auto_log_info("Penguin Tony Hawk time. Extreme!! SSX Tricky!!", "blue");
 	return autoAdv($location[The eXtreme Slope]);
