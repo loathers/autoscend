@@ -89,8 +89,8 @@ drop	29	Green Pixie	prop:_absintheDrops<5
 drop	30	Galloping Grill	prop:_hotAshesDrops<5
 # If all else fails, keep generating CBB ingredients
 drop	31	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
-# build up a few mini kiwis
-drop	32	Mini Kiwi	item:mini kiwi<5
+# build up a few mini kiwis, enough for an aioli and a bikini
+drop	32	Mini Kiwi	item:mini kiwi<7
 # use a Peace turkey if all else fails
 drop	33	Peace Turkey
 
