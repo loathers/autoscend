@@ -175,6 +175,7 @@ void initializeSettings() {
 	remove_property("auto_beatenUpLocations");
 	set_property("auto_getBeehive", false);
 	set_property("auto_bruteForcePalindome", false);
+	set_property("auto_doWhiteys", false);
 	set_property("auto_cabinetsencountered", 0);
 	set_property("auto_chasmBusted", true);
 	set_property("auto_chewed", "");
