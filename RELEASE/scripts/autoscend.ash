@@ -1,4 +1,4 @@
-since r28114;	// feat: track split pea soup banish
+since r28258;	// fix: noncomforcers avalanche name
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -49,6 +49,7 @@ import <autoscend/iotms/mr2021.ash>
 import <autoscend/iotms/mr2022.ash>
 import <autoscend/iotms/mr2023.ash>
 import <autoscend/iotms/mr2024.ash>
+import <autoscend/iotms/mr2025.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
@@ -223,6 +224,7 @@ void initializeSettings() {
 	set_property("auto_paranoia", -1);
 	set_property("auto_paranoia_counter", 0);
 	set_property("auto_parkaSpikesDeployed", false);
+	set_property("auto_avalancheDeployed", false);
 	set_property("auto_priorCharpaneMode", "0");
 	set_property("auto_powerLevelAdvCount", "0");
 	set_property("auto_powerLevelLastAttempted", "0");
@@ -814,6 +816,9 @@ void initializeDay(int day)
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
+	
+	// Open our duffel bag
+	auto_openMcLargeHugeSkis();
 	
 	//you must finish the Toot Oriole quest to unlock council quests.
 	tootOriole();
