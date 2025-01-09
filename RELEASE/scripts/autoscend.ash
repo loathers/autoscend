@@ -1,4 +1,4 @@
-since r28235;	// feat: dinghy use. Need another update to fix avalanche use before merge
+since r28258;	// fix: noncomforcers avalanche name
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
