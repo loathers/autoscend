@@ -328,21 +328,28 @@ int auto_currentCinch()
 	return 100 - get_property("_cinchUsed").to_int();
 }
 
-int auto_cinchAfterNextRest()
+int auto_cinchFromNextRest()
 {
 	int cinchoRestsAlready = get_property("_cinchoRests").to_int();
 	// calculating for how much cinch NEXT rest will give
 	cinchoRestsAlready++;
+	return auto_cinchFromRestN(cinchoRestsAlready);
+}
 
-	int cinchGainedNextRest = 5;
-	if(cinchoRestsAlready <= 5) cinchGainedNextRest = 30;
-	else if(cinchoRestsAlready == 6) cinchGainedNextRest = 25;
-	else if(cinchoRestsAlready == 7) cinchGainedNextRest = 20;
-	else if(cinchoRestsAlready == 8) cinchGainedNextRest = 15;
-	else if(cinchoRestsAlready == 9) cinchGainedNextRest = 10;
-	// 10 and above give 5
-
-	return auto_currentCinch() + cinchGainedNextRest;
+int auto_cinchFromRestN(int n)
+{
+	int cinchGainedFromRest = 5;
+	if     (n <= 5) cinchGainedFromRest = 30;
+	else if(n == 6) cinchGainedFromRest = 25;
+	else if(n == 7) cinchGainedFromRest = 20;
+	else if(n == 8) cinchGainedFromRest = 15;
+	else if(n == 9) cinchGainedFromRest = 10;
+	
+	return cinchGainedFromRest;
+}
+int auto_cinchAfterNextRest()
+{
+	return auto_currentCinch() + auto_cinchFromNextRest();
 }
 
 boolean auto_nextRestOverCinch()
@@ -424,6 +431,23 @@ boolean shouldCinchoConfetti()
 	}
 	// canSurvive checked in calling location. This function is only available to combat files
 	return true;
+}
+
+int auto_potentialMaxCinchLeft()
+{
+	int max_rests = auto_potentialMaxFreeRests();
+	int curr_free_rests_used = get_property("_cinchoRests").to_int();
+	int cinch = auto_currentCinch();
+	for (int irest = curr_free_rests_used+1 ; irest < max_rests ; irest++)
+	{
+		cinch = cinch + auto_cinchFromRestN(irest);
+	}
+	return cinch;
+}
+
+int auto_cinchForcesLeft()
+{
+	return floor(auto_potentialMaxCinchLeft()/60);
 }
 
 boolean auto_have2002Catalog()

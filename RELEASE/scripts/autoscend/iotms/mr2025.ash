@@ -41,3 +41,13 @@ boolean auto_openMcLargeHugeSkis()
 	visit_url("inventory.php?action=skiduffel");
 	return possessEquipment($item[McHugeLarge right pole]);
 }
+
+int auto_McLargeHugeForcesLeft()
+{
+	if (!auto_haveMcHugeLargeSkis())
+	{
+		return 0;
+	}
+	int used = get_property("_mcHugeLargeAvalancheUses").to_int();
+	return 3-used;
+}

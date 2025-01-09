@@ -4634,3 +4634,15 @@ boolean have_workshed() {
 	}
 	return true;
 }
+
+int remainingNCForcesToday()
+{
+	int forces = 0;
+	forces = forces + auto_pillKeeperUses();
+	forces = forces + auto_AprilTubaForcesLeft();
+	forces = forces + auto_McLargeHugeForcesLeft();
+	forces = forces + auto_ParkaSpikeForcesLeft();
+	forces = forces + auto_cinchForcesLeft();
+	
+	return forces;
+}
