@@ -725,6 +725,10 @@ boolean auto_habitatTarget(monster target)
 		 	// only worth it if we need 18 or more evilness reduced.
 			// avant guard makes free fights cost a turn. Use DOL in place of tentacle
 			return (in_avantGuard() && (get_property("cyrptNicheEvilness").to_int() - (5 * (3 + cyrptEvilBonus()))) > 13);
+		case $monster[lobsterfrogman]:
+		 	// only worth it if we need 3+ barrels
+		 	boolean sonofa_complete = get_property("sidequestJunkyardCompleted") == "hippy" || get_property("sidequestJunkyardCompleted") == "fratboy";
+			return (!sonofa_complete && item_amount($item[barrel of gunpowder])<4);
 		case $monster[eldritch tentacle]:
 			// don't habitat free fights in avant guard
 			return (!in_avantGuard() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
