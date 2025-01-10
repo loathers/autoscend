@@ -2006,7 +2006,7 @@ void auto_begin()
 	}
 
 	auto_log_info("Hello " + my_name() + ", time to explode!");
-	auto_log_info("This is version: " + svn_info("autoscend").last_changed_rev + " Mafia: " + get_revision());
+	auto_log_info("This is version: " + git_info("autoscend").commit + " Mafia: " + get_revision());
 	auto_log_info("This is day " + my_daycount() + ".");
 	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
 	auto_log_info("Current Ascension: " + my_path().name);
