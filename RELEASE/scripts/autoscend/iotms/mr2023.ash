@@ -328,21 +328,28 @@ int auto_currentCinch()
 	return 100 - get_property("_cinchUsed").to_int();
 }
 
-int auto_cinchAfterNextRest()
+int auto_cinchFromNextRest()
 {
 	int cinchoRestsAlready = get_property("_cinchoRests").to_int();
 	// calculating for how much cinch NEXT rest will give
 	cinchoRestsAlready++;
+	return auto_cinchFromRestN(cinchoRestsAlready);
+}
 
-	int cinchGainedNextRest = 5;
-	if(cinchoRestsAlready <= 5) cinchGainedNextRest = 30;
-	else if(cinchoRestsAlready == 6) cinchGainedNextRest = 25;
-	else if(cinchoRestsAlready == 7) cinchGainedNextRest = 20;
-	else if(cinchoRestsAlready == 8) cinchGainedNextRest = 15;
-	else if(cinchoRestsAlready == 9) cinchGainedNextRest = 10;
-	// 10 and above give 5
-
-	return auto_currentCinch() + cinchGainedNextRest;
+int auto_cinchFromRestN(int n)
+{
+	int cinchGainedFromRest = 5;
+	if     (n <= 5) cinchGainedFromRest = 30;
+	else if(n == 6) cinchGainedFromRest = 25;
+	else if(n == 7) cinchGainedFromRest = 20;
+	else if(n == 8) cinchGainedFromRest = 15;
+	else if(n == 9) cinchGainedFromRest = 10;
+	
+	return cinchGainedFromRest;
+}
+int auto_cinchAfterNextRest()
+{
+	return auto_currentCinch() + auto_cinchFromNextRest();
 }
 
 boolean auto_nextRestOverCinch()
@@ -426,6 +433,23 @@ boolean shouldCinchoConfetti()
 	return true;
 }
 
+int auto_potentialMaxCinchLeft()
+{
+	int max_rests = auto_potentialMaxFreeRests();
+	int curr_free_rests_used = get_property("_cinchoRests").to_int();
+	int cinch = auto_currentCinch();
+	for (int irest = curr_free_rests_used+1 ; irest < max_rests ; irest++)
+	{
+		cinch = cinch + auto_cinchFromRestN(irest);
+	}
+	return cinch;
+}
+
+int auto_cinchForcesLeft()
+{
+	return floor(auto_potentialMaxCinchLeft()/60);
+}
+
 boolean auto_have2002Catalog()
 {
 	static item catalog = wrap_item($item[2002 Mr. Store Catalog]);
@@ -495,6 +519,12 @@ void auto_buyFrom2002MrStore()
 	}
 	//Pro skateboard to dupe tomb rat king drops
 	itemConsidering = $item[pro skateboard];
+	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering) && !possessEquipment(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+	}
+	//FLUDA is +25% item, and a pickpocket
+	itemConsidering = $item[Flash Liquidizer Ultra Dousing Accessory];
 	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering) && !possessEquipment(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
@@ -705,6 +735,10 @@ boolean auto_habitatTarget(monster target)
 		 	// only worth it if we need 18 or more evilness reduced.
 			// avant guard makes free fights cost a turn. Use DOL in place of tentacle
 			return (in_avantGuard() && (get_property("cyrptNicheEvilness").to_int() - (5 * (3 + cyrptEvilBonus()))) > 13);
+		case $monster[lobsterfrogman]:
+		 	// only worth it if we need 3+ barrels
+		 	boolean sonofa_complete = get_property("sidequestLighthouseCompleted") == "hippy" || get_property("sidequestLighthouseCompleted") == "fratboy";
+			return (!sonofa_complete && item_amount($item[barrel of gunpowder])<4);
 		case $monster[eldritch tentacle]:
 			// don't habitat free fights in avant guard
 			return (!in_avantGuard() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
@@ -1234,7 +1268,7 @@ boolean auto_handleCCSC()
 
 	if((place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5 && !get_property("candyCaneSwordBowlingAlley").to_boolean())
 	   || (place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0 && !get_property("candyCaneSwordShore").to_boolean())
-	   || (place == $location[The eXtreme Slope] && (!possessEquipment($item[eXtreme scarf]) && !possessEquipment($item[snowboarder pants])))
+	   || (place == $location[The eXtreme Slope] && (!possessEquipment($item[eXtreme scarf]) && !possessEquipment($item[snowboarder pants]) && !auto_haveMcHugeLargeSkis()))
 	   || (place == $location[The Copperhead Club] && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0) && !get_property("candyCaneSwordCopperheadClub").to_boolean())
 	   || (place == $location[The Defiled Cranny] && !get_property("candyCaneSwordDefiledCranny").to_boolean())
 	   || (place == $location[The Black Forest] && !get_property("candyCaneSwordBlackForest").to_boolean())

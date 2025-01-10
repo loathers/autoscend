@@ -346,7 +346,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			couldInstaKill = false;
 		}
 	}
-	else if($monsters[Lobsterfrogman, Ninja Snowman Assassin] contains enemy)
+	else if($monsters[Lobsterfrogman] contains enemy)
 	{
 		if(auto_have_skill($skill[Digitize]) && (get_property("_sourceTerminalDigitizeMonster") != enemy))
 		{

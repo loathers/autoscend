@@ -503,6 +503,11 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	if(get_property("auto_forceNonCombatSource") == "McHugeLarge left ski" && !get_property("auto_avalancheDeployed").to_boolean())
+	{
+		autoForceEquip(wrap_item($item[McHugeLarge left ski]));
+	}
+	
 	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		autoForceEquip(wrap_item($item[jurassic parka])); //equips parka and forbids maximizer tampering with shirt slot

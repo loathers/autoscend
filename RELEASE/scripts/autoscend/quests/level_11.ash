@@ -2550,15 +2550,7 @@ boolean L11_redZeppelin()
 		}
 	}
 
-	foreach it in $items[lynyrdskin breeches, lynyrdskin cap, lynyrdskin tunic]
-	{
-		if(possessEquipment(it) && auto_can_equip(it) &&
-		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze damage") < 5) &&
-		   (numeric_modifier(equipped_item(to_slot(it)), "sleaze spell damage") < 5))
-		{
-			autoEquip(it);
-		}
-	}
+	equipMaximizedGear();
 
 	if(auto_is_valid($item[lynyrd snare]) && item_amount($item[lynyrd snare]) > 0 && get_property("_lynyrdSnareUses").to_int() < 3 && my_hp() > 150)
 	{
@@ -2571,7 +2563,13 @@ boolean L11_redZeppelin()
 		{
 			foreach ef in $effects[Dirty Pear, Fifty Ways to Bereave Your Lover] // double sleaze dmg, +100 sleaze dmg, 
 			{
-				if (numeric_modifier("sleaze_damage")+numeric_modifier("sleaze spell damage") < 400)
+				float target_sleaze = 400;
+				float current_sleaze = numeric_modifier($modifier[sleaze damage])+numeric_modifier($modifier[sleaze spell damage]);
+				if(possessEquipment($item[candy cane sword cane]) && auto_is_valid($item[candy cane sword cane]))
+				{
+					target_sleaze = 190; // We need so much less sleaze damage with the candy cane sword doubling
+				}
+				if (current_sleaze < target_sleaze)
 				{
 					if (have_effect(ef)==0)
 					{

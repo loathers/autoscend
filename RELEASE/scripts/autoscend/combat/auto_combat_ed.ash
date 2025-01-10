@@ -159,7 +159,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	# Instakill handler
 	boolean doInstaKill = true;
-	if($monsters[Lobsterfrogman, Ninja Snowman Assassin] contains enemy)
+	if($monsters[Lobsterfrogman] contains enemy)
 	{
 		if(auto_have_skill($skill[Digitize]) && (get_property("_sourceTerminalDigitizeMonster") != enemy))
 		{
@@ -746,6 +746,13 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return 	auto_bowlingBallCombatString(my_location(), false);
 	}
 	
+	// prep avalanche if requested
+	if(canUse($skill[McHugeLarge Avalanche]) && get_property("auto_forceNonCombatSource") == "McHugeLarge left ski"
+		&& !get_property("auto_avalancheDeployed").to_boolean())
+	{
+		set_property("auto_avalancheDeployed", true);
+		return useSkill($skill[McHugeLarge Avalanche]);
+	}
 	// prep parka NC forcing if requested
 	if(canUse($skill[Launch spikolodon spikes]) && get_property("auto_forceNonCombatSource") == "jurassic parka"
 		&& !get_property("auto_parkaSpikesDeployed").to_boolean())

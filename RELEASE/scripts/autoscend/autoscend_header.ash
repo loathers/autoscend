@@ -475,6 +475,7 @@ void utilizeStillsuit();
 boolean auto_hasParka();
 boolean auto_configureParka(string tag);
 boolean auto_handleParka();
+int auto_ParkaSpikeForcesLeft();
 boolean auto_hasAutumnaton();
 boolean auto_autumnatonCanAdv(location canAdventureInloc);
 boolean auto_autumnatonReadyToQuest();
@@ -513,10 +514,14 @@ boolean auto_makeMonkeyPawWish(item wish);
 boolean auto_makeMonkeyPawWish(string wish);
 boolean auto_haveCincho();
 int auto_currentCinch();
+int auto_cinchFromRestN(int n);
+int auto_cinchFromNextRest();
 int auto_cinchAfterNextRest();
 boolean auto_nextRestOverCinch();
 boolean auto_getCinch(int goal);
 boolean shouldCinchoConfetti();
+int auto_totalCinchLeft();
+int auto_cinchForcesLeft();
 boolean auto_have2002Catalog();
 int remainingCatalogCredits();
 int remainingCatalogCredits();
@@ -582,6 +587,13 @@ boolean auto_haveSeptEmberCenser();
 int remainingEmbers();
 void auto_buyFromSeptEmberStore();
 boolean auto_haveTearawayPants();
+
+########################################################################################################
+//Defined in autoscend/iotms/mr2025.ash
+boolean auto_haveMcHugeLargeSkis();
+boolean auto_equipAllMcHugeLarge();
+boolean auto_openMcLargeHugeSkis();
+int auto_McLargeHugeForcesLeft();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1085,7 +1097,6 @@ boolean L8_getMineOres();
 void itznotyerzitzMineChoiceHandler(int choice);
 boolean L8_trapperExtreme();
 void theeXtremeSlopeChoiceHandler(int choice);
-boolean L8_trapperSlopeSoftcore();
 boolean L8_trapperNinjaLair();
 boolean L8_trapperGroar();
 boolean L8_trapperPeak();
@@ -1910,3 +1921,4 @@ boolean auto_burnMP(int mpToBurn);
 boolean can_read_skillbook(item it);
 boolean have_campground();
 boolean have_workshed();
+int remainingNCForcesToday();
