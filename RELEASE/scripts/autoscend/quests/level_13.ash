@@ -294,6 +294,72 @@ boolean LX_getStarKey()
 
 boolean beehiveConsider()
 {
+	int damage_sources = 1; // basic hit
+	
+	// Familiars
+	if (have_familiar($familiar[shorter-order cook]) && auto_is_valid($familiar[shorter-order cook]))
+	{
+		damage_sources += 5;
+	}
+	else if (have_familiar($familiar[mu]) && auto_is_valid($familiar[mu]))
+	{
+		damage_sources += 5;
+	}
+	else if (have_familiar($familiar[imitation crab]) && auto_is_valid($familiar[imitation crab]))
+	{
+		damage_sources += 4;
+	}
+	
+	// Prismatic damage sources
+	if (possessEquipment($item[june cleaver])&&auto_is_valid($item[june cleaver]))
+	{
+		damage_sources += 5;
+		if (have_skill($skill[double-fisted skull smashing]))
+		{
+			damage_sources += 1;
+		}
+	}
+	else if (possessEquipment($item[giant bow tie])&&auto_is_valid($item[giant bow tie]))
+	{
+		damage_sources += 5;
+		if (have_skill($skill[double-fisted skull smashing]))
+		{
+			damage_sources += 1;
+		}
+	}
+	else if (possessEquipment($item[roman candelabra])&&auto_is_valid($item[roman candelabra]))
+	{
+		damage_sources += 4; // doesn't do spooky, so let's get that from a spookyraven skill
+		if (have_skill($skill[Snarl of the Timberwolf]) || have_skill($skill[Dirge of Dreadfulness]))
+		{
+			damage_sources += 1;
+		}
+	}
+	
+	// Combat skill to use
+	if (have_skill($skill[kneebutt]))
+	{
+		damage_sources += 1;
+	}
+	
+	// Retatiatory skills
+	foreach sk in $skills[the psalm of pointiness, spiky shell, scarysauce, Jalape&ntilde;o Saucesphere]
+	{
+		if (have_skill(sk))
+		{
+			damage_sources += 1;
+		}
+	}
+	
+	print("Damage sources: "+to_string(damage_sources));
+	
+	if (damage_sources >= 13)
+	{
+		set_property("auto_getBeehive", false);
+		return true;
+	}
+	
+	// Old method
 	if(in_hardcore())
 	{
 		if(have_skill($skill[Shell Up]) && have_skill($skill[Sauceshell]))
