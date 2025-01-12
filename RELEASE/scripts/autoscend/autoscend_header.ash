@@ -1242,6 +1242,7 @@ void maximize_hedge();
 boolean L13_towerNSHedge();
 boolean L13_sorceressDoor();
 boolean L13_towerNSTower();
+boolean L13_towerNSTowerSkin();
 boolean L13_towerNSFinal();
 boolean L13_towerNSNagamar();
 boolean L13_towerAscent();
