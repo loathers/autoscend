@@ -265,6 +265,11 @@ boolean LX_islandAccess()
 		return LX_hippyBoatman();
 	}
 
+	if (get_property("lastIslandUnlock").to_int() < my_ascensions() && item_amount($item[pirate dinghy]) > 0 && !get_property("_pirateDinghyUsed").to_boolean()) {
+		use(1, $item[pirate dinghy]);
+		return true;
+	}
+
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
 
 	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (get_property("lastIslandUnlock").to_int() != my_ascensions()) && (my_meat() >= npc_price($item[dingy planks])) && isGeneralStoreAvailable())
@@ -280,7 +285,7 @@ boolean LX_islandAccess()
 		if(get_property("lastIslandUnlock").to_int() == my_ascensions())
 		{
 			boolean reallyUnlocked = false;
-			foreach it in $items[Dingy Dinghy, Skeletal Skiff, Yellow Submarine]
+			foreach it in $items[Dingy Dinghy, Skeletal Skiff, Yellow Submarine, pirate dinghy]
 			{
 				if(item_amount(it) > 0)
 				{
@@ -819,6 +824,8 @@ item LX_getDesiredWorkshed(){
 	//return the actual item name in case a shorthand is used
 	switch(currentWorkshed)
 	{
+		case "takerspace":
+			return $item[TakerSpace letter of Marque];
 		case "model train set":
 		case "train":
 			return $item[model train set];
@@ -886,31 +893,37 @@ boolean LX_setWorkshed(){
 		//Check if there is an existing shed. We only want to go into this if statement once to use the best available workshed
 		if(existingShed == $item[none])
 		{
-			if ((auto_is_valid($item[model train set])) && (item_amount($item[model train set]) > 0))
+			if (canSetWorkshed($item[model train set]))
 			{
 				use(1, $item[model train set]);
 				auto_log_info("Installed your model train set");
 				return true;
 			}
-			if ((auto_is_valid($item[Asdon Martin keyfob (on ring)])) && (item_amount($item[Asdon Martin keyfob (on ring)]) > 0))
+			if (canSetWorkshed($item[Asdon Martin keyfob (on ring)]))
 			{
 				use(1, $item[Asdon Martin keyfob (on ring)]);
 				auto_log_info("Installed your Asdon Martin keyfob");
 				return true;
 			}
-			if ((auto_is_valid($item[cold medicine cabinet])) && (item_amount($item[cold medicine cabinet]) > 0))
+			if (canSetWorkshed($item[cold medicine cabinet]))
 			{
 				use(1, $item[cold medicine cabinet]);
 				auto_log_info("Installed your cold medicine cabinet");
 				return true;
 			}
-			if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0))
+			if (canSetWorkshed($item[TakerSpace letter of Marque]))
+			{
+				use(1, $item[TakerSpace letter of Marque]);
+				auto_log_info("Installed your TakerSpace letter of Marque");
+				return true;
+			}
+			if (canSetWorkshed($item[little geneticist dna-splicing lab]))
 			{
 				use(1, $item[little geneticist dna-splicing lab]);
 				auto_log_info("Installed your little geneticist dna-splicing lab");
 				return true;
 			}
-			if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
+			if (canSetWorkshed($item[portable mayo clinic]))
 			{
 				use(1, $item[portable mayo clinic]);
 				auto_log_info("Installed your portable mayo clinic");
@@ -922,25 +935,25 @@ boolean LX_setWorkshed(){
 		//once we have enough fasteners and only if we are currently using the model train set
 		if((fastenerCount() >= 30 && lumberCount() >= 30) && existingShed == $item[model train set])
 		{
-			if ((auto_is_valid($item[Asdon Martin keyfob (on ring)])) && (item_amount($item[Asdon Martin keyfob (on ring)]) > 0))
+			if (canSetWorkshed($item[Asdon Martin keyfob (on ring)]))
 			{
 				use(1, $item[Asdon Martin keyfob (on ring)]);
 				auto_log_info("Changed your workshed to Asdon Martin keyfob");
 				return true;
 			}
-			if ((auto_is_valid($item[cold medicine cabinet])) && (item_amount($item[cold medicine cabinet]) > 0))
+			if (canSetWorkshed($item[cold medicine cabinet]))
 			{
 				use(1, $item[cold medicine cabinet]);
 				auto_log_info("Changed your workshed to cold medicine cabinet");
 				return true;
 			}
-			if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0))
+			if (canSetWorkshed($item[little geneticist dna-splicing lab]))
 			{
 				use(1, $item[little geneticist dna-splicing lab]);
 				auto_log_info("Changed your workshed to little geneticist dna-splicing lab");
 				return true;
 			}
-			if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
+			if (canSetWorkshed($item[portable mayo clinic]))
 			{
 				use(1, $item[portable mayo clinic]);
 				auto_log_info("Changed your workshed to portable mayo clinic");
@@ -948,9 +961,13 @@ boolean LX_setWorkshed(){
 			}
 			auto_log_warning("You have no workshed to change to so leaving it as " + get_workshed().to_string());
 			return false; //return false if no other workshed is available
-		}		
+		}
 	}
 	return false;
+}
+
+boolean canSetWorkshed(item it) {
+	return (auto_is_valid(it)) && (item_amount(it) > 0);
 }
 
 boolean LX_ForceNC()
@@ -988,6 +1005,8 @@ boolean LX_ForceNC()
 		case $location[The Hidden Apartment Building]:
 		case $location[The Hidden Office Building]:
 			return L11_hiddenCity();
+		case $location[The eXtreme Slope]:
+			return L8_trapperQuest();
 		default:
 			auto_log_warning("Attempted to force NC in unexpected location: " + desiredNCLocation);
 			return false;
