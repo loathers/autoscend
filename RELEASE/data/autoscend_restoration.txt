@@ -25,88 +25,89 @@ dwelling	16	Distant Woods Getaway Brochure	250	125	2	0	none	none
 dwelling	17	Chateau Mantegna room key	250	125	2	0	none	none
 
 item	0	scented massage oil	ALL	0	0	0	none	none
-item	1	extra-strength red potion	200	0	0	0	none	Healthy Red Glow
-item	2	plaid bandage	135	0	0	0	none	none
-item	3	red pixel potion	110	0	0	0	none	none
-item	4	gauze garter	100	0	0	5	none	none
-item	5	filthy poultice	100	0	0	5	none	none
-item	6	red potion	95	0	0	0	none	Healthy Red Glow
-item	7	green pixel potion	50	35	0	0	none	none
-item	8	cartoon heart	50	0	0	0	none	Healthy Red Glow
-item	9	Texas tea	30	30	0	0	none	Texas Elegance
-item	10	Doc Galaktik's Homeopathic Elixir	19	0	0	0	none	none
-item	11	cast	15	0	0	0	none	none
-item	12	Doc Galaktik's Restorative Balm	14	0	0	0	none	none
-item	13	Doc Galaktik's Ailment Ointment	9	0	0	0	none	none
-item	14	forest tears	7	0	0	0	Beaten Up	none
-item	15	Doc Galaktik's Pungent Unguent	4	0	0	0	none	none
-item	16	palm-frond fan	40	40	0	0	none	none
-item	17	Cloaca-Cola	0	12	0	0	none	none
-item	18	scroll of drastic healing	100000	0	0	0	none	none
-item	19	warm El Vibrato drone	ALL	0	0	0	none	Well-preserved
-item	20	Camp Scout pup tent	1000	0	0	0	none	none
-item	21	really thick bandage	110	0	0	0	none	none
-item	22	bottle of Vangoghbitussin	100	100	0	0	none	The 'Tussin
-item	23	ancient turtle shell powder	90	0	0	0	none	none
-item	24	cotton candy bale	61	61	0	0	none	none
-item	25	ancient Magi-Wipes	55	55	0	0	none	none
-item	26	cotton candy pillow	51	51	0	0	none	none
-item	27	phonics down	48	48	0	0	none	Tingly Wrists,Tingly Biceps,Tingly Elbows
-item	28	cotton candy cone	39	39	0	0	none	none
-item	29	honey-dipped locust	35	35	0	0	none	none
-item	30	cotton candy plug	28	28	0	0	none	none
-item	31	comfy pillow	25	0	0	0	none	none
-item	32	cotton candy skoshe	22	22	0	0	none	none
-item	33	tiny house	22	22	0	0	Beaten Up,Confused,Embarrassed,Hardly Poisoned at All,Sleepy,Sunburned,Wussiness	none
-item	34	cotton candy smidgen	17	17	0	0	none	none
-item	35	dueling turtle	15	15	0	0	none	none
-item	36	sugar shard	15	7	0	0	none	none
-item	37	cotton candy pinch	11	11	0	0	none	none
-item	38	pixellated candy heart	4	0	0	0	none	none
-item	39	your own black heart	ALL	ALL	0	0	Beaten Up	none
-item	40	Egnaro berry	0	HALF	0	0	none	Berry Experiential
-item	41	CSA all purpose soap	0	1000	0	0	All Negative	none
-item	42	Wolfman Nardz	0	250	0	0	none	none
-item	43	high pressure seltzer bottle	0	175	0	0	none	none
-item	44	Cloaca Cola Polar	0	150	0	0	none	Polar Express
-item	45	natural fennel soda	0	100	0	0	none	none
-item	46	can of CRIMBCOLA	0	90	0	0	none	none
-item	47	Monstar energy beverage	0	75	0	0	none	none
-item	48	carbonated soy milk	0	75	0	0	none	none
-item	49	carbonated water lily	0	65	0	0	none	none
-item	50	blue pixel potion	0	65	0	0	none	none
-item	51	Nardz energy beverage	0	60	0	0	none	none
-item	52	bottle of Monsieur Bubble	0	55	0	0	none	none
-item	53	unrefined Mountain Stream syrup	0	55	0	0	none	none
-item	54	banana spritzer	0	70	0	0	none	none
-item	55	elven magi pack	0	45	0	0	none	none
-item	56	myrrh soaked, chocolate covered bacon bath ball	0	37	0	0	none	Pork Power,[800]Chocolate Reign,Incensed
-item	57	creepy ginger ale	0	40	0	0	none	none
-item	58	grogpagne	0	40	0	0	none	none
-item	59	tonic water	0	40	0	0	none	none
-item	60	Marquis de Poivre soda	0	35	0	0	none	none
-item	61	Mountain Stream soda	0	35	0	0	none	none
-item	62	Knob Goblin superseltzer	0	27	0	0	none	none
-item	63	Blatantly Canadian	0	27	0	0	none	none
-item	64	beer scented teddy bear	0	17	0	0	none	none
-item	65	Knob Goblin seltzer	0	10	0	0	none	none
-item	66	black cherry soda	0	10	0	0	none	none
-item	67	Doc Galaktik's Invigorating Tonic	0	10	0	0	none	none
-item	68	Cherry Cloaca Cola	0	8	0	0	none	none
-item	69	Diet Cloaca Cola	0	8	0	0	none	none
-item	70	Regular Cloaca Cola	0	8	0	0	none	none
-item	71	natto marble soda	0	7	0	0	none	none
-item	72	tobiko marble soda	0	7	0	0	none	none
-item	73	wasabi marble soda	0	7	0	0	none	none
-item	74	soda water	0	4	0	0	none	none
-item	75	Wint-O-Fresh mint	0	4	0	0	none	none
-item	76	magical mystery juice	0	scaling	0	0	none	none
-item	77	generic mana potion	0	scaling	0	0	none	none
-item	78	Psychokinetic Energy Blob	0	25	0	0	none	none
+item	1	pirate dinghy	1000	1000	0	0	none	none
+item	2	extra-strength red potion	200	0	0	0	none	Healthy Red Glow
+item	3	plaid bandage	135	0	0	0	none	none
+item	4	red pixel potion	110	0	0	0	none	none
+item	5	gauze garter	100	0	0	5	none	none
+item	6	filthy poultice	100	0	0	5	none	none
+item	7	red potion	95	0	0	0	none	Healthy Red Glow
+item	8	green pixel potion	50	35	0	0	none	none
+item	9	cartoon heart	50	0	0	0	none	Healthy Red Glow
+item	10	Texas tea	30	30	0	0	none	Texas Elegance
+item	11	Doc Galaktik's Homeopathic Elixir	19	0	0	0	none	none
+item	12	cast	15	0	0	0	none	none
+item	13	Doc Galaktik's Restorative Balm	14	0	0	0	none	none
+item	14	Doc Galaktik's Ailment Ointment	9	0	0	0	none	none
+item	15	forest tears	7	0	0	0	Beaten Up	none
+item	16	Doc Galaktik's Pungent Unguent	4	0	0	0	none	none
+item	17	palm-frond fan	40	40	0	0	none	none
+item	18	Cloaca-Cola	0	12	0	0	none	none
+item	19	scroll of drastic healing	100000	0	0	0	none	none
+item	20	warm El Vibrato drone	ALL	0	0	0	none	Well-preserved
+item	21	Camp Scout pup tent	1000	0	0	0	none	none
+item	22	really thick bandage	110	0	0	0	none	none
+item	23	bottle of Vangoghbitussin	100	100	0	0	none	The 'Tussin
+item	24	ancient turtle shell powder	90	0	0	0	none	none
+item	25	cotton candy bale	61	61	0	0	none	none
+item	26	ancient Magi-Wipes	55	55	0	0	none	none
+item	27	cotton candy pillow	51	51	0	0	none	none
+item	28	phonics down	48	48	0	0	none	Tingly Wrists,Tingly Biceps,Tingly Elbows
+item	29	cotton candy cone	39	39	0	0	none	none
+item	30	honey-dipped locust	35	35	0	0	none	none
+item	31	cotton candy plug	28	28	0	0	none	none
+item	32	comfy pillow	25	0	0	0	none	none
+item	33	cotton candy skoshe	22	22	0	0	none	none
+item	34	tiny house	22	22	0	0	Beaten Up,Confused,Embarrassed,Hardly Poisoned at All,Sleepy,Sunburned,Wussiness	none
+item	35	cotton candy smidgen	17	17	0	0	none	none
+item	36	dueling turtle	15	15	0	0	none	none
+item	37	sugar shard	15	7	0	0	none	none
+item	38	cotton candy pinch	11	11	0	0	none	none
+item	39	pixellated candy heart	4	0	0	0	none	none
+item	40	your own black heart	ALL	ALL	0	0	Beaten Up	none
+item	41	Egnaro berry	0	HALF	0	0	none	Berry Experiential
+item	42	CSA all purpose soap	0	1000	0	0	All Negative	none
+item	43	Wolfman Nardz	0	250	0	0	none	none
+item	44	high pressure seltzer bottle	0	175	0	0	none	none
+item	45	Cloaca Cola Polar	0	150	0	0	none	Polar Express
+item	46	natural fennel soda	0	100	0	0	none	none
+item	47	can of CRIMBCOLA	0	90	0	0	none	none
+item	48	Monstar energy beverage	0	75	0	0	none	none
+item	49	carbonated soy milk	0	75	0	0	none	none
+item	50	carbonated water lily	0	65	0	0	none	none
+item	51	blue pixel potion	0	65	0	0	none	none
+item	52	Nardz energy beverage	0	60	0	0	none	none
+item	53	bottle of Monsieur Bubble	0	55	0	0	none	none
+item	54	unrefined Mountain Stream syrup	0	55	0	0	none	none
+item	55	banana spritzer	0	70	0	0	none	none
+item	56	elven magi pack	0	45	0	0	none	none
+item	57	myrrh soaked, chocolate covered bacon bath ball	0	37	0	0	none	Pork Power,[800]Chocolate Reign,Incensed
+item	58	creepy ginger ale	0	40	0	0	none	none
+item	59	grogpagne	0	40	0	0	none	none
+item	60	tonic water	0	40	0	0	none	none
+item	61	Marquis de Poivre soda	0	35	0	0	none	none
+item	62	Mountain Stream soda	0	35	0	0	none	none
+item	63	Knob Goblin superseltzer	0	27	0	0	none	none
+item	64	Blatantly Canadian	0	27	0	0	none	none
+item	65	beer scented teddy bear	0	17	0	0	none	none
+item	66	Knob Goblin seltzer	0	10	0	0	none	none
+item	67	black cherry soda	0	10	0	0	none	none
+item	68	Doc Galaktik's Invigorating Tonic	0	10	0	0	none	none
+item	69	Cherry Cloaca Cola	0	8	0	0	none	none
+item	70	Diet Cloaca Cola	0	8	0	0	none	none
+item	71	Regular Cloaca Cola	0	8	0	0	none	none
+item	72	natto marble soda	0	7	0	0	none	none
+item	73	tobiko marble soda	0	7	0	0	none	none
+item	74	wasabi marble soda	0	7	0	0	none	none
+item	75	soda water	0	4	0	0	none	none
+item	76	Wint-O-Fresh mint	0	4	0	0	none	none
+item	77	magical mystery juice	0	scaling	0	0	none	none
+item	78	generic mana potion	0	scaling	0	0	none	none
+item	79	Psychokinetic Energy Blob	0	25	0	0	none	none
 ## Actually Ed the Undying restores
-item	79	Holy Spring Water	0	50	0	0	none	Spiritually Awake
-item	80	Spirit Beer	0	90	0	0	none	Spiritually Aware
-item	81	Sacramental Wine	0	180	0	0	none	Spiritually Awash
+item	80	Holy Spring Water	0	50	0	0	none	Spiritually Awake
+item	81	Spirit Beer	0	90	0	0	none	Spiritually Aware
+item	82	Sacramental Wine	0	180	0	0	none	Spiritually Awash
 
 # special handling in auto_restore.ash accounts for mp restore if completed as frat warrior
 place	0	the nunnery	1000	0	3	0	none	none

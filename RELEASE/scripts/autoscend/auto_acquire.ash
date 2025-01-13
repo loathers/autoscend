@@ -1014,6 +1014,7 @@ boolean LX_craftAcquireItems()
 
 	LX_dolphinKingMap();
 	auto_mayoItems();
+	auto_checkTakerSpace();
 
 	if(item_amount($item[Metal Meteoroid]) > 0 && !in_tcrs())
 	{

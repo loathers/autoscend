@@ -966,7 +966,9 @@ boolean L11_mcmuffinDiary()
 	}
 
 	auto_log_info("Getting the McMuffin Diary", "blue");
+	set_property("auto_considerCCSCShore", false);
 	LX_doVacation();
+	set_property("auto_considerCCSCShore", true);
 	foreach diary in $items[Your Father\'s Macguffin Diary, Copy of a Jerk Adventurer\'s Father\'s Diary]
 	{
 		if(item_amount(diary) > 0)
