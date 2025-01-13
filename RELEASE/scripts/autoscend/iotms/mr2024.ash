@@ -482,8 +482,18 @@ void auto_checkTakerSpace()
 		create(1, $item[anchor bomb]);
 	}
 	// goldschlepper is EPIC booze
-	int creatableGold = creatable_amount($item[tankard of spiced Goldschlepper]);
-	if(creatableGold > 0) {
-		create(creatableGold, $item[tankard of spiced Goldschlepper]);
+	int createable = creatable_amount($item[tankard of spiced Goldschlepper]);
+	if(createable > 0) {
+		create(createable, $item[tankard of spiced Goldschlepper]);
+	}
+	// tankard of spiced rum is awesome booze
+	createable = creatable_amount($item[tankard of spiced rum]);
+	if(createable > 0) {
+		create(createable, $item[tankard of spiced rum]);
+	}
+	// cursed Aztec tamale is awesome food, and only uses spices
+	createable = creatable_amount($item[cursed Aztec tamale]);
+	if(createable > 0) {
+		create(createable, $item[cursed Aztec tamale]);
 	}
 }
