@@ -1253,6 +1253,7 @@ boolean L13_towerNSTowerSkin()
 	
 	int damage = 2; // base attack damage plus TT attack skill (kneebutt, headbutt)
 	
+	boolean fam_set = false;
 	foreach fam in $familiars[shorter-order cook, mu, imitation crab] // crab is evergreen, buy one
 	{
 		if (have_familiar(fam) && auto_is_valid(fam))
@@ -1260,8 +1261,28 @@ boolean L13_towerNSTowerSkin()
 			handleFamiliar(fam);
 			use_familiar(fam);
 			damage += 4; // worst one is crab, at 4.
+			fam_set = true;
 			break;
 		}
+	}
+	if (!fam_set) // just use some trash that does damage that we will have
+	{
+		foreach fam in $familiars[angry goat, MagiMechTech MicroMechaMech, star starfish, mosquito]
+		{
+			if (have_familiar(fam) && auto_is_valid(fam))
+			{
+				handleFamiliar(fam);
+				use_familiar(fam);
+				break;
+			}
+		}
+	}
+		
+	// We've probably got a tiny bowler, that'll help.
+	if (available_amount($item[tiny bowler]) > 0 && can_equip($item[tiny bowler]))
+	{
+		autoEquip($item[tiny bowler]);
+		damage += 1; //familiar attack
 	}
 	
 	// apply skills
@@ -1271,6 +1292,7 @@ boolean L13_towerNSTowerSkin()
 	uneffect($effect[Ode to Booze]);
 	uneffect($effect[The Sonata of Sneakiness]);
 	uneffect($effect[Carlweather\'s Cantata of Confrontation]);
+	uneffect($effect[Cletus\'s Canticle of Celerity]);
 	
 	// TODO: These need to be handled so they're not recast
 	uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
