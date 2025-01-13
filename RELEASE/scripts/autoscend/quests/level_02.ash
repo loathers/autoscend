@@ -103,11 +103,6 @@ boolean L2_mosquito()
 		// Arboreal Respite choice adventure has a delay of 5 adventures.
 		return false;
 	}
-
-	if(activeCitZoneMod() == "none") //if we don't already have a Citizen of a Zone buff, might as well get this
-	{
-		auto_getCitizenZone($location[The Spooky Forest]);
-	}
 	
 	auto_log_info("Trying to find a mosquito.", "blue");
 	if(autoAdv($location[The Spooky Forest]))

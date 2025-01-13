@@ -43,7 +43,7 @@ boolean bat_wantHowl(location loc)
 	monster[int] monsters = get_monsters(loc);
 	foreach i in monsters
 	{
-		if (!(banished contains monsters[i]) && (auto_wantToBanish(monsters[i], loc) || auto_wantToBanish(monster_phylum(monsters[i]), loc))) {
+		if (!(banished contains monsters[i]) && (auto_wantToBanish(monsters[i], loc))) {
 			return true;
 		}
 	}

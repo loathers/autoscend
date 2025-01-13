@@ -455,6 +455,14 @@ boolean LX_unlockManorSecondFloor() {
 		return false;
 	}
 
+	//No sense in trying to go to the library if constructs (writing desk) are banished and we already have a killing jar and haven't done the desert yet
+	if (isBanishedPhyla($phylum[construct]) && get_property("screechCombats").to_int() > 0 &&
+	(item_amount($item[killing jar]) > 0 && ((get_property("gnasirProgress").to_int() & 4) != 4)))
+	{
+		set_property("screechDelay", true);
+		return false;
+	}
+
 	if (!hasSpookyravenLibraryKey()) {
 		return false;
 	}
@@ -2424,6 +2432,12 @@ boolean L11_mauriceSpookyraven()
 
 	if (item_amount($item[bottle of Chateau de Vinegar]) == 0 && !possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
+		if (isBanishedPhyla($phylum[construct]) && get_property("screechCombats").to_int() > 0)
+		{
+			set_property("screechDelay", true);
+			return false; //No sense in trying to go to the Wine Cellar if constructs (Wine Racks) are banished
+		}
+
 		auto_log_info("Searching for vinegar", "blue");
 		if(!bat_wantHowl($location[The Haunted Wine Cellar]))
 		{
