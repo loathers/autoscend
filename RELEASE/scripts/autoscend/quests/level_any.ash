@@ -997,6 +997,8 @@ boolean LX_ForceNC()
 		case $location[The Hidden Apartment Building]:
 		case $location[The Hidden Office Building]:
 			return L11_hiddenCity();
+		case $location[The eXtreme Slope]:
+			return L8_trapperQuest();
 		default:
 			auto_log_warning("Attempted to force NC in unexpected location: " + desiredNCLocation);
 			return false;
