@@ -147,6 +147,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 
 		if (sources >= 4) {
+			if(canUse($skill[Kneebutt], false))
+			{
+				return useSkill($skill[Kneebutt], false);
+			}
 			if(canUse($skill[Headbutt], false))
 			{
 				return useSkill($skill[Headbutt], false);

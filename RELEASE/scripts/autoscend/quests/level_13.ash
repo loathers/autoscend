@@ -1257,6 +1257,7 @@ boolean L13_towerNSTowerSkin()
 	{
 		if (have_familiar(fam) && auto_is_valid(fam))
 		{
+			handleFamiliar(fam);
 			use_familiar(fam);
 			damage += 4; // worst one is crab, at 4.
 			break;
@@ -1265,11 +1266,15 @@ boolean L13_towerNSTowerSkin()
 	
 	// apply skills
 	// start by shrugging unnecessary AT skills
-	uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
-	uneffect($effect[Antiphon of Aptitude]);
+	// These ones should be safe to just remove simply
+	uneffect($effect[Aloysius' Antiphon of Aptitude]);
 	uneffect($effect[Ode to Booze]);
 	uneffect($effect[The Sonata of Sneakiness]);
 	uneffect($effect[Carlweather\'s Cantata of Confrontation]);
+	
+	// TODO: These need to be handled so they're not recast
+	uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
+	uneffect($effect[Polka of Plenty]);
 	
 	// damage skills
 	foreach sk in $skills[dirge of dreadfulness, icy glare]
