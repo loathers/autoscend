@@ -435,7 +435,7 @@ boolean auto_run_choice(int choice, string page)
 			hiddenCityChoiceHandler(choice);
 			break;
 		case 793: // The Shore, Inc. Travel Agency. doing a vacation
-			if(options contains 5)
+			if(options contains 5 && get_property("auto_considerCCSCShore").to_boolean())
 			{
 				run_choice(5); // 2 Shore scrips, all stats, +wdmg
 			}

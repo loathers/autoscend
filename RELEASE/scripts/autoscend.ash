@@ -181,6 +181,7 @@ void initializeSettings() {
 	set_property("auto_chasmBusted", true);
 	set_property("auto_chewed", "");
 	set_property("auto_clanstuff", "0");
+	set_property("auto_considerCCSCShore", true);
 	set_property("auto_copies", "");
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);

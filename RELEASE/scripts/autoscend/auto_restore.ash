@@ -934,6 +934,9 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		if(metadata.type == "item")
 		{
 			item i = to_item(metadata.name);
+			if (i.dailyusesleft == 0) {
+				return false;
+			}
 			boolean mall_buyable = can_interact() && auto_mall_price(i) > 0;
 			boolean npc_meat_buyable = npc_price(i) > 0;
 			boolean coinmaster_buyable = i.seller != $coinmaster[none] && is_accessible(i.seller) && get_property("autoSatisfyWithCoinmasters").to_boolean();
