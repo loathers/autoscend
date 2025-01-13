@@ -78,7 +78,6 @@ boolean auto_post_adventure()
 	if(get_property("auto_forceNonCombatSource") != "" && !auto_haveQueuedForcedNonCombat() && !(get_property("auto_instakillSuccess").to_boolean()))
 	{
 		// possible to get desired NC when preparing spikes/avalanche. Only log usage if NC was actually forced
-		// I have no idea how to make this check work for avalanche too?
 		if((get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean()) &&
 		(get_property("auto_forceNonCombatSource") != "McHugeLarge left ski") || get_property("auto_avalancheDeployed").to_boolean())
 		{
