@@ -75,7 +75,7 @@ boolean auto_post_adventure()
 	 * Cosmetics Wraith in the Haunted Bathroom), and we SHOULD reset the
 	 * noncombat-forcer in those cases.*/
 
-	if(get_property("auto_forceNonCombatSource") != "" && !auto_haveQueuedForcedNonCombat() && !(get_property("auto_instakillSuccess").to_boolean()))
+	if(get_property("auto_forceNonCombatSource") != "" && !auto_haveQueuedForcedNonCombat())
 	{
 		// possible to get desired NC when preparing spikes/avalanche. Only log usage if NC was actually forced
 		if((get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean()) &&
