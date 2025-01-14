@@ -4557,7 +4557,7 @@ int meatReserve()
 
 boolean auto_wishForEffectIfNeeded(effect wish)
 {
-	if have_effect(wish)
+	if (have_effect(wish)>0)
 	{
 		return true;
 	}
