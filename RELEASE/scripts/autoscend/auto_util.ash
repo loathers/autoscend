@@ -4555,6 +4555,15 @@ int meatReserve()
 	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
 }
 
+boolean auto_wishForEffectIfNeeded(effect wish)
+{
+	if (have_effect(wish)>0)
+	{
+		return true;
+	}
+	return auto_wishForEffect(wish);
+}
+
 boolean auto_wishForEffect(effect wish)
 {
 	// First try to use the monkey paw
@@ -4645,4 +4654,49 @@ int remainingNCForcesToday()
 	forces = forces + auto_cinchForcesLeft();
 	
 	return forces;
+}
+
+float substat_to_level()
+{
+	return substat_to_level(my_basestat(stat_to_substat(my_primestat())));
+}
+
+float substat_to_level(int n)
+{
+	if(n <= 16)
+	{
+		return 1; // All substats less than 16 are level 1, before the formula takes effect
+	}
+	return square_root( square_root(n) - 4 ) + 1;
+}
+
+stat stat_to_substat(stat s)
+{
+	switch(s)
+	{
+		case $stat[muscle]:
+			return $stat[submuscle];
+		case $stat[mysticality]:
+			return $stat[submysticality];
+		case $stat[moxie]:
+			return $stat[submoxie];
+	}
+	return s;
+}
+
+float stat_exp_percent(stat s)
+{
+	switch(s)
+	{
+		case $stat[muscle]:
+		case $stat[submuscle]:
+			return numeric_modifier($modifier[muscle experience percent]);
+		case $stat[mysticality]:
+		case $stat[submysticality]:
+			return numeric_modifier($modifier[mysticality experience percent]);
+		case $stat[moxie]:
+		case $stat[submoxie]:
+			return numeric_modifier($modifier[moxie experience percent]);
+	}
+	return 0;
 }
