@@ -451,6 +451,37 @@ void auto_buyFromSeptEmberStore()
 	// consider throwin' ember for banish or summoning charm for pickpocket in future PR
 }
 
+float expected_mouthwash_main_substat()
+{
+	return expected_mouthwash_main_substat(numeric_modifier($modifier[cold resistance]));
+}
+
+float expected_mouthwash_main_substat(float cold_res)
+{
+	float boost_factor = 1+stat_exp_percent(my_primestat())/100;
+	return boost_factor * 14 * (cold_res**1.7) / 2;
+}
+
+float expected_level_after_mouthwash()
+{
+	return expected_level_after_mouthwash(1, numeric_modifier($modifier[cold resistance]));
+}
+
+float expected_level_after_mouthwash(int n_mouthwash)
+{
+	return expected_level_after_mouthwash(n_mouthwash,numeric_modifier($modifier[cold resistance]));
+}
+
+float expected_level_after_mouthwash(int n_mouthwash, float cold_res)
+{
+	float gained_main_substats = n_mouthwash * expected_mouthwash_main_substat(cold_res);
+	int old_main_substats = my_basestat(stat_to_substat(my_primestat()));
+	float new_main_substats = old_main_substats + gained_main_substats;
+	float level = substat_to_level(new_main_substats);
+	return level;
+}
+
+
 boolean auto_haveTearawayPants()
 {
 	if(auto_is_valid($item[Tearaway Pants]) && available_amount($item[Tearaway Pants]) > 0 )
