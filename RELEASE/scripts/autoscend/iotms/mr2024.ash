@@ -434,9 +434,12 @@ void auto_buyFromSeptEmberStore()
 		int [element] resGoal;
 		resGoal[$element[cold]] = 100;
 		// get cold res. Use noob cave as generic place holder
-		auto_wishForEffect($effect[Fever From the Flavor]);
 		provideResistances(resGoal, $location[noob cave], true);
 		equipMaximizedGear();
+		if (expected_level_after_mouthwash()<13) // use a wish if really need it
+		{
+			auto_wishForEffectIfNeeded($effect[Fever From the Flavor]);
+		}
 		// buy mouthwash and use it
 		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
 		auto_log_debug(`Using mouthwash with {numeric_modifier("cold Resistance")} cold resistance`);
