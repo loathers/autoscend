@@ -434,9 +434,12 @@ void auto_buyFromSeptEmberStore()
 		int [element] resGoal;
 		resGoal[$element[cold]] = 100;
 		// get cold res. Use noob cave as generic place holder
-		auto_wishForEffect($effect[Fever From the Flavor]);
 		provideResistances(resGoal, $location[noob cave], true);
 		equipMaximizedGear();
+		if (expected_level_after_mouthwash()<13) // use a wish if really need it
+		{
+			auto_wishForEffectIfNeeded($effect[Fever From the Flavor]);
+		}
 		// buy mouthwash and use it
 		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
 		auto_log_debug(`Using mouthwash with {numeric_modifier("cold Resistance")} cold resistance`);
@@ -450,6 +453,37 @@ void auto_buyFromSeptEmberStore()
 	}
 	// consider throwin' ember for banish or summoning charm for pickpocket in future PR
 }
+
+float expected_mouthwash_main_substat()
+{
+	return expected_mouthwash_main_substat(numeric_modifier($modifier[cold resistance]));
+}
+
+float expected_mouthwash_main_substat(float cold_res)
+{
+	float boost_factor = 1+stat_exp_percent(my_primestat())/100;
+	return boost_factor * 14 * (cold_res**1.7) / 2;
+}
+
+float expected_level_after_mouthwash()
+{
+	return expected_level_after_mouthwash(1, numeric_modifier($modifier[cold resistance]));
+}
+
+float expected_level_after_mouthwash(int n_mouthwash)
+{
+	return expected_level_after_mouthwash(n_mouthwash,numeric_modifier($modifier[cold resistance]));
+}
+
+float expected_level_after_mouthwash(int n_mouthwash, float cold_res)
+{
+	float gained_main_substats = n_mouthwash * expected_mouthwash_main_substat(cold_res);
+	int old_main_substats = my_basestat(stat_to_substat(my_primestat()));
+	float new_main_substats = old_main_substats + gained_main_substats;
+	float level = substat_to_level(new_main_substats);
+	return level;
+}
+
 
 boolean auto_haveTearawayPants()
 {
@@ -482,8 +516,18 @@ void auto_checkTakerSpace()
 		create(1, $item[anchor bomb]);
 	}
 	// goldschlepper is EPIC booze
-	int creatableGold = creatable_amount($item[tankard of spiced Goldschlepper]);
-	if(creatableGold > 0) {
-		create(creatableGold, $item[tankard of spiced Goldschlepper]);
+	int createable = creatable_amount($item[tankard of spiced Goldschlepper]);
+	if(createable > 0) {
+		create(createable, $item[tankard of spiced Goldschlepper]);
+	}
+	// tankard of spiced rum is awesome booze
+	createable = creatable_amount($item[tankard of spiced rum]);
+	if(createable > 0) {
+		create(createable, $item[tankard of spiced rum]);
+	}
+	// cursed Aztec tamale is awesome food, and only uses spices
+	createable = creatable_amount($item[cursed Aztec tamale]);
+	if(createable > 0) {
+		create(createable, $item[cursed Aztec tamale]);
 	}
 }

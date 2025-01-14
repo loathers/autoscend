@@ -591,7 +591,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 
 		//If you have tearaway pants equipped, use its skill
-		if(canUse($skill[Tear Away your Pants!]))
+		if(canUse($skill[Tear Away your Pants!]) && (get_property("auto_forceNonCombatSource") == "" || monster_phylum() == $phylum[plant]))
 		{
 			return useSkill($skill[Tear Away your Pants!]);
 		}
