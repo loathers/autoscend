@@ -989,3 +989,36 @@ void auto_useWardrobe()
 	// let maximizer handle if any of it is worth equipping
 	use($item[wardrobe-o-matic]);
 }
+
+boolean fightFlamingLeaflet() {
+	if(item_amount($item[inflammable leaf]) >= 11) {
+		auto_log_debug("summoning flaming leaflet (2389)");
+		leaves 11;
+
+		return true;
+	}
+
+	return false;
+}
+
+boolean fightFlamingMonstera() {
+	if(item_amount($item[inflammable leaf]) >= 111) {
+		auto_log_debug("summoning flaming monstera (2390)");
+		leaves 111;
+
+		retun true;
+	}
+
+	return false;
+}
+
+boolean fightLeaviathan() {
+	if(item_amount($item[inflammable leaf]) >= 666) {
+		auto_log_debug("summoning leaviathan (2391)");
+		leaves 666;
+
+		return true;
+	}
+
+	return false;
+}
