@@ -873,6 +873,12 @@ boolean auto_haveBurningLeaves()
 	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];
 }
 
+into auto_remainingFlamingLeafFights()
+{
+	readonly int baseFightsPerDay = 5;
+	return baseFightsPerDay - get_property("_leafMonstersFought).to_int();
+}
+
 boolean auto_burnLeaves()
 {
 	if (!auto_haveBurningLeaves())
