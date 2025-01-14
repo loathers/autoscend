@@ -4555,6 +4555,15 @@ int meatReserve()
 	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
 }
 
+boolean auto_wishForEffectIfNeeded(effect wish)
+{
+	if have_effect(wish)
+	{
+		return true;
+	}
+	return auto_wishForEffect(wish);
+}
+
 boolean auto_wishForEffect(effect wish)
 {
 	// First try to use the monkey paw
