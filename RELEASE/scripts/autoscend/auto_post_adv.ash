@@ -78,11 +78,11 @@ boolean auto_post_adventure()
 	if(get_property("auto_forceNonCombatSource") != "" && !auto_haveQueuedForcedNonCombat())
 	{
 		// possible to get desired NC when preparing spikes/avalanche. Only log usage if NC was actually forced
-		// I have no idea how to make this check work for avalanche too?
-		if(get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean())
+		if((get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean()) &&
+		(get_property("auto_forceNonCombatSource") != "McHugeLarge left ski") || get_property("auto_avalancheDeployed").to_boolean())
 		{
 			auto_log_info("Encountered forced noncombat: " + get_property("lastEncounter"), "blue");
-			handleTracker(get_property("auto_forceNonCombatSource"), get_property("lastEncounter"), "auto_forcedNC");
+			handleTracker(get_property("auto_forceNonCombatSource"), to_string(my_location()) + "-" + get_property("lastEncounter"), "auto_forcedNC");
 		}
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatLocation", "");
@@ -93,7 +93,10 @@ boolean auto_post_adventure()
 	if(get_property("auto_instakillSource") != "" && get_property("auto_instakillSuccess").to_boolean())
 	{
 		auto_log_info("Successful instakill with: " + get_property("auto_instakillSource"), "blue");
-		handleTracker(get_property("lastEncounter"), get_property("auto_instakillSource"), "auto_instakill");
+		if(get_property("lastEncounter").to_monster() == last_monster()) //only track the combat part of a combat+NC encounter (like everfull dart perks)
+		{
+			handleTracker(get_property("lastEncounter"), get_property("auto_instakillSource"), "auto_instakill");
+		}
 		set_property("auto_instakillSource", "");
 		set_property("auto_instakillSuccess", false);
 	}
