@@ -82,7 +82,7 @@ boolean auto_post_adventure()
 		(get_property("auto_forceNonCombatSource") != "McHugeLarge left ski") || get_property("auto_avalancheDeployed").to_boolean())
 		{
 			auto_log_info("Encountered forced noncombat: " + get_property("lastEncounter"), "blue");
-			handleTracker(get_property("auto_forceNonCombatSource"), to_string(my_location()) + " - " + get_property("lastEncounter"), "auto_forcedNC");
+			handleTracker(get_property("auto_forceNonCombatSource"), to_string(my_location()) + "-" + get_property("lastEncounter"), "auto_forcedNC");
 		}
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatLocation", "");
