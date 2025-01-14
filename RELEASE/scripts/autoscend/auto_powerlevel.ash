@@ -399,9 +399,9 @@ boolean LX_freeCombats(boolean powerlevel)
 		if(adv_done) return true;
 	}
 	
-	if(auto_haveBurningLeaves() && get_property("_leafMonstersFought).to_int() < 5) {
+	if(auto_haveBurningLeaves() && get_property("auto_remainingFlamingLeafFights").to_int() > 0) {
 		auto_log_debug("LX_freeCombats is summoning leaf monsters");
-		int remainingLeafFights = get_property("_leafMonstersFought).to_int();
+		int remainingLeafFights = get_property("auto_remainingFlamingLeafFights").to_int();
 
 		while(remainingLeafFights > 0 && item_amount($item[inflammable leaf]) >= 11){
 			remainingLeafFights--;
