@@ -1735,6 +1735,7 @@ string safeString(item input);
 string safeString(monster input);
 void handleTracker(string used, string tracker);
 void handleTracker(string used, string detail, string tracker);
+void handleTracker(string used, string loc, string detail, string tracker);
 boolean organsFull();
 boolean backupSetting(string setting, string newValue);
 boolean restoreAllSettings();
