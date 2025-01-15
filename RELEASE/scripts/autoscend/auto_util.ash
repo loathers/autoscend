@@ -520,11 +520,6 @@ int[phylum] banishedPhyla()
 	return retval;
 }
 
-boolean isBanishedPhyla(phylum monsterPhylum)
-{
-	return (banishedPhyla() contains monsterPhylum);
-}
-
 int autoCraft(string mode, int count, item item1, item item2)
 {
 	if((mode == "combine") && !knoll_available())

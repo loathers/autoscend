@@ -1,4 +1,4 @@
-since r28258;	// fix: noncomforcers avalanche name
+since r28270;	// feat: add function is_banished(phylum)
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

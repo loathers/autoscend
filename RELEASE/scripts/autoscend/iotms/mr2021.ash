@@ -113,14 +113,8 @@ void simulatePreAdvForCrystalBall(location place)
 {
 	// used only when simulating maximizer equipment
 	// replicates most of pre_adv monster queue checks in order to know if miniature crystal ball will be allowed
-	
-	boolean burningDelay = auto_burningDelay();
-	boolean gettingLucky = auto_gettingLucky();
-	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
-	boolean zoneQueueIgnored = auto_queueIgnore();
-
 	boolean considerCrystalBallBonus;
-	if(!zoneQueueIgnored && get_property("auto_nextEncounter").to_monster() == $monster[none] && 
+	if(!auto_queueIgnore() && get_property("auto_nextEncounter").to_monster() == $monster[none] && 
 	!auto_forceHandleCrystalBall(place))
 	{
 		//equipping the crystal ball can't hurt but it is neither forced nor forbidden
@@ -147,7 +141,7 @@ void simulatePreAdvForCrystalBall(location place)
 	
 	boolean zoneHasUnwantedMonsters;
 	boolean zoneHasWantedMonsters;
-	if (!zoneQueueIgnored)	//next encounter is a monster from the zone
+	if (!auto_queueIgnore())	//next encounter is a monster from the zone
 	{
 		foreach i,mon in possible_monsters
 		{

@@ -159,7 +159,7 @@ boolean L7_defiledAlcove()
 		return false;
 	}
 
-	if (isBanishedPhyla($phylum[undead]) && get_property("screechCombats").to_int() > 0)
+	if (is_banished($phylum[undead]) && get_property("screechCombats").to_int() > 0)
 	{
 		set_property("screechDelay", true);
 		return false; //No sense in trying to go to the cyrpt if undead are banished
@@ -391,7 +391,7 @@ boolean L7_crypt()
 		return false;
 	}
 
-	if (isBanishedPhyla($phylum[undead]) && get_property("screechCombats").to_int() > 0)
+	if (is_banished($phylum[undead]) && get_property("screechCombats").to_int() > 0)
 	{
 		set_property("screechDelay", true);
 		return false; //No sense in trying to go to the cyrpt if undead are banished

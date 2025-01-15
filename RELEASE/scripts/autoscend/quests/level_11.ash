@@ -456,7 +456,7 @@ boolean LX_unlockManorSecondFloor() {
 	}
 
 	//No sense in trying to go to the library if constructs (writing desk) are banished and we already have a killing jar and haven't done the desert yet
-	if (isBanishedPhyla($phylum[construct]) && get_property("screechCombats").to_int() > 0 &&
+	if (is_banished($phylum[construct]) && get_property("screechCombats").to_int() > 0 &&
 	(item_amount($item[killing jar]) > 0 && ((get_property("gnasirProgress").to_int() & 4) != 4)))
 	{
 		set_property("screechDelay", true);
@@ -823,7 +823,7 @@ boolean L11_blackMarket()
 	{
 		return false;
 	}
-	if (isBanishedPhyla($phylum[beast]) && get_property("screechCombats").to_int() > 0)
+	if (is_banished($phylum[beast]) && get_property("screechCombats").to_int() > 0)
 	{
 		set_property("screechDelay", true);
 		return false; // Can't get the reassembled blackbird if beasts are banished
@@ -2434,7 +2434,7 @@ boolean L11_mauriceSpookyraven()
 
 	if (item_amount($item[bottle of Chateau de Vinegar]) == 0 && !possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
-		if (isBanishedPhyla($phylum[construct]) && get_property("screechCombats").to_int() > 0)
+		if (is_banished($phylum[construct]) && get_property("screechCombats").to_int() > 0)
 		{
 			set_property("screechDelay", true);
 			return false; //No sense in trying to go to the Wine Cellar if constructs (Wine Racks) are banished
@@ -2778,7 +2778,7 @@ boolean L11_shenCopperhead()
 		return false;
 	}
 
-	if (isBanishedPhyla($phylum[dude])) // No need to check for Screech Combats because there's nothing in here we want to screech away
+	if (is_banished($phylum[dude])) // No need to check for Screech Combats because there's nothing in here we want to screech away
 	{
 		set_property("screechDelay", true);
 		return false; //Probably should delay the Copperhead Club because dudes are important here
@@ -2939,7 +2939,7 @@ boolean L11_palindome()
 	total = total + item_amount($item[Photograph Of God]);
 	total = total + item_amount($item[Photograph Of A Dog]);
 
-	if(isBanishedPhyla($phylum[dude]) && get_property("screechCombats").to_int() > 0)
+	if(is_banished($phylum[dude]) && get_property("screechCombats").to_int() > 0)
 	{
 		set_property("screechDelay", true);
 		return false; //If new phylum banishers come out, this should be updated.
@@ -2960,7 +2960,7 @@ boolean L11_palindome()
 	boolean doWhiteys()
 	{
 		//Can't do Whitey's Grove if beasts are banished
-		if(isBanishedPhyla($phylum[beast]) && get_property("screechCombats").to_int() > 0)
+		if(is_banished($phylum[beast]) && get_property("screechCombats").to_int() > 0)
 		{
 			set_property("screechDelay", true);
 			return false; //If new phylum banishers come out, this should be updated.

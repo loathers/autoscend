@@ -356,16 +356,15 @@ boolean auto_pre_adventure()
 	boolean burningDelay = auto_burningDelay();
 	boolean gettingLucky = auto_gettingLucky();
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
-	boolean zoneQueueIgnored = auto_queueIgnore();
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !zoneQueueIgnored) {
+	if (combatModifier._boolean && !auto_queueIgnore()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
 
 	boolean considerCrystalBallBonus = false;
 	if(auto_haveCrystalBall())
 	{
-		if(zoneQueueIgnored || get_property("auto_nextEncounter").to_monster() != $monster[none])
+		if(auto_queueIgnore() || get_property("auto_nextEncounter").to_monster() != $monster[none])
 		{
 			//if already forced by something else, no need to handle your ball
 		}
@@ -399,7 +398,7 @@ boolean auto_pre_adventure()
 	
 	boolean zoneHasUnwantedMonsters;
 	boolean zoneHasWantedMonsters;
-	if (!zoneQueueIgnored)	//next encounter is a monster from the zone
+	if (!auto_queueIgnore())	//next encounter is a monster from the zone
 	{
 		foreach i,mon in possible_monsters
 		{
@@ -411,7 +410,7 @@ boolean auto_pre_adventure()
 			if(auto_wantToBanish(monster_phylum(mon), place))
 			{
 				// attempt to prepare for banishing, but if we can not try free running
-				boolean canBanish = adjustForBanishIfPossible(monster_phylum(mon), place);
+				adjustForBanishIfPossible(monster_phylum(mon), place);
 				zoneHasUnwantedMonsters = true;
 			}
 			boolean wantToBanish  = auto_wantToBanish(mon, place);
