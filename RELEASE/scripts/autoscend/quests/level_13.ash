@@ -299,7 +299,7 @@ boolean beehiveConsider(boolean at_tower)
 	// Familiars
 	if (have_familiar($familiar[shorter-order cook]) && auto_is_valid($familiar[shorter-order cook]))
 	{
-		damage_sources += 5;
+		damage_sources += 6;
 	}
 	else if (have_familiar($familiar[mu]) && auto_is_valid($familiar[mu]))
 	{
@@ -328,7 +328,10 @@ boolean beehiveConsider(boolean at_tower)
 	// Damage skills
 	foreach sk in $skills[dirge of dreadfulness, icy glare]
 	{
-		damage_sources += 1;
+		if (have_skill(sk))
+		{
+			damage_sources += 1;
+		}
 	}
 	// Sleaze and stench will be taken care of war gear.
 	damage_sources += 2;
@@ -347,8 +350,8 @@ boolean beehiveConsider(boolean at_tower)
 		}
 	}
 	
-	// Tiny bowler gives familiar damage, nearly always drops.
-	if (!at_tower || (available_amount($item[tiny bowler])>0))
+	// Tiny bowler gives familiar damage
+	if (available_amount($item[tiny bowler])>0)
 	{
 		damage_sources += 1;
 	}
@@ -1285,7 +1288,7 @@ boolean L13_towerNSTowerSkin()
 		{
 			handleFamiliar(fam);
 			use_familiar(fam);
-			damage += 4; // worst one is crab, at 4.
+			damage += (fam == $familiar[imitation crab] ? 4 : 5);
 			fam_set = true;
 			break;
 		}
@@ -1322,6 +1325,9 @@ boolean L13_towerNSTowerSkin()
 	// TODO: These need to be handled so they're not recast
 	uneffect($effect[Ur-Kel\'s Aria of Annoyance]);
 	uneffect($effect[Polka of Plenty]);
+	
+	// We want retaliation for light hits, so remove blood bubble if possible
+	uneffect($effect[blood bubble]);
 	
 	// damage skills
 	foreach sk in $skills[dirge of dreadfulness, icy glare]
