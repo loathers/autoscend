@@ -1236,7 +1236,7 @@ boolean get8BitFatLootToken();
 boolean LX_getDigitalKey();
 void LX_buyStarKeyParts();
 boolean LX_getStarKey();
-boolean beehiveConsider();
+boolean beehiveConsider(boolean at_tower);
 int ns_crowd1();
 stat ns_crowd2();
 element ns_crowd3();

@@ -292,7 +292,7 @@ boolean LX_getStarKey()
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
-boolean beehiveConsider()
+boolean beehiveConsider(boolean at_tower)
 {
 	int damage_sources = 1; // basic hit
 	
@@ -333,8 +333,33 @@ boolean beehiveConsider()
 	// Sleaze and stench will be taken care of war gear.
 	damage_sources += 2;
 	
+	// Now check stuff we get in run.
 	// Hot and another retaliation will be taken care of by hot plate (guaranteed from friars)
-	damage_sources += 2;
+	if (!at_tower || (available_amount($item[hot plate])>0))
+	{
+		damage_sources += 2;
+	}
+	else // or maybe we just have hot damage already
+	{
+		if (numeric_modifier($modifier[hot damage])>0)
+		{
+			damage_sources += 1;
+		}
+	}
+	
+	// Tiny bowler gives familiar damage, nearly always drops.
+	if (!at_tower || (available_amount($item[tiny bowler])>0))
+	{
+		damage_sources += 1;
+	}
+	
+	// We can't assume we get this, so don't count it speculatively.
+	if (available_amount($item[hippy protest button])>0)
+	{
+		damage_sources += 1;
+	}
+	
+	#~ auto_log_info("Investigating chance of towerkilling wall of skin, need 13 damage, expecting to have "+to_string(damage_sources), "blue");
 	
 	if (damage_sources >= 13)
 	{
@@ -1245,7 +1270,7 @@ boolean L13_towerNSTowerSkin()
 		return autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 	}
 	// Can we kill the tower without a beehive?
-	beehiveConsider();
+	beehiveConsider(true);
 	if(get_property("auto_getBeehive").to_boolean())
 	{
 		return false;
