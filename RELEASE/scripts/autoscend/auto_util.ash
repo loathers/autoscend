@@ -336,6 +336,11 @@ void handleTracker(string used, string loc, string detail, string tracker)
 	{
 		cur = cur + ", ";
 	}
+	if(loc == "none")
+	{
+		handleTracker(used,detail,tracker);
+		return;
+	}
 	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(loc) + ":" + safeString(detail) + ":" + my_turncount() + ")";
 	set_property(tracker, cur);
 }
