@@ -1750,7 +1750,7 @@ boolean makeGenieWish(string wish)
 		return false;
 	}
 
-	handleTracker(to_item(wish_provider), wish, "auto_wishes");
+	handleTracker(to_item(wish_provider), my_location().to_string(), wish, "auto_wishes");
 	return true;
 }
 
@@ -1848,7 +1848,7 @@ boolean makeGenieCombat(monster mon, string option)
 		return false;
 	}
 	handleTracker(mon, to_item(wish_provider), "auto_copies");
-	handleTracker(to_item(wish_provider), wish, "auto_wishes");
+	handleTracker(to_item(wish_provider), my_location().to_string(), wish, "auto_wishes");
 	return true;
 }
 
