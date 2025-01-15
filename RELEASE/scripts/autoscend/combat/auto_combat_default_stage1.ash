@@ -139,26 +139,13 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			return useSkill($skill[Belch the Rainbow], false);
 		}
 
-		int sources = 0;
-		foreach damage in $strings[Cold Damage, Hot Damage, Sleaze Damage, Spooky Damage, Stench Damage] {
-			if(numeric_modifier(damage) > 0) {
-				sources += 1;
-			}
+		if(canUse($skill[Kneebutt], false))
+		{
+			return useSkill($skill[Kneebutt], false);
 		}
-
-		if (sources >= 4) {
-			if(canUse($skill[Kneebutt], false))
-			{
-				return useSkill($skill[Kneebutt], false);
-			}
-			if(canUse($skill[Headbutt], false))
-			{
-				return useSkill($skill[Headbutt], false);
-			}
-			if(canUse($skill[Clobber], false))
-			{
-				return useSkill($skill[Clobber], false);
-			}
+		if(canUse($skill[Headbutt], false))
+		{
+			return useSkill($skill[Headbutt], false);
 		}
 		return "attack with weapon";
 	}
