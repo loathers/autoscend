@@ -269,7 +269,7 @@ boolean auto_makeMonkeyPawWish(effect wish)
 	}
 	boolean success = monkey_paw(wish);
 	if (success) {
-		handleTracker(to_string($item[cursed monkey\'s paw]), to_string(wish), "auto_wishes");
+		handleTracker(to_string($item[cursed monkey\'s paw]), my_location().to_string(), to_string(wish), "auto_wishes");
 	}
 	return success;
 }
@@ -303,7 +303,7 @@ boolean auto_makeMonkeyPawWish(string wish)
 	}
 	boolean success = monkey_paw(wish);
 	if (success) {
-		handleTracker(to_string($item[cursed monkey\'s paw]), wish, "auto_wishes");
+		handleTracker(to_string($item[cursed monkey\'s paw]), my_location().to_string(), wish, "auto_wishes");
 	}
 	return success;
 }

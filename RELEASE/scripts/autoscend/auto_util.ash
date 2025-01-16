@@ -329,6 +329,22 @@ void handleTracker(string used, string detail, string tracker)
 	set_property(tracker, cur);
 }
 
+void handleTracker(string used, string loc, string detail, string tracker)
+{
+	string cur = get_property(tracker);
+	if(cur != "")
+	{
+		cur = cur + ", ";
+	}
+	if(loc == "none")
+	{
+		handleTracker(used,detail,tracker);
+		return;
+	}
+	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(loc) + ":" + safeString(detail) + ":" + my_turncount() + ")";
+	set_property(tracker, cur);
+}
+
 boolean organsFull()
 {
 	if(my_fullness() < fullness_limit())

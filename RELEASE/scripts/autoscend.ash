@@ -257,7 +257,7 @@ void initializeSettings() {
 	remove_property("auto_saveVintage");
 	set_property("auto_dontUseCookBookBat", false);
 	set_property("auto_dietpills", 0);
-	beehiveConsider();
+	beehiveConsider(false);
 
 	eudora_initializeSettings();
 	heavyrains_initializeSettings();
