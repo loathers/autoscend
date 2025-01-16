@@ -1048,212 +1048,27 @@ boolean L13_towerNSTower()
 
 	auto_log_info("Scaling the mighty NStower...", "green");
 
-	L13_towerNSTowerSkin();
-
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_06_monster2"))
+	if (L13_towerNSTowerSkin())
 	{
-		if (get_property("auto_towerBreak").to_lower_case() == "wall of meat" || get_property("auto_towerBreak").to_lower_case() == "wallofmeat" || get_property("auto_towerBreak").to_lower_case() == "meat" || get_property("auto_towerBreak").to_lower_case() == "level 2")
-		{
-			abort("auto_towerBreak set to abort here.");
-		}
-		equipBaseline();
-		provideMeat(626, true, false);
-
-		if(in_zombieSlayer())
-		{
-			acquireMP(30,0);
-		}
-
-		acquireHP();
-		autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);
 		return true;
 	}
-
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_07_monster3"))		//need to kill wall of bones
+	if(L13_towerNSTowerMeat())
 	{
-		if (get_property("auto_towerBreak").to_lower_case() == "wall of bones" || get_property("auto_towerBreak").to_lower_case() == "wallofbones" || get_property("auto_towerBreak").to_lower_case() == "bones" || get_property("auto_towerBreak").to_lower_case() == "level 3")
-		{
-			abort("auto_towerBreak set to abort here.");
-		}
-		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
-		boolean has_boning_knife = item_amount($item[Electric Boning Knife]) > 0;
-		
-		if(has_boning_knife || in_pokefam() || (in_wereprof() && canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0))		//I have everything I need. just go fight
-		{
-			return autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
-		}
-		
-		//should I grab an electric boning knife?
-		if(hundred_fam != $familiar[none] && isAttackFamiliar(hundred_fam))
-		{
-			set_property("auto_getBoningKnife", true);		//in 100% familiar run with attack familiar we must acquire boning knife
-		}
-		if(my_class() != $class[Sauceror] && !have_skill($skill[Garbage Nova]))
-		{
-			set_property("auto_getBoningKnife", true);		//can not towerkill. get boning knife instead
-		}
-		if(!uneffect($effect[Scariersauce]))
-		{
-			//passive dmg prevents tower kill. we can not uneffect it so get boning knife instead
-			set_property("auto_getBoningKnife", true);
-		}
-		
-		if(get_property("auto_getBoningKnife").to_boolean())	//grab boning knife if we deemed it necessary
-		{
-			if(lar_repeat($location[The Castle in the Clouds in the Sky (Ground Floor)]))
-			{
-				auto_log_info("Backfarming an Electric Boning Knife", "green");
-				return autoAdv($location[The Castle in the Clouds in the Sky (Ground Floor)]);
-			}
-			else abort("I determined I must get [Electric Boning Knife] to proceed but I can not get one");
-		}
-		
-		//if we reached this spot we decided that we do not need a boning knife and intend to try to towerkill the wall of bones.
-		uneffect($effect[Scarysauce]);
-		uneffect($effect[Jalape&ntilde;o Saucesphere]);
-		uneffect($effect[Spiky Shell]);
-		if(in_aosol()){
-			uneffect($effect[Queso Fustulento]);
-			uneffect($effect[Tricky Timpani]);
-		}
-		uneffect($effect[Psalm of Pointiness]);
-		uneffect($effect[Mayeaugh]);
-		uneffect($effect[Feeling Nervous]);
-		buffMaintain($effect[Tomato Power]);
-		buffMaintain($effect[Seeing Colors]);
-		buffMaintain($effect[Glittering Eyelashes]);
-		buffMaintain($effect[OMG WTF]);
-		buffMaintain($effect[There is a Spoon]);
-		buffMaintain($effect[Song of Sauce]);
-		buffMaintain($effect[Carol of the Hells]);
-		
-		// Maximizer tries to force familiar equipment. and prefers passive dmg a that. Avoid dealing damage from familiar and losing
-		if(canChangeFamiliar())
-		{
-			use_familiar(lookupFamiliarDatafile("gremlins"));		//delevel with no damage. fallback to none if unavailable
-			set_property("auto_disableFamiliarChanging", true);
-		}
-		if(my_familiar() != $familiar[none])
-		{
-			addToMaximize("-familiar");
-			equip($slot[familiar], $item[none]);
-		}
-
-		addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
-		equipMaximizedGear();
-		foreach s in $slots[acc1, acc2, acc3]
-		{
-			if(equipped_item(s) == $item[hand in glove])
-			{
-				equip(s, $item[none]);
-			}
-		}
-		
-		//Wall Of Bones combat uses Unleash The Greash, Garbage Nova, or Saucegeyser
-		if(!auto_have_skill($skill[Garbage Nova]) && have_effect($effect[Takin\' It Greasy]) == 0)
-		{
-			float saucegeyserDamage = MLDamageToMonsterMultiplier()*ceil((numeric_modifier("Spell Damage Percent")/100.0)*(60 + numeric_modifier("Spell Damage") + max(numeric_modifier("Hot Spell Damage"),numeric_modifier("Cold Spell Damage")) + 0.4*my_buffedstat($stat[mysticality])));
-			if(saucegeyserDamage < 1667)
-			{
-				//counting on Saucegeyser and its damage will be too low
-				auto_log_warning("Estimate would fail to towerkill Wall of Bones. Reverting to Boning Knife", "red");
-				set_property("auto_getBoningKnife", true);
-				return true;
-			}
-		}
-		
-		acquireMP(216, 0);
-		acquireHP();
-		autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
-		if(internalQuestStatus("questL13Final") < 9)
-		{
-			auto_log_warning("Failed to towerkill Wall of Bones. Reverting to Boning Knife", "red");
-			set_property("auto_getBoningKnife", true);
-		}
 		return true;
 	}
-
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_08_monster4"))
+	if(L13_towerNSTowerBones())
 	{
-		if (get_property("auto_towerBreak").to_lower_case() == "mirror" || get_property("auto_towerBreak").to_lower_case() == "level 4")
-		{
-			abort("auto_towerBreak set to abort here.");
-		}
-		boolean confidence = get_property("auto_confidence").to_boolean();
-		// confidence really just means take the first choice, so it's necessary in vampyre
-		if(in_darkGyffte())
-			confidence = true;
-		string choicenum = (confidence ? "1" : "2");
-		set_property("choiceAdventure1015", choicenum);
-		visit_url("place.php?whichplace=nstower&action=ns_08_monster4");
-		visit_url("choice.php?pwd=&whichchoice=1015&option=" + choicenum, true);
 		return true;
 	}
-
-	if(contains_text(visit_url("place.php?whichplace=nstower"), "ns_09_monster5"))
+	if(L13_towerNSTowerMirror())
 	{
-		if(in_robot())
-		{
-			abort("Robot shadow not currently automated. Pleasae kill your shadow manually then run me again");
-		}
-		if (get_property("auto_towerBreak").to_lower_case() == "shadow" || get_property("auto_towerBreak").to_lower_case() == "the shadow" || get_property("auto_towerBreak").to_lower_case() == "level 5")
-		{
-			abort("auto_towerBreak set to abort here.");
-		}
-		if(my_maxhp() < 800)
-		{
-			buffMaintain($effect[Industrial Strength Starch]);
-			buffMaintain($effect[Truly Gritty]);
-			buffMaintain($effect[Superheroic]);
-			buffMaintain($effect[Strong Grip]);
-			buffMaintain($effect[Spiky Hair]);
-		}
-		cli_execute("scripts/autoscend/auto_post_adv.ash");
-		acquireHP();
-
-		int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]) + item_amount($item[scented massage oil]);
-		if(in_plumber())
-		{
-			n_healing_items = item_amount($item[super deluxe mushroom]);
-			if(n_healing_items < 5)
-			{
-				retrieve_item(5, $item[super deluxe mushroom]);
-				n_healing_items = item_amount($item[super deluxe mushroom]);
-			}
-		}
-		if(n_healing_items < 5)
-		{
-			int pull_target = 5 - n_healing_items; //pull healing items if we have any pulls left because its not like we need pulls for anything else at this point
-			int pulled_items = 0;
-			foreach it in $items[gauze garter, filthy poultice, red pixel potion]
-			{
-				pullXWhenHaveY(it,1,item_amount(it));
-			}
-			
-			// If we're in Kingdom of Exploathing, there's no realm . Let's try clovering for massage oil instead
-			if (in_koe())
-			{
-				cloverUsageInit();
-				autoAdv($location[Cobb\'s Knob Harem]);
-				if(cloverUsageRestart()) autoAdv($location[Cobb\'s Knob Harem]);
-				cloverUsageFinish();
-			}
-			else {
-				int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
-				if(create_target > 0)
-				{
-					if(create(create_target, $item[red pixel potion]))
-					{
-						return true;
-					}
-					abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
-				}
-				return autoAdv($location[8-bit Realm]);
-			}
-		}
-		autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 		return true;
 	}
+	if(L13_towerNSTowerShadow())
+	{
+		return true;
+	}
+	
 	return false;
 }
 
@@ -1427,6 +1242,228 @@ boolean L13_towerNSTowerSkin()
 		set_property("auto_getBeehive", true);
 		auto_log_warning("I probably failed the Wall of Skin, I assume that I tried without a beehive. Well, I'm going back to get it.", "red");
 	}
+	return true;
+}
+
+boolean L13_towerNSTowerMeat()
+{
+	if(!contains_text(visit_url("place.php?whichplace=nstower"), "ns_05_monster2"))
+	{
+		return false;
+	}
+	if (get_property("auto_towerBreak").to_lower_case() == "wall of meat" || get_property("auto_towerBreak").to_lower_case() == "wallofmeat" || get_property("auto_towerBreak").to_lower_case() == "meat" || get_property("auto_towerBreak").to_lower_case() == "level 2")
+	{
+		abort("auto_towerBreak set to abort here.");
+	}
+	equipBaseline();
+	provideMeat(626, true, false);
+
+	if(in_zombieSlayer())
+	{
+		acquireMP(30,0);
+	}
+
+	acquireHP();
+	autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);
+	return true;
+}
+
+boolean L13_towerNSTowerBones()
+{
+	if(!contains_text(visit_url("place.php?whichplace=nstower"), "ns_05_monster3"))
+	{
+		return false;
+	}
+	if (get_property("auto_towerBreak").to_lower_case() == "wall of bones" || get_property("auto_towerBreak").to_lower_case() == "wallofbones" || get_property("auto_towerBreak").to_lower_case() == "bones" || get_property("auto_towerBreak").to_lower_case() == "level 3")
+	{
+		abort("auto_towerBreak set to abort here.");
+	}
+	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+	boolean has_boning_knife = item_amount($item[Electric Boning Knife]) > 0;
+	
+	if(has_boning_knife || in_pokefam() || (in_wereprof() && canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0))		//I have everything I need. just go fight
+	{
+		return autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
+	}
+	
+	//should I grab an electric boning knife?
+	if(hundred_fam != $familiar[none] && isAttackFamiliar(hundred_fam))
+	{
+		set_property("auto_getBoningKnife", true);		//in 100% familiar run with attack familiar we must acquire boning knife
+	}
+	if(my_class() != $class[Sauceror] && !have_skill($skill[Garbage Nova]))
+	{
+		set_property("auto_getBoningKnife", true);		//can not towerkill. get boning knife instead
+	}
+	if(!uneffect($effect[Scariersauce]))
+	{
+		//passive dmg prevents tower kill. we can not uneffect it so get boning knife instead
+		set_property("auto_getBoningKnife", true);
+	}
+	
+	if(get_property("auto_getBoningKnife").to_boolean())	//grab boning knife if we deemed it necessary
+	{
+		if(lar_repeat($location[The Castle in the Clouds in the Sky (Ground Floor)]))
+		{
+			auto_log_info("Backfarming an Electric Boning Knife", "green");
+			return autoAdv($location[The Castle in the Clouds in the Sky (Ground Floor)]);
+		}
+		else abort("I determined I must get [Electric Boning Knife] to proceed but I can not get one");
+	}
+	
+	//if we reached this spot we decided that we do not need a boning knife and intend to try to towerkill the wall of bones.
+	uneffect($effect[Scarysauce]);
+	uneffect($effect[Jalape&ntilde;o Saucesphere]);
+	uneffect($effect[Spiky Shell]);
+	if(in_aosol()){
+		uneffect($effect[Queso Fustulento]);
+		uneffect($effect[Tricky Timpani]);
+	}
+	uneffect($effect[Psalm of Pointiness]);
+	uneffect($effect[Mayeaugh]);
+	uneffect($effect[Feeling Nervous]);
+	buffMaintain($effect[Tomato Power]);
+	buffMaintain($effect[Seeing Colors]);
+	buffMaintain($effect[Glittering Eyelashes]);
+	buffMaintain($effect[OMG WTF]);
+	buffMaintain($effect[There is a Spoon]);
+	buffMaintain($effect[Song of Sauce]);
+	buffMaintain($effect[Carol of the Hells]);
+	
+	// Maximizer tries to force familiar equipment. and prefers passive dmg a that. Avoid dealing damage from familiar and losing
+	if(canChangeFamiliar())
+	{
+		use_familiar(lookupFamiliarDatafile("gremlins"));		//delevel with no damage. fallback to none if unavailable
+		set_property("auto_disableFamiliarChanging", true);
+	}
+	if(my_familiar() != $familiar[none])
+	{
+		addToMaximize("-familiar");
+		equip($slot[familiar], $item[none]);
+	}
+
+	addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
+	equipMaximizedGear();
+	foreach s in $slots[acc1, acc2, acc3]
+	{
+		if(equipped_item(s) == $item[hand in glove])
+		{
+			equip(s, $item[none]);
+		}
+	}
+	
+	//Wall Of Bones combat uses Unleash The Greash, Garbage Nova, or Saucegeyser
+	if(!auto_have_skill($skill[Garbage Nova]) && have_effect($effect[Takin\' It Greasy]) == 0)
+	{
+		float saucegeyserDamage = MLDamageToMonsterMultiplier()*ceil((numeric_modifier("Spell Damage Percent")/100.0)*(60 + numeric_modifier("Spell Damage") + max(numeric_modifier("Hot Spell Damage"),numeric_modifier("Cold Spell Damage")) + 0.4*my_buffedstat($stat[mysticality])));
+		if(saucegeyserDamage < 1667)
+		{
+			//counting on Saucegeyser and its damage will be too low
+			auto_log_warning("Estimate would fail to towerkill Wall of Bones. Reverting to Boning Knife", "red");
+			set_property("auto_getBoningKnife", true);
+			return true;
+		}
+	}
+	
+	acquireMP(216, 0);
+	acquireHP();
+	autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
+	if(internalQuestStatus("questL13Final") < 9)
+	{
+		auto_log_warning("Failed to towerkill Wall of Bones. Reverting to Boning Knife", "red");
+		set_property("auto_getBoningKnife", true);
+	}
+	return true;
+}
+
+boolean L13_towerNSTowerMirror()
+{
+	if(!contains_text(visit_url("place.php?whichplace=nstower"), "ns_08_monster4"))
+	{
+		return false;
+	}
+	if (get_property("auto_towerBreak").to_lower_case() == "mirror" || get_property("auto_towerBreak").to_lower_case() == "level 4")
+	{
+		abort("auto_towerBreak set to abort here.");
+	}
+	boolean confidence = get_property("auto_confidence").to_boolean();
+	// confidence really just means take the first choice, so necessary in vampyre
+	if(in_darkGyffte())
+		confidence = true;
+	string choicenum = (confidence ? "1" : "2");
+	set_property("choiceAdventure1015", choicenum);
+	visit_url("place.php?whichplace=nstower&action=ns_08_monster4");
+	visit_url("choice.php?pwd=&whichchoice=1015&option=" + choicenum, true);
+	return true;
+}
+
+boolean L13_towerNSTowerShadow()
+{
+	if(!contains_text(visit_url("place.php?whichplace=nstower"), "ns_09_monster5"))
+	{
+		return false;
+	}
+	
+	if(in_robot())
+	{
+		abort("Robot shadow not currently automated. Pleasae kill your shadow manually then run me again");
+	}
+	if (get_property("auto_towerBreak").to_lower_case() == "shadow" || get_property("auto_towerBreak").to_lower_case() == "the shadow" || get_property("auto_towerBreak").to_lower_case() == "level 5")
+	{
+		abort("auto_towerBreak set to abort here.");
+	}
+	if(my_maxhp() < 800)
+	{
+		buffMaintain($effect[Industrial Strength Starch]);
+		buffMaintain($effect[Truly Gritty]);
+		buffMaintain($effect[Superheroic]);
+		buffMaintain($effect[Strong Grip]);
+		buffMaintain($effect[Spiky Hair]);
+	}
+	cli_execute("scripts/autoscend/auto_post_adv.ash");
+	acquireHP();
+
+	int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]) + item_amount($item[scented massage oil]);
+	if(in_plumber())
+	{
+		n_healing_items = item_amount($item[super deluxe mushroom]);
+		if(n_healing_items < 5)
+		{
+			retrieve_item(5, $item[super deluxe mushroom]);
+			n_healing_items = item_amount($item[super deluxe mushroom]);
+		}
+	}
+	if(n_healing_items < 5)
+	{
+		int pull_target = 5 - n_healing_items; //pull healing items if we have any pulls left because its not like we need pulls for anything else at this point
+		int pulled_items = 0;
+		foreach it in $items[gauze garter, filthy poultice, red pixel potion]
+		{
+			pullXWhenHaveY(it,1,item_amount(it));
+		}
+		
+		// If we're in Kingdom of Exploathing, there's no realm . Let's try clovering for massage oil instead
+		if (in_koe())
+		{
+			cloverUsageInit();
+			autoAdv($location[Cobb\'s Knob Harem]);
+			if(cloverUsageRestart()) autoAdv($location[Cobb\'s Knob Harem]);
+			cloverUsageFinish();
+		}
+		else {
+			int create_target = min(creatable_amount($item[red pixel potion]), pull_target - pulled_items);
+			if(create_target > 0)
+			{
+				if(create(create_target, $item[red pixel potion]))
+				{
+					return true;
+				}
+				abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
+			}
+			return autoAdv($location[8-bit Realm]);
+		}
+	}
+	autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 	return true;
 }
 
