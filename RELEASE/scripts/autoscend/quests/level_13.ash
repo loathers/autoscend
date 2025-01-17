@@ -1247,7 +1247,7 @@ boolean L13_towerNSTowerSkin()
 
 boolean L13_towerNSTowerMeat()
 {
-	if(!contains_text(visit_url("place.php?whichplace=nstower"), "ns_05_monster2"))
+	if(!contains_text(visit_url("place.php?whichplace=nstower"), "ns_06_monster2"))
 	{
 		return false;
 	}
@@ -1270,7 +1270,7 @@ boolean L13_towerNSTowerMeat()
 
 boolean L13_towerNSTowerBones()
 {
-	if(!contains_text(visit_url("place.php?whichplace=nstower"), "ns_05_monster3"))
+	if(!contains_text(visit_url("place.php?whichplace=nstower"), "ns_07_monster3"))
 	{
 		return false;
 	}
