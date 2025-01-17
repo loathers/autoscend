@@ -532,6 +532,19 @@ void auto_checkTakerSpace()
 	}
 }
 
+boolean auto_haveClanPhotoBoothHere()
+{
+	if(available_amount($item[Clan VIP Lounge Key]) == 0)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	return auto_get_clan_lounge() contains $item[photo booth sized crate];
+}
+
 boolean auto_haveClanPhotoBooth()
 {
 	if(available_amount($item[Clan VIP Lounge Key]) == 0)
@@ -543,11 +556,7 @@ boolean auto_haveClanPhotoBooth()
 		return false;
 	}
 	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
-	if (auto_get_clan_lounge() contains $item[photo booth sized crate] || bafh_available)
-	{
-		return true;
-	}
-	return false;
+	return bafh_available || auto_haveClanPhotoBoothHere();
 }
 
 boolean auto_getClanPhotoBoothItems()
@@ -585,5 +594,61 @@ boolean auto_getClanPhotoBoothItem(item it)
 	{
 		return true;
 	}
+	return false;
+}
+
+string auto_getClanPhotoBoothEffectString(effect ef)
+{
+	switch(ef)
+	{
+		case $effect[Wild and Westy!]:
+			return "wild";
+		case $effect[Towering Muscles]:
+			return "tower";
+		case $effect[Spaced Out]:
+			return "space";
+	}
+	return "none";
+}
+
+boolean auto_getClanPhotoBoothEffect(effect ef)
+{
+	if(!auto_haveClanPhotoBoothHere())
+	{
+		return false;
+	}
+	string effect_string = auto_getClanPhotoBoothEffectString(ef);
+	if (effect_string == "none")
+	{
+		auto_log_error("Invalid effect for photo booth "+ef.to_string());
+		return false;
+	}
+	return auto_getClanPhotoBoothEffect(effect_string);
+}
+
+boolean auto_getClanPhotoBoothEffect(string ef_string)
+{
+	effect west_ef  = $effect[Wild and Westy!];
+	effect tower_ef = $effect[Towering Muscles];
+	effect space_ef = $effect[Spaced Out];
+	string west_string  = to_lower_case(to_string(west_ef ));
+	string tower_string = to_lower_case(to_string(tower_ef));
+	string space_string = to_lower_case(to_string(space_ef));
+	switch(to_lower_case(ef_string))
+	{
+		case "wild":
+		case west_string:
+			cli_execute("photobooth effect wild");
+			return to_boolean(have_effect(west_ef));
+		case "tower":
+		case tower_string:
+			cli_execute("photobooth effect tower");
+			return to_boolean(have_effect(tower_ef));
+		case "space":
+		case space_string:
+			cli_execute("photobooth effect space");
+			return to_boolean(have_effect(tower_ef));
+	}
+	auto_log_error("Invalid effect string for photo booth "+ef_string);
 	return false;
 }

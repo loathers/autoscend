@@ -591,6 +591,12 @@ float expected_level_after_mouthwash(int n_mouthwash, float cold_res);
 boolean auto_haveTearawayPants();
 boolean auto_haveTakerSpace();
 void auto_checkTakerSpace();
+boolean auto_haveClanPhotoBoothHere();
+boolean auto_haveClanPhotoBooth();
+boolean auto_getClanPhotoBoothItems();
+boolean auto_getClanPhotoBoothItem(item it);
+boolean auto_getClanPhotoBoothEffect(effect ef);
+boolean auto_getClanPhotoBoothEffect(string ef);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2025.ash
@@ -598,11 +604,6 @@ boolean auto_haveMcHugeLargeSkis();
 boolean auto_equipAllMcHugeLarge();
 boolean auto_openMcLargeHugeSkis();
 int auto_McLargeHugeForcesLeft();
-boolean auto_haveClanPhotoBooth();
-boolean auto_getClanPhotoBoothItems();
-boolean auto_getClanPhotoBoothItem(item it);
-boolean auto_getClanPhotoBoothEffect(effect ef);
-boolean auto_getClanPhotoBoothEffect(string ef);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
