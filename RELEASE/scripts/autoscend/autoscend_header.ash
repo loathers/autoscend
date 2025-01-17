@@ -51,9 +51,14 @@ boolean handleFaxMonster(monster enemy, boolean fightIt);
 boolean handleFaxMonster(monster enemy, boolean fightIt, string option);
 boolean checkFax(monster enemy);
 boolean [location] get_floundry_locations();
+int getBAFHID();
+boolean isWhitelistedToClan(int clanID);
+boolean isWhitelistedToBAFH();
+boolean canReturnToCurrentClan();
+int whitelistedClanToID(string clanName);
 int changeClan(string clanName);
 int changeClan(int toClan);
-int changeClan();
+int changeClan(); // to BAFH
 int hotTubSoaksRemaining();
 boolean isHotTubAvailable();
 int doHottub();
@@ -593,6 +598,11 @@ boolean auto_haveMcHugeLargeSkis();
 boolean auto_equipAllMcHugeLarge();
 boolean auto_openMcLargeHugeSkis();
 int auto_McLargeHugeForcesLeft();
+boolean auto_haveClanPhotoBooth();
+boolean auto_getClanPhotoBoothItems();
+boolean auto_getClanPhotoBoothItem(item it);
+boolean auto_getClanPhotoBoothEffect(effect ef);
+boolean auto_getClanPhotoBoothEffect(string ef);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

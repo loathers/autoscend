@@ -531,3 +531,59 @@ void auto_checkTakerSpace()
 		create(createable, $item[cursed Aztec tamale]);
 	}
 }
+
+boolean auto_haveClanPhotoBooth()
+{
+	if(available_amount($item[Clan VIP Lounge Key]) == 0)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	if (auto_get_clan_lounge() contains $item[photo booth sized crate] || bafh_available)
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_getClanPhotoBoothItems()
+{
+	if (!auto_haveClanPhotoBooth())
+	{
+		return false;
+	}
+	int orig_clan_id = get_clan_id();
+	boolean in_bafh = orig_clan_id == getBAFHID();
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	if (bafh_available && ! in_bafh)
+	{
+		changeClan();
+	}
+	boolean success = true;
+	success = auto_getClanPhotoBoothItem($item[fake arrow-through-the-head] ) && success;
+	success = auto_getClanPhotoBoothItem($item[astronaut helmet]            ) && success;
+	success = auto_getClanPhotoBoothItem($item[oversized monocle on a stick]) && success;
+	if (orig_clan_id != get_clan_id())
+	{
+		changeClan(orig_clan_id);
+	}
+	return success;
+}
+
+boolean auto_getClanPhotoBoothItem(item it)
+{
+	if (available_amount(it)>0)
+	{
+		return true;
+	}
+	cli_execute("photobooth item "+to_string(it));
+	if (available_amount(it)>0)
+	{
+		return true;
+	}
+	return false;
+}
