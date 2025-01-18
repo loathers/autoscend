@@ -559,23 +559,62 @@ boolean auto_haveClanPhotoBooth()
 	return bafh_available || auto_haveClanPhotoBoothHere();
 }
 
-boolean auto_getClanPhotoBoothItems()
+boolean auto_isClanPhotoBoothItem(item it)
+{
+	switch (it)
+	{
+		case $item[photo booth supply list]:
+		case $item[fake arrow-through-the-head]:
+		case $item[fake huge beard]:
+		case $item[astronaut helmet]:
+		case $item[cheap plastic pipe]:
+		case $item[oversized monocle on a stick]:
+		case $item[giant bow tie]:
+		case $item[feather boa]:
+		case $item[Sheriff badge]:
+		case $item[Sheriff pistol]:
+		case $item[Sheriff moustache]:
+			return true;
+	}
+	return false;
+}
+
+boolean auto_thisClanPhotoBoothHasItem(item it)
+{
+	// This still needs to be implemented
+	//~ return (auto_get_clan_lounge() contains it)
+	return false;
+}
+
+boolean auto_thisClanPhotoBoothHasItems(boolean[item] its)
+{
+	boolean success = true;
+	foreach it,b in its
+	{
+		success = success && auto_thisClanPhotoBoothHasItem(it);
+	}
+	return false;
+}
+
+boolean auto_getClanPhotoBoothDefaultItems()
 {
 	if (!auto_haveClanPhotoBooth())
 	{
 		return false;
 	}
+	boolean[item] items_to_claim = $items[fake arrow-through-the-head, astronaut helmet, oversized monocle on a stick];
 	int orig_clan_id = get_clan_id();
 	boolean in_bafh = orig_clan_id == getBAFHID();
 	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
-	if (bafh_available && ! in_bafh)
+	if (bafh_available && !in_bafh && !auto_thisClanPhotoBoothHasItems(items_to_claim))
 	{
 		changeClan();
 	}
 	boolean success = true;
-	success = auto_getClanPhotoBoothItem($item[fake arrow-through-the-head] ) && success;
-	success = auto_getClanPhotoBoothItem($item[astronaut helmet]            ) && success;
-	success = auto_getClanPhotoBoothItem($item[oversized monocle on a stick]) && success;
+	foreach it,b in items_to_claim
+	{
+		success = success && auto_getClanPhotoBoothItem(it);
+	}
 	if (orig_clan_id != get_clan_id())
 	{
 		changeClan(orig_clan_id);
@@ -585,11 +624,36 @@ boolean auto_getClanPhotoBoothItems()
 
 boolean auto_getClanPhotoBoothItem(item it)
 {
+	if (!auto_haveClanPhotoBooth())
+	{
+		return false;
+	}
+	if (!auto_isClanPhotoBoothItem(it))
+	{
+		return false;
+	}
 	if (available_amount(it)>0)
 	{
 		return true;
 	}
+	// Handle whether we want to jump to BAFH for the item
+	int orig_clan_id = get_clan_id();
+	boolean in_bafh = orig_clan_id == getBAFHID();
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	if (bafh_available && !in_bafh && !auto_thisClanPhotoBoothHasItem(it))
+	{
+		changeClan();
+	}
+	
+	// Actually claim the item
 	cli_execute("photobooth item "+to_string(it));
+	
+	// Go home if we BAFH'd it
+	if (orig_clan_id != get_clan_id())
+	{
+		changeClan(orig_clan_id);
+	}
+	
 	if (available_amount(it)>0)
 	{
 		return true;
@@ -613,10 +677,6 @@ string auto_getClanPhotoBoothEffectString(effect ef)
 
 boolean auto_getClanPhotoBoothEffect(effect ef)
 {
-	if(!auto_haveClanPhotoBoothHere())
-	{
-		return false;
-	}
 	string effect_string = auto_getClanPhotoBoothEffectString(ef);
 	if (effect_string == "none")
 	{
@@ -628,6 +688,26 @@ boolean auto_getClanPhotoBoothEffect(effect ef)
 
 boolean auto_getClanPhotoBoothEffect(string ef_string)
 {
+	if(available_amount($item[Clan VIP Lounge Key]) == 0)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	
+	// Handle whether we want to jump to BAFH
+	int orig_clan_id = get_clan_id();
+	boolean in_bafh = orig_clan_id == getBAFHID();
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	
+	if (!auto_haveClanPhotoBoothHere() && bafh_available)
+	{
+		changeClan(); // Jump to BAFH
+	}
+	
+	boolean success = false;
 	effect west_ef  = $effect[Wild and Westy!];
 	effect tower_ef = $effect[Towering Muscles];
 	effect space_ef = $effect[Spaced Out];
@@ -639,15 +719,25 @@ boolean auto_getClanPhotoBoothEffect(string ef_string)
 		case "wild":
 		case west_string:
 			cli_execute("photobooth effect wild");
-			return to_boolean(have_effect(west_ef));
+			success = to_boolean(have_effect(west_ef));
 		case "tower":
 		case tower_string:
 			cli_execute("photobooth effect tower");
-			return to_boolean(have_effect(tower_ef));
+			success = to_boolean(have_effect(tower_ef));
 		case "space":
 		case space_string:
 			cli_execute("photobooth effect space");
-			return to_boolean(have_effect(tower_ef));
+			success = to_boolean(have_effect(space_ef));
+	}
+	// Go home if we BAFH'd it
+	if (orig_clan_id != get_clan_id())
+	{
+		changeClan(orig_clan_id);
+	}
+	
+	if (success)
+	{
+		return true;
 	}
 	auto_log_error("Invalid effect string for photo booth "+ef_string);
 	return false;
