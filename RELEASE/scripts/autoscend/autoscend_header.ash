@@ -1723,6 +1723,7 @@ boolean[location] monster_to_location(monster target);
 //Defined in autoscend/auto_util.ash
 //Other files are placed alphabetically. But due to its sheer size auto_util.ash goes last
 
+int auto_combatModCap();
 boolean almostRollover();
 boolean needToConsumeForEmergencyRollover();
 boolean autoMaximize(string req, boolean simulate);

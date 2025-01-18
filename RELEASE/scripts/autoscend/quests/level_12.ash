@@ -1359,7 +1359,7 @@ boolean L12_sonofaBeach()
 
 	if(!in_lar())
 	{
-		float combat_bonus = providePlusCombat(25, $location[Sonofa Beach], true, true);
+		float combat_bonus = providePlusCombat(auto_combatModCap(), $location[Sonofa Beach], true, true);
 		if(combat_bonus <= 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate for [Lobsterfrogmen] in [Sonofa Beach]. we have: " +combat_bonus, "red");
@@ -1480,7 +1480,7 @@ boolean L12_sonofaPrefix()
 
 	if(!in_lar())
 	{
-		float combat_bonus = providePlusCombat(25, $location[Sonofa Beach], true, true);
+		float combat_bonus = providePlusCombat(auto_combatModCap(), $location[Sonofa Beach], true, true);
 		if(combat_bonus <= 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate for [Lobsterfrogmen] in [Sonofa Beach]. we have: " +combat_bonus, "red");
