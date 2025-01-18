@@ -632,15 +632,6 @@ void auto_scepterSkills()
 
 void auto_scepterRollover()
 {
-	if(canUse($skill[Aug. 13th: Left\/Off Hander\'s Day!]) && !get_property("_aug13Cast").to_boolean() &&
-	get_property("_augSkillsCast").to_int()< 5 && numeric_modifier(equipped_item($slot[off-hand]),"Adventures") >  0 && weapon_hands(equipped_item($slot[off-hand])) == 0)
-	{
-		use_skill($skill[Aug. 13th: Left\/Off Hander\'s Day!]); //bump up the off-hand
-	}
-	if(canUse($skill[Aug. 27th: Just Because Day!]) && !get_property("_aug27Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
-	{
-		use_skill($skill[Aug. 27th: Just Because Day!]); //3 random buffs
-	}
 	//Get mainstats as a last resort
 	if(get_property("_augSkillsCast").to_int()< 5)
 	{
@@ -656,6 +647,15 @@ void auto_scepterRollover()
 		{
 			use_skill($skill[Aug. 23rd: Ride the Wind Day!]); //get moxies stubstats
 		}
+	}
+	if(canUse($skill[Aug. 13th: Left\/Off Hander\'s Day!]) && !get_property("_aug13Cast").to_boolean() &&
+	get_property("_augSkillsCast").to_int()< 5 && numeric_modifier(equipped_item($slot[off-hand]),"Adventures") >  0 && weapon_hands(equipped_item($slot[off-hand])) == 0)
+	{
+		use_skill($skill[Aug. 13th: Left\/Off Hander\'s Day!]); //bump up the off-hand
+	}
+	if(canUse($skill[Aug. 27th: Just Because Day!]) && !get_property("_aug27Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 27th: Just Because Day!]); //3 random buffs
 	}
 }
 
@@ -891,7 +891,7 @@ string activeCitZoneMod() // get the active Citizen of a Zone mods, if any
 {
 	if(!auto_haveEagle() || have_effect($effect[Citizen of a Zone]) == 0)
 	{
-		return "none";
+		return "";
 	}
 	visit_url("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944"); // visit url to refresh Mafia's _citizenZoneMods preference
 	string activeCitZoneMod = get_property("_citizenZoneMods").to_lower_case();
@@ -927,21 +927,45 @@ boolean auto_citizenZonePrep(string goal)
 	return true;
 }
 
+boolean[location] citizenZones(string target)
+{
+	if(target == "meat")
+	{
+		return $locations[The Battlefield (Frat Uniform), The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
+	Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
+	}
+	if(target == "item")
+	{
+		return $locations[A Massive Ziggurat, The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
+	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
+	}
+	if(target == "init")
+	{
+		return $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, An Overgrown Shrine (Northeast),
+	Oil Peak, Cobb's Knob Kitchens, The VERY Unquiet Garves, The Haunted Kitchen];
+	}
+	if(target == "mp")
+	{
+		return $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp,
+	Megalo-City, Shadow Rift, Vanya's Castle, The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,
+	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
+	}
+	if(target == "spec")
+	{
+		$locations[The Outskirts of Cobb\'s Knob];
+	}
+}
+
 boolean auto_getCitizenZone(location loc)
 {
 	familiar eagle = $familiar[Patriotic Eagle];
 	//zones are approximately organized by autoscend level quest structure
-	boolean[location] meatZones = $locations[The Battlefield (Frat Uniform), The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
-	Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
-	boolean[location] itemZones = $locations[A Massive Ziggurat, The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
-	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
-	boolean[location] initZones = $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, An Overgrown Shrine (Northeast),
-	Oil Peak, Cobb's Knob Kitchens, The VERY Unquiet Garves, The Haunted Kitchen];
+	boolean[location] meatZones = citizenZones("meat");
+	boolean[location] itemZones = citizenZones("item");
+	boolean[location] initZones = citizenZones("init");
 	//mp zones are organized by 20-30 mp regen then 10-15 mp regen and then approximately autoscend level quest structure
-	boolean[location] mpZones = $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp,
-	Megalo-City, Shadow Rift, Vanya's Castle, The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,
-	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
-	boolean[location] specZones = $locations[The Outskirts of Cobb\'s Knob];
+	boolean[location] mpZones = citizenZones("mp");
+	boolean[location] specZones = citizenZones("spec");
 	string activeCitZoneMod = activeCitZoneMod();
 	string goal;
 	
@@ -976,7 +1000,8 @@ boolean auto_getCitizenZone(location loc)
 	else
 	{
 		//if for some reason we make it into the location getCitizenZone and it's not in any of the defined zones, get the item buff
-		auto_getCitizenZone("item");
+		auto_log_debug("Somehow we got here and don't actually want to use the Eagle");
+		return false;
 	}
 	if(!auto_citizenZonePrep(goal))
 	{
@@ -1009,17 +1034,12 @@ boolean auto_getCitizenZone(string goal)
 {
 	familiar eagle = $familiar[Patriotic Eagle];
 	//zones are approximately organized by autoscend level quest structure
-	boolean[location] meatZones = $locations[The Battlefield (Frat Uniform), The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
-	Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
-	boolean[location] itemZones = $locations[A Massive Ziggurat, The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
-	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
-	boolean[location] initZones = $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, An Overgrown Shrine (Northeast),
-	Oil Peak, Cobb's Knob Kitchens, The VERY Unquiet Garves, The Haunted Kitchen];
+	boolean[location] meatZones = citizenZones("meat");
+	boolean[location] itemZones = citizenZones("item");
+	boolean[location] initZones = citizenZones("init");
 	//mp zones are organized by 20-30 mp regen then 10-15 mp regen and then approximately autoscend level quest structure
-	boolean[location] mpZones = $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp,
-	Megalo-City, Shadow Rift, Vanya's Castle, The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,
-	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
-	boolean[location] specZones = $locations[The Outskirts of Cobb\'s Knob];
+	boolean[location] mpZones = citizenZones("mp");
+	boolean[location] specZones = citizenZones("spec");
 	string activeCitZoneMod = activeCitZoneMod();
 	
 	if(!auto_citizenZonePrep(goal))

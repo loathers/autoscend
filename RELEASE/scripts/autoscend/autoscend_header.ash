@@ -542,6 +542,7 @@ boolean auto_circadianRhythmTarget(phylum target);
 boolean auto_haveEagle();
 string activeCitZoneMod();
 boolean auto_citizenZonePrep(string goal);
+boolean[location] citizenZones(string target);
 boolean auto_getCitizenZone(location loc);
 boolean auto_getCitizenZone(string goal);
 familiar auto_forceEagle();
