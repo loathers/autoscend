@@ -599,7 +599,9 @@ boolean auto_thisClanPhotoBoothHasItems(boolean[item] items);
 boolean auto_getClanPhotoBoothDefaultItems();
 boolean auto_getClanPhotoBoothItem(item it);
 boolean auto_getClanPhotoBoothEffect(effect ef);
+boolean auto_getClanPhotoBoothEffect(effect ef, int n_times);
 boolean auto_getClanPhotoBoothEffect(string ef);
+boolean auto_getClanPhotoBoothEffect(string ef, int n_times);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2025.ash

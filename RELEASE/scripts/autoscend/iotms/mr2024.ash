@@ -677,6 +677,11 @@ string auto_getClanPhotoBoothEffectString(effect ef)
 
 boolean auto_getClanPhotoBoothEffect(effect ef)
 {
+	return auto_getClanPhotoBoothEffect(ef,1);
+}
+
+boolean auto_getClanPhotoBoothEffect(effect ef, int n_times)
+{
 	string effect_string = auto_getClanPhotoBoothEffectString(ef);
 	if (effect_string == "none")
 	{
@@ -687,6 +692,11 @@ boolean auto_getClanPhotoBoothEffect(effect ef)
 }
 
 boolean auto_getClanPhotoBoothEffect(string ef_string)
+{
+	return auto_getClanPhotoBoothEffect(ef_string,1);
+}
+
+boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
 {
 	if(available_amount($item[Clan VIP Lounge Key]) == 0)
 	{
@@ -718,15 +728,24 @@ boolean auto_getClanPhotoBoothEffect(string ef_string)
 	{
 		case "wild":
 		case west_string:
-			cli_execute("photobooth effect wild");
+			for (int i = 0 ; i < n_times ; i++)
+			{
+				cli_execute("photobooth effect wild");
+			}
 			success = to_boolean(have_effect(west_ef));
 		case "tower":
 		case tower_string:
-			cli_execute("photobooth effect tower");
+			for (int i = 0 ; i < n_times ; i++)
+			{
+				cli_execute("photobooth effect tower");
+			}
 			success = to_boolean(have_effect(tower_ef));
 		case "space":
 		case space_string:
-			cli_execute("photobooth effect space");
+			for (int i = 0 ; i < n_times ; i++)
+			{
+				cli_execute("photobooth effect space");
+			}
 			success = to_boolean(have_effect(space_ef));
 	}
 	// Go home if we BAFH'd it
