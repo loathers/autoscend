@@ -581,8 +581,22 @@ boolean auto_isClanPhotoBoothItem(item it)
 
 boolean auto_thisClanPhotoBoothHasItem(item it)
 {
-	// This still needs to be implemented
+	// This should work but it's not implemented by Mafia, sounds like it won't be
 	//~ return (auto_get_clan_lounge() contains it)
+	
+	// Instead just assume BAFH has everything, everyone else has nothing that needs unlocking
+	if (get_clan_id() == getBAFHID())
+	{
+		return auto_isClanPhotoBoothItem(it);
+	}
+	switch (it)
+	{
+		case $item[photo booth supply list]:
+		case $item[fake arrow-through-the-head]:
+		case $item[fake huge beard]:
+		case $item[astronaut helmet]:
+			return true;
+	}
 	return false;
 }
 
