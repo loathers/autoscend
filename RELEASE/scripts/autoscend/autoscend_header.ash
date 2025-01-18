@@ -528,6 +528,7 @@ boolean auto_haveIdolMicrophone();
 void auto_buyFrom2002MrStore();
 void auto_useBlackMonolith();
 boolean auto_haveAugustScepter();
+void auto_scepterRollover();
 void auto_scepterSkills();
 void auto_lostStomach();
 boolean auto_haveBofa();

@@ -598,54 +598,64 @@ void auto_scepterSkills()
 	{
 		return;
 	}
-	//Day 1 skills
-	if(my_daycount() == 1)
+	
+	if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
 	{
-		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
-		}
-		if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
-		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar())
-		{
-			familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
-			if (((in_avantGuard() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
-			{
-				use_familiar(findRockFamiliarInTerrarium());
-				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
-			}
-			else if((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small())
-			{
-				if(!is100FamRun())
-				{
-					use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
-				}
-				else
-				{
-					use_familiar(hundred_fam); // assuming non-rock familiar
-				}
-				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
-			}
-		}
+		use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
 	}
-	//Day 2+ skills
-	if(my_daycount() >= 2)
+	if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar())
 	{
-		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+		if (((in_avantGuard() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
 		{
-			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+			use_familiar(findRockFamiliarInTerrarium());
+			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
 		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
+		else if((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small())
 		{
 			if(!is100FamRun())
 			{
-				handleFamiliar("stat"); //get any familiar equipped if not in a 100% run
+				use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
+			}
+			else
+			{
+				use_familiar(hundred_fam); // assuming non-rock familiar
 			}
 			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
 		}
+	}
+}
+
+void auto_scepterRollover()
+{
+	if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
+	}
+	//Get mainstats as a last resort
+	if(get_property("_augSkillsCast").to_int()< 5)
+	{
+		if(canUse($skill[Aug. 12th: Elephant Day!]) && !get_property("_aug12Cast").to_boolean() && my_primestat() == $stat[muscle])
+		{
+			use_skill($skill[Aug. 12th: Elephant Day!]); //get muscle stubstats
+		}
+		if(canUse($skill[Aug. 11th: Presidential Joke Day!]) && !get_property("_aug11Cast").to_boolean() && my_primestat() == $stat[mysticality])
+		{
+			use_skill($skill[Aug. 11th: Presidential Joke Day!]); //get mysticality stubstats
+		}
+		if(canUse($skill[Aug. 23rd: Ride the Wind Day!]) && !get_property("_aug23Cast").to_boolean() && my_primestat() == $stat[moxie])
+		{
+			use_skill($skill[Aug. 23rd: Ride the Wind Day!]); //get moxies stubstats
+		}
+	}
+	if(canUse($skill[Aug. 13th: Left\/Off Hander\'s Day!]) && !get_property("_aug13Cast").to_boolean() &&
+	get_property("_augSkillsCast").to_int()< 5 && numeric_modifier(equipped_item($slot[off-hand]),"Adventures") >  0 && weapon_hands(equipped_item($slot[off-hand])) == 0)
+	{
+		use_skill($skill[Aug. 13th: Left\/Off Hander\'s Day!]); //bump up the off-hand
+	}
+	if(canUse($skill[Aug. 27th: Just Because Day!]) && !get_property("_aug27Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 27th: Just Because Day!]); //3 random buffs
 	}
 }
 
