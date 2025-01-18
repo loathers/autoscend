@@ -407,10 +407,52 @@ int remainingEmbers()
 
 void auto_buyFromSeptEmberStore()
 {
+	if(!auto_haveSeptEmberCenser())
+	{
+		return;
+	}
 	if(remainingEmbers() == 0)
 	{
 		return;
 	}
+
+	// mouthwash for leveling
+	item mouthwash = $item[Mmm-brr! brand mouthwash];
+	boolean disregard_karma = get_property("auto_disregardInstantKarma").to_boolean();
+	for (int imw = 0 ; imw < 3 ; imw++) // We can use up to 3 mouthwash
+	{
+		// If we have at least 4 embers remaining, don't overlevel, they can be used for something else
+		boolean happy_to_overlevel = disregard_karma && remainingEmbers() < 4;
+		boolean want_to_mouthwash_level = (my_level() < 13 || happy_to_overlevel) && my_level()<15;
+		// Even disregarding karma, never level above 15 using mouthwash as a sanity limit
+		want_to_mouthwash_level = want_to_mouthwash_level && my_level()<15;
+		if (remainingEmbers() >= 2 && want_to_mouthwash_level)
+		{
+			// get as much cold res as possible
+			int [element] resGoal;
+			resGoal[$element[cold]] = 100;
+			// get cold res. Use noob cave as generic place holder
+			
+			// get 1 bembershoot to support mouthwash leveling or general quest help
+			item bember = $item[bembershoot];
+			if (remainingEmbers() % 2 == 1 && !possessEquipment(bember) && auto_is_valid(bember))
+			{
+				buy($coinmaster[Sept-Ember Censer], 1, bember);
+			}
+			
+			provideResistances(resGoal, $location[noob cave], true);
+			equipMaximizedGear();
+			if (expected_level_after_mouthwash()<13) // use a wish if really need it
+			{
+				auto_wishForEffectIfNeeded($effect[Fever From the Flavor]);
+			}
+			// buy mouthwash and use it
+			buy($coinmaster[Sept-Ember Censer], 1, mouthwash);
+			auto_log_debug(`Using mouthwash with {numeric_modifier($modifier[cold resistance])} cold resistance`);
+			use(mouthwash);
+		}
+	}
+	
 	auto_log_debug("Have " + remainingEmbers() + " embers(s) to buy from Sept-Ember Censer. Let's spend them!");
 	// get structural ember if can't cross bridge
 	item itemConsidering = $item[Structural ember];
@@ -420,38 +462,21 @@ void auto_buyFromSeptEmberStore()
 		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
 		use(itemConsidering);
 	}
-	// get 1 bembershoot to support mouthwash leveling or general quest help
-	itemConsidering = $item[bembershoot];
-	if(remainingEmbers() >= 1 && !possessEquipment(itemConsidering) && auto_is_valid(itemConsidering))
+	
+	// Spend any remaining pairs on Septapus summoning charms
+	while (remainingEmbers() >= 2)
 	{
-		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
+		buy($coinmaster[Sept-Ember Censer], 1, $item[Septapus summoning charm]);
 	}
-	// mouthwash for leveling
-	itemConsidering = $item[Mmm-brr! brand mouthwash];
-	if(remainingEmbers() >= 2 && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && auto_is_valid(itemConsidering))
-	{
-		// get as much cold res as possible
-		int [element] resGoal;
-		resGoal[$element[cold]] = 100;
-		// get cold res. Use noob cave as generic place holder
-		provideResistances(resGoal, $location[noob cave], true);
-		equipMaximizedGear();
-		if (expected_level_after_mouthwash()<13) // use a wish if really need it
-		{
-			auto_wishForEffectIfNeeded($effect[Fever From the Flavor]);
-		}
-		// buy mouthwash and use it
-		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
-		auto_log_debug(`Using mouthwash with {numeric_modifier("cold Resistance")} cold resistance`);
-		use(itemConsidering);
-	}
+	
 	// if still have embers, get hat for mp regen
 	itemConsidering = $item[Hat of remembering];
 	if(remainingEmbers() >= 1 && !possessEquipment(itemConsidering) && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
 	}
-	// consider throwin' ember for banish or summoning charm for pickpocket in future PR
+	
+	return;
 }
 
 float expected_mouthwash_main_substat()
