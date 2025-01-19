@@ -4716,3 +4716,28 @@ float stat_exp_percent(stat s)
 	}
 	return 0;
 }
+
+boolean auto_equalizeStats()
+{
+	stat highest_basestat = my_primestat();
+	int highest_basestat_val = my_basestat(highest_basestat);
+	foreach s in $stats[muscle,mysticality,moxie]
+	{
+		int val = my_basestat(s);
+		if (val > highest_basestat_val)
+		{
+			highest_basestat_val = val;
+			highest_basestat = s;
+		}
+	}
+	switch(highest_basestat)
+	{
+		case $stat[muscle]:
+			return buffMaintain($effect[Stabilizing Oiliness]);
+		case $stat[mysticality]:
+			return buffMaintain($effect[Expert Oiliness]);
+		case $stat[moxie]:
+			return buffMaintain($effect[Slippery Oiliness]);
+	}
+	return false;
+}

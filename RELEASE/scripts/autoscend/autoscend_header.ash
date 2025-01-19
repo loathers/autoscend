@@ -1939,3 +1939,4 @@ float substat_to_level();
 float substat_to_level(int n);
 stat stat_to_substat(stat s);
 float stat_exp_percent(stat s);
+boolean auto_equalizeStats();
