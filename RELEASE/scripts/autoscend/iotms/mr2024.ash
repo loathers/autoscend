@@ -313,7 +313,9 @@ boolean auto_MayamClaimWhatever()
 	else if (!auto_MayamIsUsed("meat"))   { ring2 = "meat"; }
 	else { failure = true; }
 	
-	if      (!auto_MayamIsUsed("yam3"))   { ring3 = "yam"; }
+	boolean going_to_use_mouthwash = my_level()<13 && remainingEmbers() >= 2;
+	if (going_to_use_mouthwash && !auto_MayamIsUsed("wall")) { ring3 = "wall"; }
+	else if (!auto_MayamIsUsed("yam3"))   { ring3 = "yam"; }
 	else if (!auto_MayamIsUsed("cheese")) { ring3 = "cheese"; }
 	else if (!auto_MayamIsUsed("wall"))   { ring3 = "wall"; }
 	else { failure = true; }
@@ -419,6 +421,7 @@ void auto_buyFromSeptEmberStore()
 	// mouthwash for leveling
 	item mouthwash = $item[Mmm-brr! brand mouthwash];
 	boolean disregard_karma = get_property("auto_disregardInstantKarma").to_boolean();
+	auto_openMcLargeHugeSkis(); // make sure our skis are open for cold res
 	for (int imw = 0 ; imw < 3 ; imw++) // We can use up to 3 mouthwash
 	{
 		// If we have at least 4 embers remaining, don't overlevel, they can be used for something else
@@ -442,6 +445,17 @@ void auto_buyFromSeptEmberStore()
 			
 			provideResistances(resGoal, $location[noob cave], true);
 			equipMaximizedGear();
+			
+			// We could have left-hand if our off-hand is strong enough
+			if (numeric_modifier(equipped_item($slot[off-hand]),$modifier[cold resistance]) > 2.9)
+			{
+				skill lefty = $skill[Aug. 13th: Left/Off Hander's Day!];
+				if(canUse(lefty) && !get_property("_aug13Cast").to_boolean())
+				{
+					use_skill(lefty);
+				}
+			}
+			
 			if (expected_level_after_mouthwash()<13) // use a wish if really need it
 			{
 				auto_wishForEffectIfNeeded($effect[Fever From the Flavor]);
