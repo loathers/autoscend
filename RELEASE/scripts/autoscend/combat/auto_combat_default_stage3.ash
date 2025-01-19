@@ -180,6 +180,17 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 	}
 
+	if(wantToDouse(enemy) && round < 23) // dousing can have a low chance of success, so only do it up to round 22
+	{
+		skill douse = $skill[douse foe];
+		boolean douseAvailable = canUse(douse, false) && auto_dousesRemaining()>0;
+		if(douseAvailable)
+		{
+			handleTracker(enemy, douse, "auto_otherstuff");
+			return useSkill(douse);
+		}
+	}
+	
 	if(wantToForceDrop(enemy))
 	{
 		boolean polarVortexAvailable = canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10;
