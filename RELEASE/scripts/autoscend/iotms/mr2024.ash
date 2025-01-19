@@ -731,7 +731,7 @@ boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
 	}
 	
 	n_times = min(n_times,auto_remainingClanPhotoBoothEffects());
-	if (n_times <= 1)
+	if (n_times < 1)
 	{
 		return false;
 	}
@@ -762,6 +762,7 @@ boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
 				cli_execute("photobooth effect wild");
 			}
 			success = to_boolean(have_effect(west_ef));
+			break;
 		case "tower":
 		case tower_string:
 			for (int i = 0 ; i < n_times ; i++)
@@ -769,6 +770,7 @@ boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
 				cli_execute("photobooth effect tower");
 			}
 			success = to_boolean(have_effect(tower_ef));
+			break;
 		case "space":
 		case space_string:
 			for (int i = 0 ; i < n_times ; i++)
@@ -776,6 +778,7 @@ boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
 				cli_execute("photobooth effect space");
 			}
 			success = to_boolean(have_effect(space_ef));
+			break;
 	}
 	// Go home if we BAFH'd it
 	if (orig_clan_id != get_clan_id())
