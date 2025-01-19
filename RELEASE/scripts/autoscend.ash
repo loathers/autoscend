@@ -785,6 +785,9 @@ void initializeDay(int day)
 	}
 
 	auto_floundryAction();
+	
+	auto_getClanPhotoBoothDefaultItems();
+	auto_getClanPhotoBoothEffect("space",3);
 
 	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 1))
 	{

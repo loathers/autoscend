@@ -570,3 +570,247 @@ void auto_checkTakerSpace()
 		create(createable, $item[cursed Aztec tamale]);
 	}
 }
+
+boolean auto_haveClanPhotoBoothHere()
+{
+	if(available_amount($item[Clan VIP Lounge Key]) == 0)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	return auto_get_clan_lounge() contains $item[photo booth sized crate];
+}
+
+boolean auto_haveClanPhotoBooth()
+{
+	if(available_amount($item[Clan VIP Lounge Key]) == 0)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	return bafh_available || auto_haveClanPhotoBoothHere();
+}
+
+boolean auto_isClanPhotoBoothItem(item it)
+{
+	switch (it)
+	{
+		case $item[photo booth supply list]:
+		case $item[fake arrow-through-the-head]:
+		case $item[fake huge beard]:
+		case $item[astronaut helmet]:
+		case $item[cheap plastic pipe]:
+		case $item[oversized monocle on a stick]:
+		case $item[giant bow tie]:
+		case $item[feather boa]:
+		case $item[Sheriff badge]:
+		case $item[Sheriff pistol]:
+		case $item[Sheriff moustache]:
+			return true;
+	}
+	return false;
+}
+
+boolean auto_thisClanPhotoBoothHasItem(item it)
+{
+	// This should work but it's not implemented by Mafia, sounds like it won't be
+	//~ return (auto_get_clan_lounge() contains it)
+	
+	// Instead just assume BAFH has everything, everyone else has nothing that needs unlocking
+	if (get_clan_id() == getBAFHID())
+	{
+		return auto_isClanPhotoBoothItem(it);
+	}
+	switch (it)
+	{
+		case $item[photo booth supply list]:
+		case $item[fake arrow-through-the-head]:
+		case $item[fake huge beard]:
+		case $item[astronaut helmet]:
+			return true;
+	}
+	return false;
+}
+
+boolean auto_thisClanPhotoBoothHasItems(boolean[item] its)
+{
+	boolean success = true;
+	foreach it,b in its
+	{
+		success = success && auto_thisClanPhotoBoothHasItem(it);
+	}
+	return false;
+}
+
+boolean auto_getClanPhotoBoothDefaultItems()
+{
+	if (!auto_haveClanPhotoBooth())
+	{
+		return false;
+	}
+	boolean[item] items_to_claim = $items[fake arrow-through-the-head, astronaut helmet, oversized monocle on a stick];
+	int orig_clan_id = get_clan_id();
+	boolean in_bafh = orig_clan_id == getBAFHID();
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	if (bafh_available && !in_bafh && !auto_thisClanPhotoBoothHasItems(items_to_claim))
+	{
+		changeClan();
+	}
+	boolean success = true;
+	foreach it,b in items_to_claim
+	{
+		success = success && auto_getClanPhotoBoothItem(it);
+	}
+	if (orig_clan_id != get_clan_id())
+	{
+		changeClan(orig_clan_id);
+	}
+	return success;
+}
+
+boolean auto_getClanPhotoBoothItem(item it)
+{
+	if (!auto_haveClanPhotoBooth())
+	{
+		return false;
+	}
+	if (!auto_isClanPhotoBoothItem(it))
+	{
+		return false;
+	}
+	if (available_amount(it)>0)
+	{
+		return true;
+	}
+	// Handle whether we want to jump to BAFH for the item
+	int orig_clan_id = get_clan_id();
+	boolean in_bafh = orig_clan_id == getBAFHID();
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	if (bafh_available && !in_bafh && !auto_thisClanPhotoBoothHasItem(it))
+	{
+		changeClan();
+	}
+	
+	// Actually claim the item
+	cli_execute("photobooth item "+to_string(it));
+	
+	// Go home if we BAFH'd it
+	if (orig_clan_id != get_clan_id())
+	{
+		changeClan(orig_clan_id);
+	}
+	
+	if (available_amount(it)>0)
+	{
+		return true;
+	}
+	return false;
+}
+
+string auto_getClanPhotoBoothEffectString(effect ef)
+{
+	switch(ef)
+	{
+		case $effect[Wild and Westy!]:
+			return "wild";
+		case $effect[Towering Muscles]:
+			return "tower";
+		case $effect[Spaced Out]:
+			return "space";
+	}
+	return "none";
+}
+
+boolean auto_getClanPhotoBoothEffect(effect ef)
+{
+	return auto_getClanPhotoBoothEffect(ef,1);
+}
+
+boolean auto_getClanPhotoBoothEffect(effect ef, int n_times)
+{
+	string effect_string = auto_getClanPhotoBoothEffectString(ef);
+	if (effect_string == "none")
+	{
+		auto_log_error("Invalid effect for photo booth "+ef.to_string());
+		return false;
+	}
+	return auto_getClanPhotoBoothEffect(effect_string);
+}
+
+boolean auto_getClanPhotoBoothEffect(string ef_string)
+{
+	return auto_getClanPhotoBoothEffect(ef_string,1);
+}
+
+boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
+{
+	if(available_amount($item[Clan VIP Lounge Key]) == 0)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	
+	// Handle whether we want to jump to BAFH
+	int orig_clan_id = get_clan_id();
+	boolean in_bafh = orig_clan_id == getBAFHID();
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	
+	if (!auto_haveClanPhotoBoothHere() && bafh_available)
+	{
+		changeClan(); // Jump to BAFH
+	}
+	
+	boolean success = false;
+	effect west_ef  = $effect[Wild and Westy!];
+	effect tower_ef = $effect[Towering Muscles];
+	effect space_ef = $effect[Spaced Out];
+	string west_string  = to_lower_case(to_string(west_ef ));
+	string tower_string = to_lower_case(to_string(tower_ef));
+	string space_string = to_lower_case(to_string(space_ef));
+	switch(to_lower_case(ef_string))
+	{
+		case "wild":
+		case west_string:
+			for (int i = 0 ; i < n_times ; i++)
+			{
+				cli_execute("photobooth effect wild");
+			}
+			success = to_boolean(have_effect(west_ef));
+		case "tower":
+		case tower_string:
+			for (int i = 0 ; i < n_times ; i++)
+			{
+				cli_execute("photobooth effect tower");
+			}
+			success = to_boolean(have_effect(tower_ef));
+		case "space":
+		case space_string:
+			for (int i = 0 ; i < n_times ; i++)
+			{
+				cli_execute("photobooth effect space");
+			}
+			success = to_boolean(have_effect(space_ef));
+	}
+	// Go home if we BAFH'd it
+	if (orig_clan_id != get_clan_id())
+	{
+		changeClan(orig_clan_id);
+	}
+	
+	if (success)
+	{
+		return true;
+	}
+	auto_log_error("Invalid effect string for photo booth "+ef_string);
+	return false;
+}
