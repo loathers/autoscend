@@ -126,6 +126,24 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 			}		
 		}		
 	}
+	// Craft if we have free crafts and it's craftable
+	if(item_amount(source) < uses)
+	{
+		int needed = uses-item_amount(source);
+		int n_can_craft = creatable_amount(source);
+		int turns_to_craft = creatable_turns(source,needed,true);
+		if (turns_to_craft == 0 && n_can_craft >= needed)
+		{
+			handleTracker("buffMaintain",(speculative?"Speculatively c":"C")+"rafting "+to_string(needed)+" "+to_string(source),"auto_otherstuff");
+			if(!speculative)
+			{
+				create(source,needed);
+			}
+			else {
+				return true;
+			}
+		}
+	}
 	if(item_amount(source) < uses)
 	{
 		return false;
