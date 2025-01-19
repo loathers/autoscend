@@ -675,6 +675,15 @@ boolean auto_getClanPhotoBoothItem(item it)
 	return false;
 }
 
+int auto_remainingClanPhotoBoothEffects()
+{
+	if (!auto_haveClanPhotoBooth())
+	{
+		return 0;
+	}
+	return 3-get_property("_photoBoothEffects").to_int();
+}
+
 string auto_getClanPhotoBoothEffectString(effect ef)
 {
 	switch(ef)
@@ -717,6 +726,12 @@ boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
 		return false;
 	}
 	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	
+	n_times = min(n_times,auto_remainingClanPhotoBoothEffects());
+	if (n_times <= 1)
 	{
 		return false;
 	}

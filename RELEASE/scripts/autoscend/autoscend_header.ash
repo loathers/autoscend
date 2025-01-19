@@ -598,6 +598,7 @@ boolean auto_thisClanPhotoBoothHasItem(item it);
 boolean auto_thisClanPhotoBoothHasItems(boolean[item] items);
 boolean auto_getClanPhotoBoothDefaultItems();
 boolean auto_getClanPhotoBoothItem(item it);
+int auto_remainingClanPhotoBoothEffects();
 boolean auto_getClanPhotoBoothEffect(effect ef);
 boolean auto_getClanPhotoBoothEffect(effect ef, int n_times);
 boolean auto_getClanPhotoBoothEffect(string ef);
