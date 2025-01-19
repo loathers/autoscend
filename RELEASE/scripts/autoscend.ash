@@ -1206,6 +1206,7 @@ boolean dailyEvents()
 	auto_useBlackMonolith();
 	auto_scepterSkills();
 	auto_getAprilingBandItems();
+	auto_MayamClaimAll();
 	auto_buyFromSeptEmberStore();
 	
 	return true;
