@@ -733,7 +733,7 @@ boolean auto_getClanPhotoBoothDefaultItems(int reserve)
 	
 	// Check sheriff items (off-stat only, for tower)
 	// Don't do this d1 unless we're in turbo
-	if (daycount()>1 || auto_turbo())
+	if (my_daycount()>1 || auto_turbo())
 	{
 		stat challenge_stat = auto_getOffStatChallengeFromTelescope();
 		if (challenge_stat == $stat[muscle])
@@ -838,6 +838,7 @@ boolean auto_getClanPhotoBoothItem(item it)
 	
 	// Actually claim the item
 	cli_execute("photobooth item "+to_string(it));
+	handleTracker("Clan Photo Booth","Claimed "+it, "auto_otherstuff");
 	
 	// Go home if we BAFH'd it
 	if (orig_clan_id != get_clan_id())
