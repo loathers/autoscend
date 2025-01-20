@@ -565,7 +565,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 	];
 	if (can_interact())
 	{	// Not worth making in HC
-		ef_to_try[Provocative Perkiness] = true;
+		ef_to_try[$effect[Provocative Perkiness]] = true;
 	}
 	if(tryEffects(ef_to_try))
 		return result();
