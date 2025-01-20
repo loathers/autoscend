@@ -785,6 +785,9 @@ void initializeDay(int day)
 	}
 
 	auto_floundryAction();
+	
+	auto_getClanPhotoBoothDefaultItems();
+	auto_getClanPhotoBoothEffect("space",3);
 
 	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 1))
 	{
@@ -1203,6 +1206,7 @@ boolean dailyEvents()
 	auto_useBlackMonolith();
 	auto_scepterSkills();
 	auto_getAprilingBandItems();
+	auto_MayamClaimAll();
 	auto_buyFromSeptEmberStore();
 	
 	return true;

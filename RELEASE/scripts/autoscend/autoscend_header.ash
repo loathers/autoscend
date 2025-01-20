@@ -51,9 +51,14 @@ boolean handleFaxMonster(monster enemy, boolean fightIt);
 boolean handleFaxMonster(monster enemy, boolean fightIt, string option);
 boolean checkFax(monster enemy);
 boolean [location] get_floundry_locations();
+int getBAFHID();
+boolean isWhitelistedToClan(int clanID);
+boolean isWhitelistedToBAFH();
+boolean canReturnToCurrentClan();
+int whitelistedClanToID(string clanName);
 int changeClan(string clanName);
 int changeClan(int toClan);
-int changeClan();
+int changeClan(); // to BAFH
 int hotTubSoaksRemaining();
 boolean isHotTubAvailable();
 int doHottub();
@@ -587,6 +592,18 @@ float expected_level_after_mouthwash(int n_mouthwash, float cold_res);
 boolean auto_haveTearawayPants();
 boolean auto_haveTakerSpace();
 void auto_checkTakerSpace();
+boolean auto_haveClanPhotoBoothHere();
+boolean auto_haveClanPhotoBooth();
+boolean auto_isClanPhotoBoothItem(item it);
+boolean auto_thisClanPhotoBoothHasItem(item it);
+boolean auto_thisClanPhotoBoothHasItems(boolean[item] items);
+boolean auto_getClanPhotoBoothDefaultItems();
+boolean auto_getClanPhotoBoothItem(item it);
+int auto_remainingClanPhotoBoothEffects();
+boolean auto_getClanPhotoBoothEffect(effect ef);
+boolean auto_getClanPhotoBoothEffect(effect ef, int n_times);
+boolean auto_getClanPhotoBoothEffect(string ef);
+boolean auto_getClanPhotoBoothEffect(string ef, int n_times);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2025.ash
@@ -1250,6 +1267,10 @@ boolean L13_towerNSHedge();
 boolean L13_sorceressDoor();
 boolean L13_towerNSTower();
 boolean L13_towerNSTowerSkin();
+boolean L13_towerNSTowerMeat();
+boolean L13_towerNSTowerBones();
+boolean L13_towerNSTowerMirror();
+boolean L13_towerNSTowerShadow();
 boolean L13_towerNSFinal();
 boolean L13_towerNSNagamar();
 boolean L13_towerAscent();
