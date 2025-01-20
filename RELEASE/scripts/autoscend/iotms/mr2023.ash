@@ -730,6 +730,12 @@ boolean auto_habitatTarget(monster target)
 		 	boolean sonofa_complete = get_property("sidequestLighthouseCompleted") == "hippy" || get_property("sidequestLighthouseCompleted") == "fratboy";
 			return (!sonofa_complete && item_amount($item[barrel of gunpowder])<4);
 		case $monster[eldritch tentacle]:
+			// Max tentacles fought being free is 11, so don't habitat if we've fought more than 6
+			// This variable increments at the end of combat, so we need 5 here.
+			if (get_property("eldritchTentaclesFought").to_int() > 5)
+			{
+				return false;
+			}
 			// don't habitat free fights in avant guard
 			return (!in_avantGuard() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
 		default:
