@@ -1004,4 +1004,40 @@ string ListOutput(location[int] list)
 	return retval;
 }
 
+// Sorting.
+// Uses boolean[TYPE] to allow use on Mafia list types eg $items[]
+
+item[int] auto_sortedByModifier(int[item] map, modifier m)
+{
+	return auto_sortedByModifier(map,m,true);
+}
+
+item[int] auto_sortedByModifier(int[item] map, modifier m, boolean high_to_low)
+{
+	item[int] ranked_list;
+	foreach entry in map
+	{
+		ranked_list[count(ranked_list)] = entry;
+	}
+	// Sort
+	float sign = high_to_low ? -1 : 1;
+	sort ranked_list by sign * numeric_modifier(value,m);
+	return ranked_list;
+}
+
+item[int] auto_sortedByModifier(boolean[item] map, modifier m)
+{
+	return auto_sortedByModifier(map,m,true);
+}
+
+item[int] auto_sortedByModifier(boolean[item] map, modifier m, boolean high_to_low)
+{
+	int[item] int_map;
+	foreach entry in map
+	{
+		int_map[entry]++;
+	}
+	return auto_sortedByModifier(int_map,m,high_to_low);
+}
+
 //end of location[int]

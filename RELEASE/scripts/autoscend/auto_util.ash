@@ -4716,3 +4716,57 @@ float stat_exp_percent(stat s)
 	}
 	return 0;
 }
+
+stat auto_getOffStatChallengeFromTelescope()
+{
+	string musc  = "standing around flexing";
+	string myst  = "sitting around playing chess";
+	string moxie = "all wearing sunglasses and dancing";
+	string scope = get_property("telescope1");
+	
+	if (contains_text(scope,musc))
+	{
+		return $stat[muscle];
+	}
+	else if (contains_text(scope,myst))
+	{
+		return $stat[mysticality];
+	}
+	else if (contains_text(scope,moxie))
+	{
+		return $stat[moxie];
+	}
+	return $stat[none];
+}
+
+element auto_getElementChallengeFromTelescope()
+{
+	string hot    = "fire";
+	string cold   = "igloos";
+	string spooky = "eldritch";
+	string sleaze = "greasy";
+	string stench = "garbage";
+	string scope = get_property("telescope2");
+	
+	if (contains_text(scope,hot))
+	{
+		return $element[hot];
+	}
+	else if (contains_text(scope,cold))
+	{
+		return $element[cold];
+	}
+	else if (contains_text(scope,spooky))
+	{
+		return $element[spooky];
+	}
+	else if (contains_text(scope,sleaze))
+	{
+		return $element[sleaze];
+	}
+	else if (contains_text(scope,stench))
+	{
+		return $element[stench];
+	}
+	return $element[none];
+}

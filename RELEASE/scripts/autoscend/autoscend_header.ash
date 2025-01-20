@@ -596,7 +596,10 @@ boolean auto_haveClanPhotoBooth();
 boolean auto_isClanPhotoBoothItem(item it);
 boolean auto_thisClanPhotoBoothHasItem(item it);
 boolean auto_thisClanPhotoBoothHasItems(boolean[item] items);
+int auto_remainingClanPhotoBoothItems();
 boolean auto_getClanPhotoBoothDefaultItems();
+boolean auto_getClanPhotoBoothDefaultItems(int n_reserve);
+boolean auto_getClanPhotoBoothItems(boolean[item] items_to_claim);
 boolean auto_getClanPhotoBoothItem(item it);
 int auto_remainingClanPhotoBoothEffects();
 boolean auto_getClanPhotoBoothEffect(effect ef);
@@ -1487,6 +1490,8 @@ void equipRollover(boolean silent);
 boolean auto_forceEquipSword(boolean speculative);
 boolean auto_forceEquipSword();
 boolean is_watch(item it);
+int[item] auto_getAllEquipabble();
+int[item] auto_getAllEquipabble(slot s);
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
@@ -1576,6 +1581,12 @@ location ListOutput(location[int] list);
 effect[int] effectList();
 int[int] intList();
 item[int] itemList();
+
+// Handy sorts of item lists
+item[int] auto_sortedByModifier(int[item]     list, modifier m);
+item[int] auto_sortedByModifier(int[item]     list, modifier m, boolean high_to_low);
+item[int] auto_sortedByModifier(boolean[item] list, modifier m);
+item[int] auto_sortedByModifier(boolean[item] list, modifier m, boolean high_to_low);
 
 ########################################################################################################
 //Defined in autoscend/autoscend_migration.ash
@@ -1939,3 +1950,5 @@ float substat_to_level();
 float substat_to_level(int n);
 stat stat_to_substat(stat s);
 float stat_exp_percent(stat s);
+stat auto_getOffStatChallengeFromTelescope();
+element auto_getElementChallengeFromTelescope();

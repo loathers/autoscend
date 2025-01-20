@@ -407,6 +407,20 @@ int remainingEmbers()
 	return get_property("availableSeptEmbers").to_int();
 }
 
+boolean auto_goingToMouthwashLevel()
+{
+	if(!auto_haveSeptEmberCenser())
+	{
+		return false;
+	}
+	boolean disregard_karma = get_property("auto_disregardInstantKarma").to_boolean();
+	// If we have at least 4 embers remaining, don't overlevel, they can be used for something else
+	boolean happy_to_overlevel = disregard_karma && remainingEmbers() < 4;
+	boolean want_to_mouthwash_level = (my_level() < 13 || happy_to_overlevel);
+	// Even disregarding karma, never level above 15 using mouthwash as a sanity limit
+	want_to_mouthwash_level = want_to_mouthwash_level && my_level()<15;
+	return (remainingEmbers() >= 2 && want_to_mouthwash_level);
+}
 void auto_buyFromSeptEmberStore()
 {
 	if(!auto_haveSeptEmberCenser())
@@ -420,16 +434,10 @@ void auto_buyFromSeptEmberStore()
 
 	// mouthwash for leveling
 	item mouthwash = $item[Mmm-brr! brand mouthwash];
-	boolean disregard_karma = get_property("auto_disregardInstantKarma").to_boolean();
 	auto_openMcLargeHugeSkis(); // make sure our skis are open for cold res
 	for (int imw = 0 ; imw < 3 ; imw++) // We can use up to 3 mouthwash
 	{
-		// If we have at least 4 embers remaining, don't overlevel, they can be used for something else
-		boolean happy_to_overlevel = disregard_karma && remainingEmbers() < 4;
-		boolean want_to_mouthwash_level = (my_level() < 13 || happy_to_overlevel);
-		// Even disregarding karma, never level above 15 using mouthwash as a sanity limit
-		want_to_mouthwash_level = want_to_mouthwash_level && my_level()<15;
-		if (remainingEmbers() >= 2 && want_to_mouthwash_level)
+		if (auto_goingToMouthwashLevel())
 		{
 			// get as much cold res as possible
 			int [element] resGoal;
@@ -649,16 +657,142 @@ boolean auto_thisClanPhotoBoothHasItems(boolean[item] its)
 	{
 		success = success && auto_thisClanPhotoBoothHasItem(it);
 	}
-	return false;
+	return success;
+}
+
+int auto_remainingClanPhotoBoothItems()
+{
+	if (!auto_haveClanPhotoBooth())
+	{
+		return 0;
+	}
+	return 3-get_property("_photoBoothEquipment").to_int();
 }
 
 boolean auto_getClanPhotoBoothDefaultItems()
+{
+	return auto_getClanPhotoBoothDefaultItems(0);
+}
+
+boolean auto_getClanPhotoBoothDefaultItems(int reserve)
 {
 	if (!auto_haveClanPhotoBooth())
 	{
 		return false;
 	}
-	boolean[item] items_to_claim = $items[fake arrow-through-the-head, astronaut helmet, oversized monocle on a stick];
+	int n_claimable = auto_remainingClanPhotoBoothItems();
+	if (reserve < 0 || reserve > n_claimable)
+	{
+		auto_log_error("Bad value of items to reserve.");
+	}
+	
+	// Defult item logic:
+		// If fake arrow is better for -combat than any other hat we have, and we have no fireworks access to buy a popper, take fake arrow.
+		// If astronaut helmet is best cold red hat we have available and we'll mouthwash level, take fake arrow.
+		// If turbo or day count > 1, take off-stat sheriff items, matched to tower if scope available.
+		// Take monocle if best-in-slot for item (special case for unbrella)
+		// Take feather boa
+    
+	boolean[item] items_to_claim;
+	
+	int[item] hats_available = auto_getAllEquipabble($slot[hat]);
+	
+	// Check fake arrow through the head
+	item[int] hats_sorted_by_nc = auto_sortedByModifier(hats_available,$modifier[combat rate],false);
+	float get_combat(item it)
+	{
+		return numeric_modifier(it,$modifier[combat rate]);
+	}
+	boolean arrow_is_best_nc_hat = count(hats_sorted_by_nc)==0 || (get_combat($item[fake arrow-through-the-head]) < get_combat(hats_sorted_by_nc[0]));
+	if (arrow_is_best_nc_hat && !have_fireworks_shop()) // If we have fireworks we'll get porkpie-mounted popper
+	{
+		items_to_claim[$item[fake arrow-through-the-head]] = true;
+	}
+	
+	if (count(items_to_claim) == n_claimable)
+	{
+		return auto_getClanPhotoBoothItems(items_to_claim);
+	}
+	
+	// Check astronaut helmet
+	item[int] hats_sorted_by_cold_res = auto_sortedByModifier(hats_available,$modifier[cold resistance]);
+	float get_res(item it)
+	{
+		return numeric_modifier(it,$modifier[cold resistance]);
+	}
+	boolean astronaut_is_best_cold_hat = count(hats_sorted_by_cold_res)==0 || (get_res($item[astronaut helmet]) > get_res(hats_sorted_by_cold_res[0]));
+	if (auto_goingToMouthwashLevel() && astronaut_is_best_cold_hat)
+	{
+		items_to_claim[$item[astronaut helmet]] = true;
+	}
+
+	if (count(items_to_claim) == n_claimable)
+	{
+		return auto_getClanPhotoBoothItems(items_to_claim);
+	}
+	
+	// Check sheriff items (off-stat only, for tower)
+	// Don't do this d1 unless we're in turbo
+	if (daycount()>1 || auto_turbo())
+	{
+		stat challenge_stat = auto_getOffStatChallengeFromTelescope();
+		if (challenge_stat == $stat[muscle])
+		{
+			items_to_claim[$item[sheriff pistol]] = true;
+		}
+		else if (challenge_stat == $stat[mysticality])
+		{
+			items_to_claim[$item[sheriff badge]] = true;
+		}
+		else if (challenge_stat == $stat[moxie])
+		{
+			items_to_claim[$item[sheriff moustache]] = true;
+		}
+		else if (challenge_stat == $stat[none])
+		{
+			reserve++; // reserve a claim if no telescope
+		}
+	}
+	// To do: dual pistol support - items_to_claim only supports single entries per item
+	
+	if (count(items_to_claim)+reserve == n_claimable)
+	{
+		return auto_getClanPhotoBoothItems(items_to_claim);
+	}
+	
+	// Check if monocle is best-in-slot for +item
+	int[item] offhands_available = auto_getAllEquipabble($slot[off-hand]);
+	item[int] offhands_sorted_by_item = auto_sortedByModifier(offhands_available,$modifier[item drop]);
+	float get_item_drop(item it)
+	{
+		return numeric_modifier(it,$modifier[item drop]);
+	}
+	item monocle = $item[oversized monocle on a stick];
+	boolean monocle_is_best_drop_oh = count(offhands_sorted_by_item)==0 || (get_item_drop(monocle) > get_item_drop(offhands_sorted_by_item[0]));
+	// Unbrella will win regardless of setting
+	monocle_is_best_drop_oh = monocle_is_best_drop_oh && !possessUnrestricted($item[unbreakable umbrella]);
+	if (monocle_is_best_drop_oh)
+	{
+		items_to_claim[monocle] = true;
+	}
+	
+	if (count(items_to_claim)+reserve == n_claimable)
+	{
+		return auto_getClanPhotoBoothItems(items_to_claim);
+	}
+	
+	items_to_claim[$item[feather boa]] = true;
+	
+	return auto_getClanPhotoBoothItems(items_to_claim);
+}
+
+boolean auto_getClanPhotoBoothItems(boolean[item] items_to_claim)
+{
+	if (!auto_haveClanPhotoBooth())
+	{
+		return false;
+	}
+	
 	int orig_clan_id = get_clan_id();
 	boolean in_bafh = orig_clan_id == getBAFHID();
 	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
@@ -688,10 +822,11 @@ boolean auto_getClanPhotoBoothItem(item it)
 	{
 		return false;
 	}
-	if (available_amount(it)>0)
-	{
-		return true;
-	}
+	// Todo: implement this check for items that can't be double-equipped (sheriff badge, sheriff moustache)
+	//~ if (available_amount(it)>0)
+	//~ {
+		//~ return true;
+	//~ }
 	// Handle whether we want to jump to BAFH for the item
 	int orig_clan_id = get_clan_id();
 	boolean in_bafh = orig_clan_id == getBAFHID();
