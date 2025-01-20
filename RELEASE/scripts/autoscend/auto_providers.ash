@@ -547,8 +547,8 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		if(pass())
 			return result();
 	}
-
-	if(tryEffects($effects[
+	
+	boolean[effect] ef_to_try = $effects[
 		Adorable Lookout,
 		Alacri Tea,
 		All Fired Up,
@@ -557,13 +557,17 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		The Glistening,
 		Human-Machine Hybrid,
 		Patent Alacrity,
-		Provocative Perkiness,
 		Sepia Tan,
 		Sugar Rush,
 		Ticking Clock,
 		Well-Swabbed Ear,
 		Poppy Performance
-	]))
+	];
+	if (can_interact())
+	{	// Not worth making in HC
+		ef_to_try[Provocative Perkiness] = true;
+	}
+	if(tryEffects(ef_to_try))
 		return result();
 
 	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0 && auto_is_valid($effect[init.enh]))
