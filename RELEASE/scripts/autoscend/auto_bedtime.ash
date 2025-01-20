@@ -1018,6 +1018,13 @@ boolean doBedtime()
 				auto_sourceTerminalEnhance("damage");
 				enhances -= 1;
 		}
+		}
+			else
+			{
+				auto_sourceTerminalEnhance("items");
+				auto_sourceTerminalEnhance("meat");
+				enhances -= 2;
+			}
 	}
 
 	// Is +50% to all stats the best choice here? I don't know!
