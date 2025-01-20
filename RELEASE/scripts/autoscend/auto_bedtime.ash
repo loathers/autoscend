@@ -725,7 +725,6 @@ boolean doBedtime()
 	}
 
 	//We are committing to end of day now...
-	auto_scepterRollover();
 	getSpaceJelly();
 	while(acquireHermitItem($item[11-leaf Clover]));
 
@@ -1017,14 +1016,7 @@ boolean doBedtime()
 			if(in_glover())
 			{
 				auto_sourceTerminalEnhance("damage");
-				enhances -= 1;				
-			}
-			else
-			{
-				auto_sourceTerminalEnhance("items");
-				auto_sourceTerminalEnhance("meat");
-				enhances -= 2;
-			}
+				enhances -= 1;
 		}
 	}
 
@@ -1317,6 +1309,7 @@ boolean doBedtime()
 
 		acquireMilkOfMagnesiumIfUnused(true);
 		consumeMilkOfMagnesiumIfUnused();
+		auto_scepterRollover();
 
 		if(have_skill($skill[Calculate the Universe]) && auto_is_valid($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < min(3, get_property("skillLevel144").to_int())))
 		{

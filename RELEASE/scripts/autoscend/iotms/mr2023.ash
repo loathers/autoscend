@@ -624,16 +624,31 @@ void auto_scepterSkills()
 			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
 		}
 	}
+	//see how much mana cost reduction we can get (up to 3mp)
+	maximize("-mana cost", true);
+	int manaCostMaximize = numeric_modifier("Generated:_spec", "Mana Cost");
+	if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+	}
 }
 
 void auto_scepterRollover()
 {
-	if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	//We don't want the baywatch if our accessory slots are already filled with > 7 adventure items or we if one of the slots is the counterclockwise watch
+	boolean noWatch = ((numeric_modifier(equipped_item($slot[acc1]),"Adventures") > 7 &&
+	numeric_modifier(equipped_item($slot[acc2]),"Adventures") > 7 &&
+	numeric_modifier(equipped_item($slot[acc3]),"Adventures") > 7) ||
+		((is_watch(equipped_item($slot[acc1])) && numeric_modifier(equipped_item($slot[acc1]),"Adventures") > 7) ||
+		(is_watch(equipped_item($slot[acc2])) && numeric_modifier(equipped_item($slot[acc2]),"Adventures") > 7) ||
+		(is_watch(equipped_item($slot[acc3])) && numeric_modifier(equipped_item($slot[acc3]),"Adventures") > 7)));
+	if(!noWatch && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
 	{
-		use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
+		use_skill($skill[Aug. 30th: Beach Day!]); //For Rollover adventures (and -MP)
+		equipRollover(true);
 	}
-	//Get mainstats as a last resort
-	if(get_property("_augSkillsCast").to_int()< 5)
+	//Get mainstats
+	if(get_property("_augSkillsCast").to_int()< 5 && get_property("auto_disregardInstantKarma").to_boolean())
 	{
 		if(canUse($skill[Aug. 12th: Elephant Day!]) && !get_property("_aug12Cast").to_boolean() && my_primestat() == $stat[muscle])
 		{
