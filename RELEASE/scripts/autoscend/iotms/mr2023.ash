@@ -582,6 +582,16 @@ void auto_useBlackMonolith()
 	visit_url("campground.php?action=monolith");
 }
 
+int auto_dousesRemaining()
+{
+	item fluda = $item[Flash Liquidizer Ultra Dousing Accessory];
+	if (available_amount(fluda)<1 || !auto_is_valid(fluda))
+	{
+		return 0;
+	}
+	return 3-get_property("_douseFoeUses").to_int();
+}
+
 boolean auto_haveAugustScepter()
 {
 	static item scepter = wrap_item($item[august scepter]);
