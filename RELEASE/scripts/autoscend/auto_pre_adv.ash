@@ -356,6 +356,7 @@ boolean auto_pre_adventure()
 	boolean burningDelay = auto_burningDelay();
 	boolean gettingLucky = auto_gettingLucky();
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
+	generic_t combatModifier = zone_combatMod(place);
 	if (combatModifier._boolean && !auto_queueIgnore()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
@@ -413,7 +414,7 @@ boolean auto_pre_adventure()
 				zoneHasUnwantedMonsters = true;
 			}
 			boolean wantToBanish  = auto_wantToBanish(mon, place);
-			boolean wantToFreeRun = auto_wantToFreeRun(mon, place) || auto_forceFreeRun(false);;
+			boolean wantToFreeRun = auto_wantToFreeRun(mon, place) || auto_forceFreeRun(false);
 			if(wantToBanish || wantToFreeRun)
 			{
 				// attempt to prepare for banishing, but if we can not try free running
