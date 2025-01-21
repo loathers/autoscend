@@ -1110,9 +1110,16 @@ boolean LX_lastChance()
 			}
 			else
 			{
-				//Nothing else to do but go here
-				autoAdv($location[Noob Cave]);
-				continue;
+				if(can_adventure($location[Cobb\'s Knob Harem]))
+				{
+					autoAdv($location[Cobb\'s Knob Harem]);
+				}
+				else
+				{
+					//Nothing else to do but go here
+					autoAdv($location[Noob Cave]);
+					continue;
+				}
 			}
 		}
 		if(get_property("screechCombats").to_int() > 0)
