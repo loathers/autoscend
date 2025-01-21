@@ -159,6 +159,12 @@ boolean L7_defiledAlcove()
 		return false;
 	}
 
+	if (is_banished($phylum[undead]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; //No sense in trying to go to the cyrpt if undead are banished
+	}
+
 	if (get_property("cyrptAlcoveEvilness").to_int() > (14 + evilBonus))
 	{
 		provideInitiative(850, $location[The Defiled Alcove], true);
@@ -383,6 +389,12 @@ boolean L7_crypt()
 		equipStatgainIncreasers();
 		use(1, $item[chest of the bonerdagon]);
 		return false;
+	}
+
+	if (is_banished($phylum[undead]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; //No sense in trying to go to the cyrpt if undead are banished
 	}
 
 	// make sure quest status is correct before we attempt to adventure.

@@ -1,4 +1,4 @@
-since r28258;	// fix: noncomforcers avalanche name
+since r28270; // feat: add function is_banished(phylum)
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1442,7 +1442,7 @@ boolean adventureFailureHandler()
 		}
 	}
 
-	if(last_monster() == $monster[Crate] && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
+	if(last_monster() == $monster[Crate] && !(get_property("screechDelay").to_boolean()) && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
 	{
 		if(get_property("auto_newbieOverride").to_boolean())
 		{

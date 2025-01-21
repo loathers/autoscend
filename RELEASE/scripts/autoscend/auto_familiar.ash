@@ -486,6 +486,8 @@ boolean autoChooseFamiliar(location place)
 		}
 	}
 
+	famChoice = auto_forceEagle(); // force Patriotic Eagle if we have a >0 combats until we can screech again
+
 	// Gremlins have special familiar handling.
 	if ($locations[Next to that Barrel with Something Burning in it, Out By that Rusted-Out Car, Over Where the Old Tires Are, Near an Abandoned Refrigerator] contains place) {
 		famChoice = lookupFamiliarDatafile("gremlins");
