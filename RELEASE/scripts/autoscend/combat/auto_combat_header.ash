@@ -52,6 +52,7 @@ float turns_to_kill(float dmg);
 boolean combat_status_check(string mark);
 void combat_status_add(string mark);
 boolean wantToForceDrop(monster enemy);
+boolean wantToDouse(monster enemy);
 boolean canSurviveShootGhost(monster enemy, int shots);
 
 #####################################################
