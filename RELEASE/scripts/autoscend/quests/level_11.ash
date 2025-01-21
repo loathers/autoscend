@@ -3095,18 +3095,19 @@ boolean L11_palindome()
 	}
 	else
 	{
-		if(!in_hardcore() && pulls_remaining() == 0)
+		if(pulls_remaining() == 0)
 		{
 			// used our pulls today before getting to palindrome. Delay until next day or run out of other stuff to do
 			if(!isAboutToPowerlevel())
 			{
-				auto_log_debug("Delaying palindrome. In a normal run and don't have enough pulls to create wet stunt nut stew.");
+				auto_log_debug("Delaying palindrome.");
 				return false;
 			}
 			else
 			{
 				//After we get the photos
-				//First try wishing, then try Whitey's if we have enough +item, then brute force.
+				//First try wishing, then try Whitey's. At 0% item / combat / food drop, this expects to take ~19 turns. At a very achievable 100% item, 10 turns.
+				//The alternate route takes 14 turns so always worth trying Whitey's IMO.
 				//If we hit this, we should only need to finish the L11 quest so it won't hurt to do everything in provideItem
 				//since we will need +item for tomb rats in ~15 turns anyway. Buffs from wishes should still be active
 				//since they are 30 turns from monkey paw wishes and 20 turns from pocket/genie wishes.
@@ -3125,14 +3126,12 @@ boolean L11_palindome()
 						}
 						return false; //wasn't able to make the stew
 					}
-					else if(provideItem(300, $location[Whitey's Grove], true, true) >= 300)
+					else 
 					{
+						provideItem(300, $location[Whitey's Grove], true);
+						providePlusCombat(15, $location[Whitey's Grove], false);
 						set_property("auto_doWhiteys", true);
 						return doWhiteys(); //Initial call to do Whitey's Grove
-					}
-					else
-					{
-						set_property("auto_bruteForcePalindome",true);
 					}
 				}
 			}

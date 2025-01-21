@@ -1203,9 +1203,28 @@ boolean doBedtime()
 			effect_to_wish = $effect[One Very Clear Eye];
 		}
 	}
-	if (auto_haveMonkeyPaw())
+	if (auto_haveMonkeyPaw() && auto_monkeyPawWishesLeft() > 0)
 	{
 		boolean success = true;
+		// if we unlocked the guild and the beach, unlock Whitey's Grove so we can get bird rib / lion oil
+		if (get_property("lastGuildStoreOpen").to_int() == my_ascensions() && get_property("lastDesertUnlock").to_int() == my_ascensions()) {
+			// start, then finish the meatcar quest
+			if (internalQuestStatus("questG01Meatcar") < 1) {
+				visit_url("guild.php?place=paco");
+			}
+			if (internalQuestStatus("questG01Meatcar") < 1) {
+				visit_url("guild.php?place=paco");
+			}
+			// open Whitey's Grove
+			if (internalQuestStatus("questG02Whitecastle") < 0) {
+				visit_url("guild.php?place=paco");
+			}
+			foreach it in $items[Lion Oil, Bird Rib]
+			{
+				if(item_amount(it) > 0) continue;
+				auto_makeMonkeyPawWish(it);
+			}
+		}
 		while (auto_monkeyPawWishesLeft() > 0 && success)
 		{
 			success = auto_makeMonkeyPawWish(effect_to_wish);
