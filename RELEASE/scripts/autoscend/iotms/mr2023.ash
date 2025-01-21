@@ -636,19 +636,19 @@ void auto_scepterSkills()
 void auto_scepterRollover()
 {
 	//We don't want the baywatch if our accessory slots are already filled with > 7 adventure items or we if one of the slots is the counterclockwise watch
-	boolean noWatch = ((numeric_modifier(equipped_item($slot[acc1]),"Adventures") > 7 &&
-	numeric_modifier(equipped_item($slot[acc2]),"Adventures") > 7 &&
-	numeric_modifier(equipped_item($slot[acc3]),"Adventures") > 7) ||
-		((is_watch(equipped_item($slot[acc1])) && numeric_modifier(equipped_item($slot[acc1]),"Adventures") > 7) ||
-		(is_watch(equipped_item($slot[acc2])) && numeric_modifier(equipped_item($slot[acc2]),"Adventures") > 7) ||
-		(is_watch(equipped_item($slot[acc3])) && numeric_modifier(equipped_item($slot[acc3]),"Adventures") > 7)));
+	boolean noWatch = ((numeric_modifier(equipped_item($slot[acc1]),"Adventures") >= 7 &&
+	numeric_modifier(equipped_item($slot[acc2]),"Adventures") >= 7 &&
+	numeric_modifier(equipped_item($slot[acc3]),"Adventures") >= 7) ||
+		((is_watch(equipped_item($slot[acc1])) && numeric_modifier(equipped_item($slot[acc1]),"Adventures") >= 7) ||
+		(is_watch(equipped_item($slot[acc2])) && numeric_modifier(equipped_item($slot[acc2]),"Adventures") >= 7) ||
+		(is_watch(equipped_item($slot[acc3])) && numeric_modifier(equipped_item($slot[acc3]),"Adventures") >= 7)));
 	if(!noWatch && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
 	{
 		use_skill($skill[Aug. 30th: Beach Day!]); //For Rollover adventures (and -MP)
 		equipRollover(true);
 	}
 	//Get mainstats
-	if(get_property("_augSkillsCast").to_int()< 5 && get_property("auto_disregardInstantKarma").to_boolean())
+	if(get_property("_augSkillsCast").to_int()< 5 && disregardInstantKarma())
 	{
 		if(canUse($skill[Aug. 12th: Elephant Day!]) && !get_property("_aug12Cast").to_boolean() && my_primestat() == $stat[muscle])
 		{
