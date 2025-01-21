@@ -742,7 +742,7 @@ boolean auto_habitatTarget(monster target)
 		case $monster[eldritch tentacle]:
 			// Max tentacles fought being free is 11, so don't habitat if we've fought more than 6
 			// This variable increments at the end of combat, so we need 5 here.
-			if (get_property("eldritchTentaclesFought").to_int() > 5)
+			if (get_property("_eldritchTentaclesFoughtToday").to_int() > 5)
 			{
 				return false;
 			}

@@ -1,4 +1,4 @@
-since r28258;	// fix: noncomforcers avalanche name
+since r28301;	// _eldritchTentaclesFoughtToday variable
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
