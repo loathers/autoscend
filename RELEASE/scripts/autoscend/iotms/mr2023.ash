@@ -942,8 +942,9 @@ boolean[location] citizenZones(string target)
 	}
 	if(target == "spec")
 	{
-		$locations[The Outskirts of Cobb\'s Knob];
+		return $locations[The Outskirts of Cobb\'s Knob];
 	}
+	return $locations[none];
 }
 boolean auto_getCitizenZone(location loc)
 {
