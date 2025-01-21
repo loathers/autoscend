@@ -217,7 +217,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash]
+	foreach sk in $skills[Transcendent Olfaction, %fn\, fire a Red\, White and Blue Blast, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -232,6 +232,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	if(canUse($skill[Transcendent Olfaction], true , inCombat) && get_property("_olfactionsUsed").to_int() < 3 && !isSniffed(enemy, $skill[Transcendent Olfaction]))
 	{
 		return $skill[Transcendent Olfaction];
+	}
+	if(canUse($skill[%fn\, fire a Red, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
+	{
+		return $skill[%fn\, fire a Red, White and Blue Blast];
 	}
 	if(canUse($skill[Make Friends], true , inCombat) && my_audience() >= 20 && !isSniffed(enemy, $skill[Make Friends]))
 	{

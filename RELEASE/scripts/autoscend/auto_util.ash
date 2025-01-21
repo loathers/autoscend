@@ -1129,6 +1129,10 @@ boolean adjustForSniffingIfPossible(monster target)
 	{
 		return autoEquip($item[cursed monkey\'s paw]);
 	}
+	if(sniffer == $skill[%fn\, fire a Red, White and Blue Blast])
+	{
+		handleFamiliar($familiar[Patriotic Eagle]);
+	}
 	if(sniffer != $skill[none])
 	{
 		return acquireMP(sniffer.mp_cost());
@@ -3415,6 +3419,8 @@ boolean auto_check_conditions(string conds)
 				if(get_property("_latteMonster").to_monster() == check_sniffed)
 					return true;
 				if(get_property("motifMonster").to_monster() == check_sniffed)
+					return true;
+				if(get_property("rwbMonster").to_monster() == check_sniffed)
 					return true;
 				return false;
 			// data: Doesn't matter, but put something so I don't have to support dataless conditions

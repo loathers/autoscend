@@ -874,7 +874,7 @@ boolean auto_haveEagle()
 		return true;
 	}
 	return false;
-}}
+}
 
 boolean auto_haveBurningLeaves()
 {

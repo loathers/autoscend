@@ -546,7 +546,6 @@ boolean auto_circadianRhythmTarget(phylum target);
 boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
 boolean auto_haveEagle();
-familiar auto_forceEagle();
 boolean auto_haveBurningLeaves();
 boolean auto_burnLeaves();
 boolean auto_haveCCSC();
