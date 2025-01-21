@@ -648,7 +648,7 @@ void auto_scepterRollover()
 		equipRollover(true);
 	}
 	//Get mainstats
-	if(get_property("_augSkillsCast").to_int()< 5 && disregardInstantKarma())
+	if(get_property("_augSkillsCast").to_int()< 5 && my_level() < 13)
 	{
 		if(canUse($skill[Aug. 12th: Elephant Day!]) && !get_property("_aug12Cast").to_boolean() && my_primestat() == $stat[muscle])
 		{
