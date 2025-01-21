@@ -145,7 +145,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
-	if(!combat_status_check("phylumbanishercheck") && auto_wantToBanish(monster_phylum(enemy), my_location()))
+	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(monster_phylum(enemy), my_location()))
 	{
 		string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
 		if(banishAction != "")
@@ -192,7 +192,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
-	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()) && !ag_is_bodyguard())
+	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(enemy, my_location()) && !ag_is_bodyguard())
 	{
 		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
