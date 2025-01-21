@@ -14,5 +14,5 @@ banish	9	undead	loc:The Unquiet Garves
 banish	10	undead	loc:The Haunted Boiler Room
 banish	11	undead	loc:The Middle Chamber
 banish	12	goblin	loc:Cobb's Knob Harem
-banish	13	construct	loc:Noob Cave
+banish	13	construct	loc:Noob Cave;!prop_boolean:auto_nonAdvLoc
 

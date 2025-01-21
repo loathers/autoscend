@@ -11,4 +11,4 @@ undead	loc:The Unquiet Garves
 undead	loc:The Haunted Boiler Room
 undead	loc:The Middle Chamber
 goblin	loc:Cobb's Knob Harem
-construct	loc:Noob Cave
+construct	loc:Noob Cave;!prop_boolean:auto_nonAdvLoc
