@@ -532,6 +532,7 @@ int remainingCatalogCredits();
 boolean auto_haveIdolMicrophone();
 void auto_buyFrom2002MrStore();
 void auto_useBlackMonolith();
+int auto_dousesRemaining();
 boolean auto_haveAugustScepter();
 void auto_scepterSkills();
 void auto_lostStomach();

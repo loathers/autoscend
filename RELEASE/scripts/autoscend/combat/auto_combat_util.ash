@@ -1124,6 +1124,20 @@ boolean wantToForceDrop(monster enemy)
 	return forceDrop;
 }
 
+boolean wantToDouse(monster enemy)
+{
+	switch (enemy)
+	{
+		case $monster[larval filthworm]:
+			return item_amount($item[filthworm hatchling scent gland  ]) == 0;
+		case $monster[filthworm drone]:
+			return item_amount($item[filthworm drone scent gland      ]) == 0;
+		case $monster[filthworm royal guard]:
+			return item_amount($item[filthworm royal guard scent gland]) == 0;
+	}
+	return false;
+}
+
 boolean canSurviveShootGhost(monster enemy, int shots) {
 	int damage;
 	switch(enemy)
