@@ -866,6 +866,7 @@ void auto_handleJillOfAllTrades()
 	}
 
 	return;
+}
 
 boolean auto_haveEagle()
 {
