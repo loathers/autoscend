@@ -2457,6 +2457,12 @@ boolean L11_mauriceSpookyraven()
 	}
 	if (item_amount($item[blasting soda]) == 0 && !possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
+		if (is_banished($phylum[undead]) && get_property("screechCombats").to_int() > 0)
+		{
+			set_property("screechDelay", true);
+			return false; //No sense in trying to go to the Laundry Room if undead (Cabinet of Dr. Limpieza) are banished
+		}
+
 		auto_log_info("Searching for baking soda, I mean, blasting pop.", "blue");
 		if(!bat_wantHowl($location[The Haunted Wine Cellar]))
 		{
