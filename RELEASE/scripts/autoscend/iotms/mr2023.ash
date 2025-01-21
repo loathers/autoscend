@@ -866,7 +866,15 @@ void auto_handleJillOfAllTrades()
 	}
 
 	return;
-}
+
+boolean auto_haveEagle()
+{
+	if(auto_have_familiar($familiar[Patriotic Eagle]))
+	{
+		return true;
+	}
+	return false;
+}}
 
 boolean auto_haveBurningLeaves()
 {
