@@ -2927,6 +2927,27 @@ boolean L11_palindome()
 	#
 	boolean doWhiteys()
 	{
+		//After we get the photos
+		//First try wishing, then try Whitey's. At 0% item / combat / food drop, this expects to take ~19 turns. At a very achievable 100% item, 10 turns.
+		//The alternate route takes 14 turns so always worth trying Whitey's IMO.
+		//If we hit this, we should only need to finish the L11 quest so it won't hurt to do everything in provideItem
+		//since we will need +item for tomb rats in ~15 turns anyway. Buffs from wishes should still be active
+		//since they are 30 turns from monkey paw wishes and 20 turns from pocket/genie wishes.
+		if(auto_monkeyPawWishesLeft() > 0)
+		{
+			foreach it in $items[Lion Oil, Bird Rib]
+			{
+				if(item_amount(it) > 0) continue;
+				auto_makeMonkeyPawWish(it);
+			}
+			if(item_amount($item[Lion Oil]) > 0 && item_amount($item[Bird Rib]) > 0)
+			{
+				return makeWetStuntNutStew();
+			}
+			//wasn't able to make the stew so continue to Whitey's
+		}
+		provideItem(300, $location[Whitey's Grove], true);
+		set_property("auto_doWhiteys", true);
 		if(item_amount($item[white page]) > 0)
 		{
 			set_property("choiceAdventure940", 1);
@@ -2948,6 +2969,7 @@ boolean L11_palindome()
 			restoreSetting("lastGuildStoreOpen");
 			return true;
 		}
+		providePlusCombat(15, $location[Whitey's Grove], false);
 		// +item is nice to get that food
 		bat_formBats();
 		auto_lostStomach(true);
@@ -2975,7 +2997,9 @@ boolean L11_palindome()
 
 	if(item_amount($item[wet stunt nut stew]) == 0 && internalQuestStatus("questL11Palindome") >= 3)
 	{
-		return makeWetStuntNutStew();
+		if (makeWetStuntNutStew()) {
+			return true;
+		}
 	}
 
 	if((item_amount($item[Wet Stunt Nut Stew]) > 0) && !possessEquipment($item[Mega Gem]))
@@ -3105,34 +3129,9 @@ boolean L11_palindome()
 			}
 			else
 			{
-				//After we get the photos
-				//First try wishing, then try Whitey's. At 0% item / combat / food drop, this expects to take ~19 turns. At a very achievable 100% item, 10 turns.
-				//The alternate route takes 14 turns so always worth trying Whitey's IMO.
-				//If we hit this, we should only need to finish the L11 quest so it won't hurt to do everything in provideItem
-				//since we will need +item for tomb rats in ~15 turns anyway. Buffs from wishes should still be active
-				//since they are 30 turns from monkey paw wishes and 20 turns from pocket/genie wishes.
 				if (internalQuestStatus("questL11Palindome") > 2)
 				{
-					if(auto_monkeyPawWishesLeft() > 0)
-					{
-						foreach it in $items[Lion Oil, Bird Rib]
-						{
-							if(item_amount(it) > 0) continue;
-							auto_makeMonkeyPawWish(it);
-						}
-						if(item_amount($item[Lion Oil]) > 0 && item_amount($item[Bird Rib]) > 0)
-						{
-							return makeWetStuntNutStew();
-						}
-						return false; //wasn't able to make the stew
-					}
-					else 
-					{
-						provideItem(300, $location[Whitey's Grove], true);
-						providePlusCombat(15, $location[Whitey's Grove], false);
-						set_property("auto_doWhiteys", true);
-						return doWhiteys(); //Initial call to do Whitey's Grove
-					}
+					return doWhiteys(); //Initial call to do Whitey's Grove
 				}
 			}
 		}
