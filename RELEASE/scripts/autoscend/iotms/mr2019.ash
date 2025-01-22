@@ -809,6 +809,7 @@ int auto_beachCombFreeUsesLeft(){
 
 boolean auto_beachUseFreeCombs() {
 	int freeCombs = auto_beachCombFreeUsesLeft();
+	if(my_adventures() == 0) { return false; }
 	if(freeCombs <= 0) { return false; }
 	cli_execute(`combo {freeCombs}`);
 	return true;
