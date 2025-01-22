@@ -651,7 +651,7 @@ float [monster] auto_combat_appearance_rates(location place, boolean queue)
 	{
 		if(mob != $monster[none])
 		{
-			res_excluding_noncombat[mob] = freq / (100 - noncombat_frequency);
+			res_excluding_noncombat[mob] = freq / (100 - noncombat_frequency) * 100;
 		}
 	}
 	return res_excluding_noncombat;

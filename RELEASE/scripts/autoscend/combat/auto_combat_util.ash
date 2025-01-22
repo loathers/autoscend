@@ -202,6 +202,10 @@ boolean isSniffed(monster enemy, skill sk)
 	string search;
 	if (sk == $skill[Get a Good Whiff of This Guy]) {
 		search = "Nosy Nose";
+	} else if (sk == $skill[%fn\, fire a Red\, White and Blue Blast]){
+		if(auto_RWBMonster() == enemy) {
+			return true;
+		}
 	} else {
 		search = sk.to_string();
 	}

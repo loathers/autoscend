@@ -602,7 +602,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 
 		//If you have tearaway pants equipped, use its skill
-		if(canUse($skill[Tear Away your Pants!]) && (get_property("auto_forceNonCombatSource") == "" || monster_phylum() == $phylum[plant]))
+		if(canUse($skill[Tear Away your Pants!]) && ((get_property("auto_forceNonCombatSource") == "" && !(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])) || monster_phylum() == $phylum[plant]))
 		{
 			return useSkill($skill[Tear Away your Pants!]);
 		}
