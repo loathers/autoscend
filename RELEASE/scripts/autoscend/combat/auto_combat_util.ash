@@ -259,7 +259,7 @@ skill getSniffer(monster enemy, boolean inCombat)
 		{
 			return $skill[Monkey Point];
 		}
-		if(canUse($skill[McHugeLarge Slash], true , inCombat) && !isSniffed(enemy, $skill[McHugeLarge Slash]))
+		if(canUse($skill[McHugeLarge Slash], true , inCombat) && !isSniffed(enemy, $skill[McHugeLarge Slash]) && auto_McLargeHugeSniffsLeft()>0)
 		{
 			return $skill[McHugeLarge Slash];
 		}
@@ -270,7 +270,7 @@ skill getSniffer(monster enemy, boolean inCombat)
 		{
 			return $skill[Monkey Point];
 		}
-		if (possessEquipment($item[McHugeLarge left pole]) && !isSniffed(enemy, $skill[McHugeLarge Slash]))
+		if (possessEquipment($item[McHugeLarge left pole]) && !isSniffed(enemy, $skill[McHugeLarge Slash]) && auto_McLargeHugeSniffsLeft()>0)
 		{
 			return $skill[McHugeLarge Slash];
 		}

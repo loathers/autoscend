@@ -612,6 +612,7 @@ boolean auto_haveMcHugeLargeSkis();
 boolean auto_equipAllMcHugeLarge();
 boolean auto_openMcLargeHugeSkis();
 int auto_McLargeHugeForcesLeft();
+int auto_McLargeHugeSniffsLeft();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
