@@ -2921,6 +2921,25 @@ boolean L11_palindome()
 	}
 
 	auto_log_info("In the palindome : emodnilap eht nI", "blue");
+
+	boolean makeWetStuntNutStew()
+	{
+		 if((item_amount($item[Bird Rib]) > 0) && (item_amount($item[Lion Oil]) > 0) && (item_amount($item[Wet Stew]) == 0))
+		{
+			autoCraft("cook", 1, $item[Bird Rib], $item[Lion Oil]);
+		}
+
+		if((item_amount($item[Stunt Nuts]) > 0) && (item_amount($item[Wet Stew]) > 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0))
+		{
+			autoCraft("cook", 1, $item[wet stew], $item[stunt nuts]);
+		}
+		if(item_amount($item[wet stunt nut stew]) > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	#
 	#	In hardcore, guild-class, the right side of the or doesn't happen properly due us farming the
 	#	Mega Gem within the if, with pulls, it works fine. Need to fix this. This is bad.
@@ -2975,24 +2994,6 @@ boolean L11_palindome()
 		auto_lostStomach(true);
 		auto_log_info("Off to the grove for some doofy food!", "blue");
 		return autoAdv(1, $location[Whitey\'s Grove]);
-	}
-
-	boolean makeWetStuntNutStew()
-	{
-		 if((item_amount($item[Bird Rib]) > 0) && (item_amount($item[Lion Oil]) > 0) && (item_amount($item[Wet Stew]) == 0))
-		{
-			autoCraft("cook", 1, $item[Bird Rib], $item[Lion Oil]);
-		}
-
-		if((item_amount($item[Stunt Nuts]) > 0) && (item_amount($item[Wet Stew]) > 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0))
-		{
-			autoCraft("cook", 1, $item[wet stew], $item[stunt nuts]);
-		}
-		if(item_amount($item[wet stunt nut stew]) > 0)
-		{
-			return true;
-		}
-		return false;
 	}
 
 	if(item_amount($item[wet stunt nut stew]) == 0 && internalQuestStatus("questL11Palindome") >= 3)
