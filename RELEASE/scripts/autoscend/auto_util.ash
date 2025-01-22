@@ -1479,7 +1479,7 @@ boolean cloverUsageFinish()
 	}
 	else
 	{
-		handleTracker(get_property("auto_luckySource"),my_location()+" - "+get_property("lastEncounter"),"auto_lucky");
+		handleTracker(get_property("auto_luckySource"), my_location().to_string(), get_property("lastEncounter"), "auto_lucky");
 		set_property("auto_luckySource", "none");
 	}
 	return true;
