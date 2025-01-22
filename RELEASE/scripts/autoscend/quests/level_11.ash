@@ -2965,7 +2965,8 @@ boolean L11_palindome()
 			}
 			//wasn't able to make the stew so continue to Whitey's
 		}
-		provideItem(300, $location[Whitey's Grove], true);
+		// in normal, we delayed until this was all we had to do. In hardcore we do it earlier.
+		provideItem(300, $location[Whitey's Grove], !in_hardcore());
 		set_property("auto_doWhiteys", true);
 		if(item_amount($item[white page]) > 0)
 		{
