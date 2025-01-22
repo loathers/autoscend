@@ -513,6 +513,12 @@ boolean auto_pre_adventure()
 		}
 	}
 	
+	item fluda = $item[Flash Liquidizer Ultra Dousing Accessory];
+	if ($locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place && auto_dousesRemaining()>0)
+	{
+		autoEquip(fluda);
+	}
+	
 	item exting = wrap_item($item[industrial fire extinguisher]);
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
