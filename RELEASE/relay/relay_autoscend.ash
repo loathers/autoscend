@@ -406,6 +406,12 @@ void main()
 		generateTrackingData("auto_powerfulglove");
 	}
 
+	if(get_property("auto_iotm_claim") != "")
+	{
+		writeln("<h2>IOTM Item/Effects Claimed.</h2>");
+		generateTrackingData("auto_iotm_claim");
+	}
+	
 	writeln("<h2>Other Stuff</h2>");
 	generateTrackingData("auto_otherstuff");
 
