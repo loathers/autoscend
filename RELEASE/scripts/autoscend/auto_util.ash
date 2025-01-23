@@ -4727,3 +4727,31 @@ float stat_exp_percent(stat s)
 	}
 	return 0;
 }
+
+int auto_roughExpectedTurnsLeftToday()
+{
+	// Not designed to be accurate, just simple.
+	// Designed to be relatively stable, and more likely to come in low than high.
+	// If you want to improve the accuracy, please keep the above two principles in mind.
+	path p = my_path();
+	float eat_val   = 3.0;
+	float drink_val = 3.5;
+	float spl_val = (haveSpleenFamiliar()?2:0);
+	int curr = my_adventures();
+	int stom = stomach_left();
+	int liv  = inebriety_left();
+	int spl  = spleen_left();
+	if (p == $path[Dark Gyffte])
+	{
+		return curr + floor(7 * available_amount($item[blood bag]));
+	}
+	else if (p == $path[Slow and Steady])
+	{
+		return curr;
+	}
+	else if (p == $path[A Shrunken Adventurer am I])
+	{
+		return curr + floor(10*stom*eat_val + 10*liv*drink_val + spl*spl_val);
+	}
+	return curr + floor(stom*eat_val + liv*drink_val + spl*spl_val);
+}
