@@ -219,6 +219,9 @@ void initializeSettings() {
 	set_property("auto_instakill", "");
 	set_property("auto_instakillSource", "");
 	set_property("auto_instakillSuccess", false);
+	set_property("auto_iotm_claim", "");
+	set_property("auto_lucky", "");
+	set_property("auto_luckySource", "none");
 	set_property("auto_modernzmobiecount", "");
 	set_property("auto_powerfulglove", "");
 	set_property("auto_otherstuff", "");

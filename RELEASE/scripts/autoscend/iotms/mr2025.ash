@@ -51,3 +51,13 @@ int auto_McLargeHugeForcesLeft()
 	int used = get_property("_mcHugeLargeAvalancheUses").to_int();
 	return 3-used;
 }
+
+int auto_McLargeHugeSniffsLeft()
+{
+	if (!auto_haveMcHugeLargeSkis())
+	{
+		return 0;
+	}
+	int used = get_property("_mcHugeLargeSlashUses").to_int();
+	return 3-used;
+}
