@@ -1124,10 +1124,15 @@ boolean LX_lastChance()
 				{
 					autoAdv($location[Cobb\'s Knob Harem]);
 				}
+				else if(can_adventure($location[The Outskirts of Cobb\'s Knob]))
+				{
+					//to open up access to the Harem. Not banishing in the Outskirts so that we can get the combat in the Harem if needed
+					autoAdv($location[The Outskirts of Cobb\'s Knob]); 
+				}
 				else
 				{
 					//Nothing else to do but go here
-					autoAdv($location[Noob Cave]);
+					abort("You should manually clear the Eagle Screech counter. We recommend some other required zone you haven't been to yet or Noob Cave if all else fails");
 					continue;
 				}
 			}

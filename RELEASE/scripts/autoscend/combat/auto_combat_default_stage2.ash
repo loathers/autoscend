@@ -145,7 +145,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
-	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(monster_phylum(enemy), my_location()))
+	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)
 	{
 		string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
 		if(banishAction != "")
@@ -227,7 +227,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 
 	// Free run from monsters we want to banish/phylumbanish but are unable to, or monsters on the free run list
-	if(!combat_status_check("freeruncheck") && ((auto_wantToFreeRun(enemy, my_location()) || auto_forceFreeRun(true) || auto_wantToBanish(enemy, my_location()) || auto_wantToBanish(monster_phylum(enemy), my_location())) || (auto_wantToFreeRun(guardee, my_location()) || auto_wantToBanish(guardee, my_location()))))
+	if(!combat_status_check("freeruncheck") && ((auto_wantToFreeRun(enemy, my_location()) || auto_forceFreeRun(true) || auto_wantToBanish(enemy, my_location()) || (auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)) || (auto_wantToFreeRun(guardee, my_location()) || auto_wantToBanish(guardee, my_location()))))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")
