@@ -1,4 +1,4 @@
-since r28258;	// fix: noncomforcers avalanche name
+since r28301;	// _eldritchTentaclesFoughtToday variable
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -219,6 +219,9 @@ void initializeSettings() {
 	set_property("auto_instakill", "");
 	set_property("auto_instakillSource", "");
 	set_property("auto_instakillSuccess", false);
+	set_property("auto_iotm_claim", "");
+	set_property("auto_lucky", "");
+	set_property("auto_luckySource", "none");
 	set_property("auto_modernzmobiecount", "");
 	set_property("auto_powerfulglove", "");
 	set_property("auto_otherstuff", "");

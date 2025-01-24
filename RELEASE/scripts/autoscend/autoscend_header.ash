@@ -532,8 +532,10 @@ int remainingCatalogCredits();
 boolean auto_haveIdolMicrophone();
 void auto_buyFrom2002MrStore();
 void auto_useBlackMonolith();
+int auto_dousesRemaining();
 boolean auto_haveAugustScepter();
 void auto_scepterSkills();
+void auto_scepterRollover();
 void auto_lostStomach();
 boolean auto_haveBofa();
 boolean auto_canHabitat();
@@ -613,6 +615,7 @@ boolean auto_haveMcHugeLargeSkis();
 boolean auto_equipAllMcHugeLarge();
 boolean auto_openMcLargeHugeSkis();
 int auto_McLargeHugeForcesLeft();
+int auto_McLargeHugeSniffsLeft();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1582,11 +1585,15 @@ effect[int] effectList();
 int[int] intList();
 item[int] itemList();
 
-// Handy sorts of item lists
 item[int] auto_sortedByModifier(int[item]     list, modifier m);
 item[int] auto_sortedByModifier(int[item]     list, modifier m, boolean high_to_low);
 item[int] auto_sortedByModifier(boolean[item] list, modifier m);
 item[int] auto_sortedByModifier(boolean[item] list, modifier m, boolean high_to_low);
+
+effect[int] auto_sortedByModifier(int[effect]     list, modifier m);
+effect[int] auto_sortedByModifier(int[effect]     list, modifier m, boolean high_to_low);
+effect[int] auto_sortedByModifier(boolean[effect] list, modifier m);
+effect[int] auto_sortedByModifier(boolean[effect] list, modifier m, boolean high_to_low);
 
 ########################################################################################################
 //Defined in autoscend/autoscend_migration.ash

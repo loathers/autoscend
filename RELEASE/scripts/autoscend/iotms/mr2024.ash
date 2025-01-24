@@ -552,33 +552,44 @@ boolean auto_haveTakerSpace()
 void auto_checkTakerSpace()
 {
 	if(!auto_haveTakerSpace()) return;
+	static item ts_letter = $item[TakerSpace letter of Marque];
 	if(!get_property("_takerSpaceSuppliesDelivered").to_boolean()) {
 		// visit the workshed to get the supplies
 		visit_url("campground.php?action=workshed");
 	}
 	// unlock the island if we can (6 turn save)
 	if(get_property("lastIslandUnlock").to_int() < my_ascensions() && item_amount($item[pirate dinghy]) == 0 && creatable_amount($item[pirate dinghy]) > 0) {
-		create(1, $item[pirate dinghy]);
+		if (create(1, $item[pirate dinghy])) {
+			handleTracker(to_string(ts_letter),$item[pirate dinghy],"auto_iotm_claim");
+		}
 	}
 	// deft pirate hook would be worth it but hard for autoscend to use
 	// anchor bomb is a free banish but only for 30 turns, if we have Spring Kick we won't use it
 	if(!(auto_haveSpringShoes() && auto_is_valid($skill[Spring Kick])) && creatable_amount($item[anchor bomb]) > 0) {
-		create(1, $item[anchor bomb]);
+		if (create(1, $item[anchor bomb])) {
+			handleTracker(to_string(ts_letter),$item[anchor bomb],"auto_iotm_claim");
+		}
 	}
 	// goldschlepper is EPIC booze
 	int createable = creatable_amount($item[tankard of spiced Goldschlepper]);
 	if(createable > 0) {
-		create(createable, $item[tankard of spiced Goldschlepper]);
+		if (create(1, $item[tankard of spiced Goldschlepper])) {
+			handleTracker(to_string(ts_letter),$item[tankard of spiced Goldschlepper],"auto_iotm_claim");
+		}
 	}
 	// tankard of spiced rum is awesome booze
 	createable = creatable_amount($item[tankard of spiced rum]);
 	if(createable > 0) {
-		create(createable, $item[tankard of spiced rum]);
+		if (create(1, $item[tankard of spiced rum])) {
+			handleTracker(to_string(ts_letter),$item[tankard of spiced rum],"auto_iotm_claim");
+		}
 	}
 	// cursed Aztec tamale is awesome food, and only uses spices
 	createable = creatable_amount($item[cursed Aztec tamale]);
 	if(createable > 0) {
-		create(createable, $item[cursed Aztec tamale]);
+		if (create(1, $item[cursed Aztec tamale])) {
+			handleTracker(to_string(ts_letter),$item[cursed Aztec tamale],"auto_iotm_claim");
+		}
 	}
 }
 
@@ -838,7 +849,7 @@ boolean auto_getClanPhotoBoothItem(item it)
 	
 	// Actually claim the item
 	cli_execute("photobooth item "+to_string(it));
-	handleTracker("Clan Photo Booth","Claimed "+it, "auto_otherstuff");
+	handleTracker("Clan Photo Booth","Claimed "+it, "auto_iotm_claim");
 	
 	// Go home if we BAFH'd it
 	if (orig_clan_id != get_clan_id())
@@ -938,6 +949,7 @@ boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
 			for (int i = 0 ; i < n_times ; i++)
 			{
 				cli_execute("photobooth effect wild");
+				handleTracker("Clan Photo Booth","Claimed "+west_ef, "auto_iotm_claim");
 			}
 			success = to_boolean(have_effect(west_ef));
 			break;
@@ -946,6 +958,7 @@ boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
 			for (int i = 0 ; i < n_times ; i++)
 			{
 				cli_execute("photobooth effect tower");
+				handleTracker("Clan Photo Booth","Claimed "+tower_ef, "auto_iotm_claim");
 			}
 			success = to_boolean(have_effect(tower_ef));
 			break;
@@ -954,6 +967,7 @@ boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
 			for (int i = 0 ; i < n_times ; i++)
 			{
 				cli_execute("photobooth effect space");
+				handleTracker("Clan Photo Booth","Claimed "+space_ef, "auto_iotm_claim");
 			}
 			success = to_boolean(have_effect(space_ef));
 			break;

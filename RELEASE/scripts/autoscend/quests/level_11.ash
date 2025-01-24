@@ -1445,9 +1445,8 @@ boolean L11_unlockHiddenCity()
 	auto_log_info("Searching for the Hidden City", "blue");
 	if(!in_glover() && !in_tcrs()) 
 	{
-		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && canSummonMonster($monster[Baa\'baa\'bu\'ran]))
-		{
-			//attempt to summon before using a clover
+		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
+		{	// try to clover/summon baa baa first
 			if(auto_haveGreyGoose()){
 				auto_log_info("Bringing the Grey Goose to emit some drones at a Sheep carving.");
 				handleFamiliar($familiar[Grey Goose]);
@@ -1456,15 +1455,17 @@ boolean L11_unlockHiddenCity()
 				handleFamiliar("item");
 			}
 			addToMaximize("20 item 400max");
-			if(summonMonster($monster[Baa\'baa\'bu\'ran]))
+			
+			// Right now clovers are "cheaper" than summons, so use clover first, but not our last.
+			if(cloversAvailable() > 1)
 			{
-				return true;
+				return autoLuckyAdv($location[The Hidden Temple]);
 			}
-		}
-		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0 && cloversAvailable() > 0) 
-		{
-			//use clover to get 2x Stone Wool
-			return autoLuckyAdv($location[The Hidden Temple]);
+			
+			if(canSummonMonster($monster[Baa\'baa\'bu\'ran]))
+			{
+				return summonMonster($monster[Baa\'baa\'bu\'ran]);
+			}
 		}
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
