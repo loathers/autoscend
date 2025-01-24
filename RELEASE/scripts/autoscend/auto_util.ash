@@ -4671,6 +4671,18 @@ boolean have_workshed() {
 	return true;
 }
 
+int baseNCForcesToday()
+{
+	int forces = 0;
+	if (auto_havePillKeeper()) {forces = forces + 6;}
+	if (auto_haveAprilingBandHelmet() && available_amount($item[apriling band saxophone])>0) {forces = forces + 3;}
+	if (auto_haveMcHugeLargeSkis()) {forces = forces + 3;}
+	if (auto_hasParka()) {forces = forces + 5;}
+	if (auto_haveCincho()) {forces = forces + 3;} // Not important to calculate this properly here.
+	
+	return forces;
+}
+
 int remainingNCForcesToday()
 {
 	int forces = 0;
@@ -4678,6 +4690,18 @@ int remainingNCForcesToday()
 	forces = forces + auto_AprilTubaForcesLeft();
 	forces = forces + auto_McLargeHugeForcesLeft();
 	forces = forces + auto_ParkaSpikeForcesLeft();
+	forces = forces + auto_cinchForcesLeft();
+	
+	return forces;
+}
+
+int turnsUsedByRemainingNCForcesToday()
+{
+	int forces = 0;
+	forces = forces + auto_pillKeeperUses();
+	forces = forces + auto_AprilTubaForcesLeft();
+	forces = forces + 2 * auto_McLargeHugeForcesLeft();
+	forces = forces + 2 * auto_ParkaSpikeForcesLeft();
 	forces = forces + auto_cinchForcesLeft();
 	
 	return forces;
