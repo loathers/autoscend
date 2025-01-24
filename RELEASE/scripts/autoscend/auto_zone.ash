@@ -641,9 +641,6 @@ generic_t zone_combatMod(location loc)
 	case $location[The Defiled Alcove]:
 		value = -85;
 		break;
-	case $location[The Outskirts of Cobb\'s Knob]:
-		value = 20;
-		break;
 	case $location[The Typical Tavern Cellar]:
 		//We could cut it off early if the Rat Faucet is the last one
 		//And marginally if we know the 3rd/6th square are forced events.
