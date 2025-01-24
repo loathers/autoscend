@@ -4757,10 +4757,13 @@ int auto_roughExpectedTurnsLeftToday()
 	// Not designed to be accurate, just simple.
 	// Designed to be relatively stable, and more likely to come in low than high.
 	// If you want to improve the accuracy, please keep the above two principles in mind.
+	if (my_inebriety() > inebriety_limit()) {return 0;}
+	float min_adv = get_property("auto_consumeMinAdvPerFill").to_float();
+	boolean use_min_adv = min_adv > 0.0;
 	path p = my_path();
-	float eat_val   = 3.0;
-	float drink_val = 3.5;
-	float spl_val = (haveSpleenFamiliar()?2:0);
+	float eat_val   = (use_min_adv ? min_adv : 3.0);
+	float drink_val = (use_min_adv ? min_adv : 3.5);
+	float spl_val = ( haveSpleenFamiliar() ? 2 : 0);
 	int curr = my_adventures();
 	int stom = stomach_left();
 	int liv  = inebriety_left();
@@ -4776,6 +4779,10 @@ int auto_roughExpectedTurnsLeftToday()
 	else if (p == $path[A Shrunken Adventurer am I])
 	{
 		return curr + floor(10*stom*eat_val + 10*liv*drink_val + spl*spl_val);
+	}
+	else if (p == $path[actually ed the undying])
+	{
+		spl_val = 5.0;
 	}
 	return curr + floor(stom*eat_val + liv*drink_val + spl*spl_val);
 }
