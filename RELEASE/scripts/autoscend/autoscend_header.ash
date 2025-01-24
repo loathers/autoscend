@@ -1585,6 +1585,17 @@ effect[int] effectList();
 int[int] intList();
 item[int] itemList();
 
+// Handy sorts of lists
+item[int] auto_sortedByModifier(int[item]     list, modifier m);
+item[int] auto_sortedByModifier(int[item]     list, modifier m, boolean high_to_low);
+item[int] auto_sortedByModifier(boolean[item] list, modifier m);
+item[int] auto_sortedByModifier(boolean[item] list, modifier m, boolean high_to_low);
+
+effect[int] auto_sortedByModifier(int[effect]     list, modifier m);
+effect[int] auto_sortedByModifier(int[effect]     list, modifier m, boolean high_to_low);
+effect[int] auto_sortedByModifier(boolean[effect] list, modifier m);
+effect[int] auto_sortedByModifier(boolean[effect] list, modifier m, boolean high_to_low);
+
 ########################################################################################################
 //Defined in autoscend/autoscend_migration.ash
 string autoscend_current_version();
