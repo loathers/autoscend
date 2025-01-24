@@ -608,54 +608,79 @@ void auto_scepterSkills()
 	{
 		return;
 	}
-	//Day 1 skills
-	if(my_daycount() == 1)
+	
+	if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
 	{
-		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
-		}
-		if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
-		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar())
-		{
-			familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
-			if (((in_avantGuard() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
-			{
-				use_familiar(findRockFamiliarInTerrarium());
-				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
-			}
-			else if((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small())
-			{
-				if(!is100FamRun())
-				{
-					use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
-				}
-				else
-				{
-					use_familiar(hundred_fam); // assuming non-rock familiar
-				}
-				use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
-			}
-		}
+		use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
 	}
-	//Day 2+ skills
-	if(my_daycount() >= 2)
+	if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar())
 	{
-		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+		if (((in_avantGuard() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
 		{
-			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+			use_familiar(findRockFamiliarInTerrarium());
+			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
 		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
+		else if((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small())
 		{
 			if(!is100FamRun())
 			{
-				handleFamiliar("stat"); //get any familiar equipped if not in a 100% run
+				use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
+			}
+			else
+			{
+				use_familiar(hundred_fam); // assuming non-rock familiar
 			}
 			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
 		}
+	}
+	//see how much mana cost reduction we can get (up to 3mp)
+	maximize("-mana cost", true);
+	int manaCostMaximize = numeric_modifier("Generated:_spec", "Mana Cost");
+	if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+	}
+}
+
+void auto_scepterRollover()
+{
+	//We don't want the baywatch if our accessory slots are already filled with > 7 adventure items or we if one of the slots is the counterclockwise watch
+	boolean noWatch = ((numeric_modifier(equipped_item($slot[acc1]),"Adventures") >= 7 &&
+	numeric_modifier(equipped_item($slot[acc2]),"Adventures") >= 7 &&
+	numeric_modifier(equipped_item($slot[acc3]),"Adventures") >= 7) ||
+		((is_watch(equipped_item($slot[acc1])) && numeric_modifier(equipped_item($slot[acc1]),"Adventures") >= 7) ||
+		(is_watch(equipped_item($slot[acc2])) && numeric_modifier(equipped_item($slot[acc2]),"Adventures") >= 7) ||
+		(is_watch(equipped_item($slot[acc3])) && numeric_modifier(equipped_item($slot[acc3]),"Adventures") >= 7)));
+	if(!noWatch && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 30th: Beach Day!]); //For Rollover adventures (and -MP)
+		equipRollover(true);
+	}
+	//Get mainstats
+	if(get_property("_augSkillsCast").to_int()< 5 && my_level() < 13)
+	{
+		if(canUse($skill[Aug. 12th: Elephant Day!]) && !get_property("_aug12Cast").to_boolean() && my_primestat() == $stat[muscle])
+		{
+			use_skill($skill[Aug. 12th: Elephant Day!]); //get muscle stubstats
+		}
+		if(canUse($skill[Aug. 11th: Presidential Joke Day!]) && !get_property("_aug11Cast").to_boolean() && my_primestat() == $stat[mysticality])
+		{
+			use_skill($skill[Aug. 11th: Presidential Joke Day!]); //get mysticality stubstats
+		}
+		if(canUse($skill[Aug. 23rd: Ride the Wind Day!]) && !get_property("_aug23Cast").to_boolean() && my_primestat() == $stat[moxie])
+		{
+			use_skill($skill[Aug. 23rd: Ride the Wind Day!]); //get moxies stubstats
+		}
+	}
+	if(canUse($skill[Aug. 13th: Left\/Off Hander\'s Day!]) && !get_property("_aug13Cast").to_boolean() &&
+	get_property("_augSkillsCast").to_int()< 5 && numeric_modifier(equipped_item($slot[off-hand]),"Adventures") >  0 && weapon_hands(equipped_item($slot[off-hand])) == 0)
+	{
+		use_skill($skill[Aug. 13th: Left\/Off Hander\'s Day!]); //bump up the off-hand
+	}
+	if(canUse($skill[Aug. 27th: Just Because Day!]) && !get_property("_aug27Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 27th: Just Because Day!]); //3 random buffs
 	}
 }
 
@@ -740,6 +765,12 @@ boolean auto_habitatTarget(monster target)
 		 	boolean sonofa_complete = get_property("sidequestLighthouseCompleted") == "hippy" || get_property("sidequestLighthouseCompleted") == "fratboy";
 			return (!sonofa_complete && item_amount($item[barrel of gunpowder])<4);
 		case $monster[eldritch tentacle]:
+			// Max tentacles fought being free is 11, so don't habitat if we've fought more than 6
+			// This variable increments at the end of combat, so we need 5 here.
+			if (get_property("_eldritchTentaclesFoughtToday").to_int() > 5)
+			{
+				return false;
+			}
 			// don't habitat free fights in avant guard
 			return (!in_avantGuard() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
 		default:

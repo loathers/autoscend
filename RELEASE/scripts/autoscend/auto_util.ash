@@ -1376,10 +1376,13 @@ boolean cloverUsageInit(boolean override)
 		return true;
 	}
 	
+	set_property("auto_luckySource","none");
+	
 	if (auto_AprilSaxLuckyLeft() > 0)
 	{
 		if (auto_playAprilSax()) {
 			auto_log_info("Clover usage initialized, using Apriling sax.");
+			set_property("auto_luckySource",to_string($item[Apriling Band Saxophone]));
 			return true;
 		}
 		else
@@ -1394,7 +1397,8 @@ boolean cloverUsageInit(boolean override)
 		use_skill($skill[Aug. 2nd: Find an Eleven-Leaf Clover Day]);
 		if (have_effect($effect[Lucky!]) > 0)
 		{
-			auto_log_info("Clover usage initialized");
+			auto_log_info("Clover usage initialized using August Scepter.");
+			set_property("auto_luckySource",to_string($item[August Scepter]));
 			return true;
 		}
 		else
@@ -1414,7 +1418,8 @@ boolean cloverUsageInit(boolean override)
 		use(1, $item[11-Leaf Clover]);
 		if (have_effect($effect[Lucky!]) > 0)
 		{
-			auto_log_info("Clover usage initialized");
+			auto_log_info("Clover usage initialized using clover.");
+			set_property("auto_luckySource",to_string($item[11-Leaf Clover]));
 			return true;
 		}
 		else
@@ -1436,7 +1441,8 @@ boolean cloverUsageInit(boolean override)
 			chew(1, $item[[10883]Astral Energy Drink]);
 			if (have_effect($effect[Lucky!]) > 0)
 			{
-				auto_log_info("Clover usage initialized");
+				auto_log_info("Clover usage initialized using Astral Energy Drink");
+				set_property("auto_luckySource",to_string($item[[10883]Astral Energy Drink]));
 				return true;
 			}
 			else
@@ -1475,6 +1481,11 @@ boolean cloverUsageFinish()
 	if(have_effect($effect[Lucky!]) > 0)
 	{
 		abort("Wandering adventure interrupted our clover adventure (" + my_location() + ").");
+	}
+	else
+	{
+		handleTracker(get_property("auto_luckySource"), my_location().to_string(), get_property("lastEncounter"), "auto_lucky");
+		set_property("auto_luckySource", "none");
 	}
 	return true;
 }
