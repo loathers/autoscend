@@ -253,17 +253,31 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Motif];
 	}
+	if (inCombat)
+	{
+		if(canUse($skill[Monkey Point], true , inCombat) && !isSniffed(enemy, $skill[Monkey Point]))
+		{
+			return $skill[Monkey Point];
+		}
+		if(canUse($skill[McHugeLarge Slash], true , inCombat) && !isSniffed(enemy, $skill[McHugeLarge Slash]) && auto_McLargeHugeSniffsLeft()>0)
+		{
+			return $skill[McHugeLarge Slash];
+		}
+	}
+	else
+	{
+		if (auto_monkeyPawWishesLeft()==1 && !isSniffed(enemy, $skill[Monkey Point]))
+		{
+			return $skill[Monkey Point];
+		}
+		if (possessEquipment($item[McHugeLarge left pole]) && !isSniffed(enemy, $skill[McHugeLarge Slash]) && auto_McLargeHugeSniffsLeft()>0)
+		{
+			return $skill[McHugeLarge Slash];
+		}
+	}
 	if(canUse($skill[Gallapagosian Mating Call], true , inCombat) && !isSniffed(enemy, $skill[Gallapagosian Mating Call]))
 	{
 		return $skill[Gallapagosian Mating Call];
-	}
-	if(canUse($skill[Monkey Point], true , inCombat) && !isSniffed(enemy, $skill[Monkey Point]))
-	{
-		return $skill[Monkey Point];
-	}
-	if(canUse($skill[McHugeLarge Slash], true , inCombat) && !isSniffed(enemy, $skill[McHugeLarge Slash]))
-	{
-		return $skill[McHugeLarge Slash];
 	}
 	if(my_familiar() == $familiar[Nosy Nose] && canUse($skill[Get a Good Whiff of This Guy]) && !isSniffed(enemy,$skill[Get a Good Whiff of This Guy]))
 	{
@@ -1067,6 +1081,20 @@ boolean wantToForceDrop(monster enemy)
 	} // ed warehouse
 
 	return forceDrop;
+}
+
+boolean wantToDouse(monster enemy)
+{
+	switch (enemy)
+	{
+		case $monster[larval filthworm]:
+			return item_amount($item[filthworm hatchling scent gland  ]) == 0;
+		case $monster[filthworm drone]:
+			return item_amount($item[filthworm drone scent gland      ]) == 0;
+		case $monster[filthworm royal guard]:
+			return item_amount($item[filthworm royal guard scent gland]) == 0;
+	}
+	return false;
 }
 
 boolean canSurviveShootGhost(monster enemy, int shots) {
