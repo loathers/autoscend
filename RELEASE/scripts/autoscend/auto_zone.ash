@@ -627,8 +627,7 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[Lair of the Ninja Snowmen]:
-		if(internalQuestStatus("questL08Trapper") < 3 &&
-		(item_amount($item[Ninja Carabiner]) == 0 || item_amount($item[Ninja Crampons]) == 0 || item_amount($item[Ninja Rope]) == 0))
+		if(internalQuestStatus("questL08Trapper") < 3 && !L8_forceExtremeInstead() && item_amount($item[Ninja Rope]) == 0)
 		{
 			value = 80;
 		}
