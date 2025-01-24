@@ -797,7 +797,7 @@ boolean L12_startWar()
 	// wear the appropriate war outfit based on auto_hippyInstead
 	equipWarOutfit();
 	
-	if (auto_haveCCSC())
+	if (auto_haveCCSC() && !have_skill($skill[Comprehensive Cartography]))
 	{
 		autoForceEquip($item[candy cane sword cane]);
 	}
