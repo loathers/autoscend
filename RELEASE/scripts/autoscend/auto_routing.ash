@@ -243,6 +243,18 @@ boolean auto_earlyRoutingHandling()
 			return true;
 		}
 	}
+	
+	// Check we have flyers if war frat and war started
+	if(!in_koe() && internalQuestStatus("questL12War") == 1 && !get_property("auto_hippyInstead").to_boolean() &&
+	  get_property("sidequestArenaCompleted")!="fratboy" && available_amount($item[rock band flyers])==0)
+	{
+		outfit("frat warrior fatigues"); // don't use the equipOutfit func here since this is just temporary, we don't want to adventure like this.
+		visit_url("bigisland.php?place=concert&pwd");
+		// Just make sure the other two quests are started too
+		visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
+		visit_url("bigisland.php?action=junkman&pwd");
+	}
+	
 	return false;
 }
 
