@@ -4778,5 +4778,13 @@ int auto_roughExpectedTurnsLeftToday()
 	{
 		spl_val = 5.0;
 	}
+	else if (p == $path[avatar of jarlsberg])
+	{
+		drink_val = 1.0;
+	}
+	else if (p == $path[KOLHS])
+	{
+		drink_val = 2.5;
+	}
 	return curr + floor(stom*eat_val + liv*drink_val + spl*spl_val);
 }
