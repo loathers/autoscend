@@ -1242,6 +1242,8 @@ boolean L12_farm();
 boolean L12_clearBattlefield();
 boolean L12_finalizeWar();
 boolean L12_islandWar();
+boolean L12_opportunisticWarStart();
+boolean L12_singleNCForWarStart();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_13.ash
