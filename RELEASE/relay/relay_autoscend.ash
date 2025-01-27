@@ -73,7 +73,7 @@ void handleSetting(string type, int x)
 void generateTrackingData(string tracked, string print_between, boolean stacked)
 {
 	int day = 0;
-	string[int] tracking = split_string(get_property(tracked), ",");
+	string[int] tracking = split_string(get_property(tracked), ", ");
 	if(get_property(tracked) == "")
 	{
 		return;
