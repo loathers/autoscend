@@ -120,7 +120,8 @@ boolean auto_reserveUndergroundAdventures()
 		return false;
 	}
 	if (get_workshed() != $item[cold medicine cabinet] && auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 &&
-	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
+	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]) &&
+	have_campground())
 	{
 		auto_log_debug("Reserving underground adventures as we will be switching to the CMC.");
 		// Don't have the CMC installed yet but we can still switch today and want to switch to it so save underground zones until then.

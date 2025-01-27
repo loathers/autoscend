@@ -427,12 +427,16 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		}
 		if(item_amount($item[mini kiwi aioli]) > 0 || (item_amount($item[mini kiwi]) >= 5 && item_amount($item[mini kiwi aioli]) == 0)) //use mini kiwi aioli if we got one from the mini kiwi
 		{
-			if(item_amount($item[mini kiwi aioli]) == 0)
+			// Kiwi aioli is per-fullness, only eat it on foods size 4+
+			if (toEat.fullness > 3)
 			{
-				create(1, $item[mini kiwi aioli]); //create the aioli to actually use it
+				if(item_amount($item[mini kiwi aioli]) == 0)
+				{
+					create(1, $item[mini kiwi aioli]); //create the aioli to actually use it
+				}
+				use(1, $item[mini kiwi aioli]);
+				handleTracker("Used "+$item[mini kiwi aioli]+" for "+toEat, "auto_otherstuff");
 			}
-			use(1, $item[mini kiwi aioli]);
-			handleTracker("Used " + $item[mini kiwi aioli], "auto_otherstuff");
 		}
 		if(have_effect($effect[Ready to Eat]) > 0)
 		{
