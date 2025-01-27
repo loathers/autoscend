@@ -19,6 +19,8 @@ LX_lowkeySummer
 L11_aridDesert	L11_hasUltrahydrated
 # Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
 L11_shenStartQuest
+# If we have everything to start the war instantly, just do it so we can start flyering.
+L12_opportunisticWarStart
 # Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
 finishBuildingSmutOrcBridge
 # Call quest handlers based on current state if applicable
