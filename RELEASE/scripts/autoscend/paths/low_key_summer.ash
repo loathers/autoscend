@@ -484,7 +484,10 @@ boolean LX_lowkeySummer() {
 		int n_meat_drop_acc_50plus = 0;
 		foreach it,n in auto_getAllEquipabble($slot[acc1])
 		{
-			n_meat_drop_acc_50plus += n;
+			if (numeric_modifier(it,$modifier[meat drop])>50)
+			{
+				n_meat_drop_acc_50plus += n;
+			}
 		}
 		if (n_meat_drop_acc_50plus>=2) {
 			if (L12_themtharHills()) { return true; }
