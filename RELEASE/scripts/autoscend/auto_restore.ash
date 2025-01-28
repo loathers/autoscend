@@ -2072,6 +2072,15 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 	}
 	else
 	{
+		// Simplifies restoration massively, make that our first choice
+		if (have_skill($skill[Cannelloni Cocoon]))
+		{
+			int coc_tries = 0;
+			while (goal-my_hp() > 20 && coc_tries++ < 3)
+			{
+				use_skill($skill[Cannelloni Cocoon]);
+			}
+		}
 		__restore("hp", goal, meat_reserve, useFreeRests);
 	}
 
