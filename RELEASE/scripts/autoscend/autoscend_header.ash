@@ -1501,6 +1501,7 @@ boolean is_watch(item it);
 boolean is100FamRun();
 boolean doNotBuffFamiliar100Run();
 boolean isAttackFamiliar(familiar fam);
+boolean auto_famKill(familiar fam, location place);
 boolean pathHasFamiliar();
 boolean pathAllowsChangingFamiliar();
 boolean auto_have_familiar(familiar fam);

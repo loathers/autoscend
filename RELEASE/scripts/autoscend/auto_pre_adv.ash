@@ -407,7 +407,7 @@ boolean auto_pre_adventure()
 				adjustForYellowRayIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
-			if(auto_wantToBanish(monster_phylum(mon), place))
+			if(auto_wantToBanish(monster_phylum(mon), place) && !auto_famKill($familiar[Patriotic Eagle], place))
 			{
 				// attempt to prepare for banishing, but if we can not try free running
 				adjustForBanishIfPossible(monster_phylum(mon), place);
@@ -998,7 +998,7 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
-	utilizeStillsuit();
+	utilizeStillsuit();	
 
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");

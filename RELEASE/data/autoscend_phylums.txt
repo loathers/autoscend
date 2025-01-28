@@ -8,7 +8,7 @@ banish	3	dude	loc:Whitey's Grove;quest:questL11Palindome<=3
 banish	4	beast	loc:The Hidden Park
 banish	5	beast	loc:Inside the Palindome;quest:questL11Palindome<=3
 banish	6	beast	loc:The Penultimate Fantasy Airship
-banish	7	undead	loc:The Haunted Library	item:Killing Jar>0
+banish	7	undead	loc:The Haunted Library;item:Killing Jar>0;!prop_boolean:auto_famKill
 banish	8	undead	loc:The Haunted Wine Cellar
 banish	9	undead	loc:The Unquiet Garves
 banish	10	undead	loc:The Haunted Boiler Room
