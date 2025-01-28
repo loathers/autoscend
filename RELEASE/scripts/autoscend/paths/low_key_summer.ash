@@ -480,8 +480,13 @@ boolean LX_lowkeySummer() {
 			}
 		}
 
-		// Get the +meat keys before attempting Themthar Hills.
-		if (possessEquipment($item[Knob treasury key]) && possessEquipment($item[Kekekey])) {
+		// Check our meat accessories, grab +meat keys before attempting Themthar Hills if they'll help.
+		int n_meat_drop_acc_50plus = 0;
+		foreach it,n in auto_getAllEquipabble($slot[acc1])
+		{
+			n_meat_drop_acc_50plus += n;
+		}
+		if (n_meat_drop_acc_50plus>=2) {
 			if (L12_themtharHills()) { return true; }
 		} else if(!get_property("auto_skipNuns").to_boolean() && (get_property("hippiesDefeated").to_int() >= 192 || get_property("auto_hippyInstead").to_boolean())) {
 			// about to do nuns. Make sure The Valley is open so we can get the Kekekey.
