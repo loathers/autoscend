@@ -1244,6 +1244,8 @@ boolean L12_farm();
 boolean L12_clearBattlefield();
 boolean L12_finalizeWar();
 boolean L12_islandWar();
+boolean L12_opportunisticWarStart();
+boolean L12_singleNCForWarStart();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_13.ash
@@ -1951,8 +1953,11 @@ boolean auto_burnMP(int mpToBurn);
 boolean can_read_skillbook(item it);
 boolean have_campground();
 boolean have_workshed();
+int baseNCForcesToday();
 int remainingNCForcesToday();
+int turnsUsedByRemainingNCForcesToday();
 float substat_to_level();
 float substat_to_level(int n);
 stat stat_to_substat(stat s);
 float stat_exp_percent(stat s);
+int auto_roughExpectedTurnsLeftToday();

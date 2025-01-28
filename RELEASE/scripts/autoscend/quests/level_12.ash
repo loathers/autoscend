@@ -797,10 +797,19 @@ boolean L12_startWar()
 	// wear the appropriate war outfit based on auto_hippyInstead
 	equipWarOutfit();
 	
+	if (auto_haveCCSC() && !have_skill($skill[Comprehensive Cartography]))
+	{
+		autoForceEquip($item[candy cane sword cane]);
+	}
+	
 	// start the war when siding with frat boys
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
 		auto_log_info("Must save the ferret!!", "blue");
+		if (L12_singleNCForWarStart())
+		{
+			boolean NCForced = auto_forceNextNoncombat($location[Wartime Hippy Camp]);
+		}
 		autoAdv(1, $location[Wartime Hippy Camp]);
 		
 		//if war started, accept flyer quest for fratboys.
@@ -808,13 +817,17 @@ boolean L12_startWar()
 		//move this to dedicated function that can start it for both sides as appropriate
 		if(internalQuestStatus("questL12War") == 1)
 		{
-			visit_url("bigisland.php?place=concert&pwd");	
+			visit_url("bigisland.php?place=concert&pwd");
 		}
 	}
 	// start the war when siding with hippies
 	else
 	{
 		auto_log_info("Must save the goldfish!!", "blue");
+		if (L12_singleNCForWarStart())
+		{
+			boolean NCForced = auto_forceNextNoncombat($location[Wartime Frat House]);
+		}
 		autoAdv(1, $location[Wartime Frat House]);
 	}
 		
@@ -2401,4 +2414,28 @@ boolean L12_islandWar()
 		return true;
 	}
 	return false;
+}
+
+boolean L12_opportunisticWarStart()
+{
+	// If we have all the resources to start the war in one turn, do that.
+	if(internalQuestStatus("questL12War") != 0) { return false; }
+	if(!haveWarOutfit(true))                    { return false; }
+	if(!L12_singleNCForWarStart())              { return false; }
+	if(remainingNCForcesToday() == 0)           { return false; }
+	// Dinghy the island if we can.
+	if (get_property("lastIslandUnlock").to_int() != my_ascensions())
+	{
+		if (available_amount($item[Pirate dinghy])>0)
+		{
+			use($item[Pirate dinghy]);
+		}
+	}
+	if (get_property("lastIslandUnlock").to_int() != my_ascensions()) { return false; }
+	return L12_startWar();
+}
+
+boolean L12_singleNCForWarStart()
+{
+	return (auto_haveCCSC() || have_skill($skill[Comprehensive Cartography]));
 }

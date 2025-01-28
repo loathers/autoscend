@@ -1964,12 +1964,6 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[Astronomer])) return true;
 	}
 
-	// summon grops to start copy chain. Goal is to copy into delay zones and get war progress at same time. Bonus if we get smoke bombs
-	if(!summonedMonsterToday($monster[Green Ops Soldier]) && get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe() && auto_backupUsesLeft() > 0)
-	{
-		if(summonMonster($monster[Green Ops Soldier])) return true;
-	}
-
 	// summon additional monsters in heavy rains with rain man when available
 	if(have_skill($skill[Rain Man]) && my_rain() >= 50)
 	{
@@ -4676,6 +4670,18 @@ boolean have_workshed() {
 	return true;
 }
 
+int baseNCForcesToday()
+{
+	int forces = 0;
+	if (auto_havePillKeeper()) {forces = forces + 6;}
+	if (auto_haveAprilingBandHelmet() && available_amount($item[apriling band saxophone])>0) {forces = forces + 3;}
+	if (auto_haveMcHugeLargeSkis()) {forces = forces + 3;}
+	if (auto_hasParka()) {forces = forces + 5;}
+	if (auto_haveCincho()) {forces = forces + 3;} // Not important to calculate this properly here.
+	
+	return forces;
+}
+
 int remainingNCForcesToday()
 {
 	int forces = 0;
@@ -4683,6 +4689,18 @@ int remainingNCForcesToday()
 	forces = forces + auto_AprilTubaForcesLeft();
 	forces = forces + auto_McLargeHugeForcesLeft();
 	forces = forces + auto_ParkaSpikeForcesLeft();
+	forces = forces + auto_cinchForcesLeft();
+	
+	return forces;
+}
+
+int turnsUsedByRemainingNCForcesToday()
+{
+	int forces = 0;
+	forces = forces + auto_pillKeeperUses();
+	forces = forces + auto_AprilTubaForcesLeft();
+	forces = forces + 2 * auto_McLargeHugeForcesLeft();
+	forces = forces + 2 * auto_ParkaSpikeForcesLeft();
 	forces = forces + auto_cinchForcesLeft();
 	
 	return forces;
@@ -4731,4 +4749,47 @@ float stat_exp_percent(stat s)
 			return numeric_modifier($modifier[moxie experience percent]);
 	}
 	return 0;
+}
+
+int auto_roughExpectedTurnsLeftToday()
+{
+	// Not designed to be accurate, just simple.
+	// Designed to be relatively stable, and more likely to come in low than high.
+	// If you want to improve the accuracy, please keep the above two principles in mind.
+	if (my_inebriety() > inebriety_limit()) {return 0;}
+	float min_adv = get_property("auto_consumeMinAdvPerFill").to_float();
+	boolean use_min_adv = min_adv > 0.0;
+	path p = my_path();
+	float eat_val   = (use_min_adv ? min_adv : 3.0);
+	float drink_val = (use_min_adv ? min_adv : 3.5);
+	float spl_val = ( haveSpleenFamiliar() ? 2 : 0);
+	int curr = my_adventures();
+	int stom = stomach_left();
+	int liv  = inebriety_left();
+	int spl  = spleen_left();
+	if (p == $path[Dark Gyffte])
+	{
+		return curr + floor(7 * available_amount($item[blood bag]));
+	}
+	else if (p == $path[Slow and Steady])
+	{
+		return curr;
+	}
+	else if (p == $path[A Shrunken Adventurer am I])
+	{
+		return curr + floor(10*stom*eat_val + 10*liv*drink_val + spl*spl_val);
+	}
+	else if (p == $path[actually ed the undying])
+	{
+		spl_val = 5.0;
+	}
+	else if (p == $path[avatar of jarlsberg])
+	{
+		drink_val = 1.0;
+	}
+	else if (p == $path[KOLHS])
+	{
+		drink_val = 2.5;
+	}
+	return curr + floor(stom*eat_val + liv*drink_val + spl*spl_val);
 }
