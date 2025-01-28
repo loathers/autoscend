@@ -383,6 +383,29 @@ boolean L13_sorceressDoorLowKey()
 boolean LX_lowkeySummer() {
 
 	if (!in_lowkeysummer()) { return false; }
+	
+	// Copied out of task order default.dat
+	if (LX_freeCombatsTask        ()) { return true; }
+	if (woods_questStart          ()) { return true; }
+	if (LX_unlockPirateRealm      ()) { return true; }
+	if (catBurglarHeist           ()) { return true; }
+	if (auto_breakfastCounterVisit()) { return true; }
+	if (chateauPainting           ()) { return true; }
+	if (LX_setWorkshed            ()) { return true; }
+	if (LX_galaktikSubQuest       ()) { return true; }
+	if (L9_leafletQuest           ()) { return true; }
+	if (L5_findKnob               ()) { return true; }
+	if (L12_sonofaPrefix          ()) { return true; }
+	if (LX_burnDelay              ()) { return true; }
+	if (LX_summonMonster          ()) { return true; }
+	// Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
+	if (L11_shenStartQuest()) { return true; }
+	// If we have everything to start the war instantly, just do it so we can start flyering.
+	if (L12_opportunisticWarStart()) { return true; }
+	// Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
+	if (finishBuildingSmutOrcBridge()) { return true; }
+	// Call quest handlers based on current state if applicable
+	if (auto_earlyRoutingHandling()) { return true; }
 
 	// Guild access
 	if (LX_guildUnlock()) { return true; }
