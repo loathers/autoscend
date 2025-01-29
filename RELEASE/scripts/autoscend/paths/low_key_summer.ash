@@ -482,10 +482,8 @@ boolean LX_lowkeySummer() {
 
 		// Check our meat accessories, grab +meat keys before attempting Themthar Hills if they'll help.
 		int n_meat_drop_acc_50plus = 0;
-		foreach it,n in auto_getAllEquipabble($slot[acc1])
-		{
-			if (numeric_modifier(it,$modifier[meat drop])>50)
-			{
+		foreach it,n in auto_getAllEquipabble($slot[acc1]) {
+			if (numeric_modifier(it,$modifier[meat drop])>=45 || it==$item[backup camera]) { // backup camera isn't always meat 
 				n_meat_drop_acc_50plus += n;
 			}
 		}
