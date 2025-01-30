@@ -499,7 +499,8 @@ boolean auto_pre_adventure()
 
 	if(get_property("auto_forceNonCombatSource") == "McHugeLarge left ski" && !get_property("auto_avalancheDeployed").to_boolean())
 	{
-		autoForceEquip(wrap_item($item[McHugeLarge left ski]));
+		autoForceEquip($slot[acc2],wrap_item($item[McHugeLarge left ski]));
+		// We put it in acc2 so it can't clash with the war accessory in acc3
 	}
 	
 	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
