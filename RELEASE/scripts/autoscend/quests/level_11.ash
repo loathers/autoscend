@@ -2922,12 +2922,53 @@ boolean L11_palindome()
 	}
 
 	auto_log_info("In the palindome : emodnilap eht nI", "blue");
+
+	boolean makeWetStuntNutStew()
+	{
+		 if((item_amount($item[Bird Rib]) > 0) && (item_amount($item[Lion Oil]) > 0) && (item_amount($item[Wet Stew]) == 0))
+		{
+			autoCraft("cook", 1, $item[Bird Rib], $item[Lion Oil]);
+		}
+
+		if((item_amount($item[Stunt Nuts]) > 0) && (item_amount($item[Wet Stew]) > 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0))
+		{
+			autoCraft("cook", 1, $item[wet stew], $item[stunt nuts]);
+		}
+		if(item_amount($item[wet stunt nut stew]) > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	#
 	#	In hardcore, guild-class, the right side of the or doesn't happen properly due us farming the
 	#	Mega Gem within the if, with pulls, it works fine. Need to fix this. This is bad.
 	#
 	boolean doWhiteys()
 	{
+		//After we get the photos
+		//First try wishing, then try Whitey's. At 0% item / combat / food drop, this expects to take ~19 turns. At a very achievable 100% item, 10 turns.
+		//The alternate route takes 14 turns so always worth trying Whitey's IMO.
+		//If we hit this, we should only need to finish the L11 quest so it won't hurt to do everything in provideItem
+		//since we will need +item for tomb rats in ~15 turns anyway. Buffs from wishes should still be active
+		//since they are 30 turns from monkey paw wishes and 20 turns from pocket/genie wishes.
+		if(auto_monkeyPawWishesLeft() > 0)
+		{
+			foreach it in $items[Lion Oil, Bird Rib]
+			{
+				if(item_amount(it) > 0) continue;
+				auto_makeMonkeyPawWish(it);
+			}
+			if(item_amount($item[Lion Oil]) > 0 && item_amount($item[Bird Rib]) > 0)
+			{
+				return makeWetStuntNutStew();
+			}
+			//wasn't able to make the stew so continue to Whitey's
+		}
+		// in normal, we delayed until this was all we had to do. In hardcore we do it earlier.
+		provideItem(300, $location[Whitey's Grove], !in_hardcore());
+		set_property("auto_doWhiteys", true);
 		if(item_amount($item[white page]) > 0)
 		{
 			set_property("choiceAdventure940", 1);
@@ -2949,6 +2990,7 @@ boolean L11_palindome()
 			restoreSetting("lastGuildStoreOpen");
 			return true;
 		}
+		providePlusCombat(15, $location[Whitey's Grove], false);
 		// +item is nice to get that food
 		bat_formBats();
 		auto_lostStomach(true);
@@ -2956,27 +2998,11 @@ boolean L11_palindome()
 		return autoAdv(1, $location[Whitey\'s Grove]);
 	}
 
-	boolean makeWetStuntNutStew()
-	{
-		 if((item_amount($item[Bird Rib]) > 0) && (item_amount($item[Lion Oil]) > 0) && (item_amount($item[Wet Stew]) == 0))
-		{
-			autoCraft("cook", 1, $item[Bird Rib], $item[Lion Oil]);
-		}
-
-		if((item_amount($item[Stunt Nuts]) > 0) && (item_amount($item[Wet Stew]) > 0) && (item_amount($item[Wet Stunt Nut Stew]) == 0))
-		{
-			autoCraft("cook", 1, $item[wet stew], $item[stunt nuts]);
-		}
-		if(item_amount($item[wet stunt nut stew]) > 0)
-		{
-			return true;
-		}
-		return false;
-	}
-
 	if(item_amount($item[wet stunt nut stew]) == 0 && internalQuestStatus("questL11Palindome") >= 3)
 	{
-		return makeWetStuntNutStew();
+		if (makeWetStuntNutStew()) {
+			return true;
+		}
 	}
 
 	if((item_amount($item[Wet Stunt Nut Stew]) > 0) && !possessEquipment($item[Mega Gem]))
@@ -3096,45 +3122,19 @@ boolean L11_palindome()
 	}
 	else
 	{
-		if(!in_hardcore() && pulls_remaining() == 0)
+		if(pulls_remaining() == 0)
 		{
 			// used our pulls today before getting to palindrome. Delay until next day or run out of other stuff to do
 			if(!isAboutToPowerlevel())
 			{
-				auto_log_debug("Delaying palindrome. In a normal run and don't have enough pulls to create wet stunt nut stew.");
+				auto_log_debug("Delaying palindrome.");
 				return false;
 			}
 			else
 			{
-				//After we get the photos
-				//First try wishing, then try Whitey's if we have enough +item, then brute force.
-				//If we hit this, we should only need to finish the L11 quest so it won't hurt to do everything in provideItem
-				//since we will need +item for tomb rats in ~15 turns anyway. Buffs from wishes should still be active
-				//since they are 30 turns from monkey paw wishes and 20 turns from pocket/genie wishes.
 				if (internalQuestStatus("questL11Palindome") > 2)
 				{
-					if(auto_monkeyPawWishesLeft() > 0)
-					{
-						foreach it in $items[Lion Oil, Bird Rib]
-						{
-							if(item_amount(it) > 0) continue;
-							auto_makeMonkeyPawWish(it);
-						}
-						if(item_amount($item[Lion Oil]) > 0 && item_amount($item[Bird Rib]) > 0)
-						{
-							return makeWetStuntNutStew();
-						}
-						return false; //wasn't able to make the stew
-					}
-					else if(provideItem(300, $location[Whitey's Grove], true, true) >= 300)
-					{
-						set_property("auto_doWhiteys", true);
-						return doWhiteys(); //Initial call to do Whitey's Grove
-					}
-					else
-					{
-						set_property("auto_bruteForcePalindome",true);
-					}
+					return doWhiteys(); //Initial call to do Whitey's Grove
 				}
 			}
 		}
