@@ -462,12 +462,14 @@ boolean LX_lowkeySummer() {
 		// Don't start the war unless we've acquired the key from Belowdecks first as it gives +item.	
 		// TODO these aren't the full L12 tasks, could filthworms earlier here if Yellow Ray available
 		if (possessEquipment($item[Treasure Chest key])) {
-			if (L12_preOutfit() || L12_getOutfit() || L12_startWar() || L12_flyerFinish()) { return true; }
+			if (L12_preOutfit() || L12_getOutfit() || L12_startWar()) { return true; }
 		} else {
 			// Make sure Belowdecks is open so we can get the key.
 			if (LX_pirateQuest()) { return true; }
 		}
-
+		
+		L12_flyerFinish(); // Finish flyers whenever possible.
+		
 		// Get the +combat key before attempting Sonofa Beach.
 		if (possessEquipment($item[Music Box Key])) {
 			if (L12_sonofaBeach() || L12_sonofaFinish()) { return true; }
