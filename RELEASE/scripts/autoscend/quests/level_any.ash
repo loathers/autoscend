@@ -1110,6 +1110,7 @@ boolean LX_lastChance()
 	//miscellaneous calls that aren't powerlevelling but need to be done at some point based on certain conditions
 	if(get_property("screechDelay").to_boolean())
 	{
+		location banishLoc;
 		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else");
 		while(get_property("screechCombats").to_int() > 0 && my_adventures() > 2 && phylumBanishTurnsRemaining() > 0)
 		{
@@ -1122,11 +1123,13 @@ boolean LX_lastChance()
 			{
 				if(LX_unlockManorSecondFloor() && L11_mauriceSpookyraven())
 				{
-					autoAdv($location[Noob Cave]); //adventure here to banish constructs and be able to progress other quests after we no longer need constructs
+					banishLoc = $location[Noob Cave];
+					autoAdv(banishLoc); //adventure here to banish constructs and be able to progress other quests after we no longer need constructs
 				}
 				else if(can_adventure($location[Cobb\'s Knob Harem]) && !is_banished($phylum[goblins]))
 				{
-					autoAdv($location[Cobb\'s Knob Harem]);
+					banishLoc = $location[Cobb\'s Knob Harem];
+					autoAdv(banishLoc);
 				}
 				else if(can_adventure($location[The Outskirts of Cobb\'s Knob]) && !is_banished($phylum[goblins]))
 				{
@@ -1146,7 +1149,7 @@ boolean LX_lastChance()
 			auto_log_warning("Couldn't clear screech delay without running out of adventures");
 			return false;
 		}
-		autoAdv($location[Cobb\'s Knob Harem]); //adventure here to banish goblins and be able to progress other quests
+		autoAdv(banishLoc); //adventure here to banish goblins or constructs and be able to progress other quests
 		set_property("screechDelay", false);
 		return true;
 	}
