@@ -536,6 +536,21 @@ int[phylum] banishedPhyla()
 	return retval;
 }
 
+int phylumBanishTurnsRemaining()
+{
+	int[phylum] banishedPhy = banishedPhyla();
+
+	foreach banPhy, i in banishedPhy
+	{
+		if(banPhy.to_string() != "")
+		{
+			return 99 - (my_turncount() - banishedPhy[banPhy]);
+		}
+	}
+
+	return 0;
+}
+
 int autoCraft(string mode, int count, item item1, item item2)
 {
 	if((mode == "combine") && !knoll_available())
