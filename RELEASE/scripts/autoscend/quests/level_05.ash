@@ -10,6 +10,13 @@ boolean L5_getEncryptionKey()
 	{
 		return false;
 	}
+
+	if (is_banished($phylum[goblin]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; //No sense in trying to go to the Knob if goblins are banished
+	}
+
 	if(item_amount($item[11-inch knob sausage]) == 1)
 	{
 		visit_url("guild.php?place=challenge");
@@ -62,6 +69,12 @@ boolean L5_haremOutfit()
 	{
 		return false;
 	}
+		
+	if (is_banished($phylum[goblin]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; //No sense in trying to go to the Knob if goblins are banished
+	}
 
 	// want to fight goblin king quickly in legacy of loathing to get another replica mr a
 	// check for LoL path so we actually prep for yellow raying
@@ -88,7 +101,12 @@ boolean L5_haremOutfit()
 }
 
 boolean L5_goblinKing()
-{
+{		
+	if (is_banished($phylum[goblin]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; //No sense in trying to go to the Knob if goblins are banished
+	}
 	if(internalQuestStatus("questL05Goblin") != 1)
 	{
 		return false;
