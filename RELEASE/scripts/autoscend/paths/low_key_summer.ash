@@ -416,20 +416,22 @@ boolean LX_lowkeySummer() {
 	// Cobb's Knob unlocks a lot of zones which contain generally useful keys for all classes (-combat, +meat, +adv).
 	// Also the +20% to all Muscle Gains key unlocks here.
 	if (L5_getEncryptionKey() || L5_findKnob()) { return true; }
-
-	if (my_primestat() == $stat[Mysticality] && possessEquipment($item[Key sausage])) {
-		// Myst classes want access to Pandamonium Slums to find the demonic key (+20% to all Mysticality Gains).
-		// Get the -combat key first.
-		if(!possessEquipment($item[Demonic key]) && my_buffedstat($stat[moxie]) < monster_attack($monster[Hellion])) {
-			//starting the level 6 quest as early as possible can be dangerous?
-			buffMaintain($effect[Vital]);
+	
+	if (my_level() < 12) {
+		if (my_primestat() == $stat[Mysticality] && possessEquipment($item[Key sausage])) {
+			// Myst classes want access to Pandamonium Slums to find the demonic key (+20% to all Mysticality Gains).
+			// Get the -combat key first.
+			if(!possessEquipment($item[Demonic key]) && my_buffedstat($stat[moxie]) < monster_attack($monster[Hellion])) {
+				//starting the level 6 quest as early as possible can be dangerous?
+				buffMaintain($effect[Vital]);
+			}
+			if (L6_friarsGetParts()) { return true; }
 		}
-		if (L6_friarsGetParts()) { return true; }
-	}
-	else if (my_primestat() == $stat[Muscle] && item_amount($item[Cobb\'s Knob Lab Key]) == 0) {
-		// Mus classes want access to the laboratory to find the Knob labinet key (+20% to all Muscle Gains).
-		// Have already gone after Key sausage and Knob treasury key by now, if still missing lab key give priority to the Knob
-		if (L5_slayTheGoblinKing()) { return true; }
+		else if (my_primestat() == $stat[Muscle] && item_amount($item[Cobb\'s Knob Lab Key]) == 0) {
+			// Mus classes want access to the laboratory to find the Knob labinet key (+20% to all Muscle Gains).
+			// Have already gone after Key sausage and Knob treasury key by now, if still missing lab key give priority to the Knob
+			if (L5_slayTheGoblinKing()) { return true; }
+		}
 	}
 
 	// Island access for all classes. also farm the +20% to all Moxie Gains key
@@ -498,7 +500,7 @@ boolean LX_lowkeySummer() {
 		}
 
 		// Do the rest of the war. Should have the +item key already before we start the war.
-		if (L12_gremlins() || L12_filthworms() || L12_orchardFinalize() || L12_farm() || L12_finalizeWar()) { return true; }
+		if (L12_gremlins() || L12_filthworms() || L12_orchardFinalize() || L12_farm() || L12_clearBattlefield() || L12_finalizeWar()) { return true; }
 	}
 
 	// Start the macguffin quest as we need it to unlock Belowdecks.
