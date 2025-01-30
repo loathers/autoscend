@@ -1120,11 +1120,15 @@ boolean LX_lastChance()
 			}
 			else
 			{
-				if(can_adventure($location[Cobb\'s Knob Harem]))
+				if(LX_unlockManorSecondFloor() && L11_mauriceSpookyraven())
+				{
+					autoAdv($location[Noob Cave]); //adventure here to banish constructs and be able to progress other quests after we no longer need constructs
+				}
+				else if(can_adventure($location[Cobb\'s Knob Harem]) && !is_banished($phylum[goblins]))
 				{
 					autoAdv($location[Cobb\'s Knob Harem]);
 				}
-				else if(can_adventure($location[The Outskirts of Cobb\'s Knob]))
+				else if(can_adventure($location[The Outskirts of Cobb\'s Knob]) && !is_banished($phylum[goblins]))
 				{
 					//to open up access to the Harem. Not banishing in the Outskirts so that we can get the combat in the Harem if needed
 					autoAdv($location[The Outskirts of Cobb\'s Knob]); 
