@@ -88,10 +88,12 @@ A Shrunken Adventurer am I	53	L3_tavern
 A Shrunken Adventurer am I	54	L2_mosquito
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 A Shrunken Adventurer am I	55	L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+A Shrunken Adventurer am I	56	LX_lastChance
 # release the hounds!
-A Shrunken Adventurer am I	56	auto_softBlockHandler
+A Shrunken Adventurer am I	57	auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.
-A Shrunken Adventurer am I	57	LX_attemptPowerLevel
+A Shrunken Adventurer am I	58	LX_attemptPowerLevel
 
 Avant Guard	0	LX_freeCombatsTask
 Avant Guard	1	woods_questStart
@@ -190,10 +192,12 @@ Avant Guard	61	L2_mosquito
 Avant Guard	62	LX_koeInvaderHandler
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 Avant Guard	63	L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+Avant Guard	64	LX_lastChance
 # release the hounds!
-Avant Guard	64	auto_softBlockHandler
+Avant Guard	65	auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.
-Avant Guard	65	LX_attemptPowerLevel
+Avant Guard	66	LX_attemptPowerLevel
 
 Avatar of Jarlsberg	0	LM_jarlsberg
 Avatar of Jarlsberg	1	LX_freeCombatsTask
@@ -250,8 +254,9 @@ Avatar of Jarlsberg	51	L5_slayTheGoblinKing
 Avatar of Jarlsberg	52	L4_batCave
 Avatar of Jarlsberg	53	L3_tavern
 Avatar of Jarlsberg	54	L13_towerAscent
-Avatar of Jarlsberg	55	auto_softBlockHandler
-Avatar of Jarlsberg	56	LX_attemptPowerLevel
+Avatar of Jarlsberg	55	LX_lastChance
+Avatar of Jarlsberg	56	auto_softBlockHandler
+Avatar of Jarlsberg	57	LX_attemptPowerLevel
 
 default	0	LX_freeCombatsTask
 default	1	woods_questStart
@@ -345,10 +350,12 @@ default	58	L2_mosquito
 default	59	LX_koeInvaderHandler
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 default	60	L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+default	61	LX_lastChance
 # release the hounds!
-default	61	auto_softBlockHandler
+default	62	auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.
-default	62	LX_attemptPowerLevel
+default	63	LX_attemptPowerLevel
 
 Legacy of Loathing	0	LX_freeCombatsTask
 Legacy of Loathing	1	woods_questStart
@@ -446,8 +453,9 @@ Legacy of Loathing	84	L13_sorceressDoor
 Legacy of Loathing	85	L13_towerNSTower
 Legacy of Loathing	86	L13_towerNSNagamar
 Legacy of Loathing	87	L13_towerNSFinal
-Legacy of Loathing	88	auto_softBlockHandler
-Legacy of Loathing	89	LX_attemptPowerLevel
+Legacy of Loathing	88	LX_lastChance
+Legacy of Loathing	89	auto_softBlockHandler
+Legacy of Loathing	90	LX_attemptPowerLevel
 
 Quantum Terrarium	0	LX_freeCombatsTask
 Quantum Terrarium	1	woods_questStart
@@ -508,8 +516,9 @@ Quantum Terrarium	55	L5_slayTheGoblinKing
 Quantum Terrarium	56	L4_batCave
 Quantum Terrarium	57	L3_tavern
 Quantum Terrarium	58	L13_towerAscent
-Quantum Terrarium	59	auto_softBlockHandler
-Quantum Terrarium	60	LX_attemptPowerLevel
+Quantum Terrarium	59	LX_lastChance
+Quantum Terrarium	60	auto_softBlockHandler
+Quantum Terrarium	61	LX_attemptPowerLevel
 
 WereProfessor	0	LM_wereprof
 WereProfessor	1	LX_freeCombatsTask
@@ -611,10 +620,12 @@ WereProfessor	65	LX_getStarKey
 WereProfessor	66	LX_getDigitalKey
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 WereProfessor	67	L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+WereProfessor	68	LX_lastChance
 # release the hounds!
-WereProfessor	68	auto_softBlockHandler
+WereProfessor	69	auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.
-WereProfessor	69	LX_attemptPowerLevel
+WereProfessor	70	LX_attemptPowerLevel
 
 Zombie Slayer	0	LM_zombieSlayer
 Zombie Slayer	1	woods_questStart
@@ -671,6 +682,7 @@ Zombie Slayer	51	L5_slayTheGoblinKing
 Zombie Slayer	52	L4_batCave
 Zombie Slayer	53	L3_tavern
 Zombie Slayer	54	L13_towerAscent
-Zombie Slayer	55	auto_softBlockHandler
-Zombie Slayer	56	LX_attemptPowerLevel
+Zombie Slayer	55	LX_lastChance
+Zombie Slayer	56	auto_softBlockHandler
+Zombie Slayer	57	LX_attemptPowerLevel
 

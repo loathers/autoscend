@@ -96,6 +96,26 @@ boolean isAttackFamiliar(familiar fam)
 	return false;
 }
 
+boolean auto_famKill(familiar fam, location place)
+{
+	if(!isAttackFamiliar(fam))
+	{
+		return false;
+	}
+
+	int passiveDamage = numeric_modifier("Damage Aura") + numeric_modifier("Sporadic Damage Aura ") + numeric_modifier("Thorns") + numeric_modifier("Sporadic Thorns");
+	
+	foreach mon, freq in appearance_rates(place)
+	{
+		//Mafia doesn't output the expected damage of the familiar so going with the highest possible for most users (NPZR)
+		if(mon != $monster[none] && monster_hp(mon) < (floor(1.5 * (familiar_weight(fam) +weight_adjustment() + 3)) + passiveDamage))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 boolean pathHasFamiliar() 	// check for cases where the path bans traditional familiars.
 {
 	if(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_lta() || in_pokefam())
@@ -621,6 +641,8 @@ boolean autoChooseFamiliar(location place)
 	{
 		famChoice = lookupFamiliarDatafile("init");
 	}
+
+	famChoice = auto_forceEagle(); // force Patriotic Eagle if we have a >0 combats until we can screech again
 
 	//Gelatinous Cubeling drops items that save turns in the daily dungeon
 	if(famChoice == $familiar[none] &&

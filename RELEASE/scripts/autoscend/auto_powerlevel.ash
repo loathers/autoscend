@@ -91,11 +91,6 @@ boolean LX_attemptPowerLevel()
 	//The Source path specific powerleveling
 	LX_attemptPowerLevelTheSource();
 
-	if (LX_getDigitalKey() || LX_getStarKey())
-	{
-		return true;
-	}
-
 	//August Scepter Power Levelling
 	if(auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5){
 		if(my_primestat() == $stat[Muscle])

@@ -455,6 +455,14 @@ boolean LX_unlockManorSecondFloor() {
 		return false;
 	}
 
+	//No sense in trying to go to the library if constructs (writing desk) are banished and we already have a killing jar and haven't done the desert yet
+	if (is_banished($phylum[construct]) && get_property("screechCombats").to_int() > 0 &&
+	(item_amount($item[killing jar]) > 0 && ((get_property("gnasirProgress").to_int() & 4) != 4)))
+	{
+		set_property("screechDelay", true);
+		return false;
+	}
+
 	if (!hasSpookyravenLibraryKey()) {
 		return false;
 	}
@@ -813,6 +821,12 @@ boolean L11_blackMarket()
 	if ((possessEquipment($item[Blackberry Galoshes]) && !auto_can_equip($item[Blackberry Galoshes])) && !isAboutToPowerlevel())
 	{
 		return false;
+	}
+
+	if (is_banished($phylum[beast]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; // Can't get the reassembled blackbird if beasts are banished
 	}
 
 	if ($location[The Black Forest].turns_spent > 12 && !in_avantGuard())
@@ -2421,6 +2435,12 @@ boolean L11_mauriceSpookyraven()
 
 	if (item_amount($item[bottle of Chateau de Vinegar]) == 0 && !possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
+		if (is_banished($phylum[construct]) && get_property("screechCombats").to_int() > 0)
+		{
+			set_property("screechDelay", true);
+			return false; //No sense in trying to go to the Wine Cellar if constructs (Wine Racks) are banished
+		}
+
 		auto_log_info("Searching for vinegar", "blue");
 		if(!bat_wantHowl($location[The Haunted Wine Cellar]))
 		{
@@ -2438,6 +2458,12 @@ boolean L11_mauriceSpookyraven()
 	}
 	if (item_amount($item[blasting soda]) == 0 && !possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
+		if (is_banished($phylum[undead]) && get_property("screechCombats").to_int() > 0)
+		{
+			set_property("screechDelay", true);
+			return false; //No sense in trying to go to the Laundry Room if undead (Cabinet of Dr. Limpieza) are banished
+		}
+
 		auto_log_info("Searching for baking soda, I mean, blasting pop.", "blue");
 		if(!bat_wantHowl($location[The Haunted Wine Cellar]))
 		{
@@ -2759,6 +2785,12 @@ boolean L11_shenCopperhead()
 		return false;
 	}
 
+	if (is_banished($phylum[dude]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; //Probably should delay the Copperhead Club because dudes are important here
+	}
+
 	if (internalQuestStatus("questL11Shen") == 2 || internalQuestStatus("questL11Shen") == 4 || internalQuestStatus("questL11Shen") == 6)
 	{
 		if(is_professor())
@@ -2914,6 +2946,12 @@ boolean L11_palindome()
 	total = total + item_amount($item[Photograph Of God]);
 	total = total + item_amount($item[Photograph Of A Dog]);
 
+	if(is_banished($phylum[dude]) && get_property("screechCombats").to_int() > 0)
+	{
+		set_property("screechDelay", true);
+		return false; //If new phylum banishers come out, this should be updated.
+	}
+
 	boolean lovemeDone = hasILoveMeVolI() || (internalQuestStatus("questL11Palindome") >= 1);
 	if(!lovemeDone && (get_property("palindomeDudesDefeated").to_int() >= 5))
 	{
@@ -2989,6 +3027,12 @@ boolean L11_palindome()
 			if(autoAdvBypass(0, pages, $location[Whitey\'s Grove], "")) {}
 			restoreSetting("lastGuildStoreOpen");
 			return true;
+		}
+		//Can't do Whitey's Grove if beasts are banished
+		if(is_banished($phylum[beast]) && get_property("screechCombats").to_int() > 0)
+		{
+			set_property("screechDelay", true);
+			return false; //If new phylum banishers come out, this should be updated.
 		}
 		providePlusCombat(15, $location[Whitey's Grove], false);
 		// +item is nice to get that food

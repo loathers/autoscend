@@ -353,19 +353,18 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && place == solveDelayZone());
-	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
+	boolean burningDelay = auto_burningDelay();
+	boolean gettingLucky = auto_gettingLucky();
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
-	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !zoneQueueIgnored) {
+	if (combatModifier._boolean && !auto_queueIgnore()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
 
 	boolean considerCrystalBallBonus = false;
 	if(auto_haveCrystalBall())
 	{
-		if(zoneQueueIgnored || get_property("auto_nextEncounter").to_monster() != $monster[none])
+		if(auto_queueIgnore() || get_property("auto_nextEncounter").to_monster() != $monster[none])
 		{
 			//if already forced by something else, no need to handle your ball
 		}
@@ -399,7 +398,7 @@ boolean auto_pre_adventure()
 	
 	boolean zoneHasUnwantedMonsters;
 	boolean zoneHasWantedMonsters;
-	if (!zoneQueueIgnored)	//next encounter is a monster from the zone
+	if (!auto_queueIgnore())	//next encounter is a monster from the zone
 	{
 		foreach i,mon in possible_monsters
 		{
@@ -408,8 +407,14 @@ boolean auto_pre_adventure()
 				adjustForYellowRayIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
+			if(auto_wantToBanish(monster_phylum(mon), place) && !auto_famKill($familiar[Patriotic Eagle], place))
+			{
+				// attempt to prepare for banishing, but if we can not try free running
+				adjustForBanishIfPossible(monster_phylum(mon), place);
+				zoneHasUnwantedMonsters = true;
+			}
 			boolean wantToBanish  = auto_wantToBanish(mon, place);
-			boolean wantToFreeRun = auto_wantToFreeRun(mon, place);
+			boolean wantToFreeRun = auto_wantToFreeRun(mon, place) || auto_forceFreeRun(false);
 			if(wantToBanish || wantToFreeRun)
 			{
 				// attempt to prepare for banishing, but if we can not try free running
@@ -994,7 +999,7 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
-	utilizeStillsuit();
+	utilizeStillsuit();	
 
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
