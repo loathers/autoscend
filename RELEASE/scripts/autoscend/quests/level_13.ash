@@ -497,10 +497,7 @@ boolean L13_towerNSContests()
 
 			if(crowd1Insufficient())
 			{
-				if (have_effect($effect[New and Improved])==0)
-				{
-					auto_wishForEffect($effect[New and Improved]);
-				}
+				auto_wishForEffectIfNeeded($effect[New and Improved]);
 			}
 
 				if(crowd1Insufficient())
@@ -589,11 +586,15 @@ boolean L13_towerNSContests()
 				break;
 			}
 			
+			if(crowd2Insufficient())
+			{
+				auto_equalizeStats();
+			}
 			if(crowd2Insufficient() && !in_small())
 			{
-				if (have_effect($effect[New and Improved])==0 && !in_small())
+				if (!in_small())
 				{
-					auto_wishForEffect($effect[New and Improved]);
+					auto_wishForEffectIfNeeded($effect[New and Improved]);
 				}
 			}
 
@@ -1322,6 +1323,8 @@ boolean L13_towerNSTowerBones()
 	uneffect($effect[Psalm of Pointiness]);
 	uneffect($effect[Mayeaugh]);
 	uneffect($effect[Feeling Nervous]);
+	
+	auto_equalizeStats(); // uses reagent oil to stabilize stats
 	buffMaintain($effect[Tomato Power]);
 	buffMaintain($effect[Seeing Colors]);
 	buffMaintain($effect[Glittering Eyelashes]);
