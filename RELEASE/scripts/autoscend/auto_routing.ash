@@ -178,6 +178,17 @@ boolean auto_earlyRoutingHandling()
 	// updating this will be less 'scary' than updating n task order files any time we make a change
 	// this function should go very high in task orders, potentially the first thing that spends adventures.
 	// ideally nothing called before this should spend an adventure, only update state or use turn free resources.
+	
+	// Check we have flyers if war frat and war started, first because takes no turns.
+	if(!in_koe() && internalQuestStatus("questL12War") == 1 && !get_property("auto_hippyInstead").to_boolean() &&
+	  get_property("sidequestArenaCompleted")!="fratboy" && available_amount($item[rock band flyers])==0)
+	{
+		outfit("frat warrior fatigues"); // don't use the equipOutfit func here since this is just temporary, we don't want to adventure like this.
+		visit_url("bigisland.php?place=concert&pwd");
+		// Just make sure the other two quests are started too
+		visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
+		visit_url("bigisland.php?action=junkman&pwd");
+	}
 
 	// force forcing non-combats.
 	if (auto_canForceNextNoncombat()) {
@@ -243,6 +254,7 @@ boolean auto_earlyRoutingHandling()
 			return true;
 		}
 	}
+	
 	return false;
 }
 
