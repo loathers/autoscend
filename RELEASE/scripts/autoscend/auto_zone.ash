@@ -600,7 +600,7 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[The Penultimate Fantasy Airship]:
-		if(delay._int == 0)
+		if(delay._int == 0 || (auto_haveBatWings() && available_amount($item[S.O.C.K.])==0))
 		{
 			value = -80;
 		}
