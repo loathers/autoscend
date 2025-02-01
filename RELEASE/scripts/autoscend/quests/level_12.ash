@@ -1791,7 +1791,8 @@ boolean L12_themtharHills()
 	}
 	
 	// Outside of AG, if we have 3+ effect wishes we'll be wishing for Sinuses for Miles instead
-	boolean considerCloverForInhaler = in_avantGuard() || auto_totalEffectWishesAvailable() < 3;
+	boolean considerCloverForInhaler = (in_avantGuard() || auto_totalEffectWishesAvailable() < 3) && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]);
+	considerCloverForInhaler = considerCloverForInhaler && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]);
 	
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
@@ -1861,7 +1862,7 @@ boolean L12_themtharHills()
 	
 	if (considerCloverForInhaler)
 	{
-		if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]) && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
+		if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && cloversAvailable() > 0)
 		{
 			//use clover to get inhaler
 			return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
