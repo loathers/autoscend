@@ -1256,3 +1256,44 @@ boolean is_watch(item it)
 	//watches are accessories that conflict with each other. you can only equip one watch total.
 	return boolean_modifier(it, $modifier[Nonstackable Watch]);
 }
+
+int[item] auto_getAllEquipabble()
+{
+	return auto_getAllEquipabble($slot[none]);
+}
+
+int[item] auto_getAllEquipabble(slot s)
+{
+	boolean ignore_slot = s==$slot[none];
+	s = (s==$slot[acc2] || s==$slot[acc3]?$slot[acc1]:s);// all accessories checked against slot 1
+	int[item] valid_and_equippable;
+	foreach it,n in get_inventory()
+	{
+		slot it_s = to_slot(it);
+		if(can_equip(it) && auto_is_valid(it) && (s==it_s || ignore_slot))
+		{
+			valid_and_equippable[it] = n;
+		}
+	}
+	// Add equipped
+	boolean[slot] my_slots;
+	if (ignore_slot)
+	{
+		my_slots = $slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	else
+	{
+		my_slots[s] = true;
+		if (s==$slot[acc1])
+		{
+			my_slots[$slot[acc2]] = true;
+			my_slots[$slot[acc3]] = true;
+		}
+	}
+	foreach my_slot in my_slots
+	{
+		item it = equipped_item(my_slot);
+		valid_and_equippable[it]++;
+	}
+	return valid_and_equippable;
+}

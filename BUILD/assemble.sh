@@ -11,7 +11,7 @@ for DIR in ./*/; do
 	cat $DIR/header.txt >> $OUT
 	SAVEIFS=$IFS
 	IFS=$(echo -en "\n\b")
-	for FILENAME in ${DIR}*.dat; do
+  for FILENAME in $(ls ${DIR}*.dat | sort -i); do
 		SLOT=${FILENAME::-4}
 		SLOT=${SLOT##*/}
 		NUM=0

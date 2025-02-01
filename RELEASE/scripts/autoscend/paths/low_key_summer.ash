@@ -383,6 +383,29 @@ boolean L13_sorceressDoorLowKey()
 boolean LX_lowkeySummer() {
 
 	if (!in_lowkeysummer()) { return false; }
+	
+	// Copied out of task order default.dat
+	if (LX_freeCombatsTask        ()) { return true; }
+	if (woods_questStart          ()) { return true; }
+	if (LX_unlockPirateRealm      ()) { return true; }
+	if (catBurglarHeist           ()) { return true; }
+	if (auto_breakfastCounterVisit()) { return true; }
+	if (chateauPainting           ()) { return true; }
+	if (LX_setWorkshed            ()) { return true; }
+	if (LX_galaktikSubQuest       ()) { return true; }
+	if (L9_leafletQuest           ()) { return true; }
+	if (L5_findKnob               ()) { return true; }
+	if (L12_sonofaPrefix          ()) { return true; }
+	if (LX_burnDelay              ()) { return true; }
+	if (LX_summonMonster          ()) { return true; }
+	// Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
+	if (L11_shenStartQuest()) { return true; }
+	// If we have everything to start the war instantly, just do it so we can start flyering.
+	if (L12_opportunisticWarStart()) { return true; }
+	// Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
+	if (finishBuildingSmutOrcBridge()) { return true; }
+	// Call quest handlers based on current state if applicable
+	if (auto_earlyRoutingHandling()) { return true; }
 
 	// Guild access
 	if (LX_guildUnlock()) { return true; }
@@ -393,20 +416,22 @@ boolean LX_lowkeySummer() {
 	// Cobb's Knob unlocks a lot of zones which contain generally useful keys for all classes (-combat, +meat, +adv).
 	// Also the +20% to all Muscle Gains key unlocks here.
 	if (L5_getEncryptionKey() || L5_findKnob()) { return true; }
-
-	if (my_primestat() == $stat[Mysticality] && possessEquipment($item[Key sausage])) {
-		// Myst classes want access to Pandamonium Slums to find the demonic key (+20% to all Mysticality Gains).
-		// Get the -combat key first.
-		if(!possessEquipment($item[Demonic key]) && my_buffedstat($stat[moxie]) < monster_attack($monster[Hellion])) {
-			//starting the level 6 quest as early as possible can be dangerous?
-			buffMaintain($effect[Vital]);
+	
+	if (my_level() < 12) {
+		if (my_primestat() == $stat[Mysticality] && possessEquipment($item[Key sausage])) {
+			// Myst classes want access to Pandamonium Slums to find the demonic key (+20% to all Mysticality Gains).
+			// Get the -combat key first.
+			if(!possessEquipment($item[Demonic key]) && my_buffedstat($stat[moxie]) < monster_attack($monster[Hellion])) {
+				//starting the level 6 quest as early as possible can be dangerous?
+				buffMaintain($effect[Vital]);
+			}
+			if (L6_friarsGetParts()) { return true; }
 		}
-		if (L6_friarsGetParts()) { return true; }
-	}
-	else if (my_primestat() == $stat[Muscle] && item_amount($item[Cobb\'s Knob Lab Key]) == 0) {
-		// Mus classes want access to the laboratory to find the Knob labinet key (+20% to all Muscle Gains).
-		// Have already gone after Key sausage and Knob treasury key by now, if still missing lab key give priority to the Knob
-		if (L5_slayTheGoblinKing()) { return true; }
+		else if (my_primestat() == $stat[Muscle] && item_amount($item[Cobb\'s Knob Lab Key]) == 0) {
+			// Mus classes want access to the laboratory to find the Knob labinet key (+20% to all Muscle Gains).
+			// Have already gone after Key sausage and Knob treasury key by now, if still missing lab key give priority to the Knob
+			if (L5_slayTheGoblinKing()) { return true; }
+		}
 	}
 
 	// Island access for all classes. also farm the +20% to all Moxie Gains key
@@ -439,12 +464,14 @@ boolean LX_lowkeySummer() {
 		// Don't start the war unless we've acquired the key from Belowdecks first as it gives +item.	
 		// TODO these aren't the full L12 tasks, could filthworms earlier here if Yellow Ray available
 		if (possessEquipment($item[Treasure Chest key])) {
-			if (L12_preOutfit() || L12_getOutfit() || L12_startWar() || L12_flyerFinish()) { return true; }
+			if (L12_preOutfit() || L12_getOutfit() || L12_startWar()) { return true; }
 		} else {
 			// Make sure Belowdecks is open so we can get the key.
 			if (LX_pirateQuest()) { return true; }
 		}
-
+		
+		L12_flyerFinish(); // Finish flyers whenever possible.
+		
 		// Get the +combat key before attempting Sonofa Beach.
 		if (possessEquipment($item[Music Box Key])) {
 			if (L12_sonofaBeach() || L12_sonofaFinish()) { return true; }
@@ -457,8 +484,14 @@ boolean LX_lowkeySummer() {
 			}
 		}
 
-		// Get the +meat keys before attempting Themthar Hills.
-		if (possessEquipment($item[Knob treasury key]) && possessEquipment($item[Kekekey])) {
+		// Check our meat accessories, grab +meat keys before attempting Themthar Hills if they'll help.
+		int n_meat_drop_acc_50plus = 0;
+		foreach it,n in auto_getAllEquipabble($slot[acc1]) {
+			if (numeric_modifier(it,$modifier[meat drop])>=45 || it==$item[backup camera]) { // backup camera isn't always meat 
+				n_meat_drop_acc_50plus += n;
+			}
+		}
+		if (n_meat_drop_acc_50plus>=2) {
 			if (L12_themtharHills()) { return true; }
 		} else if(!get_property("auto_skipNuns").to_boolean() && (get_property("hippiesDefeated").to_int() >= 192 || get_property("auto_hippyInstead").to_boolean())) {
 			// about to do nuns. Make sure The Valley is open so we can get the Kekekey.
@@ -467,7 +500,7 @@ boolean LX_lowkeySummer() {
 		}
 
 		// Do the rest of the war. Should have the +item key already before we start the war.
-		if (L12_gremlins() || L12_filthworms() || L12_orchardFinalize() || L12_farm() || L12_finalizeWar()) { return true; }
+		if (L12_gremlins() || L12_filthworms() || L12_orchardFinalize() || L12_farm() || L12_clearBattlefield() || L12_finalizeWar()) { return true; }
 	}
 
 	// Start the macguffin quest as we need it to unlock Belowdecks.

@@ -1074,6 +1074,10 @@ boolean dailyEvents()
 	auto_birdOfTheDay();
 	while(auto_doPrecinct());
 	handleBarrelFullOfBarrels(true);
+	
+	// Hit bastille, then council in case we levelled up (and unlocked getaway camp)
+	cheeseWarMachine(0, 0, 0, 0);
+	council();
 
 	auto_campawayGrabBuffs();
 	kgb_getMartini();
