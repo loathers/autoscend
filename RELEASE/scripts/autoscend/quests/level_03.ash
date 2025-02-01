@@ -122,7 +122,7 @@ boolean auto_tavern()
 	}
 	else
 	{
-		providePlusCombat(auto_combatModCap(), $location[Noob Cave]);
+		providePlusCombat(20, $location[Noob Cave]);
 	}
 
 	string tavern = get_property("tavernLayout");
