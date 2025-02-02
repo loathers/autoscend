@@ -683,13 +683,29 @@ boolean auto_floundryAction()
 	{
 		return false;
 	}
+	
+	// Handle whether we can jump to BAFH
+	int orig_clan_id = get_clan_id();
+	boolean in_bafh = orig_clan_id == getBAFHID();
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh probably has it fully stocked
+	
 	if(!get_property("_floundryItemGot").to_boolean() && (auto_get_clan_lounge() contains $item[Clan Floundry]) && !inAftercore())
 	{
 		if(get_property("auto_floundryChoice") != "")
 		{
 			string[int] floundryChoice = split_string(get_property("auto_floundryChoice"), ";");
 			item myFloundry = trim(floundryChoice[min(count(floundryChoice), my_daycount()) - 1]).to_item();
-			if(auto_floundryAction(myFloundry))
+			boolean success = auto_floundryAction(myFloundry);
+			if(!success)
+			{
+				if (bafh_available)
+				{
+					changeClan(); // Jump to BAFH
+					success = auto_floundryAction(myFloundry);
+					changeClan(orig_clan_id); // go home
+				}
+			}
+			if (success)
 			{
 				if(($items[Bass Clarinet, Codpiece, Fish Hatchet] contains myFloundry) && !get_property("_floundryItemUsed").to_boolean() && (item_amount(myFloundry) > 0))
 				{
