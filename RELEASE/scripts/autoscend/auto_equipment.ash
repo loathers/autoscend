@@ -884,6 +884,11 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("effective");
 		}
 	}
+	
+	if ( auto_haveCupidBow() && !maximizeContains("bonus "+$item[toy cupid bow]) )
+	{	// Small bonus here, we have a big bonus in pre_adv if we need a drop we can't cap.
+		addBonusToMaximize($item[toy cupid bow],50);
+	}
 }
 		 
 void finalizeMaximize()
