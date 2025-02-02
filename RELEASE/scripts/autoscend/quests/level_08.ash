@@ -613,7 +613,7 @@ boolean L8_trapperNinjaLair()
 	}
 
 	// can we provide enough combat bonus to encounter snowman assassins?
-	if(providePlusCombat(25, $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
+	if(providePlusCombat(auto_combatModCap(), $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
 	{
 		if(isAboutToPowerlevel())
 		{
@@ -802,6 +802,15 @@ boolean L8_trapperPeak()
 	return false;
 }
 
+boolean L8_forceExtremeInstead()
+{
+	// If for some reason we've already got 2 ninja items, no need to get forcey
+	if(available_amount($item[ninja crampons]) > 0) { return false; }
+	// Set the variable if we're doing McHugeLarge items
+	if (auto_canEquipAllMcHugeLarge()) { set_property("auto_L8_extremeInstead", true); }
+	return get_property("auto_L8_extremeInstead").to_boolean();
+}
+
 boolean L8_trapperSlope()
 {
 	// climb the slope and reach the peak in L8 trapper quest. either via ninja snowmen lair or via the extreme slope
@@ -823,13 +832,14 @@ boolean L8_trapperSlope()
 	{
 		return false; // delay for You, Robot path
 	}
-	if(get_property("auto_L8_extremeInstead").to_boolean()) // we decided we do not want to adventure in the ninja lair
+	// Checks for McHugeLarge skis
+	if (L8_forceExtremeInstead())
 	{
 		if(L8_trapperExtreme()) return true; // try to climb slope via extreme path
 	}
-	if(auto_haveMcHugeLargeSkis()) // it's faster to do the extreme path with skis
+	if(get_property("auto_L8_extremeInstead").to_boolean()) // we decided we do not want to adventure in the ninja lair
 	{
-		if(L8_trapperExtreme()) return true; // try to climb slope via extreme path with skis
+		if(L8_trapperExtreme()) return true; // try to climb slope via extreme path
 	}
 	if(L8_trapperNinjaLair()) return true; // try to climb slope via ninja path
 	

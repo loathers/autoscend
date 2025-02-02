@@ -600,7 +600,7 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[The Penultimate Fantasy Airship]:
-		if(delay._int == 0)
+		if(delay._int == 0 || (auto_haveBatWings() && available_amount($item[S.O.C.K.])==0))
 		{
 			value = -80;
 		}
@@ -627,8 +627,7 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[Lair of the Ninja Snowmen]:
-		if(internalQuestStatus("questL08Trapper") < 3 &&
-		(item_amount($item[Ninja Carabiner]) == 0 || item_amount($item[Ninja Crampons]) == 0 || item_amount($item[Ninja Rope]) == 0))
+		if(internalQuestStatus("questL08Trapper") < 3 && !L8_forceExtremeInstead() && item_amount($item[Ninja Carabiner]) == 0)
 		{
 			value = 80;
 		}
@@ -641,9 +640,6 @@ generic_t zone_combatMod(location loc)
 	case $location[The Defiled Cranny]:
 	case $location[The Defiled Alcove]:
 		value = -85;
-		break;
-	case $location[The Outskirts of Cobb\'s Knob]:
-		value = 20;
 		break;
 	case $location[The Typical Tavern Cellar]:
 		//We could cut it off early if the Rat Faucet is the last one
