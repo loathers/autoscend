@@ -1534,21 +1534,30 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		{
 			boolean success = true;
 			int specwishes = 0;
-			foreach eff in $effects[Frosty, //200% meat, 100% item, 25 ML, 100% init
-			Braaaaaains, //200% meat, -50% item
-			Let's Go Shopping!,  //150% meat, 75% item, -300% myst
-			Always Be Collecting, //100% meat, 50% item
-			Incredibly Well Lit, //100% meat, 50% item
-			A View to Some Meat, //100% meat
-			Cravin' for a Ravin', //100% meat
-			Low on the Hog, //100% meat
-			Leisurely Amblin', //100% meat
-			Trufflin', //100% meat
-			Here's Some More Mud in Your Eye, //100% meat
-			Eau d' Clochard, //100% meat
-			Flapper Dancin', //100% meat
-			Fishing for Meat, //100% meat
-			Preternatural Greed] //100% meat
+			boolean[effect] wish_to_try = (in_avantGuard()? // Avant guard only has 6 turns for nuns, so needs tonnes of buffs
+			  $effects[Frosty, //200% meat, 100% item, 25 ML, 100% init
+			    Braaaaaains, //200% meat, -50% item
+			    // no Sinuses for Miles here in AG, get it from an inhaler
+			    Let's Go Shopping!,  //150% meat, 75% item, -300% myst
+			    Always Be Collecting, //100% meat, 50% item
+			    Incredibly Well Lit, //100% meat, 50% item
+			    A View to Some Meat, //100% meat\
+			    Cravin' for a Ravin', //100% meat
+			    Low on the Hog, //100% meat
+			    Leisurely Amblin', //100% meat
+			    Trufflin', //100% meat
+			    Here's Some More Mud in Your Eye, //100% meat
+			    Eau d' Clochard, //100% meat
+			    Flapper Dancin', //100% meat
+			    Fishing for Meat, //100% meat
+			    Preternatural Greed //100% meat
+			  ] : // Regular probably doesn't need more than 600% from wishes
+			  $effects[Frosty, //200% meat, 100% item, 25 ML, 100% init
+			    Braaaaaains, //200% meat, -50% item
+			    Sinuses for miles, //200% meat
+			    //~ Let's Go Shopping!  //150% meat, 75% item, -300% myst
+			  ]);
+			foreach eff in wish_to_try
 			{
 				if(eff == $effect[Frosty] && in_wereprof()) continue; //skip frosty in wereprof
 				if(have_effect(eff) == 0)
