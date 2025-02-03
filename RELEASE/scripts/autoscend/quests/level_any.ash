@@ -1126,12 +1126,12 @@ boolean LX_lastChance()
 					banishLoc = $location[Noob Cave];
 					autoAdv(banishLoc); //adventure here to banish constructs and be able to progress other quests after we no longer need constructs
 				}
-				else if(can_adventure($location[Cobb\'s Knob Harem]) && !is_banished($phylum[goblins]))
+				else if(can_adventure($location[Cobb\'s Knob Harem]) && !is_banished($phylum[goblin]))
 				{
 					banishLoc = $location[Cobb\'s Knob Harem];
 					autoAdv(banishLoc);
 				}
-				else if(can_adventure($location[The Outskirts of Cobb\'s Knob]) && !is_banished($phylum[goblins]))
+				else if(can_adventure($location[The Outskirts of Cobb\'s Knob]) && !is_banished($phylum[goblin]))
 				{
 					//to open up access to the Harem. Not banishing in the Outskirts so that we can get the combat in the Harem if needed
 					autoAdv($location[The Outskirts of Cobb\'s Knob]); 
