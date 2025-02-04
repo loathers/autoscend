@@ -9,6 +9,20 @@ boolean auto_haveMcHugeLargeSkis()
 	return false;
 }
 
+boolean auto_canEquipAllMcHugeLarge()
+{
+	if (!auto_haveMcHugeLargeSkis())
+	{
+		return false;
+	}
+	boolean success = true;
+	foreach it in $items[McHugeLarge duffel bag,McHugeLarge right pole,McHugeLarge left pole,McHugeLarge right ski,McHugeLarge left ski]
+	{
+		success = can_equip(it) && success;
+	}
+	return success;
+}
+
 boolean auto_equipAllMcHugeLarge()
 {
 	if (!auto_haveMcHugeLargeSkis())
