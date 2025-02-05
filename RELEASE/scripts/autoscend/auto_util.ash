@@ -3598,6 +3598,7 @@ void auto_interruptCheck(boolean debug)
 	{
 		set_property("auto_interrupt", false);
 		restoreAllSettings();
+		auto_log_info("Autoscend thinks that you need " + meatreserve() + " meat for remaining quest requirements this ascension.");
 		abort("auto_interrupt detected and aborting, auto_interrupt disabled.");
 	}
 	else if (get_property("auto_debugging").to_boolean() && debug)
