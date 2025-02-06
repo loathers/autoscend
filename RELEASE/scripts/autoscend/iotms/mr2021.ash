@@ -725,8 +725,8 @@ boolean auto_buyFireworksHat()
 	// noncombat is most valuable hat but has no effect in LAR
 	if(auto_can_equip($item[porkpie-mounted popper]) && !in_lar())
 	{
-		float simNonCombat = providePlusNonCombat(25, $location[noob cave], true, true);
-		if(simNonCombat < 25.0)
+		float simNonCombat = providePlusNonCombat(auto_combatModCap(), $location[noob cave], true, true);
+		if(simNonCombat < auto_combatModCap())
 		{
 			retrieve_item(1, $item[porkpie-mounted popper]);
 			return true;
@@ -736,8 +736,8 @@ boolean auto_buyFireworksHat()
 	// +combat hat is second most useful but has no effect in LAR and kills the professor
 	if(auto_can_equip($item[sombrero-mounted sparkler]) && !(in_lar() || in_wereprof()))
 	{
-		float simCombat = providePlusCombat(25, $location[noob cave], true, true);
-		if(simCombat < 25.0)
+		float simCombat = providePlusCombat(auto_combatModCap(), $location[noob cave], true, true);
+		if(simCombat < auto_combatModCap())
 		{
 			retrieve_item(1, $item[sombrero-mounted sparkler]);
 			return true;
