@@ -10,6 +10,7 @@ boolean L5_getEncryptionKey()
 	{
 		return false;
 	}
+
 	if(item_amount($item[11-inch knob sausage]) == 1)
 	{
 		visit_url("guild.php?place=challenge");
