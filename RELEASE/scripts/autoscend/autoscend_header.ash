@@ -611,6 +611,7 @@ boolean auto_getClanPhotoBoothEffect(string ef, int n_times);
 ########################################################################################################
 //Defined in autoscend/iotms/mr2025.ash
 boolean auto_haveMcHugeLargeSkis();
+boolean auto_canEquipAllMcHugeLarge();
 boolean auto_equipAllMcHugeLarge();
 boolean auto_openMcLargeHugeSkis();
 int auto_McLargeHugeForcesLeft();
@@ -1116,6 +1117,7 @@ int getCellToMine(item oreGoal);
 boolean L8_getGoatCheese();
 boolean L8_getMineOres();
 void itznotyerzitzMineChoiceHandler(int choice);
+boolean L8_forceExtremeInstead();
 boolean L8_trapperExtreme();
 void theeXtremeSlopeChoiceHandler(int choice);
 boolean L8_trapperNinjaLair();
@@ -1495,6 +1497,8 @@ void equipRollover(boolean silent);
 boolean auto_forceEquipSword(boolean speculative);
 boolean auto_forceEquipSword();
 boolean is_watch(item it);
+int[item] auto_getAllEquipabble();
+int[item] auto_getAllEquipabble(slot s);
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
@@ -1764,6 +1768,7 @@ boolean[location] monster_to_location(monster target);
 //Defined in autoscend/auto_util.ash
 //Other files are placed alphabetically. But due to its sheer size auto_util.ash goes last
 
+int auto_combatModCap();
 boolean almostRollover();
 boolean needToConsumeForEmergencyRollover();
 boolean autoMaximize(string req, boolean simulate);

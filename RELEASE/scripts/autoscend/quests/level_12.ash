@@ -1376,7 +1376,7 @@ boolean L12_sonofaBeach()
 
 	if(!in_lar())
 	{
-		float combat_bonus = providePlusCombat(25, $location[Sonofa Beach], true, true);
+		float combat_bonus = providePlusCombat(auto_combatModCap(), $location[Sonofa Beach], true, true);
 		if(combat_bonus <= 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate for [Lobsterfrogmen] in [Sonofa Beach]. we have: " +combat_bonus, "red");
@@ -1497,7 +1497,7 @@ boolean L12_sonofaPrefix()
 
 	if(!in_lar())
 	{
-		float combat_bonus = providePlusCombat(25, $location[Sonofa Beach], true, true);
+		float combat_bonus = providePlusCombat(auto_combatModCap(), $location[Sonofa Beach], true, true);
 		if(combat_bonus <= 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate for [Lobsterfrogmen] in [Sonofa Beach]. we have: " +combat_bonus, "red");
@@ -1739,7 +1739,9 @@ boolean L12_themtharHills()
 	{
 		auto_log_info("Themthar Nuns!", "blue");
 	}
-
+	
+	handleFamiliar("meat");
+	
 	//can only do this in Avant Guard in 6 turns in HC or 8 turns in Normal. Need the August Scepter. If going turbo, can't get enough waffles so don't even bother with this
 	set_property("auto_delayWar", false);
 	if(in_avantGuard() && auto_haveAugustScepter() && !(auto_turbo()))
@@ -1787,11 +1789,15 @@ boolean L12_themtharHills()
 			}
 		}
 	}
-
+	
+	// Outside of AG, if we have 3+ effect wishes we'll be wishing for Sinuses for Miles instead
+	boolean considerCloverForInhaler = (in_avantGuard() || auto_totalEffectWishesAvailable() < 3) && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]);
+	considerCloverForInhaler = considerCloverForInhaler && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]);
+	
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
 	//count inhaler if we have one or if we have a clover to obtain one and can use one
-	if((item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || cloversAvailable() > 0) && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]))
+	if((item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0) || (cloversAvailable() > 0 && considerCloverForInhaler))
 	{
 		meat_need = meat_need - 200;
 	}
@@ -1853,11 +1859,14 @@ boolean L12_themtharHills()
 			auto_log_info("The min should be enough! Doing it!!", "purple");
 		}
 	}
-
-	if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]) && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
+	
+	if (considerCloverForInhaler)
 	{
-		//use clover to get inhaler
-		return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
+		if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && cloversAvailable() > 0)
+		{
+			//use clover to get inhaler
+			return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
+		}
 	}
 
 	provideMeat(1800, true, false); // Do as much as possible to get meat drops

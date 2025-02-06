@@ -18,7 +18,8 @@ boolean L5_getEncryptionKey()
 	}
 
 	// want to fight goblin king quickly in legacy of loathing to get another replica mr a
-	if(!in_lol() && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
+	// In LKS, important keys are gated behind here, and we have tonnes of delay
+	if(!(in_lol()||in_lowkeysummer()) && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
 	{
 		return false;
 	}

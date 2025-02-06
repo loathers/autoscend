@@ -1,5 +1,10 @@
 //A file full of utility functions which we import into autoscend.ash
 
+int auto_combatModCap()
+{
+	return 32;
+}
+
 boolean almostRollover()
 {
 	int warning_time = get_property("auto_stopMinutesToRollover").to_int() * 60;
@@ -2275,11 +2280,11 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 {
 	if(amt < 0)
 	{
-		return providePlusNonCombat(min(25, -1 * amt), doEquips);
+		return providePlusNonCombat(min(auto_combatModCap(), -1 * amt), doEquips);
 	}
 	else if(amt > 0)
 	{
-		return providePlusCombat(min(25, amt), doEquips);
+		return providePlusCombat(min(auto_combatModCap(), amt), doEquips);
 	}
 	return true;
 }
