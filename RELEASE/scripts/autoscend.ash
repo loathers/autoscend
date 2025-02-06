@@ -1983,6 +1983,10 @@ boolean doTasks()
 	
 	if (process_tasks()) return true;
 
+	if(meatreserve() > 0)
+	{
+		auto_log_info("Autoscend thinks that you need " + meatreserve() + " meat for remaining quest requirements this ascension.");
+	}
 	auto_log_info("I should not get here more than once because I pretty much just finished all my in-run stuff. Beep", "blue");
 	return false;
 }
