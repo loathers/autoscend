@@ -940,7 +940,7 @@ boolean auto_canRWBBlast()
 		//Already have ELRWB
 		return false;
 	}
-	if(auto_canHabitat())
+	if(auto_habitatMonster() != $monster[none])
 	{
 		//don't want to RWB Blast a Habitated monster
 		return false;
