@@ -62,7 +62,7 @@ boolean auto_allowCrystalBall(monster predicted_monster, location loc)
 	//if already forced by something else, no need to handle your ball
 	//pre_adv, or simulatePreAdvForCrystalBall, handles this as it already tracks burningDelay and forced encounters
 	
-	if(is_banished(predicted_monster) || auto_wantToReplace(predicted_monster,loc) || auto_wantToBanish(predicted_monster,loc))
+	if(is_banished(predicted_monster) || auto_wantToReplace(predicted_monster,loc) || auto_wantToBanish(predicted_monster,loc) || auto_wantToBanish(monster_phylum(predicted_monster), loc))
 	{
 		// next prediction is unwanted, do not allow
 		return false;
@@ -114,13 +114,8 @@ void simulatePreAdvForCrystalBall(location place)
 	// used only when simulating maximizer equipment
 	// replicates most of pre_adv monster queue checks in order to know if miniature crystal ball will be allowed
 	
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget()) && place == solveDelayZone());
-	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
-	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
-	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
-
 	boolean considerCrystalBallBonus;
-	if(!zoneQueueIgnored && get_property("auto_nextEncounter").to_monster() == $monster[none] && 
+	if(!auto_queueIgnore() && get_property("auto_nextEncounter").to_monster() == $monster[none] && 
 	!auto_forceHandleCrystalBall(place))
 	{
 		//equipping the crystal ball can't hurt but it is neither forced nor forbidden
@@ -147,7 +142,7 @@ void simulatePreAdvForCrystalBall(location place)
 	
 	boolean zoneHasUnwantedMonsters;
 	boolean zoneHasWantedMonsters;
-	if (!zoneQueueIgnored)	//next encounter is a monster from the zone
+	if (!auto_queueIgnore())	//next encounter is a monster from the zone
 	{
 		foreach i,mon in possible_monsters
 		{
@@ -725,8 +720,8 @@ boolean auto_buyFireworksHat()
 	// noncombat is most valuable hat but has no effect in LAR
 	if(auto_can_equip($item[porkpie-mounted popper]) && !in_lar())
 	{
-		float simNonCombat = providePlusNonCombat(25, $location[noob cave], true, true);
-		if(simNonCombat < 25.0)
+		float simNonCombat = providePlusNonCombat(auto_combatModCap(), $location[noob cave], true, true);
+		if(simNonCombat < auto_combatModCap())
 		{
 			retrieve_item(1, $item[porkpie-mounted popper]);
 			return true;
@@ -736,8 +731,8 @@ boolean auto_buyFireworksHat()
 	// +combat hat is second most useful but has no effect in LAR and kills the professor
 	if(auto_can_equip($item[sombrero-mounted sparkler]) && !(in_lar() || in_wereprof()))
 	{
-		float simCombat = providePlusCombat(25, $location[noob cave], true, true);
-		if(simCombat < 25.0)
+		float simCombat = providePlusCombat(auto_combatModCap(), $location[noob cave], true, true);
+		if(simCombat < auto_combatModCap())
 		{
 			retrieve_item(1, $item[sombrero-mounted sparkler]);
 			return true;

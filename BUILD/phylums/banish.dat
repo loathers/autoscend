@@ -1,0 +1,14 @@
+dude	loc:The Black Forest
+dude	loc:Twin Peak
+dude	loc:The Red Zeppelin;item:Glark Cable>2
+dude	loc:Whitey's Grove;quest:questL11Palindome<=3
+beast	loc:The Hidden Park
+beast	loc:Inside the Palindome;quest:questL11Palindome<=3
+beast	loc:The Penultimate Fantasy Airship
+undead	loc:The Haunted Library;item:Killing Jar>0;!prop_boolean:auto_famKill
+undead	loc:The Unquiet Garves
+undead	loc:The Haunted Boiler Room
+undead	loc:The Middle Chamber
+penguin	loc:The Copperhead Club
+goblin	loc:Cobb's Knob Harem
+construct	loc:Noob Cave;!prop_boolean:auto_nonAdvLoc

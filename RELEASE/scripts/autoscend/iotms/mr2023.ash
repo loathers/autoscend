@@ -918,6 +918,17 @@ boolean auto_haveEagle()
 	return false;
 }
 
+familiar auto_forceEagle()
+{
+	//Force the Patriotic Eagle if we used a banish recently and can't use one until we burn 11 combats with the Eagle
+	if(auto_haveEagle() && get_property("screechCombats").to_int() > 0 && !auto_queueIgnore())
+	{
+		auto_log_info("Forcing Patriotic Eagle");
+		return $familiar[Patriotic Eagle];
+	}
+	return $familiar[none];
+}
+
 boolean auto_canRWBBlast()
 {
 	if(!auto_haveEagle())

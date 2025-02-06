@@ -1104,3 +1104,59 @@ boolean LX_dronesOut()
 	}
 	return false;
 }
+
+boolean LX_lastChance()
+{
+	//miscellaneous calls that aren't powerlevelling but need to be done at some point based on certain conditions
+	if(get_property("screechDelay").to_boolean())
+	{
+		location banishLoc;
+		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else");
+		while(get_property("screechCombats").to_int() > 0 && my_adventures() > 2 && phylumBanishTurnsRemaining() > 0)
+		{
+			handleFamiliar($familiar[Patriotic Eagle]); //force eagle to be used
+			if(LX_getDigitalKey() || LX_getStarKey())
+			{
+				continue;
+			}
+			else
+			{
+				if(LX_unlockManorSecondFloor() && L11_mauriceSpookyraven())
+				{
+					banishLoc = $location[Noob Cave];
+					autoAdv(banishLoc); //adventure here to banish constructs and be able to progress other quests after we no longer need constructs
+				}
+				else if(can_adventure($location[Cobb\'s Knob Harem]) && !is_banished($phylum[goblin]))
+				{
+					banishLoc = $location[Cobb\'s Knob Harem];
+					autoAdv(banishLoc);
+				}
+				else if(can_adventure($location[The Outskirts of Cobb\'s Knob]) && !is_banished($phylum[goblin]))
+				{
+					//to open up access to the Harem. Not banishing in the Outskirts so that we can get the combat in the Harem if needed
+					autoAdv($location[The Outskirts of Cobb\'s Knob]); 
+				}
+				else
+				{
+					//Nothing else to do but abort and have the user manually clear it
+					abort("You should manually clear the Eagle Screech counter. We recommend some other required zone you haven't been to yet or Noob Cave if all else fails");
+					continue;
+				}
+			}
+		}
+		if(get_property("screechCombats").to_int() > 0)
+		{
+			auto_log_warning("Couldn't clear screech delay without running out of adventures");
+			return false;
+		}
+		autoAdv(banishLoc); //adventure here to banish goblins or constructs and be able to progress other quests
+		set_property("screechDelay", false);
+		return true;
+	}
+	// Need the digital key and star key so if we have nothing to do before the L13 quest, might as well do them here
+	if (LX_getDigitalKey() || LX_getStarKey())
+	{
+		return true;
+	}
+	return false;
+}
