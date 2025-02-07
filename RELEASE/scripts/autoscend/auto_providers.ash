@@ -88,23 +88,15 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		return false;
 	}
 	
-	// Do the April band
-	if(auto_haveAprilingBandHelmet())
-	{
-		if(!speculative)
-			auto_setAprilBandCombat();
-		handleEffect($effect[Apriling Band Battle Cadence]);
-		if(pass())
-			return result();
-	}
-
 	// Now handle buffs that cost MP, items or other resources
-
+	
+	// Cheap effects
 	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
 	if (tryEffects($effects[
 		Musk of the Moose,
 		Carlweather's Cantata of Confrontation,
 		Attracting Snakes,
+		Crunchy Steps,
 		Blinking Belly,
 		Song of Battle,
 		Frown,
@@ -116,6 +108,17 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		return result();
 	}
 
+	// Do the April band
+	if(auto_haveAprilingBandHelmet())
+	{
+		if(!speculative)
+			auto_setAprilBandCombat();
+		handleEffect($effect[Apriling Band Battle Cadence]);
+		if(pass())
+			return result();
+	}
+	
+	// More limited effects
 	if (tryEffects($effects[
 		Taunt of Horus,
 		Patent Aggression,
@@ -126,8 +129,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		Celestial Saltiness,
 		Simply Irresistible,
 		Crunching Leaves,
-		Romantically Roused,
-		Crunchy Steps
+		Romantically Roused
 	])) {
 		return result();
 	}
@@ -282,16 +284,6 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		}
 		return false;
 	}
-	
-	// Do the April band
-	if(auto_haveAprilingBandHelmet())
-	{
-		if(!speculative)
-			auto_setAprilBandNonCombat();
-		handleEffect($effect[Apriling Band Patrol Beat]);
-		if(pass())
-			return result();
-	}
 
 	// Now handle buffs that cost MP, items or other resources
 
@@ -303,6 +295,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Smooth Movements,
 		The Sonata of Sneakiness,
 		Hiding From Seekers,
+		Ultra-Soft Steps,
 		Song of Solitude,
 		Inked Well,
 		Bent Knees,
@@ -326,6 +319,16 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 			return result();
 		}
 	}
+	
+	// Do the April band
+	if(auto_haveAprilingBandHelmet())
+	{
+		if(!speculative)
+			auto_setAprilBandNonCombat();
+		handleEffect($effect[Apriling Band Patrol Beat]);
+		if(pass())
+			return result();
+	}
 
 	if (tryEffects($effects[
 		Ashen,
@@ -336,11 +339,10 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Become Superficially interested,
 		Gummed Shoes,
 		Simply Invisible,
-		Inky Camouflage,	
+		Inky Camouflage,
 		Celestial Camouflage,
 		Feeling Lonely,
 		Feeling Sneaky,
-		Ultra-Soft Steps,
 		Hippy Antimilitarism
 	])) {
 		return result();

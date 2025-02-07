@@ -91,11 +91,6 @@ boolean LX_attemptPowerLevel()
 	//The Source path specific powerleveling
 	LX_attemptPowerLevelTheSource();
 
-	if (LX_getDigitalKey() || LX_getStarKey())
-	{
-		return true;
-	}
-
 	//August Scepter Power Levelling
 	if(auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5){
 		if(my_primestat() == $stat[Muscle])
@@ -162,7 +157,7 @@ boolean LX_attemptPowerLevel()
 		{
 			prefer_bedroom = true;
 		}
-		else if(providePlusNonCombat(25, true, true) < 15)	//only perform the simulation if goal_count is 1
+		else if(providePlusNonCombat(auto_combatModCap(), true, true) < 15)	//only perform the simulation if goal_count is 1
 		{
 			prefer_bedroom = true;	//for one target it depends on your noncombat. bad -combat prefers bedroom. otherwise prefer haunted gallery
 		}
@@ -185,7 +180,7 @@ boolean LX_attemptPowerLevel()
 					backupSetting("louvreDesiredGoal", "6"); // get Moxie stats
 					break;
 			}
-			providePlusNonCombat(25, true);
+			providePlusNonCombat(auto_combatModCap(), true);
 			if(autoAdv($location[The Haunted Gallery])) return true;
 		}		
 	}

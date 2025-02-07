@@ -1,5 +1,10 @@
 //A file full of utility functions which we import into autoscend.ash
 
+int auto_combatModCap()
+{
+	return 32;
+}
+
 boolean almostRollover()
 {
 	int warning_time = get_property("auto_stopMinutesToRollover").to_int() * 60;
@@ -516,6 +521,41 @@ boolean isBanished(monster enemy)
 	return (banishedMonsters() contains enemy);
 }
 
+int[phylum] banishedPhyla()
+{
+	int[phylum] retval;
+	string[int] data = split_string(get_property("banishedPhyla"), ":");
+
+	if(get_property("banishedPhyla") == "")
+	{
+		return retval;
+	}
+
+	int i=0;
+	while(i<count(data))
+	{
+		retval[to_phylum(data[i])] = to_int(data[i+2]);
+		i += 3;
+	}
+
+	return retval;
+}
+
+int phylumBanishTurnsRemaining()
+{
+	int[phylum] banishedPhy = banishedPhyla();
+
+	foreach banPhy, i in banishedPhy
+	{
+		if(banPhy.to_string() != "")
+		{
+			return 99 - (my_turncount() - banishedPhy[banPhy]);
+		}
+	}
+
+	return 0;
+}
+
 int autoCraft(string mode, int count, item item1, item item2)
 {
 	if((mode == "combine") && !knoll_available())
@@ -715,13 +755,31 @@ boolean auto_wantToBanish(monster enemy, location loc)
 	return monstersToBanish[enemy];
 }
 
+boolean auto_wantToBanish(phylum enemyphylum, location loc)
+{
+	location locCache = my_location();
+	set_location(loc);
+	boolean [phylum] phylumToBanish = auto_getPhylum("banish");
+	set_location(locCache);
+	return phylumToBanish[enemyphylum];
+}
+
 boolean canBanish(monster enemy, location loc)
 {
 	return banisherCombatString(enemy, loc) != "";
 }
 
+boolean canBanish(phylum enemyphylum, location loc)
+{
+	return banisherCombatString(enemyphylum, loc) != "";
+}
+
 boolean adjustForBanish(string combat_string)
 {
+	if(combat_string == "skill" + $skill[%fn\, Release the Patriotic Screech!])
+	{
+		return use_familiar($familiar[Patriotic Eagle]);
+	}
 	if(combat_string == "skill " + $skill[Throw Latte on Opponent])
 	{
 		return autoEquip($item[latte lovers member\'s mug]);
@@ -797,6 +855,31 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 		string banish_string = banisherCombatString(enemy, loc);
 		auto_log_info("Adjusting to have banisher available for " + enemy + ": " + banish_string, "blue");
 		return adjustForBanish(banish_string);
+	}
+	return false;
+}
+
+boolean adjustForBanishIfPossible(phylum enemyphylum, location loc)
+{
+	if(canBanish(enemyphylum, loc))
+	{
+		string banish_string = banisherCombatString(enemyphylum, loc);
+		auto_log_info("Adjusting to have phylum banisher available for " + enemyphylum + ": " + banish_string, "blue");
+		return adjustForBanish(banish_string);
+	}
+	return false;
+}
+boolean auto_forceFreeRun(boolean combat)
+{
+	if(get_property("auto_forceFreeRun").to_boolean() && combat)
+	{
+		set_property("auto_forceFreeRun", false); //want to reset as soon as we see it as true while in combat
+		return true;
+	}
+	if(get_property("auto_forceFreeRun").to_boolean())
+	{
+		//don't need to reset it because we haven't taken a turn to freeRun yet
+		return true;
 	}
 	return false;
 }
@@ -1853,7 +1936,32 @@ boolean isFreeMonster(monster mon, location loc)
 	return false;
 }
 
+boolean auto_burningDelay()
+{
+	if((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && my_location() == solveDelayZone())
+	{
+		return true;
+	}
+	return false;
+}
 
+boolean auto_gettingLucky()
+{
+	if(have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(my_location()))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_queueIgnore()
+{
+	if(auto_burningDelay() || auto_gettingLucky() || auto_haveQueuedForcedNonCombat())
+	{
+		return true;
+	}
+	return false;
+}
 
 boolean auto_deleteMail(kmailObject msg)
 {
@@ -2172,11 +2280,11 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 {
 	if(amt < 0)
 	{
-		return providePlusNonCombat(min(25, -1 * amt), doEquips);
+		return providePlusNonCombat(min(auto_combatModCap(), -1 * amt), doEquips);
 	}
 	else if(amt > 0)
 	{
-		return providePlusCombat(min(25, amt), doEquips);
+		return providePlusCombat(min(auto_combatModCap(), amt), doEquips);
 	}
 	return true;
 }
@@ -3500,6 +3608,27 @@ boolean [monster] auto_getMonsters(string category)
 		if(!auto_check_conditions(conds))
 			continue;
 		res[thisMonster] = true;
+	}
+	return res;
+}
+
+boolean [phylum] auto_getPhylum(string category)
+{
+	boolean [phylum] res;
+	string [string,int,string] phylum_text;
+	if(!file_to_map("autoscend_phylums.txt", phylum_text))
+		auto_log_error("Could not load autoscend_phylums.txt. This is bad!");
+	foreach i,name,conds in phylum_text[category]
+	{
+		phylum thisPhylum = name.to_phylum();
+		if(thisPhylum == $phylum[none])
+		{
+			auto_log_warning('"' + name + '" does not convert to a phylum properly!', "red");
+			continue;
+		}
+		if(!auto_check_conditions(conds))
+			continue;
+		res[thisPhylum] = true;
 	}
 	return res;
 }
