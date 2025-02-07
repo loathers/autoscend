@@ -909,6 +909,26 @@ void auto_handleJillOfAllTrades()
 	return;
 }
 
+boolean auto_haveEagle()
+{
+	if(auto_have_familiar($familiar[Patriotic Eagle]))
+	{
+		return true;
+	}
+	return false;
+}
+
+familiar auto_forceEagle()
+{
+	//Force the Patriotic Eagle if we used a banish recently and can't use one until we burn 11 combats with the Eagle
+	if(auto_haveEagle() && get_property("screechCombats").to_int() > 0 && !auto_queueIgnore())
+	{
+		auto_log_info("Forcing Patriotic Eagle");
+		return $familiar[Patriotic Eagle];
+	}
+	return $familiar[none];
+}
+
 boolean auto_haveBurningLeaves()
 {
 	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];

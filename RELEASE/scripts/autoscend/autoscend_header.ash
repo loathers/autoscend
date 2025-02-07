@@ -545,6 +545,8 @@ monster auto_habitatMonster();
 boolean auto_canCircadianRhythm();
 boolean auto_circadianRhythmTarget(monster target);
 boolean auto_circadianRhythmTarget(phylum target);
+boolean auto_haveEagle();
+familiar auto_forceEagle();
 boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
 boolean auto_haveBurningLeaves();
@@ -609,6 +611,7 @@ boolean auto_getClanPhotoBoothEffect(string ef, int n_times);
 ########################################################################################################
 //Defined in autoscend/iotms/mr2025.ash
 boolean auto_haveMcHugeLargeSkis();
+boolean auto_canEquipAllMcHugeLarge();
 boolean auto_equipAllMcHugeLarge();
 boolean auto_openMcLargeHugeSkis();
 int auto_McLargeHugeForcesLeft();
@@ -1114,6 +1117,7 @@ int getCellToMine(item oreGoal);
 boolean L8_getGoatCheese();
 boolean L8_getMineOres();
 void itznotyerzitzMineChoiceHandler(int choice);
+boolean L8_forceExtremeInstead();
 boolean L8_trapperExtreme();
 void theeXtremeSlopeChoiceHandler(int choice);
 boolean L8_trapperNinjaLair();
@@ -1302,6 +1306,7 @@ item LX_getDesiredWorkshed();
 boolean LX_setWorkshed();
 boolean canSetWorkshed(item it);
 boolean LX_dronesOut();
+boolean LX_lastChance();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash
@@ -1493,12 +1498,15 @@ void equipRollover(boolean silent);
 boolean auto_forceEquipSword(boolean speculative);
 boolean auto_forceEquipSword();
 boolean is_watch(item it);
+int[item] auto_getAllEquipabble();
+int[item] auto_getAllEquipabble(slot s);
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
 boolean is100FamRun();
 boolean doNotBuffFamiliar100Run();
 boolean isAttackFamiliar(familiar fam);
+boolean auto_famKill(familiar fam, location place);
 boolean pathHasFamiliar();
 boolean pathAllowsChangingFamiliar();
 boolean auto_have_familiar(familiar fam);
@@ -1761,6 +1769,7 @@ boolean[location] monster_to_location(monster target);
 //Defined in autoscend/auto_util.ash
 //Other files are placed alphabetically. But due to its sheer size auto_util.ash goes last
 
+int auto_combatModCap();
 boolean almostRollover();
 boolean needToConsumeForEmergencyRollover();
 boolean autoMaximize(string req, boolean simulate);
@@ -1787,6 +1796,8 @@ boolean loopHandlerDelayAll();
 string reverse(string s);
 int[monster] banishedMonsters();
 boolean isBanished(monster enemy);
+int[phylum] banishedPhyla();
+int phylumBanishTurnsRemaining();
 int autoCraft(string mode, int count, item item1, item item2);
 int internalQuestStatus(string prop);
 boolean canYellowRay(monster target);
@@ -1795,9 +1806,13 @@ float[monster] auto_combat_appearance_rates(location place, boolean queue);
 float[monster] auto_combat_appearance_rates(location place);
 boolean[string] auto_banishesUsedAt(location loc);
 boolean auto_wantToBanish(monster enemy, location loc);
+boolean auto_wantToBanish(phylum enemyphylum, location loc);
 boolean canBanish(monster enemy, location loc);
+boolean canBanish(phylum enemyphylum, location loc);
 boolean adjustForBanish(string combat_string);
 boolean adjustForBanishIfPossible(monster enemy, location loc);
+boolean adjustForBanishIfPossible(phylum enemyphylum, location loc);
+boolean auto_forceFreeRun(boolean combat);
 boolean auto_wantToFreeRun(monster enemy, location loc);
 boolean canFreeRun(monster enemy, location loc);
 string freeRunCombatStringPreBanish(monster enemy, location loc, boolean inCombat);
@@ -1852,6 +1867,9 @@ float MLDamageToMonsterMultiplier();
 int freeCrafts();
 boolean isFreeMonster(monster mon);
 boolean isFreeMonster(monster mon, location loc);
+boolean auto_burningDelay();
+boolean auto_gettingLucky();
+boolean auto_queueIgnore();
 boolean auto_deleteMail(kmailObject msg);
 boolean LX_summonMonster();
 boolean canSummonMonster(monster mon);
@@ -1911,6 +1929,7 @@ boolean auto_can_equip(item it);
 boolean auto_can_equip(item it, slot s);
 boolean auto_check_conditions(string conds);
 boolean [monster] auto_getMonsters(string category);
+boolean [phylum] auto_getPhylum(string category);
 boolean auto_wantToSniff(monster enemy, location loc);
 boolean auto_wantToYellowRay(monster enemy, location loc);
 boolean auto_wantToReplace(monster enemy, location loc);

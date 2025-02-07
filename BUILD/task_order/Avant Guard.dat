@@ -95,6 +95,8 @@ L2_mosquito
 LX_koeInvaderHandler
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+LX_lastChance
 # release the hounds!
 auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.

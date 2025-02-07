@@ -118,11 +118,11 @@ boolean auto_tavern()
 	
 	if(capped >= 3)
 	{
-		providePlusNonCombat(25, $location[Noob Cave]);
+		providePlusNonCombat(auto_combatModCap(), $location[Noob Cave]);
 	}
 	else
 	{
-		providePlusCombat(25, $location[Noob Cave]);
+		providePlusCombat(20, $location[Noob Cave]);
 	}
 
 	string tavern = get_property("tavernLayout");
