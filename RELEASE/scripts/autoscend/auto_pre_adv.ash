@@ -696,7 +696,10 @@ boolean auto_pre_adventure()
 	generic_t itemNeed = zone_needItem(place);
 	if(mayNeedItem && itemNeed._boolean)
 	{
-		provideItem(ceil(itemNeed._float),place,false);
+		boolean capped = provideItem(ceil(itemNeed._float),place,false);
+		if (!capped && auto_haveCupidBow()) {
+			addBonusToMaximize($item[toy cupid bow],400);
+		}
 	}
 
 
