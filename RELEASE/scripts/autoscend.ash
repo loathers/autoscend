@@ -1074,6 +1074,10 @@ boolean dailyEvents()
 	auto_birdOfTheDay();
 	while(auto_doPrecinct());
 	handleBarrelFullOfBarrels(true);
+	
+	// Hit bastille, then council in case we levelled up (and unlocked getaway camp)
+	cheeseWarMachine(0, 0, 0, 0);
+	council();
 
 	auto_campawayGrabBuffs();
 	kgb_getMartini();
@@ -1445,7 +1449,7 @@ boolean adventureFailureHandler()
 		}
 	}
 
-	if(last_monster() == $monster[Crate] && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
+	if(last_monster() == $monster[Crate] && !(get_property("screechDelay").to_boolean()) && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
 	{
 		if(get_property("auto_newbieOverride").to_boolean())
 		{

@@ -110,6 +110,45 @@ freerun	40	Mob Penguin Capo
 freerun	41	ninja snowman (chopsticks)
 freerun	42	ninja snowman janitor
 freerun	43	ninja snowman weaponmaster
+# low key summer
+freerun	44	fluffy bunny
+freerun	45	factory-irregular skeleton
+freerun	46	novelty tropical skeleton
+freerun	47	remaindered skeleton
+freerun	48	swarm of skulls
+freerun	49	cooler wino
+freerun	50	dire pigeon
+freerun	51	malt liquor golem
+freerun	52	sewer snake with a sewer snake in it
+freerun	53	angry piñata
+freerun	54	handsome mariachi
+freerun	55	irate mariachi
+freerun	56	mariachi calavera
+freerun	57	raging bull
+freerun	58	Snow Queen
+freerun	59	upgraded ram
+freerun	60	baguette lady
+freerun	61	cr&ecirc;ep
+freerun	62	dinner troll
+freerun	63	gingerbread murderer
+freerun	64	Carnivorous Moxie Weed
+freerun	65	Grass Elemental
+freerun	66	Weremoose
+freerun	67	anglerbush
+freerun	68	confused goth music student
+freerun	69	man-eating plant
+freerun	70	skeletal cat
+freerun	71	skeletal hamster
+freerun	72	skeletal monkey
+freerun	73	creepy doll
+freerun	74	possessed toy chest
+freerun	75	spooky music box
+freerun	76	1335 HaXx0r
+freerun	77	Anime Smiley
+freerun	78	Flaming Troll
+freerun	79	Lamz0r N00b
+freerun	80	me4t begZ0r
+freerun	81	Spam Witch
 
 replace	0	Banshee Librarian	item:Killing Jar>0
 replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber;!pathid:41;!path:Wildfire;!path:Fall of the Dinosaurs;!path:Avatar of Shadows Over Loathing;!path:Legacy of Loathing;!path:WereProfessor
