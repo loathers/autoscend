@@ -701,6 +701,22 @@ float [monster] auto_combat_appearance_rates(location place)
 {	return auto_combat_appearance_rates(place, false);
 }
 
+boolean auto_everythingBanished(location loc)
+{
+	float[monster] appearance_rates = auto_combat_appearance_rates(loc);
+	int totalmon = count(appearance_rates);
+	int i = 0;
+	foreach mon, freq in appearance_rates
+	{
+		if(freq < 0) i++; //banished monsters have a frequency less than 0
+		if(i == count(appearance_rates))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 boolean[string] auto_banishesUsedAt(location loc)
 {
 	boolean[string] auto_reallyBanishesUsedAt(location loc)
