@@ -1364,6 +1364,11 @@ boolean ovenHandle()
 	if(!get_property("auto_haveoven").to_boolean() && (my_meat() >= (npc_price($item[Dramatic&trade; range]) + 1000)) && isGeneralStoreAvailable())
 	{
 		auto_buyUpTo(1, $item[Dramatic&trade; range]);
+		if(storage_amount($item[Dramatic&trade; range]) > 0)
+		{
+			//pull it from storage if we didn't get 1 when we tried to buy it
+			pullXWhenHaveY($item[Dramatic&trade; range], 1, 0);
+		}
 		use(1, $item[Dramatic&trade; range]);
 		set_property("auto_haveoven", true);
 	}
