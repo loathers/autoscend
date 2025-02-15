@@ -283,9 +283,9 @@ yellowray	31	zombie hippy	!outfit:Filthy Hippy Disguise
 yellowray	32	War Hippy Spy	!outfit:War Hippy Fatigues;!itemdropcapped:30=round purple sunglasses;prop:auto_hippyInstead=true
 yellowray	33	War Hippy Airborne Commander	!outfit:War Hippy Fatigues;prop:auto_hippyInstead=true
 # And we want filthworm glands, but not if we're gonna hugpocket them
-yellowray	34	larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
-yellowray	35	filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
-yellowray	36	filthworm royal guard	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm royal guard scent gland
+yellowray	34	larval filthworm	item:filthworm hatchling scent gland<1;!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
+yellowray	35	filthworm drone	item:filthworm drone scent gland<1;!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
+yellowray	36	filthworm royal guard	item:filthworm royal guard scent gland<1;!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm royal guard scent gland
 yellowray	37	Knight (Snake)	class:Ed the Undying
 yellowray	38	bearpig topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
 yellowray	39	elephant (meatcar?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
