@@ -550,10 +550,14 @@ familiar auto_forceEagle(familiar famChoice);
 boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
 boolean auto_haveBurningLeaves();
+int auto_remainingFlamingLeafFights();
 boolean auto_burnLeaves();
 boolean auto_haveCCSC();
 boolean auto_handleCCSC();
 void auto_useWardrobe();
+boolean fightFlamingLeaflet();
+boolean fightFlamingMonstera();
+boolean fightLeaviathan();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2024.ash
