@@ -3723,7 +3723,7 @@ boolean auto_badassBelt()
 
 void meatReserveMessage()
 {
-	int reserve = meatReserve()
+	int reserve = meatReserve();
 	if(reserve > 0)
 	{
 		auto_log_info("Autoscend thinks that you need " + reserve + " meat for remaining quest requirements this ascension.");
