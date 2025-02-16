@@ -918,3 +918,16 @@ void preAdvUpdateFamiliar(location place)
 		mummifyFamiliar();
 	}
 }
+
+boolean auto_needsGoodFamiliarEquipment() {
+	if (possessEquipment($item[Astral pet sweater])) {
+		return false;
+	}
+	if (auto_hasStillSuit()) {
+		return false;
+	}
+	if (auto_haveCupidBow()) {
+		return false;
+	}
+	return true;
+}
