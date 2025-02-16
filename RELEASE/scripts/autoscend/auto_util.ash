@@ -1212,10 +1212,6 @@ boolean adjustForSniffingIfPossible(monster target)
 	{
 		return autoEquip($item[cursed monkey\'s paw]);
 	}
-	if(sniffer == $skill[%fn\, fire a Red, White and Blue Blast])
-	{
-		handleFamiliar($familiar[Patriotic Eagle]);
-	}
 	if(sniffer != $skill[none])
 	{
 		return acquireMP(sniffer.mp_cost());
@@ -1243,6 +1239,10 @@ boolean adjustForCopyIfPossible(monster target)
 	if(copier == $skill[Blow the Purple Candle\!])
 	{
 		return autoEquip($item[Roman Candelabra]);
+	}
+	if(copier == $skill[%fn\, fire a Red, White and Blue Blast])
+	{
+		handleFamiliar($familiar[Patriotic Eagle]);
 	}
 	return false;
 }

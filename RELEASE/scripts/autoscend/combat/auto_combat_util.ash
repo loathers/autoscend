@@ -237,10 +237,6 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Transcendent Olfaction];
 	}
-	if(canUse($skill[%fn\, fire a Red, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
-	{
-		return $skill[%fn\, fire a Red, White and Blue Blast];
-	}
 	if(canUse($skill[Make Friends], true , inCombat) && my_audience() >= 20 && !isSniffed(enemy, $skill[Make Friends]))
 	{
 		return $skill[Make Friends];		//avatar of sneaky pete specific skill
@@ -333,6 +329,10 @@ skill getCopier(monster enemy, boolean inCombat)
 	if((auto_haveRoman() && have_effect($effect[Everything Looks Purple]) == 0) || (have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0))
 	{
 		return $skill[Blow the Purple Candle\!];
+	}
+	if(canUse($skill[%fn\, fire a Red, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
+	{
+		return $skill[%fn\, fire a Red, White and Blue Blast];
 	}
 	return $skill[none];
 }
