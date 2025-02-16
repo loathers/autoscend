@@ -1938,6 +1938,7 @@ boolean auto_wantToCopy(monster enemy, location loc);
 boolean auto_wantToCopy(monster enemy);
 int total_items(boolean [item] items);
 boolean auto_badassBelt();
+void meatReserveMessage();
 void auto_interruptCheck(boolean debug);
 void auto_interruptCheck();
 element currentFlavour();
