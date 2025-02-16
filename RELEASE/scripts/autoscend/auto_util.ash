@@ -3597,13 +3597,23 @@ boolean auto_badassBelt()
 	}
 }
 
+void meatReserveMessage()
+{
+	int reserve = meatReserve()
+	if(reserve > 0)
+	{
+		auto_log_info("Autoscend thinks that you need " + reserve + " meat for remaining quest requirements this ascension.");
+	}
+	return;
+}
+
 void auto_interruptCheck(boolean debug)
 {
 	if(get_property("auto_interrupt").to_boolean())
 	{
 		set_property("auto_interrupt", false);
 		restoreAllSettings();
-		auto_log_info("Autoscend thinks that you need " + meatreserve() + " meat for remaining quest requirements this ascension.");
+		meatReserveMessage();
 		abort("auto_interrupt detected and aborting, auto_interrupt disabled.");
 	}
 	else if (get_property("auto_debugging").to_boolean() && debug)
