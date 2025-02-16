@@ -2940,6 +2940,12 @@ boolean L11_palindome()
 		return false;
 	}
 
+	if (my_meat() < ((2 - (item_amount($item[Photograph Of A Red Nugget]) + item_amount($item[Photograph Of God]))) * 500) && internalQuestStatus("questL11Palindome") < 1)
+	{
+		auto_log_info("Not enough meat for the Palindome");
+		return false;
+	}
+
 	int total = 0;
 	total = total + item_amount($item[Photograph Of A Red Nugget]);
 	total = total + item_amount($item[Photograph Of An Ostrich Egg]);
