@@ -76,7 +76,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 	
 	//yellowray instantly kills the enemy and makes them drop all items they can drop.
-	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()))
+	// don't yellow ray if we'll be dousing
+	skill douse = $skill[douse foe];
+	boolean isDouseTarget = wantToDouse(enemy) && round < 22; // dousing can have a low chance of success, so only do it up to round 21, then yellow
+	boolean douseAvailable = canUse(douse, false) && auto_dousesRemaining()>0;
+	boolean willDouse = isDouseTarget && douseAvailable;
+	
+	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()) && !willDouse)
 	{
 		string combatAction = yellowRayCombatString(enemy, true, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains enemy);
 		if(combatAction != "")
@@ -145,6 +151,31 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
+	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)
+	{
+		string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
+		if(banishAction != "")
+		{
+			auto_log_info("Looking at banishAction: " + banishAction, "green");
+			combat_status_add("banisher");
+			if(index_of(banishAction, "skill") == 0)
+			{
+				handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
+			}
+			else if(index_of(banishAction, "item") == 0)
+			{
+				handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
+			}
+			else
+			{
+				auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
+			}
+			return banishAction;
+		}
+		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
+		combat_status_add("phylumbanishercheck");
+	}
+
 	// Free run in Avant Guard from Bodyguard before banishing for a few monsters
 	if(!combat_status_check("banishercheck") && auto_wantToBanish(guardee, my_location()))
 	{
@@ -167,7 +198,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
-	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()) && !ag_is_bodyguard())
+	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(enemy, my_location()) && !ag_is_bodyguard())
 	{
 		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
@@ -201,8 +232,8 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		combat_status_add("banishercheck");
 	}
 
-	// Free run from monsters we want to banish but are unable to, or monsters on the free run list
-	if(!combat_status_check("freeruncheck") && ((auto_wantToFreeRun(enemy, my_location()) || auto_wantToBanish(enemy, my_location())) || (auto_wantToFreeRun(guardee, my_location()) || auto_wantToBanish(guardee, my_location()))))
+	// Free run from monsters we want to banish/phylumbanish but are unable to, or monsters on the free run list
+	if(!combat_status_check("freeruncheck") && ((auto_wantToFreeRun(enemy, my_location()) || auto_forceFreeRun(true) || auto_wantToBanish(enemy, my_location()) || (auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)) || (auto_wantToFreeRun(guardee, my_location()) || auto_wantToBanish(guardee, my_location()))))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")

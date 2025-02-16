@@ -110,6 +110,45 @@ freerun	40	Mob Penguin Capo
 freerun	41	ninja snowman (chopsticks)
 freerun	42	ninja snowman janitor
 freerun	43	ninja snowman weaponmaster
+# low key summer
+freerun	44	fluffy bunny
+freerun	45	factory-irregular skeleton
+freerun	46	novelty tropical skeleton
+freerun	47	remaindered skeleton
+freerun	48	swarm of skulls
+freerun	49	cooler wino
+freerun	50	dire pigeon
+freerun	51	malt liquor golem
+freerun	52	sewer snake with a sewer snake in it
+freerun	53	angry piñata
+freerun	54	handsome mariachi
+freerun	55	irate mariachi
+freerun	56	mariachi calavera
+freerun	57	raging bull
+freerun	58	Snow Queen
+freerun	59	upgraded ram
+freerun	60	baguette lady
+freerun	61	cr&ecirc;ep
+freerun	62	dinner troll
+freerun	63	gingerbread murderer
+freerun	64	Carnivorous Moxie Weed
+freerun	65	Grass Elemental
+freerun	66	Weremoose
+freerun	67	anglerbush
+freerun	68	confused goth music student
+freerun	69	man-eating plant
+freerun	70	skeletal cat
+freerun	71	skeletal hamster
+freerun	72	skeletal monkey
+freerun	73	creepy doll
+freerun	74	possessed toy chest
+freerun	75	spooky music box
+freerun	76	1335 HaXx0r
+freerun	77	Anime Smiley
+freerun	78	Flaming Troll
+freerun	79	Lamz0r N00b
+freerun	80	me4t begZ0r
+freerun	81	Spam Witch
 
 replace	0	Banshee Librarian	item:Killing Jar>0
 replace	1	Beefy Bodyguard Bat	loc:The Boss Bat's Lair;turnsspent:The Boss Bat's Lair>=4;!path:Heavy Rains;!path:Actually Ed the Undying;!path:Pocket Familiars;!path:Dark Gyffte;!path:Path of the Plumber;!pathid:41;!path:Wildfire;!path:Fall of the Dinosaurs;!path:Avatar of Shadows Over Loathing;!path:Legacy of Loathing;!path:WereProfessor
@@ -244,9 +283,9 @@ yellowray	31	zombie hippy	!outfit:Filthy Hippy Disguise
 yellowray	32	War Hippy Spy	!outfit:War Hippy Fatigues;!itemdropcapped:30=round purple sunglasses;prop:auto_hippyInstead=true
 yellowray	33	War Hippy Airborne Commander	!outfit:War Hippy Fatigues;prop:auto_hippyInstead=true
 # And we want filthworm glands, but not if we're gonna hugpocket them
-yellowray	34	larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
-yellowray	35	filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
-yellowray	36	filthworm royal guard	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm royal guard scent gland
+yellowray	34	larval filthworm	item:filthworm hatchling scent gland<1;!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
+yellowray	35	filthworm drone	item:filthworm drone scent gland<1;!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
+yellowray	36	filthworm royal guard	item:filthworm royal guard scent gland<1;!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm royal guard scent gland
 yellowray	37	Knight (Snake)	class:Ed the Undying
 yellowray	38	bearpig topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
 yellowray	39	elephant (meatcar?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers

@@ -508,6 +508,29 @@ string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string
 	return "abort";	//must have a return
 }
 
+string findPhylumBanisher(int round, monster enemy, string text)
+{
+	string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
+	if(banishAction != "")
+	{
+		auto_log_info("Looking at banishAction: " + banishAction, "green");
+		if(index_of(banishAction, "skill") == 0)
+		{
+			handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
+		}
+		else if(index_of(banishAction, "item") == 0)
+		{
+			handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
+		}
+		else
+		{
+			auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
+		}
+		return banishAction;
+	}
+	return auto_combatHandler(round, enemy, text);
+}
+
 string findBanisher(int round, monster enemy, string text)
 {
 	string banishAction = banisherCombatString(enemy, my_location(), true);
@@ -533,6 +556,33 @@ string findBanisher(int round, monster enemy, string text)
 		return useSkill($skill[Storm of the Scarab], false);
 	}
 	return auto_combatHandler(round, enemy, text);
+}
+
+string banisherCombatString(phylum enemyPhylum, location loc, boolean inCombat)
+{
+	if(inAftercore())
+	{
+		return "";
+	}
+
+	if(in_pokefam())
+	{
+		return "";
+	}
+
+	//Check that we actually want to banish this thing.
+	if(!auto_wantToBanish(enemyPhylum, loc))
+		return "";
+
+	if(inCombat)
+		auto_log_info("Finding a phylum banisher to use on " + enemyPhylum + " at " + loc, "green");
+
+	if(inCombat ? (my_familiar() == $familiar[Patriotic Eagle] && get_property("screechCombats").to_int() == 0) : (auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0)))
+	{
+		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
+	}
+
+	return "";
 }
 
 string banisherCombatString(monster enemy, location loc, boolean inCombat)
@@ -809,6 +859,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	}
 
 	return "";
+}
+
+string banisherCombatString(phylum enemyPhylum, location loc)
+{
+	return banisherCombatString(enemyPhylum, loc, false);
 }
 
 string banisherCombatString(monster enemy, location loc)
