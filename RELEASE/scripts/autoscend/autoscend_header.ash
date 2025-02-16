@@ -546,7 +546,7 @@ boolean auto_canCircadianRhythm();
 boolean auto_circadianRhythmTarget(monster target);
 boolean auto_circadianRhythmTarget(phylum target);
 boolean auto_haveEagle();
-familiar auto_forceEagle();
+familiar auto_forceEagle(familiar famChoice);
 boolean auto_haveJillOfAllTrades();
 void auto_handleJillOfAllTrades();
 boolean auto_haveEagle();

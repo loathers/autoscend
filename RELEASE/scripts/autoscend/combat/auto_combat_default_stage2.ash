@@ -76,7 +76,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 	
 	//yellowray instantly kills the enemy and makes them drop all items they can drop.
-	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()))
+	// don't yellow ray if we'll be dousing
+	skill douse = $skill[douse foe];
+	boolean isDouseTarget = wantToDouse(enemy) && round < 22; // dousing can have a low chance of success, so only do it up to round 21, then yellow
+	boolean douseAvailable = canUse(douse, false) && auto_dousesRemaining()>0;
+	boolean willDouse = isDouseTarget && douseAvailable;
+	
+	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()) && !willDouse)
 	{
 		string combatAction = yellowRayCombatString(enemy, true, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains enemy);
 		if(combatAction != "")
