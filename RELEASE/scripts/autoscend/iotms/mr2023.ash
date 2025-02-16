@@ -621,7 +621,7 @@ void auto_scepterSkills()
 			use_familiar(findRockFamiliarInTerrarium());
 			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
 		}
-		else if((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small())
+		else if(auto_needsGoodFamiliarEquipment() || in_small())
 		{
 			if(!is100FamRun())
 			{

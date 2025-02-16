@@ -75,3 +75,9 @@ int auto_McLargeHugeSniffsLeft()
 	int used = get_property("_mcHugeLargeSlashUses").to_int();
 	return 3-used;
 }
+
+boolean auto_haveCupidBow()
+{
+	item bow = $item[toy cupid bow];
+	return (auto_is_valid(bow) && possessEquipment(bow));
+}
