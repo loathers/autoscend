@@ -645,9 +645,7 @@ boolean autoChooseFamiliar(location place)
 	famChoice = auto_forceEagle(famChoice); // force Patriotic Eagle if we have a >0 combats until we can screech again
 
 	//Gelatinous Cubeling drops items that save turns in the daily dungeon
-	if(famChoice == $familiar[none] &&
-	wantCubeling() &&
-	lookupFamiliarDatafile("item") != $familiar[Gelatinous Cubeling]) // don't farm the drops if this is the best +item familiar we have. We will get them regardless.
+	if(famChoice == $familiar[none] && wantCubeling())
 	{
 		famChoice = $familiar[Gelatinous Cubeling];
 	}
