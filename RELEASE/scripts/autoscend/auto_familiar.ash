@@ -642,7 +642,7 @@ boolean autoChooseFamiliar(location place)
 		famChoice = lookupFamiliarDatafile("init");
 	}
 
-	famChoice = auto_forceEagle(); // force Patriotic Eagle if we have a >0 combats until we can screech again
+	famChoice = auto_forceEagle(famChoice); // force Patriotic Eagle if we have a >0 combats until we can screech again
 
 	//Gelatinous Cubeling drops items that save turns in the daily dungeon
 	if(famChoice == $familiar[none] &&
