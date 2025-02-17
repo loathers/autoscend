@@ -1392,6 +1392,8 @@ boolean doBedtime()
 			auto_log_info("You still have " + (5 - get_property("_augSkillsCast").to_int()) + " August Scepter casts remaining! Perhaps consider casting Aug 13th/30th for more rollover adventures, and/or 7th for a buff for tomorrow?", "blue");
 		}
 
+		meatReserveMessage();
+
 		if (get_property("spadingData") != "")
 		{
 			cli_execute("spade autoconfirm");
