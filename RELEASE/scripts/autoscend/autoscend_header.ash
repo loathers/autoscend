@@ -621,6 +621,7 @@ boolean auto_equipAllMcHugeLarge();
 boolean auto_openMcLargeHugeSkis();
 int auto_McLargeHugeForcesLeft();
 int auto_McLargeHugeSniffsLeft();
+boolean auto_haveCupidBow();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1525,6 +1526,7 @@ boolean autoChooseFamiliar(location place);
 boolean haveSpleenFamiliar();
 boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
+boolean auto_needsGoodFamiliarEquipment();
 
 ########################################################################################################
 //Defined in autoscend/auto_list.ash
