@@ -1449,7 +1449,7 @@ boolean adventureFailureHandler()
 		}
 	}
 
-	if(last_monster() == $monster[Crate] && !(get_property("screechDelay").to_boolean()) && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
+	if(last_monster() == $monster[Crate] && get_property("screechDelay") != "" && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
 	{
 		if(get_property("auto_newbieOverride").to_boolean())
 		{

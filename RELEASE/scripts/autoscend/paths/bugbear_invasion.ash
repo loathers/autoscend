@@ -100,7 +100,7 @@ boolean bugbear_UnlockMothership(location loc)
 
 	if (is_banished($phylum[beast]))
 	{
-		set_property("screechDelay", true);
+		set_property("screechDelay", "beast");
 		return false; // Can't fight bugbears if beasts are banished
 	}
 
