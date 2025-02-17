@@ -955,6 +955,17 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		}
 	}
 
+	// Wu Tang the Betrayer is immune to spells and normal attacks, but not Fist skills or Spectral Snapper
+	if (enemy == $monster[Wu Tang the Betrayer]) {
+		foreach sk in $skills[Spectral Snapper, Stinkpalm, Drunken Baby Style, Zendo Kobushi Kancho, Chilled Monkey Brain Technique, Knuckle Sandwich, Seven-Finger Strike, Flying Fire Fist] {
+			if(canUse(sk, false))
+			{
+				return useSkill(sk, false);
+			}
+		}
+		abort("Wu Tang the Betrayer is immune to spells and normal attacks, and I do not know how to kill him");
+	}
+
 	if((my_location() == $location[The X-32-F Combat Training Snowman]) && contains_text(text, "Cattle Prod") && (my_mp() >= costMajor))
 	{
 		return attackMajor;
