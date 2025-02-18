@@ -1,4 +1,4 @@
-since r28301;	// _eldritchTentaclesFoughtToday variable
+since r28362;	// zootomist council text
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -91,6 +91,7 @@ import <autoscend/paths/wereprofessor.ash>
 import <autoscend/paths/wildfire.ash>
 import <autoscend/paths/you_robot.ash>
 import <autoscend/paths/zombie_slayer.ash>
+import <autoscend/paths/zootomist.ash>
 
 import <autoscend/quests/level_01.ash>
 import <autoscend/quests/level_02.ash>

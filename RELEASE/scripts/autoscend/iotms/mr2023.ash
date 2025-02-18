@@ -686,7 +686,7 @@ void auto_scepterRollover()
 
 void auto_lostStomach(boolean force)
 {
-	if(!auto_haveAugustScepter() || in_small())
+	if(!auto_haveAugustScepter() || in_small() || fullness_limit()==0)
 	{
 		return;
 	}

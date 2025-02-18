@@ -561,6 +561,7 @@ boolean consumeBlackAndWhiteApronKit();
 boolean auto_haveSpringShoes();
 boolean auto_haveAprilingBandHelmet();
 boolean auto_getAprilingBandItems();
+boolean auto_playAprilPiccolo();
 boolean auto_playAprilSax();
 boolean auto_playAprilTuba();
 boolean auto_setAprilBandNonCombat();
@@ -1069,6 +1070,21 @@ boolean zombieSlayer_acquireHP(int goal);
 boolean zombieSlayer_usable(familiar fam);
 boolean zombieSlayer_canInfect(monster enemy);
 boolean LM_zombieSlayer();
+
+########################################################################################################
+//Defined in autoscend/paths/zootomist.ash
+boolean in_zootomist();
+void zootomist_pulls();
+boolean boostWeight(familiar f, int target_weight);
+boolean leftKickHasOlfaction();
+boolean leftKickHasYellowRay();
+boolean leftKickHasBanish();
+boolean leftKickHasPickpocket();
+boolean rightKickHasOlfaction();
+boolean rightKickHasYellowRay();
+boolean rightKickHasBanish();
+boolean rightKickHasPickpocket();
+
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash

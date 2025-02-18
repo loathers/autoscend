@@ -550,6 +550,8 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Mayeaugh]:						useItem = $item[Glob of Spoiled Mayo];			break;
 	case $effect[Memories of Puppy Love]:		useItem = $item[Old Love Note];					break;
 	case $effect[Merry Smithsness]:				useItem = $item[Flaskfull of Hollow];			break;
+	case $effect[Milk of Familiar Cruelty ]:	useSkill = $skill[Drink The Milk of Cruelty ];	break;
+	case $effect[Milk of Familiar Kindness]:	useSkill = $skill[Drink The Milk of Kindness];	break;
 	case $effect[Mind Vision]:					useSkill = $skill[Intracranial Eye];			break;
 	case $effect[Ministrations in the Dark]:	useItem = $item[EMD Holo-Record];				break;
 	case $effect[Minor Invulnerability]:			useItem = $item[Scroll of minor invulnerability];	break;

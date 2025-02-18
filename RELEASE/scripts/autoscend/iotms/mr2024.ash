@@ -73,15 +73,38 @@ boolean auto_getAprilingBandItems()
 	if(!auto_haveAprilingBandHelmet()) {return false;}
 	boolean have_sax  = available_amount($item[Apriling band saxophone]) > 0;
 	boolean have_tuba = available_amount($item[Apriling band tuba]     ) > 0;
-	int instruments_so_far = get_property("_aprilBandInstruments").to_int();
-	if (!have_tuba && instruments_so_far < 2) { cli_execute("aprilband item tuba"); }
-	instruments_so_far = get_property("_aprilBandInstruments").to_int();
-	if (!have_sax && instruments_so_far < 2) { cli_execute("aprilband item saxophone"); }
+	boolean have_picc = available_amount($item[Apriling band piccolo]  ) > 0;
+	int instruments_so_far()
+	{
+		return get_property("_aprilBandInstruments").to_int();
+	}
+	void track(item it)
+	{
+		if (available_amount(it)>0) { handleTracker($item[Apriling Band Helmet],"Claimed "+it,"auto_iotm_claim");}
+	}
+	if (in_zootomist())
+	{
+		if (!have_picc && instruments_so_far() < 2) {
+			cli_execute("aprilband item piccolo");
+			track($item[Apriling band piccolo]);
+		}
+	}
+	if (!have_tuba && instruments_so_far() < 2) {
+		cli_execute("aprilband item tuba");
+		track($item[Apriling band tuba]);
+	}
+	if (!have_sax  && instruments_so_far() < 2) {
+		cli_execute("aprilband item saxophone");
+		track($item[Apriling band saxophone]);
+	}
 	
-	have_sax  = available_amount($item[Apriling band saxophone]) > 0;
-	have_tuba = available_amount($item[Apriling band tuba]     ) > 0;
-	
-	return have_sax && have_tuba;
+	return instruments_so_far()==3;
+}
+
+boolean auto_playAprilPiccolo()
+{
+	cli_execute("aprilband play piccolo");
+	return true;
 }
 
 boolean auto_playAprilSax()
@@ -269,8 +292,15 @@ boolean auto_MayamClaimStinkBomb()
 	{
 		return false;
 	}
+	item it = $item[stuffed yam stinkbomb];
+	int n_start = available_amount(it);
 	cli_execute("mayam rings vessel yam cheese explosion");
-	return true;
+	if (available_amount(it)>n_start)
+	{
+		handleTracker("Mayam Calendar","Claimed "+it, "auto_iotm_claim");
+		return true;
+	}
+	return false;
 }
 
 boolean auto_MayamClaimBelt()
@@ -286,8 +316,15 @@ boolean auto_MayamClaimBelt()
 	{
 		return false;
 	}
+	item it = $item[yamtility belt];
+	int n_start = available_amount(it);
 	cli_execute("mayam rings yam meat eyepatch yam");
-	return true;
+	if (available_amount(it)>n_start)
+	{
+		handleTracker("Mayam Calendar","Claimed "+it, "auto_iotm_claim");
+		return true;
+	}
+	return false;
 }
 
 boolean auto_MayamClaimWhatever()
@@ -346,9 +383,13 @@ boolean auto_MayamClaimAll()
 	auto_log_info("Claiming mayam calendar items");
 	auto_MayamClaimStinkBomb();
 	auto_MayamClaimBelt();
-	auto_MayamClaimWhatever();
-	auto_MayamClaimWhatever();
-	auto_MayamClaimWhatever();
+	
+	if (!in_zootomist())
+	{
+		auto_MayamClaimWhatever();
+		auto_MayamClaimWhatever();
+		auto_MayamClaimWhatever();
+	}
 	return true;
 }
 
@@ -407,6 +448,24 @@ int remainingEmbers()
 	return get_property("availableSeptEmbers").to_int();
 }
 
+boolean auto_goingToMouthwashLevel()
+{
+	if(!auto_haveSeptEmberCenser())
+	{
+		return false;
+	}
+	if(in_zootomist())
+	{
+		return false;
+	}
+	boolean disregard_karma = get_property("auto_disregardInstantKarma").to_boolean();
+	// If we have at least 4 embers remaining, don't overlevel, they can be used for something else
+	boolean happy_to_overlevel = disregard_karma && remainingEmbers() < 4;
+	boolean want_to_mouthwash_level = (my_level() < 13 || happy_to_overlevel);
+	// Even disregarding karma, never level above 15 using mouthwash as a sanity limit
+	want_to_mouthwash_level = want_to_mouthwash_level && my_level()<15;
+	return (remainingEmbers() >= 2 && want_to_mouthwash_level);
+}
 void auto_buyFromSeptEmberStore()
 {
 	if(!auto_haveSeptEmberCenser())
@@ -420,16 +479,11 @@ void auto_buyFromSeptEmberStore()
 
 	// mouthwash for leveling
 	item mouthwash = $item[Mmm-brr! brand mouthwash];
-	boolean disregard_karma = get_property("auto_disregardInstantKarma").to_boolean();
 	auto_openMcLargeHugeSkis(); // make sure our skis are open for cold res
 	for (int imw = 0 ; imw < 3 ; imw++) // We can use up to 3 mouthwash
 	{
-		// If we have at least 4 embers remaining, don't overlevel, they can be used for something else
-		boolean happy_to_overlevel = disregard_karma && remainingEmbers() < 4;
-		boolean want_to_mouthwash_level = (my_level() < 13 || happy_to_overlevel);
-		// Even disregarding karma, never level above 15 using mouthwash as a sanity limit
-		want_to_mouthwash_level = want_to_mouthwash_level && my_level()<15;
-		if (remainingEmbers() >= 2 && want_to_mouthwash_level)
+		float last_res = 0;
+		if (auto_goingToMouthwashLevel())
 		{
 			// get as much cold res as possible
 			int [element] resGoal;
