@@ -1,4 +1,4 @@
-since r28362;	// zootomist council text
+since r28364;	// zootomist level fix
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1757,6 +1757,13 @@ boolean process_tasks()
 boolean doTasks()
 {
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
+	
+	// TEMP CODE FOR ZOOTOMIST
+	if (in_zootomist() && my_level()<13)
+	{
+		auto_log_warning("Zootomist should not be run before level 13, for now.", "red");
+		return false;
+	}
 
 	auto_settingsFix();		//check and correct invalid configuration inputs made by users
 	if(!auto_unreservedAdvRemaining())
@@ -2096,6 +2103,16 @@ void auto_begin()
 	if (!auto_unreservedAdvRemaining())
 	{
 		consumeStuff();
+	}
+	
+	if (in_zootomist())
+	{
+		print_html("<br /><p style=\"color:red;\">You are running in a highly developmental, unsupported zootomist mode. Do not run below level 13.<br />"+
+		  "Recommended:<br /> - Graft a yellow ray (Quantum Entangler is best) to your left foot.<br /> - Graft a banish to your right foot (MicroMech works).<br />"+
+		  " - Update the hardcoded kickHas() functions in zootomist.ash to fit what kicks you applied.<br />"+
+		  "This is not supported. Expect anarchy. Do not run this unless you are prepared to see dumb things happen and debug them yourself.<br />"+
+		  "Waiting 20 seconds for you to read this.</p>");
+		waitq(20);
 	}
 	
 	// the main loop of autoscend is doTasks() which is actually called as part of the while.
