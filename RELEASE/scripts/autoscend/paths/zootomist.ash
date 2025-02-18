@@ -12,9 +12,26 @@ void zootomist_pulls()
 	}
 }
 
-boolean boostWeight(familiar f, int target_weight)
+boolean zooBoostWeight(familiar f, int target_weight)
 {
 	return false;
+}
+
+skill getZooKickYR()
+{
+	// Optimise countdowns here once Mafia has that info
+	if (leftKickHasYellowRay()) {
+		return $skill[left \ kick];
+	}
+	if (rightKickHasYellowRay()) {
+		return $skill[right \ kick];
+	}
+	return $skill[none];
+}
+
+skill getZooBestPunch(monster m)
+{
+	return $skill[left \ punch];
 }
 
 boolean leftKickHasOlfaction()
@@ -49,7 +66,7 @@ boolean rightKickHasYellowRay()
 
 boolean rightKickHasBanish()
 {
-	return true;
+	return false;
 }
 
 boolean rightKickHasPickpocket()

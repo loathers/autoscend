@@ -95,7 +95,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	if (tryEffects($effects[
 		Musk of the Moose,
 		Carlweather's Cantata of Confrontation,
-		Milk of Familiar Cruelty,
+		Milk of Familiar Kindness,
 		Attracting Snakes,
 		Crunchy Steps,
 		Blinking Belly,
@@ -295,7 +295,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Muffled,
 		Smooth Movements,
 		The Sonata of Sneakiness,
-		Milk of Familiar Kindness,
+		Milk of Familiar Cruelty,
 		Hiding From Seekers,
 		Ultra-Soft Steps,
 		Song of Solitude,

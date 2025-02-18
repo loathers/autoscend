@@ -887,6 +887,12 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		}
 		else return "";
 	}
+	
+	if(in_zootomist() && have_effect($effect[Everything Looks Yellow]) <= 0)
+	{
+		skill kick = getZooKickYR();
+		if (kick != $skill[none]) {return "skill "+kick;}
+	}
 
 	boolean free_monster = (isFreeMonster(target, my_location()) || (get_property("breathitinCharges").to_int() > 0 && my_location().environment == "outdoor"));
 	

@@ -1075,7 +1075,9 @@ boolean LM_zombieSlayer();
 //Defined in autoscend/paths/zootomist.ash
 boolean in_zootomist();
 void zootomist_pulls();
-boolean boostWeight(familiar f, int target_weight);
+boolean zooBoostWeight(familiar f, int target_weight);
+skill getZooBestPunch(monster m);
+skill getZooKickYR();
 boolean leftKickHasOlfaction();
 boolean leftKickHasYellowRay();
 boolean leftKickHasBanish();
@@ -1084,7 +1086,6 @@ boolean rightKickHasOlfaction();
 boolean rightKickHasYellowRay();
 boolean rightKickHasBanish();
 boolean rightKickHasPickpocket();
-
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
