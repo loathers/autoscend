@@ -82,7 +82,7 @@ boolean auto_getAprilingBandItems()
 	{
 		if (available_amount(it)>0) { handleTracker($item[Apriling Band Helmet],"Claimed "+it,"auto_iotm_claim");}
 	}
-	if (in_zootomist())
+	if (in_zootomist() && my_level()<13)
 	{
 		if (!have_picc && instruments_so_far() < 2) {
 			cli_execute("aprilband item piccolo");
