@@ -2719,6 +2719,16 @@ int doNumberology(string goal, boolean doIt, string option)
 
 boolean auto_have_skill(skill sk)
 {
+	// TEMP CODE WHILE MAFIA IS BEING UPDATED
+	if (in_zootomist() && my_level()>=13) {
+		switch (sk) {
+			case $skill[left \ punch]:
+			case $skill[right \ punch]:
+			case $skill[left \ kick]:
+			case $skill[right \ kick]:
+				return true;
+		}
+	}
 	return auto_is_valid(sk) && have_skill(sk);
 }
 

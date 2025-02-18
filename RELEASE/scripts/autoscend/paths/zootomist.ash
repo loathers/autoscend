@@ -29,14 +29,45 @@ skill getZooKickYR()
 	return $skill[none];
 }
 
+skill getZooKickSniff()
+{
+	if (leftKickHasSniff()) {
+		return $skill[left \ kick];
+	}
+	if (rightKickHasSniff()) {
+		return $skill[right \ kick];
+	}
+	return $skill[none];
+}
+
+skill getZooKickBanish()
+{
+	if (leftKickHasBanish()) {
+		return $skill[left \ kick];
+	}
+	if (rightKickHasBanish()) {
+		return $skill[right \ kick];
+	}
+	return $skill[none];
+}
+
 skill getZooBestPunch(monster m)
 {
 	return $skill[left \ punch];
 }
 
-boolean leftKickHasOlfaction()
+// These will be done intelligently once Mafia can tell us.
+// For now, hardcode them to fit what you grafted.
+// Repo versions are designed for Quantum Entangler on left foot (optimal), MicroMech on right (not optimal).
+// Cooldowns on eg banish can be handled like:
+//~ boolean rightKickHasBanish()
+//~ {
+//~ 	return have_effect($effect[Everything Looks Blue]) <= 0;
+//~ }
+
+boolean leftKickHasSniff()
 {
-	return true;
+	return false;
 }
 
 boolean leftKickHasYellowRay()
@@ -46,7 +77,7 @@ boolean leftKickHasYellowRay()
 
 boolean leftKickHasBanish()
 {
-	return true;
+	return false;
 }
 
 boolean leftKickHasPickpocket()
@@ -54,7 +85,7 @@ boolean leftKickHasPickpocket()
 	return false;
 }
 
-boolean rightKickHasOlfaction()
+boolean rightKickHasSniff()
 {
 	return false;
 }
@@ -66,7 +97,7 @@ boolean rightKickHasYellowRay()
 
 boolean rightKickHasBanish()
 {
-	return false;
+	return have_effect($effect[Everything Looks Blue]) <= 0;
 }
 
 boolean rightKickHasPickpocket()

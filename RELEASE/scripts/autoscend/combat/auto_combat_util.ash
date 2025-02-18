@@ -217,7 +217,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash, Left \ Kick, Right \ Kick]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -286,7 +286,15 @@ skill getSniffer(monster enemy, boolean inCombat)
 	if(canUse($skill[Offer Latte to Opponent], true , inCombat) && !get_property("_latteCopyUsed").to_boolean() && !isSniffed(enemy, $skill[Offer Latte to Opponent]))
 	{
 		return $skill[Offer Latte to Opponent];
-	}	
+	}
+	
+	// Zootomist kicks. We might have to move this depending on what happens with cooldowns
+	skill z_kick = getZooKickSniff();
+	if (canUse(z_kick))
+	{
+		return z_kick;
+	}
+	
 	return $skill[none];
 }
 
@@ -737,7 +745,14 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
 	}
-
+	
+	// Zootomist kicks. We might have to move this depending on what happens with cooldowns
+	skill z_kick = getZooKickBanish();
+	if (auto_have_skill(z_kick) && (my_mp() > mp_cost(z_kick)))
+	{
+		return "skill "+ z_kick;
+	}
+	
 	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
 	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]) && !(used contains "Bowl a Curveball") && useFree)
 	{
