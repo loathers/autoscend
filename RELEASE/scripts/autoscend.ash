@@ -1,4 +1,4 @@
-since r28364;	// zootomist level fix
+since r28368;	// Updated tags from Zootomist
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

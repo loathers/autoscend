@@ -18,6 +18,7 @@ boolean in_zootomist()
 void zoo_initializeSettings()
 {
 	set_property("auto_lastGraft", 3);
+	set_property("auto_grafts", "");
 }
 
 void zootomist_pulls()
@@ -26,6 +27,57 @@ void zootomist_pulls()
 	if (!have_skill($skill[just the facts]) && auto_is_valid($skill[just the facts])) {
 		pullXWhenHaveY($item[book of facts (dog-eared)], 1, 0);
 		if (available_amount($item[book of facts (dog-eared)])>0) {use($item[book of facts (dog-eared)]);}
+	}
+}
+
+void zoo_useFam()
+{
+	//Identifies the 11 familiars we want based on what we have and stores them in prefs so we only go through the list of fams once
+	//Goes through fam attributes of all familiars and filters from there
+	//Unfortunately, Mafia's attributes are incomplete for now
+	string[int, familiar] famAttributes;
+	//familiar, pos in map, priority
+	int[int,familiar] intrinsicFams;
+	int[int,familiar] dcombatFams;
+	int[int,familiar] lbuffFams;
+	int[int,familiar] rbuffFams;
+	int[int,familiar] combatFams;
+	//foreach counters
+	int f = 0; //familiars
+	int i = 0; //instrinsic
+	int d = 0; //damage in combat
+	int l = 0; //left nipple
+	int r = 0; //right nipple
+	int c = 0; //combat skills
+	foreach fam in $familiars[]
+	{
+		if(have_familiar(fam))
+		{
+			famAttributes[f] = {fam:fam.attributes};
+			f++;
+			//auto_log_info(fam + ": " + famAttributes[fam]);
+		}
+	}
+	foreach j, fam, attr in famAttributes
+	{
+		string[int] attrs = split_string(attr,";");
+		foreach k, a in attrs
+		{
+			if($strings[technological, hashands, hasclaws] contains a)
+			{
+				//technological = 20% item drop, hashands/hasclaws = 20% meat drop
+				if(a == "technological")
+				{
+					intrinsicFams[i] = {fam: 1};
+				}
+				else
+				{
+					intrinsicFams[i] = {fam: 2};
+				}
+				auto_log_info(fam + ":" + intrinsicFams[i][fam]);
+				i++;
+			}
+		}
 	}
 }
 
@@ -43,7 +95,12 @@ boolean zooGraftFam()
 	9 = right butt cheek
 	10 = left foot
 	11 = right foot
-	Each body part is categorized by what it gives when a familiar is grafted to it
+	Each body part is categorized by what it gives when a familiar is grafted to it.
+	intrinsic provides the intrinsic buff and adds to it.
+	dcombat is a combat damage skill
+	lbuff is left nipple buff
+	rbuff is right nipple buff
+	combat is a useful combat skill (yr, olfact, banish)
 	*/
 	string[int] bodyPartType = {
 		ZOOPART_HEAD       : "intrinsic",

@@ -1076,6 +1076,7 @@ boolean LM_zombieSlayer();
 boolean in_zootomist();
 void zoo_initializeSettings();
 void zootomist_pulls();
+void zoo_useFam();
 boolean zooGraftFam();
 boolean zooBoostWeight(familiar f, int target_weight);
 skill getZooBestPunch(monster m);
