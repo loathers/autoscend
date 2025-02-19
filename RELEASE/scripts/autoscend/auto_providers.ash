@@ -551,8 +551,8 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		if(pass())
 			return result();
 	}
-
-	if(tryEffects($effects[
+	
+	boolean[effect] ef_to_try = $effects[
 		Adorable Lookout,
 		Alacri Tea,
 		All Fired Up,
@@ -561,14 +561,21 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		The Glistening,
 		Human-Machine Hybrid,
 		Patent Alacrity,
-		Provocative Perkiness,
 		Sepia Tan,
 		Sugar Rush,
 		Ticking Clock,
 		Well-Swabbed Ear,
 		Poppy Performance
-	]))
+	]; // eff_to_try
+	if(tryEffects(ef_to_try))
 		return result();
+	
+	if (can_interact())
+	{	// Not worth making in HC
+		ef_to_try = $effects[Provocative Perkiness];
+		if(tryEffects(ef_to_try))
+			return result();
+	}
 
 	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0 && auto_is_valid($effect[init.enh]))
 	{
@@ -1403,7 +1410,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 	}
 	songboomSetting("meat"); //30% meat
 	// items
-	if(tryEffects($effects[
+	boolean[effect] ef_to_try = $effects[
 		Flapper Dancin\', //100% meat
 		Heightened Senses, //50% meat, 25% item drop
 		Big Meat Big Prizes, //50% meat
@@ -1420,11 +1427,20 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Kindly Resolve, //5 fam weight
 		Human-Machine Hybrid, //5 fam weight, DA +50, DR 5
 		Sweet Heart, // Muscle +X, +2X% meat
-		Cranberry Cordiality, //10% meat
 		So You Can Work More... //10% meat
-	]))
+	]; // ef_to_try
+	
+	if(tryEffects(ef_to_try))
 		if(pass())
 			return result();
+			
+	if (can_interact())
+	{	// Not worth making in HC
+		ef_to_try = $effects[Cranberry Cordiality];
+		if(tryEffects(ef_to_try))
+			if(pass())
+				return result();
+	}
 
 	if(have_effect($effect[Synthesis: Greed]) == 0)
 	{
