@@ -31,53 +31,78 @@ boolean zooGraftFam()
 	9 = right butt cheek
 	10 = left foot
 	11 = right foot
+	Each body part is categorized by what it gives when a familiar is grafted to it
 	*/
-	int[familiar] graftFam = {
-		$familiar[oily woim]: 6,
-		$familiar[stab bat]: 7,
-		$familiar[mechanical songbird]: 1,
-		$familiar[mechanical songbird]: 2,
-		$familiar[mechanical songbird]: 3,
-		$familiar[mechanical songbird]: 8,
-		$familiar[mechanical songbird]: 9,
-		$familiar[autonomous disco ball]: 1,
-		$familiar[autonomous disco ball]: 2,
-		$familiar[autonomous disco ball]: 3,
-		$familiar[autonomous disco ball]: 8,
-		$familiar[autonomous disco ball]: 9,
-		$familiar[scary death orb]: 1,
-		$familiar[scary death orb]: 2,
-		$familiar[scary death orb]: 3,
-		$familiar[scary death orb]: 8,
-		$familiar[scary death orb]: 9,
-		$familiar[smiling rat]: 1,
-		$familiar[smiling rat]: 2,
-		$familiar[smiling rat]: 3,
-		$familiar[smiling rat]: 8,
-		$familiar[smiling rat]: 9,
-		$familiar[jumpsuited hound dog]: 1,
-		$familiar[jumpsuited hound dog]: 2,
-		$familiar[jumpsuited hound dog]: 3,
-		$familiar[jumpsuited hound dog]: 8,
-		$familiar[jumpsuited hound dog]: 9,
-		$familiar[baby z-rex]: 1,
-		$familiar[baby z-rex]: 2,
-		$familiar[baby z-rex]: 3,
-		$familiar[baby z-rex]: 8,
-		$familiar[baby z-rex]: 9,
-		$familiar[exotic parrot]: 1,
-		$familiar[exotic parrot]: 2,
-		$familiar[exotic parrot]: 3,
-		$familiar[exotic parrot]: 8,
-		$familiar[exotic parrot]: 9
+	string[int] bodyPartType = {
+		1: "intrinsic",
+		2: "intrinsic",
+		3: "intrinsic",
+		4: "dcombat",
+		5: "dcombat",
+		6: "lbuff",
+		7: "rbuff",
+		8: "intrinsic",
+		9: "intrinsic",
+		10: "combat",
+		11: "combat"
+	};
+	string[int] bodyPartName = {
+		1: "head",
+		2: "left shoulder",
+		3: "right shoulder",
+		4: "left hand",
+		5: "right hand",
+		6: "left nipple",
+		7: "right nipple",
+		8: "left butt cheek",
+		9: "right butt cheek",
+		10: "left foot",
+		11: "right foot"
+	};
+	//Ideally, we get the attributes of all familiars we have and rank them by what is best in each slot and level them from there
+	//We need access to familiar tags. There is this information already in familiars.txt in KoLMafia, we just need to parse it
+	string[familiar] graftFam = {
+		$familiar[oily woim]: "lbuff",
+		$familiar[killer bee]: "lbuff",
+		$familiar[mosquito]: "lbuff",
+		$familiar[helix fossil]: "lbuff",
+		$familiar[stab bat]: "rbuff",
+		$familiar[mechanical songbird]: "intrinsic",
+		$familiar[autonomous disco ball]: "intrinsic",
+		$familiar[scary death orb]: "intrinsic",
+		$familiar[smiling rat]: "intrinsic",
+		$familiar[jumpsuited hound dog]: "intrinsic",
+		$familiar[baby z-rex]: "intrinsic",
+		$familiar[exotic parrot]: "intrinsic",
+		$familiar[quantum entangler]: "combat",
+		$familiar[magimechtech micromechamech]: "combat"
 	};
 	foreach fam, bodypart in graftFam
 	{
-		if(familiar_weight(fam) < get_property("auto_lastGraft").to_int())
+		if(familiar_weight(fam) < get_property("auto_lastGraft").to_int()) //Use Mafia pref once that's a thing
 		{
 			//can only graft if the fam is higher than the level at the last graft
 			continue;
 		}
+		string auto_grafts = get_property("auto_grafts"); //Use Mafia pref once that's a thing
+		int famnumber = to_int(fam);
+		int bodyPartNum;
+		foreach i, bp in bodyPartType
+		{
+			if(contains_text(auto_grafts,i))
+			{
+				continue;
+			}
+			else if(bp == bodypart)
+			{
+				bodyPartNum = i;
+				break;
+			}
+		}
+		string temp = visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + bodyPartNum + "&fam=" + famnumber, true);
+		auto_log_info("Grafting a " + fam.to_string() + " to you", "blue");
+		handleTracker(fam,"Grafted to " + bodyPartName[bodyPartNum],"auto_otherstuff");
+		return true;
 	}
 
 	return false;
