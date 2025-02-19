@@ -281,6 +281,7 @@ item[slot] speculatedMaximizerEquipment(string statement)
 
 void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip)
 {
+	if (auto_ignoreExperience()) { return; }
 	//want to equip best equipment that increases specified stat gains including out of combat
 	//should be frequently called by consume actions so try not to lose HP or MP, but will equip anyway if argument alwaysEquip is true
 	string maximizerStatement;
@@ -544,6 +545,10 @@ string defaultMaximizeStatement()
 	if(in_plumber())
 	{
 		res += ",plumber,-ml";
+	}
+	else if(auto_ignoreExperience())
+	{
+		// Nothing to do here
 	}
 	else if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
 	{
