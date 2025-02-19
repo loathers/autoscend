@@ -1074,7 +1074,9 @@ boolean LM_zombieSlayer();
 ########################################################################################################
 //Defined in autoscend/paths/zootomist.ash
 boolean in_zootomist();
+void zoo_initializeSettings();
 void zootomist_pulls();
+boolean zooGraftFam();
 boolean zooBoostWeight(familiar f, int target_weight);
 skill getZooBestPunch(monster m);
 skill getZooKickYR();
