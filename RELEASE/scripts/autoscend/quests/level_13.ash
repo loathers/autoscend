@@ -497,10 +497,7 @@ boolean L13_towerNSContests()
 
 			if(crowd1Insufficient())
 			{
-				if (have_effect($effect[New and Improved])==0)
-				{
-					auto_wishForEffect($effect[New and Improved]);
-				}
+				auto_wishForEffectIfNeeded($effect[New and Improved]);
 			}
 
 				if(crowd1Insufficient())
@@ -591,9 +588,9 @@ boolean L13_towerNSContests()
 			
 			if(crowd2Insufficient() && !in_small())
 			{
-				if (have_effect($effect[New and Improved])==0 && !in_small())
+				if (!in_small())
 				{
-					auto_wishForEffect($effect[New and Improved]);
+					auto_wishForEffectIfNeeded($effect[New and Improved]);
 				}
 			}
 
@@ -1322,24 +1319,70 @@ boolean L13_towerNSTowerBones()
 	uneffect($effect[Psalm of Pointiness]);
 	uneffect($effect[Mayeaugh]);
 	uneffect($effect[Feeling Nervous]);
-	buffMaintain($effect[Tomato Power]);
+	
+	if (my_primestat()!=$stat[mysticality])
+	{
+		auto_equalizeStats(); // uses reagent oil to stabilize stats
+	}
+	
+	// Clear some AT buffs so we have room. Ur-kel is actively harmful since it increases DR
+	uneffect($effect[Ur-Kel's Aria of Annoyance]);
+	uneffect($effect[Polka of Plenty]);
+	uneffect($effect[The Sonata of Sneakiness]);
+	uneffect($effect[Carlweather's Cantata of Confrontation]);
+	uneffect($effect[Ode to Booze]);
+	
+	acquireMP(150, 0);
+	buffMaintain($effect[Jackasses' Symphony of Destruction]);
+	buffMaintain($effect[Stevedave's Shanty of Superiority]);
 	buffMaintain($effect[Seeing Colors]);
 	buffMaintain($effect[Glittering Eyelashes]);
 	buffMaintain($effect[OMG WTF]);
 	buffMaintain($effect[There is a Spoon]);
 	buffMaintain($effect[Song of Sauce]);
 	buffMaintain($effect[Carol of the Hells]);
+	buffMaintain($effect[Sauce Monocle]);
+	buffMaintain($effect[Arched Eyebrow of the Archmage]);
+	buffMaintain($effect[Rosewater Mark]);
+	buffMaintain($effect[Black Eyes]);
+	buffMaintain($effect[Imported Strength]);
+	buffMaintain($effect[Mystically Oiled]);
+	buffMaintain($effect[Tomato Power]);
+	//~ buffMaintain($effect[Visions of the Deep Dark Deeps]);
 	
 	// Maximizer tries to force familiar equipment. and prefers passive dmg a that. Avoid dealing damage from familiar and losing
 	if(canChangeFamiliar())
 	{
-		use_familiar(lookupFamiliarDatafile("gremlins"));		//delevel with no damage. fallback to none if unavailable
+		if (have_familiar($familiar[magic dragonfish]))
+		{
+			use_familiar($familiar[magic dragonfish]); // boosts spell damage
+		}
+		else
+		{
+			use_familiar(lookupFamiliarDatafile("gremlins"));		//delevel with no damage. fallback to none if unavailable
+		}
 		set_property("auto_disableFamiliarChanging", true);
 	}
 	if(my_familiar() != $familiar[none])
 	{
 		addToMaximize("-familiar");
 		equip($slot[familiar], $item[none]);
+	}
+	
+	if (auto_remainingCandyCaneSlashes()>0)
+	{
+		addToMaximize("+equip "+$item[Candy Cane Sword Cane]);
+	}
+	
+	if (possessEquipment($item[big hot pepper]))
+	{
+		addToMaximize("+equip "+$item[big hot pepper]);
+	}
+	
+	acquireOrPull($item[congressional medal of insanity]);
+	if (possessEquipment($item[congressional medal of insanity]))
+	{
+		addToMaximize("+equip "+$item[congressional medal of insanity]);
 	}
 
 	addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");

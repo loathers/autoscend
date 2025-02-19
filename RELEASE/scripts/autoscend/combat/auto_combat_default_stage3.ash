@@ -269,9 +269,9 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		//HP reduction if the monster has high HP
 		if(monster_hp() > 1500 || enemy.physical_resistance > 90)
 		{
-			if(canUse($skill[Surprisingly Sweet Slash])) //75% less HP
+			if(canUse($skill[Surprisingly Sweet Slash]) && auto_remainingCandyCaneSlashes() > 1) // reserve a slash for wall of bones
 			{
-				return useSkill($skill[Surprisingly Sweet Slash]);
+				return useSkill($skill[Surprisingly Sweet Slash]); // 75% less HP
 			}
 			if(canUse($item[autumnic bomb])) //50% less hp && prismatic damage on hit
 			{
@@ -281,7 +281,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 		// delevel and 75% less HP if you have a candy cane sword cane
 		// Need this separate because want to reserve the Slash in Avant Guard for high HP bodyguards
-		if (canUse($skill[Surprisingly Sweet Slash]) && !in_avantGuard())
+		if (canUse($skill[Surprisingly Sweet Slash]) && !in_avantGuard() && auto_remainingCandyCaneSlashes() > 1) // reserve a slash for wall of bones
 		{
 			return useSkill($skill[Surprisingly Sweet Slash]);
 		}
