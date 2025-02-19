@@ -149,3 +149,14 @@ boolean untinker(int amount, item target)
 	auto_log_warning("Untinkering " +amount+ " [" +target+ "] mysteriously failed. Only " +success_amt+ " were untinkered");
 	return false;
 }
+
+boolean auto_craftIfFree(item it)
+{
+	if (creatable_amount(it) > 0 && creatable_turns(it,1,true)==0)
+	{
+		boolean success = create(it);
+		handleTracker((success?"F":"Failed to f")+"ree craft item",it,"auto_otherstuff");
+		return success;
+	}
+	return false;
+}

@@ -553,6 +553,8 @@ boolean auto_haveBurningLeaves();
 boolean auto_burnLeaves();
 boolean auto_haveCCSC();
 boolean auto_handleCCSC();
+int auto_remainingCandyCaneSlashes();
+int auto_remainingCandyCaneStabs();
 void auto_useWardrobe();
 
 ########################################################################################################
@@ -1486,6 +1488,7 @@ boolean canUntinker();
 boolean canUntinker(item target);
 boolean untinker(item target);
 boolean untinker(int amount, item target);
+boolean auto_craftIfFree(item it);
 
 ########################################################################################################
 //Defined in autoscend/auto_equipment.ash
@@ -2005,4 +2008,7 @@ float substat_to_level();
 float substat_to_level(int n);
 stat stat_to_substat(stat s);
 float stat_exp_percent(stat s);
+boolean auto_equalizeStats();
 int auto_roughExpectedTurnsLeftToday();
+boolean auto_ignoreExperience();
+boolean auto_needAccordion();

@@ -1021,6 +1021,24 @@ boolean auto_handleCCSC()
 	return false;
 }
 
+int auto_remainingCandyCaneSlashes()
+{
+	if (!auto_haveCCSC())
+	{
+		return 0;
+	}
+	return 11-get_property("_surprisinglySweetSlashUsed").to_int();
+}
+
+int auto_remainingCandyCaneStabs()
+{
+	if (!auto_haveCCSC())
+	{
+		return 0;
+	}
+	return 11-get_property("_surprisinglySweetStabUsed").to_int();
+}
+
 void auto_useWardrobe()
 {
 	if(!auto_is_valid($item[wardrobe-o-matic]))
