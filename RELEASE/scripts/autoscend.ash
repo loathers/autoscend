@@ -170,6 +170,7 @@ void initializeSettings() {
 
 	set_property("auto_abooclover", true);
 	set_property("auto_aboopending", 0);
+	set_property("auto_avalancheDeployed", false);
 	set_property("auto_banishes", "");
 	set_property("auto_batoomerangDay", 0);
 	set_property("auto_beatenUpCount", 0);
@@ -229,7 +230,6 @@ void initializeSettings() {
 	set_property("auto_paranoia", -1);
 	set_property("auto_paranoia_counter", 0);
 	set_property("auto_parkaSpikesDeployed", false);
-	set_property("auto_avalancheDeployed", false);
 	set_property("auto_priorCharpaneMode", "0");
 	set_property("auto_powerLevelAdvCount", "0");
 	set_property("auto_powerLevelLastAttempted", "0");
@@ -791,6 +791,7 @@ void initializeDay(int day)
 
 	auto_floundryAction();
 	
+	auto_MayamClaimAll(); // Want Mayam before booth to decide if we want a feather boa given yamtility.
 	auto_getClanPhotoBoothDefaultItems();
 	auto_getClanPhotoBoothEffect("space",3);
 
@@ -906,7 +907,7 @@ void initializeDay(int day)
 			{
 				acquireGumItem($item[disco ball]);
 			}
-			if(!(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber() || in_wereprof()))
+			if(!auto_needAccordion())
 			{
 				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && ((my_meat() > npc_price($item[Toy Accordion])) && (npc_price($item[Toy Accordion]) != 0)))
 				{
