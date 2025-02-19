@@ -131,11 +131,11 @@ boolean zooGraftFam()
 	//Ideally, we get the attributes of all familiars we have and rank them by what is best in each slot and level them from there
 	//We need access to familiar tags. There is this information already in familiars.txt in KoLMafia, we just need to parse it
 	string[familiar] graftFam = {
-		$familiar[oily woim]: "lbuff",
-		$familiar[killer bee]: "lbuff",
-		$familiar[mosquito]: "lbuff",
-		$familiar[helix fossil]: "lbuff",
-		$familiar[stab bat]: "rbuff",
+		$familiar[oily woim]: "rbuff",
+		$familiar[killer bee]: "rbuff",
+		$familiar[mosquito]: "rbuff",
+		$familiar[helix fossil]: "rbuff",
+		$familiar[stab bat]: "lbuff",
 		$familiar[mechanical songbird]: "intrinsic",
 		$familiar[autonomous disco ball]: "intrinsic",
 		$familiar[scary death orb]: "intrinsic",
