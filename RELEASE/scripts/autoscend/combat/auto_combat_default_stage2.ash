@@ -436,6 +436,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[Darts: Aim for the Bullseye]);
 		}
 
+		skill z_kick = getZooKickFreeKill();
+		if (canUse(z_kick))
+		{
+			set_property("auto_instakillSource", "zootomist kick");
+			set_property("auto_instakillSuccess", true);
+			loopHandlerDelayAll();
+			return useSkill(z_kick);
+		}
+
 		if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0)
 		{
 			set_property("auto_instakillSource", "slaughter");
@@ -515,7 +524,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			loopHandlerDelayAll();
 			return useSkill($skill[Fire the Jokester\'s Gun]);
 		}
-	}
+	} // instakills
 
 	//wearing [retro superhero cape] iotm set to vampire slicer mode instakills Undead and reduces evilness in Cyrpt zones.
 	if (canUse($skill[Slay the Dead]) && enemy.phylum == $phylum[undead])

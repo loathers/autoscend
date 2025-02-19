@@ -51,6 +51,28 @@ skill getZooKickBanish()
 	return $skill[none];
 }
 
+skill getZooKickPickpocket()
+{
+	if (leftKickHasPickpocket()) {
+		return $skill[left \ kick];
+	}
+	if (rightKickHasPickpocket()) {
+		return $skill[right \ kick];
+	}
+	return $skill[none];
+}
+
+skill getZooKickFreeKill()
+{
+	if (leftKickHasFreeKill()) {
+		return $skill[left \ kick];
+	}
+	if (rightKickHasFreeKill()) {
+		return $skill[right \ kick];
+	}
+	return $skill[none];
+}
+
 skill getZooBestPunch(monster m)
 {
 	return $skill[left \ punch];
@@ -85,6 +107,11 @@ boolean leftKickHasPickpocket()
 	return false;
 }
 
+boolean leftKickHasFreeKill()
+{
+	return false;
+}
+
 boolean rightKickHasSniff()
 {
 	return false;
@@ -101,6 +128,11 @@ boolean rightKickHasBanish()
 }
 
 boolean rightKickHasPickpocket()
+{
+	return false;
+}
+
+boolean rightKickHasFreeKill()
 {
 	return false;
 }

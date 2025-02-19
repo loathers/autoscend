@@ -384,7 +384,7 @@ boolean auto_MayamClaimAll()
 	auto_MayamClaimStinkBomb();
 	auto_MayamClaimBelt();
 	
-	if (!in_zootomist())
+	if (!in_zootomist() || my_level() >= 13)
 	{
 		auto_MayamClaimWhatever();
 		auto_MayamClaimWhatever();
