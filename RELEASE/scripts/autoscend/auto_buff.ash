@@ -126,6 +126,24 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 			}		
 		}		
 	}
+	// Craft if we have free crafts and it's craftable
+	if(item_amount(source) < uses)
+	{
+		int needed = uses-item_amount(source);
+		int n_can_craft = creatable_amount(source);
+		int turns_to_craft = creatable_turns(source,needed,true);
+		if (turns_to_craft == 0 && n_can_craft >= needed)
+		{
+			handleTracker("buffMaintain",(speculative?"Speculatively c":"C")+"rafting "+to_string(needed)+" "+to_string(source),"auto_otherstuff");
+			if(!speculative)
+			{
+				create(source,needed);
+			}
+			else {
+				return true;
+			}
+		}
+	}
 	if(item_amount(source) < uses)
 	{
 		return false;
@@ -481,6 +499,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Hyphemariffic]:				useItem = $item[Black Eyedrops];				break;
 	case $effect[Icy Glare]:					useSkill = $skill[Icy Glare];					break;
 	case $effect[Impeccable Coiffure]:			useSkill = $skill[Self-Combing Hair];			break;
+	case $effect[Imported Strength]:			useItem = $item[Imported Taffy];				break;
 	case $effect[Inigo\'s Incantation of Inspiration]:useSkill = $skill[Inigo\'s Incantation of Inspiration];break;
 	case $effect[Incredibly Healthy]:			useItem = $item[mini kiwi illicit antibiotic];	break;
 	case $effect[Incredibly Hulking]:			useItem = $item[Ferrigno\'s Elixir of Power];	break;
@@ -550,8 +569,8 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Mayeaugh]:						useItem = $item[Glob of Spoiled Mayo];			break;
 	case $effect[Memories of Puppy Love]:		useItem = $item[Old Love Note];					break;
 	case $effect[Merry Smithsness]:				useItem = $item[Flaskfull of Hollow];			break;
-	case $effect[Milk of Familiar Cruelty ]:	useSkill = $skill[Drink The Milk of Cruelty ];	break;
-	case $effect[Milk of Familiar Kindness]:	useSkill = $skill[Drink The Milk of Kindness];	break;
+	case $effect[Milk of Familiar Cruelty ]:	useSkill = $skill[Drink The Milk of \ Cruelty ];break;
+	case $effect[Milk of Familiar Kindness]:	useSkill = $skill[Drink The Milk of \ Kindness];break;
 	case $effect[Mind Vision]:					useSkill = $skill[Intracranial Eye];			break;
 	case $effect[Ministrations in the Dark]:	useItem = $item[EMD Holo-Record];				break;
 	case $effect[Minor Invulnerability]:			useItem = $item[Scroll of minor invulnerability];	break;
@@ -764,6 +783,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Sleazy Hands]:					useItem = $item[Lotion of Sleaziness];			break;
 	case $effect[Slightly Larger Than Usual]:	useItem = $item[Giant Giant Moth Dust];			break;
 	case $effect[Slinking Noodle Glob]:			useSkill = $skill[none];						break;
+	case $effect[Slippery Oiliness]:			useItem = $item[oil of slipperiness];			break;
 	case $effect[Smelly Pants]:					useItem = $item[Stench Powder];					break;
 	case $effect[Smooth Movements]:				useSkill = $skill[Smooth Movement];				break;
 	case $effect[Snarl of the Timberwolf]:		useSkill = $skill[Snarl of the Timberwolf];		break;
@@ -924,6 +944,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Wisdom of the Autumn Years]:	useItem = $item[Autumn years wisdom];			break;
 	case $effect[Wisdom of Thoth]:				useSkill = $skill[Wisdom of Thoth];				break;
 	case $effect[Wit Tea]:						useItem = $item[cuppa Wit tea];					break;
+	case $effect[Wizard Squint]:				useSkill = $skill[Wizard Squint];				break;
 	case $effect[Woad Warrior]:					useItem = $item[Pygmy Pygment];					break;
 	case $effect[Worth Your Salt]:				useItem = $item[Salt wages];					break;
 	case $effect[Wry Smile]:					useSkill = $skill[Wry Smile];					break;
