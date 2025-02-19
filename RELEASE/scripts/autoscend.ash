@@ -293,6 +293,7 @@ void initializeSettings() {
 	small_initializeSettings();
 	wereprof_initializeSettings();
 	ag_initializeSettings();
+	zoo_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
