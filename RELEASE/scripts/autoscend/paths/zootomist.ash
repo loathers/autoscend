@@ -1,3 +1,15 @@
+static int ZOOPART_HEAD       = 1;
+static int ZOOPART_L_SHOULDER = 2;
+static int ZOOPART_R_SHOULDER = 3;
+static int ZOOPART_L_HAND     = 4;
+static int ZOOPART_R_HAND     = 5;
+static int ZOOPART_L_NIPPLE   = 6;
+static int ZOOPART_R_NIPPLE   = 7;
+static int ZOOPART_L_BUTTOCK  = 8;
+static int ZOOPART_R_BUTTOCK  = 9;
+static int ZOOPART_L_FOOT     = 10;
+static int ZOOPART_R_FOOT     = 11;
+
 boolean in_zootomist()
 {
 	return my_path()==$path[z is for zootomist];
@@ -34,30 +46,30 @@ boolean zooGraftFam()
 	Each body part is categorized by what it gives when a familiar is grafted to it
 	*/
 	string[int] bodyPartType = {
-		1: "intrinsic",
-		2: "intrinsic",
-		3: "intrinsic",
-		4: "dcombat",
-		5: "dcombat",
-		6: "lbuff",
-		7: "rbuff",
-		8: "intrinsic",
-		9: "intrinsic",
-		10: "combat",
-		11: "combat"
+		ZOOPART_HEAD       : "intrinsic",
+		ZOOPART_L_SHOULDER : "intrinsic",
+		ZOOPART_R_SHOULDER : "intrinsic",
+		ZOOPART_L_HAND     : "dcombat",
+		ZOOPART_R_HAND     : "dcombat",
+		ZOOPART_L_NIPPLE   : "lbuff",
+		ZOOPART_R_NIPPLE   : "rbuff",
+		ZOOPART_L_BUTTOCK  : "intrinsic",
+		ZOOPART_R_BUTTOCK  : "intrinsic",
+		ZOOPART_L_FOOT     : "combat",
+		ZOOPART_R_FOOT     : "combat"
 	};
 	string[int] bodyPartName = {
-		1: "head",
-		2: "left shoulder",
-		3: "right shoulder",
-		4: "left hand",
-		5: "right hand",
-		6: "left nipple",
-		7: "right nipple",
-		8: "left butt cheek",
-		9: "right butt cheek",
-		10: "left foot",
-		11: "right foot"
+		ZOOPART_HEAD       : "head",
+		ZOOPART_L_SHOULDER : "left shoulder",
+		ZOOPART_R_SHOULDER : "right shoulder",
+		ZOOPART_L_HAND     : "left hand",
+		ZOOPART_R_HAND     : "right hand",
+		ZOOPART_L_NIPPLE   : "left nipple",
+		ZOOPART_R_NIPPLE   : "right nipple",
+		ZOOPART_L_BUTTOCK  : "left butt cheek",
+		ZOOPART_R_BUTTOCK  : "right butt cheek",
+		ZOOPART_L_FOOT     : "left foot",
+		ZOOPART_R_FOOT     : "right foot"
 	};
 	//Ideally, we get the attributes of all familiars we have and rank them by what is best in each slot and level them from there
 	//We need access to familiar tags. There is this information already in familiars.txt in KoLMafia, we just need to parse it
