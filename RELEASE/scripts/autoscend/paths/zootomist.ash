@@ -34,7 +34,6 @@ void zoo_useFam()
 {
 	//Identifies the 11 familiars we want based on what we have and stores them in prefs so we only go through the list of fams once
 	//Goes through fam attributes of all familiars and filters from there
-	//Unfortunately, Mafia's attributes are incomplete for now
 	string[int, familiar] famAttributes;
 	//familiar, pos in map, priority
 	int[int,familiar] intrinsicFams;
@@ -42,6 +41,143 @@ void zoo_useFam()
 	int[int,familiar] lbuffFams;
 	int[int,familiar] rbuffFams;
 	int[int,familiar] combatFams;
+	//Weights for familiar priority. These are based off of our default maximizer statement
+	float[string] intrinsicWeights = { 
+		"technological": 100, //20% item drop
+		"haseyes": 75, //15% item drop
+		"object": 25, //5% item drop
+		"hashands": 20, //20% meat drop
+		"hasclaws": 20, //20% meat drop
+		"bite": 15, //15% meat drop
+		"animal": 10, //10% meat drop
+		"haswings": 25, //50% initiative
+		"haslegs": 25, //50% initiative
+		"fast": 25, //50% initiative
+		"animatedart": 25, //50% initiative
+		"robot": 10, //10 DR
+		"polygonal": 10, //10 DR
+		"hasshell": 10, //10 DR
+		"hasbones": 5, //5 DR
+		"food": 0.5, //1 stench res
+		"hasstinger": 0.5, //1 stench res
+		"good": 0.5, //1 spooky res
+		"evil": 0.5, //1 spooky res
+		"reallyevil": 0.5, //1 spooky res
+		"hard": 0.5, //1 sleaze res
+		"phallic": 0.5, //1 sleaze res
+		"edible": 0.5, //1 sleaze res
+		"cute": 0.5, //1 sleaze res
+		"mineral": 0.5, //1 hot res
+		"swims": 0.5, //1 hot res
+		"aquatic": 0.5, //1 hot res
+		"vegetable": 0.5, //1 cold res
+		"wearsclothes": 0.5, //1 cold res
+		"isclothes": 0.5, //1 cold res
+		"flies": 1, //never fumble
+		"insect": 10, //25 max hp
+		"software": 10, //25 max hp
+		"person": 8, //20 max hp
+		"undead": 8, //20 max hp
+		"humanoid": 6, //15 max hp
+		"organic": 4, //10 max hp
+		"sentient": 2, //5 max hp
+		"orb": 5, //25 max mp
+		"cold": 15, //10 cold dmg
+		"hasbeak": 15, //10 weapon dmg
+		"hot": 15, //10 hot dmg
+		"sleaze": 15, //10 sleaze dmg
+		"spooky": 15, //10 spooky dmg
+		"stench": 15, //10 stench dmg
+		"cantalk": 1, //-1mp for skills
+	};
+	float[string] lNipWeights = { 
+		"animal": 2.5, //25 hp regen
+		"animatedart": 0.5, //50% moxie
+		"aquatic": 1, //2 hot res
+		"bite": 30, //sleaze dmg
+		"cantalk": 37.5, //25% myst
+		"cold": 30, //20 cold dmg
+		"edible": 20, //20 muscle
+		"evil": 15, //10 weapon dmg
+		"fast": 150, //30% item drop
+		"flies": 25, //50% initiative
+		"food": 30, //20 stench dmg
+		"good": 5, //50% dmg to skeletons
+		"hard": 5, //25% weapon drop
+		"hasbeak": 150, //30% food drop
+		"hasbones": 2.5, //25% dmg to skeletons
+		"hasclaws": 4, //20% crit rate
+		"haseyes": 2, //4 spooky res
+		"hashands": 15, //15 meat drop
+		"haslegs": 10, //50% pant drop
+		"hasshell": 20, //20 DR
+		"hasstinger": 15, //10 spooky dmg
+		"haswings": 20, //20 myst
+		"hot": 15, //10 hot dmg
+		"hovers": 1000, //-5% combat
+		"insect": 12.5, //25% init
+		"isclothes": 2, //4 cold res
+		"object": 40, //100 maxhp
+		"organic": 5, //+1 fam exp
+		"person": 1, //2 stench res
+		"phallic": 10, //10 moxie
+		"polygonal": 2, //4 sleaze res
+		"reallyevil": 1000, //-5 combat
+		"robot": 37.5, //25% muscle
+		"sentient": 10, //5 fam weight
+		"sleaze": 50, //50% booze drop
+		"software": 10, //50% max mp
+		"stench": 5, //50% dmg to zombies
+		"technological": 45, //10-20mp per turn
+		"undead": 3, //30 dmg to undead
+		"vegetable": 2, //20 familiar dmg
+		"wearsclothes": 10, //50% gear drop
+	};
+	float[string] rNipWeights = { 
+		"animal": 15, //10 stench dmg
+		"animatedart": 1, //2 spooky res
+		"aquatic": 10, //10 muscle
+		"bite": 30, //weapon dmg
+		"cantalk": 20, //100% max mp
+		"cold": 2, //4 hot res
+		"cute": 37.5, //25% moxie
+		"edible": 150, //30% booze drops
+		"evil": 30, //20 spooky dmg
+		"fast": 50, //100% initiative
+		"flies": 20, //20 moxie
+		"food": 250, //50% food drops
+		"good": 20, //10 fam weight
+		"hard": 75, //50% muscle
+		"hasbones": 5, //50% dmg to skeletons
+		"hasclaws": 10, //50% weapon drop
+		"haseyes": 1000, //+5% combat
+		"hashands": 75, //15% item drop
+		"haslegs": 5, //25% gear drop
+		"hasshell": 20, //20 DR
+		"hasstinger": 2, //2x crit hit chance
+		"haswings": 25, //50% init
+		"hot": 1, //2 cold res
+		"insect": 5, //1 fam exp
+		"isclothes": 5, //25% pant drop
+		"mineral": 20, //20 DR
+		"object": 2, //4 stench res
+		"orb": 10, //10 myst
+		"organic": 1, //10 fam dmg
+		"person": 30, //30% meat drop
+		"phallic": 5, //5 pool skill
+		"polygonal": 15, //10 sleaze dmg
+		"reallyevil": 30, //20 weapon dmg
+		"robot": 30, //20 hot dmg
+		"sentient": 75, //50% myst
+		"software": 75, //20-30 mp regen
+		"spooky": 5, //50 ghost dmg
+		"stench": 1000, //+5% combat
+		"swims": 15, //10 cold dmg
+		"technological": 15, //10-20 hp regen
+		"undead": 3, //30 dmg to undead
+		"vegetable": 1, //2 sleaze res
+		"wearsclothes": 50, //50% max hp
+	};
 	//foreach counters
 	int f = 0; //familiars
 	int i = 0; //instrinsic
@@ -55,7 +191,6 @@ void zoo_useFam()
 		{
 			famAttributes[f] = {fam:fam.attributes};
 			f++;
-			//auto_log_info(fam + ": " + famAttributes[fam]);
 		}
 	}
 	foreach j, fam, attr in famAttributes
@@ -63,20 +198,20 @@ void zoo_useFam()
 		string[int] attrs = split_string(attr,";");
 		foreach k, a in attrs
 		{
-			if($strings[technological, hashands, hasclaws] contains a)
+			if(a == "technological")
 			{
-				//technological = 20% item drop, hashands/hasclaws = 20% meat drop
-				if(a == "technological")
-				{
-					intrinsicFams[i] = {fam: 1};
-				}
-				else
-				{
-					intrinsicFams[i] = {fam: 2};
-				}
-				auto_log_info(fam + ":" + intrinsicFams[i][fam]);
-				i++;
+				intrinsicFams[i][fam] += 40;
 			}
+			if(a == "haseyes")
+			{
+				intrinsicFams[i][fam] += 30;
+			}
+			if(a == "object")
+			{
+				intrinsicFams[i][fam] += 10;
+			}
+			auto_log_info(fam + ":" + intrinsicFams[i][fam]);
+			i++;
 		}
 	}
 }
