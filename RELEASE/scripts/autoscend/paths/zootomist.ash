@@ -195,21 +195,48 @@ void zoo_useFam()
 			rbuffFams[fam] += rNipWeights[a];
 		}
 	}
-	auto_log_info("Head, shoulder and butt fams", "green");
-	foreach m, fam in intrinsicFams
+	auto_log_info("Best Head, shoulder and butt fams", "green");
+	familiar[5] intrinsicFam;
+	familiar lbuffFam;
+	familiar rbuffFam;
+	foreach fam, m in intrinsicFams
 	{
-		auto_log_info(fam + ":" + m, "green");
+		foreach i in intrinsicFam
+		{
+			if(m > intrinsicFams[intrinsicFam[i]])
+			{
+				if(i < 4)
+				{
+					intrinsicFam[i+1] = intrinsicFam[i];
+				}
+				intrinsicFam[i] = fam;
+				break;
+			}
+		}
+		//auto_log_info(fam + ":" + m, "green");
 	}
-	auto_log_info("Left nipple fams", "blue");
-	foreach m, fam in lbuffFams
+	foreach i, fam in intrinsicFam
 	{
-		auto_log_info(fam + ":" + m, "blue");
+		auto_log_info(fam + ":" + intrinsicFams[fam], "green");
 	}
-	auto_log_info("Right nipple fams", "purple");
-	foreach m, fam in rbuffFams
+	auto_log_info("Best Left nipple fams", "blue");
+	foreach fam, m in lbuffFams
 	{
-		auto_log_info(fam + ":" + m, "purple");
+		if(m > lbuffFams[lbuffFam])
+		{
+			lbuffFam = fam;
+		}
 	}
+	auto_log_info(lbuffFam + ":" + lbuffFams[lbuffFam], "blue");
+	auto_log_info("Best Right nipple fams", "purple");
+	foreach fam, m in rbuffFams
+	{
+		if(m > rbuffFams[rbuffFam])
+		{
+			rbuffFam = fam;
+		}
+	}
+	auto_log_info(rbuffFam + ":" + rbuffFams[rbuffFam], "purple");
 }
 
 boolean zooGraftFam()
