@@ -35,12 +35,12 @@ void zoo_useFam()
 	//Identifies the 11 familiars we want based on what we have and stores them in prefs so we only go through the list of fams once
 	//Goes through fam attributes of all familiars and filters from there
 	string[int, familiar] famAttributes;
-	//familiar, pos in map, priority
-	int[int,familiar] intrinsicFams;
-	int[int,familiar] dcombatFams;
-	int[int,familiar] lbuffFams;
-	int[int,familiar] rbuffFams;
-	int[int,familiar] combatFams;
+	//priority, familiar
+	int[familiar] intrinsicFams;
+	int[familiar] dcombatFams;
+	int[familiar] lbuffFams;
+	int[familiar] rbuffFams;
+	int[familiar] combatFams;
 	//Weights for familiar priority. These are based off of our default maximizer statement
 	float[string] intrinsicWeights = { 
 		"technological": 100, //20% item drop
@@ -180,11 +180,6 @@ void zoo_useFam()
 	};
 	//foreach counters
 	int f = 0; //familiars
-	int i = 0; //instrinsic
-	int d = 0; //damage in combat
-	int l = 0; //left nipple
-	int r = 0; //right nipple
-	int c = 0; //combat skills
 	foreach fam in $familiars[]
 	{
 		if(have_familiar(fam))
@@ -198,21 +193,25 @@ void zoo_useFam()
 		string[int] attrs = split_string(attr,";");
 		foreach k, a in attrs
 		{
-			if(a == "technological")
-			{
-				intrinsicFams[i][fam] += 40;
-			}
-			if(a == "haseyes")
-			{
-				intrinsicFams[i][fam] += 30;
-			}
-			if(a == "object")
-			{
-				intrinsicFams[i][fam] += 10;
-			}
-			auto_log_info(fam + ":" + intrinsicFams[i][fam]);
-			i++;
+			intrinsicFams[fam] += intrinsicWeights[a];
+			lbuffFams[fam] += lNipWeights[a];
+			rbuffFams[fam] += rNipWeights[a];
 		}
+	}
+	auto_log_info("Head, shoulder and butt fams", "green");
+	foreach m, fam in intrinsicFams
+	{
+		auto_log_info(fam + ":" + m, "green");
+	}
+	auto_log_info("Left nipple fams", "blue");
+	foreach m, fam in lbuffFams
+	{
+		auto_log_info(fam + ":" + m, "blue");
+	}
+	auto_log_info("Right nipple fams", "purple");
+	foreach m, fam in rbuffFams
+	{
+		auto_log_info(fam + ":" + m, "purple");
 	}
 }
 
