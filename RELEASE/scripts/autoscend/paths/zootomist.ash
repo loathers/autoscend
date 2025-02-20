@@ -34,13 +34,13 @@ void zoo_useFam()
 {
 	//Identifies the 11 familiars we want based on what we have and stores them in prefs so we only go through the list of fams once
 	//Goes through fam attributes of all familiars and filters from there
-	string[int, familiar] famAttributes;
+	string[familiar] famAttributes;
 	//priority, familiar
-	int[familiar] intrinsicFams;
-	int[familiar] dcombatFams;
-	int[familiar] lbuffFams;
-	int[familiar] rbuffFams;
-	int[familiar] combatFams;
+	float[familiar] intrinsicFams;
+	float[familiar] dcombatFams;
+	float[familiar] lbuffFams;
+	float[familiar] rbuffFams;
+	float[familiar] combatFams;
 	//Weights for familiar priority. These are based off of our default maximizer statement
 	float[string] intrinsicWeights = { 
 		"technological": 100, //20% item drop
@@ -178,19 +178,16 @@ void zoo_useFam()
 		"vegetable": 1, //2 sleaze res
 		"wearsclothes": 50, //50% max hp
 	};
-	//foreach counters
-	int f = 0; //familiars
 	foreach fam in $familiars[]
 	{
 		if(have_familiar(fam))
 		{
-			famAttributes[f] = {fam:fam.attributes};
-			f++;
+			famAttributes[fam] = fam.attributes;
 		}
 	}
-	foreach j, fam, attr in famAttributes
+	foreach fam, attr in famAttributes
 	{
-		string[int] attrs = split_string(attr,";");
+		string[int] attrs = split_string(attr,"; ");
 		foreach k, a in attrs
 		{
 			intrinsicFams[fam] += intrinsicWeights[a];
