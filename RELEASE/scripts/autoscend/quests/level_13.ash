@@ -1253,7 +1253,8 @@ boolean L13_towerNSTowerMeat()
 		abort("auto_towerBreak set to abort here.");
 	}
 	equipBaseline();
-	provideMeat(626, true, false);
+	shrugAT($effect[Polka of Plenty]);
+	provideMeat(526, true, false);
 
 	if(in_zombieSlayer())
 	{
@@ -1288,7 +1289,7 @@ boolean L13_towerNSTowerBones()
 	{
 		set_property("auto_getBoningKnife", true);		//in 100% familiar run with attack familiar we must acquire boning knife
 	}
-	if(my_class() != $class[Sauceror] && !have_skill($skill[Garbage Nova]))
+	if(!(have_skill($skill[Saucegeyser]) || have_skill($skill[Garbage Nova])))
 	{
 		set_property("auto_getBoningKnife", true);		//can not towerkill. get boning knife instead
 	}
@@ -1395,11 +1396,31 @@ boolean L13_towerNSTowerBones()
 		}
 	}
 	
+	float saucegeyserDamage()
+	{
+		float base = ceil((numeric_modifier("Spell Damage Percent")/100.0)*(60 + numeric_modifier("Spell Damage") + max(numeric_modifier("Hot Spell Damage"),numeric_modifier("Cold Spell Damage")) + 0.4*my_buffedstat($stat[mysticality])));
+		float lanterns = have_equipped($item[big hot pepper]) ? 2.0 : 1.0;
+		lanterns *= have_equipped($item[congressional medal of insanity]) ? 3.0 : 1.0; // can be x3 or 4x, we need the minimum
+		return MLDamageToMonsterMultiplier() * lanterns * base;
+	}
+	
+	float wob_hp = $monster[wall of bones].base_hp;
+	int rounds = 4;
+	
+	// Candy cane slash quarters HP for one attack
+	if (have_equipped($item[candy cane sword cane]) && auto_remainingCandyCaneSlashes()>0)
+	{
+		wob_hp /= 4;
+		rounds--;
+	}
+	
 	//Wall Of Bones combat uses Unleash The Greash, Garbage Nova, or Saucegeyser
 	if(!auto_have_skill($skill[Garbage Nova]) && have_effect($effect[Takin\' It Greasy]) == 0)
 	{
-		float saucegeyserDamage = MLDamageToMonsterMultiplier()*ceil((numeric_modifier("Spell Damage Percent")/100.0)*(60 + numeric_modifier("Spell Damage") + max(numeric_modifier("Hot Spell Damage"),numeric_modifier("Cold Spell Damage")) + 0.4*my_buffedstat($stat[mysticality])));
-		if(saucegeyserDamage < 1667)
+		float total_damage = saucegeyserDamage()*rounds*3;
+		auto_log_info("Wall of bones will have "+wob_hp+" hp with "+rounds+" rounds to kill.\n" +
+		 "Saucegeyser should do "+saucegeyserDamage()+" per hit for "+total_damage);
+		if(total_damage < wob_hp) // 3 is saucegeyser group size
 		{
 			//counting on Saucegeyser and its damage will be too low
 			auto_log_warning("Estimate would fail to towerkill Wall of Bones. Reverting to Boning Knife", "red");
