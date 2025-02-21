@@ -37,6 +37,36 @@ void zootomist_start_pulls()
 	}
 }
 
+string auto_grafted(int bodyPart)
+{
+	switch(bodyPart)
+	{
+		case 1:
+			return get_property("zootGraftedHeadFamiliar");
+		case 2:
+			return get_property("zootGraftedShoulderLeftFamiliar");
+		case 3:
+			return get_property("zootGraftedShoulderRightFamiliar");
+		case 4:
+			return get_property("zootGraftedHandLeftFamiliar");
+		case 5:
+			return get_property("zootGraftedHandRightFamiliar");
+		case 6:
+			return get_property("zootGraftedNippleLeftFamiliar");
+		case 7:
+			return get_property("zootGraftedNippleRightFamiliar");
+		case 8:
+			return get_property("zootGraftedButtCheekLeftFamiliar");
+		case 9:
+			return get_property("zootGraftedButtCheekRightFamiliar");
+		case 10:
+			return get_property("zootGraftedFootLeftFamiliar");
+		case 11:
+			return get_property("zootGraftedFootRightFamiliar");
+	}
+	return "";
+}
+
 void zoo_useFam()
 {
 	//Identifies the 11 familiars we want based on what we have and stores them in prefs so we only go through the list of fams once
@@ -351,10 +381,10 @@ skill getZooKickYR()
 {
 	// Optimise countdowns here once Mafia has that info
 	if (leftKickHasYellowRay()) {
-		return $skill[left \ kick];
+		return $skill[left %n kick];
 	}
 	if (rightKickHasYellowRay()) {
-		return $skill[right \ kick];
+		return $skill[right %n kick];
 	}
 	return $skill[none];
 }
@@ -362,10 +392,10 @@ skill getZooKickYR()
 skill getZooKickSniff()
 {
 	if (leftKickHasSniff()) {
-		return $skill[left \ kick];
+		return $skill[left %n kick];
 	}
 	if (rightKickHasSniff()) {
-		return $skill[right \ kick];
+		return $skill[right %n kick];
 	}
 	return $skill[none];
 }
@@ -373,10 +403,10 @@ skill getZooKickSniff()
 skill getZooKickBanish()
 {
 	if (leftKickHasBanish()) {
-		return $skill[left \ kick];
+		return $skill[left %n kick];
 	}
 	if (rightKickHasBanish()) {
-		return $skill[right \ kick];
+		return $skill[right %n kick];
 	}
 	return $skill[none];
 }
@@ -384,10 +414,10 @@ skill getZooKickBanish()
 skill getZooKickPickpocket()
 {
 	if (leftKickHasPickpocket()) {
-		return $skill[left \ kick];
+		return $skill[left %n kick];
 	}
 	if (rightKickHasPickpocket()) {
-		return $skill[right \ kick];
+		return $skill[right %n kick];
 	}
 	return $skill[none];
 }
@@ -395,10 +425,10 @@ skill getZooKickPickpocket()
 skill getZooKickFreeKill()
 {
 	if (leftKickHasFreeKill()) {
-		return $skill[left \ kick];
+		return $skill[left %n kick];
 	}
 	if (rightKickHasFreeKill()) {
-		return $skill[right \ kick];
+		return $skill[right %n kick];
 	}
 	return $skill[none];
 }
@@ -410,7 +440,7 @@ skill getZooBestPunch()
 
 skill getZooBestPunch(monster m)
 {
-	return $skill[left \ punch];
+	return $skill[left %n punch];
 }
 
 // These will be done intelligently once Mafia can tell us.

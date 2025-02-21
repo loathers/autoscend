@@ -1,4 +1,4 @@
-since r28368;	// Updated tags from Zootomist
+since r28378;	// Ninja change to grafted familiar prefs to make them clearer. Ok an old and slow ninja
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

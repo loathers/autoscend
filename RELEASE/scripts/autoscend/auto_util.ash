@@ -2722,10 +2722,10 @@ boolean auto_have_skill(skill sk)
 	// TEMP CODE WHILE MAFIA IS BEING UPDATED
 	if (in_zootomist() && my_level()>=13) {
 		switch (sk) {
-			case $skill[left \ punch]:
-			case $skill[right \ punch]:
-			case $skill[left \ kick]:
-			case $skill[right \ kick]:
+			case $skill[left %n punch]:
+			case $skill[right %n punch]:
+			case $skill[left %n kick]:
+			case $skill[right %n kick]:
 				return true;
 		}
 	}
