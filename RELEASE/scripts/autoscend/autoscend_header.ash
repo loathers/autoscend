@@ -1090,13 +1090,9 @@ skill getZooKickBanish();
 skill getZooKickPickpocket();
 skill getZooKickFreeKill();
 boolean leftKickHasSniff();
-boolean leftKickHasYellowRay();
-boolean leftKickHasBanish();
 boolean leftKickHasPickpocket();
 boolean leftKickHasFreeKill();
 boolean rightKickHasSniff();
-boolean rightKickHasYellowRay();
-boolean rightKickHasBanish();
 boolean rightKickHasPickpocket();
 boolean rightKickHasFreeKill();
 

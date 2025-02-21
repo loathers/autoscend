@@ -482,11 +482,14 @@ boolean zooBoostWeight(familiar f, int target_weight)
 
 skill getZooKickYR()
 {
-	// Optimise countdowns here once Mafia has that info
-	if (leftKickHasYellowRay()) {
+	boolean isYR(int fam_id) {
+		familiar fam = to_familiar(fam_id);
+		return $familiars[quantum entangler, foul ball, Defective Childrens' Stapler] contains fam;
+	}
+	if (isYR(to_int(get_property("zootGraftedFootLeftFamiliar")))) {
 		return $skill[left %n kick];
 	}
-	if (rightKickHasYellowRay()) {
+	if (isYR(to_int(get_property("zootGraftedFootRightFamiliar")))) {
 		return $skill[right %n kick];
 	}
 	return $skill[none];
@@ -505,10 +508,15 @@ skill getZooKickSniff()
 
 skill getZooKickBanish()
 {
-	if (leftKickHasBanish()) {
+	if (have_effect($effect[Everything Looks Blue])>0) { return $skill[none]; }
+	boolean isBanish(int fam_id) {
+		familiar fam = to_familiar(fam_id);
+		return $familiars[Dire Cassava, Phantom Limb,MagiMechTech MicroMechaMech] contains fam;
+	}
+	if (isBanish(to_int(get_property("zootGraftedFootLeftFamiliar")))) {
 		return $skill[left %n kick];
 	}
-	if (rightKickHasBanish()) {
+	if (isBanish(to_int(get_property("zootGraftedFootRightFamiliar")))) {
 		return $skill[right %n kick];
 	}
 	return $skill[none];
@@ -560,16 +568,6 @@ boolean leftKickHasSniff()
 	return false;
 }
 
-boolean leftKickHasYellowRay()
-{
-	return true;
-}
-
-boolean leftKickHasBanish()
-{
-	return false;
-}
-
 boolean leftKickHasPickpocket()
 {
 	return false;
@@ -583,16 +581,6 @@ boolean leftKickHasFreeKill()
 boolean rightKickHasSniff()
 {
 	return false;
-}
-
-boolean rightKickHasYellowRay()
-{
-	return false;
-}
-
-boolean rightKickHasBanish()
-{
-	return have_effect($effect[Everything Looks Blue]) <= 0;
 }
 
 boolean rightKickHasPickpocket()
