@@ -21,12 +21,19 @@ void zoo_initializeSettings()
 	set_property("auto_grafts", "");
 }
 
-void zootomist_pulls()
+void zootomist_start_pulls()
 {
 	if (!in_zootomist() || pulls_remaining()==0) { return; }
 	if (!have_skill($skill[just the facts]) && auto_is_valid($skill[just the facts])) {
 		pullXWhenHaveY($item[book of facts (dog-eared)], 1, 0);
 		if (available_amount($item[book of facts (dog-eared)])>0) {use($item[book of facts (dog-eared)]);}
+	}
+	if (!have_skill($skill[perpetrate mild evil]) && auto_is_valid($skill[perpetrate mild evil])) {
+		pullXWhenHaveY($item[Pocket Guide to Mild Evil (used)], 1, 0);
+		if (available_amount($item[Pocket Guide to Mild Evil (used)])>0) {use($item[Pocket Guide to Mild Evil (used)]);}
+	}
+	if (available_amount($item[iflail])==0 && auto_is_valid($item[iflail])) {
+		pullXWhenHaveY($item[iflail], 1, 0);
 	}
 }
 
@@ -394,6 +401,11 @@ skill getZooKickFreeKill()
 		return $skill[right \ kick];
 	}
 	return $skill[none];
+}
+
+skill getZooBestPunch()
+{
+	return getZooBestPunch($monster[fluffy bunny]);
 }
 
 skill getZooBestPunch(monster m)

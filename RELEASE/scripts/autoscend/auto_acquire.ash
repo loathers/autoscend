@@ -654,7 +654,7 @@ int handlePulls(int day)
 		// pulls for Avant Guard path
 		ag_pulls();
 		// pulls for Z is for Zootomist path
-		zootomist_pulls();
+		zootomist_start_pulls();
 
 		// generic pulls for any path are below
 		if(auto_is_valid($item[etched hourglass]))

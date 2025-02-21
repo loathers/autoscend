@@ -884,6 +884,10 @@ void finalizeMaximize(boolean speculative)
 		{
 			addToMaximize("club");
 		}
+		else if (in_zootomist() && getZooBestPunch()!=$skill[none])
+		{
+			// Nothing to do here. Should be a more general case of "classes that never attack with weapon"?
+		}
 		else
 		{
 			addToMaximize("effective");
