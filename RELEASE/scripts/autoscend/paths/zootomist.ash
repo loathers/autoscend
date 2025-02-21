@@ -305,24 +305,24 @@ familiar zoo_useFam(int bodyPart)
 	familiar rbuffFam;
 	familiar lcombatFam;
 	familiar rcombatFam;
-	auto_log_info("Best Left nipple fams", "purple");
-	foreach fam, m in lbuffFams
-	{
-		if(m > lbuffFams[lbuffFam])
-		{
-			lbuffFam = fam;
-		}
-	}
-	auto_log_info(lbuffFam + ":" + lbuffFams[lbuffFam], "purple");
-	auto_log_info("Best Right nipple fams", "blue");
+	auto_log_info("Best Right nipple fams", "purple");
 	foreach fam, m in rbuffFams
 	{
-		if(m > rbuffFams[rbuffFam] && lbuffFam != fam)
+		if(m > rbuffFams[rbuffFam])
 		{
 			rbuffFam = fam;
 		}
 	}
-	auto_log_info(rbuffFam + ":" + rbuffFams[rbuffFam], "blue");
+	auto_log_info(rbuffFam + ":" + rbuffFams[rbuffFam], "purple");
+	auto_log_info("Best Left nipple fams", "blue");
+	foreach fam, m in lbuffFams
+	{
+		if(m > lbuffFams[lbuffFam] && rbuffFam != fam)
+		{
+			lbuffFam = fam;
+		}
+	}
+	auto_log_info(lbuffFam + ":" + lbuffFams[lbuffFam], "blue");
 	auto_log_info("Best Left Foot Fam", "green");
 	foreach fam, m in combatFams
 	{
