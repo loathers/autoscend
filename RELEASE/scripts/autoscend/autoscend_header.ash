@@ -1079,7 +1079,7 @@ boolean in_zootomist();
 void zoo_initializeSettings();
 void zootomist_start_pulls();
 string auto_grafted(int bodyPart);
-void zoo_useFam();
+familiar zoo_useFam(int bodyPart);
 boolean zooGraftFam();
 boolean zooBoostWeight(familiar f, int target_weight);
 skill getZooBestPunch();

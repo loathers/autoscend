@@ -9,6 +9,18 @@ static int ZOOPART_L_BUTTOCK  = 8;
 static int ZOOPART_R_BUTTOCK  = 9;
 static int ZOOPART_L_FOOT     = 10;
 static int ZOOPART_R_FOOT     = 11;
+static int[int] bodyPartPriority = {
+		ZOOPART_L_NIPPLE,
+		ZOOPART_R_NIPPLE,
+		ZOOPART_L_FOOT,
+		ZOOPART_HEAD,
+		ZOOPART_L_HAND,
+		ZOOPART_L_SHOULDER,
+		ZOOPART_R_SHOULDER,
+		ZOOPART_L_BUTTOCK,
+		ZOOPART_R_BUTTOCK,
+		ZOOPART_R_FOOT,
+		ZOOPART_R_HAND};
 
 boolean in_zootomist()
 {
@@ -67,8 +79,10 @@ string auto_grafted(int bodyPart)
 	return "";
 }
 
-void zoo_useFam()
+familiar zoo_useFam(int bodyPart)
 {
+	//Currently only called by user in gCLI to output what fam to target based on our weights. Will be called in zoo_useFam to automate grafting
+	//Will also be called to force familiar for levelling
 	//Identifies the 11 familiars we want based on what we have and stores them in prefs so we only go through the list of fams once
 	//Goes through fam attributes of all familiars and filters from there
 	string[familiar] famAttributes;
@@ -151,15 +165,15 @@ void zoo_useFam()
 		"hasstinger": 15, //10 spooky dmg
 		"haswings": 20, //20 myst
 		"hot": 15, //10 hot dmg
-		"hovers": 1000, //-5% combat
+		"hovers": 25, //-5% combat
 		"insect": 12.5, //25% init
 		"isclothes": 2, //4 cold res
 		"object": 40, //100 maxhp
-		"organic": 5, //+1 fam exp
+		"organic": 500, //+1 fam exp
 		"person": 1, //2 stench res
 		"phallic": 10, //10 moxie
 		"polygonal": 2, //4 sleaze res
-		"reallyevil": 1000, //-5 combat
+		"reallyevil": 25, //-5 combat
 		"robot": 37.5, //25% muscle
 		"sentient": 10, //5 fam weight
 		"sleaze": 50, //50% booze drop
@@ -187,14 +201,14 @@ void zoo_useFam()
 		"hard": 75, //50% muscle
 		"hasbones": 5, //50% dmg to skeletons
 		"hasclaws": 10, //50% weapon drop
-		"haseyes": 1000, //+5% combat
+		"haseyes": 25, //+5% combat
 		"hashands": 75, //15% item drop
 		"haslegs": 5, //25% gear drop
 		"hasshell": 20, //20 DR
 		"hasstinger": 2, //2x crit hit chance
 		"haswings": 25, //50% init
 		"hot": 1, //2 cold res
-		"insect": 5, //1 fam exp
+		"insect": 500, //1 fam exp
 		"isclothes": 5, //25% pant drop
 		"mineral": 20, //20 DR
 		"object": 2, //4 stench res
@@ -208,16 +222,17 @@ void zoo_useFam()
 		"sentient": 75, //50% myst
 		"software": 75, //20-30 mp regen
 		"spooky": 5, //50 ghost dmg
-		"stench": 1000, //+5% combat
+		"stench": 25, //+5% combat
 		"swims": 15, //10 cold dmg
 		"technological": 15, //10-20 hp regen
 		"undead": 3, //30 dmg to undead
 		"vegetable": 1, //2 sleaze res
 		"wearsclothes": 50, //50% max hp
 	};
+	boolean[familiar] blacklistFams = $familiars[reassembled blackbird, reconstituted crow];
 	foreach fam in $familiars[]
 	{
-		if(have_familiar(fam))
+		if(have_familiar(fam) && !(blacklistFams contains fam))
 		{
 			famAttributes[fam] = fam.attributes;
 		}
@@ -232,12 +247,34 @@ void zoo_useFam()
 			rbuffFams[fam] += rNipWeights[a];
 		}
 	}
-	auto_log_info("Best Head, shoulder and butt fams", "green");
 	familiar[5] intrinsicFam;
 	familiar lbuffFam;
 	familiar rbuffFam;
+	auto_log_info("Best Left nipple fams", "blue");
+	foreach fam, m in lbuffFams
+	{
+		if(m > lbuffFams[lbuffFam])
+		{
+			lbuffFam = fam;
+		}
+	}
+	auto_log_info(lbuffFam + ":" + lbuffFams[lbuffFam], "blue");
+	auto_log_info("Best Right nipple fams", "purple");
+	foreach fam, m in rbuffFams
+	{
+		if(m > rbuffFams[rbuffFam] && lbuffFam != fam)
+		{
+			rbuffFam = fam;
+		}
+	}
+	auto_log_info(rbuffFam + ":" + rbuffFams[rbuffFam], "purple");
+	auto_log_info("Best Head, shoulder and butt fams", "green");
 	foreach fam, m in intrinsicFams
 	{
+		if(rbuffFam == fam || lbuffFam == fam)
+		{
+			continue;
+		}
 		foreach i in intrinsicFam
 		{
 			if(m > intrinsicFams[intrinsicFam[i]])
@@ -256,24 +293,7 @@ void zoo_useFam()
 	{
 		auto_log_info(fam + ":" + intrinsicFams[fam], "green");
 	}
-	auto_log_info("Best Left nipple fams", "blue");
-	foreach fam, m in lbuffFams
-	{
-		if(m > lbuffFams[lbuffFam])
-		{
-			lbuffFam = fam;
-		}
-	}
-	auto_log_info(lbuffFam + ":" + lbuffFams[lbuffFam], "blue");
-	auto_log_info("Best Right nipple fams", "purple");
-	foreach fam, m in rbuffFams
-	{
-		if(m > rbuffFams[rbuffFam])
-		{
-			rbuffFam = fam;
-		}
-	}
-	auto_log_info(rbuffFam + ":" + rbuffFams[rbuffFam], "purple");
+	return $familiar[none];
 }
 
 boolean zooGraftFam()
@@ -323,8 +343,7 @@ boolean zooGraftFam()
 		ZOOPART_L_FOOT     : "left foot",
 		ZOOPART_R_FOOT     : "right foot"
 	};
-	//Ideally, we get the attributes of all familiars we have and rank them by what is best in each slot and level them from there
-	//We need access to familiar tags. There is this information already in familiars.txt in KoLMafia, we just need to parse it
+	//Probably don't need graftFam now that zoo_useFam is a thing. Good for verification of weights
 	string[familiar] graftFam = {
 		$familiar[oily woim]: "rbuff",
 		$familiar[killer bee]: "rbuff",
@@ -341,34 +360,22 @@ boolean zooGraftFam()
 		$familiar[quantum entangler]: "combat",
 		$familiar[magimechtech micromechamech]: "combat"
 	};
-	foreach fam, bodypart in graftFam
+	foreach p in bodyPartPriority
 	{
-		if(familiar_weight(fam) < get_property("auto_lastGraft").to_int()) //Use Mafia pref once that's a thing
+		string auto_grafts = auto_grafted(p);
+		if(auto_grafts != "") continue;
+		int famnumber = to_int(zoo_useFam(p));
+		if(familiar_weight(to_familiar(famnumber)) < get_property("auto_lastGraft").to_int()) //Use Mafia pref once that's a thing
 		{
 			//can only graft if the fam is higher than the level at the last graft
-			continue;
+			return false;
 		}
-		string auto_grafts = get_property("auto_grafts"); //Use Mafia pref once that's a thing
-		int famnumber = to_int(fam);
-		int bodyPartNum;
-		foreach i, bp in bodyPartType
-		{
-			if(contains_text(auto_grafts,i))
-			{
-				continue;
-			}
-			else if(bp == bodypart)
-			{
-				bodyPartNum = i;
-				break;
-			}
-		}
-		string temp = visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + bodyPartNum + "&fam=" + famnumber, true);
-		auto_log_info("Grafting a " + fam.to_string() + " to you", "blue");
-		handleTracker(fam,"Grafted to " + bodyPartName[bodyPartNum],"auto_otherstuff");
+		string temp = visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber, true);
+		auto_log_info("Grafting a " + to_familiar(famnumber).to_string() + " to you", "blue");
+		handleTracker(to_familiar(famnumber),"Grafted to " + bodyPartName[p],"auto_otherstuff");
 		return true;
 	}
-
+	
 	return false;
 }
 
