@@ -165,7 +165,7 @@ familiar zoo_useFam(int bodyPart)
 		"hasstinger": 15, //10 spooky dmg
 		"haswings": 20, //20 myst
 		"hot": 15, //10 hot dmg
-		"hovers": 25, //-5% combat
+		"hovers": 250, //-5% combat
 		"insect": 12.5, //25% init
 		"isclothes": 2, //4 cold res
 		"object": 40, //100 maxhp
@@ -173,7 +173,7 @@ familiar zoo_useFam(int bodyPart)
 		"person": 1, //2 stench res
 		"phallic": 10, //10 moxie
 		"polygonal": 2, //4 sleaze res
-		"reallyevil": 25, //-5 combat
+		"reallyevil": 250, //-5 combat
 		"robot": 37.5, //25% muscle
 		"sentient": 10, //5 fam weight
 		"sleaze": 50, //50% booze drop
@@ -229,6 +229,55 @@ familiar zoo_useFam(int bodyPart)
 		"vegetable": 1, //2 sleaze res
 		"wearsclothes": 50, //50% max hp
 	};
+	string[string] footParam = {
+		"bite": "instakill",
+		"cute": "instakill",
+		"evil": "instakill",
+		"food": "instakill",
+		"hasstinger": "instakill",
+		"object": "instakill",
+		"reallyevil": "instakill",
+		"stench": "instakill",
+		"animatedart": "banish",
+		"hard": "banish",
+		"hasbones": "banish",
+		"haslegs": "banish",
+		"haswings": "banish",
+		"spooky": "banish",
+		"swims": "banish",
+		"vegetable": "banish",
+		"hasbeak": "pp",
+		"hasclaws": "pp",
+		"hashands": "pp",
+		"isclothes": "pp",
+		"polygonal": "pp",
+		"sleaze": "pp",
+		"technological": "pp",
+		"wearsclothes": "pp",
+		"aquatic": "heal",
+		"cold": "heal",
+		"edible": "heal",
+		"good": "heal",
+		"organic": "heal",
+		"person": "heal",
+		"phallic": "heal",
+		"undead": "heal",
+		"animal": "sniff",
+		"haseyes": "sniff",
+		"hot": "sniff",
+		"humanoid": "sniff",
+		"mineral": "sniff",
+		"orb": "sniff",
+		"sentient": "sniff",
+		"software": "sniff"
+	};
+	int[string] footWeights = {
+		"instakill": 10,
+		"banish": 10,
+		"pp": 5,
+		"heal": 5,
+		"sniff": 5
+	};
 	boolean[familiar] blacklistFams = $familiars[reassembled blackbird, reconstituted crow];
 	foreach fam in $familiars[]
 	{
@@ -240,17 +289,21 @@ familiar zoo_useFam(int bodyPart)
 	foreach fam, attr in famAttributes
 	{
 		string[int] attrs = split_string(attr,"; ");
+		//buffs
 		foreach k, a in attrs
 		{
 			intrinsicFams[fam] += intrinsicWeights[a];
 			lbuffFams[fam] += lNipWeights[a];
 			rbuffFams[fam] += rNipWeights[a];
+			combatFams[fam] += footWeights[footParam[a]];
 		}
 	}
 	familiar[5] intrinsicFam;
 	familiar lbuffFam;
 	familiar rbuffFam;
-	auto_log_info("Best Left nipple fams", "blue");
+	familiar lcombatFam;
+	familiar rcombatFam;
+	auto_log_info("Best Left nipple fams", "purple");
 	foreach fam, m in lbuffFams
 	{
 		if(m > lbuffFams[lbuffFam])
@@ -258,8 +311,8 @@ familiar zoo_useFam(int bodyPart)
 			lbuffFam = fam;
 		}
 	}
-	auto_log_info(lbuffFam + ":" + lbuffFams[lbuffFam], "blue");
-	auto_log_info("Best Right nipple fams", "purple");
+	auto_log_info(lbuffFam + ":" + lbuffFams[lbuffFam], "purple");
+	auto_log_info("Best Right nipple fams", "blue");
 	foreach fam, m in rbuffFams
 	{
 		if(m > rbuffFams[rbuffFam] && lbuffFam != fam)
@@ -267,11 +320,32 @@ familiar zoo_useFam(int bodyPart)
 			rbuffFam = fam;
 		}
 	}
-	auto_log_info(rbuffFam + ":" + rbuffFams[rbuffFam], "purple");
-	auto_log_info("Best Head, shoulder and butt fams", "green");
-	foreach fam, m in intrinsicFams
+	auto_log_info(rbuffFam + ":" + rbuffFams[rbuffFam], "blue");
+	auto_log_info("Best Left Foot Fam", "green");
+	foreach fam, m in combatFams
 	{
 		if(rbuffFam == fam || lbuffFam == fam)
+		{
+			continue;
+		}
+		if(m > combatFams[lcombatFam])
+		{
+			lcombatFam = fam;
+		}
+	}
+	foreach fam in $familiars[quantum entangler, foul ball]
+	{
+		if(have_familiar(fam))
+		{
+			lcombatFam = fam;
+			break;
+		}
+	}
+	auto_log_info(lcombatFam + ":" + combatFams[lcombatFam], "green");
+	auto_log_info("Best Head, Shoulder, and Butt Fam", "orange");
+	foreach fam, m in intrinsicFams
+	{
+		if(rbuffFam == fam || lbuffFam == fam || lcombatFam == fam)
 		{
 			continue;
 		}
@@ -287,12 +361,32 @@ familiar zoo_useFam(int bodyPart)
 				break;
 			}
 		}
-		//auto_log_info(fam + ":" + m, "green");
 	}
 	foreach i, fam in intrinsicFam
 	{
-		auto_log_info(fam + ":" + intrinsicFams[fam], "green");
+		auto_log_info(fam + ":" + intrinsicFams[fam], "orange");
 	}
+	auto_log_info("Best Right Foot Fam", "red");
+	foreach fam, m in combatFams
+	{
+		if(rbuffFam == fam || lbuffFam == fam || lcombatFam == fam || intrinsicFams contains fam)
+		{
+			continue;
+		}
+		if(m > combatFams[rcombatFam])
+		{
+			rcombatFam = fam;
+		}
+	}
+	foreach fam in $familiars[dire cassava, phantom limb, MagiMechTech MicroMechaMech]
+	{
+		if(have_familiar(fam))
+		{
+			rcombatFam = fam;
+			break;
+		}
+	}
+	auto_log_info(rcombatFam + ":" + combatFams[rcombatFam], "red");
 	return $familiar[none];
 }
 
