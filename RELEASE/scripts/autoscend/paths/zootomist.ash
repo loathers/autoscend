@@ -101,10 +101,10 @@ familiar zoo_useFam(int bodyPart)
 		"hasclaws": 20, //20% meat drop
 		"bite": 15, //15% meat drop
 		"animal": 10, //10% meat drop
-		"haswings": 25, //50% initiative
-		"haslegs": 25, //50% initiative
-		"fast": 25, //50% initiative
-		"animatedart": 25, //50% initiative
+		"haswings": 12.5, //50% initiative
+		"haslegs": 12.5, //50% initiative
+		"fast": 12.5, //50% initiative
+		"animatedart": 12.5, //50% initiative
 		"robot": 10, //10 DR
 		"polygonal": 10, //10 DR
 		"hasshell": 10, //10 DR
@@ -151,7 +151,7 @@ familiar zoo_useFam(int bodyPart)
 		"edible": 20, //20 muscle
 		"evil": 15, //10 weapon dmg
 		"fast": 150, //30% item drop
-		"flies": 25, //50% initiative
+		"flies": 12.5, //50% initiative
 		"food": 30, //20 stench dmg
 		"good": 5, //50% dmg to skeletons
 		"hard": 5, //25% weapon drop
@@ -166,7 +166,7 @@ familiar zoo_useFam(int bodyPart)
 		"haswings": 20, //20 myst
 		"hot": 15, //10 hot dmg
 		"hovers": 250, //-5% combat
-		"insect": 12.5, //25% init
+		"insect": 6.25, //25% init
 		"isclothes": 2, //4 cold res
 		"object": 40, //100 maxhp
 		"organic": 500, //+1 fam exp
@@ -194,7 +194,7 @@ familiar zoo_useFam(int bodyPart)
 		"cute": 37.5, //25% moxie
 		"edible": 150, //30% booze drops
 		"evil": 30, //20 spooky dmg
-		"fast": 50, //100% initiative
+		"fast": 25, //100% initiative
 		"flies": 20, //20 moxie
 		"food": 250, //50% food drops
 		"good": 20, //10 fam weight
@@ -206,7 +206,7 @@ familiar zoo_useFam(int bodyPart)
 		"haslegs": 5, //25% gear drop
 		"hasshell": 20, //20 DR
 		"hasstinger": 2, //2x crit hit chance
-		"haswings": 25, //50% init
+		"haswings": 12.5, //50% init
 		"hot": 1, //2 cold res
 		"insect": 500, //1 fam exp
 		"isclothes": 5, //25% pant drop
@@ -281,7 +281,9 @@ familiar zoo_useFam(int bodyPart)
 	boolean[familiar] blacklistFams = $familiars[reassembled blackbird, reconstituted crow];
 	foreach fam in $familiars[]
 	{
+		//comment out below line and uncomment second below line to see all unrestricted fams
 		if(have_familiar(fam) && !(blacklistFams contains fam))
+		//if(is_unrestricted(fam))
 		{
 			famAttributes[fam] = fam.attributes;
 		}
