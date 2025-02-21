@@ -454,7 +454,7 @@ boolean auto_goingToMouthwashLevel()
 	{
 		return false;
 	}
-	if(in_zootomist())
+	if(auto_ignoreExperience())
 	{
 		return false;
 	}

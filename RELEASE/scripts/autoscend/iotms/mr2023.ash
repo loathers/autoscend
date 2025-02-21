@@ -516,18 +516,21 @@ void auto_buyFrom2002MrStore()
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
+		handleTracker("Mr. Store 2002","Claimed "+itemConsidering, "auto_iotm_claim");
 	}
 	//Pro skateboard to dupe tomb rat king drops
 	itemConsidering = $item[pro skateboard];
 	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering) && !possessEquipment(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+		handleTracker("Mr. Store 2002","Claimed "+itemConsidering, "auto_iotm_claim");
 	}
 	//FLUDA is +25% item, and a pickpocket
 	itemConsidering = $item[Flash Liquidizer Ultra Dousing Accessory];
 	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering) && !possessEquipment(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+		handleTracker("Mr. Store 2002","Claimed "+itemConsidering, "auto_iotm_claim");
 	}
 	// meat butler on day 1 of run
 	itemConsidering = $item[meat butler];
@@ -535,15 +538,17 @@ void auto_buyFrom2002MrStore()
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
+		handleTracker("Mr. Store 2002","Claimed "+itemConsidering, "auto_iotm_claim");
 	}
 	// giant black monolith. Mostly useful at low level for stats
 	if (have_campground() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) &&
-	!(auto_haveSeptEmberCenser() || auto_haveTrainSet())) {
+	!(auto_haveSeptEmberCenser() || auto_haveTrainSet()) && !auto_ignoreExperience()) {
 		itemConsidering = $item[giant black monolith];
 		if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
 		{
 			buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 			use(itemConsidering);
+			handleTracker("Mr. Store 2002","Claimed "+itemConsidering, "auto_iotm_claim");
 			visit_url("campground.php?action=monolith");
 		}
 	}
@@ -552,12 +557,14 @@ void auto_buyFrom2002MrStore()
 	if(remainingCatalogCredits() > 0 && in_hardcore() && my_daycount() == 1 && in_lol())
 	{
 		buy($coinmaster[Mr. Store 2002], remainingCatalogCredits(), itemConsidering);
+		handleTracker("Mr. Store 2002","Claimed "+itemConsidering, "auto_iotm_claim");
 	}
 	// loathing idol microphone. Use remaining credits
 	itemConsidering = $item[loathing idol microphone];
 	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], remainingCatalogCredits(), itemConsidering);
+		handleTracker("Mr. Store 2002","Claimed "+itemConsidering, "auto_iotm_claim");
 	}
 }
 
