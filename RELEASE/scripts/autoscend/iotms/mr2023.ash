@@ -131,6 +131,25 @@ boolean auto_havePayPhone()
 	return auto_is_valid($item[closed-circuit pay phone]) && item_amount($item[closed-circuit pay phone]) > 0;
 }
 
+boolean[location] auto_allRifts()
+{
+	return $locations[
+	    Shadow Rift (Desert Beach),
+	    Shadow Rift (Forest Village),
+	    Shadow Rift (Mt. McLargeHuge),
+	    Shadow Rift (Somewhere Over the Beanstalk),
+	    Shadow Rift (Spookyraven Manor Third Floor),
+	    Shadow Rift (The 8-Bit Realm),
+	    Shadow Rift (The Ancient Buried Pyramid),
+	    Shadow Rift (The Castle in the Clouds in the Sky),
+	    Shadow Rift (The Distant Woods),
+	    Shadow Rift (The Hidden City),
+	    Shadow Rift (The Misspelled Cemetary),
+	    Shadow Rift (The Nearby Plains),
+	    Shadow Rift (The Right Side of the Tracks)
+	];
+}
+
 location auto_availableBrickRift()
 {
 	if(!auto_havePayPhone())
@@ -144,11 +163,38 @@ location auto_availableBrickRift()
 	}
 
 	boolean[location] riftsWithBricks = $locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)];
+	boolean[location] riftsWithWishes = auto_riftsWithWishes();
+	// First loop checks for bricks and wishes if we have BoFA
+	if (auto_haveBofa() && auto_wishFactsLeft() > 0)
+	{
+		foreach loc in riftsWithBricks
+		{
+			if(riftsWithWishes contains loc && can_adventure(loc)) return loc;
+		}
+	}
+	// Then ignore wishes
 	foreach loc in riftsWithBricks
 	{
 		if(can_adventure(loc)) return loc;
 	}
 	return $location[none];
+}
+
+boolean[location] auto_riftsWithWishes()
+{
+	boolean[location] out;
+	foreach loc in auto_allRifts()
+	{
+		foreach m in get_location_monsters(loc)
+		{
+			if(item_fact(m)==$item[pocket wish])
+			{
+				out[loc] = true;
+				break;
+			}
+		}
+	}
+	return out;
 }
 
 int auto_neededShadowBricks()
@@ -837,6 +883,12 @@ boolean auto_circadianRhythmTarget(phylum target)
 		return false;
 	}
 	return true;
+}
+
+int auto_wishFactsLeft()
+{
+	if (!auto_haveBofa()) { return 0; }
+	return 3-get_property("_bookOfFactsWishes").to_int();
 }
 
 boolean auto_haveJillOfAllTrades()
