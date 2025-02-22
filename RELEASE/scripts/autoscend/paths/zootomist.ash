@@ -30,7 +30,6 @@ boolean in_zootomist()
 void zoo_initializeSettings()
 {
 	set_property("auto_lastGraft", 3);
-	set_property("auto_grafts", "");
 }
 
 void zootomist_start_pulls()
@@ -490,11 +489,13 @@ boolean zooGraftFam()
 	foreach p in bodyPartPriority
 	{
 		int auto_grafts = auto_grafted(p);
+		int auto_lastGraft = get_property("auto_lastGraft").to_int();
 		if(auto_grafts > 0) continue;
 		int famnumber = to_int(zoo_useFam(p, false));
-		if(familiar_weight(to_familiar(famnumber)) < get_property("auto_lastGraft").to_int()) //Use Mafia pref once that's a thing
+		if(familiar_weight(to_familiar(famnumber)) < auto_lastGraft) //Use Mafia pref once that's a thing
 		{
 			//can only graft if the fam is higher than the level at the last graft
+			zooBoostWeight(to_familiar(famnumber),auto_lastGraft);
 			return false;
 		}
 		string temp = visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber, true);
@@ -508,6 +509,64 @@ boolean zooGraftFam()
 
 boolean zooBoostWeight(familiar f, int target_weight)
 {
+	//Once this is proven to output as expected, actually do the operations, not just output stuff
+	float experience_needed = target_weight*target_weight - familiar_weight(f)*familiar_weight(f);
+	float mayam = 0;
+	boolean mayamavailable;
+	boolean piccoloavailable;
+	boolean specimenavailable;
+	if(auto_haveMayamCalendar() && !(auto_MayamIsUsed("fur")) && !(auto_MayamAllUsed()))
+	{
+		mayam = 100;
+		mayamavailable = true;
+	}
+	float piccolo = 0;
+	if(auto_haveAprilingBandHelmet() && possessEquipment($item[Apriling band piccolo]) && get_property("_aprilBandPiccoloUses").to_int() < 3)
+	{
+		piccolo = 40;
+		piccoloavailable = true;
+	}
+	float specimen = 0;
+	if(get_property("zootSpecimensPrepared").to_int() <= get_property("zootomistPoints").to_int())
+	{
+		specimen = 20;
+		specimenavailable = true;
+	}
+	maximize("familiar experience", false);
+	float fight = numeric_modifier("familiar experience");
+	auto_log_info("Your familiar needs " + experience_needed + " experience");
+	auto_log_info("To level up your familiar, you should:");
+	float amt = 0;
+	float diff = experience_needed - amt;
+	while(diff >= 1)
+	{
+		if(diff > 100 && mayam > 0 && mayamavailable)
+		{
+			auto_log_info("Use the Mayam calendar and get fur on the outer ring");
+			amt += mayam;
+			mayamavailable = false;
+		}
+		else if(diff > 40 && piccolo > 0 && piccoloavailable)
+		{
+			auto_log_info("Play the Apriling Band Piccolo");
+			amt += piccolo;
+			piccoloavailable = false;
+		}
+		else if(diff > 20 && specimen > 0 && specimenavailable)
+		{
+			auto_log_info("Use the Specimen Preparation Bench");
+			amt += specimen;
+			specimenavailable = false;
+		}
+		else
+		{
+			int fights_needed = ceil(diff / fight);
+			auto_log_info("Do " + fights_needed + " (preferably free) fights");
+			amt += fight * fights_needed;
+		}
+		diff = experience_needed - amt;
+		auto_log_info("Diff = " + diff);
+	}
 	return false;
 }
 
