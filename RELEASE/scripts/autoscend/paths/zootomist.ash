@@ -49,37 +49,37 @@ void zootomist_start_pulls()
 	}
 }
 
-string auto_grafted(int bodyPart)
+int auto_grafted(int bodyPart)
 {
 	switch(bodyPart)
 	{
 		case 1:
-			return get_property("zootGraftedHeadFamiliar");
+			return get_property("zootGraftedHeadFamiliar").to_int();
 		case 2:
-			return get_property("zootGraftedShoulderLeftFamiliar");
+			return get_property("zootGraftedShoulderLeftFamiliar").to_int();
 		case 3:
-			return get_property("zootGraftedShoulderRightFamiliar");
+			return get_property("zootGraftedShoulderRightFamiliar").to_int();
 		case 4:
-			return get_property("zootGraftedHandLeftFamiliar");
+			return get_property("zootGraftedHandLeftFamiliar").to_int();
 		case 5:
-			return get_property("zootGraftedHandRightFamiliar");
+			return get_property("zootGraftedHandRightFamiliar").to_int();
 		case 6:
-			return get_property("zootGraftedNippleLeftFamiliar");
+			return get_property("zootGraftedNippleLeftFamiliar").to_int();
 		case 7:
-			return get_property("zootGraftedNippleRightFamiliar");
+			return get_property("zootGraftedNippleRightFamiliar").to_int();
 		case 8:
-			return get_property("zootGraftedButtCheekLeftFamiliar");
+			return get_property("zootGraftedButtCheekLeftFamiliar").to_int();
 		case 9:
-			return get_property("zootGraftedButtCheekRightFamiliar");
+			return get_property("zootGraftedButtCheekRightFamiliar").to_int();
 		case 10:
-			return get_property("zootGraftedFootLeftFamiliar");
+			return get_property("zootGraftedFootLeftFamiliar").to_int();
 		case 11:
-			return get_property("zootGraftedFootRightFamiliar");
+			return get_property("zootGraftedFootRightFamiliar").to_int();
 	}
-	return "";
+	return 0;
 }
 
-familiar zoo_useFam(int bodyPart)
+familiar zoo_useFam(int bodyPart, boolean sim)
 {
 	//Currently only called by user in gCLI to output what fam to target based on our weights. Will be called in zoo_useFam to automate grafting
 	//Will also be called to force familiar for levelling
@@ -305,7 +305,6 @@ familiar zoo_useFam(int bodyPart)
 	familiar rbuffFam;
 	familiar lcombatFam;
 	familiar rcombatFam;
-	auto_log_info("Best Right nipple fams", "purple");
 	foreach fam, m in rbuffFams
 	{
 		if(m > rbuffFams[rbuffFam])
@@ -313,8 +312,6 @@ familiar zoo_useFam(int bodyPart)
 			rbuffFam = fam;
 		}
 	}
-	auto_log_info(rbuffFam + ":" + rbuffFams[rbuffFam], "purple");
-	auto_log_info("Best Left nipple fams", "blue");
 	foreach fam, m in lbuffFams
 	{
 		if(m > lbuffFams[lbuffFam] && rbuffFam != fam)
@@ -322,8 +319,6 @@ familiar zoo_useFam(int bodyPart)
 			lbuffFam = fam;
 		}
 	}
-	auto_log_info(lbuffFam + ":" + lbuffFams[lbuffFam], "blue");
-	auto_log_info("Best Left Foot Fam", "green");
 	foreach fam, m in combatFams
 	{
 		if(rbuffFam == fam || lbuffFam == fam)
@@ -343,8 +338,6 @@ familiar zoo_useFam(int bodyPart)
 			break;
 		}
 	}
-	auto_log_info(lcombatFam + ":" + combatFams[lcombatFam], "green");
-	auto_log_info("Best Head, Shoulder, and Butt Fam", "orange");
 	foreach fam, m in intrinsicFams
 	{
 		if(rbuffFam == fam || lbuffFam == fam || lcombatFam == fam)
@@ -364,11 +357,6 @@ familiar zoo_useFam(int bodyPart)
 			}
 		}
 	}
-	foreach i, fam in intrinsicFam
-	{
-		auto_log_info(fam + ":" + intrinsicFams[fam], "orange");
-	}
-	auto_log_info("Best Right Foot Fam", "red");
 	foreach fam, m in combatFams
 	{
 		if(rbuffFam == fam || lbuffFam == fam || lcombatFam == fam || intrinsicFams contains fam)
@@ -388,7 +376,50 @@ familiar zoo_useFam(int bodyPart)
 			break;
 		}
 	}
-	auto_log_info(rcombatFam + ":" + combatFams[rcombatFam], "red");
+	if(sim)
+	{
+		auto_log_info("Best Right nipple fams", "purple");
+		auto_log_info(rbuffFam + ":" + rbuffFams[rbuffFam], "purple");
+		auto_log_info("Best Left nipple fams", "blue");
+		auto_log_info(lbuffFam + ":" + lbuffFams[lbuffFam], "blue");
+		auto_log_info("Best Left Foot Fam", "green");
+		auto_log_info(lcombatFam + ":" + combatFams[lcombatFam], "green");
+		auto_log_info("Best Head, Shoulder, and Butt Fam", "orange");
+		foreach i, fam in intrinsicFam
+		{
+			auto_log_info(fam + ":" + intrinsicFams[fam], "orange");
+		}
+		auto_log_info("Best Right Foot Fam", "red");
+		auto_log_info(rcombatFam + ":" + combatFams[rcombatFam], "red");
+	}
+	else
+	{
+		switch(bodyPart)
+		{
+			case 1:
+				return intrinsicFam[0];
+			case 2:
+				return intrinsicFam[0];
+			case 3:
+				return intrinsicFam[0];
+			case 4:
+				return $familiar[Barrrnacle];
+			case 5:
+				return $familiar[Blood-Faced Volleyball];
+			case 6:
+				return lbuffFam;
+			case 7:
+				return rbuffFam;
+			case 8:
+				return intrinsicFam[0];
+			case 9:
+				return intrinsicFam[0];
+			case 10:
+				return lcombatFam;
+			case 11:
+				return rcombatFam;
+		}
+	}
 	return $familiar[none];
 }
 
@@ -458,9 +489,9 @@ boolean zooGraftFam()
 	};
 	foreach p in bodyPartPriority
 	{
-		string auto_grafts = auto_grafted(p);
-		if(auto_grafts != "") continue;
-		int famnumber = to_int(zoo_useFam(p));
+		int auto_grafts = auto_grafted(p);
+		if(auto_grafts > 0) continue;
+		int famnumber = to_int(zoo_useFam(p, false));
 		if(familiar_weight(to_familiar(famnumber)) < get_property("auto_lastGraft").to_int()) //Use Mafia pref once that's a thing
 		{
 			//can only graft if the fam is higher than the level at the last graft
