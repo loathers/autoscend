@@ -501,6 +501,7 @@ boolean zooGraftFam()
 		string temp = visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber, true);
 		auto_log_info("Grafting a " + to_familiar(famnumber).to_string() + " to you", "blue");
 		handleTracker(to_familiar(famnumber),"Grafted to " + bodyPartName[p],"auto_otherstuff");
+		set_property("auto_lastGraft", auto_lastGraft + 1);
 		return true;
 	}
 	
@@ -534,7 +535,7 @@ boolean zooBoostWeight(familiar f, int target_weight)
 	}
 	maximize("familiar experience", false);
 	float fight = numeric_modifier("familiar experience");
-	auto_log_info("Your familiar needs " + experience_needed + " experience");
+	auto_log_info(f + " needs " + experience_needed + " experience");
 	auto_log_info("To level up your familiar, you should:");
 	float amt = 0;
 	float diff = experience_needed - amt;
