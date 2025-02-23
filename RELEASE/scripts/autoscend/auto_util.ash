@@ -4608,7 +4608,7 @@ int poolSkillPracticeGains()
 boolean hasUsefulShirt()
 {
 	int amtUsefulShirts = 0;
-	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac, jurassic parka]
+	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac, jurassic parka, hairshirt, futuristic shirt]
 	{
 		item w_it = wrap_item(it);
 		if(item_amount(w_it) != 0 && is_unrestricted(w_it)) amtUsefulShirts += 1;
