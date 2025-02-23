@@ -3,8 +3,8 @@ static int ZOOPART_L_SHOULDER = 2;
 static int ZOOPART_R_SHOULDER = 3;
 static int ZOOPART_L_HAND     = 4;
 static int ZOOPART_R_HAND     = 5;
-static int ZOOPART_L_NIPPLE   = 6;
-static int ZOOPART_R_NIPPLE   = 7;
+static int ZOOPART_R_NIPPLE   = 6;
+static int ZOOPART_L_NIPPLE   = 7;
 static int ZOOPART_L_BUTTOCK  = 8;
 static int ZOOPART_R_BUTTOCK  = 9;
 static int ZOOPART_L_FOOT     = 10;
@@ -63,9 +63,9 @@ int auto_grafted(int bodyPart)
 		case 5:
 			return get_property("zootGraftedHandRightFamiliar").to_int();
 		case 6:
-			return get_property("zootGraftedNippleLeftFamiliar").to_int();
-		case 7:
 			return get_property("zootGraftedNippleRightFamiliar").to_int();
+		case 7:
+			return get_property("zootGraftedNippleLeftFamiliar").to_int();
 		case 8:
 			return get_property("zootGraftedButtCheekLeftFamiliar").to_int();
 		case 9:
@@ -406,9 +406,9 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 			case 5:
 				return $familiar[Blood-Faced Volleyball];
 			case 6:
-				return lbuffFam;
-			case 7:
 				return rbuffFam;
+			case 7:
+				return lbuffFam;
 			case 8:
 				return intrinsicFam[0];
 			case 9:
