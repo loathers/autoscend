@@ -600,7 +600,12 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[The Penultimate Fantasy Airship]:
-		if(delay._int == 0 || (auto_haveBatWings() && available_amount($item[S.O.C.K.])==0))
+		if (in_bugbear() && bugbear_BioDataRemaining($location[Engineering]) > 0)
+		{
+			// When hunting bugbears, we want normal combats, not NC combats
+			value = 10;
+		}
+		else if(delay._int == 0 || (auto_haveBatWings() && available_amount($item[S.O.C.K.])==0))
 		{
 			value = -80;
 		}

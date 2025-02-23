@@ -723,6 +723,7 @@ boolean in_bugbear();
 void bugbear_initializeSettings();
 boolean LX_bugbearInvasion();
 boolean LX_bugbearInvasionFinale();
+int bugbear_BioDataRemaining(location loc);
 
 ########################################################################################################
 //Defined in autoscend/paths/casual.ash
