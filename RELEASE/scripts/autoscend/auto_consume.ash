@@ -1985,7 +1985,7 @@ boolean auto_chewAdventures()
 	//tries to chew a size 4 familiar spleen item that gives adventures. All are IOTM derivatives with 1.875 adv/size
 	boolean liver_check = my_inebriety() < inebriety_limit() && !in_kolhs();	//kolhs has special drinking. liver often unfilled
 	if(liver_check || my_fullness() < fullness_limit()
-		|| ((my_adventures() > 1+auto_advToReserve()) && !almostRollover()))
+		|| (my_adventures() > max(10,1+auto_advToReserve()) && !almostRollover()))
 	{
 		return false;	//1.875 A/S is bad. only chew if 1 adv remains
 	}
@@ -2206,7 +2206,7 @@ void consumeStuff()
 
 	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
 	
-	if (my_adventures() < 10 && fullness_left() > 0 && is_boris())
+	if (my_adventures() < max(10,1+auto_advToReserve()) && fullness_left() > 0 && is_boris())
 	{
 		borisDemandSandwich(true);
 	}
@@ -2229,8 +2229,8 @@ void consumeStuff()
 		}
 	}
 
-	// If adventures low, or it's almost Rollover, we need to consume
-	if ((my_adventures() < 10 && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover()))
+	// If adventures at our reserve amount, or it's almost Rollover, we need to consume
+	if ((my_adventures() < max(10,1+auto_advToReserve()) && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover()))
 	{
 		// always unequip stooper as only useful for roll over
 		if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 
