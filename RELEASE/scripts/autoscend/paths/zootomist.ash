@@ -486,12 +486,14 @@ boolean zooGraftFam()
 		$familiar[quantum entangler]: "combat",
 		$familiar[magimechtech micromechamech]: "combat"
 	};
-	foreach p in bodyPartPriority
+	foreach i, p in bodyPartPriority
 	{
+		auto_log_info(p);
 		int auto_grafts = auto_grafted(p);
 		int auto_lastGraft = get_property("auto_lastGraft").to_int();
 		if(auto_grafts > 0) continue;
 		int famnumber = to_int(zoo_useFam(p, false));
+		use_familiar(to_familiar(famnumber));
 		if(familiar_weight(to_familiar(famnumber)) < auto_lastGraft) //Use Mafia pref once that's a thing
 		{
 			//can only graft if the fam is higher than the level at the last graft
