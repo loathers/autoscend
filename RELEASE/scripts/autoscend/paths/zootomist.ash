@@ -74,8 +74,9 @@ int auto_grafted(int bodyPart)
 			return get_property("zootGraftedFootLeftFamiliar").to_int();
 		case 11:
 			return get_property("zootGraftedFootRightFamiliar").to_int();
+		default:
+			return 0;
 	}
-	return 0;
 }
 
 familiar zoo_useFam(int bodyPart, boolean sim)
@@ -488,10 +489,10 @@ boolean zooGraftFam()
 	};
 	foreach i, p in bodyPartPriority
 	{
-		auto_log_info(p);
 		int auto_grafts = auto_grafted(p);
 		int auto_lastGraft = get_property("auto_lastGraft").to_int();
 		if(auto_grafts > 0) continue;
+		auto_log_info(p);
 		int famnumber = to_int(zoo_useFam(p, false));
 		use_familiar(to_familiar(famnumber));
 		if(familiar_weight(to_familiar(famnumber)) < auto_lastGraft) //Use Mafia pref once that's a thing
@@ -500,13 +501,15 @@ boolean zooGraftFam()
 			zooBoostWeight(to_familiar(famnumber),auto_lastGraft);
 			return false;
 		}
-		string temp = visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber, true);
+		visit_url("place.php?whichplace=graftinglab&action=graftinglab_chamber");
+		visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber);
 		auto_log_info("Grafting a " + to_familiar(famnumber).to_string() + " to you", "blue");
 		handleTracker(to_familiar(famnumber),"Grafted to " + bodyPartName[p],"auto_otherstuff");
 		set_property("auto_lastGraft", auto_lastGraft + 1);
 		return true;
 	}
 	
+	auto_log_info("No more to graft");
 	return false;
 }
 
