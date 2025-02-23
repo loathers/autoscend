@@ -2012,7 +2012,12 @@ float substat_to_level(int n);
 stat stat_to_substat(stat s);
 float stat_exp_percent(stat s);
 boolean auto_equalizeStats();
+item[int] auto_getListOfNonDamagingFamiliarEquipment();
+stat auto_getOffStatChallengeFromTelescope();
+element auto_getElementChallengeFromTelescope();
+boolean auto_amIRich();
 int auto_roughExpectedTurnsLeftToday();
+boolean auto_wantToFreeKillWithNoDrops(location loc, monster enemy);
 boolean auto_ignoreExperience();
 boolean auto_needAccordion();
 boolean auto_inRonin()

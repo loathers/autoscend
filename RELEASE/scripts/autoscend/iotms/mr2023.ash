@@ -44,69 +44,8 @@ boolean wantToThrowGravel(location loc, monster enemy)
 	if (isFreeMonster(enemy, loc)) { return false; } // don't use gravel against inherently free fights
 	// prevent overuse after breaking ronin or in casual
 	if(can_interact()) return false;
-
-	// only want certain enemies to free-kill in Avant Guard
-	if(in_avantGuard())
-	{
-		if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
-		{
-			return true;
-		}
-		//This is called in stage2 and auto_purple_candled is set in stage 4 so this should only ever show up on the purple candled enemy
-		if(get_property("auto_purple_candled").to_monster() == enemy)
-		{
-			return true;
-		}
-		return false;
-	}
-
-	// many monsters in these zones with similar names
-	if(loc == $location[The Battlefield (Frat Uniform)] && 
-		(contains_text(enemy.to_string(), "War Hippy")) ||
-		$strings[Bailey's Beetle, Mobile Armored Sweat Lodge] contains enemy)
-	{
-		return true;
-	}
-	if(loc == $location[The Battlefield (Hippy Uniform)] && contains_text(enemy.to_string(), "War Frat"))
-	{
-		return true;
-	}
-	if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
-	{
-		return true;
-	}
-
-	// look for specific monsters in zones where some monsters we do care about
-	static boolean[string] gravelTargets = $strings[
-		// The Haunted Bathroom
-		claw-foot bathtub,
-		malevolent hair clog,
-		toilet papergeist,
-
-		// The Haunted Gallery
-		cubist bull,
-		empty suit of armor,
-		guy with a pitchfork, and his wife,
-
-		// The Haunted Bedroom
-		animated mahogany nightstand,
-		animated ornate nightstand,
-		animated rustic nightstand,
-		elegant animated nightstand,
-		Wardr&ouml;b nightstand,
-		
-		// The Haunted Wine Cellar
-		skeletal sommelier,
-
-		// The Haunted Laundry Room
-		plaid ghost,
-		possessed laundry press,
-
-		// The Haunted Boiler Room
-		coaltergeist,
-		steam elemental
-	];
-	return gravelTargets contains enemy;
+	
+	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
 boolean auto_haveSITCourse()

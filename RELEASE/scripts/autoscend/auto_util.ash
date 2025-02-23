@@ -4911,6 +4911,83 @@ boolean auto_equalizeStats()
 	return false;
 }
 
+item[int] auto_getListOfNonDamagingFamiliarEquipment()
+{
+	// Returns items of generic familiar equipment that do not cause damage when equipped to a non-damage familiar
+	// Sorted by familiar weight boost, highest to lowest
+	boolean[item] base_list = $items[astral pet sweater, tiny stillsuit, tiny gold medal, lead necklace,
+	  futuristic collar, miniature crystal ball, tiny rake];
+	boolean[item] valid_and_available;
+	foreach it in base_list
+	{
+		if(auto_is_valid(it) && available_amount(it)>0)
+		{
+			valid_and_available[it] = true;
+		}
+	}
+	// Have to sort each time because futuristic collar changes
+	return auto_sortedByModifier(valid_and_available,$modifier[familiar weight],true);
+}
+
+stat auto_getOffStatChallengeFromTelescope()
+{
+	string musc  = "standing around flexing";
+	string myst  = "sitting around playing chess";
+	string moxie = "all wearing sunglasses and dancing";
+	string scope = get_property("telescope1");
+	
+	if (contains_text(scope,musc))
+	{
+		return $stat[muscle];
+	}
+	else if (contains_text(scope,myst))
+	{
+		return $stat[mysticality];
+	}
+	else if (contains_text(scope,moxie))
+	{
+		return $stat[moxie];
+	}
+	return $stat[none];
+}
+
+element auto_getElementChallengeFromTelescope()
+{
+	string hot    = "fire";
+	string cold   = "igloos";
+	string spooky = "eldritch";
+	string sleaze = "greasy";
+	string stench = "garbage";
+	string scope = get_property("telescope2");
+	
+	if (contains_text(scope,hot))
+	{
+		return $element[hot];
+	}
+	else if (contains_text(scope,cold))
+	{
+		return $element[cold];
+	}
+	else if (contains_text(scope,spooky))
+	{
+		return $element[spooky];
+	}
+	else if (contains_text(scope,sleaze))
+	{
+		return $element[sleaze];
+	}
+	else if (contains_text(scope,stench))
+	{
+		return $element[stench];
+	}
+	return $element[none];
+}
+
+boolean auto_amIRich()
+{
+	return my_meat() > meatReserve()+5000;
+}
+
 int auto_roughExpectedTurnsLeftToday()
 {
 	// Not designed to be accurate, just simple.
@@ -4952,6 +5029,89 @@ int auto_roughExpectedTurnsLeftToday()
 		drink_val = 2.5;
 	}
 	return curr + floor(stom*eat_val + liv*drink_val + spl*spl_val);
+}
+
+boolean auto_wantToFreeKillWithNoDrops(location loc, monster enemy)
+{
+	// only want certain enemies to free-kill in Avant Guard
+	if(in_avantGuard())
+	{
+		if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
+		{
+			return true;
+		}
+		//This is called in stage2 and auto_purple_candled is set in stage 4 so this should only ever show up on the purple candled enemy
+		if(get_property("auto_purple_candled").to_monster() == enemy)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	// many monsters in these zones with similar names
+	if(loc == $location[The Battlefield (Frat Uniform)] && 
+		(contains_text(enemy.to_string(), "War Hippy")) ||
+		$strings[Bailey's Beetle, Mobile Armored Sweat Lodge] contains enemy)
+	{
+		return true;
+	}
+	if(loc == $location[The Battlefield (Hippy Uniform)] && contains_text(enemy.to_string(), "War Frat"))
+	{
+		return true;
+	}
+	if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
+	{
+		return true;
+	}
+
+	// look for specific monsters in zones where some monsters we do care about
+	static boolean[string] targets = $strings[
+		// The Haunted Bathroom
+		claw-foot bathtub,
+		malevolent hair clog,
+		toilet papergeist,
+
+		// The Haunted Gallery
+		cubist bull,
+		empty suit of armor,
+		guy with a pitchfork, and his wife,
+
+		// The Haunted Bedroom
+		animated mahogany nightstand,
+		animated ornate nightstand,
+		animated rustic nightstand,
+		elegant animated nightstand,
+		Wardr&ouml;b nightstand,
+		
+		// The Haunted Wine Cellar
+		skeletal sommelier,
+
+		// The Haunted Laundry Room
+		plaid ghost,
+		possessed laundry press,
+
+		// The Haunted Boiler Room
+		coaltergeist,
+		steam elemental,
+		
+		// The 8-bit realm
+		octorok,
+		keese,
+		tektite,
+		zol,
+		blader,
+		met,
+		tackle fire,
+		blooper,
+		bullet bill,
+		buzzy beetle,
+		goomba,
+		koopa troopa,
+		fleaman,
+		ghost,
+		medusa
+	];
+	return targets contains enemy;
 }
 
 boolean auto_ignoreExperience()
