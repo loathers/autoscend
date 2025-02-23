@@ -516,7 +516,7 @@ string defaultMaximizeStatement()
 		borisTrusty();						//forceequip trusty. the modification it makes to the maximizer string will be lost so also do next line
 		res +=	",-weapon,-offhand";		//we do not want maximizer trying to touch weapon or offhand slot in boris
 	}
-	else if(!in_plumber())
+	else if(!(in_plumber() || in_zootomist()))
 	{
 		if(my_primestat() == $stat[Mysticality])
 		{
