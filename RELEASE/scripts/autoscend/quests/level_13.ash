@@ -586,6 +586,10 @@ boolean L13_towerNSContests()
 				break;
 			}
 			
+			if(crowd2Insufficient())
+			{
+				auto_equalizeStats();
+			}
 			if(crowd2Insufficient() && !in_small())
 			{
 				if (!in_small())
@@ -1368,6 +1372,15 @@ boolean L13_towerNSTowerBones()
 	{
 		addToMaximize("-familiar");
 		equip($slot[familiar], $item[none]);
+		// Try just boosting weight
+		foreach i,it in auto_getListOfNonDamagingFamiliarEquipment()
+		{
+			if (can_equip(my_familiar(),it))
+			{
+				equip($slot[familiar],it);
+				break;
+			}
+		}
 	}
 	
 	if (auto_remainingCandyCaneSlashes()>0)
