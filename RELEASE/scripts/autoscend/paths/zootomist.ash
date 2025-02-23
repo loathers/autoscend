@@ -430,8 +430,8 @@ boolean zooGraftFam()
 	3 = right shoulder
 	4 = left hand
 	5 = right hand
-	6 = left nipple
-	7 = right nipple
+	6 = right nipple
+	7 = left nipple
 	8 = left butt cheek
 	9 = right butt cheek
 	10 = left foot
