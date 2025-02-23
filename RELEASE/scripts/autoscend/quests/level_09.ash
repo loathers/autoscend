@@ -331,6 +331,15 @@ boolean L9_chasmBuild()
 	{
 		return true;
 	}
+	
+	if (auto_inRonin() || auto_haveMayamCalendar() || auto_haveSeptEmberCenser())
+	{
+		if (auto_waitForDay2())
+		{
+			auto_log_debug("Delaying Logging Camp waiting for day 2.");
+			return false;
+		}
+	}
 
 	if (shenShouldDelayZone($location[The Smut Orc Logging Camp]))
 	{

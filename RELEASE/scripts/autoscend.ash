@@ -234,6 +234,7 @@ void initializeSettings() {
 	set_property("auto_powerLevelAdvCount", "0");
 	set_property("auto_powerLevelLastAttempted", "0");
 	set_property("auto_pulls", "");
+	set_property("auto_day2WaitLastLevel", "0");
 	remove_property("auto_shenZonesTurnsSpent");
 	remove_property("auto_lastShenTurn");
 	set_property("auto_sniffs", "");

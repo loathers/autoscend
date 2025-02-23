@@ -4968,3 +4968,8 @@ boolean auto_needAccordion()
 	}
 	return true;
 }
+
+boolean auto_inRonin()
+{
+	return !(can_interact() || in_hardcore());
+}

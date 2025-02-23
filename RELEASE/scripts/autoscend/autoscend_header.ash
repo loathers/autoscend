@@ -1746,7 +1746,9 @@ location solveDelayZone(boolean skipOutdoorZones);
 location solveDelayZone();
 boolean canBurnDelay(location loc);
 boolean allowSoftblockUndergroundAdvs();
+boolean allowSoftblockDay2Wait();
 boolean auto_reserveUndergroundAdventures();
+boolean auto_waitForDay2();
 boolean auto_earlyRoutingHandling();
 boolean auto_softBlockHandler();
 
@@ -2013,3 +2015,4 @@ boolean auto_equalizeStats();
 int auto_roughExpectedTurnsLeftToday();
 boolean auto_ignoreExperience();
 boolean auto_needAccordion();
+boolean auto_inRonin()

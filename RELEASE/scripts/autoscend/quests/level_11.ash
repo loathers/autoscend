@@ -2479,6 +2479,16 @@ boolean L11_mauriceSpookyraven()
 
 	if (possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
+		// Zootomist probably wants to wait until D2 in SC for this.
+		if (auto_inRonin() && in_zootomist())
+		{
+			if (auto_waitForDay2())
+			{
+				auto_log_debug("Delaying Monstrous Boiler waiting for day 2.");
+				return false;
+			}
+		}
+		
 		auto_MaxMLToCap(auto_convertDesiredML(82), true);
 		addToMaximize("500ml " + auto_convertDesiredML(82) + "max");
 
