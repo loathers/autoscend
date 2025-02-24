@@ -2031,8 +2031,15 @@ boolean LX_summonMonster()
 	}
 
 	// summon LFM if don't have autumnaton since that guarantees 1 turn to get 5 barrels
-	if(item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && 
-	my_level() >= 12 && !auto_hasAutumnaton() && canSummonMonster($monster[lobsterfrogman]))
+	int gunpowder_left = 5-item_amount($item[barrel of gunpowder]);
+	boolean canCopyLFM()
+	{
+		return (auto_canHabitat() || auto_backupUsesLeft() >= max(gunpowder_left-1,0));
+	}
+	if(get_property("sidequestLighthouseCompleted") == "none" && gunpowder_left > 0 &&
+	   my_level() >= 12 && canSummonMonster($monster[lobsterfrogman]) && 
+	   (canCopyLFM() || gunpowder_left == 1) && !(auto_habitatMonster() == $monster[lobsterfrogman]) &&
+	   (get_property("lastEncounter")!=$monster[lobsterfrogman]) && !auto_hasAutumnaton())
 	{
 		if(summonMonster($monster[lobsterfrogman])) return true;
 	}
