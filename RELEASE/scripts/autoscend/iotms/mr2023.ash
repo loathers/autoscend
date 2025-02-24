@@ -227,6 +227,17 @@ boolean auto_doPhoneQuest()
 	return autoAdv(auto_availableBrickRift());
 }
 
+boolean auto_isShadowRiftMonster(monster m)
+{
+	boolean[monster] reg = $monsters[
+	  shadow bat, shadow cow, shadow devil, shadow guy, shadow hexagon, shadow orb,
+	  shadow prism, shadow slab, shadow snake, shadow spider, shadow stalk, shadow tree ];
+	boolean[monster] boss = $monsters[
+	  shadow cauldron, shadow matrix, shadow orrery, shadow scythe,
+	  shadow spire, shadow tongue ];
+	return reg contains m || boss contains m;
+}
+
 boolean auto_haveMonkeyPaw()
 {
 	static item paw = $item[cursed monkey\'s paw];

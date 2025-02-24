@@ -1,5 +1,10 @@
 //this file is utility functions that are only used for combat file.
 
+int defaultRoundLimit()
+{
+	return 25;
+}
+
 boolean haveUsed(skill sk)
 {
 	return get_property("_auto_combatState").contains_text("(sk" + sk.to_int().to_string() + ")");
@@ -1171,6 +1176,21 @@ boolean wantToDouse(monster enemy)
 			return item_amount($item[filthworm royal guard scent gland]) == 0;
 	}
 	return false;
+}
+
+int maxRoundsToDouse(monster enemy)
+{
+	int rounds = defaultRoundLimit() - 3;
+	if (auto_isShadowRiftMonster(enemy))  { rounds -= 3; } // resist damage, take longer
+	if (my_class()==$class[disco bandit]) { rounds -= 3; } // DBs take a while to kill b/c disco momentum and potentially low damage
+	
+	// save a round for flyering if we're doing that.
+	item flyer = auto_warSide() == "hippy" ? $item[Jam Band Flyers] : $item[Rock Band Flyers];
+	if (canUse(flyer) && get_property("flyeredML").to_int() < 10000) { rounds -= 1; }
+	// Or pants removal
+	if (canUse($skill[tear away your pants!])) { rounds -= 1; }
+	
+	return rounds;
 }
 
 boolean canSurviveShootGhost(monster enemy, int shots) {

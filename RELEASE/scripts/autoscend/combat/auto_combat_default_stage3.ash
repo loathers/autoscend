@@ -180,7 +180,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 	}
 
-	if(wantToDouse(enemy) && round < 23) // dousing can have a low chance of success, so only do it up to round 22
+	if(wantToDouse(enemy) && round <= maxRoundsToDouse(enemy)) // dousing can have a low chance of success, so only do it for a while
 	{
 		skill douse = $skill[douse foe];
 		boolean douseAvailable = canUse(douse, false) && auto_dousesRemaining()>0;
