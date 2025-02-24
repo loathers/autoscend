@@ -134,7 +134,7 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 		"sentient": 2, //5 max hp
 		"orb": 5, //25 max mp
 		"cold": 15, //10 cold dmg
-		"hasbeak": 15, //10 weapon dmg
+		"hasbeak": 0, //10 weapon dmg. Won't use in zootomist
 		"hot": 15, //10 hot dmg
 		"sleaze": 15, //10 sleaze dmg
 		"spooky": 15, //10 spooky dmg
@@ -149,7 +149,7 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 		"cantalk": 37.5, //25% myst
 		"cold": 30, //20 cold dmg
 		"edible": 20, //20 muscle
-		"evil": 15, //10 weapon dmg
+		"evil": 0, //10 weapon dmg. Won't use in zootomist
 		"fast": 150, //30% item drop
 		"flies": 12.5, //50% initiative
 		"food": 30, //20 stench dmg
@@ -188,7 +188,7 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 		"animal": 15, //10 stench dmg
 		"animatedart": 1, //2 spooky res
 		"aquatic": 10, //10 muscle
-		"bite": 30, //weapon dmg
+		"bite": 0, //weapon dmg. Won't use in zootomist
 		"cantalk": 20, //100% max mp
 		"cold": 2, //4 hot res
 		"cute": 37.5, //25% moxie
@@ -217,7 +217,7 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 		"person": 30, //30% meat drop
 		"phallic": 5, //5 pool skill
 		"polygonal": 15, //10 sleaze dmg
-		"reallyevil": 30, //20 weapon dmg
+		"reallyevil": 0, //20 weapon dmg. Won't use in zootomist
 		"robot": 30, //20 hot dmg
 		"sentient": 75, //50% myst
 		"software": 75, //20-30 mp regen
