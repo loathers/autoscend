@@ -518,7 +518,7 @@ boolean zooGraftFam()
 		if(auto_grafts > 0) continue;
 		auto_log_info(p);
 		int famnumber = to_int(zoo_useFam(p, false));
-		use_familiar(to_familiar(famnumber));
+		handleFamiliar(to_familiar(famnumber));
 		if(familiar_weight(to_familiar(famnumber)) < auto_lastGraft) //Use Mafia pref once that's a thing
 		{
 			//can only graft if the fam is higher than the level at the last graft
@@ -530,6 +530,7 @@ boolean zooGraftFam()
 		auto_log_info("Grafting a " + to_familiar(famnumber).to_string() + " to you", "blue");
 		handleTracker(to_familiar(famnumber),"Grafted to " + bodyPartName[p],"auto_otherstuff");
 		set_property("auto_lastGraft", auto_lastGraft + 1);
+		council();
 		return true;
 	}
 	
@@ -545,6 +546,13 @@ boolean zooBoostWeight(familiar f, int target_weight)
 	boolean mayamavailable;
 	boolean piccoloavailable;
 	boolean specimenavailable;
+	boolean doZooto = get_property("auto_doZooto").to_boolean();
+	if(auto_monkeyPawWishesLeft() > 2 && !(have_effect($effect[Blue Swayed]) > 0))
+	{
+		//do it twice
+		auto_makeMonkeyPawWish($effect[Blue Swayed]);
+		auto_makeMonkeyPawWish($effect[Blue Swayed]);
+	}
 	if(auto_haveMayamCalendar() && !(auto_MayamIsUsed("fur")) && !(auto_MayamAllUsed()))
 	{
 		mayam = 100;
@@ -574,24 +582,40 @@ boolean zooBoostWeight(familiar f, int target_weight)
 		{
 			auto_log_info("Use the Mayam calendar and get fur on the outer ring");
 			amt += mayam;
+			if(doZooto)
+			{
+				auto_MayamClaim("fur wood yam3 clock");
+			}
 			mayamavailable = false;
 		}
 		else if(diff > 40 && piccolo > 0 && piccoloavailable)
 		{
 			auto_log_info("Play the Apriling Band Piccolo");
 			amt += piccolo;
+			if(doZooto)
+			{
+				auto_playAprilPiccolo();
+			}
 			piccoloavailable = false;
 		}
 		else if(diff > 20 && specimen > 0 && specimenavailable)
 		{
 			auto_log_info("Use the Specimen Preparation Bench");
 			amt += specimen;
+			if(doZooto)
+			{
+				visit_url("choice.php?pwd=&whichchoice=1555&option=1");
+			}
 			specimenavailable = false;
 		}
 		else
 		{
 			int fights_needed = ceil(diff / fight);
 			auto_log_info("Do " + fights_needed + " (preferably free) fights");
+			if(doZooto)
+			{
+				LX_zootoFight();
+			}
 			amt += fight * fights_needed;
 		}
 		diff = experience_needed - amt;
@@ -710,5 +734,58 @@ boolean rightKickHasPickpocket()
 
 boolean rightKickHasFreeKill()
 {
+	return false;
+}
+
+boolean LX_zootoFight()
+{
+	if(!in_zootomist())
+	{
+		return false;
+	}
+	if(speakeasyCombat())
+	{
+		return true;
+	}
+	if(my_level() >= 7)
+	{
+		if(auto_doPhoneQuest())
+		{
+			return true;
+		}
+		//should get wishes in Shadow Rift. If not can't do this
+		if(summonMonster($monster[War Frat Mobile Grill Unit]))
+		{
+			return true;
+		}
+		if(have_familiar($familiar[Jill-of-All-Trades]))
+		{
+			abort("Get a map to a candy rich block yourself and trick or treat with the frat outfit, ideally");
+		}
+		//TODO: Figure out accessing map to a candy rich block
+	}
+	if(!(can_adventure($location[Cobb\'s Knob Harem])))
+	{
+		//Haven't opened the Knob yet
+		if(autoAdv($location[The Outskirts of Cobb'\s Knob]))
+		{
+			return true;
+		}
+	}
+	else if(!can_adventure($location[The Haunted Billiards Room]))
+	{
+		if(autoAdv($location[The Haunted Kitchen]))
+		{
+			return true;
+		}
+	}
+	else if(autoAdv($location[The Spooky Forest]))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 	return false;
 }

@@ -583,6 +583,7 @@ boolean dartEleDmg();
 boolean auto_haveMayamCalendar();
 boolean auto_MayamIsUsed(string glyph);
 boolean auto_MayamAllUsed();
+boolean auto_MayamClaim(string str);
 boolean auto_MayamClaimStinkBomb();
 boolean auto_MayamClaimBelt();
 boolean auto_MayamClaimWhatever();
@@ -1099,6 +1100,7 @@ boolean leftKickHasFreeKill();
 boolean rightKickHasSniff();
 boolean rightKickHasPickpocket();
 boolean rightKickHasFreeKill();
+boolean LX_zootoFight();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash

@@ -263,6 +263,7 @@ void initializeSettings() {
 	set_property("auto_dontUseCookBookBat", false);
 	set_property("auto_dietpills", 0);
 	set_property("_auto_candyMapCompleted", false);
+	set_property("auto_doZooto", false); //remove from final version
 	beehiveConsider(false);
 
 	eudora_initializeSettings();
@@ -1764,7 +1765,7 @@ boolean doTasks()
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
 	
 	// TEMP CODE FOR ZOOTOMIST
-	if (in_zootomist() && my_level()<13)
+	if (in_zootomist() && my_level()<13 && !(get_property("auto_doZooto").to_boolean()))
 	{
 		auto_log_warning("Zootomist should not be run before level 13, for now.", "red");
 		return false;
@@ -1887,6 +1888,7 @@ boolean doTasks()
 	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
+	zooGraftFam();
 
 	oldPeoplePlantStuff();
 	use_barrels();
@@ -2196,6 +2198,11 @@ void main(string... input)
 						break;
 					}
 				}
+			case "zooto":
+			//actually adventure/consume things for familiar levelling. Remove from final version
+				user_confirm("This will automatically use resources. Proceed with caution and if it breaks you, well...", 15000, false);
+				set_property("auto_doZooto", true);
+				break;
 			default:
 				auto_log_info("Running normal autoscend because you didn't enter in a valid parameter");
 		}

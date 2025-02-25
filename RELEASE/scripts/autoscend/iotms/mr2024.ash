@@ -279,6 +279,22 @@ boolean auto_MayamAllUsed()
 	return auto_MayamIsUsed("yam4") && auto_MayamIsUsed("clock") && auto_MayamIsUsed("explosion");
 }
 
+boolean auto_MayamClaim(string str)
+{
+	if(!auto_haveMayamCalendar())
+	{
+		return false;
+	}
+	string[int] rings = split_string(str," ");
+	foreach i, s in rings
+	{
+		if(auto_MayamIsUsed(s)) return false;
+	}
+	cli_execute("mayam " + str);
+	handleTracker("Mayam Calendar", "Claimed " + str, "auto_itom_claim");
+	return true;
+}
+
 boolean auto_MayamClaimStinkBomb()
 {
 	if(!auto_haveMayamCalendar())
