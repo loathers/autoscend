@@ -519,7 +519,7 @@ boolean zooGraftFam()
 			zooBoostWeight(to_familiar(famnumber),min(my_level()+1,13));
 			return false;
 		}
-		equip(fam,$item[none]); //unequip fam equipment to not lose it, just in case
+		equip(to_familiar(famnumber),$item[none]); //unequip fam equipment to not lose it, just in case
 		visit_url("place.php?whichplace=graftinglab&action=graftinglab_chamber");
 		visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber);
 		auto_log_info("Grafting a " + to_familiar(famnumber).to_string() + " to you", "blue");
