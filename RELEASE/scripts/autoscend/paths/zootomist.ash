@@ -521,7 +521,7 @@ boolean zooGraftFam()
 		visit_url("place.php?whichplace=graftinglab&action=graftinglab_chamber");
 		visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber);
 		auto_log_info("Grafting a " + to_familiar(famnumber).to_string() + " to you", "blue");
-		handleTracker(to_familiar(famnumber),"Grafted to " + bodyPartName[p],"auto_otherstuff");
+		handleTracker(to_familiar(famnumber),"Grafted to " + bodyPartName[p],"auto_tracker_path");
 		council();
 		return true;
 	}
@@ -602,6 +602,9 @@ boolean zooBoostWeight(familiar f, int target_weight)
 			{
 				visit_url("place.php?whichplace=graftinglab&action=graftinglab_prep");
 				visit_url("choice.php?pwd=&whichchoice=1555&option=1", true);
+				int new_exp = f.experience;
+				int new_weight = familiar_weight(f);
+				handleTracker(f,"Specimen prepared to "+f.experience+" XP {"+new_weight+" lb}","auto_tracker_path");
 			}
 			specimenavailable = false;
 		}

@@ -103,8 +103,16 @@ boolean auto_getAprilingBandItems()
 
 boolean auto_playAprilPiccolo()
 {
-	cli_execute("aprilband play piccolo");
-	return true;
+	familiar f = my_familiar();
+	boolean success = false;
+	if (f!=$familiar[none])
+	{
+		int startexp = f.experience;
+		cli_execute("aprilband play piccolo");
+		boolean success = f.experience>startexp;
+	}
+	handleTracker($item[apriling band piccolo],(success?"Played":"Failed to play")+" to "+f,"auto_tracker_path");
+	return success;
 }
 
 boolean auto_playAprilSax()

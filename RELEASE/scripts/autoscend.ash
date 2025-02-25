@@ -188,6 +188,7 @@ void initializeSettings() {
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);
 	set_property("auto_day1_dna", "");
+	set_property("auto_day2WaitLastLevel", "0");
 	set_property("auto_debuffAsdonDelay", 0);
 	set_property("auto_disableAdventureHandling", false);
 	set_property("auto_doCombatCopy", "no");
@@ -234,11 +235,11 @@ void initializeSettings() {
 	set_property("auto_powerLevelAdvCount", "0");
 	set_property("auto_powerLevelLastAttempted", "0");
 	set_property("auto_pulls", "");
-	set_property("auto_day2WaitLastLevel", "0");
 	remove_property("auto_shenZonesTurnsSpent");
 	remove_property("auto_lastShenTurn");
 	set_property("auto_sniffs", "");
 	set_property("auto_stopMinutesToRollover", "5");
+	set_property("auto_tracker_path","");
 	set_property("auto_wandOfNagamar", true);
 	set_property("auto_wineracksencountered", 0);
 	set_property("auto_wishes", "");
