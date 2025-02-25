@@ -530,7 +530,10 @@ string defaultMaximizeStatement()
 
 	if(pathHasFamiliar())
 	{
-		res += ",2familiar weight";
+		if(!(in_zootomist() && my_level() < 13))
+		{
+			res += ",2familiar weight";
+		}
 		if(my_familiar().familiar_weight() < 20)
 		{
 			res += ",5familiar exp";

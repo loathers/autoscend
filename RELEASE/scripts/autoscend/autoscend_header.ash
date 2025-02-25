@@ -584,6 +584,7 @@ boolean dartEleDmg();
 boolean auto_haveMayamCalendar();
 boolean auto_MayamIsUsed(string glyph);
 boolean auto_MayamAllUsed();
+boolean auto_MayamClaim(string str);
 boolean auto_MayamClaimStinkBomb();
 boolean auto_MayamClaimBelt();
 boolean auto_MayamClaimWhatever();
@@ -1083,6 +1084,7 @@ boolean in_zootomist();
 void zoo_initializeSettings();
 void zootomist_start_pulls();
 int auto_grafted(int bodyPart);
+int [int] bodyPartPriority();
 familiar zoo_useFam(int bodyPart, boolean sim);
 boolean zooGraftFam();
 boolean zooBoostWeight(familiar f, int target_weight);
@@ -1099,6 +1101,7 @@ boolean leftKickHasFreeKill();
 boolean rightKickHasSniff();
 boolean rightKickHasPickpocket();
 boolean rightKickHasFreeKill();
+boolean LX_zootoFight();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
@@ -1337,6 +1340,8 @@ item LX_getDesiredWorkshed();
 boolean LX_setWorkshed();
 boolean canSetWorkshed(item it);
 boolean LX_dronesOut();
+boolean candyBlock();
+string candyBlockOutfit(string type);
 boolean LX_lastChance();
 
 ########################################################################################################

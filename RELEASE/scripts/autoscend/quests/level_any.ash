@@ -1105,6 +1105,93 @@ boolean LX_dronesOut()
 	return false;
 }
 
+boolean candyBlock()
+{
+	//Based on freecandy's trickTreatTasks.ts
+	if(get_property("_mapToACandyRichBlockUsed").to_boolean() && get_property("_auto_candyMapCompleted").to_boolean())
+	{
+		return false;
+	}
+	int [int] houseNumbers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+	int [int] treatedHouse;
+	int count = 0;
+	boolean tricked = false;
+	boolean treated = false;
+
+	if(!get_property("_mapToACandyRichBlockUsed").to_boolean())
+	{
+		use(1,$item[Map to a candy-rich block]);
+	}
+	string blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+	void refreshBlock()
+	{
+		blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+	}	
+	//treat
+	auto_log_info("Get some treats");
+	foreach house in houseNumbers
+	{
+		outfit(candyBlockOutfit("treat"));
+		matcher treat = create_matcher("whichhouse=" + house + ">[^>]*?house_l", blockHtml);
+		matcher starhouse = create_matcher("whichhouse=" + house + ">[^>]*?starhouse", blockHtml);
+		//treat
+		if(treat.find() || starhouse.find())
+		{
+			treatedHouse[count] = house;
+			count += 1;
+			visit_url(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
+		}
+		treated = true;
+	}
+	refreshBlock();
+	//trick
+	auto_log_info("Perform some tricks");
+	foreach house in houseNumbers
+	{
+		if(treatedHouse contains house) continue;
+		matcher trick = create_matcher("whichhouse=" + house + ">[^>]*?house_d", blockHtml);
+		//treat
+		if(trick.find())
+		{
+			tricked = autoAdvBypass(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
+			refreshBlock();
+		}
+		tricked = true;
+	}
+	if(treated && tricked)
+	{
+		set_property("_auto_candyMapCompleted", true);
+		return true;
+	}
+	return false;
+}
+
+string candyBlockOutfit(string type)
+{
+	if(type == "treat")
+	{
+		foreach x, fit in get_outfits()
+		{
+			if(fit == " - No Change - " || fit == "Birthday Suit" || fit == "Your Previous Outfit") continue;
+			if($strings[Legendary Regalia of the Chelonian Overlord, Legendary Regalia of the Groovelord, Legendary Regalia of the Master Squeezeboxer,
+							   Legendary Regalia of the Pasta Master, Legendary Regalia of the Saucemaestro, Legendary Regalia of the Seal Crusher, Terra Cotta Tackle,
+							   Eldritch Equipage, Filthy Hippy Disguise, Trainbot Trappings, Frat Warrior Fatigues, Black Armaments, Knob Goblin Harem Girl Disguise] contains fit)
+			{
+				return fit;
+			}
+			//if we don't have one of the bestTreatOutfits just choose the last one in the list that's an actual outfit
+			if(x == count(get_outfits()))
+			{
+				return fit;
+			}
+		}
+	}
+	else
+	{
+		return "";
+	}
+	return "";
+}
 boolean LX_lastChance()
 {
 	//miscellaneous calls that aren't powerlevelling but need to be done at some point based on certain conditions
