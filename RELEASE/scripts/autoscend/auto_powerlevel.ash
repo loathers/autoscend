@@ -394,11 +394,11 @@ boolean LX_freeCombats(boolean powerlevel)
 		if(adv_done) return true;
 	}
 
-	if(item_amount($item[Map to a candy-rich block]) > 0 && !get_property("_mapToACandyRichBlockUsed").to_boolean() && count(get_outfits()) > 3)
+	/*if(item_amount($item[Map to a candy-rich block]) > 0 && !get_property("_mapToACandyRichBlockUsed").to_boolean() && count(get_outfits()) > 3)
 	{
 		auto_log_debug("LX_freeCombats is adventuring in a Map to a candy-rich block");
 		if(candyBlock()) return true;
-	}
+	}*/
 
 	// tentacle should be last so it can be backed up, if script wants to
 	// see auto_backupTarget()
