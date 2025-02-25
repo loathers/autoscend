@@ -604,7 +604,8 @@ boolean zooBoostWeight(familiar f, int target_weight)
 			amt += specimen;
 			if(doZooto)
 			{
-				visit_url("choice.php?pwd=&whichchoice=1555&option=1");
+				visit_url("place.php?whichplace=graftinglab&action=graftinglab_prep");
+				visit_url("choice.php?pwd=&whichchoice=1555&option=1", true);
 			}
 			specimenavailable = false;
 		}
@@ -695,7 +696,14 @@ skill getZooBestPunch()
 
 skill getZooBestPunch(monster m)
 {
-	return $skill[left %n punch];
+	if(have_skill($skill[left %n punch]))
+	{
+		return $skill[left %n punch];
+	}
+	else
+	{
+		return $skill[none];
+	}
 }
 
 // These will be done intelligently once Mafia can tell us.

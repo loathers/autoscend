@@ -813,6 +813,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	
 	case $class[zootomist]:
 		skill punch = getZooBestPunch(enemy);
+		if(punch == $skill[none])
+		{
+			return "attack with weapon";
+		}
 		attackMajor = useSkill(punch, false);
 		attackMinor = useSkill(punch, false);
 		costMajor = mp_cost(punch);
