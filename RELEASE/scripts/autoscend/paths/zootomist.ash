@@ -27,11 +27,6 @@ boolean in_zootomist()
 	return my_path()==$path[z is for zootomist];
 }
 
-void zoo_initializeSettings()
-{
-	set_property("auto_lastGraft", 3);
-}
-
 void zootomist_start_pulls()
 {
 	if (!in_zootomist() || pulls_remaining()==0) { return; }
@@ -514,22 +509,19 @@ boolean zooGraftFam()
 	foreach i, p in bodyPartPriority
 	{
 		int auto_grafts = auto_grafted(p);
-		int auto_lastGraft = get_property("auto_lastGraft").to_int();
 		if(auto_grafts > 0) continue;
 		auto_log_info(p);
 		int famnumber = to_int(zoo_useFam(p, false));
 		handleFamiliar(to_familiar(famnumber));
-		if(familiar_weight(to_familiar(famnumber)) < auto_lastGraft) //Use Mafia pref once that's a thing
+		if(familiar_weight(to_familiar(famnumber)) < min(my_level()+1,13)) //Use Mafia pref once that's a thing
 		{
 			//can only graft if the fam is higher than the level at the last graft
-			zooBoostWeight(to_familiar(famnumber),auto_lastGraft);
-			return false;
+			zooBoostWeight(to_familiar(famnumber),min(my_level()+1,13));
 		}
 		visit_url("place.php?whichplace=graftinglab&action=graftinglab_chamber");
 		visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber);
 		auto_log_info("Grafting a " + to_familiar(famnumber).to_string() + " to you", "blue");
 		handleTracker(to_familiar(famnumber),"Grafted to " + bodyPartName[p],"auto_otherstuff");
-		set_property("auto_lastGraft", auto_lastGraft + 1);
 		council();
 		return true;
 	}
@@ -541,6 +533,10 @@ boolean zooGraftFam()
 boolean zooBoostWeight(familiar f, int target_weight)
 {
 	//Once this is proven to output as expected, actually do the operations, not just output stuff
+	if(my_familiar() != f)
+	{
+		handleFamiliar(f);
+	}
 	float experience_needed = target_weight*target_weight - familiar_weight(f)*familiar_weight(f);
 	float mayam = 0;
 	boolean mayamavailable;
