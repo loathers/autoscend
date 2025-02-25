@@ -519,11 +519,12 @@ boolean zooGraftFam()
 			zooBoostWeight(to_familiar(famnumber),min(my_level()+1,13));
 			return false;
 		}
+		equip(fam,$item[none]); //unequip fam equipment to not lose it, just in case
 		visit_url("place.php?whichplace=graftinglab&action=graftinglab_chamber");
 		visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber);
 		auto_log_info("Grafting a " + to_familiar(famnumber).to_string() + " to you", "blue");
 		handleTracker(to_familiar(famnumber),"Grafted to " + bodyPartName[p],"auto_tracker_path");
-		council();
+		refresh_status();
 		return true;
 	}
 	
@@ -751,10 +752,6 @@ boolean LX_zootoFight()
 	{
 		return false;
 	}
-	if(speakeasyCombat())
-	{
-		return true;
-	}
 	if(my_level() >= 7)
 	{
 		if(auto_doPhoneQuest())
@@ -771,6 +768,13 @@ boolean LX_zootoFight()
 			abort("Get a map to a candy rich block yourself and trick or treat with the frat outfit, ideally");
 		}
 		if(candyBlock())
+		{
+			return true;
+		}
+	}
+	if(my_level() >= 5)
+	{
+		if(speakeasyCombat())
 		{
 			return true;
 		}
