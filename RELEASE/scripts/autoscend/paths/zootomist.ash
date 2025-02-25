@@ -9,7 +9,7 @@ static int ZOOPART_L_BUTTOCK  = 8;
 static int ZOOPART_R_BUTTOCK  = 9;
 static int ZOOPART_L_FOOT     = 10;
 static int ZOOPART_R_FOOT     = 11;
-static int[int] bodyPartPriority = {
+/*static int[int] bodyPartPriority = {
 		ZOOPART_L_NIPPLE,
 		ZOOPART_R_NIPPLE,
 		ZOOPART_L_FOOT,
@@ -20,7 +20,7 @@ static int[int] bodyPartPriority = {
 		ZOOPART_L_BUTTOCK,
 		ZOOPART_R_BUTTOCK,
 		ZOOPART_R_FOOT,
-		ZOOPART_R_HAND};
+		ZOOPART_R_HAND};*/
 
 boolean in_zootomist()
 {
@@ -79,6 +79,39 @@ int auto_grafted(int bodyPart)
 	}
 }
 
+int [int] bodyPartPriority()
+{
+	int [int] priority;
+	if(auto_have_familiar($familiar[burly bodyguard]))
+	{
+		priority = {ZOOPART_L_NIPPLE,
+		ZOOPART_R_NIPPLE,
+		ZOOPART_L_FOOT,
+		ZOOPART_HEAD,
+		ZOOPART_L_HAND,
+		ZOOPART_L_SHOULDER,
+		ZOOPART_R_SHOULDER,
+		ZOOPART_L_BUTTOCK,
+		ZOOPART_R_HAND,
+		ZOOPART_R_BUTTOCK,
+		ZOOPART_R_FOOT};
+	}
+	else
+	{
+		priority = {ZOOPART_L_NIPPLE,
+		ZOOPART_R_NIPPLE,
+		ZOOPART_L_FOOT,
+		ZOOPART_HEAD,
+		ZOOPART_L_HAND,
+		ZOOPART_L_SHOULDER,
+		ZOOPART_R_SHOULDER,
+		ZOOPART_L_BUTTOCK,
+		ZOOPART_R_BUTTOCK,
+		ZOOPART_R_FOOT,
+		ZOOPART_R_HAND};
+	}
+	return priority;
+}
 familiar zoo_useFam(int bodyPart, boolean sim)
 {
 	//Currently only called by user in gCLI to output what fam to target based on our weights. Will be called in zoo_useFam to automate grafting
@@ -282,7 +315,7 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 	foreach fam in $familiars[]
 	{
 		//comment out below line and uncomment second below line to see all unrestricted fams
-		if(have_familiar(fam) && !(blacklistFams contains fam))
+		if(auto_have_familiar(fam) && !(blacklistFams contains fam))
 		//if(is_unrestricted(fam))
 		{
 			famAttributes[fam] = fam.attributes;
@@ -332,7 +365,7 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 	}
 	foreach fam in $familiars[quantum entangler, foul ball]
 	{
-		if(have_familiar(fam))
+		if(auto_have_familiar(fam))
 		{
 			lcombatFam = fam;
 			break;
@@ -370,7 +403,7 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 	}
 	foreach fam in $familiars[dire cassava, phantom limb, MagiMechTech MicroMechaMech]
 	{
-		if(have_familiar(fam))
+		if(auto_have_familiar(fam))
 		{
 			rcombatFam = fam;
 			break;
@@ -403,9 +436,16 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 			case 3:
 				return intrinsicFam[0];
 			case 4:
-				return $familiar[Barrrnacle];
+				return $familiar[Barrrnacle]; //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
 			case 5:
-				return $familiar[Blood-Faced Volleyball];
+				if(auto_have_familiar($familiar[burly bodyguard])) //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
+				{
+					return $familiar[burly bodyguard];
+				}
+				else
+				{
+					return $familiar[Blood-Faced Volleyball]; //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
+				}
 			case 6:
 				return rbuffFam;
 			case 7:
@@ -470,23 +510,7 @@ boolean zooGraftFam()
 		ZOOPART_L_FOOT     : "left foot",
 		ZOOPART_R_FOOT     : "right foot"
 	};
-	//Probably don't need graftFam now that zoo_useFam is a thing. Good for verification of weights
-	string[familiar] graftFam = {
-		$familiar[oily woim]: "rbuff",
-		$familiar[killer bee]: "rbuff",
-		$familiar[mosquito]: "rbuff",
-		$familiar[helix fossil]: "rbuff",
-		$familiar[stab bat]: "lbuff",
-		$familiar[mechanical songbird]: "intrinsic",
-		$familiar[autonomous disco ball]: "intrinsic",
-		$familiar[scary death orb]: "intrinsic",
-		$familiar[smiling rat]: "intrinsic",
-		$familiar[jumpsuited hound dog]: "intrinsic",
-		$familiar[baby z-rex]: "intrinsic",
-		$familiar[exotic parrot]: "intrinsic",
-		$familiar[quantum entangler]: "combat",
-		$familiar[magimechtech micromechamech]: "combat"
-	};
+	int[int] bodyPartPriority = bodyPartPriority();
 	foreach i, p in bodyPartPriority
 	{
 		int auto_grafts = auto_grafted(p);
