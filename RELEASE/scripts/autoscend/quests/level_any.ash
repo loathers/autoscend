@@ -1131,7 +1131,7 @@ boolean candyBlock()
 	auto_log_info("Get some treats");
 	foreach house in houseNumbers
 	{
-		outfit(candyBlockOutfit("treat"));
+		autoOutfit(candyBlockOutfit("treat"));
 		matcher treat = create_matcher("whichhouse=" + house + ">[^>]*?house_l", blockHtml);
 		matcher starhouse = create_matcher("whichhouse=" + house + ">[^>]*?starhouse", blockHtml);
 		//treat
@@ -1153,6 +1153,7 @@ boolean candyBlock()
 		//treat
 		if(trick.find())
 		{
+			autoOutfit(candyBlockOutfit("treat"));
 			tricked = autoAdvBypass(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
 			refreshBlock();
 		}

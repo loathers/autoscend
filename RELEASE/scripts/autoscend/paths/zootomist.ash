@@ -761,15 +761,18 @@ boolean LX_zootoFight()
 			return true;
 		}
 		//should get wishes in Shadow Rift. If not can't do this
-		if(summonMonster($monster[War Frat Mobile Grill Unit]))
+		if(summonMonster($monster[War Frat Mobile Grill Unit]) && !(have_outfit("Frat Warrior Fatigues")))
 		{
 			return true;
 		}
-		if(have_familiar($familiar[Jill-of-All-Trades]))
+		if(auto_have_familiar($familiar[Jill-of-All-Trades]) && !(get_property("_mapToACandyRichBlockUsed").to_boolean()))
 		{
 			abort("Get a map to a candy rich block yourself and trick or treat with the frat outfit, ideally");
 		}
-		//TODO: Figure out accessing map to a candy rich block
+		if(candyBlock())
+		{
+			return true;
+		}
 	}
 	if(!(can_adventure($location[Cobb\'s Knob Harem])))
 	{
