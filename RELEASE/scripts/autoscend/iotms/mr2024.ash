@@ -450,6 +450,15 @@ boolean auto_canLeapBridge()
 	return true;
 }
 
+int auto_swoopsRemaining()
+{
+	if (!auto_haveBatWings())
+	{
+		return 0;
+	}
+	return 11-get_property("_batWingsSwoopUsed").to_int();
+}
+
 boolean auto_haveSeptEmberCenser()
 {
 	if(auto_is_valid($item[Sept-Ember Censer]) && available_amount($item[Sept-Ember Censer]) > 0 )

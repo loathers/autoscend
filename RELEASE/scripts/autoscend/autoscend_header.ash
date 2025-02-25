@@ -592,6 +592,7 @@ boolean auto_MayamClaimAll();
 boolean auto_haveRoman();
 boolean auto_haveBatWings();
 boolean auto_canLeapBridge();
+int auto_swoopsRemaining();
 boolean auto_haveSeptEmberCenser();
 int remainingEmbers();
 void auto_buyFromSeptEmberStore();

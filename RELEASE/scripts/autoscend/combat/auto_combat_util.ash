@@ -1136,6 +1136,11 @@ boolean wantToForceDrop(monster enemy)
 		{
 			forceDrop = true;
 		}
+		
+		if(enemy == $monster[Baa'baa'bu'ran] && (item_amount($item[stone wool])==0 || dropsFromYR.to_boolean()))
+		{
+			forceDrop = true;
+		}
 	}
 	
 	if(isActuallyEd() && my_location() == $location[The Secret Council Warehouse])
@@ -1174,6 +1179,8 @@ boolean wantToDouse(monster enemy)
 			return item_amount($item[filthworm drone scent gland      ]) == 0;
 		case $monster[filthworm royal guard]:
 			return item_amount($item[filthworm royal guard scent gland]) == 0;
+		case $monster[shadow slab]:
+			return item_amount($item[shadow brick]) < 13;
 	}
 	return false;
 }
