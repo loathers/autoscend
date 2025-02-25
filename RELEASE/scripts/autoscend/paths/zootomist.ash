@@ -535,7 +535,7 @@ boolean zooBoostWeight(familiar f, int target_weight)
 	//Once this is proven to output as expected, actually do the operations, not just output stuff
 	if(my_familiar() != f)
 	{
-		handleFamiliar(f);
+		use_familiar(f);
 	}
 	float experience_needed = target_weight*target_weight - familiar_weight(f)*familiar_weight(f);
 	float mayam = 0;
@@ -580,7 +580,7 @@ boolean zooBoostWeight(familiar f, int target_weight)
 			amt += mayam;
 			if(doZooto)
 			{
-				auto_MayamClaim("fur wood yam3 clock");
+				auto_MayamClaim("fur wood yam clock");
 			}
 			mayamavailable = false;
 		}
