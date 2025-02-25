@@ -517,6 +517,7 @@ boolean zooGraftFam()
 		{
 			//can only graft if the fam is higher than the level at the last graft
 			zooBoostWeight(to_familiar(famnumber),min(my_level()+1,13));
+			return false;
 		}
 		visit_url("place.php?whichplace=graftinglab&action=graftinglab_chamber");
 		visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber);
@@ -782,7 +783,7 @@ boolean LX_zootoFight()
 			return true;
 		}
 	}
-	else if(!can_adventure($location[The Haunted Billiards Room]))
+	else if(!(can_adventure($location[The Haunted Billiards Room])))
 	{
 		if(autoAdv($location[The Haunted Kitchen]))
 		{
