@@ -111,7 +111,8 @@ boolean auto_playAprilPiccolo()
 		cli_execute("aprilband play piccolo");
 		boolean success = f.experience>startexp;
 	}
-	handleTracker($item[apriling band piccolo],(success?"Played":"Failed to play")+" to "+f,"auto_tracker_path");
+	string tracker = in_zootomist()?"auto_tracker_path":"auto_otherstuff";
+	handleTracker($item[apriling band piccolo],(success?"Played":"Failed to play")+" to "+f,tracker);
 	return success;
 }
 
