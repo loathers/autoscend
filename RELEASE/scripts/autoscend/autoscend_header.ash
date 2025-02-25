@@ -1336,6 +1336,8 @@ item LX_getDesiredWorkshed();
 boolean LX_setWorkshed();
 boolean canSetWorkshed(item it);
 boolean LX_dronesOut();
+boolean candyBlock();
+string candyBlockOutfit(string type);
 boolean LX_lastChance();
 
 ########################################################################################################

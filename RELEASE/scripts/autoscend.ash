@@ -262,6 +262,7 @@ void initializeSettings() {
 	remove_property("auto_saveVintage");
 	set_property("auto_dontUseCookBookBat", false);
 	set_property("auto_dietpills", 0);
+	set_property("_auto_candyMapCompleted", false);
 	beehiveConsider(false);
 
 	eudora_initializeSettings();
@@ -689,6 +690,7 @@ void initializeDay(int day)
 		set_property("auto_delayLastLevel", "0");
 		set_property("auto_cmcConsultLastLevel", "0");
 		set_property("auto_breathitinLastLevel", "0");
+		set_property("_auto_candyMapCompleted", false);
 	}
 
 	if(!possessEquipment($item[Your Cowboy Boots]) && get_property("telegraphOfficeAvailable").to_boolean() && is_unrestricted($item[LT&T Telegraph Office Deed]))

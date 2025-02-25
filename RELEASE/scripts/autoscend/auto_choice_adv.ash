@@ -458,6 +458,12 @@ boolean auto_run_choice(int choice, string page)
 		case 797: // Let's Workshop This a Little (The Old Landfill)
 			oldLandfillChoiceHandler(choice);
 			break;
+		case 804:
+			run_choice(3);
+			break;
+		case 806:
+			run_choice(2);
+			break;
 		case 822: // The Prince's Ball (In the Restroom)
 		case 823: // The Prince's Ball (On the Dance Floor)
 		case 824: // The Prince's Ball (The Kitchen)
