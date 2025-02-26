@@ -451,7 +451,7 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 			return rbuffFam;
 		case ZOOPART_L_FOOT:
 			return lcombatFam;
-		case ZOOPART_L_FOOT:
+		case ZOOPART_R_FOOT:
 			return rcombatFam;
 	}
 	return $familiar[none];
