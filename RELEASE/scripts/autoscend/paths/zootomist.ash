@@ -47,27 +47,27 @@ int auto_grafted(int bodyPart)
 {
 	switch(bodyPart)
 	{
-		case 1:
+		case ZOOPART_HEAD:
 			return get_property("zootGraftedHeadFamiliar").to_int();
-		case 2:
+		case ZOOPART_L_SHOULDER:
 			return get_property("zootGraftedShoulderLeftFamiliar").to_int();
-		case 3:
+		case ZOOPART_R_SHOULDER:
 			return get_property("zootGraftedShoulderRightFamiliar").to_int();
-		case 4:
+		case ZOOPART_L_HAND:
 			return get_property("zootGraftedHandLeftFamiliar").to_int();
-		case 5:
+		case ZOOPART_R_HAND:
 			return get_property("zootGraftedHandRightFamiliar").to_int();
-		case 6:
+		case ZOOPART_R_NIPPLE:
 			return get_property("zootGraftedNippleRightFamiliar").to_int();
-		case 7:
+		case ZOOPART_L_NIPPLE:
 			return get_property("zootGraftedNippleLeftFamiliar").to_int();
-		case 8:
+		case ZOOPART_L_BUTTOCK:
 			return get_property("zootGraftedButtCheekLeftFamiliar").to_int();
-		case 9:
+		case ZOOPART_R_BUTTOCK:
 			return get_property("zootGraftedButtCheekRightFamiliar").to_int();
-		case 10:
+		case ZOOPART_L_FOOT:
 			return get_property("zootGraftedFootLeftFamiliar").to_int();
-		case 11:
+		case ZOOPART_R_FOOT:
 			return get_property("zootGraftedFootRightFamiliar").to_int();
 		default:
 			return 0;
@@ -107,10 +107,14 @@ int [int] bodyPartPriority()
 	}
 	return priority;
 }
-familiar zoo_useFam(int bodyPart, boolean sim)
+
+familiar zoo_getBestFam(int bodyPart)
 {
-	//Currently only called by user in gCLI to output what fam to target based on our weights. Will be called in zoo_useFam to automate grafting
-	//Will also be called to force familiar for levelling
+	return zoo_getBestFam(bodyPart, false);
+}
+
+familiar zoo_getBestFam(int bodyPart, boolean verbose)
+{
 	//Identifies the 11 familiars we want based on what we have and stores them in prefs so we only go through the list of fams once
 	//Goes through fam attributes of all familiars and filters from there
 	string[familiar] famAttributes;
@@ -404,7 +408,7 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 			break;
 		}
 	}
-	if(sim)
+	if(verbose)
 	{
 		auto_log_info("Best Right nipple fams", "purple");
 		auto_log_info(rbuffFam + ":" + rbuffFams[rbuffFam], "purple");
@@ -420,47 +424,43 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 		auto_log_info("Best Right Foot Fam", "red");
 		auto_log_info(rcombatFam + ":" + combatFams[rcombatFam], "red");
 	}
-	else
+	
+	familiar bestIntrinsicFam = intrinsicFam[0];
+	switch(bodyPart)
 	{
-		switch(bodyPart)
-		{
-			case 1:
-				return intrinsicFam[0];
-			case 2:
-				return intrinsicFam[0];
-			case 3:
-				return intrinsicFam[0];
-			case 4:
-				return $familiar[Barrrnacle]; //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
-			case 5:
-				if(auto_have_familiar($familiar[burly bodyguard])) //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
-				{
-					return $familiar[burly bodyguard];
-				}
-				else
-				{
-					return $familiar[Blood-Faced Volleyball]; //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
-				}
-			case 6:
-				return rbuffFam;
-			case 7:
-				return lbuffFam;
-			case 8:
-				return intrinsicFam[0];
-			case 9:
-				return intrinsicFam[0];
-			case 10:
-				return lcombatFam;
-			case 11:
-				return rcombatFam;
-		}
+		case ZOOPART_HEAD:
+		case ZOOPART_L_SHOULDER:
+		case ZOOPART_R_SHOULDER:
+		case ZOOPART_L_BUTTOCK:
+		case ZOOPART_R_BUTTOCK:
+			return bestIntrinsicFam;
+		case ZOOPART_L_HAND:
+			return $familiar[Barrrnacle]; //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
+		case ZOOPART_R_HAND:
+			if(auto_have_familiar($familiar[burly bodyguard])) //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
+			{
+				return $familiar[burly bodyguard];
+			}
+			else
+			{
+				return $familiar[Blood-Faced Volleyball]; //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
+			}
+		case ZOOPART_L_NIPPLE:
+			return lbuffFam;
+		case ZOOPART_R_NIPPLE:
+			return rbuffFam;
+		case ZOOPART_L_FOOT:
+			return lcombatFam;
+		case ZOOPART_L_FOOT:
+			return rcombatFam;
 	}
 	return $familiar[none];
 }
 
 boolean zooGraftFam()
 {
-	if (!in_zootomist())
+	boolean doZooto = get_property("auto_doZooto").to_boolean();
+	if (!in_zootomist() || my_level()>=13 || !doZooto)
 	{
 		return false;
 	}
@@ -515,25 +515,44 @@ boolean zooGraftFam()
 		int auto_grafts = auto_grafted(p);
 		if(auto_grafts > 0) continue;
 		auto_log_info(p);
-		int famnumber = to_int(zoo_useFam(p, false));
-		handleFamiliar(to_familiar(famnumber));
-		if(familiar_weight(to_familiar(famnumber)) < min(my_level()+1,13)) //Use Mafia pref once that's a thing
+		familiar fam = zoo_getBestFam(p, false);
+		handleFamiliar(fam);
+		int next_graft_weight = zoo_nextGraftWeight();
+		if(familiar_weight(fam) < next_graft_weight)
 		{
 			//can only graft if the fam is higher than the level at the last graft
-			zooBoostWeight(to_familiar(famnumber),min(my_level()+1,13));
+			zooBoostWeight(fam,next_graft_weight);
 			return false;
 		}
-		equip(to_familiar(famnumber),$item[none]); //unequip fam equipment to not lose it, just in case
+		equip(fam,$item[none]); //unequip fam equipment to not lose it, just in case
 		visit_url("place.php?whichplace=graftinglab&action=graftinglab_chamber");
-		visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + famnumber);
-		auto_log_info("Grafting a " + to_familiar(famnumber).to_string() + " to you", "blue");
-		handleTracker(to_familiar(famnumber),"Grafted to " + bodyPartName[p],"auto_tracker_path");
+		visit_url("choice.php?pwd=&whichchoice=1553&option=1&slot=" + p + "&fam=" + to_int(fam));
+		auto_log_info("Grafting a " + fam + " to you", "blue");
+		handleTracker(fam,"Grafted to " + bodyPartName[p],"auto_tracker_path");
 		refresh_status();
+		council();
+		if (my_level() < 13)
+		{
+			familiar nextfam = zoo_getBestFam(bodyPartPriority[my_level()], false);
+			if (nextfam==$familiar[none]) { abort("Got none familiar in zooGraftFam()"); }
+			use_familiar(nextfam);
+			handleFamiliar(nextfam);
+		}
 		return true;
 	}
 	
 	auto_log_info("No more to graft");
 	return false;
+}
+
+int zoo_nextGraftWeight()
+{
+	return min(my_level()+2,13);
+}
+
+boolean zooBoostWeight(familiar f)
+{
+	return zooBoostWeight(f,zoo_nextGraftWeight());
 }
 
 boolean zooBoostWeight(familiar f, int target_weight)
@@ -763,9 +782,9 @@ boolean LX_zootoFight()
 			return true;
 		}
 		//should get wishes in Shadow Rift. If not can't do this
-		if(summonMonster($monster[War Frat Mobile Grill Unit]) && !(have_outfit("Frat Warrior Fatigues")))
+		if(!(have_outfit("Frat Warrior Fatigues")))
 		{
-			return true;
+			return summonMonster($monster[War Frat Mobile Grill Unit]);
 		}
 		if(candyBlock())
 		{
