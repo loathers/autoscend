@@ -568,11 +568,15 @@ boolean zooBoostWeight(familiar f, int target_weight)
 	boolean piccoloavailable;
 	boolean specimenavailable;
 	boolean doZooto = get_property("auto_doZooto").to_boolean();
-	if(auto_monkeyPawWishesLeft() > 2 && !(have_effect($effect[Blue Swayed]) > 0))
+	if(auto_monkeyPawWishesLeft() >= 2 && !(have_effect($effect[Blue Swayed]) > 0))
 	{
 		//do it twice
 		auto_makeMonkeyPawWish($effect[Blue Swayed]);
 		auto_makeMonkeyPawWish($effect[Blue Swayed]);
+	}
+	if(auto_monkeyPawWishesLeft() >= 1 && !(have_effect($effect[Warm Shoulders]) > 0))
+	{
+		auto_makeMonkeyPawWish($effect[Warm Shoulders]);
 	}
 	if(auto_haveMayamCalendar() && !(auto_MayamIsUsed("fur")) && !(auto_MayamAllUsed()))
 	{
