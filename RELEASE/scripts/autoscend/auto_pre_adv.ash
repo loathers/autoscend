@@ -351,6 +351,15 @@ boolean auto_pre_adventure()
 			//	}
 		}
 	}
+	
+	// If we're zootomist, need to level, and we have +xp on our milk, cast it.
+	if (in_zootomist() && my_level()<13) {
+		foreach ef in $effects[Milk of Familiar Kindness, Milk of Familiar Cruelty] {
+			if (numeric_modifier(ef,$modifier[familiar experience]) > 0) {
+				buffMaintain(ef);
+			}
+		}
+	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
 	boolean burningDelay = auto_burningDelay();
