@@ -460,6 +460,10 @@ familiar zoo_useFam(int bodyPart, boolean sim)
 
 boolean zooGraftFam()
 {
+	if (!in_zootomist())
+	{
+		return false;
+	}
 	/*Body parts are identified by number
 	1 = head
 	2 = left shoulder
