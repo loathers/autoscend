@@ -763,13 +763,13 @@ boolean LX_zootoFight()
 		{
 			return true;
 		}
-		if(auto_have_familiar($familiar[Jill-of-All-Trades]) && !(get_property("_mapToACandyRichBlockUsed").to_boolean()))
-		{
-			abort("Get a map to a candy rich block yourself and trick or treat with the frat outfit, ideally");
-		}
 		if(candyBlock())
 		{
 			return true;
+		}
+		if(auto_have_familiar($familiar[Jill-of-All-Trades]) && !(get_property("_mapToACandyRichBlockUsed").to_boolean()))
+		{
+			abort("Get a map to a candy rich block yourself and trick or treat with the frat outfit, ideally");
 		}
 	}
 	if(my_level() >= 5)

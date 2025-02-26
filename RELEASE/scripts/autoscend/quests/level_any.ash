@@ -1118,51 +1118,54 @@ boolean candyBlock()
 	boolean tricked = false;
 	boolean treated = false;
 
-	if(!get_property("_mapToACandyRichBlockUsed").to_boolean())
+	if(!get_property("_mapToACandyRichBlockUsed").to_boolean() && item_amount($item[Map to a candy-rich block]) > 0)
 	{
 		use(1,$item[Map to a candy-rich block]);
 	}
-	string blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
-	void refreshBlock()
+	if(get_property("_mapToACandyRichBlockUsed").to_boolean())
 	{
-		blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
-	}	
-	//treat
-	auto_log_info("Get some treats");
-	foreach house in houseNumbers
-	{
-		autoOutfit(candyBlockOutfit("treat"));
-		matcher treat = create_matcher("whichhouse=" + house + ">[^>]*?house_l", blockHtml);
-		matcher starhouse = create_matcher("whichhouse=" + house + ">[^>]*?starhouse", blockHtml);
-		//treat
-		if(treat.find() || starhouse.find())
+		string blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+		void refreshBlock()
 		{
-			treatedHouse[count] = house;
-			count += 1;
-			visit_url(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
-		}
-		treated = true;
-	}
-	refreshBlock();
-	//trick
-	auto_log_info("Perform some tricks");
-	foreach house in houseNumbers
-	{
-		if(treatedHouse contains house) continue;
-		matcher trick = create_matcher("whichhouse=" + house + ">[^>]*?house_d", blockHtml);
+			blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+		}	
 		//treat
-		if(trick.find())
+		auto_log_info("Get some treats");
+		foreach house in houseNumbers
 		{
 			autoOutfit(candyBlockOutfit("treat"));
-			tricked = autoAdvBypass(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
-			refreshBlock();
+			matcher treat = create_matcher("whichhouse=" + house + ">[^>]*?house_l", blockHtml);
+			matcher starhouse = create_matcher("whichhouse=" + house + ">[^>]*?starhouse", blockHtml);
+			//treat
+			if(treat.find() || starhouse.find())
+			{
+				treatedHouse[count] = house;
+				count += 1;
+				visit_url(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
+			}
+			treated = true;
 		}
-		tricked = true;
-	}
-	if(treated && tricked)
-	{
-		set_property("_auto_candyMapCompleted", true);
-		return true;
+		refreshBlock();
+		//trick
+		auto_log_info("Perform some tricks");
+		foreach house in houseNumbers
+		{
+			if(treatedHouse contains house) continue;
+			matcher trick = create_matcher("whichhouse=" + house + ">[^>]*?house_d", blockHtml);
+			//treat
+			if(trick.find())
+			{
+				autoOutfit(candyBlockOutfit("treat"));
+				tricked = autoAdvBypass(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
+				refreshBlock();
+			}
+			tricked = true;
+		}
+		if(treated && tricked)
+		{
+			set_property("_auto_candyMapCompleted", true);
+			return true;
+		}
 	}
 	return false;
 }
