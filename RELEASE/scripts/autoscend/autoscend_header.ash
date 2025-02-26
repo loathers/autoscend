@@ -1087,6 +1087,7 @@ int auto_grafted(int bodyPart);
 int [int] bodyPartPriority();
 familiar zoo_getBestFam(int bodyPart);
 familiar zoo_getBestFam(int bodyPart, boolean verbose);
+familiar zoo_getNextFam();
 boolean zooGraftFam();
 int zoo_nextGraftWeight();
 boolean zooBoostWeight(familiar f);

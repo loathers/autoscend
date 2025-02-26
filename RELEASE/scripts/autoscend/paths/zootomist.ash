@@ -457,6 +457,12 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 	return $familiar[none];
 }
 
+familiar zoo_getNextFam()
+{
+	if (!in_zootomist() || my_level() > 11) {return $familiar[none];}
+	return zoo_getBestFam(bodyPartPriority()[my_level()-1], false);
+}
+
 boolean zooGraftFam()
 {
 	boolean doZooto = get_property("auto_doZooto").to_boolean();
@@ -533,7 +539,7 @@ boolean zooGraftFam()
 		council();
 		if (my_level() < 13)
 		{
-			familiar nextfam = zoo_getBestFam(bodyPartPriority[my_level()], false);
+			familiar nextfam = zoo_getNextFam();
 			if (nextfam==$familiar[none]) { abort("Got none familiar in zooGraftFam()"); }
 			use_familiar(nextfam);
 			handleFamiliar(nextfam);
