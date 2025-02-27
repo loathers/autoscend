@@ -1042,7 +1042,7 @@ void main()
 	try
 	{
 		ret = auto_pre_adventure();
-		if (my_familiar()==$familiar[none]) {
+		if (pathHasFamiliar() && my_familiar()==$familiar[none]) {
 			abort("Trying to adventure with no familiar.");
 		}
 	}
