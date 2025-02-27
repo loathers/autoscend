@@ -918,9 +918,8 @@ boolean LX_zootoFight()
 				return summonMonster($monster[War Hippy Airborne Commander]);
 			}
 			else if(!(possessOutfit("Frat Warrior Fatigues")))
-				{
-					return summonMonster($monster[War Frat Mobile Grill Unit]);
-				}
+			{
+				return summonMonster($monster[War Frat Mobile Grill Unit]);
 			}
 			if(candyBlock())
 			{
@@ -930,7 +929,7 @@ boolean LX_zootoFight()
 			{
 				abort("Get a map to a candy rich block yourself and trick or treat with the frat outfit, ideally");
 			}
-	}
+		}
 	}
 	if(my_level() >= 5)
 	{
