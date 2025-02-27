@@ -6,7 +6,7 @@
 
 boolean L5_getEncryptionKey()
 {
-	if(internalQuestStatus("questL05Goblin") != 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)
+	if(internalQuestStatus("questL05Goblin") > 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)
 	{
 		return false;
 	}
@@ -19,7 +19,8 @@ boolean L5_getEncryptionKey()
 
 	// want to fight goblin king quickly in legacy of loathing to get another replica mr a
 	// In LKS, important keys are gated behind here, and we have tonnes of delay
-	if(!(in_lol()||in_lowkeysummer()) && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
+	// in Zootomist it's a valuable levelling zone that drops wishes
+	if(!(in_lol() || in_lowkeysummer() || in_zootomist()) && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
 	{
 		return false;
 	}
