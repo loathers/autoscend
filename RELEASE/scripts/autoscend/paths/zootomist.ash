@@ -910,20 +910,27 @@ boolean LX_zootoFight()
 			return true;
 		}
 		// should get wishes in Shadow Rift. If not can't do this
-		// add Hippy support before we merge
                 // CHECK FOR AVAILABLE YELLOW RAY
-		if(!(have_outfit("Frat Warrior Fatigues")))
+		if(auto_have_familiar($familiar[Jill-of-All-Trades]))
 		{
-			return summonMonster($monster[War Frat Mobile Grill Unit]);
-		}
-		if(candyBlock())
-		{
-			return true;
-		}
-		if(auto_have_familiar($familiar[Jill-of-All-Trades]) && !(get_property("_mapToACandyRichBlockUsed").to_boolean()))
-		{
-			abort("Get a map to a candy rich block yourself and trick or treat with the frat outfit, ideally");
-		}
+			if(get_property("auto_hippyInstead").to_boolean() && !(possessOutfit("War Hippy Fatigues")))
+			{
+				return summonMonster($monster[War Hippy Airborne Commander]);
+			}
+			else if(!(possessOutfit("Frat Warrior Fatigues")))
+				{
+					return summonMonster($monster[War Frat Mobile Grill Unit]);
+				}
+			}
+			if(candyBlock())
+			{
+				return true;
+			}
+			if(!(get_property("_mapToACandyRichBlockUsed").to_boolean()) && candyBlockOutfit("treat") != "")
+			{
+				abort("Get a map to a candy rich block yourself and trick or treat with the frat outfit, ideally");
+			}
+	}
 	}
 	if(my_level() >= 5)
 	{
