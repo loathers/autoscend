@@ -1120,6 +1120,7 @@ boolean candyBlock()
 
 	if(!get_property("_mapToACandyRichBlockUsed").to_boolean() && item_amount($item[Map to a candy-rich block]) > 0)
 	{
+		autoOutfit(candyBlockOutfit("treat"));
 		use(1,$item[Map to a candy-rich block]);
 	}
 	if(get_property("_mapToACandyRichBlockUsed").to_boolean())
