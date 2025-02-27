@@ -1,3 +1,4 @@
+static int ZOOPART_NONE       = 0;
 static int ZOOPART_HEAD       = 1;
 static int ZOOPART_L_SHOULDER = 2;
 static int ZOOPART_R_SHOULDER = 3;
@@ -9,22 +10,33 @@ static int ZOOPART_L_BUTTOCK  = 8;
 static int ZOOPART_R_BUTTOCK  = 9;
 static int ZOOPART_L_FOOT     = 10;
 static int ZOOPART_R_FOOT     = 11;
-/*static int[int] bodyPartPriority = {
-		ZOOPART_L_NIPPLE,
-		ZOOPART_R_NIPPLE,
-		ZOOPART_L_FOOT,
-		ZOOPART_HEAD,
-		ZOOPART_L_HAND,
-		ZOOPART_L_SHOULDER,
-		ZOOPART_R_SHOULDER,
-		ZOOPART_L_BUTTOCK,
-		ZOOPART_R_BUTTOCK,
-		ZOOPART_R_FOOT,
-		ZOOPART_R_HAND};*/
 
 boolean in_zootomist()
 {
 	return my_path()==$path[z is for zootomist];
+}
+
+int zoo_specimenPreparationsLeft()
+{
+	if (!in_zootomist()) { return 0; }
+	return get_property("zootomistPoints").to_int()+1-get_property("zootSpecimensPrepared").to_int();
+}
+
+boolean zoo_prepareSpecimen()
+{
+	familiar f = my_familiar();
+	if (!in_zootomist()) { return false; }
+	if (zoo_specimenPreparationsLeft() > 0)
+	{
+		visit_url("place.php?whichplace=graftinglab&action=graftinglab_prep");
+		visit_url("choice.php?pwd=&whichchoice=1555&option=1", true);
+		refresh_status();
+		int new_exp = f.experience;
+		int new_weight = familiar_weight(f);
+		handleTracker(f,"Specimen prepared to "+f.experience+" XP {"+new_weight+" lb}","auto_tracker_path");
+		return true;
+	}
+	return false;
 }
 
 void zootomist_start_pulls()

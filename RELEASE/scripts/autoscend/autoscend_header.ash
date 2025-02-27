@@ -1083,6 +1083,8 @@ boolean LM_zombieSlayer();
 ########################################################################################################
 //Defined in autoscend/paths/zootomist.ash
 boolean in_zootomist();
+int zoo_specimenPreparationsLeft();
+boolean zoo_prepareSpecimen();
 void zootomist_start_pulls();
 int auto_grafted(int bodyPart);
 int [int] bodyPartPriority();
