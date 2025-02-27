@@ -575,6 +575,7 @@ boolean auto_setAprilBandCombat();
 boolean auto_setAprilBandDrops();
 int auto_AprilSaxLuckyLeft();
 int auto_AprilTubaForcesLeft();
+int auto_AprilPiccoloBoostsLeft();
 boolean auto_haveDarts();
 void dartChoiceHandler(int choice, string[int] options);
 int dartBullseyeChance();

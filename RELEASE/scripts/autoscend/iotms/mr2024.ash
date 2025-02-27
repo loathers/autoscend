@@ -109,7 +109,7 @@ boolean auto_playAprilPiccolo()
 	{
 		int startexp = f.experience;
 		cli_execute("aprilband play piccolo");
-		boolean success = f.experience>startexp;
+		success = f.experience > startexp;
 	}
 	string tracker = in_zootomist()?"auto_tracker_path":"auto_otherstuff";
 	handleTracker($item[apriling band piccolo],(success?"Played":"Failed to play")+" to "+f,tracker);
@@ -164,6 +164,13 @@ int auto_AprilTubaForcesLeft()
 	if(!auto_haveAprilingBandHelmet()) {return 0;}
 	if(available_amount($item[Apriling band tuba]) == 0) {return 0;}
 	return 3-get_property("_aprilBandTubaUses").to_int();
+}
+
+int auto_AprilPiccoloBoostsLeft()
+{
+	if(!auto_haveAprilingBandHelmet()) {return 0;}
+	if(available_amount($item[Apriling band piccolo]) == 0) {return 0;}
+	return 3-get_property("_aprilBandPiccoloUses").to_int();
 }
 
 boolean auto_haveDarts()
