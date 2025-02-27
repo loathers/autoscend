@@ -1873,6 +1873,8 @@ boolean doTasks()
 
 	basicAdjustML();
 
+	if (zoo_GraftFam()) { return true; }
+
 	finishBuildingSmutOrcBridge();
 	councilMaintenance();
 	auto_buySkills();		// formerly picky_buyskills() now moved here
@@ -1888,7 +1890,6 @@ boolean doTasks()
 	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
-	zooGraftFam();
 
 	oldPeoplePlantStuff();
 	use_barrels();
@@ -1918,6 +1919,8 @@ boolean doTasks()
 	ocrs_postCombatResolve();
 	beatenUpResolution();
 	lar_safeguard();
+
+	if (LX_zootoFight()) { return true; }
 
 
 	//Early adventure options that we probably want

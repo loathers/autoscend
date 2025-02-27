@@ -39,7 +39,7 @@ boolean zoo_prepareSpecimen()
 	return false;
 }
 
-void zootomist_start_pulls()
+void zoo_startPulls()
 {
 	if (!in_zootomist() || pulls_remaining()==0) { return; }
 	if (!have_skill($skill[just the facts]) && auto_is_valid($skill[just the facts])) {
@@ -55,38 +55,96 @@ void zootomist_start_pulls()
 	}
 }
 
-int auto_grafted(int bodyPart)
+void zoo_d2Pulls()
+{
+	if (!in_zootomist() || pulls_remaining()==0) { return; }
+	
+	// Pull enough ML for oil peak, we need a provider function here.
+	int ml_target = 100.0;
+	maximize("monster level",true);
+	int curr_ml = numeric_modifier($modifier[monster level]);
+	
+	// Function to try pulling an ML item, if it improves our ML by at least 10 over best alternative.
+	float try_ml_pull(item it) {
+		if (!can_equip(it) || (available_amount(it)>0) || !auto_is_valid(it)) { return 0; }
+		modifier m = $modifier[monster level];
+		slot s = to_slot(it);
+		int[item] alternatives = auto_getAllEquipabble(s);
+		item[int] ranked_alternatives = auto_sortedByModifier(alternatives,m);
+		int islot = (s==$slot[acc1] ? 2 : 0); // we want to compare to our third best item for accessories
+		item curr_best_in_slot = count(ranked_alternatives)>islot ? ranked_alternatives[islot] : $item[none];
+		float curr_best_mod = numeric_modifier(curr_best_in_slot, m);
+		float improvement = numeric_modifier(it,m) - curr_best_mod;
+		if (improvement > 10) {
+			pullXWhenHaveY(it, 1, 0);
+			return improvement;
+		}
+		return 0;
+	}
+	// Good ML boosting items. Vinyl Shield is lower than you might think because it can't be wielded with unstable fulminate.
+	foreach it in $items[hairshirt, hockey stick of furious angry rage, stainless steel scarf, Porcelain pelerine, Bakelite backpack, vinyl shield, iFlail]
+	{
+		if (curr_ml >= ml_target) {break;}
+		curr_ml += try_ml_pull(it);
+	}
+	return;
+}
+
+familiar zoo_graftedToPart(int bodyPart)
 {
 	switch(bodyPart)
 	{
 		case ZOOPART_HEAD:
-			return get_property("zootGraftedHeadFamiliar").to_int();
+			return get_property("zootGraftedHeadFamiliar").to_int().to_familiar();
 		case ZOOPART_L_SHOULDER:
-			return get_property("zootGraftedShoulderLeftFamiliar").to_int();
+			return get_property("zootGraftedShoulderLeftFamiliar").to_int().to_familiar();
 		case ZOOPART_R_SHOULDER:
-			return get_property("zootGraftedShoulderRightFamiliar").to_int();
+			return get_property("zootGraftedShoulderRightFamiliar").to_int().to_familiar();
 		case ZOOPART_L_HAND:
-			return get_property("zootGraftedHandLeftFamiliar").to_int();
+			return get_property("zootGraftedHandLeftFamiliar").to_int().to_familiar();
 		case ZOOPART_R_HAND:
-			return get_property("zootGraftedHandRightFamiliar").to_int();
+			return get_property("zootGraftedHandRightFamiliar").to_int().to_familiar();
 		case ZOOPART_R_NIPPLE:
-			return get_property("zootGraftedNippleRightFamiliar").to_int();
+			return get_property("zootGraftedNippleRightFamiliar").to_int().to_familiar();
 		case ZOOPART_L_NIPPLE:
-			return get_property("zootGraftedNippleLeftFamiliar").to_int();
+			return get_property("zootGraftedNippleLeftFamiliar").to_int().to_familiar();
 		case ZOOPART_L_BUTTOCK:
-			return get_property("zootGraftedButtCheekLeftFamiliar").to_int();
+			return get_property("zootGraftedButtCheekLeftFamiliar").to_int().to_familiar();
 		case ZOOPART_R_BUTTOCK:
-			return get_property("zootGraftedButtCheekRightFamiliar").to_int();
+			return get_property("zootGraftedButtCheekRightFamiliar").to_int().to_familiar();
 		case ZOOPART_L_FOOT:
-			return get_property("zootGraftedFootLeftFamiliar").to_int();
+			return get_property("zootGraftedFootLeftFamiliar").to_int().to_familiar();
 		case ZOOPART_R_FOOT:
-			return get_property("zootGraftedFootRightFamiliar").to_int();
+			return get_property("zootGraftedFootRightFamiliar").to_int().to_familiar();
 		default:
-			return 0;
+			return $familiar[none];
 	}
 }
 
-int [int] bodyPartPriority()
+familiar[int] zoo_graftedFams()
+{
+	familiar[int] fams;
+	for (int i = 1 ; i < 12 ; i++) {fams[i] = zoo_graftedToPart(i);}
+	return fams;
+}
+
+boolean[familiar] zoo_graftedIntrinsicFams()
+{
+	boolean[familiar] fams;
+	void check(int part)
+	{
+		familiar f = zoo_graftedToPart(part);
+		if (f!=$familiar[none]) {fams[f] = true;}
+	}
+	check(ZOOPART_HEAD);
+	check(ZOOPART_L_SHOULDER);
+	check(ZOOPART_R_SHOULDER);
+	check(ZOOPART_L_BUTTOCK );
+	check(ZOOPART_R_BUTTOCK );
+	return fams;
+}
+
+int [int] zoo_getBodyPartPriority()
 {
 	int [int] priority;
 	if(auto_have_familiar($familiar[burly bodyguard]))
@@ -132,10 +190,10 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 	string[familiar] famAttributes;
 	//priority, familiar
 	float[familiar] intrinsicFams;
-	float[familiar] dcombatFams;
+	float[familiar] punchFams;
 	float[familiar] lbuffFams;
 	float[familiar] rbuffFams;
-	float[familiar] combatFams;
+	float[familiar] kickFams;
 	//Weights for familiar priority. These are based off of our default maximizer statement
 	float[string] intrinsicWeights = { 
 		"technological": 100, //20% item drop
@@ -341,85 +399,138 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 			intrinsicFams[fam] += intrinsicWeights[a];
 			lbuffFams[fam] += lNipWeights[a];
 			rbuffFams[fam] += rNipWeights[a];
-			combatFams[fam] += footWeights[footParam[a]];
+			kickFams [fam] += footWeights[footParam[a]];
 		}
 	}
-	familiar[5] intrinsicFam;
-	familiar lbuffFam;
-	familiar rbuffFam;
-	familiar lcombatFam;
-	familiar rcombatFam;
-	foreach fam, m in rbuffFams
+	
+	// Function for sorting familiars by their weights
+	familiar[int] sortFams(float[familiar] map)
 	{
-		if(m > rbuffFams[rbuffFam])
+		// Make an indexed list of the familiars
+		familiar[int] ranked_list;
+		foreach entry in map
+		{
+			ranked_list[count(ranked_list)] = entry;
+		}
+		// Sort by their weight, high to low
+		sort ranked_list by -map[value];
+		return ranked_list;
+	}
+	
+	boolean[familiar] used;
+	familiar[int] intrinsicFam;
+	familiar lbuffFam  = $familiar[none];
+	familiar rbuffFam  = $familiar[none];
+	familiar lkickFam  = $familiar[none];
+	familiar rkickFam  = $familiar[none];
+	familiar lpunchFam = $familiar[none];
+	familiar rpunchFam = $familiar[none];
+	
+	foreach i,fam in sortFams(rbuffFams)
+	{
+		if (!(used contains fam))
 		{
 			rbuffFam = fam;
-		}
-	}
-	foreach fam, m in lbuffFams
-	{
-		if(m > lbuffFams[lbuffFam] && rbuffFam != fam)
-		{
-			lbuffFam = fam;
-		}
-	}
-	foreach fam, m in combatFams
-	{
-		if(rbuffFam == fam || lbuffFam == fam)
-		{
-			continue;
-		}
-		if(m > combatFams[lcombatFam])
-		{
-			lcombatFam = fam;
-		}
-	}
-	foreach fam in $familiars[quantum entangler, foul ball]
-	{
-		if(auto_have_familiar(fam))
-		{
-			lcombatFam = fam;
+			used[fam] = true;
 			break;
 		}
 	}
-	foreach fam, m in intrinsicFams
+	
+	foreach i,fam in sortFams(lbuffFams)
 	{
-		if(rbuffFam == fam || lbuffFam == fam || lcombatFam == fam)
+		if (!(used contains fam))
 		{
-			continue;
+			lbuffFam = fam;
+			used[fam] = true;
+			break;
 		}
-		foreach i in intrinsicFam
+	}
+	
+	foreach fam in $familiars[quantum entangler, foul ball, Defective Childrens' Stapler]
+	{
+		if(auto_have_familiar(fam))
 		{
-			if(m > intrinsicFams[intrinsicFam[i]])
+			lkickFam = fam;
+			used[fam] = true;
+			break;
+		}
+	}
+	
+	if (lkickFam == $familiar[none])
+	{
+		foreach i,fam in sortFams(kickFams)
+		{
+			if (!(used contains fam))
 			{
-				if(i < 4)
-				{
-					intrinsicFam[i+1] = intrinsicFam[i];
-				}
-				intrinsicFam[i] = fam;
+				lkickFam = fam;
+				used[fam] = true;
 				break;
 			}
 		}
 	}
-	foreach fam, m in combatFams
+	
+	int intrinsic_index = 0;
+	foreach i,fam in sortFams(intrinsicFams)
 	{
-		if(rbuffFam == fam || lbuffFam == fam || lcombatFam == fam || intrinsicFams contains fam)
+		// We only need enough to fill our empty graft slots
+		if (count(intrinsicFam)>=5-count(zoo_graftedIntrinsicFams()))
 		{
-			continue;
+			break;
 		}
-		if(m > combatFams[rcombatFam])
+		if (!(used contains fam))
 		{
-			rcombatFam = fam;
+			intrinsicFam[intrinsic_index++] = fam;
+			used[fam] = true; // should probably not add to used if we already have grafts that will prevent this ever being used
 		}
 	}
+	
+	// Right kick banishes (cassava and limb are super-banishes, magimech is OK)
 	foreach fam in $familiars[dire cassava, phantom limb, MagiMechTech MicroMechaMech]
 	{
 		if(auto_have_familiar(fam))
 		{
-			rcombatFam = fam;
+			rkickFam = fam;
+			used[fam] = true;
 			break;
 		}
 	}
+	// Backup right kick options
+	if (rkickFam == $familiar[none])
+	{
+		foreach i,fam in sortFams(kickFams)
+		{
+			if (!(used contains fam))
+			{
+				rkickFam = fam;
+				used[fam] = true;
+				break;
+			}
+		}
+	}
+	
+	// Punch familiars, hardcoded for now.
+	// Barrrnacle can kill everything in-run, so a good default choice
+	// Burly bodyguard levels up with AG path progression so can be grafted faster.
+	// Cold cut is a pure cold punch, can be useful for certain monsters (smorcs, war boss)
+	// volleyball and mosquito and fairyas backups. Everybody needs somebody to punch.
+	foreach fam in $familiars[barrrnacle, burly bodyguard, cold cut, blood-faced volleyball, mosquito, baby gravy fairy]
+	{
+		if(auto_have_familiar(fam) && (!(used contains fam)))
+		{
+			if(lpunchFam==$familiar[none])
+			{
+				lpunchFam = fam;
+				used[fam] = true;
+			}
+			else
+			{
+				rpunchFam = fam;
+				used[fam] = true;
+				break;
+			}
+		}
+	}
+
 	if(verbose)
 	{
 		auto_log_info("Best Right nipple fams", "purple");
@@ -427,14 +538,25 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		auto_log_info("Best Left nipple fams", "blue");
 		auto_log_info(lbuffFam + ":" + lbuffFams[lbuffFam], "blue");
 		auto_log_info("Best Left Foot Fam", "green");
-		auto_log_info(lcombatFam + ":" + combatFams[lcombatFam], "green");
+		auto_log_info(lkickFam + ":" + kickFams[lkickFam], "green");
 		auto_log_info("Best Head, Shoulder, and Butt Fam", "orange");
-		foreach i, fam in intrinsicFam
+		if (count(intrinsicFam)>0)
 		{
-			auto_log_info(fam + ":" + intrinsicFams[fam], "orange");
+			foreach i, fam in intrinsicFam
+			{
+				auto_log_info(fam + ":" + intrinsicFams[fam], "orange");
+			}
+		}
+		else
+		{
+			auto_log_info("All slots occupied", "orange");
 		}
 		auto_log_info("Best Right Foot Fam", "red");
-		auto_log_info(rcombatFam + ":" + combatFams[rcombatFam], "red");
+		auto_log_info(rkickFam + ":" + kickFams[rkickFam], "red");
+		auto_log_info("Best Left Hand Fam", "red");
+		auto_log_info(lpunchFam, "red");
+		auto_log_info("Best Right Hand Fam", "red");
+		auto_log_info(rpunchFam, "red");
 	}
 	
 	familiar bestIntrinsicFam = intrinsicFam[0];
@@ -447,24 +569,17 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		case ZOOPART_R_BUTTOCK:
 			return bestIntrinsicFam;
 		case ZOOPART_L_HAND:
-			return $familiar[Barrrnacle]; //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
+			return lpunchFam;
 		case ZOOPART_R_HAND:
-			if(auto_have_familiar($familiar[burly bodyguard])) //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
-			{
-				return $familiar[burly bodyguard];
-			}
-			else
-			{
-				return $familiar[Blood-Faced Volleyball]; //Need to programmatically figure this out yet because what if this is optimal in an earlier slot?
-			}
+			return rpunchFam;
 		case ZOOPART_L_NIPPLE:
 			return lbuffFam;
 		case ZOOPART_R_NIPPLE:
 			return rbuffFam;
 		case ZOOPART_L_FOOT:
-			return lcombatFam;
+			return lkickFam;
 		case ZOOPART_R_FOOT:
-			return rcombatFam;
+			return rkickFam;
 	}
 	return $familiar[none];
 }
@@ -472,10 +587,10 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 familiar zoo_getNextFam()
 {
 	if (!in_zootomist() || my_level() > 11) {return $familiar[none];}
-	return zoo_getBestFam(bodyPartPriority()[my_level()-1], false);
+	return zoo_getBestFam(zoo_getBodyPartPriority()[my_level()-1], false);
 }
 
-boolean zooGraftFam()
+boolean zoo_graftFam()
 {
 	boolean doZooto = get_property("auto_doZooto").to_boolean();
 	if (!in_zootomist() || my_level()>=13 || !doZooto)
@@ -496,7 +611,7 @@ boolean zooGraftFam()
 	11 = right foot
 	Each body part is categorized by what it gives when a familiar is grafted to it.
 	intrinsic provides the intrinsic buff and adds to it.
-	dcombat is a combat damage skill
+	punch is a combat damage skill
 	lbuff is left nipple buff
 	rbuff is right nipple buff
 	combat is a useful combat skill (yr, olfact, banish)
@@ -505,14 +620,14 @@ boolean zooGraftFam()
 		ZOOPART_HEAD       : "intrinsic",
 		ZOOPART_L_SHOULDER : "intrinsic",
 		ZOOPART_R_SHOULDER : "intrinsic",
-		ZOOPART_L_HAND     : "dcombat",
-		ZOOPART_R_HAND     : "dcombat",
+		ZOOPART_L_HAND     : "punch",
+		ZOOPART_R_HAND     : "punch",
 		ZOOPART_L_NIPPLE   : "lbuff",
 		ZOOPART_R_NIPPLE   : "rbuff",
 		ZOOPART_L_BUTTOCK  : "intrinsic",
 		ZOOPART_R_BUTTOCK  : "intrinsic",
-		ZOOPART_L_FOOT     : "combat",
-		ZOOPART_R_FOOT     : "combat"
+		ZOOPART_L_FOOT     : "kick",
+		ZOOPART_R_FOOT     : "kick"
 	};
 	string[int] bodyPartName = {
 		ZOOPART_HEAD       : "head",
@@ -527,19 +642,18 @@ boolean zooGraftFam()
 		ZOOPART_L_FOOT     : "left foot",
 		ZOOPART_R_FOOT     : "right foot"
 	};
-	int[int] bodyPartPriority = bodyPartPriority();
+	int[int] bodyPartPriority = zoo_getBodyPartPriority();
 	foreach i, p in bodyPartPriority
 	{
-		int auto_grafts = auto_grafted(p);
-		if(auto_grafts > 0) continue;
-		auto_log_info(p);
+		familiar existing_graft = zoo_graftedToPart(p);
+		if (existing_graft != $familiar[none]) { continue;}
 		familiar fam = zoo_getBestFam(p, false);
 		handleFamiliar(fam);
 		int next_graft_weight = zoo_nextGraftWeight();
 		if(familiar_weight(fam) < next_graft_weight)
 		{
 			//can only graft if the fam is higher than the level at the last graft
-			zooBoostWeight(fam,next_graft_weight);
+			zoo_BoostWeight(fam,next_graft_weight);
 			return false;
 		}
 		equip(fam,$item[none]); //unequip fam equipment to not lose it, just in case
@@ -548,14 +662,16 @@ boolean zooGraftFam()
 		auto_log_info("Grafting a " + fam + " to you", "blue");
 		handleTracker(fam,"Grafted to " + bodyPartName[p],"auto_tracker_path");
 		refresh_status();
+                // This section should probably be removed, should work without.
 		council();
 		if (my_level() < 13)
 		{
 			familiar nextfam = zoo_getNextFam();
-			if (nextfam==$familiar[none]) { abort("Got none familiar in zooGraftFam()"); }
+			if (nextfam==$familiar[none]) { abort("Got none familiar in zoo_GraftFam()"); }
 			use_familiar(nextfam);
 			handleFamiliar(nextfam);
 		}
+                // remove to here
 		return true;
 	}
 	
@@ -568,51 +684,27 @@ int zoo_nextGraftWeight()
 	return min(my_level()+2,13);
 }
 
-boolean zooBoostWeight(familiar f)
+boolean zoo_boostWeight(familiar f)
 {
-	return zooBoostWeight(f,zoo_nextGraftWeight());
+	return zoo_boostWeight(f,zoo_nextGraftWeight());
 }
 
-boolean zooBoostWeight(familiar f, int target_weight)
+boolean zoo_boostWeight(familiar f, int target_weight)
 {
-	//Once this is proven to output as expected, actually do the operations, not just output stuff
 	if(my_familiar() != f)
 	{
 		use_familiar(f);
 	}
 	float experience_needed = target_weight*target_weight - familiar_weight(f)*familiar_weight(f);
-	float mayam = 0;
-	boolean mayamavailable;
-	boolean piccoloavailable;
-	boolean specimenavailable;
+	
+	float mayam_exp    = 100;
+	float piccolo_exp  =  40;
+	float specimen_exp =  20;
+	
+	boolean mayamavailable = auto_haveMayamCalendar() && !(auto_MayamIsUsed("fur")) && !(auto_MayamAllUsed());
+	
 	boolean doZooto = get_property("auto_doZooto").to_boolean();
-	if(auto_monkeyPawWishesLeft() >= 2 && !(have_effect($effect[Blue Swayed]) > 0))
-	{
-		//do it twice
-		auto_makeMonkeyPawWish($effect[Blue Swayed]);
-		auto_makeMonkeyPawWish($effect[Blue Swayed]);
-	}
-	if(auto_monkeyPawWishesLeft() >= 1 && !(have_effect($effect[Warm Shoulders]) > 0))
-	{
-		auto_makeMonkeyPawWish($effect[Warm Shoulders]);
-	}
-	if(auto_haveMayamCalendar() && !(auto_MayamIsUsed("fur")) && !(auto_MayamAllUsed()))
-	{
-		mayam = 100;
-		mayamavailable = true;
-	}
-	float piccolo = 0;
-	if(auto_haveAprilingBandHelmet() && possessEquipment($item[Apriling band piccolo]) && get_property("_aprilBandPiccoloUses").to_int() < 3)
-	{
-		piccolo = 40;
-		piccoloavailable = true;
-	}
-	float specimen = 0;
-	if(get_property("zootSpecimensPrepared").to_int() <= get_property("zootomistPoints").to_int())
-	{
-		specimen = 20;
-		specimenavailable = true;
-	}
+	
 	maximize("familiar experience", false);
 	float fight = numeric_modifier("familiar experience");
 	auto_log_info(f + " needs " + experience_needed + " experience");
@@ -621,48 +713,38 @@ boolean zooBoostWeight(familiar f, int target_weight)
 	float diff = experience_needed - amt;
 	while(diff >= 1)
 	{
-		if(diff > 100 && mayam > 0 && mayamavailable)
+		if(diff >= 100 && mayamavailable)
 		{
 			auto_log_info("Use the Mayam calendar and get fur on the outer ring");
-			amt += mayam;
+			amt += mayam_exp;
 			if(doZooto)
 			{
 				auto_MayamClaim("fur wood yam clock");
 			}
 			mayamavailable = false;
 		}
-		else if(diff > 40 && piccolo > 0 && piccoloavailable)
+		else if(diff >= 40 && auto_AprilPiccoloBoostsLeft()> 0 )
 		{
 			auto_log_info("Play the Apriling Band Piccolo");
-			amt += piccolo;
+			amt += piccolo_exp;
 			if(doZooto)
 			{
 				auto_playAprilPiccolo();
 			}
-			piccoloavailable = false;
 		}
-		else if(diff > 20 && specimen > 0 && specimenavailable)
+		else if(diff >= 20 && zoo_specimenPreparationsLeft() > 0)
 		{
-			auto_log_info("Use the Specimen Preparation Bench");
-			amt += specimen;
+			auto_log_info("Try to use the Specimen Preparation Bench");
+			amt += specimen_exp;
 			if(doZooto)
 			{
-				visit_url("place.php?whichplace=graftinglab&action=graftinglab_prep");
-				visit_url("choice.php?pwd=&whichchoice=1555&option=1", true);
-				int new_exp = f.experience;
-				int new_weight = familiar_weight(f);
-				handleTracker(f,"Specimen prepared to "+f.experience+" XP {"+new_weight+" lb}","auto_tracker_path");
+				zoo_prepareSpecimen();
 			}
-			specimenavailable = false;
 		}
 		else
 		{
 			int fights_needed = ceil(diff / fight);
 			auto_log_info("Do " + fights_needed + " (preferably free) fights");
-			if(doZooto)
-			{
-				LX_zootoFight();
-			}
 			amt += fight * fights_needed;
 		}
 		diff = experience_needed - amt;
@@ -793,17 +875,43 @@ boolean rightKickHasFreeKill()
 
 boolean LX_zootoFight()
 {
-	if(!in_zootomist())
+	boolean doZooto = get_property("auto_doZooto").to_boolean();
+	if(!in_zootomist() || my_level()>=13 || !doZooto)
 	{
 		return false;
 	}
+	
+	// Make sure have our mega familiar exp boosting wishes up
+	// Blue swayed boost depends on turns left so keep it above 31 (casts twice immediately to max out boost)
+	while(auto_monkeyPawWishesLeft() > 0 && have_effect($effect[Blue Swayed]) < 31)
+	{
+		auto_makeMonkeyPawWish($effect[Blue Swayed]);
+	}
+	if(auto_monkeyPawWishesLeft() > 0 && have_effect($effect[Warm Shoulders]) <= 0)
+	{
+		auto_makeMonkeyPawWish($effect[Warm Shoulders]);
+	}
+	
+	// We want lots of XP
+	addToMaximize("+1000 familiar exp");
+	
+	if(my_level() >= 10)
+	{	// If we have Mayam, let's get that stone wool and unlock our Mayam.
+		if (auto_haveMayamCalendar() && get_property("lastTempleAdventures").to_int()<my_ascensions())
+		{
+			L11_unlockHiddenCity();
+		}
+	}
+	
 	if(my_level() >= 7)
 	{
 		if(auto_doPhoneQuest())
 		{
 			return true;
 		}
-		//should get wishes in Shadow Rift. If not can't do this
+		// should get wishes in Shadow Rift. If not can't do this
+		// add Hippy support before we merge
+                // CHECK FOR AVAILABLE YELLOW RAY
 		if(!(have_outfit("Frat Warrior Fatigues")))
 		{
 			return summonMonster($monster[War Frat Mobile Grill Unit]);
@@ -824,28 +932,30 @@ boolean LX_zootoFight()
 			return true;
 		}
 	}
-	if(!(can_adventure($location[Cobb\'s Knob Harem])))
+	
+	// Do the the temple unlock first, so we can get stone wool to reset our mayam
+	if (auto_haveMayamCalendar())
 	{
-		//Haven't opened the Knob yet
-		if(autoAdv($location[The Outskirts of Cobb'\s Knob]))
+		if(LX_unlockHiddenTemple())
 		{
 			return true;
 		}
 	}
-	else if(!(can_adventure($location[The Haunted Billiards Room])))
-	{
-		if(autoAdv($location[The Haunted Kitchen]))
-		{
-			return true;
-		}
-	}
-	else if(autoAdv($location[The Spooky Forest]))
+	
+	if(L5_getEncryptionKey())
 	{
 		return true;
 	}
-	else
+	
+	if(LX_unlockHauntedBilliardsRoom())
 	{
-		return false;
+		return true;
 	}
+
+	if(LX_unlockHiddenTemple())
+	{
+		return true;
+	}
+
 	return false;
 }
