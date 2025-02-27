@@ -1068,6 +1068,11 @@ void auto_useWardrobe()
 	{
 		return;
 	}
+	// Zooto will be at 10 in very few turns
+	if(my_level() < 10 && in_zootomist())
+	{
+		return;
+	}
 	// wait for level 15 if close and not at NS tower
 	if(my_level() == 14 && internalQuestStatus("questL13Final") < 0)
 	{
