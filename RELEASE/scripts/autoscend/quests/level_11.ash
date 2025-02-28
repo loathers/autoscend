@@ -1344,7 +1344,14 @@ boolean L11_aridDesert()
 
 		if (dbr.fam != $familiar[none])
 		{
-			handleFamiliar(dbr.fam);
+			if(in_quantumTerrarium())
+			{
+				qt_FamiliarSwap(dbr.fam);
+			}
+			else
+			{
+				handleFamiliar(dbr.fam);
+			}
 		}
 		if (dbr.weapon != $item[none])
 		{
