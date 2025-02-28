@@ -526,8 +526,19 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 	// Burly bodyguard levels up with AG path progression so can be grafted faster.
 	// Cold cut is a pure cold punch, can be useful for certain monsters (smorcs, war boss)
 	// volleyball and mosquito and fairyas backups. Everybody needs somebody to punch.
-	foreach fam in $familiars[barrrnacle, burly bodyguard, cold cut, blood-faced volleyball, mosquito, baby gravy fairy]
+	familiar[int] punchPotential;
+	int ipunch = 0;
+	foreach fam in $familiars[barrrnacle, cold cut, blood-faced volleyball, mosquito, baby gravy fairy]
 	{
+		if (ipunch == 1 && auto_have_familiar($familiar[burly bodyguard])) {
+			punchPotential[ipunch++] = $familiar[burly bodyguard];
+		}
+		punchPotential[ipunch++] = fam;
+	}
+		
+	for (int ifam = 0 ; ifam < count(punchPotential) ; ifam++)
+	{
+		familiar fam = punchPotential[ifam];
 		if(auto_have_familiar(fam) && (!(used contains fam)))
 		{
 			if(lpunchFam==$familiar[none])
