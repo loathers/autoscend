@@ -1090,6 +1090,7 @@ void zoo_d2Pulls();
 familiar zoo_graftedToPart(int bodyPart);
 familiar[int] zoo_graftedFams();
 boolean[familiar] zoo_graftedIntrinsicFams();
+boolean zoo_isGrafted(familiar f);
 int [int] zoo_getBodyPartPriority();
 familiar zoo_getBestFam(int bodyPart);
 familiar zoo_getBestFam(int bodyPart, boolean verbose);

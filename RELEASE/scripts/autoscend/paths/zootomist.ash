@@ -144,10 +144,20 @@ boolean[familiar] zoo_graftedIntrinsicFams()
 	return fams;
 }
 
+boolean zoo_isGrafted(familiar f)
+{
+	if (f==$familiar[none]) { return false; }
+	foreach i,fam in zoo_graftedFams()
+	{
+		if (fam==f) { return true ;}
+	}
+	return false;
+}
+
 int [int] zoo_getBodyPartPriority()
 {
 	int [int] priority;
-	if(auto_have_familiar($familiar[burly bodyguard]))
+	if(auto_have_familiar($familiar[burly bodyguard]) || zoo_isGrafted($familiar[burly bodyguard]))
 	{
 		priority = {ZOOPART_L_NIPPLE,
 		ZOOPART_R_NIPPLE,
@@ -574,7 +584,7 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		{
 			auto_log_info("All slots occupied", "orange");
 		}
-		auto_log_info("Best Right Foot Fam", "red");
+		auto_log_info("Best Right Foot Fam", "green");
 		auto_log_info(rkickFam + ":" + kickFams[rkickFam], "red");
 		auto_log_info("Best Left Hand Fam", "red");
 		auto_log_info(lpunchFam, "red");
@@ -982,7 +992,7 @@ boolean LX_zootoFight()
 	}
 	
 	// Do the the temple unlock first, so we can get stone wool to reset our mayam
-	if (auto_haveMayamCalendar())
+	if (auto_haveMayamCalendar() && my_level() >= 2)
 	{
 		if(LX_unlockHiddenTemple())
 		{
