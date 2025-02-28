@@ -419,40 +419,49 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 	
 	boolean[familiar] used;
 	familiar[int] intrinsicFam;
-	familiar lbuffFam  = $familiar[none];
-	familiar rbuffFam  = $familiar[none];
-	familiar lkickFam  = $familiar[none];
-	familiar rkickFam  = $familiar[none];
-	familiar lpunchFam = $familiar[none];
-	familiar rpunchFam = $familiar[none];
+	familiar lbuffFam  = zoo_graftedToPart(ZOOPART_L_NIPPLE);
+	familiar rbuffFam  = zoo_graftedToPart(ZOOPART_R_NIPPLE);
+	familiar lkickFam  = zoo_graftedToPart(ZOOPART_L_FOOT);
+	familiar rkickFam  = zoo_graftedToPart(ZOOPART_R_FOOT);
+	familiar lpunchFam = zoo_graftedToPart(ZOOPART_L_HAND);
+	familiar rpunchFam = zoo_graftedToPart(ZOOPART_R_HAND);
 	
-	foreach i,fam in sortFams(rbuffFams)
+	if (rbuffFam == $familiar[none])
 	{
-		if (!(used contains fam))
+		foreach i,fam in sortFams(rbuffFams)
 		{
-			rbuffFam = fam;
-			used[fam] = true;
-			break;
+			if (!(used contains fam))
+			{
+				rbuffFam = fam;
+				used[fam] = true;
+				break;
+			}
 		}
 	}
 	
-	foreach i,fam in sortFams(lbuffFams)
+	if (lbuffFam == $familiar[none])
 	{
-		if (!(used contains fam))
+		foreach i,fam in sortFams(lbuffFams)
 		{
-			lbuffFam = fam;
-			used[fam] = true;
-			break;
+			if (!(used contains fam))
+			{
+				lbuffFam = fam;
+				used[fam] = true;
+				break;
+			}
 		}
 	}
 	
-	foreach fam in $familiars[quantum entangler, foul ball, Defective Childrens' Stapler]
+	if (lkickFam == $familiar[none])
 	{
-		if(auto_have_familiar(fam))
+		foreach fam in $familiars[quantum entangler, foul ball, Defective Childrens' Stapler]
 		{
-			lkickFam = fam;
-			used[fam] = true;
-			break;
+			if(auto_have_familiar(fam))
+			{
+				lkickFam = fam;
+				used[fam] = true;
+				break;
+			}
 		}
 	}
 	
@@ -485,15 +494,19 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 	}
 	
 	// Right kick banishes (cassava and limb are super-banishes, magimech is OK)
-	foreach fam in $familiars[dire cassava, phantom limb, MagiMechTech MicroMechaMech]
+	if (rkickFam == $familiar[none])
 	{
-		if(auto_have_familiar(fam))
+		foreach fam in $familiars[dire cassava, phantom limb, MagiMechTech MicroMechaMech]
 		{
-			rkickFam = fam;
-			used[fam] = true;
-			break;
+			if(auto_have_familiar(fam))
+			{
+				rkickFam = fam;
+				used[fam] = true;
+				break;
+			}
 		}
 	}
+	
 	// Backup right kick options
 	if (rkickFam == $familiar[none])
 	{
@@ -522,11 +535,10 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 				lpunchFam = fam;
 				used[fam] = true;
 			}
-			else
+			else if(rpunchFam==$familiar[none])
 			{
 				rpunchFam = fam;
 				used[fam] = true;
-				break;
 			}
 		}
 	}
