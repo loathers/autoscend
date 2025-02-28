@@ -337,6 +337,7 @@ void auto_settingsDefaults()
 	//set default values for settings which have not yet been configured
 	defaultConfig("auto_delayTimer", "1");
 	defaultConfig("auto_abooclover", "true");		//Are we considering using a clover at A-Boo Peak?
+	defaultConfig("auto_consumablePriceLimit", "12000");		//Are we considering using a clover at A-Boo Peak?
 	defaultConfig("auto_paranoia", "-1");
 	defaultConfig("auto_inv_paranoia", "false");
 	defaultConfig("auto_save_adv_override", "-1");

@@ -1055,7 +1055,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			(it.fullness == 0 || it.inebriety == 0) &&
 			auto_is_valid(it))
 		{
-			boolean value_allowed = (historical_price(it) < get_property("autoBuyPriceLimit").to_int()) ||
+			boolean value_allowed = (historical_price(it) < auto_getConsumablePriceLimit()) ||
 									($items[blueberry muffin, bran muffin, chocolate chip muffin] contains it && item_amount(it) > 0 && //muffins are expensive but renewable
 									my_path() != $path[Grey You]); //Grey You should not even get to here if ever supported but it consumes the tin so blocked just in case
 									
@@ -2273,4 +2273,14 @@ boolean cannotFillSpleenWithHighPriority()
 boolean isSpleenConsumable(item it)
 {
 	return it.spleen != 0;
+}
+
+int auto_getConsumablePriceLimit()
+{
+	int mafia_max = get_property("autoBuyPriceLimit").to_int();
+	int autoscend_max = get_property("auto_consumablePriceLimit").to_int();
+	if (autoscend_max < 1) {
+		return mafia_max;
+	}
+	return min(autoscend_max,mafia_max);
 }

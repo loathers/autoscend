@@ -1503,6 +1503,7 @@ boolean prepare_food_xp_multi();
 void consumeStuff();
 boolean cannotFillSpleenWithHighPriority();
 boolean isSpleenConsumable(item it);
+int auto_getConsumablePriceLimit();
 
 ########################################################################################################
 //Defined in autoscend/auto_craft.ash
