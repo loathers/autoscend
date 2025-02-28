@@ -1153,6 +1153,10 @@ int cyrptEvilBonus(boolean inCombat);
 int cyrptEvilBonus();
 boolean L7_crypt();
 boolean L7_override();
+boolean L7_defiledAlcove();
+boolean L7_defiledNook  ();
+boolean L7_defiledNiche ();
+boolean L7_defiledCranny();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_08.ash
