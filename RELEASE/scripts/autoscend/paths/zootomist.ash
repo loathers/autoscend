@@ -922,15 +922,19 @@ boolean LX_zootoFight()
 			return true;
 		}
 		// should get wishes in Shadow Rift. If not can't do this
-                // CHECK FOR AVAILABLE YELLOW RAY
 		
-		if(get_property("auto_hippyInstead").to_boolean() && !(possessOutfit("War Hippy Fatigues")))
+		if (canYellowRay())
 		{
-			return summonMonster($monster[War Hippy Airborne Commander]);
-		}
-		else if(!(possessOutfit("Frat Warrior Fatigues")))
-		{
-			return summonMonster($monster[War Frat Mobile Grill Unit]);
+			if(get_property("auto_hippyInstead").to_boolean() && !(possessOutfit("War Hippy Fatigues")))
+			{
+				adjustForYellowRayIfPossible();
+				return summonMonster($monster[War Hippy Airborne Commander]);
+			}
+			else if(!(possessOutfit("Frat Warrior Fatigues")))
+			{
+				adjustForYellowRayIfPossible();
+				return summonMonster($monster[War Frat Mobile Grill Unit]);
+			}
 		}
 		if(auto_have_familiar($familiar[Jill-of-All-Trades]))
 		{
