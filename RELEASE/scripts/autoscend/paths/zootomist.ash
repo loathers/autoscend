@@ -707,7 +707,16 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 	{
 		use_familiar(f);
 	}
-	float experience_needed = target_weight*target_weight - familiar_weight(f)*familiar_weight(f);
+	// We want a fight with the bodyguard before we consider boosting because it superlevels first combat
+	if(f==$familiar[burly bodyguard])
+	{
+		if (f.experience == 0)
+		{
+			return false;
+		}
+	}
+	
+	float experience_needed = target_weight*target_weight - f.experience;
 	
 	float mayam_exp    = 100;
 	float piccolo_exp  =  40;
@@ -732,6 +741,7 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 			if(doZooto)
 			{
 				auto_MayamClaim("fur wood yam clock");
+				handleTracker(f,"Mayam fur used to "+f.experience+" XP {"+familiar_weight(f)+" lb}","auto_tracker_path");
 			}
 			mayamavailable = false;
 		}
