@@ -944,7 +944,11 @@ boolean LX_zootoFight()
 			}
 			if(!(get_property("_mapToACandyRichBlockUsed").to_boolean()) && candyBlockOutfit("treat") != "")
 			{
-				abort("Get a map to a candy rich block yourself and trick or treat with the frat outfit, ideally");
+				while(item_amount($item[Map to a candy-rich block]) == 0)
+				{
+					handleFamiliar($familiar[Jill-of-All-Trades]);
+					L7_defiledNook(); //Need eyes anyway so might as well try to get a couple while getting the map
+				}
 			}
 		}
 	}
