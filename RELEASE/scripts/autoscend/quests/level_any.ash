@@ -1121,7 +1121,7 @@ boolean candyBlock()
 
 	if(!get_property("_mapToACandyRichBlockUsed").to_boolean() && item_amount($item[Map to a candy-rich block]) > 0)
 	{
-		autoOutfit(candyBlockOutfit("treat"));
+		outfit(candyBlockOutfit("treat"));
 		use(1,$item[Map to a candy-rich block]);
 	}
 	if(get_property("_mapToACandyRichBlockUsed").to_boolean())
@@ -1135,7 +1135,7 @@ boolean candyBlock()
 		auto_log_info("Get some treats");
 		foreach house in houseNumbers
 		{
-			autoOutfit(candyBlockOutfit("treat"));
+			outfit(candyBlockOutfit("treat"));
 			matcher treat = create_matcher("whichhouse=" + house + ">[^>]*?house_l", blockHtml);
 			matcher starhouse = create_matcher("whichhouse=" + house + ">[^>]*?starhouse", blockHtml);
 			//treat
