@@ -1094,6 +1094,7 @@ boolean zoo_isGrafted(familiar f);
 int [int] zoo_getBodyPartPriority();
 familiar zoo_getBestFam(int bodyPart);
 familiar zoo_getBestFam(int bodyPart, boolean verbose);
+int zoo_getNextPart();
 familiar zoo_getNextFam();
 boolean zoo_graftFam();
 int zoo_nextGraftWeight();

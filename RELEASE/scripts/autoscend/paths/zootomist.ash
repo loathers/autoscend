@@ -617,10 +617,22 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 	return $familiar[none];
 }
 
+int zoo_getNextPart()
+{
+	if (!in_zootomist() || my_level() > 11) {return ZOOPART_NONE;}
+	int[int] bpp = zoo_getBodyPartPriority();
+	for (int ipart = 0 ; ipart < count(bpp) ; ipart++)
+	{
+		int part = bpp[ipart];
+		if (zoo_graftedToPart(part) == $familiar[none]) { return part; }
+	}
+	return ZOOPART_NONE;
+}
+
 familiar zoo_getNextFam()
 {
 	if (!in_zootomist() || my_level() > 11) {return $familiar[none];}
-	return zoo_getBestFam(zoo_getBodyPartPriority()[my_level()-1], false);
+	return zoo_getBestFam(zoo_getNextPart(), false);
 }
 
 boolean zoo_graftFam()
@@ -675,9 +687,10 @@ boolean zoo_graftFam()
 		ZOOPART_L_FOOT     : "left foot",
 		ZOOPART_R_FOOT     : "right foot"
 	};
-	int[int] bodyPartPriority = zoo_getBodyPartPriority();
-	foreach i, p in bodyPartPriority
+	
+	while (zoo_getNextPart() != ZOOPART_NONE)
 	{
+		int p = zoo_getNextPart();
 		familiar existing_graft = zoo_graftedToPart(p);
 		if (existing_graft != $familiar[none]) { continue;}
 		familiar fam = zoo_getBestFam(p, false);
