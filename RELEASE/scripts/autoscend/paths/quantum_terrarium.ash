@@ -58,6 +58,18 @@ boolean LX_quantumTerrarium()
 				}
 			}
 			break;
+		case $familiar[Reassembled blackbird]:
+			if(my_level() > 10 && !(internalQuestStatus("questL11Black") < 0 || internalQuestStatus("questL11Black") > 1 || black_market_available()))
+			{
+				return L11_blackMarket();
+			}
+			break;
+		case $familiar[Reconstituted crow]:
+			if(my_level() > 10 && !(internalQuestStatus("questL11Black") < 0 || internalQuestStatus("questL11Black") > 1 || black_market_available()))
+			{
+				return L11_blackMarket();
+			}
+			break;
 		default:
 			break;
 	}

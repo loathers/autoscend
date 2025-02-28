@@ -828,6 +828,16 @@ boolean L11_blackMarket()
 		set_property("screechDelay", true);
 		return false; // Can't get the reassembled blackbird if beasts are banished
 	}
+	
+	if(in_quantumTerrarium())
+	{
+		//swap to the blackbird or crow if we can
+		if(!($familiars[Reassembled Blackbird, Reconstituted Crow] contains my_familiar()))
+		{
+			qt_FamiliarSwap($familiar[Reassembled Blackbird]);
+			qt_FamiliarSwap($familiar[Reconstituted Crow]);
+		}
+	}
 
 	if ($location[The Black Forest].turns_spent > 12 && !in_avantGuard())
 	{
