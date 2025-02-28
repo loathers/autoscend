@@ -620,6 +620,7 @@ boolean auto_getClanPhotoBoothEffect(string ef, int n_times);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2025.ash
+boolean auto_haveCyberRealm();
 boolean auto_haveMcHugeLargeSkis();
 boolean auto_canEquipAllMcHugeLarge();
 boolean auto_equipAllMcHugeLarge();
@@ -1500,6 +1501,8 @@ boolean stillReachable();
 boolean distill(item target);
 boolean prepare_food_xp_multi();
 void consumeStuff();
+boolean cannotFillSpleenWithHighPriority();
+boolean isSpleenConsumable(item it);
 
 ########################################################################################################
 //Defined in autoscend/auto_craft.ash

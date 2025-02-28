@@ -1,5 +1,15 @@
 # This is meant for items that have a date of 2025
 
+boolean auto_haveCyberRealm()
+{
+	// Should check for daypass access? Don't see a Mafia preference.
+	if(auto_is_valid($item[server room key]) && available_amount($item[server room key]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
+
 boolean auto_haveMcHugeLargeSkis()
 {
 	if(auto_is_valid($item[McHugeLarge duffel bag]) && available_amount($item[McHugeLarge duffel bag]) > 0 )

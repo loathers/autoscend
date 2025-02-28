@@ -150,7 +150,15 @@ boolean buffMaintain(item source, effect buff, int uses, int turns, boolean spec
 	}
 	if(!speculative)
 	{
-		use(uses, source);
+		if (isSpleenConsumable(source))
+		{
+			chew(uses,source);
+			handleTracker(source, my_location(), "auto_chewed");
+		}
+		else
+		{
+			use(uses, source);
+		}
 	}	
 	return true;
 }
@@ -322,6 +330,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[Crunching Leaves]:				useItem = $item[Autumn Leaf];					break;
 	case $effect[Crunchy Steps]:				useItem = $item[crunchy brush];					break;
+	case $effect[Cyber Resist x2000]:			useItem = $item[synapse blaster];				break;
 	case $effect[Dance of the Sugar Fairy]:		useItem = $item[Sugar Fairy];					break;
 	case $effect[Destructive Resolve]:			useItem = $item[Resolution: Be Feistier];		break;
 	case $effect[Dexteri Tea]:					useItem = $item[cuppa Dexteri tea];				break;
