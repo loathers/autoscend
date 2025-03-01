@@ -19,7 +19,8 @@ boolean in_zootomist()
 int zoo_specimenPreparationsLeft()
 {
 	if (!in_zootomist()) { return 0; }
-	return get_property("zootomistPoints").to_int()+1-get_property("zootSpecimensPrepared").to_int();
+	int zoo_grafts_allowed = min(11,get_property("zootomistPoints").to_int()+1);
+	return zoo_grafts_allowed-get_property("zootSpecimensPrepared").to_int();
 }
 
 boolean zoo_prepareSpecimen()
