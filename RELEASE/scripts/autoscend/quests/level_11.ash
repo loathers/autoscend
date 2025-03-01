@@ -3132,7 +3132,7 @@ boolean L11_palindome()
 					pullXWhenHaveY($item[Stunt Nuts], 1, 0);
 				}
 			}
-			if(in_hardcore() && isGuildClass())
+			if(in_hardcore())
 			{
 				return true;
 			}
