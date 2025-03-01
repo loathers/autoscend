@@ -1108,6 +1108,9 @@ boolean LX_dronesOut()
 
 boolean candyBlock()
 {
+	// Set choice defaults
+	set_property("choiceAdventure804","2"); // don't halt on map use
+	set_property("choiceAdventure806","1"); // grab the big bowl of candy
 	//Based on freecandy's trickTreatTasks.ts
 	if(get_property("_mapToACandyRichBlockUsed").to_boolean() && get_property("_auto_candyMapCompleted").to_boolean())
 	{
@@ -1160,7 +1163,7 @@ boolean candyBlock()
 				autoOutfit(candyBlockOutfit("treat"));
 				tricked = autoAdvBypass(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
 				refreshBlock();
-				continue;
+				if (tricked) { return true; }
 			}
 			tricked = true;
 		}
