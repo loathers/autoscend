@@ -1517,7 +1517,11 @@ void hiddenTempleChoiceHandler(int choice, string page) {
 	} else if (choice == 125) { // No Visible Means of Support
 		run_choice(3); // Unlock the Hidden City!
 	} else if (choice == 579) { // Such Great Heights
-		if (item_amount($item[The Nostril of the Serpent]) == 0 && internalQuestStatus("questL11Worship") < 3) {
+		if (item_amount($item[stone wool]) >= 2 && get_property("lastTempleAdventures").to_int() < my_ascensions())
+		{
+			run_choice(3); // if we have plenty of stone wool, take the adventures first (and reset Mayam)
+		}
+		else if (item_amount($item[The Nostril of the Serpent]) == 0 && internalQuestStatus("questL11Worship") < 3) {
 			run_choice(2); // Get The Nostril of the Serpent
 		} else {
 			run_choice(3); // +3 adventures and extend 10 effects (first time) or skip
