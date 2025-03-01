@@ -1445,6 +1445,34 @@ boolean L11_aridDesert()
 	return true;
 }
 
+boolean LX_killBaaBaaBuran()
+{
+	if (!hidden_temple_unlocked()) { return false; }
+	if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
+	{	// try to clover/summon baa baa first
+		if(auto_haveGreyGoose()){
+			auto_log_info("Bringing the Grey Goose to emit some drones at a Sheep carving.");
+			handleFamiliar($familiar[Grey Goose]);
+		}
+		else {
+			handleFamiliar("item");
+		}
+		addToMaximize("20 item 400max");
+		
+		// Right now clovers are "cheaper" than summons, so use clover first, but not our last.
+		if(cloversAvailable() > 1)
+		{
+			return autoLuckyAdv($location[The Hidden Temple]);
+		}
+		
+		if(canSummonMonster($monster[Baa\'baa\'bu\'ran]))
+		{
+			return summonMonster($monster[Baa\'baa\'bu\'ran]);
+		}
+	}
+	return false;
+}
+
 boolean L11_unlockHiddenCity() 
 {
 	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2) 
@@ -1459,28 +1487,9 @@ boolean L11_unlockHiddenCity()
 	auto_log_info("Searching for the Hidden City", "blue");
 	if(!in_glover() && !in_tcrs()) 
 	{
-		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
-		{	// try to clover/summon baa baa first
-			if(auto_haveGreyGoose()){
-				auto_log_info("Bringing the Grey Goose to emit some drones at a Sheep carving.");
-				handleFamiliar($familiar[Grey Goose]);
-			}
-			else {
-				handleFamiliar("item");
-			}
-			addToMaximize("20 item 400max");
-			
-			// Right now clovers are "cheaper" than summons, so use clover first, but not our last.
-			if(cloversAvailable() > 1)
-			{
-				return autoLuckyAdv($location[The Hidden Temple]);
-			}
-			
-			if(canSummonMonster($monster[Baa\'baa\'bu\'ran]))
-			{
-				return summonMonster($monster[Baa\'baa\'bu\'ran]);
-			}
-		}
+		// BaaBaabaran is the best source of stone wool
+		if (LX_killBaaBaaBuran()) { return true; }
+		
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
 			//try to pull stone wool

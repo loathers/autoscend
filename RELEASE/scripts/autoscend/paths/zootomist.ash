@@ -953,11 +953,15 @@ boolean LX_zootoFight()
 	// We want lots of XP
 	addToMaximize("+1000 familiar exp");
 	
-	if(my_level() >= 10)
+	if(my_level() >= 9)
 	{	// If we have Mayam, let's get that stone wool and unlock our Mayam.
 		if (auto_haveMayamCalendar() && get_property("lastTempleAdventures").to_int()<my_ascensions())
 		{
-			L11_unlockHiddenCity();
+			if (available_amount($item[stone wool]) < 2 && internalQuestStatus("questL11Worship") < 0)
+			{
+				if (LX_killBaaBaaBuran()) { return true; }
+			}
+			if (auto_doTempleSummit()) { return true; }
 		}
 	}
 	

@@ -1238,6 +1238,7 @@ void auto_visit_gnasir();
 boolean L11_getUVCompass();
 boolean L11_hasUltrahydrated();
 boolean L11_aridDesert();
+boolean LX_killBaaBaaBuran();
 boolean L11_unlockHiddenCity();
 void hiddenTempleChoiceHandler(int choice, string page);
 boolean liana_cleared(location loc);
