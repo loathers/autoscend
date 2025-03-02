@@ -938,6 +938,25 @@ boolean LX_zootoFight()
 	{
 		return false;
 	}
+
+	boolean additionalFights()
+	{
+		if(L5_getEncryptionKey())
+		{
+			return true;
+		}
+		
+		if(LX_unlockHauntedBilliardsRoom())
+		{
+			return true;
+		}
+
+		if(LX_unlockHiddenTemple())
+		{
+			return true;
+		}
+		return false;
+	}
 	
 	// Make sure have our mega familiar exp boosting wishes up
 	// Blue swayed boost depends on turns left so keep it above 31 (casts twice immediately to max out boost)
@@ -972,7 +991,7 @@ boolean LX_zootoFight()
 			return true;
 		}
 		// should get wishes in Shadow Rift. If not can't do this
-		
+
 		if (canYellowRay())
 		{
 			if(get_property("auto_hippyInstead").to_boolean() && !(possessOutfit("War Hippy Fatigues")))
@@ -997,7 +1016,14 @@ boolean LX_zootoFight()
 				while(item_amount($item[Map to a candy-rich block]) == 0)
 				{
 					handleFamiliar($familiar[Jill-of-All-Trades]);
-					L7_defiledNook(); //Need eyes anyway so might as well try to get a couple while getting the map
+					if(L7_defiledNook()) //Need eyes anyway so might as well try to get a couple while getting the map
+					{
+						return true;
+					}
+					else
+					{
+						additionalFights(); //didn't get a map trying to complete the Nook so doing additional combats
+					}
 				}
 			}
 		}
@@ -1019,17 +1045,7 @@ boolean LX_zootoFight()
 		}
 	}
 	
-	if(L5_getEncryptionKey())
-	{
-		return true;
-	}
-	
-	if(LX_unlockHauntedBilliardsRoom())
-	{
-		return true;
-	}
-
-	if(LX_unlockHiddenTemple())
+	if(additionalFights())
 	{
 		return true;
 	}
