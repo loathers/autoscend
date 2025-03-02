@@ -407,7 +407,7 @@ boolean auto_pre_adventure()
 				adjustForYellowRayIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
-			if(auto_wantToBanish(monster_phylum(mon), place) && !auto_famKill($familiar[Patriotic Eagle], place))
+			if(auto_wantToBanish(monster_phylum(mon), place))
 			{
 				// attempt to prepare for banishing, but if we can not try free running
 				adjustForBanishIfPossible(monster_phylum(mon), place);
