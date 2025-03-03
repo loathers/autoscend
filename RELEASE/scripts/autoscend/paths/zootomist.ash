@@ -344,14 +344,14 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		"wearsclothes": 50, //50% max hp
 	};
 	string[string] footParam = {
-		"bite": "instakill",
-		"cute": "instakill",
-		"evil": "instakill",
-		"food": "instakill",
-		"hasstinger": "instakill",
-		"object": "instakill",
-		"reallyevil": "instakill",
-		"stench": "instakill",
+		"bite": "freekill",
+		"cute": "freekill",
+		"evil": "freekill",
+		"food": "freekill",
+		"hasstinger": "freekill",
+		"object": "freekill",
+		"reallyevil": "freekill",
+		"stench": "freekill",
 		"animatedart": "banish",
 		"hard": "banish",
 		"hasbones": "banish",
@@ -386,7 +386,7 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		"software": "sniff"
 	};
 	int[string] footWeights = {
-		"instakill": 10,
+		"freekill": 10,
 		"banish": 10,
 		"pp": 5,
 		"heal": 5,
@@ -866,10 +866,10 @@ skill getZooKickPickpocket()
 
 skill getZooKickFreeKill()
 {
-	if (leftKickHasFreeKill()) {
+	if (leftKickHasFreeKill() && getZooKickYR() == $skill[none]) {
 		return $skill[left %n kick];
 	}
-	if (rightKickHasFreeKill()) {
+	if (rightKickHasFreeKill() && getZooKickYR() == $skill[none]) {
 		return $skill[right %n kick];
 	}
 	return $skill[none];
@@ -903,31 +903,163 @@ skill getZooBestPunch(monster m)
 
 boolean leftKickHasSniff()
 {
+	string fAttrs = zoo_graftedToPart(ZOOPART_L_FOOT).attributes;
+	string[int] attrs = split_string(fAttrs,"; ");
+	string[int] sniffs = {
+		"animal",
+		"haseyes",
+		"hot",
+		"humanoid",
+		"mineral",
+		"orb",
+		"sentient",
+		"software"
+	};
+	foreach i,attr in attrs
+	{
+		foreach j, sniff in sniffs
+		{
+			if(sniff == attr)
+			{
+				return true;
+			}
+		}
+	}
 	return false;
 }
 
 boolean leftKickHasPickpocket()
 {
+	string fAttrs = zoo_graftedToPart(ZOOPART_L_FOOT).attributes;
+	string[int] attrs = split_string(fAttrs,"; ");
+	string[int] pps = {
+		"hasbeak",
+		"hasclaws",
+		"hashands",
+		"isclothes",
+		"polygonal",
+		"sleaze",
+		"technological",
+		"wearsclothes"
+	};
+	foreach i,attr in attrs
+	{
+		foreach j, pp in pps
+		{
+			if(pp == attr)
+			{
+				return true;
+			}
+		}
+	}
 	return false;
 }
 
 boolean leftKickHasFreeKill()
 {
+	string fAttrs = zoo_graftedToPart(ZOOPART_L_FOOT).attributes;
+	string[int] attrs = split_string(fAttrs,"; ");
+	string[int] freekills = {
+		"bite",
+		"cute",
+		"evil",
+		"food",
+		"hasstinger",
+		"object",
+		"reallyevil",
+		"stench"
+	};
+	foreach i,attr in attrs
+	{
+		foreach j, freekill in freekills
+		{
+			if(freekill == attr)
+			{
+				return true;
+			}
+		}
+	}
 	return false;
 }
 
 boolean rightKickHasSniff()
 {
+	string fAttrs = zoo_graftedToPart(ZOOPART_R_FOOT).attributes;
+	string[int] attrs = split_string(fAttrs,"; ");
+	string[int] sniffs = {
+		"animal",
+		"haseyes",
+		"hot",
+		"humanoid",
+		"mineral",
+		"orb",
+		"sentient",
+		"software"
+	};
+	foreach i,attr in attrs
+	{
+		foreach j, sniff in sniffs
+		{
+			if(sniff == attr)
+			{
+				return true;
+			}
+		}
+	}
 	return false;
 }
 
 boolean rightKickHasPickpocket()
 {
+	string fAttrs = zoo_graftedToPart(ZOOPART_R_FOOT).attributes;
+	string[int] attrs = split_string(fAttrs,"; ");
+	string[int] pps = {
+		"hasbeak",
+		"hasclaws",
+		"hashands",
+		"isclothes",
+		"polygonal",
+		"sleaze",
+		"technological",
+		"wearsclothes"
+	};
+	foreach i,attr in attrs
+	{
+		foreach j, pp in pps
+		{
+			if(pp == attr)
+			{
+				return true;
+			}
+		}
+	}
 	return false;
 }
 
 boolean rightKickHasFreeKill()
 {
+	string fAttrs = zoo_graftedToPart(ZOOPART_R_FOOT).attributes;
+	string[int] attrs = split_string(fAttrs,"; ");
+	string[int] freekills = {
+		"bite",
+		"cute",
+		"evil",
+		"food",
+		"hasstinger",
+		"object",
+		"reallyevil",
+		"stench"
+	};
+	foreach i,attr in attrs
+	{
+		foreach j, freekill in freekills
+		{
+			if(freekill == attr)
+			{
+				return true;
+			}
+		}
+	}
 	return false;
 }
 
