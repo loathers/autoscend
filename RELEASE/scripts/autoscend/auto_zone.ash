@@ -604,6 +604,11 @@ generic_t zone_combatMod(location loc)
 		{
 			value = -80;
 		}
+		else if (in_bugbear() && bugbear_BioDataRemaining($location[Engineering]) > 0)
+		{
+			// When hunting bugbears, we want normal combats, not NC combats
+			value = 10;
+		}
 		else
 		{
 			//Let us not worry about throttling the Airship

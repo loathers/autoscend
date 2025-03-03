@@ -13,6 +13,8 @@ void bugbear_InitializeSettings()
 		set_property("auto_holeinthesky", false);
 		set_property("auto_getStarKey", false);
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
+		// banishing beasts / constructs can screw up bugbear hunting
+		set_property("auto_dontPhylumBanish", true);
 	}
 }
 
@@ -97,6 +99,12 @@ boolean bugbear_UnlockMothership(location loc)
 	}
 
 	if (!zone_available(unlockLocation)) return false;
+
+	if (is_banished($phylum[beast]))
+	{
+		set_property("screechDelay", true);
+		return false; // Can't fight bugbears if beasts are banished
+	}
 
 	if (item_amount($item[Key-o-tron]) == 0 && item_amount($item[BURT]) >= 5)
 	{
