@@ -639,8 +639,7 @@ familiar zoo_getNextFam()
 
 boolean zoo_graftFam()
 {
-	boolean doZooto = get_property("auto_doZooto").to_boolean();
-	if (!in_zootomist() || my_level()>=13 || !doZooto)
+	if (!in_zootomist() || my_level()>=13)
 	{
 		return false;
 	}
@@ -760,8 +759,6 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 	
 	boolean mayamavailable = auto_haveMayamCalendar() && !(auto_MayamIsUsed("fur")) && !(auto_MayamAllUsed());
 	
-	boolean doZooto = get_property("auto_doZooto").to_boolean();
-	
 	maximize("familiar experience", false);
 	float fight = numeric_modifier("familiar experience");
 	auto_log_info(f + " needs " + experience_needed + " experience");
@@ -774,30 +771,21 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 		{
 			auto_log_info("Use the Mayam calendar and get fur on the outer ring");
 			amt += mayam_exp;
-			if(doZooto)
-			{
-				auto_MayamClaim("fur wood yam clock");
-				handleTracker(f,"Mayam fur used to "+f.experience+" XP {"+familiar_weight(f)+" lb}","auto_tracker_path");
-			}
+			auto_MayamClaim("fur wood yam clock");
+			handleTracker(f,"Mayam fur used to "+f.experience+" XP {"+familiar_weight(f)+" lb}","auto_tracker_path");
 			mayamavailable = false;
 		}
 		else if(diff >= 40 && auto_AprilPiccoloBoostsLeft()> 0 )
 		{
 			auto_log_info("Play the Apriling Band Piccolo");
 			amt += piccolo_exp;
-			if(doZooto)
-			{
-				auto_playAprilPiccolo();
-			}
+			auto_playAprilPiccolo();
 		}
 		else if(diff >= 20 && zoo_specimenPreparationsLeft() > 0)
 		{
 			auto_log_info("Try to use the Specimen Preparation Bench");
 			amt += specimen_exp;
-			if(doZooto)
-			{
-				zoo_prepareSpecimen();
-			}
+			zoo_prepareSpecimen();
 		}
 		else
 		{
@@ -1065,8 +1053,7 @@ boolean rightKickHasFreeKill()
 
 boolean LX_zootoFight()
 {
-	boolean doZooto = get_property("auto_doZooto").to_boolean();
-	if(!in_zootomist() || my_level()>=13 || !doZooto)
+	if(!in_zootomist() || my_level()>=13)
 	{
 		return false;
 	}

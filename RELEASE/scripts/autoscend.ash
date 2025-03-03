@@ -264,7 +264,6 @@ void initializeSettings() {
 	set_property("auto_dontUseCookBookBat", false);
 	set_property("auto_dietpills", 0);
 	set_property("_auto_candyMapCompleted", false);
-	set_property("auto_doZooto", false); //remove from final version
 	beehiveConsider(false);
 
 	eudora_initializeSettings();
@@ -1763,13 +1762,6 @@ boolean process_tasks()
 boolean doTasks()
 {
 	//this is the main loop for autoscend. returning true will restart from the begining. returning false will quit the loop and go on to do bedtime
-	
-	// TEMP CODE FOR ZOOTOMIST
-	if (in_zootomist() && my_level()<13 && !(get_property("auto_doZooto").to_boolean()))
-	{
-		auto_log_warning("Zootomist should not be run before level 13, for now.", "red");
-		return false;
-	}
 
 	auto_settingsFix();		//check and correct invalid configuration inputs made by users
 	if(!auto_unreservedAdvRemaining())
@@ -2115,16 +2107,6 @@ void auto_begin()
 		consumeStuff();
 	}
 	
-	if (in_zootomist())
-	{
-		print_html("<br /><p style=\"color:red;\">You are running in a highly developmental, unsupported zootomist mode. Do not run below level 13.<br />"+
-		  "Recommended:<br /> - Graft a yellow ray (Quantum Entangler is best) to your left foot.<br /> - Graft a banish to your right foot (MicroMech works).<br />"+
-		  " - Update the hardcoded kickHas() functions in zootomist.ash to fit what kicks you applied.<br />"+
-		  "This is not supported. Expect anarchy. Do not run this unless you are prepared to see dumb things happen and debug them yourself.<br />"+
-		  "Waiting 20 seconds for you to read this.</p>");
-		waitq(20);
-	}
-	
 	// the main loop of autoscend is doTasks() which is actually called as part of the while.
 	while(doTasks())
 	{
@@ -2201,11 +2183,6 @@ void main(string... input)
 						break;
 					}
 				}
-			case "zooto":
-			//actually adventure/consume things for familiar levelling. Remove from final version
-				user_confirm("This will automatically use resources. Proceed with caution and if it breaks you, well...", 15000, false);
-				set_property("auto_doZooto", true);
-				break;
 			default:
 				auto_log_info("Running normal autoscend because you didn't enter in a valid parameter");
 		}
