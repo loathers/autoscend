@@ -1,4 +1,4 @@
-since r28384;	// Grafted familiars can't be used in Zootomist
+since r28404;	// zoot nipple skills, fix level after grafting
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
