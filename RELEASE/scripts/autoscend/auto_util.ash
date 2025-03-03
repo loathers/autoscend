@@ -757,6 +757,9 @@ boolean auto_wantToBanish(monster enemy, location loc)
 
 boolean auto_wantToBanish(phylum enemyphylum, location loc)
 {
+	if (get_property("auto_dontPhylumBanish").to_boolean()) {
+		return false;
+	}
 	location locCache = my_location();
 	set_location(loc);
 	boolean [phylum] phylumToBanish = auto_getPhylum("banish");
