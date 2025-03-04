@@ -655,7 +655,7 @@ boolean LX_doVacation()
 
 boolean auto_doTempleSummit()
 {
-	if(!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 3)
+	if(!hidden_temple_unlocked())
 	{
 		return false;
 	}
@@ -665,6 +665,11 @@ boolean auto_doTempleSummit()
 	}
 	if (get_property("lastTempleAdventures").to_int()>=my_ascensions())
 	{
+		return false;
+	}
+	if (auto_haveMayamCalendar() && !auto_MayamAllUsed())
+	{
+		auto_log_info("Not getting temple summit adventures since our Mayam calendar isn't spent.");
 		return false;
 	}
 	buffMaintain($effect[Stone-Faced]);
