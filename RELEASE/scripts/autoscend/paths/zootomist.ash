@@ -344,14 +344,14 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		"wearsclothes": 50, //50% max hp
 	};
 	string[string] footParam = {
-		"bite": "freekill",
-		"cute": "freekill",
-		"evil": "freekill",
-		"food": "freekill",
-		"hasstinger": "freekill",
-		"object": "freekill",
-		"reallyevil": "freekill",
-		"stench": "freekill",
+		"bite": "instakill",
+		"cute": "instakill",
+		"evil": "instakill",
+		"food": "instakill",
+		"hasstinger": "instakill",
+		"object": "instakill",
+		"reallyevil": "instakill",
+		"stench": "instakill",
 		"animatedart": "banish",
 		"hard": "banish",
 		"hasbones": "banish",
@@ -386,7 +386,7 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		"software": "sniff"
 	};
 	int[string] footWeights = {
-		"freekill": 10,
+		"instakill": 10,
 		"banish": 10,
 		"pp": 5,
 		"heal": 5,
@@ -817,10 +817,10 @@ skill getZooKickYR()
 skill getZooKickSniff()
 {
 	boolean haveYR = getZooKickYR() != $skill[none] && have_effect($effect[Everything Looks Yellow]) == 0; //Could potentially Yellow Ray
-	if (leftKickHasSniff() && (leftKickHasFreeKill() && !haveYR)) {
+	if (leftKickHasSniff() && (leftKickHasInstaKill() && !haveYR)) {
 		return $skill[left %n kick];
 	}
-	if (rightKickHasSniff() && (rightKickHasFreeKill() && !haveYR)) {
+	if (rightKickHasSniff() && (rightKickHasInstaKill() && !haveYR)) {
 		return $skill[right %n kick];
 	}
 	return $skill[none];
@@ -845,22 +845,26 @@ skill getZooKickBanish()
 skill getZooKickPickpocket()
 {
 	boolean haveYR = getZooKickYR() != $skill[none] && have_effect($effect[Everything Looks Yellow]) == 0; //Could potentially Yellow Ray
-	if (leftKickHasPickpocket() && (leftKickHasFreeKill() && !haveYR)) {
+	if (leftKickHasPickpocket() && (leftKickHasInstaKill() && !haveYR)) {
 		return $skill[left %n kick];
 	}
-	if (rightKickHasPickpocket() && (rightKickHasFreeKill() && !haveYR)) {
+	if (rightKickHasPickpocket() && (rightKickHasInstaKill() && !haveYR)) {
 		return $skill[right %n kick];
 	}
 	return $skill[none];
 }
 
-skill getZooKickFreeKill()
+skill getZooKickInstaKill()
 {
 	//Only free kill if we can't yellow ray
-	if (leftKickHasFreeKill() && getZooKickYR() == $skill[none]) {
+	if(canYellowRay())
+	{
+		return false;
+	}
+	if (leftKickHasInstaKill() && getZooKickYR() == $skill[none]) {
 		return $skill[left %n kick];
 	}
-	if (rightKickHasFreeKill() && getZooKickYR() == $skill[none]) {
+	if (rightKickHasInstaKill() && getZooKickYR() == $skill[none]) {
 		return $skill[right %n kick];
 	}
 	return $skill[none];
@@ -946,11 +950,11 @@ boolean leftKickHasPickpocket()
 	return false;
 }
 
-boolean leftKickHasFreeKill()
+boolean leftKickHasInstaKill()
 {
 	string fAttrs = zoo_graftedToPart(ZOOPART_L_FOOT).attributes;
 	string[int] attrs = split_string(fAttrs,"; ");
-	string[int] freekills = {
+	string[int] instakills = {
 		"bite",
 		"cute",
 		"evil",
@@ -962,9 +966,9 @@ boolean leftKickHasFreeKill()
 	};
 	foreach i,attr in attrs
 	{
-		foreach j, freekill in freekills
+		foreach j, instakill in instakills
 		{
-			if(freekill == attr)
+			if(instakill == attr)
 			{
 				return true;
 			}
@@ -1027,11 +1031,11 @@ boolean rightKickHasPickpocket()
 	return false;
 }
 
-boolean rightKickHasFreeKill()
+boolean rightKickHasInstaKill()
 {
 	string fAttrs = zoo_graftedToPart(ZOOPART_R_FOOT).attributes;
 	string[int] attrs = split_string(fAttrs,"; ");
-	string[int] freekills = {
+	string[int] instakills = {
 		"bite",
 		"cute",
 		"evil",
@@ -1043,9 +1047,9 @@ boolean rightKickHasFreeKill()
 	};
 	foreach i,attr in attrs
 	{
-		foreach j, freekill in freekills
+		foreach j, instakill in instakills
 		{
-			if(freekill == attr)
+			if(instakill == attr)
 			{
 				return true;
 			}

@@ -1107,13 +1107,13 @@ skill getZooKickYR();
 skill getZooKickSniff();
 skill getZooKickBanish();
 skill getZooKickPickpocket();
-skill getZooKickFreeKill();
+skill getZooKickInstaKill();
 boolean leftKickHasSniff();
 boolean leftKickHasPickpocket();
-boolean leftKickHasFreeKill();
+boolean leftKickHasInstaKill();
 boolean rightKickHasSniff();
 boolean rightKickHasPickpocket();
-boolean rightKickHasFreeKill();
+boolean rightKickHasInstaKill();
 boolean LX_zootoFight();
 
 ########################################################################################################
