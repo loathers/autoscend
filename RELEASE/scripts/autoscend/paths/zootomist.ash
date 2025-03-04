@@ -816,7 +816,7 @@ skill getZooKickYR()
 
 skill getZooKickSniff()
 {
-	boolean haveYR = getZooKickYR() != $skill[none] && have_effect($effect[Everything Looks Yellow]) == 0; //Could potentially Yellow Ray
+	boolean haveYR = (canYellowRay() || getZooKickYR() != $skill[none]) && have_effect($effect[Everything Looks Yellow]) == 0; //Could potentially Yellow Ray
 	if (leftKickHasSniff() && (leftKickHasInstaKill() && !haveYR)) {
 		return $skill[left %n kick];
 	}
@@ -844,11 +844,11 @@ skill getZooKickBanish()
 
 skill getZooKickPickpocket()
 {
-	boolean haveYR = getZooKickYR() != $skill[none] && have_effect($effect[Everything Looks Yellow]) == 0; //Could potentially Yellow Ray
-	if (leftKickHasPickpocket() && (leftKickHasInstaKill() && !haveYR)) {
+	boolean haveYR = (canYellowRay() || getZooKickYR() != $skill[none]) && have_effect($effect[Everything Looks Yellow]) == 0; //Could potentially Yellow Ray
+	if (leftKickHasPickpocket() && (leftKickHasInstaKill() && !haveYR) && getZooKickBanish() != $skill[left %n kick]) {
 		return $skill[left %n kick];
 	}
-	if (rightKickHasPickpocket() && (rightKickHasInstaKill() && !haveYR)) {
+	if (rightKickHasPickpocket() && (rightKickHasInstaKill() && !haveYR) && getZooKickBanish() != $skill[right %n kick]) {
 		return $skill[right %n kick];
 	}
 	return $skill[none];
