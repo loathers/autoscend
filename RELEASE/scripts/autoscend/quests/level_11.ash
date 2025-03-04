@@ -2621,9 +2621,13 @@ boolean L11_redZeppelin()
 	}
 
 	if(get_property("zeppelinProtestors").to_int() < 75 && cloversAvailable() > 0)
-	{
+	{ // "zeppelinProtestors" is number killed so far, so it ends when we hit 80
 		if(cloversAvailable() >= 3)
 		{
+			if (!in_koe() || my_daycount() > 1) // in koe, if d1 save bend hell for invader
+			{
+				buffMaintain($effect[Bendin\' Hell],0,0,1);
+			}
 			foreach ef in $effects[Dirty Pear, Fifty Ways to Bereave Your Lover] // double sleaze dmg, +100 sleaze dmg, 
 			{
 				float target_sleaze = 400;
@@ -2690,6 +2694,12 @@ boolean L11_redZeppelin()
 			}
 			return autoLuckyAdv($location[A Mob of Zeppelin Protesters]);
 		}
+	}
+
+	if (auto_waitForDay2())
+	{
+		auto_log_debug("Delaying zeppelin protestors waiting for day 2 clovers.");
+		return false;
 	}
 
 	if (handleFamiliar($familiar[Red-Nosed Snapper])) {
