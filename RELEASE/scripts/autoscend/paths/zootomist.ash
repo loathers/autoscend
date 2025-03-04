@@ -857,14 +857,14 @@ skill getZooKickPickpocket()
 skill getZooKickInstaKill()
 {
 	//Only free kill if we can't yellow ray
-	if(canYellowRay())
+	if(canYellowRay() || getZooKickYR() != $skill[none])
 	{
-		return false;
+		return $skill[none];
 	}
-	if (leftKickHasInstaKill() && getZooKickYR() == $skill[none]) {
+	if (leftKickHasInstaKill()) {
 		return $skill[left %n kick];
 	}
-	if (rightKickHasInstaKill() && getZooKickYR() == $skill[none]) {
+	if (rightKickHasInstaKill()) {
 		return $skill[right %n kick];
 	}
 	return $skill[none];
