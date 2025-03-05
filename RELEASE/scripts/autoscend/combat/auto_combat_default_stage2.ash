@@ -436,7 +436,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[Darts: Aim for the Bullseye]);
 		}
 
-		skill z_kick = getZooKickFreeKill();
+		skill z_kick = getZooKickInstaKill();
 		if (canUse(z_kick))
 		{
 			set_property("auto_instakillSource", "zootomist kick");
