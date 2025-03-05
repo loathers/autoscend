@@ -151,6 +151,32 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
+	//if everything is banished and the reason is phylum banishing, we need to try to banish a different phylum in zone
+	if(auto_everythingBanished(my_location()) && !(get_property("banishedPhyla") == ""))
+	{
+		string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
+		if(banishAction != "")
+		{
+			auto_log_info("Looking at banishAction: " + banishAction, "green");
+			combat_status_add("banisher");
+			if(index_of(banishAction, "skill") == 0)
+			{
+				handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
+			}
+			else if(index_of(banishAction, "item") == 0)
+			{
+				handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
+			}
+			else
+			{
+				auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
+			}
+			return banishAction;
+		}
+		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
+		combat_status_add("phylumbanishercheck");
+	}
+
 	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)
 	{
 		string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
