@@ -816,7 +816,7 @@ skill getZooKickYR()
 
 skill getZooKickSniff()
 {
-	boolean haveYR = (canYellowRay() || getZooKickYR() != $skill[none]) && have_effect($effect[Everything Looks Yellow]) == 0; //Could potentially Yellow Ray
+	boolean haveYR = yellowRayCombatString($monster[none], false) != ""; //Could potentially Yellow Ray. We want false because the item might not be bought/equipped
 	if (leftKickHasSniff() && (leftKickHasInstaKill() && !haveYR)) {
 		return $skill[left %n kick];
 	}
@@ -844,7 +844,7 @@ skill getZooKickBanish()
 
 skill getZooKickPickpocket()
 {
-	boolean haveYR = (canYellowRay() || getZooKickYR() != $skill[none]) && have_effect($effect[Everything Looks Yellow]) == 0; //Could potentially Yellow Ray
+	boolean haveYR = yellowRayCombatString($monster[none], false) != ""; //Could potentially Yellow Ray. We want false because the item might not be bought/equipped
 	if (leftKickHasPickpocket() && (leftKickHasInstaKill() && !haveYR) && getZooKickBanish() != $skill[left %n kick]) {
 		return $skill[left %n kick];
 	}
@@ -856,16 +856,19 @@ skill getZooKickPickpocket()
 
 skill getZooKickInstaKill()
 {
-	//Only free kill if we can't yellow ray
-	if(canYellowRay() || getZooKickYR() != $skill[none])
+	//Only instakill if we can't yellow ray
+	if(yellowRayCombatString($monster[none], false) != "") //Could potentially Yellow Ray. We want false because the item might not be bought/equipped
 	{
 		return $skill[none];
 	}
+	//uncomment return $skill[kick] and comment return $skill[none] if you want us to auto use your instakill. Not recommended
 	if (leftKickHasInstaKill()) {
-		return $skill[left %n kick];
+		//return $skill[left %n kick];
+		return $skill[none];
 	}
 	if (rightKickHasInstaKill()) {
-		return $skill[right %n kick];
+		//return $skill[right %n kick];
+		return $skill[none];
 	}
 	return $skill[none];
 }
