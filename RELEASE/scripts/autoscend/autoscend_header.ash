@@ -1104,6 +1104,7 @@ boolean zoo_boostWeight(familiar f, int target_weight);
 skill getZooBestPunch();
 skill getZooBestPunch(monster m);
 skill getZooKickYR();
+skill getZooKickFreeKill();
 skill getZooKickSniff();
 skill getZooKickBanish();
 skill getZooKickPickpocket();

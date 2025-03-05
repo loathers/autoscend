@@ -760,7 +760,7 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 	boolean mayamavailable = auto_haveMayamCalendar() && !(auto_MayamIsUsed("fur")) && !(auto_MayamAllUsed());
 	
 	maximize("familiar experience", false);
-	float fight = numeric_modifier("familiar experience");
+	float fight = numeric_modifier("familiar experience") + 1;
 	auto_log_info(f + " needs " + experience_needed + " experience");
 	auto_log_info("To level up your familiar, you should:");
 	float amt = 0;
@@ -800,6 +800,21 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 }
 
 skill getZooKickYR()
+{
+	boolean isYR(int fam_id) {
+		familiar fam = to_familiar(fam_id);
+		return $familiars[quantum entangler, foul ball, Defective Childrens' Stapler] contains fam;
+	}
+	if (isYR(to_int(get_property("zootGraftedFootLeftFamiliar")))) {
+		return $skill[left %n kick];
+	}
+	if (isYR(to_int(get_property("zootGraftedFootRightFamiliar")))) {
+		return $skill[right %n kick];
+	}
+	return $skill[none];
+}
+
+skill getZooKickFreeKill() //different than YR. Better than instakill
 {
 	boolean isYR(int fam_id) {
 		familiar fam = to_familiar(fam_id);
