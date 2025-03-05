@@ -934,6 +934,12 @@ boolean auto_haveBurningLeaves()
 	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];
 }
 
+int auto_remainingFlamingLeafFights()
+{
+	readonly int baseFightsPerDay = 5;
+	return baseFightsPerDay - get_property("_leafMonstersFought).to_int();
+}
+
 boolean auto_burnLeaves()
 {
 	if (!auto_haveBurningLeaves())
@@ -1049,4 +1055,37 @@ void auto_useWardrobe()
 	// only need to use it so we get the hat, shirt, fam equip
 	// let maximizer handle if any of it is worth equipping
 	use($item[wardrobe-o-matic]);
+}
+
+boolean fightFlamingLeaflet() {
+	if(item_amount($item[inflammable leaf]) >= 11) {
+		auto_log_debug("summoning flaming leaflet (2389)");
+		leaves 11;
+
+		return true;
+	}
+
+	return false;
+}
+
+boolean fightFlamingMonstera() {
+	if(item_amount($item[inflammable leaf]) >= 111) {
+		auto_log_debug("summoning flaming monstera (2390)");
+		leaves 111;
+
+		retun true;
+	}
+
+	return false;
+}
+
+boolean fightLeaviathan() {
+	if(item_amount($item[inflammable leaf]) >= 666) {
+		auto_log_debug("summoning leaviathan (2391)");
+		leaves 666;
+
+		return true;
+	}
+
+	return false;
 }
