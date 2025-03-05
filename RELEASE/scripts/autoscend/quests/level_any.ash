@@ -1200,11 +1200,24 @@ string candyBlockOutfit(string type)
 				return fit;
 			}
 		}
+		if($strings[mongoose, wallaby, vole] contains my_sign().to_lower_case())
+		{
+			foreach i, it in outfit_pieces("Bugbear Costume")
+			{
+				if(possessEquipment(it)) continue;
+				buy(1, it);
+			}
+			if(possessOutfit("Bugbear Costume"))
+			{
+				return "Bugbear Costume";
+			}
+		}
 	}
 	else
 	{
 		return "";
 	}
+
 	return "";
 }
 boolean LX_lastChance()
