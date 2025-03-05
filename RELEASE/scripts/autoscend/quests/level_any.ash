@@ -1116,6 +1116,11 @@ boolean candyBlock()
 	{
 		return false;
 	}
+	if(candyBlockOutfit("treat") == "")
+	{
+		//don't have an outfit to trick or treat in
+		return false;
+	}
 	int [int] houseNumbers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 	int [int] treatedHouse;
 	int count = 0;
