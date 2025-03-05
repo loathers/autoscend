@@ -459,10 +459,10 @@ boolean auto_run_choice(int choice, string page)
 			oldLandfillChoiceHandler(choice);
 			break;
 		case 804:
-			run_choice(3);
+			run_choice(2); //Trick or Treat!
 			break;
 		case 806:
-			run_choice(2);
+			run_choice(2); //A Fun-Size Dilemma
 			break;
 		case 822: // The Prince's Ball (In the Restroom)
 		case 823: // The Prince's Ball (On the Dance Floor)
