@@ -787,6 +787,10 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 			amt += specimen_exp;
 			zoo_prepareSpecimen();
 		}
+		else if(diff <= 0)
+		{
+			return true;
+		}
 		else
 		{
 			int fights_needed = ceil(diff / fight);
@@ -1136,7 +1140,7 @@ boolean LX_zootoFight()
 		}
 		// should get wishes in Shadow Rift. If not can't do this
 
-		if (canYellowRay())
+		if (yellowRayCombatString($monster[none], false) != "")
 		{
 			if(get_property("auto_hippyInstead").to_boolean() && !(possessOutfit("War Hippy Fatigues")))
 			{
@@ -1149,13 +1153,13 @@ boolean LX_zootoFight()
 				return summonMonster($monster[War Frat Mobile Grill Unit]);
 			}
 		}
-		if(auto_have_familiar($familiar[Jill-of-All-Trades]))
+		if(auto_have_familiar($familiar[Jill-of-All-Trades]) && candyBlockOutfit("treat") != "")
 		{
 			if(candyBlock())
 			{
 				return true;
 			}
-			if(!(get_property("_mapToACandyRichBlockUsed").to_boolean()) && candyBlockOutfit("treat") != "")
+			if(!(get_property("_mapToACandyRichBlockUsed").to_boolean()))
 			{
 				while(item_amount($item[Map to a candy-rich block]) == 0)
 				{

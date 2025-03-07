@@ -1116,6 +1116,11 @@ boolean candyBlock()
 	{
 		return false;
 	}
+	if(candyBlockOutfit("treat") == "")
+	{
+		//don't have an outfit to trick or treat in
+		return false;
+	}
 	int [int] houseNumbers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 	int [int] treatedHouse;
 	int count = 0;
@@ -1195,11 +1200,24 @@ string candyBlockOutfit(string type)
 				return fit;
 			}
 		}
+		if($strings[mongoose, wallaby, vole] contains my_sign().to_lower_case())
+		{
+			foreach i, it in outfit_pieces("Bugbear Costume")
+			{
+				if(possessEquipment(it)) continue;
+				buy(1, it);
+			}
+			if(possessOutfit("Bugbear Costume"))
+			{
+				return "Bugbear Costume";
+			}
+		}
 	}
 	else
 	{
 		return "";
 	}
+
 	return "";
 }
 boolean LX_lastChance()
