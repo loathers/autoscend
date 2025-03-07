@@ -534,6 +534,7 @@ void auto_buyFrom2002MrStore()
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
+		visit_url("campground.php"); // get butler meat
 		handleTracker("Mr. Store 2002","Claimed "+itemConsidering, "auto_iotm_claim");
 	}
 	// giant black monolith. Mostly useful at low level for stats
