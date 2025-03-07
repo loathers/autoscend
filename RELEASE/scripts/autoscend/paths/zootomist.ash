@@ -787,6 +787,10 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 			amt += specimen_exp;
 			zoo_prepareSpecimen();
 		}
+		else if(diff <= 0)
+		{
+			return true;
+		}
 		else
 		{
 			int fights_needed = ceil(diff / fight);
