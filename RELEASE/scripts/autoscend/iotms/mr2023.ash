@@ -44,7 +44,7 @@ boolean wantToThrowGravel(location loc, monster enemy)
 	if (isFreeMonster(enemy, loc)) { return false; } // don't use gravel against inherently free fights
 	// prevent overuse after breaking ronin or in casual
 	if(can_interact()) return false;
-	
+	//don't gravel first astronomer we encounter in an ascension. 
 	if(enemy == $monster[Astronomer] && item_amount($item[star chart]) < 1 && item_amount($item[Richard's star key]) < 1)
 	{
 		return false;
