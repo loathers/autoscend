@@ -4923,7 +4923,7 @@ item[int] auto_getListOfNonDamagingFamiliarEquipment()
 	// Returns items of generic familiar equipment that do not cause damage when equipped to a non-damage familiar
 	// Sorted by familiar weight boost, highest to lowest
 	boolean[item] base_list = $items[astral pet sweater, tiny stillsuit, tiny gold medal, lead necklace,
-	  futuristic collar, miniature crystal ball, tiny rake];
+	  futuristic collar, miniature crystal ball, tiny rake, toy cupid bow];
 	boolean[item] valid_and_available;
 	foreach it in base_list
 	{
