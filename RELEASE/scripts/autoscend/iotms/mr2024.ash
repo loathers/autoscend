@@ -98,7 +98,7 @@ boolean auto_getAprilingBandItems()
 		track($item[Apriling band saxophone]);
 	}
 	
-	return instruments_so_far()==3;
+	return instruments_so_far()==2;
 }
 
 boolean auto_playAprilPiccolo()
