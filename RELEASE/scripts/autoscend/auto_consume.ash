@@ -2256,7 +2256,7 @@ void consumeStuff()
 
 // In standard or with few IOTMs we might not be able to fill spleen with adventures or worksheds
 // So in that case we can use them for the low priority various drops
-boolean cannotFillSpleenWithHighPriority()
+boolean shouldUseSpleenForLowPriority()
 {
 	if (spleen_left()==1) { return true; }
 	if (spleen_left()==0) { return false; }

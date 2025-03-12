@@ -881,7 +881,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			return result();
 	}
 	
-	if(cannotFillSpleenWithHighPriority() && auto_haveCyberRealm())
+	if(shouldUseSpleenForLowPriority() && auto_haveCyberRealm())
 	{
 		if(tryEffects($effects[
 			Cyber Resist x2000

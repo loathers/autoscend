@@ -1503,7 +1503,7 @@ boolean stillReachable();
 boolean distill(item target);
 boolean prepare_food_xp_multi();
 void consumeStuff();
-boolean cannotFillSpleenWithHighPriority();
+boolean shouldUseSpleenForLowPriority();
 boolean isSpleenConsumable(item it);
 int auto_getConsumablePriceLimit();
 
