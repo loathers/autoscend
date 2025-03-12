@@ -2744,6 +2744,10 @@ boolean have_skills(boolean[skill] array)
 //From Bale\'s woods.ash relay script.
 boolean woods_questStart()
 {
+	if (my_level() < 2)
+	{
+		return false;
+	}
 	if(internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0)
 	{
 		// distant woods access is gated behind level 2 quest & whitey's grove quest.
