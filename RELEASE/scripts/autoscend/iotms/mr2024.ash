@@ -499,6 +499,10 @@ boolean auto_goingToMouthwashLevel()
 	{
 		return false;
 	}
+	if(in_glover() || in_bhy())
+	{
+		return false;
+	}
 	boolean disregard_karma = get_property("auto_disregardInstantKarma").to_boolean();
 	// If we have at least 4 embers remaining, don't overlevel, they can be used for something else
 	boolean happy_to_overlevel = disregard_karma && remainingEmbers() < 4;
@@ -507,6 +511,7 @@ boolean auto_goingToMouthwashLevel()
 	want_to_mouthwash_level = want_to_mouthwash_level && my_level()<15;
 	return (remainingEmbers() >= 2 && want_to_mouthwash_level);
 }
+
 void auto_buyFromSeptEmberStore()
 {
 	if(!auto_haveSeptEmberCenser())
