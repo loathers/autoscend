@@ -307,7 +307,7 @@ boolean auto_MayamClaim(string str)
 		if(auto_MayamIsUsed(s)) return false;
 	}
 	cli_execute("mayam rings " + str);
-	handleTracker("Mayam Calendar", "Claimed " + str, "auto_itom_claim");
+	handleTracker("Mayam Calendar", "Claimed " + str, "auto_iotm_claim");
 	return true;
 }
 
