@@ -709,16 +709,6 @@ boolean zoo_graftFam()
 		auto_log_info("Grafting a " + fam + " to you", "blue");
 		handleTracker(fam,"Grafted to " + bodyPartName[p],"auto_tracker_path");
 		refresh_status();
-                // This section should probably be removed, should work without.
-		council();
-		if (my_level() < 13)
-		{
-			familiar nextfam = zoo_getNextFam();
-			if (nextfam==$familiar[none]) { abort("Got none familiar in zoo_GraftFam()"); }
-			use_familiar(nextfam);
-			handleFamiliar(nextfam);
-		}
-                // remove to here
 		return true;
 	}
 	
