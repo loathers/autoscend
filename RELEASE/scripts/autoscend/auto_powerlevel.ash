@@ -393,6 +393,28 @@ boolean LX_freeCombats(boolean powerlevel)
 		adv_done = autoAdv(1, $location[An Unusually Quiet Barroom Brawl]);
 		if(adv_done) return true;
 	}
+	
+	if(auto_haveBurningLeaves() && get_property("auto_remainingFlamingLeafFights").to_int() > 0) {
+		auto_log_debug("LX_freeCombats is summoning leaf monsters");
+		int remainingLeafFights = get_property("auto_remainingFlamingLeafFights").to_int();
+
+		while(remainingLeafFights > 0 && item_amount($item[inflammable leaf]) >= 11){
+			remainingLeafFights--;
+			if(item_amount($item[inflammable leaf]) >= 666 + (11 * remainingLeafFights)) {
+				if (!fightLeaviathan()) {
+					auto_log_debug("Failed to summon leaviathan");
+				}
+			} else if(item_amount($item[inflammable leaf]) >= 111 + (11 * remainingLeafFights)) {
+				if (!fightFlamingMonstera()) {
+					auto_log_debug("Failed to summon flaming monstera");
+				}
+			} else {
+				if (!fightFlamingLeaflet()) {
+					auto_log_debug("Failed to summon flaming leaflet");
+				}
+			}
+		}
+	}
 
 	// tentacle should be last so it can be backed up, if script wants to
 	// see auto_backupTarget()
