@@ -13,6 +13,8 @@ void bugbear_InitializeSettings()
 		set_property("auto_holeinthesky", false);
 		set_property("auto_getStarKey", false);
 		set_property("nsTowerDoorKeysUsed", "Boris's key,Jarlsberg's key,Sneaky Pete's key,Richard's star key,skeleton key,digital key");
+		// banishing beasts / constructs can screw up bugbear hunting
+		set_property("auto_dontPhylumBanish", true);
 	}
 }
 
