@@ -293,6 +293,11 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				costMinor = mp_cost($skill[Utensil Twist]);
 			}
 		}
+		if((in_glover() || attackMinor == "attack with weapon") && canUse($skill[Saucegeyser], false))
+        	{
+            		attackMinor = useSkill($skill[Saucegeyser], false);
+            		costMinor = mp_cost($skill[Saucegeyser]);
+        	}
 		break;
 	case $class[Sauceror]:
 		if(canUse($skill[Saucegeyser], false))
