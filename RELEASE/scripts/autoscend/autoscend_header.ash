@@ -2053,4 +2053,7 @@ int auto_roughExpectedTurnsLeftToday();
 boolean auto_wantToFreeKillWithNoDrops(location loc, monster enemy);
 boolean auto_ignoreExperience();
 boolean auto_needAccordion();
-boolean auto_inRonin()
+boolean auto_inRonin();
+modifier resistanceModifier (element el);
+modifier damageModifier     (element el);
+modifier spellDamageModifier(element el);

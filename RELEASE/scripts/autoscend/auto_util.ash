@@ -5144,3 +5144,42 @@ boolean auto_inRonin()
 {
 	return !(can_interact() || in_hardcore());
 }
+
+modifier resistanceModifier(element el)
+{
+	switch(el)
+	{
+		case $element[hot   ]: return $modifier[hot resistance];
+		case $element[cold  ]: return $modifier[cold resistance];
+		case $element[stench]: return $modifier[stench resistance];
+		case $element[spooky]: return $modifier[spooky resistance];
+		case $element[sleaze]: return $modifier[sleaze resistance];
+	}
+	return $modifier[none];
+}
+
+modifier damageModifier(element el)
+{
+	switch(el)
+	{
+		case $element[hot   ]: return $modifier[hot damage];
+		case $element[cold  ]: return $modifier[cold damage];
+		case $element[stench]: return $modifier[stench damage];
+		case $element[spooky]: return $modifier[spooky damage];
+		case $element[sleaze]: return $modifier[sleaze damage];
+	}
+	return $modifier[none];
+}
+
+modifier spellDamageModifier(element el)
+{
+	switch(el)
+	{
+		case $element[hot   ]: return $modifier[hot spell damage];
+		case $element[cold  ]: return $modifier[cold spell damage];
+		case $element[stench]: return $modifier[stench spell damage];
+		case $element[spooky]: return $modifier[spooky spell damage];
+		case $element[sleaze]: return $modifier[sleaze spell damage];
+	}
+	return $modifier[none];
+}
