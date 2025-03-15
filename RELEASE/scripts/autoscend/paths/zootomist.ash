@@ -899,15 +899,6 @@ skill getZooBestPunch(monster m)
 	}
 }
 
-// These will be done intelligently once Mafia can tell us.
-// For now, hardcode them to fit what you grafted.
-// Repo versions are designed for Quantum Entangler on left foot (optimal), MicroMech on right (not optimal).
-// Cooldowns on eg banish can be handled like:
-//~ boolean rightKickHasBanish()
-//~ {
-//~ 	return have_effect($effect[Everything Looks Blue]) <= 0;
-//~ }
-
 boolean leftKickHasSniff()
 {
 	string fAttrs = zoo_graftedToPart(ZOOPART_L_FOOT).attributes;
