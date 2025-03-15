@@ -281,6 +281,7 @@ item[slot] speculatedMaximizerEquipment(string statement)
 
 void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip)
 {
+	if (auto_ignoreExperience()) { return; }
 	//want to equip best equipment that increases specified stat gains including out of combat
 	//should be frequently called by consume actions so try not to lose HP or MP, but will equip anyway if argument alwaysEquip is true
 	string maximizerStatement;
@@ -515,7 +516,7 @@ string defaultMaximizeStatement()
 		borisTrusty();						//forceequip trusty. the modification it makes to the maximizer string will be lost so also do next line
 		res +=	",-weapon,-offhand";		//we do not want maximizer trying to touch weapon or offhand slot in boris
 	}
-	else if(!in_plumber())
+	else if(!(in_plumber() || in_zootomist()))
 	{
 		if(my_primestat() == $stat[Mysticality])
 		{
@@ -529,7 +530,10 @@ string defaultMaximizeStatement()
 
 	if(pathHasFamiliar())
 	{
-		res += ",2familiar weight";
+		if(!(in_zootomist() && my_level() < 13))
+		{
+			res += ",2familiar weight";
+		}
 		if(my_familiar().familiar_weight() < 20)
 		{
 			res += ",5familiar exp";
@@ -544,6 +548,10 @@ string defaultMaximizeStatement()
 	if(in_plumber())
 	{
 		res += ",plumber,-ml";
+	}
+	else if(auto_ignoreExperience())
+	{
+		// Nothing to do here
 	}
 	else if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
 	{
@@ -878,6 +886,10 @@ void finalizeMaximize(boolean speculative)
 		if (my_class() == $class[Seal Clubber] && in_glover())
 		{
 			addToMaximize("club");
+		}
+		else if (in_zootomist() && getZooBestPunch()!=$skill[none])
+		{
+			// Nothing to do here. Should be a more general case of "classes that never attack with weapon"?
 		}
 		else
 		{

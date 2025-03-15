@@ -27,7 +27,7 @@ boss	7	Mosquito
 # every 2 cookbookbat ingredients generate a size 1 density 7 food. prioritize having enough to craft 1.
 drop	0	Cookbookbat	item:Vegetable of Jarlsberg<2;item:Yeast of Boris<2;item:St. Sneaky Pete's Whey<2;!prop_boolean:auto_dontUseCookBookBat
 # jill will drop her fam equip and a halloween map. Only consider map though
-drop	1	Jill-of-All-Trades	item:Map to a candy-rich block<1
+drop	1	Jill-of-All-Trades	prop:_mapToACandyRichBlockDrops<1
 # 5 turkey booze drops a day. each is size 1 and density of either 5, 5.5, or 6
 drop	2	Fist Turkey	prop:_turkeyBooze<5
 # every 10 yellow pixels make a size 2 density 5 food or drink. unlimited drops per day. prioritize having enough to craft 2.

@@ -332,6 +332,12 @@ void main()
 	writeln("<tr><td align=center colspan='3'><input type='submit' name='' value='Save Changes'/></td></tr></table></form>");
 
 	write_settings_key();		//display the key to the settings table
+	
+	if(get_property("auto_tracker_path") != "")
+	{
+		writeln("<h2>"+my_path()+"</h2>");
+		generateTrackingData("auto_tracker_path");
+	}
 
 	writeln("<h2>Banishes</h2>");
 	generateTrackingData("auto_banishes");

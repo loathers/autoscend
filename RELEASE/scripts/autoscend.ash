@@ -1,4 +1,4 @@
-since r28301;	// _eldritchTentaclesFoughtToday variable
+since r28404;	// zoot nipple skills, fix level after grafting
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -91,6 +91,7 @@ import <autoscend/paths/wereprofessor.ash>
 import <autoscend/paths/wildfire.ash>
 import <autoscend/paths/you_robot.ash>
 import <autoscend/paths/zombie_slayer.ash>
+import <autoscend/paths/zootomist.ash>
 
 import <autoscend/quests/level_01.ash>
 import <autoscend/quests/level_02.ash>
@@ -169,6 +170,7 @@ void initializeSettings() {
 
 	set_property("auto_abooclover", true);
 	set_property("auto_aboopending", 0);
+	set_property("auto_avalancheDeployed", false);
 	set_property("auto_banishes", "");
 	set_property("auto_batoomerangDay", 0);
 	set_property("auto_beatenUpCount", 0);
@@ -186,6 +188,7 @@ void initializeSettings() {
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);
 	set_property("auto_day1_dna", "");
+	set_property("auto_day2WaitLastLevel", "0");
 	set_property("auto_debuffAsdonDelay", 0);
 	set_property("auto_disableAdventureHandling", false);
 	set_property("auto_doCombatCopy", "no");
@@ -228,7 +231,6 @@ void initializeSettings() {
 	set_property("auto_paranoia", -1);
 	set_property("auto_paranoia_counter", 0);
 	set_property("auto_parkaSpikesDeployed", false);
-	set_property("auto_avalancheDeployed", false);
 	set_property("auto_priorCharpaneMode", "0");
 	set_property("auto_powerLevelAdvCount", "0");
 	set_property("auto_powerLevelLastAttempted", "0");
@@ -237,6 +239,7 @@ void initializeSettings() {
 	remove_property("auto_lastShenTurn");
 	set_property("auto_sniffs", "");
 	set_property("auto_stopMinutesToRollover", "5");
+	set_property("auto_tracker_path","");
 	set_property("auto_wandOfNagamar", true);
 	set_property("auto_wineracksencountered", 0);
 	set_property("auto_wishes", "");
@@ -260,6 +263,7 @@ void initializeSettings() {
 	remove_property("auto_saveVintage");
 	set_property("auto_dontUseCookBookBat", false);
 	set_property("auto_dietpills", 0);
+	set_property("_auto_candyMapCompleted", false);
 	beehiveConsider(false);
 
 	eudora_initializeSettings();
@@ -651,7 +655,7 @@ boolean LX_doVacation()
 
 boolean auto_doTempleSummit()
 {
-	if(!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 3)
+	if(!hidden_temple_unlocked())
 	{
 		return false;
 	}
@@ -661,6 +665,11 @@ boolean auto_doTempleSummit()
 	}
 	if (get_property("lastTempleAdventures").to_int()>=my_ascensions())
 	{
+		return false;
+	}
+	if (auto_haveMayamCalendar() && !auto_MayamAllUsed())
+	{
+		auto_log_info("Not getting temple summit adventures since our Mayam calendar isn't spent.");
 		return false;
 	}
 	buffMaintain($effect[Stone-Faced]);
@@ -686,6 +695,7 @@ void initializeDay(int day)
 		set_property("auto_delayLastLevel", "0");
 		set_property("auto_cmcConsultLastLevel", "0");
 		set_property("auto_breathitinLastLevel", "0");
+		set_property("_auto_candyMapCompleted", false);
 	}
 
 	if(!possessEquipment($item[Your Cowboy Boots]) && get_property("telegraphOfficeAvailable").to_boolean() && is_unrestricted($item[LT&T Telegraph Office Deed]))
@@ -789,6 +799,7 @@ void initializeDay(int day)
 
 	auto_floundryAction();
 	
+	auto_MayamClaimAll(); // Want Mayam before booth to decide if we want a feather boa given yamtility.
 	auto_getClanPhotoBoothDefaultItems();
 	auto_getClanPhotoBoothEffect("space",3);
 
@@ -904,7 +915,7 @@ void initializeDay(int day)
 			{
 				acquireGumItem($item[disco ball]);
 			}
-			if(!(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber() || in_wereprof()))
+			if(auto_needAccordion())
 			{
 				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && ((my_meat() > npc_price($item[Toy Accordion])) && (npc_price($item[Toy Accordion]) != 0)))
 				{
@@ -1859,6 +1870,8 @@ boolean doTasks()
 
 	basicAdjustML();
 
+	if (zoo_GraftFam()) { return true; }
+
 	finishBuildingSmutOrcBridge();
 	councilMaintenance();
 	auto_buySkills();		// formerly picky_buyskills() now moved here
@@ -1903,6 +1916,8 @@ boolean doTasks()
 	ocrs_postCombatResolve();
 	beatenUpResolution();
 	lar_safeguard();
+
+	if (LX_zootoFight()) { return true; }
 
 
 	//Early adventure options that we probably want

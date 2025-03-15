@@ -907,6 +907,10 @@ boolean L12_filthworms()
 	{
 		auto_log_info("Will steal stench glands using FLUDA douse");
 	}
+	else if(auto_swoopsRemaining()>0)
+	{
+		auto_log_info("Will steal stench glands using Swoop like a Bat");
+	}
 	else if(auto_fireExtinguisherCharges() > 10)
 	{
 		auto_log_info("Will steal stench glands using polar vortex ability of [Industrial Fire Extinguisher]");
