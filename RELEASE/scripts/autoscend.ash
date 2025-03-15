@@ -1,4 +1,4 @@
-since r28404;	// zoot nipple skills, fix level after grafting
+since r28445;	// update mafia for early condo support
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
