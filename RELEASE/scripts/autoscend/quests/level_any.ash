@@ -1108,11 +1108,11 @@ boolean LX_dronesOut()
 boolean LX_lastChance()
 {
 	//miscellaneous calls that aren't powerlevelling but need to be done at some point based on certain conditions
-	if(get_property("screechDelay").to_boolean())
+	if(get_property("screechDelay") != "")
 	{
 		location banishLoc;
 		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else");
-		while(get_property("screechCombats").to_int() > 0 && my_adventures() > 2 && phylumBanishTurnsRemaining() > 0)
+		while((get_property("screechCombats").to_int() > 0 || banishLoc == $location[none]) && my_adventures() > 2 && is_banished(get_property("screechDelay").to_phylum()))
 		{
 			handleFamiliar($familiar[Patriotic Eagle]); //force eagle to be used
 			if(LX_getDigitalKey() || LX_getStarKey())
@@ -1149,8 +1149,10 @@ boolean LX_lastChance()
 			auto_log_warning("Couldn't clear screech delay without running out of adventures");
 			return false;
 		}
-		autoAdv(banishLoc); //adventure here to banish goblins or constructs and be able to progress other quests
-		set_property("screechDelay", false);
+		if (is_banished(get_property("screechDelay").to_phylum())) {
+			autoAdv(banishLoc); //adventure here to banish goblins or constructs and be able to progress other quests
+		}
+		set_property("screechDelay", "");
 		return true;
 	}
 	// Need the digital key and star key so if we have nothing to do before the L13 quest, might as well do them here
