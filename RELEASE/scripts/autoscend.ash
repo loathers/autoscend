@@ -1557,16 +1557,7 @@ boolean autosellCrap()
 	{
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
-	foreach it in $items[dense meat stack, meat stack,  //quest rewards that are better off as meat. If we ever need it we can freely recreate them at no loss.
-	Blue Money Bag, Red Money Bag, White Money Bag,  //vampyre path boss rewards and major source of meat in run.
-	Space Blanket, //can be inside MayDay package. Only purpose is to sell for meat
-	Void Stone] //dropped by Void Fights when Cursed Magnifying Glass is equiped. Only purpose is to sell for meat
-	{
-		if(item_amount(it) > 0)
-		{
-			auto_autosell(min(10,item_amount(it)), it);		//autosell all of this item
-		}
-	}
+
 	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
 	{
 		if(item_amount(it) > 0 && auto_is_valid(it))
@@ -1576,40 +1567,65 @@ boolean autosellCrap()
 	}
 	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
 	{
-		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. sell the rest
+		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. use the rest
 		{
 			use(min(10,item_amount(it)-1), it);
 		}
 	}
-	foreach it in $items[elegant nightstick]		//keeping 2 nightsticks in stock for double fisting
+	
+	// Function to sell all of our items, optionally keeping some.
+	void sell_except(int n_to_keep, boolean[item] items_to_sell)
 	{
-		if(item_amount(it) > 2)		//for these items we want to keep 2 in stock. sell the rest
+		foreach it in items_to_sell
 		{
-			auto_autosell(min(10,item_amount(it)-2), it);
+			if(item_amount(it) > n_to_keep)
+			{
+				auto_autosell(min(10,item_amount(it)-n_to_keep), it);
+			}
 		}
 	}
+	
+	sell_except(2,$items[elegant nightstick]);	//keeping 2 nightsticks in stock for double fisting
 
-	//bellow this point are items we only want to sell if we are desperate for meat.
-	if(my_meat() > meatReserve())
+	// below this point are items we only want to sell if we are desperate for meat.
+	if(auto_amIRich())
 	{
 		return false;
 	}
+	
+	// Keep none
+	boolean[item] items_considered = $items[Anticheese, Awful Poetry Journal, Azurite, Beach Glass Bead, Beer Bomb, Bit-o-Cactus,
+	  Blue Pixel, Clay Peace-Sign Bead, Clockwork key, Cocoa Eggshell Fragment, Datastick, Decorative Fountain, Dense Meat Stack,
+	  Empty Cloaca-Cola Bottle, Enchanted Barbell, Eye Agate, Fancy Bath Salts, Frigid Ninja Stars,
+	  Feng Shui For Big Dumb Idiots, Frat Army FGF, Giant Moxie Weed, Green Pixel, Half of a Gold Tooth,
+	  Headless Sparrow, Keel-Haulin\' Knife, Knob Goblin pants, Knob goblin scimitar, Knob Goblin tongs,
+	  Kokomo Resort Pass, Lapis Lazuli, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita,
+	  Meat Paste, Mineapple, Moxie Weed, PADL Phone, Patchouli Incense Stick, Phat Turquoise Bead,
+	  Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Sausage Bomb,
+	  Sea Honeydew, Sea Lychee, Sea Persimmon, Sea Tangelo,
+	  Shiny Hood Ornament, Slingshot, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Spooky Stick,
+	  Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, White Pixel,
+	  Windchimes];
+	  
+	sell_except(0,items_considered);
 
-	foreach it in $items[Anticheese, Awful Poetry Journal, Azurite, Beach Glass Bead, Beer Bomb, Bit-o-Cactus, Clay Peace-Sign Bead, Cocoa Eggshell Fragment, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Eye Agate, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Lapis Lazuli, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Sea Honeydew, Sea Lychee, Sea Tangelo, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
+	if(auto_amIRich())
 	{
-		if(item_amount(it) > 0)
-		{
-			auto_autosell(min(5,item_amount(it)), it);
-		}
+		return false;
 	}
-	if(item_amount($item[hot wing]) > 3)
-	{
-		auto_autosell(item_amount($item[hot wing]) - 3, $item[hot wing]);
-	}
-	if(item_amount($item[Chaos Butterfly]) > 1)
-	{
-		auto_autosell(item_amount($item[Chaos Butterfly]) - 1, $item[Chaos Butterfly]);
-	}
+	
+	// Keep none
+	items_considered = $items[Imp ale, Shot of grapefruit schnapps, shot of orange schnapps, shot of tomato schnapps];
+	sell_except(0,items_considered);
+	
+	// Keep one
+	items_considered = $items[Big Hot Pepper, Chaos Butterfly];
+	sell_except(1,items_considered);
+	
+	// Keep three
+	items_considered = $items[energized spores, hot wing];
+	sell_except(3,items_considered);
+
 	return true;
 }
 
