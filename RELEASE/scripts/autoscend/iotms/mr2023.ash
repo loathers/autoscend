@@ -944,7 +944,7 @@ boolean auto_haveBurningLeaves()
 	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];
 }
 
-boolean auto_burnLeaves()
+boolean auto_initBurningLeaves()
 {
 	if (!auto_haveBurningLeaves())
 	{
@@ -955,29 +955,99 @@ boolean auto_burnLeaves()
 		// visit the pile of burning leaves to grab the rakes
 		visit_url("campground.php?preaction=leaves");
 	}
-	if (item_amount($item[inflammable leaf]) > 73 && !(get_campground() contains $item[forest canopy bed]) && get_dwelling() != $item[big rock] && auto_haveCincho())
+	return available_amount($item[rake]) > 0;
+}
+
+boolean auto_defaultBurnLeaves()
+{
+	// Returns true if we made everything we want, false if anything fails.
+	if (!auto_haveBurningLeaves())
+	{
+		return false;
+	}
+
+	auto_initBurningLeaves();
+
+	boolean success = true;
+
+	if (!(get_campground() contains $item[forest canopy bed]) && get_dwelling() != $item[big rock] && auto_haveCincho())
 	{
 		// get and use the forest canopy bed if we don't have one already and have a Cincho as it is +5 free rests
 		if (create(1, $item[forest canopy bed]))
 		{
-			return use(1, $item[forest canopy bed]);
+			success = success && use(1, $item[forest canopy bed]);
 		}
-		return false;
+		else
+		{
+			return false;
+		}
 	}
-	if (get_campground() contains $item[forest canopy bed] && item_amount($item[inflammable leaf]) > 49 && have_effect($effect[Resined]) == 0)
+
+	if (get_campground() contains $item[forest canopy bed] && have_effect($effect[Resined]) == 0)
 	{
 		// Get the Resined effect if we don't have it as it is net positive for leaves.
 		if (create(1, $item[distilled resin]))
 		{
-			return use(1, $item[distilled resin]);
+			success = success && use(1, $item[distilled resin]);
 		}
+		else
+		{
+			return false;
+		}
+	}
+
+	if (in_avantGuard() && item_amount($item[Autumnic bomb]) == 0)
+	{
+		success = success && create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
+	}
+
+	if (!isGuildClass())
+	{
+		success = success && auto_makeAutumnalAegis(); // +2 resistance to all elements, 250 DA (for megalo-city with no tao)
+	}
+	return success;
+}
+
+boolean auto_makeAutumnalAegis()
+{
+	if (!auto_haveBurningLeaves())
+	{
 		return false;
 	}
-	if (in_avantGuard() && item_amount($item[inflammable leaf]) > 86 && item_amount($item[Autumnic bomb]) == 0)
+	if (creatable_amount($item[Autumnal Aegis]) > 0 && item_amount($item[Autumnal Aegis]) == 0)
 	{
-		create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
+		create(1, $item[Autumnal Aegis]); // So-so resistance to all elements, 250 DA (for megalo-city)
 	}
-	return false;
+	return available_amount($item[Autumnal Aegis]) > 0;
+}
+
+int auto_remainingBurningLeavesFights()
+{
+	if (!auto_haveBurningLeaves())
+	{
+		return 0;
+	}
+	return 5-get_property("_leafMonstersFought").to_int();
+}
+
+boolean auto_fightFlamingLeaflet()
+{
+	if (auto_remainingBurningLeavesFights() < 1)
+	{
+		return false;
+	}
+	if(available_amount($item[inflammable leaf]) < 11)
+	{
+		return false;
+	}
+
+	if(auto_haveTearawayPants())
+	{
+		addBonusToMaximize($item[tearaway pants], 500); // plants give turns when you tearaway
+	}
+
+	visit_url("campground.php?preaction=leaves");
+	return autoAdvBypass("choice.php?pwd&whichchoice=1510&option=1&leaves=11",$location[Noob Cave]);
 }
 
 boolean auto_haveCCSC()

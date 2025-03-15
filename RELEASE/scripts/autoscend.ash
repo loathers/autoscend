@@ -803,6 +803,8 @@ void initializeDay(int day)
 	auto_getClanPhotoBoothDefaultItems();
 	auto_getClanPhotoBoothEffect("space",3);
 
+	auto_initBurningLeaves();
+
 	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 1))
 	{
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
@@ -1928,6 +1930,7 @@ boolean doTasks()
 	prioritizeGoose();
 	auto_useWardrobe();
 	auto_MayamClaimAll();
+	auto_defaultBurnLeaves();
 	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
@@ -1993,7 +1996,6 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if (auto_juneCleaverAdventure()) { return true; }
-	if (auto_burnLeaves()) { return true; }
 	if(LX_ForceNC())					return true;
 	if(LX_dronesOut())					return true;
 	if(LM_bond())						return true;

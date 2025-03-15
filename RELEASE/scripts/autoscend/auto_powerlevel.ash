@@ -396,6 +396,12 @@ boolean LX_freeCombats(boolean powerlevel)
 
 	auto_log_debug("LX_freeCombats is trying to free trick-or-treat.");
 	if(candyBlock()) return true;
+	
+	if(auto_haveBurningLeaves())
+	{
+		auto_log_debug("LX_freeCombats is trying to fight burning leaves.");
+		if(auto_fightFlamingLeaflet()) return true;
+	}
 
 	// tentacle should be last so it can be backed up, if script wants to
 	// see auto_backupTarget()
