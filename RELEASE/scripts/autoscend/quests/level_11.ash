@@ -925,7 +925,7 @@ boolean L11_forgedDocuments()
 	{
 		return false;
 	}
-	if (my_meat() < npc_price($item[Forged Identification Documents]))
+	if (!in_wotsf() && my_meat() < npc_price($item[Forged Identification Documents]))
 	{
 		if(isAboutToPowerlevel())
 		{
@@ -3182,7 +3182,7 @@ boolean L11_palindome()
 					pullXWhenHaveY($item[Stunt Nuts], 1, 0);
 				}
 			}
-			if(in_hardcore() && isGuildClass())
+			if(in_hardcore())
 			{
 				return true;
 			}

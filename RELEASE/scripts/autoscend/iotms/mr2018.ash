@@ -286,8 +286,8 @@ boolean fantasyRealmToken()
 		return false;
 	}
 
-	// If we're not allowed to adventure without a familiar due to being in a 100% familiar run.
-	if(is100FamRun())
+	// If we're not allowed to adventure without a familiar due to being in a 100% familiar run or Avant Guard
+	if(is100FamRun() || in_avantGuard())
 	{
 		return false;
 	}

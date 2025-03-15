@@ -293,6 +293,11 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				costMinor = mp_cost($skill[Utensil Twist]);
 			}
 		}
+		if((in_glover() || attackMinor == "attack with weapon") && canUse($skill[Saucegeyser], false))
+        	{
+            		attackMinor = useSkill($skill[Saucegeyser], false);
+            		costMinor = mp_cost($skill[Saucegeyser]);
+        	}
 		break;
 	case $class[Sauceror]:
 		if(canUse($skill[Saucegeyser], false))
@@ -965,6 +970,17 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			abort("I am fighting a physically immune monster and I do not know how to kill it");
 		}
+	}
+
+	// Wu Tang the Betrayer is immune to spells and normal attacks, but not Fist skills or Spectral Snapper
+	if (enemy == $monster[Wu Tang the Betrayer]) {
+		foreach sk in $skills[Spectral Snapper, Stinkpalm, Drunken Baby Style, Zendo Kobushi Kancho, Chilled Monkey Brain Technique, Knuckle Sandwich, Seven-Finger Strike, Flying Fire Fist] {
+			if(canUse(sk, false))
+			{
+				return useSkill(sk, false);
+			}
+		}
+		abort("Wu Tang the Betrayer is immune to spells and normal attacks, and I do not know how to kill him");
 	}
 
 	if((my_location() == $location[The X-32-F Combat Training Snowman]) && contains_text(text, "Cattle Prod") && (my_mp() >= costMajor))
