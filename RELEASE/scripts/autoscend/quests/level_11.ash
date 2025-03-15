@@ -459,7 +459,7 @@ boolean LX_unlockManorSecondFloor() {
 	if (is_banished($phylum[construct]) && get_property("screechCombats").to_int() > 0 &&
 	(item_amount($item[killing jar]) > 0 && ((get_property("gnasirProgress").to_int() & 4) != 4)))
 	{
-		set_property("screechDelay", true);
+		set_property("screechDelay", "construct");
 		return false;
 	}
 
@@ -825,7 +825,7 @@ boolean L11_blackMarket()
 
 	if (is_banished($phylum[beast]) && get_property("screechCombats").to_int() > 0)
 	{
-		set_property("screechDelay", true);
+		set_property("screechDelay", "beast");
 		return false; // Can't get the reassembled blackbird if beasts are banished
 	}
 	
@@ -2454,7 +2454,7 @@ boolean L11_mauriceSpookyraven()
 	{
 		if (is_banished($phylum[construct]) && get_property("screechCombats").to_int() > 0)
 		{
-			set_property("screechDelay", true);
+			set_property("screechDelay", "construct");
 			return false; //No sense in trying to go to the Wine Cellar if constructs (Wine Racks) are banished
 		}
 
@@ -2477,7 +2477,7 @@ boolean L11_mauriceSpookyraven()
 	{
 		if (is_banished($phylum[undead]) && get_property("screechCombats").to_int() > 0)
 		{
-			set_property("screechDelay", true);
+			set_property("screechDelay", "undead");
 			return false; //No sense in trying to go to the Laundry Room if undead (Cabinet of Dr. Limpieza) are banished
 		}
 
@@ -2804,7 +2804,7 @@ boolean L11_shenCopperhead()
 
 	if (is_banished($phylum[dude]) && get_property("screechCombats").to_int() > 0)
 	{
-		set_property("screechDelay", true);
+		set_property("screechDelay", "dude");
 		return false; //Probably should delay the Copperhead Club because dudes are important here
 	}
 
@@ -2971,7 +2971,7 @@ boolean L11_palindome()
 
 	if(is_banished($phylum[dude]) && get_property("screechCombats").to_int() > 0)
 	{
-		set_property("screechDelay", true);
+		set_property("screechDelay", "dude");
 		return false; //If new phylum banishers come out, this should be updated.
 	}
 
@@ -3054,7 +3054,7 @@ boolean L11_palindome()
 		//Can't do Whitey's Grove if beasts are banished
 		if(is_banished($phylum[beast]) && get_property("screechCombats").to_int() > 0)
 		{
-			set_property("screechDelay", true);
+			set_property("screechDelay", "beast");
 			return false; //If new phylum banishers come out, this should be updated.
 		}
 		providePlusCombat(15, $location[Whitey's Grove], false);
