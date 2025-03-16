@@ -970,7 +970,7 @@ boolean auto_defaultBurnLeaves()
 
 	boolean success = true;
 
-	if (!(get_campground() contains $item[forest canopy bed]) && get_dwelling() != $item[big rock] && auto_haveCincho())
+	if (!(get_campground() contains $item[forest canopy bed]) && get_dwelling() != $item[big rock] && auto_haveCincho() && creatable_amount($item[forest canopy bed])>0)
 	{
 		// get and use the forest canopy bed if we don't have one already and have a Cincho as it is +5 free rests
 		if (create(1, $item[forest canopy bed]))
@@ -983,7 +983,7 @@ boolean auto_defaultBurnLeaves()
 		}
 	}
 
-	if (get_campground() contains $item[forest canopy bed] && have_effect($effect[Resined]) == 0)
+	if (get_campground() contains $item[forest canopy bed] && have_effect($effect[Resined]) == 0 && creatable_amount($item[distilled resin])>0)
 	{
 		// Get the Resined effect if we don't have it as it is net positive for leaves.
 		if (create(1, $item[distilled resin]))
@@ -996,7 +996,7 @@ boolean auto_defaultBurnLeaves()
 		}
 	}
 
-	if (in_avantGuard() && item_amount($item[Autumnic bomb]) == 0)
+	if (in_avantGuard() && item_amount($item[Autumnic bomb]) == 0  && creatable_amount($item[Autumnic bomb])>0)
 	{
 		success = success && create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
 	}

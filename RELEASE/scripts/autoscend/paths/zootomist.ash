@@ -1087,6 +1087,9 @@ boolean LX_zootoFight()
 		return false;
 	}
 	
+	// Set our familiar
+	handleFamiliar(zoo_getNextFam());
+	
 	// Make sure have our mega familiar exp boosting wishes up
 	// Blue swayed boost depends on turns left so keep it above 31 (casts twice immediately to max out boost)
 	while(auto_monkeyPawWishesLeft() > 0 && have_effect($effect[Blue Swayed]) < 31)
@@ -1163,9 +1166,13 @@ boolean LX_zootoFight()
 		{
 			return true;
 		}
+		if(auto_fightFlamingLeaflet())
+		{
+			return true;
+		}
 	}
-	
-	// Do the the temple unlock first, so we can get stone wool to reset our mayam
+
+	// Do the temple unlock first, so we can get stone wool to reset our mayam
 	if (auto_haveMayamCalendar() && my_level() >= 2)
 	{
 		if(LX_unlockHiddenTemple())
