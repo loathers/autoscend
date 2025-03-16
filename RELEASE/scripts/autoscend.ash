@@ -1587,6 +1587,14 @@ boolean autosellCrap()
 		}
 	}
 	
+	// keep none of these
+	boolean[item] items_considered = $items[dense meat stack, meat stack,  //quest rewards that are better off as meat. If we ever need it we can freely recreate them at no loss.
+	  Blue Money Bag, Red Money Bag, White Money Bag,  //vampyre path boss rewards and major source of meat in run.
+	  Space Blanket, //can be inside MayDay package. Only purpose is to sell for meat
+	  Void Stone];//dropped by Void Fights when Cursed Magnifying Glass is equiped. Only purpose is to sell for meat
+	
+	sell_except(0,items_considered);
+
 	sell_except(2,$items[elegant nightstick]);	//keeping 2 nightsticks in stock for double fisting
 
 	// below this point are items we only want to sell if we are desperate for meat.
@@ -1596,7 +1604,7 @@ boolean autosellCrap()
 	}
 	
 	// Keep none
-	boolean[item] items_considered = $items[Anticheese, Awful Poetry Journal, Azurite, Beach Glass Bead, Beer Bomb, Bit-o-Cactus,
+	items_considered = $items[Anticheese, Awful Poetry Journal, Azurite, Beach Glass Bead, Beer Bomb, Bit-o-Cactus,
 	  Blue Pixel, Clay Peace-Sign Bead, Clockwork key, Cocoa Eggshell Fragment, Datastick, Decorative Fountain, Dense Meat Stack,
 	  Empty Cloaca-Cola Bottle, Enchanted Barbell, Eye Agate, Fancy Bath Salts, Frigid Ninja Stars,
 	  Feng Shui For Big Dumb Idiots, Frat Army FGF, Giant Moxie Weed, Green Pixel, Half of a Gold Tooth,
