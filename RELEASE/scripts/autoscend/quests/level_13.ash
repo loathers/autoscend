@@ -325,11 +325,15 @@ boolean LX_getStarKey()
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
-boolean beehiveConsider(boolean at_tower)
+boolean beehiveConsider(boolean at_tower) // returns true if we can kill without a beehive
 {
 	int damage_sources = 1; // basic hit
 	
 	// Familiars
+	if (have_familiar($familiar[glover]) && auto_is_valid($familiar[glover]))
+	{
+		damage_sources += 11;
+	}
 	if (have_familiar($familiar[shorter-order cook]) && auto_is_valid($familiar[shorter-order cook]))
 	{
 		damage_sources += 6;
@@ -1131,13 +1135,20 @@ boolean L13_towerNSTowerSkin()
 	int damage = 2; // base attack damage plus TT attack skill (kneebutt, headbutt)
 	
 	boolean fam_set = false;
-	foreach fam in $familiars[shorter-order cook, mu, imitation crab] // crab is evergreen, buy one
+	int[familiar] fam_damage = {
+		$familiar[glover]             : 11,
+		$familiar[shorter-order cook] :  6,
+		$familiar[mu]                 :  5,
+		$familiar[imitation crab]     :  4
+	};
+	
+	foreach fam in $familiars[glover, shorter-order cook, mu, imitation crab] // crab is evergreen, buy one
 	{
 		if (have_familiar(fam) && auto_is_valid(fam))
 		{
 			handleFamiliar(fam);
 			use_familiar(fam);
-			damage += (fam == $familiar[imitation crab] ? 4 : 5);
+			damage += fam_damage[fam];
 			fam_set = true;
 			break;
 		}
