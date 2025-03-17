@@ -975,6 +975,7 @@ boolean auto_defaultBurnLeaves()
 		// get and use the forest canopy bed if we don't have one already and have a Cincho as it is +5 free rests
 		if (create(1, $item[forest canopy bed]))
 		{
+			handleTracker("Burning Leaves", "Claimed " + $item[forest canopy bed], "auto_iotm_claim");
 			success = success && use(1, $item[forest canopy bed]);
 		}
 		else
@@ -988,6 +989,7 @@ boolean auto_defaultBurnLeaves()
 		// Get the Resined effect if we don't have it as it is net positive for leaves.
 		if (create(1, $item[distilled resin]))
 		{
+			handleTracker("Burning Leaves", "Claimed " + $item[distilled resin], "auto_iotm_claim");
 			success = success && use(1, $item[distilled resin]);
 		}
 		else
@@ -998,10 +1000,17 @@ boolean auto_defaultBurnLeaves()
 
 	if (in_avantGuard() && item_amount($item[Autumnic bomb]) == 0  && creatable_amount($item[Autumnic bomb])>0)
 	{
-		success = success && create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
+		if (create(1, $item[Autumnic bomb])) //Reduces enemy hp in half, useful for bodyguards with 40K hp
+		{
+			handleTracker("Burning Leaves", "Claimed " + $item[Autumnic bomb], "auto_iotm_claim");
+		}
+		else
+		{
+			success = false;
+		}
 	}
 
-	if (!isGuildClass())
+	if (!isGuildClass() && get_campground() contains $item[forest canopy bed])
 	{
 		success = success && auto_makeAutumnalAegis(); // +2 resistance to all elements, 250 DA (for megalo-city with no tao)
 	}
@@ -1016,7 +1025,10 @@ boolean auto_makeAutumnalAegis()
 	}
 	if (creatable_amount($item[Autumnal Aegis]) > 0 && item_amount($item[Autumnal Aegis]) == 0)
 	{
-		create(1, $item[Autumnal Aegis]); // So-so resistance to all elements, 250 DA (for megalo-city)
+		if (create(1, $item[Autumnal Aegis])) // So-so resistance to all elements, 250 DA (for megalo-city)
+		{
+			handleTracker("Burning Leaves", "Claimed " + $item[Autumnal Aegis], "auto_iotm_claim");
+		}
 	}
 	return available_amount($item[Autumnal Aegis]) > 0;
 }
