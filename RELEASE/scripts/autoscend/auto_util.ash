@@ -5182,3 +5182,14 @@ modifier spellDamageModifier(element el)
 	}
 	return $modifier[none];
 }
+
+float auto_getElementalDamageMultiplier(element source, element target)
+{
+	if (source == target) { return 0.0; }
+	if (source == $element[cold  ] && $elements[sleaze, stench] contains target) { return 2.0; }
+	if (source == $element[hot   ] && $elements[cold  , spooky] contains target) { return 2.0; }
+	if (source == $element[sleaze] && $elements[hot   , stench] contains target) { return 2.0; }
+	if (source == $element[spooky] && $elements[cold  , sleaze] contains target) { return 2.0; }
+	if (source == $element[stench] && $elements[hot   , spooky] contains target) { return 2.0; }
+	return 1.0;
+}
