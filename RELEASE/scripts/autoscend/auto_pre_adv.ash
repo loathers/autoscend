@@ -529,7 +529,8 @@ boolean auto_pre_adventure()
 	}
 	
 	item fluda = $item[Flash Liquidizer Ultra Dousing Accessory];
-	if ($locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place && auto_dousesRemaining()>0)
+	boolean[location] douse_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber];
+	if ( (douse_locs contains place || auto_allRifts() contains place) && auto_dousesRemaining()>0)
 	{
 		autoEquip(fluda);
 	}
