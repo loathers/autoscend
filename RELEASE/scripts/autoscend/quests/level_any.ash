@@ -1147,11 +1147,17 @@ boolean candyBlock()
 			matcher treat = create_matcher("whichhouse=" + house + ">[^>]*?house_l", blockHtml);
 			matcher starhouse = create_matcher("whichhouse=" + house + ">[^>]*?starhouse", blockHtml);
 			//treat
-			if(treat.find() || starhouse.find())
+			if(treat.find())
 			{
 				treatedHouse[count] = house;
 				count += 1;
 				visit_url(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
+			}
+			if(starhouse.find())
+			{
+				treatedHouse[count] = house;
+				count += 1;
+				autoAdvBypass(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
 			}
 			treated = true;
 		}
