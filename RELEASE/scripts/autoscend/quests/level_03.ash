@@ -40,41 +40,35 @@ boolean auto_tavern()
 			}
 		}
 	}
+	
+	// We need 20 each of the elements except sleaze to skip noncombats
+	void try_buff_damage(element el, effect ef)
+	{
+		if (numeric_modifier(damageModifier(el)) < 20.0)
+		{
+			buffMaintain(ef,20,1,1);
+		}
+	}
 
-	if(numeric_modifier("Hot Damage") < 20.0)
-	{
-		buffMaintain($effect[Pyromania], 20, 1, 1);
-	}
-	if(numeric_modifier("Cold Damage") < 20.0)
-	{
-		buffMaintain($effect[Frostbeard], 20, 1, 1);
-	}
-	if(numeric_modifier("Stench Damage") < 20.0)
-	{
-		buffMaintain($effect[Rotten Memories], 20, 1, 1);
-	}
-	if(numeric_modifier("Spooky Damage") < 20.0)
-	{
-		if(auto_have_skill($skill[Intimidating Mien]))
-		{
-			buffMaintain($effect[Intimidating Mien], 20, 1, 1);
-		}
-		else
-		{
-			buffMaintain($effect[Dirge of Dreadfulness (Remastered)]);
-			buffMaintain($effect[Dirge of Dreadfulness], 20, 1, 1);
-			buffMaintain($effect[Snarl of Three Timberwolves]);
-			buffMaintain($effect[Snarl of the Timberwolf], 20, 1, 1);
-		}
-	}
+	try_buff_damage($element[hot   ], $effect[Pyromania]);
+	try_buff_damage($element[cold  ], $effect[Frostbeard]);
+	try_buff_damage($element[cold  ], $effect[Song of the North]);
+	try_buff_damage($element[stench], $effect[Rotten Memories]);
+	try_buff_damage($element[spooky], $effect[Intimidating Mien]);
+	try_buff_damage($element[spooky], $effect[Dirge of Dreadfulness (Remastered)]);
+	try_buff_damage($element[spooky], $effect[Dirge of Dreadfulness]);
+	try_buff_damage($element[spooky], $effect[Snarl of Three Timberwolves]);
+	try_buff_damage($element[spooky], $effect[Snarl of the Timberwolf]);
+	
+	int max_ml_target = 150;
 
 	if(!isActuallyEd() && monster_level_adjustment() <= 299)
 	{
-		auto_MaxMLToCap(auto_convertDesiredML(150), true);
+		auto_MaxMLToCap(auto_convertDesiredML(max_ml_target), true);
 	}
 	else
 	{
-		auto_MaxMLToCap(auto_convertDesiredML(150), false);
+		auto_MaxMLToCap(auto_convertDesiredML(max_ml_target), false);
 	}
 
 	foreach element_type in $strings[Hot, Cold, Stench, Sleaze, Spooky]
@@ -92,9 +86,48 @@ boolean auto_tavern()
 	if(!maximized)
 	{
 		// Tails are a better time saving investment. Add -combat to ensure sim and real maximizer results match
-		simMaximizeWith("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(150) + "max,-200combat 25max");
+		simMaximizeWith("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(max_ml_target) + "max,-200combat 25max");
 		maximized = true;
 	}
+
+	int n_passed() // We pass an elemental damage check if we have 20 damage for that element
+	{
+		int n = 0;
+		foreach el in $elements[hot,cold,spooky,stench]
+		{
+			if (simValue(damageModifier(el)) >= 20.0)
+			{
+				n++;
+			}
+		}
+		return n; // 4 is success here
+	}
+	boolean all_passed() // do we pass all of the damage checks?
+	{
+		return n_passed() >= 4;
+	}
+
+	// Consider a pull
+	foreach it in $items[crepe paper parachute cape, 17-ball, rare oboe, recording of benetton's medley of diversity]
+	{
+		if (!all_passed())
+		{
+			if (pullXWhenHaveY(it,1,0))
+			{
+				simMaximizeWith("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(max_ml_target) + "max,-200combat 25max");
+			}
+		}
+	}
+
+	if (!all_passed())
+	{
+		item rec = $item[recording of Benetton's Medley of Diversity];
+		if (available_amount(rec) > 0)
+		{
+			use(1,rec);
+		}
+	}
+
 	int [string] eleChoiceCombos =
 	{
 		"Cold": 513,
@@ -114,7 +147,7 @@ boolean auto_tavern()
 			addToMaximize("80" + ele + " Damage 20max");	//only give value to elements that will pass
 		}
 	}
-	addToMaximize("500ml " + auto_convertDesiredML(150) + "max");
+	addToMaximize("500ml " + auto_convertDesiredML(max_ml_target) + "max");
 	
 	if(capped >= 3)
 	{
