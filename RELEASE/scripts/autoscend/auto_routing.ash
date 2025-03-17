@@ -24,6 +24,12 @@ location solveDelayZone(boolean skipOutdoorZones)
 		}
 	}
 
+	// If we're going to Megalo-city, do the prep work to acquire enough DA
+	if (burnZone == $location[Megalo-city])
+	{
+		prepForMegaloCity();
+	}
+
 	if (burnZone != $location[none])
 	{
 		return burnZone;

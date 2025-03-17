@@ -79,6 +79,38 @@ int EightBitScore()
 	return score;
 }
 
+boolean prepForMegaloCity() // low DA is punishing here, so if you're a non-guild class get torso and potentially autumn aegis
+{
+	if (isGuildClass())
+	{
+		return true; // nothing to do here as guild class
+	}
+	// If we can buy Torso and should, do that here, ignoring reserve
+	if((my_meat() >= 6000)
+	   && gnomads_available()
+	   && (!hasTorso())
+	   && hasUsefulShirt() )
+	{
+		visit_url("gnomes.php?action=trainskill&whichskill=12");
+	}
+	
+	// After this consider the aegis
+	item aegis = $item[autumnal aegis];
+	if (available_amount(aegis) > 0 || !auto_is_valid(aegis))
+	{
+		return true; // no point doing anything further here
+	}
+	if (!isGuildClass() && available_amount(aegis)==0)
+	{
+		auto_makeAutumnalAegis();
+	}
+	if (in_zootomist() && available_amount(aegis)==0)
+	{
+		pullXWhenHaveY(aegis, 1, 0);
+	}
+	return available_amount(aegis)>0;
+}
+
 boolean EightBitRealmHandler()
 {
 	//Spend adventures to get the digital key
@@ -104,6 +136,7 @@ boolean EightBitRealmHandler()
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
+			prepForMegaloCity();
 			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":

@@ -1316,6 +1316,7 @@ boolean need8BitPoints();
 int towerKeyCount();
 int towerKeyCount(boolean effective);
 int EightBitScore();
+boolean prepForMegaloCity();
 boolean EightBitRealmHandler();
 boolean get8BitFatLootToken();
 boolean LX_getDigitalKey();
