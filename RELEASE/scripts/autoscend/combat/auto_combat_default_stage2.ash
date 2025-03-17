@@ -341,8 +341,22 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return "item " + $item[drone self-destruct chip];
 		}
 	}
-	
-	# Instakill handler
+
+	// Dupe Tomb Rat King drops with pro skateboard
+	if(enemy == $monster[Tomb Rat King] && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
+	{
+		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
+		return useSkill($skill[Do an epic McTwist!]);
+	}
+
+	// Dupe Mountain Man drops with pro skateboard on day 1, not in turbo
+	if(enemy == $monster[Mountain Man] && my_daycount()==1 && !auto_turbo() && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
+	{
+		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
+		return useSkill($skill[Do an epic McTwist!]);
+	}
+
+	// Instakill handler
 	boolean couldInstaKill = true;
 	if($monsters[Smut Orc Pipelayer,Smut Orc Jacker,Smut Orc Screwer,Smut Orc Nailer] contains enemy && get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 	{

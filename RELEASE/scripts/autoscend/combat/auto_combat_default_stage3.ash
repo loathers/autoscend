@@ -137,13 +137,6 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 	}
 
-	//Dupe Tomb Rat King with pro skateboard
-	if(enemy == $monster[Tomb Rat King] && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
-	{
-		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
-		return useSkill($skill[Do an epic McTwist!]);
-	}
-	
 	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
 	if(canUse($skill[Hugs and Kisses!]) && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
 	{
