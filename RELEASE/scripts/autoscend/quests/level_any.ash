@@ -1157,7 +1157,7 @@ boolean candyBlock()
 			{
 				treatedHouse[count] = house;
 				count += 1;
-				autoAdvBypass(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
+				return autoAdvBypass(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
 			}
 			treated = true;
 		}
