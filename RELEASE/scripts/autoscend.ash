@@ -1,4 +1,4 @@
-since r28445;	// update mafia for early condo support
+since r28448;	// update mafia for early condo support
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -2022,6 +2022,7 @@ boolean doTasks()
 	if(auto_doPhoneQuest())				return true;
 	
 	if(auto_doTempleSummit())		return true;
+	if(L8_mountainManSummon())		return true;
 	
 	if (process_tasks()) return true;
 

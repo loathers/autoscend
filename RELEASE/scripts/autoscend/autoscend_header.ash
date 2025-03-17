@@ -1172,6 +1172,7 @@ boolean L7_defiledCranny();
 boolean needOre();
 int getCellToMine(item oreGoal);
 boolean L8_getGoatCheese();
+boolean L8_mountainManSummon();
 boolean L8_getMineOres();
 void itznotyerzitzMineChoiceHandler(int choice);
 boolean L8_forceExtremeInstead();
