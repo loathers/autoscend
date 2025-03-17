@@ -2112,10 +2112,9 @@ boolean summonMonster(monster mon)
 
 boolean summonMonster(monster mon, boolean speculative)
 {
-	auto_log_debug((speculative ? "Checking if we can" : "Trying to") + " summon " + mon, "blue");
-
 	if(!speculative)
 	{
+		auto_log_debug("Trying to summon " + mon, "blue");
 		set_property("auto_nonAdvLoc", true);
 	}
 
