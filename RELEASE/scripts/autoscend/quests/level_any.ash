@@ -1106,6 +1106,25 @@ boolean LX_dronesOut()
 	return false;
 }
 
+int freeCandyFightsLeft()
+{
+	// Map is done
+	if(get_property("_mapToACandyRichBlockUsed").to_boolean() && get_property("_auto_candyMapCompleted").to_boolean())
+	{
+		return 0;
+	}
+	if(!get_property("_mapToACandyRichBlockUsed").to_boolean() && item_amount($item[Map to a candy-rich block]) > 0 || !auto_is_valid($item[Map to a candy-rich block]))
+	{
+		return 5;
+	}
+	buffer blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+	string block = get_property("_trickOrTreatBlock");
+	matcher m = create_matcher("D",block);
+	int n_unused_dark = 0;
+	while(m.find()) {n_unused_dark++;}
+	return n_unused_dark;
+}
+
 boolean candyBlock()
 {
 	// Set choice defaults

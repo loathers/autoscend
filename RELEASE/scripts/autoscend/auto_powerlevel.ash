@@ -278,6 +278,17 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 		logRemainingFights("Oliver's Place = " + temp);
 	}
 
+	if(auto_haveBurningLeaves())
+	{
+		int temp = min(auto_remainingBurningLeavesFights(),floor(item_amount($item[inflammable leaf])/11));
+		count += temp;
+		logRemainingFights("Burning Leaves = " + temp);
+	}
+	
+	int free_candy = freeCandyFightsLeft();
+	count += free_candy;
+	logRemainingFights("Trick or Treating = " + free_candy);
+
 	return count;
 }
 
