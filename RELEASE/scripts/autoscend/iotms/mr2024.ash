@@ -543,7 +543,7 @@ void auto_buyFromSeptEmberStore()
 				buy($coinmaster[Sept-Ember Censer], 1, bember);
 			}
 			
-			provideResistances(resGoal, $location[noob cave], true);
+			provideResistances(resGoal, $location[noob cave], true, true, false);
 			equipMaximizedGear();
 			
 			// We could have left-hand if our off-hand is strong enough
