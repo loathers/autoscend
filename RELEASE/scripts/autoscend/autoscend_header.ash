@@ -1716,7 +1716,9 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 float provideInitiative(int amt, boolean doEquips, boolean speculative);
 boolean provideInitiative(int amt, location loc, boolean doEquips);
 boolean provideInitiative(int amt, boolean doEquips);
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean doAll, boolean speculative);
 int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative);
+int [element] provideResistances(int [element] amt, boolean doEquips, boolean doAll, boolean speculative);
 int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative);
 boolean provideResistances(int [element] amt, location loc, boolean doEquips);
 boolean provideResistances(int [element] amt, boolean doEquips);

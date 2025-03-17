@@ -635,7 +635,7 @@ boolean provideInitiative(int amt, boolean doEquips)
 	return provideInitiative(amt, my_location(), doEquips);
 }
 
-int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative)
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean doAll, boolean speculative)
 {
 	string debugprint = "Trying to provide ";
 	foreach ele,goal in amt
@@ -646,6 +646,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		debugprint += " resistance, ";
 	}
 	debugprint += (doEquips ? "with equipment" : "without equipment");
+	debugprint += (doAll    ? " and everything else like spleen.":"");
 	auto_log_info(debugprint, "blue");
 
 	if(amt[$element[stench]] > 0)
@@ -881,25 +882,38 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			return result();
 	}
 	
-	if(shouldUseSpleenForLowPriority() && auto_haveCyberRealm())
+	if (doAll)
 	{
-		if(tryEffects($effects[
-			Cyber Resist x2000
-		]))
-			return result();
+		if(shouldUseSpleenForLowPriority() && auto_haveCyberRealm())
+		{
+			if(tryEffects($effects[
+				Cyber Resist x2000
+			]))
+				return result();
+		}
 	}
 
 	return result();
 }
 
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative)
+{
+	return provideResistances(amt, loc, doEquips, false, speculative);
+}
+
+int [element] provideResistances(int [element] amt, boolean doEquips, boolean doAll, boolean speculative)
+{
+	return provideResistances(amt, my_location(), doEquips, doAll, speculative);
+}
+
 int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative)
 {
-	return provideResistances(amt, my_location(), doEquips, speculative);
+	return provideResistances(amt, my_location(), doEquips, false, speculative);
 }
 
 boolean provideResistances(int [element] amt, location loc, boolean doEquips)
 {
-	int [element] res = provideResistances(amt, doEquips, false);
+	int [element] res = provideResistances(amt, doEquips, false, false);
 	foreach ele, i in amt
 	{
 		if(res[ele] < i)

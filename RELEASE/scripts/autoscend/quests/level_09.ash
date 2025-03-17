@@ -785,10 +785,10 @@ boolean prepareForTwinPeak(boolean speculative)
 		int [element] resGoal;
 		resGoal[$element[stench]] = 4;
 		// check if we can get enough stench res before we start applying anything
-		int [element] resPossible = provideResistances(resGoal, $location[Twin Peak], true, true);
+		int [element] resPossible = provideResistances(resGoal, $location[Twin Peak], true, true, true);
 		if(resPossible[$element[stench]] >= 4)
 		{
-			if(!speculative) provideResistances(resGoal, $location[Twin Peak], true);
+			if(!speculative) provideResistances(resGoal, $location[Twin Peak], true, true, false);
 			return true;
 		}
 	}
