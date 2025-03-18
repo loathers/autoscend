@@ -202,6 +202,10 @@ boolean isSniffed(monster enemy, skill sk)
 	string search;
 	if (sk == $skill[Get a Good Whiff of This Guy]) {
 		search = "Nosy Nose";
+	} else if (sk == $skill[%fn\, fire a Red\, White and Blue Blast]){
+		if(auto_RWBMonster() == enemy) {
+			return true;
+		}
 	} else {
 		search = sk.to_string();
 	}
@@ -217,7 +221,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash]
+	foreach sk in $skills[Transcendent Olfaction, %fn\, fire a Red\, White and Blue Blast, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -325,6 +329,10 @@ skill getCopier(monster enemy, boolean inCombat)
 	if((auto_haveRoman() && have_effect($effect[Everything Looks Purple]) == 0) || (have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0))
 	{
 		return $skill[Blow the Purple Candle\!];
+	}
+	if(canUse($skill[%fn\, fire a Red, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
+	{
+		return $skill[%fn\, fire a Red, White and Blue Blast];
 	}
 	return $skill[none];
 }

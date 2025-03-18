@@ -691,7 +691,7 @@ float [monster] auto_combat_appearance_rates(location place, boolean queue)
 	{
 		if(mob != $monster[none])
 		{
-			res_excluding_noncombat[mob] = freq / (100 - noncombat_frequency);
+			res_excluding_noncombat[mob] = freq / (100 - noncombat_frequency) * 100;
 		}
 	}
 	return res_excluding_noncombat;
@@ -1239,6 +1239,10 @@ boolean adjustForCopyIfPossible(monster target)
 	if(copier == $skill[Blow the Purple Candle\!])
 	{
 		return autoEquip($item[Roman Candelabra]);
+	}
+	if(copier == $skill[%fn\, fire a Red, White and Blue Blast])
+	{
+		handleFamiliar($familiar[Patriotic Eagle]);
 	}
 	return false;
 }
@@ -3528,6 +3532,8 @@ boolean auto_check_conditions(string conds)
 				if(get_property("_latteMonster").to_monster() == check_sniffed)
 					return true;
 				if(get_property("motifMonster").to_monster() == check_sniffed)
+					return true;
+				if(get_property("rwbMonster").to_monster() == check_sniffed)
 					return true;
 				return false;
 			// data: Doesn't matter, but put something so I don't have to support dataless conditions
