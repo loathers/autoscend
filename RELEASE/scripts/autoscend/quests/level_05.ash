@@ -66,6 +66,13 @@ boolean L5_haremOutfit()
 		return false;
 	}
 
+	// Just pull it if d2
+	if (my_daycount()>1)
+	{
+		pullXWhenHaveY($item[knob goblin harem veil ], 1, 0);
+		pullXWhenHaveY($item[knob goblin harem pants], 1, 0);
+	}
+
 	// want to fight goblin king quickly in legacy of loathing to get another replica mr a
 	// check for LoL path so we actually prep for yellow raying
 	if(!adjustForYellowRayIfPossible($monster[Knob Goblin Harem Girl]) && !in_lol())
