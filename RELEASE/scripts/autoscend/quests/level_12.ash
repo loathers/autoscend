@@ -1869,6 +1869,7 @@ boolean L12_themtharHills()
 		}
 	}
 
+	auto_getCitizenZone("meat"); //because it can take a turn, get this before getting any other buffs
 	provideMeat(1800, true, false); // Do as much as possible to get meat drops
 
 	{
