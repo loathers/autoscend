@@ -1366,6 +1366,7 @@ item LX_getDesiredWorkshed();
 boolean LX_setWorkshed();
 boolean canSetWorkshed(item it);
 boolean LX_dronesOut();
+int freeCandyFightsLeft();
 boolean candyBlock();
 string candyBlockOutfit(string type);
 boolean LX_lastChance();
