@@ -1179,6 +1179,7 @@ boolean candyBlock()
 				visit_url("place.php?whichplace=town&action=town_trickortreat");
 				visit_url(`choice.php?whichchoice=804&option=3&whichhouse={house}`);
 				visit_url("choice.php?whichchoice=806&option=2");
+				refreshBlock();
 			}
 			treated = true;
 		}
