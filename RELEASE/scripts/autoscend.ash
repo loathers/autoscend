@@ -1606,23 +1606,29 @@ boolean autosellCrap()
 	
 	// Keep none
 	items_considered = $items[Anticheese, Awful Poetry Journal, Azurite, Beach Glass Bead, Beer Bomb, Bit-o-Cactus,
-	  Blue Pixel, Clay Peace-Sign Bead, Clockwork key, Cocoa Eggshell Fragment, Datastick, Decorative Fountain, Dense Meat Stack,
+	  Clay Peace-Sign Bead, Clockwork key, Cocoa Eggshell Fragment, Datastick, Decorative Fountain, Dense Meat Stack,
 	  Empty Cloaca-Cola Bottle, Enchanted Barbell, Eye Agate, Fancy Bath Salts, Frigid Ninja Stars,
-	  Feng Shui For Big Dumb Idiots, Frat Army FGF, Giant Moxie Weed, Green Pixel, Half of a Gold Tooth,
+	  Feng Shui For Big Dumb Idiots, Frat Army FGF, Giant Moxie Weed, Half of a Gold Tooth,
 	  Headless Sparrow, Keel-Haulin\' Knife, Knob Goblin pants, Knob goblin scimitar, Knob Goblin tongs,
 	  Kokomo Resort Pass, Lapis Lazuli, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita,
 	  Meat Paste, Mineapple, Moxie Weed, PADL Phone, Patchouli Incense Stick, Phat Turquoise Bead,
 	  Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Sausage Bomb,
 	  Sea Honeydew, Sea Lychee, Sea Persimmon, Sea Tangelo,
 	  Shiny Hood Ornament, Slingshot, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Spooky Stick,
-	  Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, White Pixel,
-	  Windchimes];
+	  Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes];
 	  
 	sell_except(0,items_considered);
 
 	if(auto_amIRich())
 	{
 		return false;
+	}
+	
+	// Pixels, keep all in KoE, none otherwise (black and red saved for red pixel potions)
+	if (!in_koe())
+	{
+		items_considered = $items[blue pixel, green pixel, white pixel];
+		sell_except(0,items_considered);
 	}
 	
 	// Keep none
