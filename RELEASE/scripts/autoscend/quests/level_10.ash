@@ -52,6 +52,12 @@ boolean L10_airship()
 		return false;
 	}
 
+	if (is_banished($phylum[dude]) && get_property("screechCombats").to_int() > 0 && !possessEquipment($item[amulet of extreme plot significance]))
+	{
+		set_property("screechDelay", "dude");
+		return false; //Probably should delay the Airship to try for a Quiet Healer
+	}
+
 	auto_log_info("The Penultimate Fantasy Airship - unlocking Castle.", "blue");
 	if((my_mp() > 60) || considerGrimstoneGolem(true))
 	{
@@ -147,7 +153,7 @@ boolean L10_basement()
 			return false;
 		}
 	}
-	else if(possessEquipment($item[Titanium Assault Umbrella]) && !auto_can_equip($item[Titanium Assault Umbrella]))
+	else if(possessEquipment($item[Titanium Assault Umbrella]) && !in_wotsf() && !is_boris() && !auto_can_equip($item[Titanium Assault Umbrella]))
 	{
 		return false;
 	}

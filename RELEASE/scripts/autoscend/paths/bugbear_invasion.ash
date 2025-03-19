@@ -98,6 +98,12 @@ boolean bugbear_UnlockMothership(location loc)
 
 	if (!zone_available(unlockLocation)) return false;
 
+	if (is_banished($phylum[beast]))
+	{
+		set_property("screechDelay", "beast");
+		return false; // Can't fight bugbears if beasts are banished
+	}
+
 	if (item_amount($item[Key-o-tron]) == 0 && item_amount($item[BURT]) >= 5)
 	{
 		create(1, $item[Key-o-tron]);
