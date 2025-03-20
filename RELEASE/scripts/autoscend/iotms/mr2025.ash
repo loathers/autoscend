@@ -2,8 +2,11 @@
 
 boolean auto_haveCyberRealm()
 {
-	// Should check for daypass access? Don't see a Mafia preference.
-	if(auto_is_valid($item[server room key]) && available_amount($item[server room key]) > 0 )
+	if(!is_unrestricted($item[server room key]))
+	{
+		return false;
+	}
+	if((get_property("crAlways").to_boolean() || get_property("_crToday").to_boolean()))
 	{
 		return true;
 	}
