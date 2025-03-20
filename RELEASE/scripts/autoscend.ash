@@ -1950,6 +1950,9 @@ boolean doTasks()
 	ocrs_postCombatResolve();
 	beatenUpResolution();
 	lar_safeguard();
+	
+	auto_setLeprecondo();
+	auto_useLeprecondoDrops();
 
 	if (LX_zootoFight()) { return true; }
 

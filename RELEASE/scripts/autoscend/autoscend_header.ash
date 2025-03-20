@@ -632,6 +632,10 @@ boolean auto_openMcLargeHugeSkis();
 int auto_McLargeHugeForcesLeft();
 int auto_McLargeHugeSniffsLeft();
 boolean auto_haveCupidBow();
+boolean auto_haveLeprecondo();
+boolean auto_haveDiscoveredLeprecondoFurniture(int furn);
+boolean auto_setLeprecondo();
+boolean auto_useLeprecondoDrops();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
