@@ -1437,10 +1437,14 @@ boolean L13_towerNSTowerBones()
 		addToMaximize("+equip "+$item[big hot pepper]);
 	}
 	
-	acquireOrPull($item[congressional medal of insanity]);
-	if (possessEquipment($item[congressional medal of insanity]))
+	foreach lantern in $items[congressional medal of insanity, petrified wood water purifier, petrified wood wizard's pouch]
 	{
-		addToMaximize("+equip "+$item[congressional medal of insanity]);
+		acquireOrPull(lantern);
+		if (possessEquipment(lantern))
+		{
+			addToMaximize("+equip "+lantern);
+			break; // we only need to pull one megalantern
+		}
 	}
 
 	addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
