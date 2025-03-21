@@ -152,6 +152,11 @@ boolean auto_setLeprecondo()
 		foreach i,f in priority
 		{
 			if (n_picks == 4) { break; }
+			// Ignore the Fam Exp buffs in some paths
+			if ( (in_avantGuard() || !pathHasFamiliar()) && (f==9 || f==18) )
+			{
+				continue;
+			}
 			if (auto_haveDiscoveredLeprecondoFurniture(f))
 			{
 				picks[n_picks++] = f;
