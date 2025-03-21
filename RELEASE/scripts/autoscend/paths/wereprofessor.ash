@@ -10,6 +10,8 @@ void wereprof_initializeSettings()
 		return;
 	}
 	set_property("auto_wandOfNagamar", false);		//wand not used in this path
+	// if we banish a phylum while werewolf, we can't undo it while wereprofessor
+	set_property("auto_dontPhylumBanish", true);
 	cli_execute('wereprofessor research');			//parse the research bench
 }
 
