@@ -426,7 +426,7 @@ void auto_buyFromSeptEmberStore()
 	{
 		// If we have at least 4 embers remaining, don't overlevel, they can be used for something else
 		boolean happy_to_overlevel = disregard_karma && remainingEmbers() < 4;
-		boolean want_to_mouthwash_level = (my_level() < 13 || happy_to_overlevel);
+		boolean want_to_mouthwash_level = (my_level() < 13 || happy_to_overlevel) && !in_plumber();
 		// Even disregarding karma, never level above 15 using mouthwash as a sanity limit
 		want_to_mouthwash_level = want_to_mouthwash_level && my_level()<15;
 		if (remainingEmbers() >= 2 && want_to_mouthwash_level)
