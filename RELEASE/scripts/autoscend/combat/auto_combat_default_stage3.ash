@@ -137,13 +137,6 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 	}
 
-	//Dupe Tomb Rat King with pro skateboard
-	if(enemy == $monster[Tomb Rat King] && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
-	{
-		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
-		return useSkill($skill[Do an epic McTwist!]);
-	}
-	
 	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
 	if(canUse($skill[Hugs and Kisses!]) && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
 	{
@@ -180,7 +173,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 	}
 
-	if(wantToDouse(enemy) && round < 23) // dousing can have a low chance of success, so only do it up to round 22
+	if(wantToDouse(enemy) && round <= maxRoundsToDouse(enemy)) // dousing can have a low chance of success, so only do it for a while
 	{
 		skill douse = $skill[douse foe];
 		boolean douseAvailable = canUse(douse, false) && auto_dousesRemaining()>0;
@@ -269,9 +262,9 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		//HP reduction if the monster has high HP
 		if(monster_hp() > 1500 || enemy.physical_resistance > 90)
 		{
-			if(canUse($skill[Surprisingly Sweet Slash])) //75% less HP
+			if(canUse($skill[Surprisingly Sweet Slash]) && auto_remainingCandyCaneSlashes() > 1) // reserve a slash for wall of bones
 			{
-				return useSkill($skill[Surprisingly Sweet Slash]);
+				return useSkill($skill[Surprisingly Sweet Slash]); // 75% less HP
 			}
 			if(canUse($item[autumnic bomb])) //50% less hp && prismatic damage on hit
 			{
@@ -281,7 +274,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 
 		// delevel and 75% less HP if you have a candy cane sword cane
 		// Need this separate because want to reserve the Slash in Avant Guard for high HP bodyguards
-		if (canUse($skill[Surprisingly Sweet Slash]) && !in_avantGuard())
+		if (canUse($skill[Surprisingly Sweet Slash]) && !in_avantGuard() && auto_remainingCandyCaneSlashes() > 1) // reserve a slash for wall of bones
 		{
 			return useSkill($skill[Surprisingly Sweet Slash]);
 		}

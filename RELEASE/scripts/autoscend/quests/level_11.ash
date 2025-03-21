@@ -311,7 +311,7 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 		resGoals[$element[hot]] = 9;
 		resGoals[$element[stench]] = 9;
 		// check to see if we can acquire sufficient hot and stench res for the kitchen
-		int [element] resPossible = provideResistances(resGoals, $location[The Haunted Kitchen], true, true);
+		int [element] resPossible = provideResistances(resGoals, $location[The Haunted Kitchen], true, false, true);
 		delayKitchen = (resPossible[$element[hot]] < 9 || resPossible[$element[stench]] < 9);
 	}
 
@@ -324,7 +324,7 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 		int [element] resGoal;
 		resGoal[$element[hot]] = 9;
 		resGoal[$element[stench]] = 9;
-		int [element] resPossible = provideResistances(resGoal, $location[The Haunted Kitchen], true, false);
+		int [element] resPossible = provideResistances(resGoal, $location[The Haunted Kitchen], true, true, false);
 		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + resPossible[$element[hot]] + "/" + resPossible[$element[stench]] + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
 		if (autoAdv($location[The Haunted Kitchen])) {
 			return true;
@@ -1462,6 +1462,34 @@ boolean L11_aridDesert()
 	return true;
 }
 
+boolean LX_killBaaBaaBuran()
+{
+	if (!hidden_temple_unlocked()) { return false; }
+	if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
+	{	// try to clover/summon baa baa first
+		if(auto_haveGreyGoose()){
+			auto_log_info("Bringing the Grey Goose to emit some drones at a Sheep carving.");
+			handleFamiliar($familiar[Grey Goose]);
+		}
+		else {
+			handleFamiliar("item");
+		}
+		addToMaximize("20 item 400max");
+		
+		// Right now clovers are "cheaper" than summons, so use clover first, but not our last.
+		if(cloversAvailable() > 1)
+		{
+			return autoLuckyAdv($location[The Hidden Temple]);
+		}
+		
+		if(canSummonMonster($monster[Baa\'baa\'bu\'ran]))
+		{
+			return summonMonster($monster[Baa\'baa\'bu\'ran]);
+		}
+	}
+	return false;
+}
+
 boolean L11_unlockHiddenCity() 
 {
 	if (!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 0 || internalQuestStatus("questL11Worship") > 2) 
@@ -1476,28 +1504,9 @@ boolean L11_unlockHiddenCity()
 	auto_log_info("Searching for the Hidden City", "blue");
 	if(!in_glover() && !in_tcrs()) 
 	{
-		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
-		{	// try to clover/summon baa baa first
-			if(auto_haveGreyGoose()){
-				auto_log_info("Bringing the Grey Goose to emit some drones at a Sheep carving.");
-				handleFamiliar($familiar[Grey Goose]);
-			}
-			else {
-				handleFamiliar("item");
-			}
-			addToMaximize("20 item 400max");
-			
-			// Right now clovers are "cheaper" than summons, so use clover first, but not our last.
-			if(cloversAvailable() > 1)
-			{
-				return autoLuckyAdv($location[The Hidden Temple]);
-			}
-			
-			if(canSummonMonster($monster[Baa\'baa\'bu\'ran]))
-			{
-				return summonMonster($monster[Baa\'baa\'bu\'ran]);
-			}
-		}
+		// BaaBaabaran is the best source of stone wool
+		if (LX_killBaaBaaBuran()) { return true; }
+		
 		if(item_amount($item[Stone Wool]) == 0 && have_effect($effect[Stone-Faced]) == 0)
 		{
 			//try to pull stone wool
@@ -1534,7 +1543,11 @@ void hiddenTempleChoiceHandler(int choice, string page) {
 	} else if (choice == 125) { // No Visible Means of Support
 		run_choice(3); // Unlock the Hidden City!
 	} else if (choice == 579) { // Such Great Heights
-		if (item_amount($item[The Nostril of the Serpent]) == 0 && internalQuestStatus("questL11Worship") < 3) {
+		if (item_amount($item[stone wool]) >= 2 && get_property("lastTempleAdventures").to_int() < my_ascensions())
+		{
+			run_choice(3); // if we have plenty of stone wool, take the adventures first (and reset Mayam)
+		}
+		else if (item_amount($item[The Nostril of the Serpent]) == 0 && internalQuestStatus("questL11Worship") < 3) {
 			run_choice(2); // Get The Nostril of the Serpent
 		} else {
 			run_choice(3); // +3 adventures and extend 10 effects (first time) or skip
@@ -2496,6 +2509,16 @@ boolean L11_mauriceSpookyraven()
 
 	if (possessEquipment($item[Unstable Fulminate]) && internalQuestStatus("questL11Manor") < 3)
 	{
+		// Zootomist probably wants to wait until D2 in SC for this.
+		if (auto_inRonin() && in_zootomist())
+		{
+			if (auto_waitForDay2())
+			{
+				auto_log_debug("Delaying Monstrous Boiler waiting for day 2.");
+				return false;
+			}
+		}
+		
 		auto_MaxMLToCap(auto_convertDesiredML(82), true);
 		addToMaximize("500ml " + auto_convertDesiredML(82) + "max");
 
@@ -2598,9 +2621,13 @@ boolean L11_redZeppelin()
 	}
 
 	if(get_property("zeppelinProtestors").to_int() < 75 && cloversAvailable() > 0)
-	{
+	{ // "zeppelinProtestors" is number killed so far, so it ends when we hit 80
 		if(cloversAvailable() >= 3)
 		{
+			if (!in_koe() || my_daycount() > 1) // in koe, if d1 save bend hell for invader
+			{
+				buffMaintain($effect[Bendin\' Hell],0,0,1);
+			}
 			foreach ef in $effects[Dirty Pear, Fifty Ways to Bereave Your Lover] // double sleaze dmg, +100 sleaze dmg, 
 			{
 				float target_sleaze = 400;
@@ -2667,6 +2694,12 @@ boolean L11_redZeppelin()
 			}
 			return autoLuckyAdv($location[A Mob of Zeppelin Protesters]);
 		}
+	}
+
+	if (auto_waitForDay2())
+	{
+		auto_log_debug("Delaying zeppelin protestors waiting for day 2 clovers.");
+		return false;
 	}
 
 	if (handleFamiliar($familiar[Red-Nosed Snapper])) {
@@ -3316,7 +3349,8 @@ boolean L11_palindome()
 
 boolean L11_unlockPyramid()
 {
-  if (internalQuestStatus("questL11Desert") < 1 || get_property("desertExploration").to_int() < 100 || internalQuestStatus("questL11Pyramid") > -1)
+	visit_url("place.php?whichplace=desertbeach");
+	if (internalQuestStatus("questL11Desert") < 1 || get_property("desertExploration").to_int() < 100 || internalQuestStatus("questL11Pyramid") > -1)
 	{
 		return false;
 	}

@@ -351,6 +351,15 @@ boolean auto_pre_adventure()
 			//	}
 		}
 	}
+	
+	// If we're zootomist, need to level, and we have +xp on our milk, cast it.
+	if (in_zootomist() && my_level()<13) {
+		foreach ef in $effects[Milk of Familiar Kindness, Milk of Familiar Cruelty] {
+			if (numeric_modifier(ef,$modifier[familiar experience]) > 0) {
+				buffMaintain(ef);
+			}
+		}
+	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
 	boolean burningDelay = auto_burningDelay();
@@ -520,9 +529,17 @@ boolean auto_pre_adventure()
 	}
 	
 	item fluda = $item[Flash Liquidizer Ultra Dousing Accessory];
-	if ($locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place && auto_dousesRemaining()>0)
+	boolean[location] douse_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber];
+	if ( (douse_locs contains place || auto_allRifts() contains place) && auto_dousesRemaining()>0)
 	{
 		autoEquip(fluda);
+	}
+	
+	item bat_wings = $item[bat wings];
+	boolean[location] swoop_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber,The Hidden Temple];
+	if ( (swoop_locs contains place || auto_allRifts() contains place) && auto_swoopsRemaining()>0)
+	{
+		autoEquip(bat_wings);
 	}
 	
 	item exting = wrap_item($item[industrial fire extinguisher]);
@@ -696,7 +713,10 @@ boolean auto_pre_adventure()
 	generic_t itemNeed = zone_needItem(place);
 	if(mayNeedItem && itemNeed._boolean)
 	{
-		provideItem(ceil(itemNeed._float),place,false);
+		boolean capped = provideItem(ceil(itemNeed._float),place,false);
+		if (!capped && auto_haveCupidBow()) {
+			addBonusToMaximize($item[toy cupid bow],400);
+		}
 	}
 
 
@@ -714,7 +734,8 @@ boolean auto_pre_adventure()
 		boolean purgeML = false;
 
 	boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, The Defiled Cranny];
-	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp, Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass];
+	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp, Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass,
+		Tower Level 1, Tower Level 2, Tower Level 3];
 
 	// Generic Conditions
 	if(inAftercore())
@@ -1025,6 +1046,9 @@ void main()
 	try
 	{
 		ret = auto_pre_adventure();
+		if (pathHasFamiliar() && my_familiar()==$familiar[none]) {
+			abort("Trying to adventure with no familiar.");
+		}
 	}
 	finally
 	{

@@ -95,6 +95,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	if (tryEffects($effects[
 		Musk of the Moose,
 		Carlweather's Cantata of Confrontation,
+		Milk of Familiar Kindness,
 		Attracting Snakes,
 		Crunchy Steps,
 		Blinking Belly,
@@ -294,6 +295,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Muffled,
 		Smooth Movements,
 		The Sonata of Sneakiness,
+		Milk of Familiar Cruelty,
 		Hiding From Seekers,
 		Ultra-Soft Steps,
 		Song of Solitude,
@@ -549,8 +551,8 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		if(pass())
 			return result();
 	}
-
-	if(tryEffects($effects[
+	
+	boolean[effect] ef_to_try = $effects[
 		Adorable Lookout,
 		Alacri Tea,
 		All Fired Up,
@@ -559,14 +561,21 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		The Glistening,
 		Human-Machine Hybrid,
 		Patent Alacrity,
-		Provocative Perkiness,
 		Sepia Tan,
 		Sugar Rush,
 		Ticking Clock,
 		Well-Swabbed Ear,
 		Poppy Performance
-	]))
+	]; // eff_to_try
+	if(tryEffects(ef_to_try))
 		return result();
+	
+	if (can_interact())
+	{	// Not worth making in HC
+		ef_to_try = $effects[Provocative Perkiness];
+		if(tryEffects(ef_to_try))
+			return result();
+	}
 
 	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0 && auto_is_valid($effect[init.enh]))
 	{
@@ -626,7 +635,7 @@ boolean provideInitiative(int amt, boolean doEquips)
 	return provideInitiative(amt, my_location(), doEquips);
 }
 
-int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative)
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean doAll, boolean speculative)
 {
 	string debugprint = "Trying to provide ";
 	foreach ele,goal in amt
@@ -637,6 +646,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		debugprint += " resistance, ";
 	}
 	debugprint += (doEquips ? "with equipment" : "without equipment");
+	debugprint += (doAll    ? " and everything else like spleen.":"");
 	auto_log_info(debugprint, "blue");
 
 	if(amt[$element[stench]] > 0)
@@ -871,18 +881,39 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		]))
 			return result();
 	}
+	
+	if (doAll)
+	{
+		if(shouldUseSpleenForLowPriority() && auto_haveCyberRealm())
+		{
+			if(tryEffects($effects[
+				Cyber Resist x2000
+			]))
+				return result();
+		}
+	}
 
 	return result();
 }
 
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative)
+{
+	return provideResistances(amt, loc, doEquips, false, speculative);
+}
+
+int [element] provideResistances(int [element] amt, boolean doEquips, boolean doAll, boolean speculative)
+{
+	return provideResistances(amt, my_location(), doEquips, doAll, speculative);
+}
+
 int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative)
 {
-	return provideResistances(amt, my_location(), doEquips, speculative);
+	return provideResistances(amt, my_location(), doEquips, false, speculative);
 }
 
 boolean provideResistances(int [element] amt, location loc, boolean doEquips)
 {
-	int [element] res = provideResistances(amt, doEquips, false);
+	int [element] res = provideResistances(amt, doEquips, false, false);
 	foreach ele, i in amt
 	{
 		if(res[ele] < i)
@@ -1401,7 +1432,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 	}
 	songboomSetting("meat"); //30% meat
 	// items
-	if(tryEffects($effects[
+	boolean[effect] ef_to_try = $effects[
 		Flapper Dancin\', //100% meat
 		Heightened Senses, //50% meat, 25% item drop
 		Big Meat Big Prizes, //50% meat
@@ -1418,11 +1449,20 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Kindly Resolve, //5 fam weight
 		Human-Machine Hybrid, //5 fam weight, DA +50, DR 5
 		Sweet Heart, // Muscle +X, +2X% meat
-		Cranberry Cordiality, //10% meat
 		So You Can Work More... //10% meat
-	]))
+	]; // ef_to_try
+	
+	if(tryEffects(ef_to_try))
 		if(pass())
 			return result();
+			
+	if (can_interact())
+	{	// Not worth making in HC
+		ef_to_try = $effects[Cranberry Cordiality];
+		if(tryEffects(ef_to_try))
+			if(pass())
+				return result();
+	}
 
 	if(have_effect($effect[Synthesis: Greed]) == 0)
 	{

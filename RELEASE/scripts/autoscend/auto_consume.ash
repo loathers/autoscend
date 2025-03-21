@@ -1055,7 +1055,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			(it.fullness == 0 || it.inebriety == 0) &&
 			auto_is_valid(it))
 		{
-			boolean value_allowed = (historical_price(it) < get_property("autoBuyPriceLimit").to_int()) ||
+			boolean value_allowed = (historical_price(it) < auto_getConsumablePriceLimit()) ||
 									($items[blueberry muffin, bran muffin, chocolate chip muffin] contains it && item_amount(it) > 0 && //muffins are expensive but renewable
 									my_path() != $path[Grey You]); //Grey You should not even get to here if ever supported but it consumes the tin so blocked just in case
 									
@@ -2252,4 +2252,35 @@ void consumeStuff()
 	{
 		return;
 	}
+}
+
+// In standard or with few IOTMs we might not be able to fill spleen with adventures or worksheds
+// So in that case we can use them for the low priority various drops
+boolean shouldUseSpleenForLowPriority()
+{
+	if (spleen_left()==1) { return true; }
+	if (spleen_left()==0) { return false; }
+	if (isActuallyEd()  ) { return false; }
+	if (haveSpleenFamiliar() && pathHasFamiliar() && canChangeFamiliar()) { return false; }
+	
+	int spleen_likely_to_use = 0;
+	spleen_likely_to_use += 2 * auto_CMCconsultsLeft();
+	spleen_likely_to_use += $item[dieting pill].spleen * available_amount($item[dieting pill]);
+	
+	return spleen_left() > spleen_likely_to_use;
+}
+
+boolean isSpleenConsumable(item it)
+{
+	return it.spleen != 0;
+}
+
+int auto_getConsumablePriceLimit()
+{
+	int mafia_max = get_property("autoBuyPriceLimit").to_int();
+	int autoscend_max = get_property("auto_consumablePriceLimit").to_int();
+	if (autoscend_max < 1) {
+		return mafia_max;
+	}
+	return min(autoscend_max,mafia_max);
 }

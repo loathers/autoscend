@@ -52,7 +52,7 @@ boolean L10_airship()
 		return false;
 	}
 
-	if (is_banished($phylum[dude]) && get_property("screechCombats").to_int() > 0 && !possessEquipment($item[amulet of extreme plot significance]))
+	if (is_banished($phylum[dude]) && !possessEquipment($item[amulet of extreme plot significance]))
 	{
 		set_property("screechDelay", "dude");
 		return false; //Probably should delay the Airship to try for a Quiet Healer

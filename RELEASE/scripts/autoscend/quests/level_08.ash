@@ -288,6 +288,56 @@ boolean L8_getGoatCheese()
 	return retval;
 }
 
+boolean L8_mountainManSummon()
+{
+	if(internalQuestStatus("questL08Trapper") < 1 && my_level() >= 8)
+	{
+		L8_trapperTalk();
+	}
+	if(internalQuestStatus("questL08Trapper") != 1) // step1 = we spoke to trapper to learn what ores he wants
+	{
+		return false;
+	}
+	item oreGoal = get_property("trapperOre").to_item();
+	int current_ore = item_amount(oreGoal);
+	if(current_ore >= 3)
+	{
+		return false;
+	}
+	
+	// use a summon if we can guarantee it will be enough via cat burglar
+	if(canSummonMonster($monster[mountain man]) && catBurglarHeistsLeft() > 1)
+	{
+		auto_log_info("Trying to summon a mountain man, which the cat will then burgle, hopefully.");
+		handleFamiliar($familiar[cat burglar]);
+		return summonMonster($monster[mountain man]);
+	}
+	
+	// use a summon if we can guarantee it will be enough via pro skateboard and YR
+	if(canSummonMonster($monster[mountain man]) && canYellowRay())
+	{
+		boolean need_dupe    = current_ore < 1;
+		boolean can_mctwist  = auto_can_equip($item[pro skateboard]) && !get_property("_epicMcTwistUsed").to_boolean();
+		boolean will_mctwist = can_mctwist && need_dupe;
+		auto_log_info("Trying to summon a mountain man, which we will YR"+(will_mctwist?" and McTwist.":"."));
+		adjustForYellowRayIfPossible();
+		if (will_mctwist)
+		{
+			autoEquip($item[pro skateboard]);
+			return summonMonster($monster[mountain man]);
+		}
+		else if (!need_dupe)
+		{
+			return summonMonster($monster[mountain man]);
+		}
+		else
+		{
+			return false; // if we need to dupe drops but can't, don't summon.
+		}
+	}
+	return false;
+}
+
 boolean L8_getMineOres()
 {
 	if(internalQuestStatus("questL08Trapper") != 1) // step1 = we spoke to trapper to learn what ores he wants
@@ -308,6 +358,8 @@ boolean L8_getMineOres()
 		return false;
 	}
 
+	L8_mountainManSummon();
+
 	// in softcore we want to pull an ore
 	if(canPull(oreGoal))
 	{
@@ -321,14 +373,6 @@ boolean L8_getMineOres()
 	if(auto_haveTrainSet() && item_amount(oreGoal) < 3)
 	{
 		return false; //will get ore organically through the train set so no need to adventure for it
-	}
-	
-	// use a summon if we can guarentee it will be enough via cat burglar
-	if(canSummonMonster($monster[mountain man]) && catBurglarHeistsLeft() > 1)
-	{
-		auto_log_info("Trying to summon a mountain man, which the cat will then burgle, hopefully.");
-		handleFamiliar($familiar[cat burglar]);
-		return summonMonster($monster[mountain man]);
 	}
 	
 	// try to clover for the ore

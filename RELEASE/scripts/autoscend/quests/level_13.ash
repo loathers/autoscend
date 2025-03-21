@@ -79,6 +79,38 @@ int EightBitScore()
 	return score;
 }
 
+boolean prepForMegaloCity() // low DA is punishing here, so if you're a non-guild class get torso and potentially autumn aegis
+{
+	if (isGuildClass())
+	{
+		return true; // nothing to do here as guild class
+	}
+	// If we can buy Torso and should, do that here, ignoring reserve
+	if((my_meat() >= 6000)
+	   && gnomads_available()
+	   && (!hasTorso())
+	   && hasUsefulShirt() )
+	{
+		visit_url("gnomes.php?action=trainskill&whichskill=12");
+	}
+	
+	// After this consider the aegis
+	item aegis = $item[autumnal aegis];
+	if (available_amount(aegis) > 0 || !auto_is_valid(aegis))
+	{
+		return true; // no point doing anything further here
+	}
+	if (!isGuildClass() && available_amount(aegis)==0)
+	{
+		auto_makeAutumnalAegis();
+	}
+	if (in_zootomist() && available_amount(aegis)==0)
+	{
+		pullXWhenHaveY(aegis, 1, 0);
+	}
+	return available_amount(aegis)>0;
+}
+
 boolean EightBitRealmHandler()
 {
 	//Spend adventures to get the digital key
@@ -104,6 +136,7 @@ boolean EightBitRealmHandler()
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
+			prepForMegaloCity();
 			adv_spent = autoAdv($location[Megalo-City]);
 			break;
 		case "green":
@@ -292,11 +325,15 @@ boolean LX_getStarKey()
 	return autoAdv(1, $location[The Hole In The Sky]);
 }
 
-boolean beehiveConsider(boolean at_tower)
+boolean beehiveConsider(boolean at_tower) // returns true if we can kill without a beehive
 {
 	int damage_sources = 1; // basic hit
 	
 	// Familiars
+	if (have_familiar($familiar[glover]) && auto_is_valid($familiar[glover]))
+	{
+		damage_sources += 11;
+	}
 	if (have_familiar($familiar[shorter-order cook]) && auto_is_valid($familiar[shorter-order cook]))
 	{
 		damage_sources += 6;
@@ -497,10 +534,7 @@ boolean L13_towerNSContests()
 
 			if(crowd1Insufficient())
 			{
-				if (have_effect($effect[New and Improved])==0)
-				{
-					auto_wishForEffect($effect[New and Improved]);
-				}
+				auto_wishForEffectIfNeeded($effect[New and Improved]);
 			}
 
 				if(crowd1Insufficient())
@@ -589,11 +623,15 @@ boolean L13_towerNSContests()
 				break;
 			}
 			
+			if(crowd2Insufficient())
+			{
+				auto_equalizeStats();
+			}
 			if(crowd2Insufficient() && !in_small())
 			{
-				if (have_effect($effect[New and Improved])==0 && !in_small())
+				if (!in_small())
 				{
-					auto_wishForEffect($effect[New and Improved]);
+					auto_wishForEffectIfNeeded($effect[New and Improved]);
 				}
 			}
 
@@ -1097,13 +1135,20 @@ boolean L13_towerNSTowerSkin()
 	int damage = 2; // base attack damage plus TT attack skill (kneebutt, headbutt)
 	
 	boolean fam_set = false;
-	foreach fam in $familiars[shorter-order cook, mu, imitation crab] // crab is evergreen, buy one
+	int[familiar] fam_damage = {
+		$familiar[glover]             : 11,
+		$familiar[shorter-order cook] :  6,
+		$familiar[mu]                 :  5,
+		$familiar[imitation crab]     :  4
+	};
+	
+	foreach fam in $familiars[glover, shorter-order cook, mu, imitation crab] // crab is evergreen, buy one
 	{
 		if (have_familiar(fam) && auto_is_valid(fam))
 		{
 			handleFamiliar(fam);
 			use_familiar(fam);
-			damage += (fam == $familiar[imitation crab] ? 4 : 5);
+			damage += fam_damage[fam];
 			fam_set = true;
 			break;
 		}
@@ -1256,7 +1301,8 @@ boolean L13_towerNSTowerMeat()
 		abort("auto_towerBreak set to abort here.");
 	}
 	equipBaseline();
-	provideMeat(626, true, false);
+	shrugAT($effect[Polka of Plenty]);
+	provideMeat(526, true, false);
 
 	if(in_zombieSlayer())
 	{
@@ -1291,7 +1337,7 @@ boolean L13_towerNSTowerBones()
 	{
 		set_property("auto_getBoningKnife", true);		//in 100% familiar run with attack familiar we must acquire boning knife
 	}
-	if(my_class() != $class[Sauceror] && !have_skill($skill[Garbage Nova]))
+	if(!(have_skill($skill[Saucegeyser]) || have_skill($skill[Garbage Nova])))
 	{
 		set_property("auto_getBoningKnife", true);		//can not towerkill. get boning knife instead
 	}
@@ -1322,24 +1368,83 @@ boolean L13_towerNSTowerBones()
 	uneffect($effect[Psalm of Pointiness]);
 	uneffect($effect[Mayeaugh]);
 	uneffect($effect[Feeling Nervous]);
-	buffMaintain($effect[Tomato Power]);
+	
+	if (my_primestat()!=$stat[mysticality])
+	{
+		auto_equalizeStats(); // uses reagent oil to stabilize stats
+	}
+	
+	// Clear some AT buffs so we have room. Ur-kel is actively harmful since it increases DR
+	uneffect($effect[Ur-Kel's Aria of Annoyance]);
+	uneffect($effect[Polka of Plenty]);
+	uneffect($effect[The Sonata of Sneakiness]);
+	uneffect($effect[Carlweather's Cantata of Confrontation]);
+	uneffect($effect[Ode to Booze]);
+	
+	acquireMP(150, 0);
+	buffMaintain($effect[Jackasses' Symphony of Destruction]);
+	buffMaintain($effect[Stevedave's Shanty of Superiority]);
 	buffMaintain($effect[Seeing Colors]);
 	buffMaintain($effect[Glittering Eyelashes]);
 	buffMaintain($effect[OMG WTF]);
 	buffMaintain($effect[There is a Spoon]);
 	buffMaintain($effect[Song of Sauce]);
 	buffMaintain($effect[Carol of the Hells]);
+	buffMaintain($effect[Sauce Monocle]);
+	buffMaintain($effect[Arched Eyebrow of the Archmage]);
+	buffMaintain($effect[Rosewater Mark]);
+	buffMaintain($effect[Black Eyes]);
+	buffMaintain($effect[Imported Strength]);
+	buffMaintain($effect[Mystically Oiled]);
+	buffMaintain($effect[Tomato Power]);
+	//~ buffMaintain($effect[Visions of the Deep Dark Deeps]);
 	
 	// Maximizer tries to force familiar equipment. and prefers passive dmg a that. Avoid dealing damage from familiar and losing
 	if(canChangeFamiliar())
 	{
-		use_familiar(lookupFamiliarDatafile("gremlins"));		//delevel with no damage. fallback to none if unavailable
+		if (have_familiar($familiar[magic dragonfish]))
+		{
+			use_familiar($familiar[magic dragonfish]); // boosts spell damage
+		}
+		else
+		{
+			use_familiar(lookupFamiliarDatafile("gremlins"));		//delevel with no damage. fallback to none if unavailable
+		}
 		set_property("auto_disableFamiliarChanging", true);
 	}
 	if(my_familiar() != $familiar[none])
 	{
 		addToMaximize("-familiar");
 		equip($slot[familiar], $item[none]);
+		// Try just boosting weight
+		foreach i,it in auto_getListOfNonDamagingFamiliarEquipment()
+		{
+			if (can_equip(my_familiar(),it))
+			{
+				equip($slot[familiar],it);
+				break;
+			}
+		}
+	}
+	
+	if (auto_remainingCandyCaneSlashes()>0)
+	{
+		addToMaximize("+equip "+$item[Candy Cane Sword Cane]);
+	}
+	
+	if (possessEquipment($item[big hot pepper]))
+	{
+		addToMaximize("+equip "+$item[big hot pepper]);
+	}
+	
+	foreach lantern in $items[congressional medal of insanity, petrified wood water purifier, petrified wood wizard's pouch]
+	{
+		acquireOrPull(lantern);
+		if (possessEquipment(lantern))
+		{
+			addToMaximize("+equip "+lantern);
+			break; // we only need to pull one megalantern
+		}
 	}
 
 	addToMaximize("100myst,60spell damage percent,20spell damage,-20ml");
@@ -1352,11 +1457,31 @@ boolean L13_towerNSTowerBones()
 		}
 	}
 	
+	float saucegeyserDamage()
+	{
+		float base = ceil((numeric_modifier("Spell Damage Percent")/100.0)*(60 + numeric_modifier("Spell Damage") + max(numeric_modifier("Hot Spell Damage"),numeric_modifier("Cold Spell Damage")) + 0.4*my_buffedstat($stat[mysticality])));
+		float lanterns = have_equipped($item[big hot pepper]) ? 2.0 : 1.0;
+		lanterns *= have_equipped($item[congressional medal of insanity]) ? 3.0 : 1.0; // can be x3 or 4x, we need the minimum
+		return MLDamageToMonsterMultiplier() * lanterns * base;
+	}
+	
+	float wob_hp = $monster[wall of bones].base_hp;
+	int rounds = 4;
+	
+	// Candy cane slash quarters HP for one attack
+	if (have_equipped($item[candy cane sword cane]) && auto_remainingCandyCaneSlashes()>0)
+	{
+		wob_hp /= 4;
+		rounds--;
+	}
+	
 	//Wall Of Bones combat uses Unleash The Greash, Garbage Nova, or Saucegeyser
 	if(!auto_have_skill($skill[Garbage Nova]) && have_effect($effect[Takin\' It Greasy]) == 0)
 	{
-		float saucegeyserDamage = MLDamageToMonsterMultiplier()*ceil((numeric_modifier("Spell Damage Percent")/100.0)*(60 + numeric_modifier("Spell Damage") + max(numeric_modifier("Hot Spell Damage"),numeric_modifier("Cold Spell Damage")) + 0.4*my_buffedstat($stat[mysticality])));
-		if(saucegeyserDamage < 1667)
+		float total_damage = saucegeyserDamage()*rounds*3;
+		auto_log_info("Wall of bones will have "+wob_hp+" hp with "+rounds+" rounds to kill.\n" +
+		 "Saucegeyser should do "+saucegeyserDamage()+" per hit for "+total_damage);
+		if(total_damage < wob_hp) // 3 is saucegeyser group size
 		{
 			//counting on Saucegeyser and its damage will be too low
 			auto_log_warning("Estimate would fail to towerkill Wall of Bones. Reverting to Boning Knife", "red");

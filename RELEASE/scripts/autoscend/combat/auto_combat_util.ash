@@ -1,5 +1,10 @@
 //this file is utility functions that are only used for combat file.
 
+int defaultRoundLimit()
+{
+	return 25;
+}
+
 boolean haveUsed(skill sk)
 {
 	return get_property("_auto_combatState").contains_text("(sk" + sk.to_int().to_string() + ")");
@@ -217,7 +222,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash, Left %n Kick, Right %n Kick]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -286,7 +291,15 @@ skill getSniffer(monster enemy, boolean inCombat)
 	if(canUse($skill[Offer Latte to Opponent], true , inCombat) && !get_property("_latteCopyUsed").to_boolean() && !isSniffed(enemy, $skill[Offer Latte to Opponent]))
 	{
 		return $skill[Offer Latte to Opponent];
-	}	
+	}
+	
+	// Zootomist kicks. We might have to move this depending on what happens with cooldowns
+	skill z_kick = getZooKickSniff();
+	if (canUse(z_kick))
+	{
+		return z_kick;
+	}
+	
 	return $skill[none];
 }
 
@@ -662,10 +675,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Howl of the Alpha];
 	}
 
-	if(inCombat ? item_amount($item[Handful of split pea soup]) > 0 && (!(used contains "Handful of split pea soup")) && auto_is_valid($item[Handful of split pea soup]) && useFree : (item_amount($item[Handful of split pea soup]) > 0 || item_amount($item[Whirled peas]) >= 2))
-	{
-		return "item " + $item[Handful of split pea soup];
-	}
 	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && auto_is_valid($skill[Throw Latte On Opponent]) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent") && useFree)
 	{
 		return "skill " + $skill[Throw Latte on Opponent];
@@ -716,6 +725,12 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Batter Up!];
 	}
 
+	skill z_kick = getZooKickBanish();
+	if (auto_have_skill(z_kick) && (my_mp() > mp_cost(z_kick)))
+	{
+		return "skill "+ z_kick;
+	}
+
 	if(auto_have_skill($skill[Banishing Shout]) && (my_mp() > mp_cost($skill[Banishing Shout])) && (!(used contains "banishing shout")))
 	{
 		return "skill " + $skill[Banishing Shout];
@@ -737,7 +752,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Your Boring Familiar Pictures];
 	}
-
+	
 	// bowling ball is only in inventory if it is available to use in combat. While on cooldown, it is not in inventory
 	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]) && !(used contains "Bowl a Curveball") && useFree)
 	{
@@ -754,9 +769,24 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[[7510]Punt];
 	}
 	
+	if(auto_have_skill($skill[Snokebomb]) && auto_is_valid($skill[Snokebomb]) && (get_property("_snokebombUsed").to_int() < 3) && ((my_mp() - 20) >= mp_cost($skill[Snokebomb])) && (!(used contains "snokebomb")) && useFree)
+	{
+		return "skill " + $skill[Snokebomb];
+	}
+	
+	if(auto_have_skill($skill[Punch Out Your Foe]) && auto_is_valid($skill[Punch Out Your Foe]) && (my_mp() >= mp_cost($skill[Punch Out Your Foe])) && (!(used contains "punch out your foe")) && useFree)
+	{
+		return "skill " + $skill[Punch Out Your Foe];
+	}
+	
 	if((item_amount($item[stuffed yam stinkbomb]) > 0) && (!(used contains "stuffed yam stinkbomb")) && auto_is_valid($item[stuffed yam stinkbomb]))
 	{
 		return "item " + $item[stuffed yam stinkbomb];
+	}
+	
+	if(inCombat ? item_amount($item[Handful of split pea soup]) > 0 && (!(used contains "Handful of split pea soup")) && auto_is_valid($item[Handful of split pea soup]) && useFree : (item_amount($item[Handful of split pea soup]) > 0 || item_amount($item[Whirled peas]) >= 2))
+	{
+		return "item " + $item[Handful of split pea soup];
 	}
 
 	if(auto_have_skill($skill[[28021]Punt]) && (my_mp() > mp_cost($skill[[28021]Punt])) && !(used contains "Punt"))
@@ -786,10 +816,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		{
 			return "skill " + $skill[KGB Tranquilizer Dart];
 		}
-	}
-	if(auto_have_skill($skill[Snokebomb]) && auto_is_valid($skill[Snokebomb]) && (get_property("_snokebombUsed").to_int() < 3) && ((my_mp() - 20) >= mp_cost($skill[Snokebomb])) && (!(used contains "snokebomb")) && useFree)
-	{
-		return "skill " + $skill[Snokebomb];
 	}
 
 	if((inCombat ? auto_have_skill($skill[Monkey Slap]) : possessEquipment($item[cursed monkey\'s paw])) && auto_is_valid($skill[Monkey Slap]) && get_property("_monkeyPawWishesUsed").to_int() == 0 && !(used contains "Monkey Slap"))
@@ -886,6 +912,12 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 			}
 		}
 		else return "";
+	}
+	
+	if(in_zootomist() && have_effect($effect[Everything Looks Yellow]) <= 0)
+	{
+		skill kick = getZooKickYR();
+		if (kick != $skill[none]) {return "skill "+kick;}
 	}
 
 	boolean free_monster = (isFreeMonster(target, my_location()) || (get_property("breathitinCharges").to_int() > 0 && my_location().environment == "outdoor"));
@@ -1110,6 +1142,11 @@ boolean wantToForceDrop(monster enemy)
 		{
 			forceDrop = true;
 		}
+		
+		if(enemy == $monster[Baa'baa'bu'ran] && (item_amount($item[stone wool])==0 || dropsFromYR.to_boolean()))
+		{
+			forceDrop = true;
+		}
 	}
 	
 	if(isActuallyEd() && my_location() == $location[The Secret Council Warehouse])
@@ -1148,8 +1185,25 @@ boolean wantToDouse(monster enemy)
 			return item_amount($item[filthworm drone scent gland      ]) == 0;
 		case $monster[filthworm royal guard]:
 			return item_amount($item[filthworm royal guard scent gland]) == 0;
+		case $monster[shadow slab]:
+			return item_amount($item[shadow brick]) < 13;
 	}
 	return false;
+}
+
+int maxRoundsToDouse(monster enemy)
+{
+	int rounds = defaultRoundLimit() - 3;
+	if (auto_isShadowRiftMonster(enemy))  { rounds -= 3; } // resist damage, take longer
+	if (my_class()==$class[disco bandit]) { rounds -= 3; } // DBs take a while to kill b/c disco momentum and potentially low damage
+	
+	// save a round for flyering if we're doing that.
+	item flyer = auto_warSide() == "hippy" ? $item[Jam Band Flyers] : $item[Rock Band Flyers];
+	if (canUse(flyer) && get_property("flyeredML").to_int() < 10000) { rounds -= 1; }
+	// Or pants removal
+	if (canUse($skill[tear away your pants!])) { rounds -= 1; }
+	
+	return rounds;
 }
 
 boolean canSurviveShootGhost(monster enemy, int shots) {

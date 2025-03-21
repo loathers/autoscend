@@ -140,7 +140,8 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 		auto_log_info("autoAdvBypass has encountered a combat! (param: '" + option + "')", "green");
 		run_combat(option);
 	} else {
-		auto_log_info("autoAdvBypass has encountered a choice!", "green");
+		int choice_id = last_choice();
+		auto_log_info("autoAdvBypass has encountered a choice: "+choice_id, "green");
 		run_choice(-1);
 	}
 
@@ -152,7 +153,8 @@ boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string opt
 			run_combat(option);
 		}
 		if (choice_follows_fight() || handling_choice()) {
-			auto_log_info("autoAdvBypass has encountered a choice!", "green");
+			int choice_id = last_choice();
+			auto_log_info("autoAdvBypass has encountered a choice: "+choice_id, "green");
 			run_choice(-1);
 		}
 	}
