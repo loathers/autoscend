@@ -749,7 +749,7 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 	
 	boolean mayamavailable = auto_haveMayamCalendar() && !(auto_MayamIsUsed("fur")) && !(auto_MayamAllUsed());
 	
-	maximize("familiar experience", false);
+	provideFamExp(min(25,experience_needed),$location[The Outskirts of Cobb\'s Knob], true, false);
 	float fight = numeric_modifier("familiar experience") + 1;
 	auto_log_info(f + " needs " + experience_needed + " experience");
 	auto_log_info("To level up your familiar, you should:");
@@ -1092,17 +1092,20 @@ boolean LX_zootoFight()
 	
 	// Make sure have our mega familiar exp boosting wishes up
 	// Blue swayed boost depends on turns left so keep it above 31 (casts twice immediately to max out boost)
-	while(auto_monkeyPawWishesLeft() > 0 && have_effect($effect[Blue Swayed]) < 31)
+	/*while(auto_monkeyPawWishesLeft() > 0 && have_effect($effect[Blue Swayed]) < 31)
 	{
 		auto_makeMonkeyPawWish($effect[Blue Swayed]);
 	}
 	if(auto_monkeyPawWishesLeft() > 0 && have_effect($effect[Warm Shoulders]) <= 0)
 	{
 		auto_makeMonkeyPawWish($effect[Warm Shoulders]);
-	}
+	}*/
 	
+	int target_weight = zoo_nextGraftWeight();
+	int expToLevel = target_weight*target_weight - my_familiar().experience;
+
 	// We want lots of XP
-	addToMaximize("+1000 familiar exp");
+	provideFamExp(min(25,expToLevel),true);
 	
 	if(my_level() >= 9)
 	{	// If we have Mayam, let's get that stone wool and unlock our Mayam.

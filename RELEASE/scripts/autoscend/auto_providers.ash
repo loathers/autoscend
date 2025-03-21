@@ -1992,3 +1992,194 @@ boolean provideItem(int amt, boolean doEverything)
 {
 	return provideItem(amt, my_location(), doEverything);
 }
+
+float provideFamExp(int amt, location loc, boolean doEverything, boolean speculative)
+{
+	//doEverything means use equipment, familiar slot, and limited buffs (ie steely eye squint)
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " familiar experience, " + (doEverything ? "with" : "without") + " equipment, familiar, and limited buffs", "blue");
+
+	float alreadyHave = numeric_modifier("Familiar Experience") + 1; //default of 1 fam exp per combat
+	float need = amt - alreadyHave;
+
+	if(need > 0)
+	{
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	}
+	else
+	{
+		auto_log_debug("We already have enough +fam experience!");
+		return alreadyHave;
+	}
+
+	float delta = 0;
+
+	float result()
+	{
+		return numeric_modifier("Familiar Experience") + 1 + delta;
+	}
+
+	boolean pass()
+	{
+		return result() >= amt;
+	}
+
+	if(pass())
+		return result();
+	
+	// don't craft equipment here. See how much +item we can get with gear on hand
+	if(doEverything)
+	{
+		string max = "1000familiar experience " + (amt + 10) + "max";
+		if(speculative)
+		{
+			simMaximizeWith(loc, max);
+		}
+		else
+		{
+			addToMaximize(max);
+			simMaximize(loc);
+		}
+		delta = simValue("Familiar Experience") - numeric_modifier("Familiar Experience");
+		auto_log_debug("With existing gear we can get to " + result());
+
+		if(pass())
+			return result();
+	}
+
+	void handleEffect(effect eff)
+	{
+		if(speculative)
+		{
+			delta += numeric_modifier(eff, "Familiar Experience");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
+	}
+
+	boolean tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(numeric_modifier(eff,$modifier[familiar experience]) > 0) {
+				if(buffMaintain(eff, 0, 1, 1, speculative))
+					handleEffect(eff);
+				if(pass())
+					return true;
+			}
+		}
+		return false;
+	}
+
+	// If we're zootomist, need to level, and we have +xp on our milk, cast it.
+	if (in_zootomist() && my_level()<13) {
+		if(tryEffects($effects[Milk of Familiar Kindness, Milk of Familiar Cruelty])) {
+			return result();
+		}
+	}
+		
+	// unlimited skills
+	if(tryEffects($effects[
+		Curiosity of Br'er Tarrypin, //+1
+	]))
+		return result();
+
+	// craft equipment, even limited use, here
+	if(doEverything)
+	{
+		//craft IOTM derivative that gives high item bonus
+
+		string max = "1000familiar experience " + (amt + 100) + "max";
+		if(speculative)
+		{
+			simMaximizeWith(loc, max);
+		}
+		else
+		{
+			addToMaximize(max);
+			simMaximize(loc);
+		}
+		delta = simValue("familiar experience") - numeric_modifier("familiar experience");
+		auto_log_debug("With existing and crafted gear we can get to " + result());
+
+		if(pass())
+			return result();
+	}
+
+	// Use limited resources
+	if(doEverything)
+	{
+		while(have_effect($effect[Blue Swayed]) < 31 && item_amount($item[pulled blue taffy]) > 0){
+			auto_log_info("Getting Blue Swayed");
+			if(tryEffects($effects[Blue Swayed])) //+X/5, decreasing by 5 every 5 turns so keeping it separate
+				if(pass())
+					return result();
+		}
+		if(tryEffects($effects[
+			Warm Shoulders, //+5
+			Shortly Hydrated, //+5
+			Candied Devil, //+5		
+			Black Tongue, //+2
+			Green Tongue, //+2
+			Heart of White //+1
+		]))
+			if(pass())
+				return result();
+		if(zataraAvailable() && (0 == have_effect($effect[A Girl Named Sue])) & auto_is_valid($effect[A Girl Named Sue]))
+		{
+			if(!speculative)
+			{
+				zataraSeaside("familiar");
+			}
+			handleEffect($effect[A Girl Named Sue]); //+5
+			if(pass())
+				return result();			
+		}
+		if(auto_totalEffectWishesAvailable() > 0)
+		{
+			boolean success = true;
+			int specwishes = 0;
+			foreach eff in $effects[
+				Blue Swayed, //+X/5, decreasing by 5 every 5 turns
+				Warm Shoulders, //+5
+				Animal Lover, // +2
+				Heart of White //+1
+			]{
+				while(have_effect(eff) == 0 || (eff == $effect[Blue Swayed] && have_effect(eff) < 31))
+				{
+					if(!speculative)
+						success = auto_wishForEffect(eff);
+					specwishes +=1;
+					if(specwishes <= auto_totalEffectWishesAvailable())
+					{
+						handleEffect(eff);
+						if(pass())
+							return result();
+					}
+					else
+					{
+						success = false;
+					}
+				}
+				if(!success) break;
+			}
+		}
+		auto_log_debug("With limited buffs we can get to " + result());
+		if(pass())
+			return result();
+	}
+	return result();
+}
+
+float provideFamExp(int amt, boolean doEverything, boolean speculative)
+{
+	return provideFamExp(amt, my_location(), doEverything, speculative);
+}
+
+boolean provideFamExp(int amt, location loc, boolean doEverything)
+{
+	return provideFamExp(amt, loc, doEverything, false) >= amt;
+}
+
+boolean provideFamExp(int amt, boolean doEverything)
+{
+	return provideFamExp(amt, my_location(), doEverything);
+}

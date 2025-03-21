@@ -1754,6 +1754,10 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 float provideMeat(int amt, boolean doEverything, boolean speculative);
 boolean provideMeat(int amt, location loc, boolean doEverything);
 boolean provideMeat(int amt, boolean doEverything);
+float provideFamExp(int amt, location loc, boolean doEverything, boolean speculative);
+float provideFamExp(int amt, boolean doEverything, boolean speculative);
+boolean provideFamExp(int amt, location loc, boolean doEverything);
+boolean provideFamExp(int amt, boolean doEverything);
 
 ########################################################################################################
 //Defined in autoscend/auto_restore.ash
