@@ -499,7 +499,7 @@ boolean auto_goingToMouthwashLevel()
 	{
 		return false;
 	}
-	if(in_glover() || in_bhy())
+	if(in_glover() || in_bhy() || in_plumber())
 	{
 		return false;
 	}
