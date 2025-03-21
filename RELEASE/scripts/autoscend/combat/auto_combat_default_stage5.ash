@@ -815,8 +815,20 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMinor = mp_cost($skill[Grit Teeth]);
 		}
 		break;
-
-	}
+	
+	case $class[zootomist]:
+		skill punch = getZooBestPunch(enemy);
+		if(punch == $skill[none])
+		{
+			return "attack with weapon";
+		}
+		attackMajor = useSkill(punch, false);
+		attackMinor = useSkill(punch, false);
+		costMajor = mp_cost(punch);
+		costMinor = mp_cost(punch);
+		break;
+		
+	} // class attack selection
 
 	if(((my_hp() * 10)/3) < my_maxhp())
 	{

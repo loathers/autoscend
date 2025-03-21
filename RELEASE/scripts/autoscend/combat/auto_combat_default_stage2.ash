@@ -75,10 +75,10 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 	
-	//yellowray instantly kills the enemy and makes them drop all items they can drop.
+	// yellowray instantly kills the enemy and makes them drop all items they can drop.
 	// don't yellow ray if we'll be dousing
 	skill douse = $skill[douse foe];
-	boolean isDouseTarget = wantToDouse(enemy) && round < 22; // dousing can have a low chance of success, so only do it up to round 21, then yellow
+	boolean isDouseTarget = wantToDouse(enemy) && round < maxRoundsToDouse(enemy)-1; // dousing can have a low chance of success, so only do it for a while then yellow
 	boolean douseAvailable = canUse(douse, false) && auto_dousesRemaining()>0;
 	boolean willDouse = isDouseTarget && douseAvailable;
 	
@@ -341,8 +341,22 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return "item " + $item[drone self-destruct chip];
 		}
 	}
-	
-	# Instakill handler
+
+	// Dupe Tomb Rat King drops with pro skateboard
+	if(enemy == $monster[Tomb Rat King] && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
+	{
+		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
+		return useSkill($skill[Do an epic McTwist!]);
+	}
+
+	// Dupe Mountain Man drops with pro skateboard on day 1, not in turbo
+	if(enemy == $monster[Mountain Man] && my_daycount()==1 && !auto_turbo() && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
+	{
+		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
+		return useSkill($skill[Do an epic McTwist!]);
+	}
+
+	// Instakill handler
 	boolean couldInstaKill = true;
 	if($monsters[Smut Orc Pipelayer,Smut Orc Jacker,Smut Orc Screwer,Smut Orc Nailer] contains enemy && get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 	{
@@ -436,6 +450,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[Darts: Aim for the Bullseye]);
 		}
 
+		skill z_kick = getZooKickInstaKill();
+		if (canUse(z_kick))
+		{
+			set_property("auto_instakillSource", "zootomist kick");
+			set_property("auto_instakillSuccess", true);
+			loopHandlerDelayAll();
+			return useSkill(z_kick);
+		}
+
 		if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0)
 		{
 			set_property("auto_instakillSource", "slaughter");
@@ -515,7 +538,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			loopHandlerDelayAll();
 			return useSkill($skill[Fire the Jokester\'s Gun]);
 		}
-	}
+	} // instakills
 
 	//wearing [retro superhero cape] iotm set to vampire slicer mode instakills Undead and reduces evilness in Cyrpt zones.
 	if (canUse($skill[Slay the Dead]) && enemy.phylum == $phylum[undead])

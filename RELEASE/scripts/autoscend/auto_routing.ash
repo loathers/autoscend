@@ -24,6 +24,12 @@ location solveDelayZone(boolean skipOutdoorZones)
 		}
 	}
 
+	// If we're going to Megalo-city, do the prep work to acquire enough DA
+	if (burnZone == $location[Megalo-city])
+	{
+		prepForMegaloCity();
+	}
+
 	if (burnZone != $location[none])
 	{
 		return burnZone;
@@ -95,6 +101,11 @@ boolean allowSoftblockUndergroundAdvs()
 	return get_property("auto_cmcConsultLastLevel").to_int() < my_level();
 }
 
+boolean allowSoftblockDay2Wait()
+{
+	return get_property("auto_day2WaitLastLevel").to_int() < my_level();
+}
+
 int[string] getLastCombatEnvironmentCounts(int offset)
 {
 	// mafia has no char type. string will have to do.
@@ -142,6 +153,15 @@ boolean auto_reserveUndergroundAdventures()
 		}
 	}
 	return false;
+}
+
+boolean auto_waitForDay2()
+{
+	if (auto_turbo()             ) { return false;}
+	if (my_daycount() > 1        ) { return false;}
+	if (!allowSoftblockDay2Wait()) { return false;}
+	auto_log_debug("Waiting for day 2 for this.");
+	return true;
 }
 
 boolean allowSoftblockOutdoorAdvs()
@@ -268,6 +288,12 @@ boolean auto_softBlockHandler()
 		// Delay goes first as it applies to everyone and is our "OG" softblock
 		auto_log_warning("I was trying to avoid delay zones, but I've run out of stuff to do. Releasing softblock.", "red");
 		set_property("auto_delayLastLevel", my_level());
+		return true;
+	}
+	if (allowSoftblockDay2Wait())
+	{
+		auto_log_warning("I was trying to avoid quests that would benefit from day 2 dailies, but I've run out of stuff to do. Releasing softblock.", "red");
+		set_property("auto_day2WaitLastLevel", my_level());
 		return true;
 	}
 	if (allowSoftblockUndergroundAdvs())
