@@ -58,6 +58,23 @@ boolean LX_quantumTerrarium()
 				}
 			}
 			break;
+		case $familiar[Reassembled blackbird]:
+			if(!(internalQuestStatus("questL11Black") < 0 || internalQuestStatus("questL11Black") > 1 || black_market_available()))
+			{
+				return L11_blackMarket();
+			}
+			break;
+		case $familiar[Reconstituted crow]:
+			if(!(internalQuestStatus("questL11Black") < 0 || internalQuestStatus("questL11Black") > 1 || black_market_available()))
+			{
+				return L11_blackMarket();
+			}
+			break;
+		case $familiar[Melodramedary]:
+			if(!(internalQuestStatus("questL11Desert") != 0 || get_property("desertExploration").to_int() >= 100))
+			{
+				return L11_aridDesert();
+			}
 		default:
 			break;
 	}
