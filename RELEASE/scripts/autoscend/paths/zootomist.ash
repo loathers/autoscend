@@ -1090,17 +1090,6 @@ boolean LX_zootoFight()
 	// Set our familiar
 	handleFamiliar(zoo_getNextFam());
 	
-	// Make sure have our mega familiar exp boosting wishes up
-	// Blue swayed boost depends on turns left so keep it above 31 (casts twice immediately to max out boost)
-	/*while(auto_monkeyPawWishesLeft() > 0 && have_effect($effect[Blue Swayed]) < 31)
-	{
-		auto_makeMonkeyPawWish($effect[Blue Swayed]);
-	}
-	if(auto_monkeyPawWishesLeft() > 0 && have_effect($effect[Warm Shoulders]) <= 0)
-	{
-		auto_makeMonkeyPawWish($effect[Warm Shoulders]);
-	}*/
-	
 	int target_weight = zoo_nextGraftWeight();
 	int expToLevel = target_weight*target_weight - my_familiar().experience;
 
