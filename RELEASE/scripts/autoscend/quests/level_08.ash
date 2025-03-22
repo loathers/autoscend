@@ -831,6 +831,11 @@ boolean L8_trapperPeak()
 			equip($slot[off-hand], $item[McHugeLarge left pole]);
 			equip($slot[acc1]    , $item[McHugeLarge left ski]);
 			equip($slot[acc2]    , $item[McHugeLarge right ski]);
+			// plumber literally wont let you adventure if you have no way to fight in plumber.
+			if(in_plumber())
+			{
+				equip($slot[acc3], $item[work boots]);
+			}
 			visit_url("place.php?whichplace=mclargehuge&action=cloudypeak");
 			return true;
 		}
