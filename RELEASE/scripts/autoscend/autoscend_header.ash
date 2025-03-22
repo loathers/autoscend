@@ -636,6 +636,8 @@ boolean auto_haveLeprecondo();
 boolean auto_haveDiscoveredLeprecondoFurniture(int furn);
 boolean auto_setLeprecondo();
 boolean auto_useLeprecondoDrops();
+int auto_punchOutsLeft();
+int auto_afterimagesLeft();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

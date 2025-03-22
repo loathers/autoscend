@@ -209,6 +209,11 @@ boolean auto_pre_adventure()
 	preAdvUpdateFamiliar(place);
 	ed_handleAdventureServant(place);
 
+	if (item_amount($item[Handful of split pea soup]) == 0 && creatable_amount($item[Handful of split pea soup]) > 0)
+	{
+		return create(1, $item[Handful of split pea soup]);
+	}
+
 	if(get_floundry_locations() contains place)
 	{
 		buffMaintain($effect[Baited Hook]);
