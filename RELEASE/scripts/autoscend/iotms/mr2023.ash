@@ -1085,7 +1085,7 @@ boolean auto_handleCCSC()
 	 The Shore, Inc. Travel Agency - 2 Scrips and all stats
 	 The Defiled Cranny - -11 evilness
 	 The eXtreme Slope - If we can't do ninja snowmen for some reason, gives us 2 pieces of equipment in one NC
-	 The Penultimate Fantasy Airship - Get an umbrella for basement, metallic A for wand, SGEEA, and Fantasy Chest for even more items
+	 The Penultimate Fantasy Airship - Get an umbrella for basement, only if we don't have one.
 	 The Black Forest - +8 exploration
 	 The Copperhead Club - Gives us a priceless diamond, saving 4950-5000 meat
 	 The Hidden Apartment Building - +1 cursed level, Doesn't leave NC
@@ -1104,7 +1104,7 @@ boolean auto_handleCCSC()
 	   || (place == $location[The Hidden Apartment Building] && !get_property("candyCaneSwordApartmentBuilding").to_boolean())
 	   || (place == $location[An Overgrown Shrine (Northeast)] && !get_property("_candyCaneSwordOvergrownShrine").to_boolean() && get_property("hiddenOfficeProgress").to_int() > 0)
 	   || (place == $location[The Overgrown Lot] && !get_property("_candyCaneSwordOvergrownLot").to_boolean())
-	   || (place == $location[The Penultimate Fantasy Airship] && (!possessEquipment($item[Amulet of Extreme Plot Significance]) || !possessEquipment($item[unbreakable umbrella]) || !possessEquipment($item[Titanium Assault Umbrella])))
+	   || (place == $location[The Penultimate Fantasy Airship] && L10_needUmbrella())
 	   || ((place == $location[Wartime Frat House] && possessOutfit("War Hippy Fatigues")) || (place == $location[Wartime Hippy Camp] && possessOutfit("Frat Warrior Fatigues")))
 	   || ($locations[The Sleazy Back Alley, A Mob of Zeppelin Protesters, The Daily Dungeon]) contains place)
 	{

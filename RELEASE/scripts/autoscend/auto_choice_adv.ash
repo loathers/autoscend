@@ -192,7 +192,7 @@ boolean auto_run_choice(int choice, string page)
 			{
 				run_choice(6); // advance immateria quest
 			}
-			else if (options contains 5)
+			else if (options contains 5 && L10_needUmbrella())
 			{
 				run_choice(5); // get titanium umbrella, metallic A, SGEEA and a penultimate fantasy chest
 			}

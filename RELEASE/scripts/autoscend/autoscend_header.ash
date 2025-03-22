@@ -1219,6 +1219,7 @@ boolean L10_topFloor();
 void castleTopFloorChoiceHandler(int choice);
 boolean L10_holeInTheSkyUnlock();
 boolean L10_rainOnThePlains();
+boolean L10_needUmbrella();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_11.ash
