@@ -256,6 +256,11 @@ boolean fantasyRealmToken()
 		return false;
 	}
 
+	if (in_bad_moon())
+	{
+		return false;
+	}
+
 	if((get_property("frAlways").to_boolean() || get_property("_frToday").to_boolean()) && !possessEquipment($item[FantasyRealm G. E. M.]))
 	{
 		int option = 1;
@@ -778,6 +783,10 @@ boolean neverendingPartyAvailable()
 		// Can't adventure if the quest is complete for the day.
 		return false;
 	}
+	if (in_bad_moon())
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -1269,7 +1278,7 @@ boolean auto_voteMonster(boolean freeMon, location loc)
 
 boolean fightClubNap()
 {
-	if(!is_unrestricted($item[Boxing Day care package]))
+	if(!is_unrestricted($item[Boxing Day care package]) || in_bad_moon())
 	{
 		return false;
 	}
