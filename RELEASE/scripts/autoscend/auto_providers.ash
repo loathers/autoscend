@@ -361,8 +361,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Inky Camouflage,
 		Celestial Camouflage,
 		Feeling Lonely,
-		Feeling Sneaky,
-		Hippy Antimilitarism
+		Feeling Sneaky
 	])) {
 		return result();
 	}
