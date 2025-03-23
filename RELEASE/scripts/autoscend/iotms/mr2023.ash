@@ -405,6 +405,11 @@ boolean shouldCinchoConfetti()
 	// costs 5 cinch and flips out the monster
 	// cast this skill when we can't cast any more fiesta exists
 
+	if (auto_ignoreExperience())
+	{
+		return false;
+	}
+
 	// can't cast it if we don't have it
 	if(!canUse($skill[Cincho: Confetti Extravaganza]))
 	{
