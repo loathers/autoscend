@@ -496,6 +496,11 @@ boolean L8_trapperExtreme()
 	if(auto_haveMcHugeLargeSkis())
 	{
 		auto_equipAllMcHugeLarge();
+		// plumber literally wont let you adventure if you have no way to fight in plumber.
+			if(in_plumber())
+			{
+				equip($slot[acc3], $item[work boots]);
+			}
 	}
 	// we should equip the extreme outfit if we have it
 	else if(possessOutfit("eXtreme Cold-Weather Gear", true)) // own and can equip
