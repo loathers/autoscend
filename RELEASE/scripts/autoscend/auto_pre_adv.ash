@@ -1020,7 +1020,17 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
-	utilizeStillsuit();	
+	utilizeStillsuit();
+
+	if (in_avantGuard()) // In AG we want our familiar's hands empty during gremlins to stop him hurting anyone
+	{
+		if ($locations[Next to that Barrel with Something Burning in it, Near an Abandoned Refrigerator,
+		               Over Where the Old Tires Are, Out by that Rusted-Out Car] contains place)
+		{
+			auto_log_info("Taking the bodyguard's equipment away for Gremlins.", "blue");
+			equip($slot[familiar], $item[none]);
+		}
+	}
 
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");

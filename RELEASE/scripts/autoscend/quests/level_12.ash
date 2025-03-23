@@ -1267,7 +1267,15 @@ boolean L12_gremlins()
 
 	auto_log_info("Doing them gremlins", "blue");
 	// ideally we want to survive a single attack
-	addToMaximize("20dr,1da 1000max,-ml,-1000avoid attack");
+	if (in_avantGuard()) // In AG we want extra ML to stop our bodyguard killing the gremlin
+	{
+		addToMaximize("20dr,1da 1000max,+10ml,-1000avoid attack");
+	}
+	else // otherwise just lower ML
+	{
+		addToMaximize("20dr,1da 1000max,-ml,-1000avoid attack");
+	}
+	
 	acquireHP();
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{
