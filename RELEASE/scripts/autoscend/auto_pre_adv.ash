@@ -1027,8 +1027,11 @@ boolean auto_pre_adventure()
 		if ($locations[Next to that Barrel with Something Burning in it, Near an Abandoned Refrigerator,
 		               Over Where the Old Tires Are, Out by that Rusted-Out Car] contains place)
 		{
-			auto_log_info("Taking the bodyguard's equipment away for Gremlins.", "blue");
-			equip($slot[familiar], $item[none]);
+			if (numeric_modifier($modifier[familiar weight],equipped_item($slot[familiar])) > 0)
+			{
+				auto_log_info("Taking the bodyguard's equipment away for Gremlins.", "blue");
+				equip($slot[familiar], $item[none]);
+			}
 		}
 	}
 
