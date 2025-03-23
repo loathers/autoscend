@@ -1097,6 +1097,7 @@ int zoo_specimenPreparationsLeft();
 boolean zoo_prepareSpecimen();
 void zoo_startPulls();
 void zoo_d2Pulls();
+string zoo_getPartName(int bodyPart);
 familiar zoo_graftedToPart(int bodyPart);
 familiar[int] zoo_graftedFams();
 boolean[familiar] zoo_graftedIntrinsicFams();

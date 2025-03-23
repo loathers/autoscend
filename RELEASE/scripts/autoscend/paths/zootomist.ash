@@ -92,6 +92,37 @@ void zoo_d2Pulls()
 	return;
 }
 
+string zoo_getPartName(int bodyPart)
+{
+	switch(bodyPart)
+	{
+		case ZOOPART_HEAD:
+			return "Head";
+		case ZOOPART_L_SHOULDER:
+			return "Left Shoulder";
+		case ZOOPART_R_SHOULDER:
+			return "Right Shoulder";
+		case ZOOPART_L_HAND:
+			return "Left Hand";
+		case ZOOPART_R_HAND:
+			return "Right Hand";
+		case ZOOPART_R_NIPPLE:
+			return "Right Nipple";
+		case ZOOPART_L_NIPPLE:
+			return "Left Nipple";
+		case ZOOPART_L_BUTTOCK:
+			return "Left Buttock";
+		case ZOOPART_R_BUTTOCK:
+			return "Right Buttock";
+		case ZOOPART_L_FOOT:
+			return "Left Foot";
+		case ZOOPART_R_FOOT:
+			return "Right Foot";
+		default:
+			return "BAD PART";
+	}
+}
+
 familiar zoo_graftedToPart(int bodyPart)
 {
 	switch(bodyPart)
@@ -595,6 +626,7 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 	}
 	
 	familiar bestIntrinsicFam = intrinsicFam[0];
+	familiar selection = $familiar[none];
 	switch(bodyPart)
 	{
 		case ZOOPART_HEAD:
@@ -602,21 +634,26 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		case ZOOPART_R_SHOULDER:
 		case ZOOPART_L_BUTTOCK:
 		case ZOOPART_R_BUTTOCK:
-			return bestIntrinsicFam;
+			selection = bestIntrinsicFam; break;
 		case ZOOPART_L_HAND:
-			return lpunchFam;
+			selection = lpunchFam; break;
 		case ZOOPART_R_HAND:
-			return rpunchFam;
+			selection = rpunchFam; break;
 		case ZOOPART_L_NIPPLE:
-			return lbuffFam;
+			selection = lbuffFam;  break;
 		case ZOOPART_R_NIPPLE:
-			return rbuffFam;
+			selection = rbuffFam;  break;
 		case ZOOPART_L_FOOT:
-			return lkickFam;
+			selection = lkickFam;  break;
 		case ZOOPART_R_FOOT:
-			return rkickFam;
+			selection = rkickFam;  break;
 	}
-	return $familiar[none];
+	if (zoo_graftedFams()[bodyPart] != $familiar[none])
+	{
+		auto_log_error(`zoo_getBestFam() returning {selection} for body part {zoo_getPartName(bodyPart)} ({bodyPart}) which Mafia thinks is already filled. Please report this on Discord.`);
+		set_property("auto_interrupt", true);
+	}
+	return selection;
 }
 
 int zoo_getNextPart()
@@ -634,7 +671,14 @@ int zoo_getNextPart()
 familiar zoo_getNextFam()
 {
 	if (!in_zootomist() || my_level() > 11) {return $familiar[none];}
-	return zoo_getBestFam(zoo_getNextPart(), false);
+	int next_part = zoo_getNextPart();
+	familiar fam = zoo_getBestFam(next_part, false);
+	if (zoo_isGrafted(fam))
+	{
+		auto_log_error(`zoo_getNextFam() returning {fam} for body part {zoo_getPartName(next_part)} ({next_part}) which Mafia thinks has already been grafted. Please report this on Discord.`);
+		set_property("auto_interrupt", true);
+	}
+	return fam;
 }
 
 boolean zoo_graftFam()
