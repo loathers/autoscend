@@ -753,6 +753,14 @@ boolean zoo_graftFam()
 		auto_log_info("Grafting a " + fam + " to you", "blue");
 		handleTracker(fam,"Grafted to " + bodyPartName[p],"auto_tracker_path");
 		refresh_status();
+
+		if (my_level() < 13)
+		{	// This is paranoia because a couple of people reported issues with the Ragamuffin Imp being re-equipped after grafting.
+			familiar nextfam = zoo_getNextFam();
+			if (nextfam==$familiar[none]) { abort("Got none familiar in zoo_GraftFam()"); }
+			use_familiar(nextfam);
+			handleFamiliar(nextfam);
+		}
 		return true;
 	}
 	
