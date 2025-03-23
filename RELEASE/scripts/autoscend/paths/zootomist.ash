@@ -83,8 +83,8 @@ void zoo_d2Pulls()
 		return 0;
 	}
 	// Good ML boosting items. Vinyl Shield is lower than you might think because it can't be wielded with unstable fulminate.
-	foreach it in $items[hairshirt, hockey stick of furious angry rage, stainless steel scarf, Porcelain pelerine,
-	  Bakelite backpack, brown pirate pants, mer-kin headguard, vinyl shield, red shirt, iFlail]
+	foreach it in $items[hairshirt, hockey stick of furious angry rage, stainless steel scarf, red shirt, pearl diver's necklace, 
+	  C.A.R.N.I.V.O.R.E. button, Porcelain pelerine, Bakelite backpack, brown pirate pants, mer-kin headguard, vinyl shield, iFlail]
 	{
 		if (curr_ml >= ml_target) {break;}
 		curr_ml += try_ml_pull(it);
