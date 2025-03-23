@@ -1458,6 +1458,7 @@ boolean autoAdvBypass(string url, string option);
 ########################################################################################################
 //Defined in autoscend/auto_bedtime.ash
 void bedtime_still();
+boolean bedtime_spleen();
 int pullsNeeded(string data);
 float rollover_value(item it);
 float rollover_improvement(item it, slot sl);
