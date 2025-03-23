@@ -827,7 +827,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Saucemastery], 200, 5, 4);
 			buffMaintain($effect[Pasta Oneness], 200, 5, 4);
 		}
-		if(familiar_weight(my_familiar()) < 20)
+		if(familiar_weight(my_familiar()) < 20 && !in_avantGuard())
 		{
 			buffMaintain($effect[Curiosity of Br\'er Tarrypin], 50, 1, 2);
 		}
