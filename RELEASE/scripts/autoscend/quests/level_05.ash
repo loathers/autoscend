@@ -20,7 +20,7 @@ boolean L5_getEncryptionKey()
 	// want to fight goblin king quickly in legacy of loathing to get another replica mr a
 	// In LKS, important keys are gated behind here, and we have tonnes of delay
 	// in Zootomist it's a valuable levelling zone that drops wishes
-	if(!(in_lol() || in_lowkeysummer() || in_zootomist()) && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
+	if(!(in_lol() || in_lowkeysummer() || (in_zootomist() && my_level() < 13) ) && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
 	{
 		return false;
 	}
