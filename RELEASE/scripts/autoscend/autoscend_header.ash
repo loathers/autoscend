@@ -1754,10 +1754,11 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 float provideMeat(int amt, boolean doEverything, boolean speculative);
 boolean provideMeat(int amt, location loc, boolean doEverything);
 boolean provideMeat(int amt, boolean doEverything);
-float provideFamExp(int amt, location loc, boolean doEverything, boolean speculative);
-float provideFamExp(int amt, boolean doEverything, boolean speculative);
-boolean provideFamExp(int amt, location loc, boolean doEverything);
-boolean provideFamExp(int amt, boolean doEverything);
+float provideFamExp(int amt, location loc, boolean doEquips, boolean doEverything, boolean speculative);
+float provideFamExp(int amt, boolean doEquips, boolean doEverything, boolean speculative);
+boolean provideFamExp(int amt, location loc, boolean doEquips, boolean doEverything);
+boolean provideFamExp(int amt, boolean doEquips, boolean doEverything);
+boolean provideFamExp(int amt, boolean doEquips);
 
 ########################################################################################################
 //Defined in autoscend/auto_restore.ash
@@ -1982,6 +1983,8 @@ int doNumberology(string goal);
 int doNumberology(string goal, string option);
 int doNumberology(string goal, boolean doIt);
 int doNumberology(string goal, boolean doIt, string option);
+boolean candyEggDeviler();
+void getCandy();
 boolean auto_have_skill(skill sk);
 boolean have_skills(boolean[skill] array);
 boolean woods_questStart();

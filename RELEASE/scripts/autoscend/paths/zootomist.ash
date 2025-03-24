@@ -749,7 +749,7 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 	
 	boolean mayamavailable = auto_haveMayamCalendar() && !(auto_MayamIsUsed("fur")) && !(auto_MayamAllUsed());
 	
-	provideFamExp(min(25,experience_needed),$location[The Outskirts of Cobb\'s Knob], true, false);
+	provideFamExp(min(25,experience_needed),$location[The Outskirts of Cobb\'s Knob], true, true, false);
 	float fight = numeric_modifier("familiar experience") + 1;
 	auto_log_info(f + " needs " + experience_needed + " experience");
 	auto_log_info("To level up your familiar, you should:");
@@ -1094,7 +1094,7 @@ boolean LX_zootoFight()
 	int expToLevel = target_weight*target_weight - my_familiar().experience;
 
 	// We want lots of XP
-	provideFamExp(min(25,expToLevel),true);
+	provideFamExp(min(25,expToLevel), true, true);
 	
 	if(my_level() >= 9)
 	{	// If we have Mayam, let's get that stone wool and unlock our Mayam.

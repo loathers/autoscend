@@ -1993,7 +1993,7 @@ boolean provideItem(int amt, boolean doEverything)
 	return provideItem(amt, my_location(), doEverything);
 }
 
-float provideFamExp(int amt, location loc, boolean doEverything, boolean speculative)
+float provideFamExp(int amt, location loc, boolean doEquips, boolean doEverything, boolean speculative)
 {
 	//doEverything means use equipment, familiar slot, and limited buffs (ie steely eye squint)
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " familiar experience, " + (doEverything ? "with" : "without") + " equipment, familiar, and limited buffs", "blue");
@@ -2026,8 +2026,8 @@ float provideFamExp(int amt, location loc, boolean doEverything, boolean specula
 	if(pass())
 		return result();
 	
-	// don't craft equipment here. See how much +item we can get with gear on hand
-	if(doEverything)
+	// don't craft equipment here. See how much +fam xp we can get with gear on hand
+	if(doEquips || doEverything)
 	{
 		string max = "1000familiar experience " + (amt + 10) + "max";
 		if(speculative)
@@ -2085,7 +2085,8 @@ float provideFamExp(int amt, location loc, boolean doEverything, boolean specula
 	// craft equipment, even limited use, here
 	if(doEverything)
 	{
-		//craft IOTM derivative that gives high item bonus
+		//craft IOTM derivative that gives high fam xp bonus
+		auto_latteRefill("famxp"); //+3
 
 		string max = "1000familiar experience " + (amt + 100) + "max";
 		if(speculative)
@@ -2113,10 +2114,11 @@ float provideFamExp(int amt, location loc, boolean doEverything, boolean specula
 				if(pass())
 					return result();
 		}
+		candyEggDeviler(); //try to get a deviled candy egg
 		if(tryEffects($effects[
 			Warm Shoulders, //+5
 			Shortly Hydrated, //+5
-			Candied Devil, //+5		
+			Candied Devil, //+5
 			Black Tongue, //+2
 			Green Tongue, //+2
 			Heart of White //+1
@@ -2140,8 +2142,6 @@ float provideFamExp(int amt, location loc, boolean doEverything, boolean specula
 			foreach eff in $effects[
 				Blue Swayed, //+X/5, decreasing by 5 every 5 turns
 				Warm Shoulders, //+5
-				Animal Lover, // +2
-				Heart of White //+1
 			]{
 				while(have_effect(eff) == 0 || (eff == $effect[Blue Swayed] && have_effect(eff) < 31))
 				{
@@ -2169,17 +2169,22 @@ float provideFamExp(int amt, location loc, boolean doEverything, boolean specula
 	return result();
 }
 
-float provideFamExp(int amt, boolean doEverything, boolean speculative)
+float provideFamExp(int amt, boolean doEquips, boolean doEverything, boolean speculative)
 {
-	return provideFamExp(amt, my_location(), doEverything, speculative);
+	return provideFamExp(amt, my_location(), doEquips, doEverything, speculative);
 }
 
-boolean provideFamExp(int amt, location loc, boolean doEverything)
+boolean provideFamExp(int amt, location loc, boolean doEquips, boolean doEverything)
 {
-	return provideFamExp(amt, loc, doEverything, false) >= amt;
+	return provideFamExp(amt, loc, doEquips, doEverything, false) >= amt;
 }
 
-boolean provideFamExp(int amt, boolean doEverything)
+boolean provideFamExp(int amt, boolean doEquips, boolean doEverything)
 {
-	return provideFamExp(amt, my_location(), doEverything);
+	return provideFamExp(amt, my_location(), doEquips, doEverything);
+}
+
+boolean provideFamExp(int amt, boolean doEquips)
+{
+	return provideFamExp(amt, doEquips, false);
 }
