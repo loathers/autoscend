@@ -178,3 +178,13 @@ boolean auto_useLeprecondoDrops()
 	}
 	return true;
 }
+
+int auto_punchOutsLeft()
+{
+	return to_int(get_property("preworkoutPowderUses"));
+}
+
+int auto_afterimagesLeft()
+{
+	return to_int(get_property("phosphorTracesUses"));
+}

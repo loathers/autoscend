@@ -636,6 +636,8 @@ boolean auto_haveLeprecondo();
 boolean auto_haveDiscoveredLeprecondoFurniture(int furn);
 boolean auto_setLeprecondo();
 boolean auto_useLeprecondoDrops();
+int auto_punchOutsLeft();
+int auto_afterimagesLeft();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1217,6 +1219,7 @@ boolean L10_topFloor();
 void castleTopFloorChoiceHandler(int choice);
 boolean L10_holeInTheSkyUnlock();
 boolean L10_rainOnThePlains();
+boolean L10_needUmbrella();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_11.ash
@@ -1455,6 +1458,7 @@ boolean autoAdvBypass(string url, string option);
 ########################################################################################################
 //Defined in autoscend/auto_bedtime.ash
 void bedtime_still();
+boolean bedtime_spleen();
 int pullsNeeded(string data);
 float rollover_value(item it);
 float rollover_improvement(item it, slot sl);
