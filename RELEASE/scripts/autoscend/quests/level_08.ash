@@ -268,6 +268,33 @@ boolean L8_getGoatCheese()
 		return false;
 	}
 
+	// If we only need one and goats aren't already sniffed, just pull it.
+	if (auto_inRonin() && item_amount($item[Goat Cheese]) == 2 && !isSniffed($monster[dairy goat]))
+	{
+		pullXWhenHaveY($item[Goat Cheese],1,item_amount($item[Goat Cheese]));
+	}
+	// or on day 2+ just pull anyway, we have loads of pulls
+	else if (auto_inRonin() && my_daycount() > 1)
+	{
+		pullXWhenHaveY($item[Goat Cheese],1,item_amount($item[Goat Cheese]));
+	}
+
+	// If we have enough now, just stop here.
+	if(item_amount($item[Goat Cheese]) >= 3)
+	{
+		return false;
+	}
+
+	// Condider softblocking until day 2 for Mayam
+	if (auto_haveMayamCalendar() && item_amount($item[Goat Cheese]) == 2)
+	{
+		if (auto_waitForDay2())
+		{
+			auto_log_debug("Delaying Goatlet waiting for day 2.");
+			return false;
+		}
+	}
+
 	auto_log_info("Yay for goat cheese!", "blue");
 	if(get_property("_sourceTerminalDuplicateUses").to_int() == 0)
 	{
