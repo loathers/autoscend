@@ -2135,8 +2135,36 @@ float provideFamExp(int amt, location loc, boolean doEquips, boolean doEverythin
 			if(pass())
 				return result();			
 		}
-		if(auto_totalEffectWishesAvailable() > 0)
+		//2 separate statements because Warm Shoulders doesn't degrade, blue swayed does. If only 1 wish available Warm shoulders is better, otherwise, go for 2 wishs of Blue Swayed first
+		if(auto_totalEffectWishesAvailable() == 1)
 		{
+			boolean success = true;
+			int specwishes = 0;
+			//not really any reason to hit blue swayed since we are only able to wish once, but might as well keep it here in case warm shoulders isn't wishable by whatever wish we are using, but blue swayed is
+			foreach eff in $effects[
+				Warm Shoulders, //+5
+				Blue Swayed, //+X/5, decreasing by 5 every 5 turns
+			]{
+				while(have_effect(eff) == 0 || (eff == $effect[Blue Swayed] && have_effect(eff) < 31))
+				{
+					if(!speculative)
+						success = auto_wishForEffect(eff);
+					specwishes +=1;
+					if(specwishes <= auto_totalEffectWishesAvailable())
+					{
+						handleEffect(eff);
+						if(pass())
+							return result();
+					}
+					else
+					{
+						success = false;
+					}
+				}
+				if(!success) break;
+			}
+		}
+		else if(auto_totalEffectWishesAvailable() > 1){
 			boolean success = true;
 			int specwishes = 0;
 			foreach eff in $effects[
