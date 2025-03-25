@@ -295,12 +295,14 @@ boolean L8_getGoatCheese()
 		}
 	}
 
+	// Actually adventure for cheese
 	auto_log_info("Yay for goat cheese!", "blue");
 	if(get_property("_sourceTerminalDuplicateUses").to_int() == 0)
 	{
 		auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
 	}
-	if(auto_haveGreyGoose() && item_amount($item[Goat Cheese]) >= 2){
+	if(auto_haveGreyGoose() && item_amount($item[Goat Cheese]) <= 1)
+	{
 		auto_log_info("Bringing the Grey Goose to emit some drones at a Dairy Goat for cheese, Gromit.");
 		handleFamiliar($familiar[Grey Goose]);
 	}
