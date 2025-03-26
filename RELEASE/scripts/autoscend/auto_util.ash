@@ -848,6 +848,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return create(1, $item[Handful of split pea soup]);
 	}
+	if(combat_string == "skill "+$skill[Punch Out Your Foe] && auto_punchOutsLeft() == 0 && available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3)
+	{
+		return autoChew(1, $item[scoop of pre-workout powder]);
+	}
 	return true;
 }
 
@@ -1068,6 +1072,13 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	if((inCombat ? auto_have_skill($skill[Bowl a Curveball]) : item_amount($item[Cosmic Bowling Ball]) > 0) && auto_is_valid($skill[Bowl a Curveball]))
 	{
 		return "skill " + $skill[Bowl a Curveball];
+	}
+
+	// We have a lot of banishes - we can use handful of split pea soup as runaway, but not our last
+	int potential_split_pea_soup = available_amount($item[whirled peas])/2 + available_amount($item[handful of split pea soup]);
+	if(potential_split_pea_soup > 1 && auto_is_valid($item[handful of split pea soup]))
+	{
+		return "item " + $item[handful of split pea soup];
 	}
 
 	//Non-standard free-runs

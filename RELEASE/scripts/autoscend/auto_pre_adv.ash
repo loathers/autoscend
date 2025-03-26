@@ -205,9 +205,11 @@ boolean auto_pre_adventure()
 	}
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " +place, "green");
-	
-	preAdvUpdateFamiliar(place);
-	ed_handleAdventureServant(place);
+
+	if (item_amount($item[Handful of split pea soup]) == 0 && creatable_amount($item[Handful of split pea soup]) > 0)
+	{
+		return create(1, $item[Handful of split pea soup]);
+	}
 
 	if(get_floundry_locations() contains place)
 	{
@@ -369,6 +371,10 @@ boolean auto_pre_adventure()
 	if (combatModifier._boolean && !auto_queueIgnore()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
+
+	// Update our familiar after combat modifiers (which can set the familiar), but before Crystal Ball (familiar equip)
+	preAdvUpdateFamiliar(place);
+	ed_handleAdventureServant(place);
 
 	boolean considerCrystalBallBonus = false;
 	if(auto_haveCrystalBall())

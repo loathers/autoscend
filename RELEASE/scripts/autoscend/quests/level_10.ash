@@ -423,3 +423,14 @@ boolean L10_rainOnThePlains()
 	}
 	return false;
 }
+
+boolean L10_needUmbrella()
+{
+	foreach it in $items[titanium assault umbrella, unbreakable umbrella]
+	{
+		if (auto_is_valid(it) && available_amount(it)>0) {
+			return false;
+		}
+	}
+	return true;
+}
