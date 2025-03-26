@@ -1203,6 +1203,9 @@ int maxRoundsToDouse(monster enemy)
 	if (canUse(flyer) && get_property("flyeredML").to_int() < 10000) { rounds -= 1; }
 	// Or pants removal
 	if (canUse($skill[tear away your pants!])) { rounds -= 1; }
+	if (canUse($skill[perpetrate mild evil] )) { rounds -= auto_remainingMildEvilUses(); }// We'll be mild eviling any monsters we douse most likely
+	if (canUse($skill[swoop like a bat]     )) { rounds -= 1; } // swoopin' em too
+	if (canUse($skill[Fire Extinguisher: Polar Vortex])) { rounds -= auto_fireExtinguisherCharges(); }// and extingo
 	
 	return rounds;
 }
@@ -1254,4 +1257,10 @@ boolean canSurviveShootGhost(monster enemy, int shots) {
 			damage = my_maxhp() * 0.3;
 	}
 	return my_hp() > damage * shots;
+}
+
+int auto_remainingMildEvilUses()
+{
+	if (!have_skill($skill[perpetrate mild evil])) { return 0; }
+	return 3-get_property("_mildEvilPerpetrated").to_int();
 }
