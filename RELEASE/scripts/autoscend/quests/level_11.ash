@@ -1080,11 +1080,9 @@ boolean L11_aridDesert()
 		return false;
 	}
 
-	// Fix broken desert tracking. pocket familiars failing as of r19010. plumber as of r20019
-	if(in_plumber() || in_pokefam())
-	{
-		visit_url("place.php?whichplace=desertbeach", false);
-	}
+	// Fix broken desert tracking. It just happens sometimes in new paths, might as well do it every time.
+	visit_url("place.php?whichplace=desertbeach", false);
+
 	if(get_property("desertExploration").to_int() >= 100)
 	{
 		return false;		//done exploring
