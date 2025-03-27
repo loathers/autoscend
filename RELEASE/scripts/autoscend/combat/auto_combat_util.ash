@@ -774,11 +774,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Snokebomb];
 	}
 	
-	if(auto_have_skill($skill[Punch Out Your Foe]) && auto_is_valid($skill[Punch Out Your Foe]) && (my_mp() >= mp_cost($skill[Punch Out Your Foe])) && (!(used contains "punch out your foe")) && useFree)
-	{
-		return "skill " + $skill[Punch Out Your Foe];
-	}
-	
 	if((item_amount($item[stuffed yam stinkbomb]) > 0) && (!(used contains "stuffed yam stinkbomb")) && auto_is_valid($item[stuffed yam stinkbomb]))
 	{
 		return "item " + $item[stuffed yam stinkbomb];
@@ -787,6 +782,12 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if(inCombat ? item_amount($item[Handful of split pea soup]) > 0 && (!(used contains "Handful of split pea soup")) && auto_is_valid($item[Handful of split pea soup]) && useFree : (item_amount($item[Handful of split pea soup]) > 0 || item_amount($item[Whirled peas]) >= 2))
 	{
 		return "item " + $item[Handful of split pea soup];
+	}
+
+	if(inCombat ? (auto_have_skill($skill[Punch Out Your Foe]) && auto_is_valid($skill[Punch Out Your Foe]) && (my_mp() >= mp_cost($skill[Punch Out Your Foe])) && (!(used contains "punch out your foe")) && useFree)
+	    : auto_is_valid($skill[Punch Out Your Foe]) && (auto_have_skill($skill[Punch Out Your Foe]) || (available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3) ))
+	{
+		return "skill " + $skill[Punch Out Your Foe];
 	}
 
 	if(auto_have_skill($skill[[28021]Punt]) && (my_mp() > mp_cost($skill[[28021]Punt])) && !(used contains "Punt"))
@@ -945,7 +946,7 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "item " + $item[yellow rocket]; // 75 turns & 250 meat
 		}
-		if(inCombat ? have_skill($skill[Blow the Yellow Candle\!]) : auto_haveRoman() && auto_is_valid($skill[Blow the Yellow Candle\!]))
+		if(inCombat ? have_skill($skill[Blow the Yellow Candle\!]) : auto_haveRoman() && auto_can_equip($item[Roman Candelabra]) && auto_is_valid($skill[Blow the Yellow Candle\!]))
 		{
 			return "skill " + $skill[Blow the Yellow Candle\!]; //75 Turns
 		}
@@ -1202,6 +1203,9 @@ int maxRoundsToDouse(monster enemy)
 	if (canUse(flyer) && get_property("flyeredML").to_int() < 10000) { rounds -= 1; }
 	// Or pants removal
 	if (canUse($skill[tear away your pants!])) { rounds -= 1; }
+	if (canUse($skill[perpetrate mild evil] )) { rounds -= auto_remainingMildEvilUses(); }// We'll be mild eviling any monsters we douse most likely
+	if (canUse($skill[swoop like a bat]     )) { rounds -= 1; } // swoopin' em too
+	if (canUse($skill[Fire Extinguisher: Polar Vortex])) { rounds -= auto_fireExtinguisherCharges(); }// and extingo
 	
 	return rounds;
 }
@@ -1253,4 +1257,10 @@ boolean canSurviveShootGhost(monster enemy, int shots) {
 			damage = my_maxhp() * 0.3;
 	}
 	return my_hp() > damage * shots;
+}
+
+int auto_remainingMildEvilUses()
+{
+	if (!have_skill($skill[perpetrate mild evil])) { return 0; }
+	return 3-get_property("_mildEvilPerpetrated").to_int();
 }

@@ -59,6 +59,7 @@ boolean wantToForceDrop(monster enemy);
 boolean wantToDouse(monster enemy);
 int maxRoundsToDouse(monster enemy);
 boolean canSurviveShootGhost(monster enemy, int shots);
+int auto_remainingMildEvilUses();
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash

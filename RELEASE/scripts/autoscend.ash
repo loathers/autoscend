@@ -1,4 +1,4 @@
-since r28448;	// update mafia for early condo support
+since r28468;	// douse success variable
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1160,11 +1160,12 @@ boolean dailyEvents()
 
 	if(item_amount($item[Clan VIP Lounge Key]) > 0)
 	{
-		if(!get_property("_olympicSwimmingPoolItemFound").to_boolean() && is_unrestricted($item[Olympic-sized Clan Crate]))
+		int[item] furn = auto_get_clan_lounge();
+		if(furn contains $item[Olympic-sized Clan crate] && !get_property("_olympicSwimmingPoolItemFound").to_boolean() && is_unrestricted($item[Olympic-sized Clan Crate]))
 		{
 			cli_execute("swim item");
 		}
-		if(!get_property("_lookingGlass").to_boolean() && is_unrestricted($item[Clan Looking Glass]))
+		if(furn contains $item[Clan looking glass] && !get_property("_lookingGlass").to_boolean() && is_unrestricted($item[Clan Looking Glass]))
 		{
 			string temp = visit_url("clan_viplounge.php?action=lookingglass");
 		}
@@ -1174,7 +1175,7 @@ boolean dailyEvents()
 			cli_execute("clan_viplounge.php?action=klaw");
 			cli_execute("clan_viplounge.php?action=klaw");
 		}
-		if(!get_property("_crimboTree").to_boolean() && is_unrestricted($item[Crimbough]))
+		if(furn contains $item[Crimbough] && furn[$item[Crimbough]]==5 && !get_property("_crimboTree").to_boolean() && is_unrestricted($item[Crimbough]))
 		{
 			cli_execute("crimbotree get");
 		}

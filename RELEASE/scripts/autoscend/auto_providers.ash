@@ -233,6 +233,23 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		return result();
 	}
 
+	// First let's do the peace turkey, only if we haven't already picked a familiar
+	if (!speculative && get_property("auto_familiarChoice").to_familiar()==$familiar[none])
+	{
+		foreach fam in $familiars[Peace Turkey]
+		{
+			if(canChangeToFamiliar(fam))
+			{
+				use_familiar(fam);
+				handleFamiliar(fam);
+				if(pass()){
+					return result();
+				}
+				break;
+			}
+		}
+	}
+
 
 	// first lets do stuff that is "free" (as in has no MP cost, item use or can be freely removed/toggled)
 
@@ -344,8 +361,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Inky Camouflage,
 		Celestial Camouflage,
 		Feeling Lonely,
-		Feeling Sneaky,
-		Hippy Antimilitarism
+		Feeling Sneaky
 	])) {
 		return result();
 	}
@@ -376,16 +392,19 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		return result();
 	}
 
-	if (!speculative)
+	// If we haven't picked a familiar by now consider the disgeist
+	if (!speculative && get_property("auto_familiarChoice").to_familiar()==$familiar[none])
 	{
-		foreach fam in $familiars[Peace Turkey, Disgeist]
+		foreach fam in $familiars[disgeist]
 		{
 			if(canChangeToFamiliar(fam))
 			{
+				use_familiar(fam);
 				handleFamiliar(fam);
 				if(pass()){
 					return result();
 				}
+				break;
 			}
 		}
 	}
