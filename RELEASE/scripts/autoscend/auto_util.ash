@@ -2754,6 +2754,13 @@ boolean candyEggDeviler()
 	item[int] candyList;
 	foreach it in $items[]
 	{
+		foreach ut in $items[Comet Pop, Black Candy Heart, Explosion-flavored chewing gum]
+		{
+			if(it == ut)
+			{
+				candyList[count(candyList)] = it;
+			}
+		}
 		if(it.candy && (item_amount(it) > 0) && (auto_mall_price(it) <= maxprice) && it.tradeable)
 		{
 			candyList[count(candyList)] = it;
@@ -2764,6 +2771,13 @@ boolean candyEggDeviler()
 		getCandy();
 		foreach it in $items[]
 		{
+			foreach ut in $items[Comet Pop, Black Candy Heart, Explosion-flavored chewing gum]
+			{
+				if(it == ut)
+				{
+					candyList[count(candyList)] = it;
+				}
+			}
 			if(it.candy && (item_amount(it) > 0) && (auto_mall_price(it) <= maxprice) && it.tradeable)
 			{
 				candyList[count(candyList)] = it;
@@ -2782,7 +2796,7 @@ boolean candyEggDeviler()
 
 void getCandy()
 {
-	foreach sk in $skills[Candyblast, Summon Candy Heart, Chubby and Plump]
+	foreach sk in $skills[Summon Candy Heart, Chubby and Plump, Summon Hilarious Objects]
 	{
 		//use a skill if we can
 		if(auto_have_skill(sk))
@@ -2797,11 +2811,6 @@ void getCandy()
 		if(auto_buyUpTo(1, $item[lime-and-chile-flavored chewing gum])) return;
 	}
 	if(candyBlock()) return;
-	if(cloversAvailable() > 1 && can_adventure($location[South of the Border])) //don't want to use all clovers
-	{
-		//worst case scenario, get lucky south of the border
-		if(autoLuckyAdv($location[South of the Border])) return;
-	}
 	auto_log_info("Can't get any candy");
 	return;
 }

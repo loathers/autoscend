@@ -1995,7 +1995,7 @@ boolean provideItem(int amt, boolean doEverything)
 
 float provideFamExp(int amt, location loc, boolean doEquips, boolean doEverything, boolean speculative)
 {
-	//doEverything means use equipment, familiar slot, and limited buffs (ie steely eye squint)
+	//doEverything means use equipment, familiar slot, and limited buffs (like Feeling Fancy (2 Fullness))
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " familiar experience, " + (doEverything ? "with" : "without") + " equipment, familiar, and limited buffs", "blue");
 
 	float alreadyHave = numeric_modifier("Familiar Experience") + 1; //default of 1 fam exp per combat
@@ -2113,6 +2113,14 @@ float provideFamExp(int amt, location loc, boolean doEquips, boolean doEverythin
 			if(tryEffects($effects[Blue Swayed])) //+X/5, decreasing by 5 every 5 turns so keeping it separate
 				if(pass())
 					return result();
+		}
+		if(fullness_left() > 2 && item_amount($item[roasted vegetable focaccia]) > 0)
+		{
+			if(tryEffects($effects[Feeling Fancy])) //+10
+			{ 
+				if(pass())
+					return result();
+			}
 		}
 		candyEggDeviler(); //try to get a deviled candy egg
 		if(tryEffects($effects[

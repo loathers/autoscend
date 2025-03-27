@@ -383,6 +383,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Faboooo]:						useItem = $item[Fabiotion];						break;
 	case $effect[Far Out]:						useItem = $item[Patchouli Incense Stick];		break;
 	case $effect[Fat Leon\'s Phat Loot Lyric]:	useSkill = $skill[Fat Leon\'s Phat Loot Lyric];	break;
+	case $effect[Feeling Fancy]:				useItem = $item[roasted vegetable focaccia];	break;
 	case $effect[Feeling Lonely]:				useSkill = $skill[none];						break;
 	case $effect[Feeling Excited]:				useSkill = $skill[none];						break;
 	case $effect[Feeling Nervous]:				useSkill = $skill[none];						break;
