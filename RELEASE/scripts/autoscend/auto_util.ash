@@ -2767,7 +2767,7 @@ boolean candyEggDeviler()
 	{
 		foreach ut in $items[Comet Pop, Black Candy Heart, Explosion-flavored chewing gum]
 		{
-			if(it == ut)
+			if(it == ut && (item_amount(it) > 0))
 			{
 				candyList[count(candyList)] = it;
 			}
@@ -2784,7 +2784,7 @@ boolean candyEggDeviler()
 		{
 			foreach ut in $items[Comet Pop, Black Candy Heart, Explosion-flavored chewing gum]
 			{
-				if(it == ut)
+				if(it == ut && (item_amount(it) > 0))
 				{
 					candyList[count(candyList)] = it;
 				}
