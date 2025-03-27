@@ -1267,9 +1267,9 @@ boolean L12_gremlins()
 
 	auto_log_info("Doing them gremlins", "blue");
 	// ideally we want to survive a single attack
-	if (in_avantGuard()) // In AG we want extra ML to stop our bodyguard killing the gremlin
+	if (in_avantGuard()) // In AG we want extra ML and less weight to stop our bodyguard killing the gremlin
 	{
-		addToMaximize("20dr,1da 1000max,+10ml,-1000avoid attack");
+		addToMaximize("20dr,1da 1000max,+10ml,-1000avoid attack,-10000 familiar weight");
 	}
 	else // otherwise just lower ML
 	{

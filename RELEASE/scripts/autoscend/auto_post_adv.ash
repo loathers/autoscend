@@ -494,6 +494,10 @@ boolean auto_post_adventure()
 	boolean [skill] toCast = $skills[Prevent Scurvy and Sobriety, Acquire Rhinestones, Advanced Cocktailcrafting, Advanced Saucecrafting, Communism!, Grab a Cold One, Lunch Break, Pastamastery, Perfect Freeze, Request Sandwich, Spaghetti Breakfast, Summon Alice\'s Army Cards, Summon Carrot, Summon Confiscated Things, Summon Crimbo Candy, Summon Geeky Gifts, Summon Hilarious Objects, Summon Holiday Fun!, Summon Kokomo Resort Pass, Summon Tasteful Items];
 	
 	boolean buff_familiar = pathHasFamiliar() && !get_property("_auto_bad100Familiar").to_boolean();
+	if (in_avantGuard() && isGremlinsZone(my_location())) // bodyguard weight is bad for gremlins in AG
+	{
+		buff_familiar = false;
+	}
 	float regen = (numeric_modifier("MP Regen Min").to_float() + numeric_modifier("MP Regen Max").to_float())/2.0;
 	
 	if(my_maxmp() < 50)
@@ -827,13 +831,13 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Saucemastery], 200, 5, 4);
 			buffMaintain($effect[Pasta Oneness], 200, 5, 4);
 		}
-		if(familiar_weight(my_familiar()) < 20 && !in_avantGuard())
+		if(familiar_weight(my_familiar()) < 20 && buff_familiar)
 		{
 			buffMaintain($effect[Curiosity of Br\'er Tarrypin], 50, 1, 2);
 		}
 
 		// Only maintain in path with familiars
-		if(pathHasFamiliar() && !get_property("_auto_bad100Familiar").to_boolean())
+		if(pathHasFamiliar() && !get_property("_auto_bad100Familiar").to_boolean() && buff_familiar)
 		{
 			buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);		//familiar acts more often
 		}

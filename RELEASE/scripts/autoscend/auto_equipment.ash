@@ -667,9 +667,12 @@ void finalizeMaximize(boolean speculative)
 {
 	if(auto_hasStillSuit() && pathHasFamiliar() && inebriety_limit() > 0 && !in_kolhs() && !in_small())
 	{
-		//always enough bonus to beat the 25 default maximizer score of miniature crystal ball's +initiative enchantment
-		//100 to 200 bonus for diminishing returns when drams already high
-		addBonusToMaximize($item[tiny stillsuit], (100 + to_int(100*min(1,(10.0 / max(1,auto_expectedStillsuitAdvs()))))));
+		if (!(in_avantGuard() && isGremlinsZone(my_location()))) // Don't use stillsuit at the Gremlins in AG
+		{
+			//always enough bonus to beat the 25 default maximizer score of miniature crystal ball's +initiative enchantment
+			//100 to 200 bonus for diminishing returns when drams already high
+			addBonusToMaximize($item[tiny stillsuit], (100 + to_int(100*min(1,(10.0 / max(1,auto_expectedStillsuitAdvs()))))));
+		}
 	}
 	if(speculative && auto_haveCrystalBall())
 	{	//when doing simMaximize, in order to know if miniature crystal ball will be allowed in the simulated location, 

@@ -2303,3 +2303,8 @@ boolean[location] monster_to_location(monster target)
 
 
 */
+
+boolean isGremlinsZone(location loc)
+{
+	return $locations[Next to that barrel with something burning in it, Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator] contains loc;
+}

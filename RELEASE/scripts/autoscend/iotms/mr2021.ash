@@ -31,7 +31,7 @@ monster crystalBallMonster(location loc)
 boolean auto_allowCrystalBall(monster predicted_monster, location loc)
 {	
 	// blacklisted locations
-	if($locations[Next to that barrel with something burning in it, Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator] contains loc)
+	if(isGremlinsZone(loc))
 	{
 		//predictions can't tell tool gremlins apart from non tool gremlins
 		return false;

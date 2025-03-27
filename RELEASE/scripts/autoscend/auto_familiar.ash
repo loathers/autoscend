@@ -507,7 +507,7 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	// Gremlins have special familiar handling.
-	if ($locations[Next to that Barrel with Something Burning in it, Out By that Rusted-Out Car, Over Where the Old Tires Are, Near an Abandoned Refrigerator] contains place) {
+	if (isGremlinsZone(place)) {
 		famChoice = lookupFamiliarDatafile("gremlins");
 	}
 	

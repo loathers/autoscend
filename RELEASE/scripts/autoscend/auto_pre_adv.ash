@@ -282,7 +282,7 @@ boolean auto_pre_adventure()
 	}
 
 	boolean junkyardML;
-	if($locations[Next to that Barrel with something Burning In It, Near an Abandoned Refrigerator, Over where the Old Tires Are, Out by that Rusted-Out Car] contains place)
+	if(isGremlinsZone(place))
 	{
 		junkyardML = true;
 		uneffect($effect[Spiky Shell]);
@@ -1026,20 +1026,20 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
-	utilizeStillsuit();
-
 	if (in_avantGuard()) // In AG we want our familiar's hands empty during gremlins to stop him hurting anyone
 	{
-		if ($locations[Next to that Barrel with Something Burning in it, Near an Abandoned Refrigerator,
-		               Over Where the Old Tires Are, Out by that Rusted-Out Car] contains place)
+		if (isGremlinsZone(place))
 		{
-			if (numeric_modifier($modifier[familiar weight],equipped_item($slot[familiar])) > 0)
+			if (numeric_modifier(equipped_item($slot[familiar]),$modifier[familiar weight]) > 0)
 			{
 				auto_log_info("Taking the bodyguard's equipment away for Gremlins.", "blue");
 				equip($slot[familiar], $item[none]);
 			}
+			uneffect($effect[empathy]);
 		}
 	}
+
+	utilizeStillsuit();
 
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
