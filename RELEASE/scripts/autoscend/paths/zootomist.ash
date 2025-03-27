@@ -745,6 +745,9 @@ boolean zoo_graftFam()
 		{
 			//can only graft if the fam is higher than the level at the last graft
 			zoo_BoostWeight(fam,next_graft_weight);
+		}
+		if(familiar_weight(fam) < next_graft_weight)
+		{	// if we're still too low, return false so the task loop will take us on to a combat
 			return false;
 		}
 		equip(fam,$item[none]); //unequip fam equipment to not lose it, just in case
