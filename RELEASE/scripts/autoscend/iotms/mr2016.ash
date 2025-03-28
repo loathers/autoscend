@@ -1037,6 +1037,10 @@ boolean LX_ghostBusting()
 	{
 		autoForceEquip($slot[acc3], $item[Talisman O\' Namsilat]);
 	}
+	if(in_plumber())
+	{
+		autoForceEquip($slot[weapon], $item[fire flower]);
+	}
 	acquireHP();
 	return autoAdv(goal);
 }
