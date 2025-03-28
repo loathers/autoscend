@@ -332,7 +332,7 @@ boolean beehiveConsider(boolean at_tower) // returns true if we can kill without
 	// Familiars
 	if (in_avantGuard())
 	{
-		damage_sources += 1; // Just the bodyguard in AG, for one damage per round.
+		return false ; // Curently unreliable to kill in AG. If fixed, change to damage_sources += 1; for Bodyguard.
 	}
 	else if (canChangeFamiliar())
 	{
