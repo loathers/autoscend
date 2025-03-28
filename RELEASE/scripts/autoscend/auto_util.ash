@@ -726,7 +726,7 @@ boolean[string] auto_banishesUsedAt(location loc)
 		return used;
 	}
 	
-	if($locations[Next To That Barrel With Something Burning In It, Out By That Rusted-Out Car, Over Where The Old Tires Are, Near an Abandoned Refrigerator] contains loc)
+	if(isGremlinsZone(loc))
 	{
 		boolean[string] gremlinBanishes;
 		foreach l in $locations[Next To That Barrel With Something Burning In It, Out By That Rusted-Out Car, Over Where The Old Tires Are, Near an Abandoned Refrigerator]
