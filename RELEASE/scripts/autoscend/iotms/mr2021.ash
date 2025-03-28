@@ -892,6 +892,10 @@ void auto_CMCconsult()
 	}
 	boolean shouldChewBreathitin()
 	{
+		if (in_avantGuard()) // breathitin doesn't help in avant guard
+		{
+			return false;
+		}
 		if(my_location() == $location[The Hidden Park])
 		{
 			//already free [dense liana] should come right after and would waste charges
