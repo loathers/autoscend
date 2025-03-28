@@ -1,4 +1,4 @@
-since r28448;	// update mafia for early condo support
+since r28468;	// douse success variable
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
