@@ -2261,7 +2261,7 @@ boolean shouldUseSpleenForLowPriority()
 	if (spleen_left()==1) { return true; }
 	if (spleen_left()==0) { return false; }
 	if (isActuallyEd()  ) { return false; }
-	if (haveSpleenFamiliar() && pathHasFamiliar() && canChangeFamiliar()) { return false; }
+	if (haveSpleenFamiliar() && pathHasFamiliar() && canChangeFamiliar() && !in_avantGuard()) { return false; }
 	
 	int spleen_likely_to_use = 0;
 	spleen_likely_to_use += 2 * auto_CMCconsultsLeft();
