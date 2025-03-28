@@ -265,6 +265,8 @@ boolean fantasyRealmAvailable();
 int fantasyBanditsFought();
 boolean acquiredFantasyRealmToken();
 boolean fantasyRealmToken();
+boolean[location] allFantasyRealmLocations();
+boolean isFantasyRealm(location loc);
 boolean songboomSetting(string goal);
 boolean songboomSetting(int option);
 void auto_setSongboom();
