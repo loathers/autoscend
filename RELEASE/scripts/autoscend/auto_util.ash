@@ -2807,7 +2807,7 @@ boolean candyEggDeviler()
 
 void getCandy()
 {
-	foreach sk in $skills[Summon Candy Heart, Chubby and Plump, Summon Hilarious Objects]
+	foreach sk in $skills[Summon Crimbo Candy, Summon Candy Heart, Chubby and Plump, Summon Hilarious Objects]
 	{
 		//use a skill if we can
 		if(auto_have_skill(sk))
