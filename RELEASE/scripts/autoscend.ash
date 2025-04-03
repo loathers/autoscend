@@ -1158,7 +1158,7 @@ boolean dailyEvents()
 		put_closet(1, $item[empty rain-doh can]);
 	}
 
-	if(item_amount($item[Clan VIP Lounge Key]) > 0)
+	if(item_amount($item[Clan VIP Lounge Key]) > 0 && !in_bad_moon())
 	{
 		int[item] furn = auto_get_clan_lounge();
 		if(furn contains $item[Olympic-sized Clan crate] && !get_property("_olympicSwimmingPoolItemFound").to_boolean() && is_unrestricted($item[Olympic-sized Clan Crate]))
