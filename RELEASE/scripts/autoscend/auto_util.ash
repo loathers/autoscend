@@ -2737,6 +2737,95 @@ int doNumberology(string goal, boolean doIt, string option)
 	return -1;
 }
 
+boolean candyEggDeviler()
+{
+	if(!(item_amount($item[Candy Egg Deviler]) > 0 || storage_amount($item[Candy Egg Deviler]) > 0))
+	{
+		//do we have a Candy Egg Deviler?
+		return false;
+	}
+	if(!(get_property("_candyEggsDeviled").to_int() < 3))
+	{
+		//already generated our 3 deviled candy eggs today
+		return false;
+	}
+
+	if(storage_amount($item[Candy Egg Deviler]) > 0)
+	{
+		pullXWhenHaveY($item[Candy Egg Deviler], 1, 0);
+	}
+
+	//Below is modified from the synthesis code
+	int maxprice = 2500;
+	if(get_property("auto_maxCandyPrice").to_int() != 0)
+	{
+		maxprice = get_property("auto_maxCandyPrice").to_int();
+	}
+
+	item[int] candyList;
+	foreach it in $items[]
+	{
+		foreach ut in $items[Comet Pop, Black Candy Heart, Explosion-flavored chewing gum]
+		{
+			if(it == ut && (item_amount(it) > 0))
+			{
+				candyList[count(candyList)] = it;
+			}
+		}
+		if(it.candy && (item_amount(it) > 0) && (auto_mall_price(it) <= maxprice) && it.tradeable)
+		{
+			candyList[count(candyList)] = it;
+		}
+	}
+	if(count(candyList) == 0)
+	{
+		getCandy();
+		foreach it in $items[]
+		{
+			foreach ut in $items[Comet Pop, Black Candy Heart, Explosion-flavored chewing gum]
+			{
+				if(it == ut && (item_amount(it) > 0))
+				{
+					candyList[count(candyList)] = it;
+				}
+			}
+			if(it.candy && (item_amount(it) > 0) && (auto_mall_price(it) <= maxprice) && it.tradeable)
+			{
+				candyList[count(candyList)] = it;
+			}
+		}
+		if(count(candyList) == 0)
+		{
+			auto_log_info("No candy for a devilled candy egg");
+			return false;
+		}
+	}
+	sort candyList by auto_mall_price(value);
+	item[int] candyL = List(candyList);
+	return cli_execute('devilcandyegg ' + candyL[0]);
+}
+
+void getCandy()
+{
+	foreach sk in $skills[Summon Crimbo Candy, Summon Candy Heart, Chubby and Plump, Summon Hilarious Objects]
+	{
+		//use a skill if we can
+		if(auto_have_skill(sk))
+		{
+			use_skill(1, sk);
+			return;
+		}
+	}
+	if($strings[wombat, blender, packrat] contains my_sign().to_lower_case() && can_adventure($location[South of the Border]))
+	{
+		//buy some candy from gno-mart if we have gnomes
+		if(auto_buyUpTo(1, $item[lime-and-chile-flavored chewing gum])) return;
+	}
+	if(candyBlock()) return;
+	auto_log_info("Can't get any candy");
+	return;
+}
+
 boolean auto_have_skill(skill sk)
 {
 	return auto_is_valid(sk) && have_skill(sk);
