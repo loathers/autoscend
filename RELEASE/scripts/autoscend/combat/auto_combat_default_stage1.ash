@@ -161,6 +161,11 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			return useSkill($skill[Unleash The Greash], false);
 		}
 
+		if(canUse($skill[Surprisingly Sweet Slash], true) && auto_remainingCandyCaneSlashes() > 0)
+		{
+			return useSkill($skill[Surprisingly Sweet Slash], true);
+		}
+		
 		if(canUse($skill[Garbage Nova], false))
 		{
 			return useSkill($skill[Garbage Nova], false);
