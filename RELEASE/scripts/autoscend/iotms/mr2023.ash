@@ -950,6 +950,17 @@ string activeCitZoneMod() // get the active Citizen of a Zone mods, if any
 	return activeCitZoneMod;
 }
 
+boolean auto_citZoneModIsGoal(string goal)
+{
+	string activeCitZoneMod = activeCitZoneMod();
+
+	if(contains_text(activeCitZoneMod, goal) || (goal == "spec" && contains_text(activeCitZoneMod, "resistance to all el")))
+	{
+		return true;
+	}
+	return false;
+}
+
 boolean auto_citizenZonePrep(string goal)
 {
 	string activeCitZoneMod = activeCitZoneMod();
@@ -967,7 +978,7 @@ boolean auto_citizenZonePrep(string goal)
 		auto_log_info("Can't remove Citizen of a Zone");
 		return false;
 	}
-	if(!contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0) //try to remove Citizen of a Zone
+	if(!(auto_citZoneModIsGoal(goal)) && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0) //try to remove Citizen of a Zone
 	{
 		uneffect($effect[Citizen of a Zone]);
 		if(have_effect($effect[Citizen of a Zone]) > 0)
@@ -979,31 +990,32 @@ boolean auto_citizenZonePrep(string goal)
 	return true;
 }
 
-boolean[location] citizenZones(string target)
+boolean[location] citizenZones(string goal)
 {
-	if(target == "meat")
+	if(goal == "meat")
 	{
 		return $locations[The Battlefield (Frat Uniform), The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
 	Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
 	}
-	if(target == "item")
+	if(goal == "item")
 	{
 		return $locations[A Massive Ziggurat, The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
 	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
 	}
-	if(target == "init")
+	if(goal == "init")
 	{
 		return $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, An Overgrown Shrine (Northeast),
 	Oil Peak, Cobb's Knob Kitchens, The VERY Unquiet Garves, The Haunted Kitchen];
 	}
-	if(target == "mp")
+	if(goal == "mp")
 	{
 		return $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp,
 	Megalo-City, Shadow Rift, Vanya's Castle, The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,
 	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
 	}
-	if(target == "spec")
+	if(goal == "spec")
 	{
+		//prismatic resistance
 		return $locations[The Outskirts of Cobb\'s Knob];
 	}
 	return $locations[none];
@@ -1028,6 +1040,7 @@ boolean auto_getCitizenZone(location loc)
 	//set goal for tracking
 	if(specZones contains loc)
 	{
+		//only want spec to get cold res for septEmberCenser usage
 		if(auto_haveSeptEmberCenser() && turns_played() == 0) //ideally also have spring away
 		{
 			goal = "spec";
@@ -1064,192 +1077,59 @@ boolean auto_getCitizenZone(location loc)
 	if(autoAdv(loc))
 	{
 		activeCitZoneMod = activeCitZoneMod();
-		if(contains_text(activeCitZoneMod, goal) || (goal == "spec" && contains_text(activeCitZoneMod, "cold"))) //need this if statement separate in case we hit a non-combat
+		if(auto_citZoneModIsGoal(goal)) //need this if statement separate in case we hit a non-combat
 		{
 			handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
 			return true;
 		}
 		else
 		{
-			auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
+			auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
 			return false;
 		}
 	}
 	else
 	{
-		auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
+		auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
 		return false;
 	}
 }
 
 boolean auto_getCitizenZone(string goal)
 {
-	familiar eagle = $familiar[Patriotic Eagle];
-	//zones are approximately organized by autoscend level quest structure
-	boolean[location] meatZones = citizenZones("meat");
-	boolean[location] itemZones = citizenZones("item");
-	boolean[location] initZones = citizenZones("init");
-	//mp zones are organized by 20-30 mp regen then 10-15 mp regen and then approximately autoscend level quest structure
-	boolean[location] mpZones = citizenZones("mp");
-	boolean[location] specZones = citizenZones("spec");
-	string activeCitZoneMod = activeCitZoneMod();
+	boolean[location] zones = citizenZones(goal);
 
 	if(!auto_citizenZonePrep(goal))
 	{
 		return false;
 	}
-	switch(goal)
+
+	foreach loc in zones
 	{
-		case "spec": //Special handling for zones that depend on other IOTMs to be useful
-			foreach loc in specZones
+		if(!can_adventure(loc))
+		{
+			continue;
+		}
+		handleFamiliar($familiar[Patriotic Eagle]);
+		set_property("auto_forceFreeRun", true);
+		if(autoAdv(loc))
+		{
+			if(auto_citZoneModIsGoal(goal))
 			{
-				if(!can_adventure(loc))
-				{
-					continue;
-				}
-				handleFamiliar(eagle);
-				set_property("auto_forceFreeRun", true);
-				if(autoAdv(loc))
-				{
-					activeCitZoneMod = activeCitZoneMod();
-					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-						{
-						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-						return true;
-					}
-					else
-					{
-						auto_log_debug("Attempted to get citizen of a zone buff for a special goal however we failed.");
-						return false;
-					}
-				}
-				else
-				{
-					auto_log_debug("Attempted to get citizen of a zone buff for a special goal however we failed.");
-					return false;
-				}
+				handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
+				return true;
 			}
-			break;
-		case "meat": //Get +50% meat
-			foreach loc in meatZones
+			else
 			{
-				if(!can_adventure(loc))
-				{
-					continue;
-				}
-				handleFamiliar(eagle);
-				set_property("auto_forceFreeRun", true);
-				if(autoAdv(loc))
-				{
-					activeCitZoneMod = activeCitZoneMod();
-					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-					{
-						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-						return true;
-					}
-					else
-					{
-						auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
-						return false;
-					}
-				}
-				else
-				{
-					auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
-					return false;
-				}
+				auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
+				return false;
 			}
-			break;
-		case "initiative": //Get +100% initiative. Give the option to add this to a quest later, but currently unused
-			foreach loc in initZones
-			{
-				if(!can_adventure(loc))
-				{
-					continue;
-				}
-				handleFamiliar(eagle);
-				set_property("auto_forceFreeRun", true);
-				if(autoAdv(loc))
-				{
-					activeCitZoneMod = activeCitZoneMod();
-					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-					{
-						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-						return true;
-					}
-					else
-					{
-						auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
-						return false;
-					}
-				}
-				else
-				{
-					auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
-					return false;
-				}
-			}
-			break;
-		case "mp": //Get 20-30 mp regen or 10-15 mp regen. Currently only gets 10-15 mp regen in The Spooky Forest
-			foreach loc in mpZones
-			{
-				if(!can_adventure(loc))
-				{
-					continue;
-				}
-				handleFamiliar(eagle);
-				set_property("auto_forceFreeRun", true);
-				if(autoAdv(loc))
-				{
-					activeCitZoneMod = activeCitZoneMod();
-					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-					{
-						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-						return true;
-					}
-					else
-					{
-						auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
-						return false;
-					}
-				}
-				else
-				{
-					auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
-					return false;
-				}
-			}
-			break;
-		default: //Get +30% item by default
-			foreach loc in itemZones
-			{
-				if(!can_adventure(loc))
-				{
-					continue;
-				}
-				handleFamiliar(eagle);
-				set_property("auto_forceFreeRun", true);
-				if(autoAdv(loc))
-				{
-					activeCitZoneMod = activeCitZoneMod();
-					if(contains_text(activeCitZoneMod, goal)) //need this if statement separate in case we hit a non-combat
-					{
-						handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-						return true;
-					}
-					else
-					{
-						auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
-						return false;
-					}
-				}
-				else
-				{
-					auto_log_debug("Attempted to get citizen of a zone buff " + goal + " however we failed.");
-					return false;
-				}
-			}
-			break;
+		}
+		else
+		{
+			auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
+			return false;
+		}
 	}
 	return false;
 }
