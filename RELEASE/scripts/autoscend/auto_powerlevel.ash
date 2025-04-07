@@ -278,6 +278,17 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 		logRemainingFights("Oliver's Place = " + temp);
 	}
 
+	if(auto_haveBurningLeaves())
+	{
+		int temp = min(auto_remainingBurningLeavesFights(),floor(item_amount($item[inflammable leaf])/11));
+		count += temp;
+		logRemainingFights("Burning Leaves = " + temp);
+	}
+	
+	int free_candy = freeCandyFightsLeft();
+	count += free_candy;
+	logRemainingFights("Trick or Treating = " + free_candy);
+
 	return count;
 }
 
@@ -392,6 +403,15 @@ boolean LX_freeCombats(boolean powerlevel)
 		auto_log_debug("LX_freeCombats is adventuring in [An Unusually Quiet Barroom Brawl]");
 		adv_done = autoAdv(1, $location[An Unusually Quiet Barroom Brawl]);
 		if(adv_done) return true;
+	}
+
+	auto_log_debug("LX_freeCombats is trying to free trick-or-treat.");
+	if(candyBlock()) return true;
+	
+	if(auto_haveBurningLeaves())
+	{
+		auto_log_debug("LX_freeCombats is trying to fight burning leaves.");
+		if(auto_fightFlamingLeaflet()) return true;
 	}
 
 	// tentacle should be last so it can be backed up, if script wants to

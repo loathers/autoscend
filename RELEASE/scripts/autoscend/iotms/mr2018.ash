@@ -286,8 +286,8 @@ boolean fantasyRealmToken()
 		return false;
 	}
 
-	// If we're not allowed to adventure without a familiar due to being in a 100% familiar run.
-	if(is100FamRun())
+	// If we're not allowed to adventure without a familiar due to being in a 100% familiar run or Avant Guard
+	if(is100FamRun() || in_avantGuard())
 	{
 		return false;
 	}
@@ -300,6 +300,21 @@ boolean fantasyRealmToken()
 	//This does not appear to check that we no longer need to adventure there...
 
 	return autoAdv(1, $location[The Bandit Crossroads]);
+}
+
+boolean[location] allFantasyRealmLocations()
+{
+	return $locations[The Bandit Crossroads, The Cursed Village, The Evil Cathedral, The Archwizard's Tower,
+	  The Cursed Village Thieves' Guild, The Towering Mountains, The Foreboding Cave, The Lair of the Phoenix,
+	  The Old Rubee Mine, The Ogre Chieftain's Keep, The Master Thief's Chalet, The Mystic Wood, The Faerie Cyrkle,
+	  The Spider Queen's Lair, The Druidic Campsite, The Ley Nexus, The Putrid Swamp, Near the Witch's House,
+	  The Troll Fortress, The Dragon's Moor, The Sprawling Cemetery, The Labyrinthine Crypt, The Barrow Mounds,
+	  The Ghoul King's Catacomb, Duke Vampire's Chateau];
+}
+
+boolean isFantasyRealm(location loc)
+{
+	return allFantasyRealmLocations() contains loc;
 }
 
 boolean songboomSetting(string goal)

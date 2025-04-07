@@ -9,6 +9,7 @@ string auto_combatHandler(int round, monster enemy, string text);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_util.ash
+int defaultRoundLimit();
 boolean haveUsed(skill sk);
 boolean haveUsed(item it);
 int usedCount(skill sk);
@@ -56,7 +57,9 @@ boolean combat_status_check(string mark);
 void combat_status_add(string mark);
 boolean wantToForceDrop(monster enemy);
 boolean wantToDouse(monster enemy);
+int maxRoundsToDouse(monster enemy);
 boolean canSurviveShootGhost(monster enemy, int shots);
+int auto_remainingMildEvilUses();
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash

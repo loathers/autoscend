@@ -95,6 +95,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	if (tryEffects($effects[
 		Musk of the Moose,
 		Carlweather's Cantata of Confrontation,
+		Milk of Familiar Kindness,
 		Attracting Snakes,
 		Crunchy Steps,
 		Blinking Belly,
@@ -232,6 +233,23 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		return result();
 	}
 
+	// First let's do the peace turkey, only if we haven't already picked a familiar
+	if (!speculative && get_property("auto_familiarChoice").to_familiar()==$familiar[none])
+	{
+		foreach fam in $familiars[Peace Turkey]
+		{
+			if(canChangeToFamiliar(fam))
+			{
+				use_familiar(fam);
+				handleFamiliar(fam);
+				if(pass()){
+					return result();
+				}
+				break;
+			}
+		}
+	}
+
 
 	// first lets do stuff that is "free" (as in has no MP cost, item use or can be freely removed/toggled)
 
@@ -294,6 +312,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Muffled,
 		Smooth Movements,
 		The Sonata of Sneakiness,
+		Milk of Familiar Cruelty,
 		Hiding From Seekers,
 		Ultra-Soft Steps,
 		Song of Solitude,
@@ -342,8 +361,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		Inky Camouflage,
 		Celestial Camouflage,
 		Feeling Lonely,
-		Feeling Sneaky,
-		Hippy Antimilitarism
+		Feeling Sneaky
 	])) {
 		return result();
 	}
@@ -374,16 +392,19 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		return result();
 	}
 
-	if (!speculative)
+	// If we haven't picked a familiar by now consider the disgeist
+	if (!speculative && get_property("auto_familiarChoice").to_familiar()==$familiar[none])
 	{
-		foreach fam in $familiars[Peace Turkey, Disgeist]
+		foreach fam in $familiars[disgeist]
 		{
 			if(canChangeToFamiliar(fam))
 			{
+				use_familiar(fam);
 				handleFamiliar(fam);
 				if(pass()){
 					return result();
 				}
+				break;
 			}
 		}
 	}
@@ -549,8 +570,8 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		if(pass())
 			return result();
 	}
-
-	if(tryEffects($effects[
+	
+	boolean[effect] ef_to_try = $effects[
 		Adorable Lookout,
 		Alacri Tea,
 		All Fired Up,
@@ -559,14 +580,21 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		The Glistening,
 		Human-Machine Hybrid,
 		Patent Alacrity,
-		Provocative Perkiness,
 		Sepia Tan,
 		Sugar Rush,
 		Ticking Clock,
 		Well-Swabbed Ear,
 		Poppy Performance
-	]))
+	]; // eff_to_try
+	if(tryEffects(ef_to_try))
 		return result();
+	
+	if (can_interact())
+	{	// Not worth making in HC
+		ef_to_try = $effects[Provocative Perkiness];
+		if(tryEffects(ef_to_try))
+			return result();
+	}
 
 	if(auto_sourceTerminalEnhanceLeft() > 0 && have_effect($effect[init.enh]) == 0 && auto_is_valid($effect[init.enh]))
 	{
@@ -626,7 +654,7 @@ boolean provideInitiative(int amt, boolean doEquips)
 	return provideInitiative(amt, my_location(), doEquips);
 }
 
-int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative)
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean doAll, boolean speculative)
 {
 	string debugprint = "Trying to provide ";
 	foreach ele,goal in amt
@@ -637,6 +665,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		debugprint += " resistance, ";
 	}
 	debugprint += (doEquips ? "with equipment" : "without equipment");
+	debugprint += (doAll    ? " and everything else like spleen.":"");
 	auto_log_info(debugprint, "blue");
 
 	if(amt[$element[stench]] > 0)
@@ -871,18 +900,39 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		]))
 			return result();
 	}
+	
+	if (doAll)
+	{
+		if(shouldUseSpleenForLowPriority() && auto_haveCyberRealm())
+		{
+			if(tryEffects($effects[
+				Cyber Resist x2000
+			]))
+				return result();
+		}
+	}
 
 	return result();
 }
 
+int [element] provideResistances(int [element] amt, location loc, boolean doEquips, boolean speculative)
+{
+	return provideResistances(amt, loc, doEquips, false, speculative);
+}
+
+int [element] provideResistances(int [element] amt, boolean doEquips, boolean doAll, boolean speculative)
+{
+	return provideResistances(amt, my_location(), doEquips, doAll, speculative);
+}
+
 int [element] provideResistances(int [element] amt, boolean doEquips, boolean speculative)
 {
-	return provideResistances(amt, my_location(), doEquips, speculative);
+	return provideResistances(amt, my_location(), doEquips, false, speculative);
 }
 
 boolean provideResistances(int [element] amt, location loc, boolean doEquips)
 {
-	int [element] res = provideResistances(amt, doEquips, false);
+	int [element] res = provideResistances(amt, doEquips, false, false);
 	foreach ele, i in amt
 	{
 		if(res[ele] < i)
@@ -1401,7 +1451,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 	}
 	songboomSetting("meat"); //30% meat
 	// items
-	if(tryEffects($effects[
+	boolean[effect] ef_to_try = $effects[
 		Flapper Dancin\', //100% meat
 		Heightened Senses, //50% meat, 25% item drop
 		Big Meat Big Prizes, //50% meat
@@ -1418,11 +1468,20 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Kindly Resolve, //5 fam weight
 		Human-Machine Hybrid, //5 fam weight, DA +50, DR 5
 		Sweet Heart, // Muscle +X, +2X% meat
-		Cranberry Cordiality, //10% meat
 		So You Can Work More... //10% meat
-	]))
+	]; // ef_to_try
+	
+	if(tryEffects(ef_to_try))
 		if(pass())
 			return result();
+			
+	if (can_interact())
+	{	// Not worth making in HC
+		ef_to_try = $effects[Cranberry Cordiality];
+		if(tryEffects(ef_to_try))
+			if(pass())
+				return result();
+	}
 
 	if(have_effect($effect[Synthesis: Greed]) == 0)
 	{
@@ -1951,4 +2010,236 @@ boolean provideItem(int amt, location loc, boolean doEverything)
 boolean provideItem(int amt, boolean doEverything)
 {
 	return provideItem(amt, my_location(), doEverything);
+}
+
+float provideFamExp(int amt, location loc, boolean doEquips, boolean doEverything, boolean speculative)
+{
+	//doEverything means use equipment, familiar slot, and limited buffs (like Feeling Fancy (2 Fullness))
+	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " familiar experience, " + (doEverything ? "with" : "without") + " equipment, familiar, and limited buffs", "blue");
+
+	float alreadyHave = numeric_modifier("Familiar Experience") + 1; //default of 1 fam exp per combat
+	float need = amt - alreadyHave;
+
+	if(need > 0)
+	{
+		auto_log_debug("We currently have " + alreadyHave + ", so we need an extra " + need);
+	}
+	else
+	{
+		auto_log_debug("We already have enough +fam experience!");
+		return alreadyHave;
+	}
+
+	float delta = 0;
+
+	float result()
+	{
+		return numeric_modifier("Familiar Experience") + 1 + delta;
+	}
+
+	boolean pass()
+	{
+		return result() >= amt;
+	}
+
+	if(pass())
+		return result();
+	
+	// don't craft equipment here. See how much +fam xp we can get with gear on hand
+	if(doEquips || doEverything)
+	{
+		string max = "1000familiar experience " + (amt + 10) + "max";
+		if(speculative)
+		{
+			simMaximizeWith(loc, max);
+		}
+		else
+		{
+			addToMaximize(max);
+			simMaximize(loc);
+		}
+		delta = simValue("Familiar Experience") - numeric_modifier("Familiar Experience");
+		auto_log_debug("With existing gear we can get to " + result());
+
+		if(pass())
+			return result();
+	}
+
+	void handleEffect(effect eff)
+	{
+		if(speculative)
+		{
+			delta += numeric_modifier(eff, "Familiar Experience");
+		}
+		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
+	}
+
+	boolean tryEffects(boolean [effect] effects)
+	{
+		foreach eff in effects
+		{
+			if(numeric_modifier(eff,$modifier[familiar experience]) > 0) {
+				if(buffMaintain(eff, 0, 1, 1, speculative))
+					handleEffect(eff);
+				if(pass())
+					return true;
+			}
+		}
+		return false;
+	}
+
+	// If we're zootomist, need to level, and we have +xp on our milk, cast it.
+	if (in_zootomist() && my_level()<13) {
+		if(tryEffects($effects[Milk of Familiar Kindness, Milk of Familiar Cruelty])) {
+			return result();
+		}
+	}
+		
+	// unlimited skills
+	if(tryEffects($effects[
+		Curiosity of Br'er Tarrypin, //+1
+	]))
+		return result();
+
+	// craft equipment, even limited use, here
+	if(doEverything)
+	{
+		//craft IOTM derivative that gives high fam xp bonus
+		auto_latteRefill("famxp"); //+3
+
+		string max = "1000familiar experience " + (amt + 100) + "max";
+		if(speculative)
+		{
+			simMaximizeWith(loc, max);
+		}
+		else
+		{
+			addToMaximize(max);
+			simMaximize(loc);
+		}
+		delta = simValue("familiar experience") - numeric_modifier("familiar experience");
+		auto_log_debug("With existing and crafted gear we can get to " + result());
+
+		if(pass())
+			return result();
+	}
+
+	// Use limited resources
+	if(doEverything)
+	{
+		while(have_effect($effect[Blue Swayed]) < 31 && item_amount($item[pulled blue taffy]) > 0){
+			auto_log_info("Getting Blue Swayed");
+			if(tryEffects($effects[Blue Swayed])) //+X/5, decreasing by 5 every 5 turns so keeping it separate
+				if(pass())
+					return result();
+		}
+		if(fullness_left() > 2 && item_amount($item[roasted vegetable focaccia]) > 0)
+		{
+			if(tryEffects($effects[Feeling Fancy])) //+10
+			{ 
+				if(pass())
+					return result();
+			}
+		}
+		candyEggDeviler(); //try to get a deviled candy egg
+		if(tryEffects($effects[
+			Warm Shoulders, //+5
+			Shortly Hydrated, //+5
+			Candied Devil, //+5
+			Black Tongue, //+2
+			Green Tongue, //+2
+			Heart of White //+1
+		]))
+			if(pass())
+				return result();
+		if(zataraAvailable() && (0 == have_effect($effect[A Girl Named Sue])) & auto_is_valid($effect[A Girl Named Sue]))
+		{
+			if(!speculative)
+			{
+				zataraSeaside("familiar");
+			}
+			handleEffect($effect[A Girl Named Sue]); //+5
+			if(pass())
+				return result();			
+		}
+		//2 separate statements because Warm Shoulders doesn't degrade, blue swayed does. If only 1 wish available Warm shoulders is better, otherwise, go for 2 wishs of Blue Swayed first
+		if(auto_totalEffectWishesAvailable() == 1)
+		{
+			boolean success = true;
+			int specwishes = 0;
+			//not really any reason to hit blue swayed since we are only able to wish once, but might as well keep it here in case warm shoulders isn't wishable by whatever wish we are using, but blue swayed is
+			foreach eff in $effects[
+				Warm Shoulders, //+5
+				Blue Swayed, //+X/5, decreasing by 5 every 5 turns
+			]{
+				while(have_effect(eff) == 0 || (eff == $effect[Blue Swayed] && have_effect(eff) < 31))
+				{
+					if(!speculative)
+						success = auto_wishForEffect(eff);
+					specwishes +=1;
+					if(specwishes <= auto_totalEffectWishesAvailable())
+					{
+						handleEffect(eff);
+						if(pass())
+							return result();
+					}
+					else
+					{
+						success = false;
+					}
+				}
+				if(!success) break;
+			}
+		}
+		else if(auto_totalEffectWishesAvailable() > 1){
+			boolean success = true;
+			int specwishes = 0;
+			foreach eff in $effects[
+				Blue Swayed, //+X/5, decreasing by 5 every 5 turns
+				Warm Shoulders, //+5
+			]{
+				while(have_effect(eff) == 0 || (eff == $effect[Blue Swayed] && have_effect(eff) < 31))
+				{
+					if(!speculative)
+						success = auto_wishForEffect(eff);
+					specwishes +=1;
+					if(specwishes <= auto_totalEffectWishesAvailable())
+					{
+						handleEffect(eff);
+						if(pass())
+							return result();
+					}
+					else
+					{
+						success = false;
+					}
+				}
+				if(!success) break;
+			}
+		}
+		auto_log_debug("With limited buffs we can get to " + result());
+		if(pass())
+			return result();
+	}
+	return result();
+}
+
+float provideFamExp(int amt, boolean doEquips, boolean doEverything, boolean speculative)
+{
+	return provideFamExp(amt, my_location(), doEquips, doEverything, speculative);
+}
+
+boolean provideFamExp(int amt, location loc, boolean doEquips, boolean doEverything)
+{
+	return provideFamExp(amt, loc, doEquips, doEverything, false) >= amt;
+}
+
+boolean provideFamExp(int amt, boolean doEquips, boolean doEverything)
+{
+	return provideFamExp(amt, my_location(), doEquips, doEverything);
+}
+
+boolean provideFamExp(int amt, boolean doEquips)
+{
+	return provideFamExp(amt, doEquips, false);
 }

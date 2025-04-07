@@ -69,6 +69,29 @@ void bedtime_still()
 	}
 }
 
+boolean bedtime_spleen()
+{
+	boolean[item] to_try = $items[Breathitin&trade;, Extrovermectin&trade;,
+	  scoop of pre-workout powder, phosphor traces, Homebodyl&trade;, energized spores];
+
+	boolean done = false;
+	while (spleen_left() > 0 && !done)
+	{
+		boolean consumed_this_loop = false;
+		foreach it in to_try
+		{
+			if (canChew(it) && available_amount(it) > 0 && it.spleen <= spleen_left())
+			{
+				autoChew(1,it);
+				consumed_this_loop = true;
+				break;
+			}
+		}
+		if (!consumed_this_loop) { done = true; }
+	}
+	return spleen_left()==0;
+}
+
 int pullsNeeded(string data)
 {
 	if(inAftercore())
@@ -1330,7 +1353,9 @@ boolean doBedtime()
 			auto_log_info("Using the spinning wheel in your workshed", "blue");
 			visit_url("campground.php?action=spinningwheel");
 		}
-		
+
+		bedtime_spleen();
+
 		bedtime_pulls();
 		pullsNeeded("evaluate");
 
@@ -1391,6 +1416,8 @@ boolean doBedtime()
 		{
 			auto_log_info("You still have " + (5 - get_property("_augSkillsCast").to_int()) + " August Scepter casts remaining! Perhaps consider casting Aug 13th/30th for more rollover adventures, and/or 7th for a buff for tomorrow?", "blue");
 		}
+
+		meatReserveMessage();
 
 		if (get_property("spadingData") != "")
 		{

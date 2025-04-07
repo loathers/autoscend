@@ -192,7 +192,7 @@ boolean auto_run_choice(int choice, string page)
 			{
 				run_choice(6); // advance immateria quest
 			}
-			else if (options contains 5)
+			else if (options contains 5 && L10_needUmbrella())
 			{
 				run_choice(5); // get titanium umbrella, metallic A, SGEEA and a penultimate fantasy chest
 			}
@@ -457,6 +457,12 @@ boolean auto_run_choice(int choice, string page)
 		case 796: // The Den of Iquity (The Old Landfill)
 		case 797: // Let's Workshop This a Little (The Old Landfill)
 			oldLandfillChoiceHandler(choice);
+			break;
+		case 804:
+			run_choice(2); //Trick or Treat!
+			break;
+		case 806:
+			run_choice(2); //A Fun-Size Dilemma
 			break;
 		case 822: // The Prince's Ball (In the Restroom)
 		case 823: // The Prince's Ball (On the Dance Floor)
