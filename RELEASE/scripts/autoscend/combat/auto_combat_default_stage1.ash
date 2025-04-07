@@ -233,10 +233,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		return useSkill($skill[Recall Facts: Monster Habitats]);
 	}
 
-	if(auto_canRWBBlast() && auto_RWBBlastTarget(enemy) && canUse($skill[%fn\, fire a Red, White and Blue Blast]))
+	if(auto_canRWBBlast() && auto_RWBBlastTarget(enemy) && canUse($skill[%fn\, fire a Red\, White and Blue Blast]))
 	{
-		handleTracker($skill[%fn\, fire a Red, White and Blue Blast], enemy, "auto_copies");
-		return useSkill($skill[%fn\, fire a Red, White and Blue Blast]);
+		handleTracker($skill[%fn\, fire a Red\, White and Blue Blast], enemy, "auto_copies");
+		return useSkill($skill[%fn\, fire a Red\, White and Blue Blast]);
 	}
 
 	monster backedUpMonster = get_property("lastCopyableMonster").to_monster();

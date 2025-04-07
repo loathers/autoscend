@@ -317,7 +317,7 @@ boolean isCopied(monster enemy, skill sk)
 		case $skill[Blow the Purple Candle\!]:
 			retval = contains_text(get_property("auto_purple_candled"), enemy);
 			break;
-		case $skill[%fn\, fire a Red, White and Blue Blast]:
+		case $skill[%fn\, fire a Red\, White and Blue Blast]:
 			retval = auto_RWBMonster() == enemy;
 		default:
 			abort("isCopied was asked to check an unidentified skill: " +sk);
@@ -328,7 +328,7 @@ boolean isCopied(monster enemy, skill sk)
 boolean isCopied(monster enemy)
 {
 	//checks if the monster enemy is currently copied using any of the copy skills
-	foreach sk in $skills[Blow the Purple Candle\!, %fn\, fire a Red, White and Blue Blast]
+	foreach sk in $skills[Blow the Purple Candle\!, %fn\, fire a Red\, White and Blue Blast]
 	{
 		if(isCopied(enemy, sk)) return true;
 	}
@@ -341,9 +341,9 @@ skill getCopier(monster enemy, boolean inCombat)
 	{
 		return $skill[Blow the Purple Candle\!];
 	}
-	if(canUse($skill[%fn\, fire a Red, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
+	if(canUse($skill[%fn\, fire a Red\, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
 	{
-		return $skill[%fn\, fire a Red, White and Blue Blast];
+		return $skill[%fn\, fire a Red\, White and Blue Blast];
 	}
 	return $skill[none];
 }

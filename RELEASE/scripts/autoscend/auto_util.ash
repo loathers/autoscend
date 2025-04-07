@@ -1254,7 +1254,7 @@ boolean adjustForCopyIfPossible(monster target)
 	{
 		return autoEquip($item[Roman Candelabra]);
 	}
-	if(copier == $skill[%fn\, fire a Red, White and Blue Blast])
+	if(copier == $skill[%fn\, fire a Red\, White and Blue Blast])
 	{
 		handleFamiliar($familiar[Patriotic Eagle]);
 	}
