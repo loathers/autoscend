@@ -207,10 +207,6 @@ boolean isSniffed(monster enemy, skill sk)
 	string search;
 	if (sk == $skill[Get a Good Whiff of This Guy]) {
 		search = "Nosy Nose";
-	} else if (sk == $skill[%fn\, fire a Red\, White and Blue Blast]){
-		if(auto_RWBMonster() == enemy) {
-			return true;
-		}
 	} else {
 		search = sk.to_string();
 	}
@@ -321,6 +317,8 @@ boolean isCopied(monster enemy, skill sk)
 		case $skill[Blow the Purple Candle\!]:
 			retval = contains_text(get_property("auto_purple_candled"), enemy);
 			break;
+		case $skill[%fn\, fire a Red, White and Blue Blast]:
+			retval = auto_RWBMonster() == enemy;
 		default:
 			abort("isCopied was asked to check an unidentified skill: " +sk);
 	}
@@ -330,7 +328,7 @@ boolean isCopied(monster enemy, skill sk)
 boolean isCopied(monster enemy)
 {
 	//checks if the monster enemy is currently copied using any of the copy skills
-	foreach sk in $skills[Blow the Purple Candle\!]
+	foreach sk in $skills[Blow the Purple Candle\!, %fn\, fire a Red, White and Blue Blast]
 	{
 		if(isCopied(enemy, sk)) return true;
 	}
