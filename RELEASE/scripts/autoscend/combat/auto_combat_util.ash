@@ -222,7 +222,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, %fn\, fire a Red\, White and Blue Blast, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash, Left %n Kick, Right %n Kick]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash, Left %n Kick, Right %n Kick]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -341,7 +341,7 @@ skill getCopier(monster enemy, boolean inCombat)
 	{
 		return $skill[Blow the Purple Candle\!];
 	}
-	if(canUse($skill[%fn\, fire a Red\, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
+	if(auto_haveEagle() && canUse($skill[%fn\, fire a Red\, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
 	{
 		return $skill[%fn\, fire a Red\, White and Blue Blast];
 	}
