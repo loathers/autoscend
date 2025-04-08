@@ -608,6 +608,7 @@ boolean auto_canLeapBridge();
 int auto_swoopsRemaining();
 boolean auto_haveSeptEmberCenser();
 int remainingEmbers();
+boolean auto_goingToMouthwashLevel();
 void auto_buyFromSeptEmberStore();
 float expected_mouthwash_main_substat();
 float expected_mouthwash_main_substat(float cold_res);

@@ -1040,8 +1040,10 @@ boolean auto_getCitizenZone(location loc)
 	//set goal for tracking
 	if(specZones contains loc)
 	{
-		//only want spec to get cold res for septEmberCenser usage
-		if(auto_haveSeptEmberCenser() && turns_played() == 0) //ideally also have spring away
+		
+		//only want spec to get cold res for septEmberCenser usage and only if we don't get to L13. Don't want to do this outside of D1
+		//ideally also have spring away or some other free run
+		if((auto_goingToMouthwashLevel() && expected_level_after_mouthwash() < 13) && turns_played() == 0)
 		{
 			goal = "spec";
 		}
