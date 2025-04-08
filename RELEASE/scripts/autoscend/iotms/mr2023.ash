@@ -954,7 +954,7 @@ boolean auto_citZoneModIsGoal(string goal)
 {
 	string activeCitZoneMod = activeCitZoneMod();
 
-	if(contains_text(activeCitZoneMod, goal) || (goal == "spec" && contains_text(activeCitZoneMod, "resistance to all el")))
+	if(contains_text(activeCitZoneMod, goal) || (goal == "spec" && contains_text(activeCitZoneMod, "cold resistance")))
 	{
 		return true;
 	}
