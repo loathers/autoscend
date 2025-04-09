@@ -559,7 +559,7 @@ string activeCitZoneMod();
 boolean auto_citZoneModIsGoal(string goal);
 boolean auto_citizenZonePrep(string goal);
 boolean[location] citizenZones(string target);
-boolean auto_getCitizenZone(location loc);
+boolean auto_getCitizenZone(location loc, boolean inCombat);
 boolean auto_getCitizenZone(string goal);
 boolean auto_haveBurningLeaves();
 boolean auto_initBurningLeaves();

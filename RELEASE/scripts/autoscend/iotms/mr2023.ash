@@ -985,7 +985,7 @@ boolean auto_citizenZonePrep(string goal)
 		{
 			auto_log_debug("Tried to remove Citizen of a Zone but couldn't");
 			return false;
-			}
+		}
 	}
 	return true;
 }
@@ -1020,7 +1020,7 @@ boolean[location] citizenZones(string goal)
 	}
 	return $locations[none];
 }
-boolean auto_getCitizenZone(location loc)
+boolean auto_getCitizenZone(location loc, boolean inCombat)
 {
 	familiar eagle = $familiar[Patriotic Eagle];
 	//zones are approximately organized by autoscend level quest structure
@@ -1074,27 +1074,24 @@ boolean auto_getCitizenZone(location loc)
 	{
 		return false;
 	}
-	handleFamiliar(eagle);
-	set_property("auto_forceFreeRun", true);
-	if(autoAdv(loc))
+	if(!inCombat)
 	{
-		activeCitZoneMod = activeCitZoneMod();
-		if(auto_citZoneModIsGoal(goal)) //need this if statement separate in case we hit a non-combat
+		if(use_familiar(eagle))
 		{
-			handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-			return true;
-		}
-		else
-		{
-			auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
-			return false;
+			set_property("auto_forceFreeRun", true);
+			if(!autoAdv(loc))
+			{
+				auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
+				return false;
+			}
 		}
 	}
 	else
 	{
-		auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
-		return false;
+		handleTracker("Citizen of a Zone", my_location().to_string(), goal, "auto_otherstuff");
+		return true;
 	}
+	return false;
 }
 
 boolean auto_getCitizenZone(string goal)
@@ -1112,26 +1109,7 @@ boolean auto_getCitizenZone(string goal)
 		{
 			continue;
 		}
-		handleFamiliar($familiar[Patriotic Eagle]);
-		set_property("auto_forceFreeRun", true);
-		if(autoAdv(loc))
-		{
-			if(auto_citZoneModIsGoal(goal))
-			{
-				handleTracker("Citizen of a Zone: " + goal, "auto_otherstuff");
-				return true;
-			}
-			else
-			{
-				auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
-				return false;
-			}
-		}
-		else
-		{
-			auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
-			return false;
-		}
+		return auto_getCitizenZone(loc, false);
 	}
 	return false;
 }

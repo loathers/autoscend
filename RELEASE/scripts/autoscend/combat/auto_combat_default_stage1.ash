@@ -266,6 +266,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	//[Patriotic Eagle] familiar skill that gives a useful buff
 	if (canUse($skill[%fn\, let\'s pledge allegiance to a Zone]))
 	{
+		auto_getCitizenZone(my_location(), true);
 		return useSkill($skill[%fn\, let\'s pledge allegiance to a Zone], true);
 	}
 	
