@@ -945,6 +945,10 @@ boolean auto_canRWBBlast()
 	{
 		return false;
 	}
+	if(!(auto_is_valid($skill[%fn\, fire a Red\, White and Blue Blast])))
+	{
+		return false;
+	}
 	if(have_effect($effect[Everything Looks Red, White and Blue]) > 0)
 	{
 		//Already have ELRWB
