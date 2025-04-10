@@ -921,7 +921,7 @@ void auto_handleJillOfAllTrades()
 
 boolean auto_haveEagle()
 {
-	if(auto_have_familiar($familiar[Patriotic Eagle]))
+	if(canChangeToFamiliar($familiar[Patriotic Eagle]))
 	{
 		return true;
 	}
