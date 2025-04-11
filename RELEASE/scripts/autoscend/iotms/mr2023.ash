@@ -921,7 +921,7 @@ void auto_handleJillOfAllTrades()
 
 boolean auto_haveEagle()
 {
-	if(auto_have_familiar($familiar[Patriotic Eagle]))
+	if(canChangeToFamiliar($familiar[Patriotic Eagle]))
 	{
 		return true;
 	}
@@ -937,6 +937,67 @@ familiar auto_forceEagle(familiar famChoice)
 		return $familiar[Patriotic Eagle];
 	}
 	return famChoice;
+}
+
+boolean auto_canRWBBlast()
+{
+	if(!auto_haveEagle())
+	{
+		return false;
+	}
+	if(!(auto_is_valid($skill[%fn\, fire a Red\, White and Blue Blast])))
+	{
+		return false;
+	}
+	if(have_effect($effect[Everything Looks Red, White and Blue]) > 0)
+	{
+		//Already have ELRWB
+		return false;
+	}
+	if(auto_habitatMonster() != $monster[none])
+	{
+		//don't want to RWB Blast a Habitated monster
+		return false;
+	}
+	return true;
+}
+
+boolean auto_RWBBlastTarget(monster target)
+{
+	if(!auto_canRWBBlast())
+	{
+		return false;
+	}
+	switch(target)
+	{
+		case $monster[modern zmobie]:
+			// only worth it if we need 15 or more evilness reduced
+			return ((get_property("cyrptAlcoveEvilness").to_int() - (3 * (5 + cyrptEvilBonus()))) > 13);
+		case $monster[dirty old lihc]:
+			// only worth it if we need 9 or more evilness reduced.
+			return ((get_property("cyrptNicheEvilness").to_int() - (3 * (3 + cyrptEvilBonus()))) > 13);
+		default:
+			return (get_property("rwbMonster").to_monster() == target);
+	}
+	return false;
+}
+
+int auto_rwbFightsLeft()
+{
+	if(auto_RWBMonster() != $monster[none])
+	{
+		return (3 - get_property("rwbMonsterCount").to_int());
+	}
+	return 0;
+}
+
+monster auto_RWBMonster()
+{
+	if(get_property("rwbMonsterCount").to_int() < 3)
+	{
+		return get_property("rwbMonster").to_monster();
+	}
+	return $monster[none];
 }
 
 boolean auto_haveBurningLeaves()
