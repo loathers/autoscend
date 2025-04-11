@@ -563,6 +563,10 @@ void auto_buyFromSeptEmberStore()
 			{
 				auto_wishForEffectIfNeeded($effect[Fever From the Flavor]);
 			}
+			if (expected_level_after_mouthwash()<13) // get Citizen of Outskirts of Cobb's Knob (+4 prismatic res) if we really need it
+			{
+				auto_getCitizenZone("spec");
+			}
 			// buy mouthwash and use it
 			buy($coinmaster[Sept-Ember Censer], 1, mouthwash);
 			auto_log_debug(`Using mouthwash with {numeric_modifier($modifier[cold resistance])} cold resistance`);
