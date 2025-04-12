@@ -1355,6 +1355,8 @@ boolean doBedtime()
 		}
 
 		bedtime_spleen();
+		// spleen use may have equipped +stat gain items
+		equipRollover(true);
 
 		bedtime_pulls();
 		pullsNeeded("evaluate");
