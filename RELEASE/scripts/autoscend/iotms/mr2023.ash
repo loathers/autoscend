@@ -1060,19 +1060,19 @@ boolean[location] citizenZones(string goal)
 	}
 	if(goal == "item")
 	{
-		return $locations[A Massive Ziggurat, The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
+		return $locations[The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
 	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
 	}
 	if(goal == "init")
 	{
-		return $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, An Overgrown Shrine (Northeast),
-	Oil Peak, Cobb's Knob Kitchens, The VERY Unquiet Garves, The Haunted Kitchen];
+		return $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, Oil Peak, Cobb's Knob Kitchens,
+		The VERY Unquiet Garves, The Haunted Kitchen];
 	}
 	if(goal == "mp")
 	{
-		return $locations[Sonofa Beach, The Themthar Hills, The Upper Chamber, Inside the Palindome, An Overgrown Shrine (Northwest), A-boo Peak, Hippy Camp,
-	Megalo-City, Shadow Rift, Vanya's Castle, The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,
-	The Haunted Ballroom, The Red Zeppelin, An Overgrown Shrine (Southwest), The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
+		return $locations[The Upper Chamber, Inside the Palindome, A-boo Peak, Hippy Camp, Megalo-City, Shadow Rift, Vanya's Castle,
+		The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,	The Haunted Ballroom,
+		The Red Zeppelin, The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
 	}
 	if(goal == "spec")
 	{
