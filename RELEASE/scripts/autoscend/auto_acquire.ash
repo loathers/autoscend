@@ -627,7 +627,7 @@ int handlePulls(int day)
 			{
 				if(storage_amount(it) > 0 && auto_is_valid(it) && !pulledToday(it))
 				{
-					user_confirm("Pulling a " + it + ". If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+					if(user_confirm("Pulling a " + it + ". If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false))
 					{
 						pullXWhenHaveY(it, 1, 0);
 					}
