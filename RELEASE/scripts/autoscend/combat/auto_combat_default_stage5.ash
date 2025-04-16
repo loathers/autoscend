@@ -204,7 +204,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 
 		if(enemy.physical_resistance > 80)
 		{
-			foreach sk in $skills[Saucestorm, Saucegeyser, Northern Explosion]
+			foreach sk in $skills[Saucestorm, Saucegeyser]
 			{
 				if(canUse(sk, false))
 				{
@@ -214,6 +214,14 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 					costMajor = mp_cost(sk);
 					break;
 				}
+			}
+			if(canUse($skill[Northern Explosion], false) && !auto_canNorthernExplosionFE())
+			{
+				attackMinor = useSkill(sk, false);
+				attackMajor = useSkill(sk, false);
+				costMinor = mp_cost(sk);
+				costMajor = mp_cost(sk);
+				break;
 			}
 		}
 		break;
@@ -856,7 +864,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				return useSkill($skill[Spirit Snap]);
 			}
 		}
-		if(canUse($skill[Northern Explosion]) && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]) && (hasClubEquipped() || (buffed_hit_stat() - 20) > monster_defense()))
+		if(canUse($skill[Northern Explosion]) && !auto_canNorthernExplosionFE() && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]) && (hasClubEquipped() || (buffed_hit_stat() - 20) > monster_defense()))
 		{
 			return useSkill($skill[Northern Explosion]);
 		}
