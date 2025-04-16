@@ -639,7 +639,10 @@ boolean canYellowRay(monster target)
 		auto_is_valid($item[spitball]) &&			//or if it's not valid
 		item_amount($item[glob of wet paper]) > 0)	//need at least 1 glob of wet paper to buy one
 		{
-			buy($coinmaster[Using your Shower Thoughts], 1, $item[spitball]);
+			if(buy($coinmaster[Using your Shower Thoughts], 1, $item[spitball]))
+			{
+				handleTracker($item[April Shower Thoughts Shield],$item[spitball],"auto_iotm_claim");
+			}
 		}
 
 		// Spitball from April Shower Thoughts Shiled has a 100 turn cd, but is a free-kill but is not unlimited
