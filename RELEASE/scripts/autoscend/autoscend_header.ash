@@ -644,6 +644,10 @@ boolean auto_setLeprecondo();
 boolean auto_useLeprecondoDrops();
 int auto_punchOutsLeft();
 int auto_afterimagesLeft();
+boolean auto_haveAprilShowerShield();
+boolean auto_getGlobs();
+boolean auto_equipAprilShieldBuff();
+boolean auto_canNorthernExplosionFE();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

@@ -507,6 +507,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Leash of Linguini], 20, 1, 10);
 			if(regen > 10.0)
 			{
+				auto_equipAprilShieldBuff(); //Equip the shield if possible
 				buffMaintain($effect[Empathy], 25, 1, 10);
 			}
 		}
@@ -568,6 +569,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Leash of Linguini], 30, 1, 10);
 			if(regen > 10.0)
 			{
+				auto_equipAprilShieldBuff(); //Equip the shield if possible
 				buffMaintain($effect[Empathy], 35, 1, 10);
 			}
 		}
@@ -635,6 +637,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
 			if(regen > 4.0)
 			{
+				auto_equipAprilShieldBuff(); //Equip the shield if possible
 				buffMaintain($effect[Empathy], 50, 1, 10);
 			}
 		}
@@ -745,6 +748,7 @@ boolean auto_post_adventure()
 		// Only maintain in path with familiars
 		if(buff_familiar)
 		{
+			auto_equipAprilShieldBuff(); //Equip the shield if possible
 			buffMaintain($effect[Empathy], 50, 1, 10);
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
 		}

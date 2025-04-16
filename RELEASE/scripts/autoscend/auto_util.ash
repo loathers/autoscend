@@ -609,8 +609,13 @@ boolean canYellowRay(monster target)
 
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
-		
-		// first, do any necessary prep to use a yellow ray
+		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
+		if(auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]) && hasTorso())
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
+		}
+
+		// Get a yellow rocket if we don't have a parka
 		if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
 			get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
 			item_amount($item[yellow rocket]) == 0 &&		// Don't buy if we already have one
@@ -620,18 +625,27 @@ boolean canYellowRay(monster target)
 			cli_execute("acquire " + $item[yellow rocket]);
 		}
 
-		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
-		if(auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]) && hasTorso())
-		{
-			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
-		}
-
 		// Yellow rocket has the lowest cooldown, and is unlimited, so prioritize over other sources
 		if (item_amount($item[yellow rocket]) > 0 &&
 			auto_is_valid($item[yellow rocket]) &&
 			yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "")
 		{
 			return true;
+		}
+
+		// acquire a spitball if we haven't gotten any of the above
+		if(auto_haveAprilShowerShield() &&			//need April Shower Thoughts Shield
+		item_amount($item[spitball]) == 0 &&		//don't buy if we already have one
+		auto_is_valid($item[spitball]) &&			//or if it's not valid
+		item_amount($item[glob of wet paper]) > 0)	//need at least 1 glob of wet paper to buy one
+		{
+			buy($coinmaster[Using your Shower Thoughts], 1, $item[spitball]);
+		}
+
+		// Spitball from April Shower Thoughts Shiled has a 100 turn cd, but is a free-kill but is not unlimited
+		if(auto_is_valid($item[spitball]) && item_amount($item[spitball]) > 0)
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 		}
 		
 		// roman candelabra, also a 75 turn cooldown
@@ -1145,6 +1159,10 @@ boolean adjustForYellowRay(string combat_string)
 		{
 			auto_log_error("Failed to prepare a yellow ray. yellowRayCombatString thinks we can craft a 9-volt battery but we actually could not");
 		}
+	}
+	if(combat_string == "skill " + $skill[Northern Explosion])
+	{
+		return autoEquip($item[April Shower Thoughts Shield]);
 	}
 	return true;
 }
@@ -4889,6 +4907,11 @@ boolean auto_burnMP(int mpToBurn)
 	{
 		// only set a default skill if we have one
 		set_property("lastChanceBurn","cast # " + defaultSkill);
+	}
+
+	if(auto_haveAprilShowerShield())
+	{
+		equip($item[April Shower Thoughts Shield]); //useful additional buffs when equipped
 	}
 
 	// record starting MP
