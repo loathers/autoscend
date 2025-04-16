@@ -217,10 +217,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			}
 			if(canUse($skill[Northern Explosion], false) && !auto_canNorthernExplosionFE())
 			{
-				attackMinor = useSkill(sk, false);
-				attackMajor = useSkill(sk, false);
-				costMinor = mp_cost(sk);
-				costMajor = mp_cost(sk);
+				attackMinor = useSkill($skill[Northern Explosion], false);
+				attackMajor = useSkill($skill[Northern Explosion], false);
+				costMinor = mp_cost($skill[Northern Explosion]);
+				costMajor = mp_cost($skill[Northern Explosion]);
 				break;
 			}
 		}

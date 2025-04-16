@@ -504,7 +504,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Hippy Stench]:					useItem = $item[reodorant];						break;
 	case $effect[Hot Hands]:					useItem = $item[lotion of hotness];				break;
 	case $effect[How to Scam Tourists]:			useItem = $item[How to Avoid Scams];			break;
-	case $effect[Human-Beast Hybrid]:			useItem = $item[Gene Tonic: Beast];				break;																					break;
+	case $effect[Human-Beast Hybrid]:			useItem = $item[Gene Tonic: Beast];				break;
 	case $effect[Human-Constellation Hybrid]:	useItem = $item[Gene Tonic: Constellation];		break;
 	case $effect[Human-Demon Hybrid]:			useItem = $item[Gene Tonic: Demon];				break;
 	case $effect[Human-Elemental Hybrid]:		useItem = $item[Gene Tonic: Elemental];			break;
@@ -936,9 +936,9 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[They\'ve Got Fleas]:			useItem = $item[Out-of-work circus flea];		break;
 	case $effect[This is Where You\'re a Viking]:useItem = $item[VYKEA woadpaint];				break;
 	case $effect[Thoughtful Empathy]:
-		if(auto_have_skill($skill[Empathy]) && auto_equipAprilShieldBuff())
+		if(auto_have_skill($skill[Empathy of the Newt]) && auto_equipAprilShieldBuff())
 		{
-			useSkill = $skill[Empathy];
+			useSkill = $skill[Empathy of the Newt];
 		}																						break;
 	case $effect[Throwing Some Shade]:			useItem = $item[Shady Shades];					break;
 	case $effect[Ticking Clock]:				useItem = $item[Cheap wind-up Clock];			break;
