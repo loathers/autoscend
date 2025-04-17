@@ -1000,6 +1000,190 @@ monster auto_RWBMonster()
 	return $monster[none];
 }
 
+string activeCitZoneMod() // get the active Citizen of a Zone mods, if any
+{
+	if(!auto_haveEagle() || have_effect($effect[Citizen of a Zone]) == 0)
+	{
+		return "";
+	}
+	visit_url("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944"); // visit url to refresh Mafia's _citizenZoneMods preference
+	string activeCitZoneMod = get_property("_citizenZoneMods").to_lower_case();
+	return activeCitZoneMod;
+}
+
+boolean auto_citZoneModIsGoal(string goal)
+{
+	string activeCitZoneMod = activeCitZoneMod();
+
+	if(contains_text(activeCitZoneMod, goal) || (goal == "spec" && contains_text(activeCitZoneMod, "cold resistance")))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_citizenZonePrep(string goal)
+{
+	string activeCitZoneMod = activeCitZoneMod();
+	if(my_meat() < meatReserve() && goal != "mp")
+	{
+		return false; //don't attempt to change if we don't have a lot of meat and we are going for something other than mp
+	}
+	if(have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal))
+	{
+		auto_log_info("No need to remove Citizen of a Zone");
+		return false;
+	}
+	if(have_effect($effect[Citizen of a Zone]) > 0 && !contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) == 0)
+	{
+		auto_log_info("Can't remove Citizen of a Zone");
+		return false;
+	}
+	if(!(auto_citZoneModIsGoal(goal)) && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0) //try to remove Citizen of a Zone
+	{
+		uneffect($effect[Citizen of a Zone]);
+		if(have_effect($effect[Citizen of a Zone]) > 0)
+		{
+			auto_log_debug("Tried to remove Citizen of a Zone but couldn't");
+			return false;
+		}
+	}
+	return true;
+}
+
+boolean[location] citizenZones(string goal)
+{
+	if(goal == "meat")
+	{
+		return $locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
+	Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
+	}
+	if(goal == "item")
+	{
+		return $locations[The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
+	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
+	}
+	if(goal == "init")
+	{
+		return $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, Oil Peak, Cobb's Knob Kitchens,
+		The VERY Unquiet Garves, The Haunted Kitchen];
+	}
+	if(goal == "mp")
+	{
+		return $locations[The Upper Chamber, Inside the Palindome, A-boo Peak, Hippy Camp, Megalo-City, Shadow Rift, Vanya's Castle,
+		The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,	The Haunted Ballroom,
+		The Red Zeppelin, The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
+	}
+	if(goal == "spec")
+	{
+		//prismatic resistance
+		return $locations[The Outskirts of Cobb\'s Knob];
+	}
+	return $locations[none];
+}
+boolean auto_getCitizenZone(location loc, boolean inCombat)
+{
+	familiar eagle = $familiar[Patriotic Eagle];
+	//zones are approximately organized by autoscend level quest structure
+	boolean[location] meatZones = citizenZones("meat");
+	boolean[location] itemZones = citizenZones("item");
+	boolean[location] initZones = citizenZones("init");
+	//mp zones are organized by 20-30 mp regen then 10-15 mp regen and then approximately autoscend level quest structure
+	boolean[location] mpZones = citizenZones("mp");
+	boolean[location] specZones = citizenZones("spec");
+	string activeCitZoneMod = activeCitZoneMod();
+	string goal;
+	
+	if(!can_adventure(loc))
+	{
+		return false;
+	}
+	//set goal for tracking
+	if(specZones contains loc)
+	{
+		
+		//only want spec to get cold res for septEmberCenser usage and only if we don't get to L13. Don't want to do this outside of D1
+		//ideally also have spring away or some other free run
+		if((auto_goingToMouthwashLevel() && expected_level_after_mouthwash() < 13) && turns_played() == 0)
+		{
+			goal = "spec";
+		}
+	}
+	if(meatZones contains loc)
+	{
+		goal = "meat";
+	}
+	else if(itemZones contains loc)
+	{
+		goal = "item";
+	}
+	else if(initZones contains loc)
+	{
+		goal = "init";
+	}
+	else if(mpZones contains loc)
+	{
+		goal = "mp";
+	}
+	else
+	{
+		//if for some reason we make it into the location getCitizenZone and it's not in any of the defined zones, get the item buff
+		auto_log_debug("Somehow we got here and don't actually want to use the Eagle");
+		return false;
+	}
+	if(!auto_citizenZonePrep(goal))
+	{
+		return false;
+	}
+
+	boolean wantToFreeRun()
+	{
+		if(loc == solveDelayZone())
+		{
+			return true;
+		}
+		return false;
+	}
+	if(!inCombat)
+	{
+		if(use_familiar(eagle))
+		{
+			if(wantToFreeRun())	set_property("auto_forceFreeRun", true);
+			if(!autoAdv(loc))
+			{
+				auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
+				return false;
+			}
+		}
+	}
+	else
+	{
+		handleTracker("Citizen of a Zone", my_location().to_string(), goal, "auto_otherstuff");
+		return true;
+	}
+	return false;
+}
+
+boolean auto_getCitizenZone(string goal)
+{
+	boolean[location] zones = citizenZones(goal);
+
+	if(!auto_citizenZonePrep(goal))
+	{
+		return false;
+	}
+
+	foreach loc in zones
+	{
+		if(!can_adventure(loc))
+		{
+			continue;
+		}
+		return auto_getCitizenZone(loc, false);
+	}
+	return false;
+}
+
 boolean auto_haveBurningLeaves()
 {
 	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];
