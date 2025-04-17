@@ -104,6 +104,10 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			{
 				set_property("_missileLauncherUsed", true);
 			}
+			if(combatAction == useSkill($skill[Northern Explosion]))
+			{
+				set_property("_autoNorthernExplosionFEUsed", true);
+			}
 			return combatAction;
 		}
 		else

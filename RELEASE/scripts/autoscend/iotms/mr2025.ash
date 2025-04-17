@@ -188,3 +188,52 @@ int auto_afterimagesLeft()
 {
 	return to_int(get_property("phosphorTracesUses"));
 }
+
+boolean auto_haveAprilShowerShield()
+{
+	item shield = $item[April Shower Thoughts shield];
+	return (auto_is_valid(shield) && possessEquipment(shield));
+}
+
+boolean auto_getGlobs()
+{
+	if(!auto_haveAprilShowerShield())
+	{
+		return false;
+	}
+	//if breakfast hasn't run yet or they haven't been manually collected
+	if(!get_property("_aprilShowerGlobsCollected").to_boolean())
+	{
+		visit_url('inventory.php?action=shower');
+		return true;
+	}
+	return false;
+}
+
+boolean auto_equipAprilShieldBuff()
+{
+	if(!auto_haveAprilShowerShield())
+	{
+		return false;
+	}
+	//force equip the shield if this is called
+	return equip($item[April Shower Thoughts Shield]);
+}
+
+boolean auto_canNorthernExplosionFE()
+{
+	//Northern Explosion becomes Feel Envy-adjacent once per day
+	if(!auto_haveAprilShowerShield())
+	{
+		return false;
+	}
+	if(!auto_have_skill($skill[Northern Explosion]))
+	{
+		return false;
+	}
+	if(get_property("_autoNorthernExplosionFEUsed").to_boolean()) //update this once Mafia has the preference
+	{
+		return false;
+	}
+	return true;
+}

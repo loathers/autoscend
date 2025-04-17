@@ -399,7 +399,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			{
 				coldSkillToUse = $skill[Cannelloni Cannon];
 			}
-			else if(canUse($skill[Northern Explosion], false))
+			else if(canUse($skill[Northern Explosion], false) && !auto_canNorthernExplosionFE())
 			{
 				coldSkillToUse = $skill[Northern Explosion];
 			}
