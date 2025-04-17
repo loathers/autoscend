@@ -1055,7 +1055,7 @@ boolean[location] citizenZones(string goal)
 {
 	if(goal == "meat")
 	{
-		return $locations[The Battlefield (Frat Uniform), The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
+		return $locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
 	Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
 	}
 	if(goal == "item")
@@ -1135,11 +1135,20 @@ boolean auto_getCitizenZone(location loc, boolean inCombat)
 	{
 		return false;
 	}
+
+	boolean wantToFreeRun()
+	{
+		if(loc == solveDelayZone())
+		{
+			return true;
+		}
+		return false;
+	}
 	if(!inCombat)
 	{
 		if(use_familiar(eagle))
 		{
-			set_property("auto_forceFreeRun", true);
+			if(wantToFreeRun())	set_property("auto_forceFreeRun", true);
 			if(!autoAdv(loc))
 			{
 				auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
