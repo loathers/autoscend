@@ -188,6 +188,10 @@ boolean auto_run_choice(int choice, string page)
 			{
 				run_choice(4); // get the model airship
 			}
+			else if (options contains 6)
+			{
+				run_choice(6); // advance immateria quest
+			}
 			else if (options contains 5)
 			{
 				run_choice(5); // get titanium umbrella, metallic A, SGEEA and a penultimate fantasy chest
@@ -319,8 +323,8 @@ boolean auto_run_choice(int choice, string page)
 		case 605: // Welcome to the Great Overlook Lodge (Twin Peak Part 2)
 			run_choice(1); // always advance to next option via choice 1
 			break;
-		case 606: // Lost in the Great Overlook
-			if(in_bhy())
+		case 606: // Lost in the Great Overlook Lodge
+			if(in_bhy() || in_glover() && item_amount($item[Jar Of Oil]) == 0)
 			{
 				// we can't make an oil jar to solve the quest, just adventure until the hotel is burned down
 				run_choice(6); // and flee the music NC
@@ -431,7 +435,7 @@ boolean auto_run_choice(int choice, string page)
 			hiddenCityChoiceHandler(choice);
 			break;
 		case 793: // The Shore, Inc. Travel Agency. doing a vacation
-			if(options contains 5)
+			if(options contains 5 && get_property("auto_considerCCSCShore").to_boolean())
 			{
 				run_choice(5); // 2 Shore scrips, all stats, +wdmg
 			}

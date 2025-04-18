@@ -199,47 +199,25 @@ string useItems(item it1, item it2)
 
 boolean isSniffed(monster enemy, skill sk)
 {
-	//checks if the monster enemy is currently sniffed using the specific skill sk
-	boolean retval = false;
-	switch(sk)
-	{
-		case $skill[Transcendent Olfaction]:
-			retval = contains_text(get_property("olfactedMonster"), enemy);
-			break;
-		case $skill[Make Friends]:
-			retval = contains_text(get_property("makeFriendsMonster"), enemy);
-			break;
-		case $skill[Long Con]:
-			retval = contains_text(get_property("longConMonster"), enemy);
-			break;
-		case $skill[Perceive Soul]:
-			retval = contains_text(get_property("auto_bat_soulmonster"), enemy);
-			break;
-		case $skill[Gallapagosian Mating Call]:
-			retval = contains_text(get_property("_gallapagosMonster"), enemy);
-			break;
-		case $skill[Monkey Point]:
-			retval = contains_text(get_property("monkeyPointMonster"), enemy);
-			break;
-		case $skill[Get a Good Whiff of This Guy]:
-			retval = contains_text(get_property("nosyNoseMonster"), enemy) && my_familiar() == $familiar[Nosy Nose];
-			break;
-		case $skill[Offer Latte to Opponent]:
-			retval = contains_text(get_property("_latteMonster"), enemy);
-			break;
-		case $skill[Motif]:
-			retval = contains_text(get_property("motifMonster"), enemy);
-			break;
-		default:
-			abort("isSniffed was asked to check an unidentified skill: " +sk);
+	string search;
+	if (sk == $skill[Get a Good Whiff of This Guy]) {
+		search = "Nosy Nose";
+	} else {
+		search = sk.to_string();
 	}
-	return retval;
+	string[0] tracked = tracked_by(enemy);
+	foreach n in tracked {
+		if (tracked[n] == search) {
+			return true;
+		}
+	}
+	return false;
 }
 
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -259,11 +237,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Make Friends];		//avatar of sneaky pete specific skill
 	}
-	//commented out because Mafia doesn't track Hunt yet
-	/*if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
+	if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
 	{
 		return $skill[Hunt];				//WereProfessor Werewolf specific skill
-	}*/
+	}
 	if(canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5 && !isSniffed(enemy, $skill[Long Con]))
 	{
 		return $skill[Long Con];
@@ -276,13 +253,31 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Motif];
 	}
+	if (inCombat)
+	{
+		if(canUse($skill[Monkey Point], true , inCombat) && !isSniffed(enemy, $skill[Monkey Point]))
+		{
+			return $skill[Monkey Point];
+		}
+		if(canUse($skill[McHugeLarge Slash], true , inCombat) && !isSniffed(enemy, $skill[McHugeLarge Slash]) && auto_McLargeHugeSniffsLeft()>0)
+		{
+			return $skill[McHugeLarge Slash];
+		}
+	}
+	else
+	{
+		if (auto_monkeyPawWishesLeft()==1 && !isSniffed(enemy, $skill[Monkey Point]))
+		{
+			return $skill[Monkey Point];
+		}
+		if (possessEquipment($item[McHugeLarge left pole]) && !isSniffed(enemy, $skill[McHugeLarge Slash]) && auto_McLargeHugeSniffsLeft()>0)
+		{
+			return $skill[McHugeLarge Slash];
+		}
+	}
 	if(canUse($skill[Gallapagosian Mating Call], true , inCombat) && !isSniffed(enemy, $skill[Gallapagosian Mating Call]))
 	{
 		return $skill[Gallapagosian Mating Call];
-	}
-	if(canUse($skill[Monkey Point], true , inCombat) && !isSniffed(enemy, $skill[Monkey Point]))
-	{
-		return $skill[Monkey Point];
 	}
 	if(my_familiar() == $familiar[Nosy Nose] && canUse($skill[Get a Good Whiff of This Guy]) && !isSniffed(enemy,$skill[Get a Good Whiff of This Guy]))
 	{
@@ -298,6 +293,45 @@ skill getSniffer(monster enemy, boolean inCombat)
 skill getSniffer(monster enemy)
 {
 	return getSniffer(enemy, true);
+}
+
+boolean isCopied(monster enemy, skill sk)
+{
+	//checks if the monster enemy is currently copied using the specific skill sk
+	boolean retval = false;
+	switch(sk)
+	{
+		case $skill[Blow the Purple Candle\!]:
+			retval = contains_text(get_property("auto_purple_candled"), enemy);
+			break;
+		default:
+			abort("isCopied was asked to check an unidentified skill: " +sk);
+	}
+	return retval;
+}
+
+boolean isCopied(monster enemy)
+{
+	//checks if the monster enemy is currently copied using any of the copy skills
+	foreach sk in $skills[Blow the Purple Candle\!]
+	{
+		if(isCopied(enemy, sk)) return true;
+	}
+	return false;
+}
+
+skill getCopier(monster enemy, boolean inCombat)
+{
+	if((auto_haveRoman() && have_effect($effect[Everything Looks Purple]) == 0) || (have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0))
+	{
+		return $skill[Blow the Purple Candle\!];
+	}
+	return $skill[none];
+}
+
+skill getCopier(monster enemy)
+{
+	return getCopier(enemy, true);
 }
 
 skill getStunner(monster enemy)
@@ -399,6 +433,12 @@ skill getStunner(monster enemy)
 		break;
 	}
 	
+	// From Designer Sweatpants. Use when have nearly full sweat or when losing combat
+	if(canUse($skill[Sweat Flood]) && (getSweat() > 98 || contains_text(get_property("_auto_combatState"), "last attempt")))
+	{
+		return $skill[Sweat Flood];
+	}
+
 	// Decreases in stun duration the more it's used
 	if(canUse($skill[Summon Love Gnats]))
 	{
@@ -468,6 +508,29 @@ string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string
 	return "abort";	//must have a return
 }
 
+string findPhylumBanisher(int round, monster enemy, string text)
+{
+	string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
+	if(banishAction != "")
+	{
+		auto_log_info("Looking at banishAction: " + banishAction, "green");
+		if(index_of(banishAction, "skill") == 0)
+		{
+			handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
+		}
+		else if(index_of(banishAction, "item") == 0)
+		{
+			handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
+		}
+		else
+		{
+			auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
+		}
+		return banishAction;
+	}
+	return auto_combatHandler(round, enemy, text);
+}
+
 string findBanisher(int round, monster enemy, string text)
 {
 	string banishAction = banisherCombatString(enemy, my_location(), true);
@@ -493,6 +556,33 @@ string findBanisher(int round, monster enemy, string text)
 		return useSkill($skill[Storm of the Scarab], false);
 	}
 	return auto_combatHandler(round, enemy, text);
+}
+
+string banisherCombatString(phylum enemyPhylum, location loc, boolean inCombat)
+{
+	if(inAftercore())
+	{
+		return "";
+	}
+
+	if(in_pokefam())
+	{
+		return "";
+	}
+
+	//Check that we actually want to banish this thing.
+	if(!auto_wantToBanish(enemyPhylum, loc))
+		return "";
+
+	if(inCombat)
+		auto_log_info("Finding a phylum banisher to use on " + enemyPhylum + " at " + loc, "green");
+
+	if(inCombat ? (my_familiar() == $familiar[Patriotic Eagle] && get_property("screechCombats").to_int() == 0) : (auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0)))
+	{
+		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
+	}
+
+	return "";
 }
 
 string banisherCombatString(monster enemy, location loc, boolean inCombat)
@@ -551,6 +641,8 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		Beancannon: item, no turn limit, no limit
 		Tennis Ball: item, no turn limit
 
+		anchor bomb: item, 30 turns
+
 		Breathe Out: per hot jelly usage
 	*/
 
@@ -570,6 +662,10 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Howl of the Alpha];
 	}
 
+	if(inCombat ? item_amount($item[Handful of split pea soup]) > 0 && (!(used contains "Handful of split pea soup")) && auto_is_valid($item[Handful of split pea soup]) && useFree : (item_amount($item[Handful of split pea soup]) > 0 || item_amount($item[Whirled peas]) >= 2))
+	{
+		return "item " + $item[Handful of split pea soup];
+	}
 	if((inCombat ? auto_have_skill($skill[Throw Latte on Opponent]) : possessEquipment($item[latte lovers member\'s mug])) && auto_is_valid($skill[Throw Latte On Opponent]) && !get_property("_latteBanishUsed").to_boolean() && !(used contains "Throw Latte on Opponent") && useFree)
 	{
 		return "skill " + $skill[Throw Latte on Opponent];
@@ -757,8 +853,17 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "item " + $item[divine champagne popper];
 	}
+	if((item_amount($item[anchor bomb]) > keep) && (!(used contains "anchor bomb"))&& auto_is_valid($item[anchor bomb]) && useFree)
+	{
+		return "item " + $item[anchor bomb];
+	}
 
 	return "";
+}
+
+string banisherCombatString(phylum enemyPhylum, location loc)
+{
+	return banisherCombatString(enemyPhylum, loc, false);
 }
 
 string banisherCombatString(monster enemy, location loc)
@@ -907,7 +1012,7 @@ string replaceMonsterCombatString(monster target, boolean inCombat)
 	{
 		return "skill " + $skill[CHEAT CODE: Replace Enemy];
 	}
-	if(canUse($item[waffle]))
+	if (canUse($item[waffle]) && !in_avantGuard())
 	{
 		return useItems($item[waffle], $item[none]);
 	}
@@ -950,6 +1055,7 @@ boolean wantToForceDrop(monster enemy)
 	//skills that can be used on any combat round, repeatedly until an item is stolen
 	//take into account if a yellow ray has been used. Must have been one that doesn't insta-kill
 	boolean mildEvilAvailable = canUse($skill[Perpetrate Mild Evil],false) && get_property("_mildEvilPerpetrated").to_int() < 3;
+	boolean swoopAvailable = canUse($skill[Swoop like a Bat], true) && get_property("_batWingsSwoopUsed").to_int() < 11;
 
 	boolean forceDrop = false;
 
@@ -973,7 +1079,7 @@ boolean wantToForceDrop(monster enemy)
 
 	// polar vortex/mild evil is more likely to pocket an item the higher the drop rate. Unlike XO which has equal chance for all drops
 	// reserve extinguisher 30 charge for filth worms
-	if(auto_fireExtinguisherCharges() > 20 || mildEvilAvailable)
+	if(auto_fireExtinguisherCharges() > 20 || mildEvilAvailable || swoopAvailable)
 	{
 		int dropsFromYR = 0;
 		if(combat_status_check("yellowray"))
@@ -1005,7 +1111,92 @@ boolean wantToForceDrop(monster enemy)
 			forceDrop = true;
 		}
 	}
+	
+	if(isActuallyEd() && my_location() == $location[The Secret Council Warehouse])
+	{
+		int progress = get_property("warehouseProgress").to_int();
+		if(enemy == $monster[Warehouse Guard])
+		{
+			int n_pages = item_amount($item[warehouse map page]);
+			int progress_with_pages = progress+n_pages*8;
+			if (progress_with_pages<39) // need 40 to "win", will get +1 for this combat
+			{
+				forceDrop = true;
+			}
+		}
+		else if(enemy == $monster[Warehouse Clerk])
+		{
+			int n_pages = item_amount($item[warehouse inventory page]);
+			int progress_with_pages = progress+n_pages*8;
+			if (progress_with_pages<39) // need 40 to "win", will get +1 for this combat
+			{
+				forceDrop = true;
+			}
+		}
+	} // ed warehouse
 
 	return forceDrop;
 }
 
+boolean wantToDouse(monster enemy)
+{
+	switch (enemy)
+	{
+		case $monster[larval filthworm]:
+			return item_amount($item[filthworm hatchling scent gland  ]) == 0;
+		case $monster[filthworm drone]:
+			return item_amount($item[filthworm drone scent gland      ]) == 0;
+		case $monster[filthworm royal guard]:
+			return item_amount($item[filthworm royal guard scent gland]) == 0;
+	}
+	return false;
+}
+
+boolean canSurviveShootGhost(monster enemy, int shots) {
+	int damage;
+	switch(enemy)
+	{
+		case $monster[the ghost of Oily McBindle]:
+			damage = my_maxhp() * 0.4 * elemental_resistance($element[sleaze]) / 100;
+			break;
+		case $monster[boneless blobghost]:
+			damage = my_maxhp() * 0.45 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[the ghost of Monsieur Baguelle]:
+			damage = my_maxhp() * 0.5 * elemental_resistance($element[hot]) / 100;
+			break;
+		case $monster[The Headless Horseman]:
+			damage = my_maxhp() * 0.55 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The Icewoman]:
+			damage = my_maxhp() * 0.6 * elemental_resistance($element[cold]) / 100;
+			break;
+		case $monster[The ghost of Ebenoozer Screege]:
+			damage = my_maxhp() * 0.65 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The ghost of Lord Montague Spookyraven]:
+			damage = my_maxhp() * 0.7 * elemental_resistance($element[stench]) / 100;
+			break;
+		case $monster[The ghost of Vanillica "Trashblossom" Gorton]:
+			damage = my_maxhp() * 0.75 * elemental_resistance($element[stench]) / 100;
+			break;
+		case $monster[The ghost of Sam McGee]:
+			damage = my_maxhp() * 0.8 * elemental_resistance($element[hot]) / 100;
+			break;
+		case $monster[The ghost of Richard Cockingham]:
+			damage = my_maxhp() * 0.85 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The ghost of Waldo the Carpathian]:
+			damage = my_maxhp() * 0.9 * elemental_resistance($element[hot]) / 100;
+			break;
+		case $monster[Emily Koops, a spooky lime]:
+			damage = my_maxhp() * 0.95 * elemental_resistance($element[spooky]) / 100;
+			break;
+		case $monster[The ghost of Jim Unfortunato]:
+			damage = my_maxhp() * elemental_resistance($element[sleaze]) / 100;
+			break;
+		default:
+			damage = my_maxhp() * 0.3;
+	}
+	return my_hp() > damage * shots;
+}

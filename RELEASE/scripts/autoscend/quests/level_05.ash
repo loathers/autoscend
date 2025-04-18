@@ -10,6 +10,7 @@ boolean L5_getEncryptionKey()
 	{
 		return false;
 	}
+
 	if(item_amount($item[11-inch knob sausage]) == 1)
 	{
 		visit_url("guild.php?place=challenge");
@@ -17,7 +18,8 @@ boolean L5_getEncryptionKey()
 	}
 
 	// want to fight goblin king quickly in legacy of loathing to get another replica mr a
-	if(!in_lol() && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
+	// In LKS, important keys are gated behind here, and we have tonnes of delay
+	if(!(in_lol()||in_lowkeysummer()) && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
 	{
 		return false;
 	}
@@ -153,6 +155,7 @@ boolean L5_goblinKing()
 		auto_change_mcd(10); // get the Crown from the Goblin King.
 	}
 	set_property("auto_nextEncounter","Knob Goblin King");
+	set_property("auto_nonAdvLoc", true);
 	boolean advSpent = autoAdv($location[Throne Room]);
 
 	if((item_amount($item[Crown of the Goblin King]) > 0) || (item_amount($item[Glass Balls of the Goblin King]) > 0) || (item_amount($item[Codpiece of the Goblin King]) > 0) || (get_property("questL05Goblin") == "finished") || in_plumber() || (item_amount($item[Cursed Goblin Cape]) > 0))

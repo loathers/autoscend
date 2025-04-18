@@ -198,10 +198,8 @@ boolean LX_steelOrgan()
 		auto_log_info("I am hungry for some steel.", "blue");
 	}
 
-	if(have_effect($effect[items.enh]) == 0 && auto_is_valid($effect[items.enh]))
-	{
-		auto_sourceTerminalEnhance("items");
-	}
+	// typically getting steel organ means this is a long run, might as well use all options to get +item as sources refresh each day
+	provideItem(567, $location[The Laugh Floor], true);
 
 	if(get_property("questM10Azazel") == "unstarted")
 	{
@@ -355,7 +353,7 @@ boolean LX_guildUnlock()
 	{
 		return false;
 	}
-	if(!(in_picky() || in_lowkeysummer()) && get_property('auto_skipUnlockGuild').to_boolean())
+	if(!(in_picky() || in_lowkeysummer()) && get_property('auto_skipUnlockGuild').to_boolean() && !(my_primestat() == $stat[Moxie] && auto_haveTearawayPants()))
 	{
 		return false;
 	}
@@ -367,6 +365,18 @@ boolean LX_guildUnlock()
 	string pref;
 	location loc = $location[None];
 	item goal = $item[none];
+	if(my_primestat() == $stat[Moxie] && auto_haveTearawayPants())
+	{
+		//Can bypass moxie test if we have the Tearaway Pants
+		if(autoForceEquip($item[Tearaway Pants]))
+		{
+			if (internalQuestStatus("questG08Moxie") < 1)
+			{
+				visit_url("guild.php?place=challenge");
+			}
+			return true;
+		}
+	}
 	switch(my_primestat())
 	{
 		case $stat[Muscle]:
@@ -855,7 +865,7 @@ boolean LX_joinPirateCrew() {
 				else if (possessEquipment($item[mullet wig]) && auto_can_equip($item[mullet wig])) {
 					// easiest to get or wait to get a briefcase
 					// todo modify banish list to not banish pygmy headhunters if wanting a briefcase in hardcore?
-					if (!mightCatburgle && internalQuestStatus("questL04Bat") >= 1 && internalQuestStatus("hiddenOfficeProgress") >= 6) {	
+					if (!mightCatburgle && internalQuestStatus("questL04Bat") >= 1 && get_property("hiddenOfficeProgress").to_int() >= 6) {	
 						// briefcase zones already finished and not expecting Catburgle then try to pull it
 						if (pullXWhenHaveY($item[briefcase], 1, 0) && autoForceEquip($item[mullet wig])) {
 							infiltrationReady = true;

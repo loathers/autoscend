@@ -19,7 +19,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	// Path = zombie slayer
 	retval = auto_combatZombieSlayerStage3(round, enemy, text);
 	if(retval != "") return retval;
-	
+
 	//delevel (10 + medicine_level)% in avatar of west of loathing path
 	if(canUse($skill[Bad Medicine]) && (my_mp() >= (3 * mp_cost($skill[Bad Medicine]))))
 	{
@@ -136,6 +136,13 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			return useSkill($skill[Emit Matter Duplicating Drones]);			
 		}
 	}
+
+	//Dupe Tomb Rat King with pro skateboard
+	if(enemy == $monster[Tomb Rat King] && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
+	{
+		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
+		return useSkill($skill[Do an epic McTwist!]);
+	}
 	
 	//iotm skill that can be used on any combat round, repeatedly until an item is stolen
 	if(canUse($skill[Hugs and Kisses!]) && (my_familiar() == $familiar[XO Skeleton]) && (get_property("_xoHugsUsed").to_int() < 11))
@@ -173,11 +180,29 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 	}
 
+	if(wantToDouse(enemy) && round < 23) // dousing can have a low chance of success, so only do it up to round 22
+	{
+		skill douse = $skill[douse foe];
+		boolean douseAvailable = canUse(douse, false) && auto_dousesRemaining()>0;
+		if(douseAvailable)
+		{
+			handleTracker(enemy, douse, "auto_otherstuff");
+			return useSkill(douse);
+		}
+	}
+	
 	if(wantToForceDrop(enemy))
 	{
 		boolean polarVortexAvailable = canUse($skill[Fire Extinguisher: Polar Vortex], false) && auto_fireExtinguisherCharges() > 10;
 		boolean mildEvilAvailable = canUse($skill[Perpetrate Mild Evil],false) && get_property("_mildEvilPerpetrated").to_int() < 3;
-		// mild evil only can pick pocket. Use it before fire extinguisher
+		boolean swoopAvailable = canUse($skill[Swoop like a Bat], true) && get_property("_batWingsSwoopUsed").to_int() < 11;
+
+		// mild evil and swoop can only pick pocket. Use them before fire extinguisher
+		if(swoopAvailable)
+		{
+			handleTracker(enemy, $skill[Swoop like a Bat], "auto_otherstuff");
+			return useSkill($skill[Swoop like a Bat]);	
+		}
 		if(mildEvilAvailable)
 		{
 			handleTracker(enemy, $skill[Perpetrate Mild Evil], "auto_otherstuff");
@@ -202,8 +227,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	{
 		doWeaksauce = true;
 	}
-	// if(enemy == $monster[invader bullet]) // TODO: on version bump
-	if(enemy.to_string().to_lower_case() == "invader bullet")
+	if(enemy == $monster[invader bullet])
 	{
 		doWeaksauce = false;
 	}
@@ -218,13 +242,18 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		enemy_la = 151;
 	}
 
-	// if(enemy == $monster[invader bullet]) // TODO: on version bump
-	if(enemy.to_string().to_lower_case() == "invader bullet")
+	if(enemy == $monster[invader bullet])
 	{
 		enemy_la = 151;
 	}
 
 	if($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains enemy && !get_property("auto_confidence").to_boolean())
+	{
+		enemy_la = 151;
+	}
+
+	// some dark gyffte boss's are stagger immune
+	if($monsters[%alucard%, Jake Norris, Ricardo Belmont, Jayden Belmont, Sharona, Greg Dagreasy, Travis Belmont, Chad Alacarte] contains enemy)
 	{
 		enemy_la = 151;
 	}
@@ -237,8 +266,22 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			return useSkill($skill[Curse Of Weaksauce]);
 		}
 
+		//HP reduction if the monster has high HP
+		if(monster_hp() > 1500 || enemy.physical_resistance > 90)
+		{
+			if(canUse($skill[Surprisingly Sweet Slash])) //75% less HP
+			{
+				return useSkill($skill[Surprisingly Sweet Slash]);
+			}
+			if(canUse($item[autumnic bomb])) //50% less hp && prismatic damage on hit
+			{
+				return useItem($item[autumnic bomb]);
+			}
+		}
+
 		// delevel and 75% less HP if you have a candy cane sword cane
-		if(canUse($skill[Surprisingly Sweet Slash]))
+		// Need this separate because want to reserve the Slash in Avant Guard for high HP bodyguards
+		if (canUse($skill[Surprisingly Sweet Slash]) && !in_avantGuard())
 		{
 			return useSkill($skill[Surprisingly Sweet Slash]);
 		}
@@ -331,7 +374,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			}
 		}
 
-		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0) && get_property("chasmBridgeProgress").to_int() < 30)
+		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0) && get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 		{
 			boolean coldMortarShell = canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0;
 			skill coldSkillToUse;
@@ -556,6 +599,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		if(canUse($item[Tomayohawk-Style Reflex Hammer]))
 		{
 			return useItem($item[Tomayohawk-Style Reflex Hammer]);
+		}
+
+		//If you have tearaway pants equipped, use its skill
+		if(canUse($skill[Tear Away your Pants!]) && (get_property("auto_forceNonCombatSource") == "" || monster_phylum() == $phylum[plant]))
+		{
+			return useSkill($skill[Tear Away your Pants!]);
 		}
 
 		// skills from Lathe weapons

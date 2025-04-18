@@ -797,10 +797,19 @@ boolean L12_startWar()
 	// wear the appropriate war outfit based on auto_hippyInstead
 	equipWarOutfit();
 	
+	if (auto_haveCCSC() && !have_skill($skill[Comprehensive Cartography]))
+	{
+		autoForceEquip($item[candy cane sword cane]);
+	}
+	
 	// start the war when siding with frat boys
 	if(!get_property("auto_hippyInstead").to_boolean())
 	{
 		auto_log_info("Must save the ferret!!", "blue");
+		if (L12_singleNCForWarStart())
+		{
+			boolean NCForced = auto_forceNextNoncombat($location[Wartime Hippy Camp]);
+		}
 		autoAdv(1, $location[Wartime Hippy Camp]);
 		
 		//if war started, accept flyer quest for fratboys.
@@ -808,13 +817,17 @@ boolean L12_startWar()
 		//move this to dedicated function that can start it for both sides as appropriate
 		if(internalQuestStatus("questL12War") == 1)
 		{
-			visit_url("bigisland.php?place=concert&pwd");	
+			visit_url("bigisland.php?place=concert&pwd");
 		}
 	}
 	// start the war when siding with hippies
 	else
 	{
 		auto_log_info("Must save the goldfish!!", "blue");
+		if (L12_singleNCForWarStart())
+		{
+			boolean NCForced = auto_forceNextNoncombat($location[Wartime Frat House]);
+		}
 		autoAdv(1, $location[Wartime Frat House]);
 	}
 		
@@ -890,6 +903,10 @@ boolean L12_filthworms()
 		auto_log_info("Will steal stench glands using [XO Skeleton]");
 		handleFamiliar($familiar[XO Skeleton]);
 	}
+	else if(auto_dousesRemaining()>0)
+	{
+		auto_log_info("Will steal stench glands using FLUDA douse");
+	}
 	else if(auto_fireExtinguisherCharges() > 10)
 	{
 		auto_log_info("Will steal stench glands using polar vortex ability of [Industrial Fire Extinguisher]");
@@ -943,42 +960,16 @@ boolean L12_filthworms()
 				}
 			}
 			
-			//todo check if provide item can simulate enough not to bother with delaying?
-			
 			if(delayFilthworms)
 			{
 				auto_log_info("Delaying filthworms because Everything Looks Yellow");
 				return false;
 			}
 		}
-	
-		buffMaintain($effect[Joyful Resolve]);
-		buffMaintain($effect[Kindly Resolve]);
-		buffMaintain($effect[Fortunate Resolve]);
-		buffMaintain($effect[One Very Clear Eye]);
-		buffMaintain($effect[Human-Fish Hybrid]);
-		buffMaintain($effect[Human-Human Hybrid]);
-		buffMaintain($effect[Human-Machine Hybrid]);
-		buffMaintain($effect[Unusual Perspective]);
-		buffMaintain($effect[Eagle Eyes]);
-		buffMaintain($effect[Heart of Lavender]);
-		buffMaintain($effect[Five Sticky Fingers]);
-		asdonBuff($effect[Driving Observantly]);
-		bat_formBats();
 
-		if(!in_wereprof()) buffMaintain($effect[Frosty]); //wereprof doesn't like +ML effects outside of Werewolf
-		
-		//craft IOTM derivative that gives high item bonus
-		if((!possessEquipment($item[A Light That Never Goes Out])) && (item_amount($item[Lump of Brituminous Coal]) > 0))
-		{
-			auto_buyUpTo(1, $item[third-hand lantern]);
-			autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[third-hand lantern]);
-		}
-
-		if(!canChangeToFamiliar($familiar[XO Skeleton]) && catBurglarHeistsLeft() < 1) {
-			//fold and remove maximizer block on using IOTM with 9 charges a day that doubles item drop chance
-			januaryToteAcquire($item[Broken Champagne Bottle]);
-		}
+		// filth worm glands have 10% drop rate
+		// getting here means we don't have a yellow ray, not delaying for the yr, and don't have enough +item yet
+		provideItem(900,$location[The Feeding Chamber], false);
 
 		if(in_lar())
 		{
@@ -1094,6 +1085,10 @@ boolean L12_orchardFinalize()
 void gremlinsFamiliar()
 {
 	//when fighting gremlins we want to minimize the familiar ability to cause damage.
+
+	if (in_avantGuard()) {
+		return;
+	}
 	
 	familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
 	boolean strip_familiar = true;
@@ -1106,6 +1101,20 @@ void gremlinsFamiliar()
 			//easier to track if we tried today than to track if it is allowed in current path
 			set_property("_auto_seaQuestStartedToday", true);
 			visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman");	//get bathysphere by starting the sea quest
+		}
+		if(possessEquipment($item[mini kiwi invisible dirigible]) && !in_iluh())
+		{
+			equip($slot[familiar], $item[mini kiwi invisible dirigible]);
+			strip_familiar = false;
+			//disable maximizer switching of familiar equipment
+			addToMaximize("-familiar");
+		}
+		if(possessEquipment($item[Tiny consolation ribbon]))
+		{
+			equip($slot[familiar], $item[Tiny consolation ribbon]);
+			strip_familiar = false;
+			//disable maximizer switching of familiar equipment
+			addToMaximize("-familiar");
 		}
 		if(possessEquipment($item[little bitty bathysphere]))
 		{
@@ -1165,7 +1174,14 @@ boolean L12_gremlins()
 	{
 		return false;
 	}
-	if(in_glover())
+	if (in_zombieSlayer())
+	{
+		if(!auto_have_skill($skill[Plague Claws]) && item_amount($item[Seal Tooth]) == 0)
+		{
+			return false;
+		}
+	}
+	else if(in_glover())
 	{
 		int need = 30 - item_amount($item[Doc Galaktik\'s Pungent Unguent]);
 		if((need > 0) && (item_amount($item[Molybdenum Pliers]) == 0))
@@ -1246,7 +1262,8 @@ boolean L12_gremlins()
 	gremlinsFamiliar();
 
 	auto_log_info("Doing them gremlins", "blue");
-	addToMaximize("20dr,1da 1000max,3hp,-3ml");
+	// ideally we want to survive a single attack
+	addToMaximize("20dr,1da 1000max,-ml,-1000avoid attack");
 	acquireHP();
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{
@@ -1359,7 +1376,7 @@ boolean L12_sonofaBeach()
 
 	if(!in_lar())
 	{
-		float combat_bonus = providePlusCombat(25, $location[Sonofa Beach], true, true);
+		float combat_bonus = providePlusCombat(auto_combatModCap(), $location[Sonofa Beach], true, true);
 		if(combat_bonus <= 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate for [Lobsterfrogmen] in [Sonofa Beach]. we have: " +combat_bonus, "red");
@@ -1480,7 +1497,7 @@ boolean L12_sonofaPrefix()
 
 	if(!in_lar())
 	{
-		float combat_bonus = providePlusCombat(25, $location[Sonofa Beach], true, true);
+		float combat_bonus = providePlusCombat(auto_combatModCap(), $location[Sonofa Beach], true, true);
 		if(combat_bonus <= 0.0)
 		{
 			auto_log_warning("Something is keeping us from getting a suitable combat rate for [Lobsterfrogmen] in [Sonofa Beach]. we have: " +combat_bonus, "red");
@@ -1722,111 +1739,65 @@ boolean L12_themtharHills()
 	{
 		auto_log_info("Themthar Nuns!", "blue");
 	}
-
-	if((get_property("sidequestArenaCompleted") == "fratboy") && !get_property("concertVisited").to_boolean() && (have_effect($effect[Winklered]) == 0))
+	
+	handleFamiliar("meat");
+	
+	//can only do this in Avant Guard in 6 turns in HC or 8 turns in Normal. Need the August Scepter. If going turbo, can't get enough waffles so don't even bother with this
+	set_property("auto_delayWar", false);
+	if(in_avantGuard() && auto_haveAugustScepter() && !(auto_turbo()))
 	{
-		if(is_professor())
+		auto_log_info("Checking how much meat drop we can get");
+		if((in_hardcore() && item_amount($item[waffle]) <= 6 && $location[The Themthar Hills].turns_spent + item_amount($item[waffle]) > 6) ||
+		(item_amount($item[waffle]) <= 8 && $location[The Themthar Hills].turns_spent + item_amount($item[waffle]) > 8))
 		{
-			//Need to manually equip because professor
-			if(!have_equipped($item[beer helmet])) equip($item[beer helmet]);
-			if(!have_equipped($item[distressed denim pants])) equip($item[distressed denim pants]);
-			if(!have_equipped($item[bejeweled pledge pin])) equip($item[bejeweled pledge pin]);
+			return false;
 		}
-		else
+		int meatProvide = (in_hardcore() ? provideMeat(1800, true, true) : provideMeat(1600, true, true));
+		if((in_hardcore() && !(meatProvide >= 1800)) || !(meatProvide >= 1600))
 		{
-			outfit("Frat Warrior Fatigues");
-		}
-		cli_execute("concert 2");
-	}
-
-	handleBjornify($familiar[Hobo Monkey]);
-	if((equipped_item($slot[off-hand]) != $item[Half a Purse]) && !possessEquipment($item[Half a Purse]) && (item_amount($item[Lump of Brituminous Coal]) > 0))
-	{
-		auto_buyUpTo(1, $item[Loose Purse Strings]);
-		autoCraft("smith", 1, $item[Lump of Brituminous Coal], $item[Loose purse strings]);
-	}
-
-	autoEquip($item[Half a Purse]);
-	if(in_heavyrains())
-	{
-		autoEquip($item[Thor\'s Pliers]);
-	}
-	autoEquip($item[Miracle Whip]);
-
-	shrugAT($effect[Polka of Plenty]);
-	if(isActuallyEd())
-	{
-		if(!have_skill($skill[Gift of the Maid]) && ($servant[Maid].experience >= 441))
-		{
-			visit_url("charsheet.php");
-			if(have_skill($skill[Gift of the Maid]))
+			int bonusMeat = 0;
+			boolean getInhaler = false;
+			boolean doRufus = false;
+			if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]) && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
 			{
-				auto_log_warning("Gift of the Maid not properly detected until charsheet refresh.", "red");
+				bonusMeat += 200;
+				getInhaler = true;
+			}
+			if(auto_havePayPhone() && !(get_property("_shadowAffinityToday").to_boolean()) && item_amount($item[Rufus\'s shadow lodestone]) < 1 )
+			{
+				bonusMeat += 200;
+				doRufus = true;
+			}
+			int bonusMeatNeeded = (in_hardcore() ? (1800 - meatProvide) : (1600 - meatProvide));
+			if(bonusMeatNeeded - bonusMeat <= 0)
+			{
+				if(getInhaler)
+				{
+					auto_log_info("Getting Inhaler");
+					return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
+				}
+				if(doRufus)
+				{
+					auto_log_info("Doing Pay Phone Quest for Shadow Waters");
+					return auto_doPhoneQuest();
+				}
+			}
+			else
+			{
+				set_property("auto_delayWar", true);
+				return false;
 			}
 		}
 	}
-	buffMaintain($effect[Purr of the Feline], 10, 1, 1);
-	songboomSetting("meat");
-	handleFamiliar("meat");
-	addToMaximize("200meat drop");
-
-	if(have_effect($effect[Frosty])==0 && !in_wereprof())
-	{
-		auto_wishForEffect($effect[Frosty]);
-	}
-	buffMaintain($effect[Greedy Resolve]);
-	buffMaintain($effect[Disco Leer], 10, 1, 1);
-	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
-	#Handle for familiar weight change.
-	buffMaintain($effect[Kindly Resolve]);
-	buffMaintain($effect[Heightened Senses]);
-	buffMaintain($effect[Big Meat Big Prizes]);
-	buffMaintain($effect[Human-Machine Hybrid]);
-	buffMaintain($effect[Human-Constellation Hybrid]);
-	buffMaintain($effect[Human-Humanoid Hybrid]);
-	buffMaintain($effect[Human-Fish Hybrid]);
-	buffMaintain($effect[Cranberry Cordiality]);
-	buffMaintain($effect[Patent Avarice]);
-	buffMaintain($effect[Car-Charged]);
-	buffMaintain($effect[Heart of Pink]);
-	buffMaintain($effect[Sweet Heart], 0, 1, 20);
-	buffMaintain($effect[Earning Interest]);
-	buffMaintain($effect[Bet Your Autumn Dollar]);
-	buffMaintain($effect[Flapper Dancin\']);
-	buffMaintain($effect[shadow waters]);
-		
-	if(item_amount($item[body spradium]) > 0 && !in_tcrs() && have_effect($effect[Boxing Day Glow]) == 0)
-	{
-		autoChew(1, $item[body spradium]);
-	}
-	if(have_effect($effect[meat.enh]) == 0 && auto_is_valid($effect[meat.enh]))
-	{
-		if(auto_sourceTerminalEnhanceLeft() > 0)
-		{
-			auto_sourceTerminalEnhance("meat");
-		}
-	}
-	if(have_effect($effect[Synthesis: Greed]) == 0)
-	{
-		rethinkingCandy($effect[Synthesis: Greed]);
-	}
-	asdonBuff($effect[Driving Observantly]);
-
-	if(available_amount($item[Li\'l Pirate Costume]) > 0 && canChangeToFamiliar($familiar[Trick-or-Treating Tot]) && (!in_heavyrains()))
-	{
-		use_familiar($familiar[Trick-or-Treating Tot]);
-		autoEquip($item[Li\'l Pirate Costume]);
-		handleFamiliar($familiar[Trick-or-Treating Tot]);
-	}
-
-	if(in_heavyrains())
-	{
-		buffMaintain($effect[Sinuses For Miles]);
-	}
+	
+	// Outside of AG, if we have 3+ effect wishes we'll be wishing for Sinuses for Miles instead
+	boolean considerCloverForInhaler = (in_avantGuard() || auto_totalEffectWishesAvailable() < 3) && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]);
+	considerCloverForInhaler = considerCloverForInhaler && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]);
+	
 	// Target 1000 + 400% = 5000 meat per brigand. Of course we want more, but don\'t bother unless we can get this.
 	float meat_need = 400.00;
 	//count inhaler if we have one or if we have a clover to obtain one and can use one
-	if((item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0 || cloversAvailable() > 0) && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]))
+	if((item_amount($item[Mick\'s IcyVapoHotness Inhaler]) > 0) || (cloversAvailable() > 0 && considerCloverForInhaler))
 	{
 		meat_need = meat_need - 200;
 	}
@@ -1845,7 +1816,7 @@ boolean L12_themtharHills()
 		use_familiar(to_familiar(get_property("auto_familiarChoice")));
 	}
 	equipMaximizedGear();
-	float meatDropHave = meat_drop_modifier();
+	float meatDropHave = provideMeat(1800, true, true);
 
 	if(isActuallyEd() && have_skill($skill[Curse of Fortune]) && item_amount($item[Ka Coin]) > 0)
 	{
@@ -1888,36 +1859,17 @@ boolean L12_themtharHills()
 			auto_log_info("The min should be enough! Doing it!!", "purple");
 		}
 	}
-
-	if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && auto_is_valid($item[Mick\'s IcyVapoHotness Inhaler]) && cloversAvailable() > 0 && zone_isAvailable($location[The Castle in the Clouds in the Sky (Top Floor)]))
+	
+	if (considerCloverForInhaler)
 	{
-		//use clover to get inhaler
-		return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
+		if(have_effect($effect[Sinuses For Miles]) <= 0 && item_amount($item[Mick\'s IcyVapoHotness Inhaler]) < 1 && cloversAvailable() > 0)
+		{
+			//use clover to get inhaler
+			return autoLuckyAdv($location[The Castle in the Clouds in the Sky (Top Floor)]);
+		}
 	}
 
-	buffMaintain($effect[Disco Leer], 10, 1, 1);
-	buffMaintain($effect[Polka of Plenty], 8, 1, 1);
-	buffMaintain($effect[Sinuses For Miles]);
-	buffMaintain($effect[Greedy Resolve]);
-	buffMaintain($effect[Kindly Resolve]);
-	buffMaintain($effect[Heightened Senses]);
-	buffMaintain($effect[Big Meat Big Prizes]);
-	buffMaintain($effect[Fortunate Resolve]);
-	buffMaintain($effect[Human-Machine Hybrid]);
-	buffMaintain($effect[Human-Constellation Hybrid]);
-	buffMaintain($effect[Human-Humanoid Hybrid]);
-	buffMaintain($effect[Human-Fish Hybrid]);
-	buffMaintain($effect[Cranberry Cordiality]);
-	buffMaintain($effect[Car-Charged]);
-	buffMaintain($effect[Heart of Pink]);
-	buffMaintain($effect[Sweet Heart], 0, 1, 20);
-	buffMaintain($effect[Good Things Are Coming, You Can Smell It]);
-	buffMaintain($effect[Incredibly Well Lit]);
-	bat_formWolf();
-	if(auto_is_valid($effect[Meet the Meat]))
-	{
-		zataraSeaside("meat");
-	}
+	provideMeat(1800, true, false); // Do as much as possible to get meat drops
 
 	{
 		equipWarOutfit();
@@ -2453,6 +2405,11 @@ boolean L12_islandWar()
 	{
 		return false;	//delay for You, Robot path
 	}
+	if(get_property("auto_delayWar") == true)
+	{
+		set_property("auto_delayWar", false);
+		return false;	//delay war at Nuns so we can maybe get the Inhaler
+	}
 	if(L12_preOutfit() || L12_getOutfit() || L12_startWar())
 	{
 		return true;
@@ -2466,4 +2423,28 @@ boolean L12_islandWar()
 		return true;
 	}
 	return false;
+}
+
+boolean L12_opportunisticWarStart()
+{
+	// If we have all the resources to start the war in one turn, do that.
+	if(internalQuestStatus("questL12War") != 0) { return false; }
+	if(!haveWarOutfit(true))                    { return false; }
+	if(!L12_singleNCForWarStart())              { return false; }
+	if(remainingNCForcesToday() == 0)           { return false; }
+	// Dinghy the island if we can.
+	if (get_property("lastIslandUnlock").to_int() != my_ascensions())
+	{
+		if (available_amount($item[Pirate dinghy])>0)
+		{
+			use($item[Pirate dinghy]);
+		}
+	}
+	if (get_property("lastIslandUnlock").to_int() != my_ascensions()) { return false; }
+	return L12_startWar();
+}
+
+boolean L12_singleNCForWarStart()
+{
+	return (auto_haveCCSC() || have_skill($skill[Comprehensive Cartography]));
 }

@@ -578,6 +578,16 @@ boolean auto_handleParka()
 	return get_property("parkaMode") == tempDino && have_equipped(parka);
 }
 
+int auto_ParkaSpikeForcesLeft()
+{
+	if (!auto_hasParka())
+	{
+		return 0;
+	}
+	int spike_uses = get_property("_spikolodonSpikeUses").to_int();
+	return 5-spike_uses;
+}
+
 boolean auto_hasAutumnaton()
 {
 	return get_property("hasAutumnaton").to_boolean() && auto_is_valid($item[autumn-aton]) && !in_pokefam();
@@ -740,6 +750,20 @@ boolean auto_autumnatonQuest()
 		}
 	}
 
+	// a location of last resort for those without shadow rifts
+	if(get_property("shadowRiftIngress") == "")
+	{
+		//Cookbookbat materials if you have a Cookbookbat and Autumn Fest Ale+stone wool or Autumn Leaves
+		if(item_amount($item[Stone Wool]) == 0 && get_property("lastTempleAdventures").to_int() < my_ascensions())
+		{
+			if(auto_sendAutumnaton($location[The Hidden Temple])) return false;
+		}
+		else
+		{
+			if(auto_sendAutumnaton($location[The Outskirts of Cobb's Knob])) return false;
+		}
+	}
+
 	return false;
 }
 
@@ -752,6 +776,20 @@ int auto_remainingSpeakeasyFreeFights()
 {
 	if(!auto_hasSpeakEasy()) return 0;
 	return max(3 - get_property("_speakeasyFreeFights").to_int(), 0);
+}
+
+boolean speakeasyCombat()
+{
+	if(!auto_hasSpeakEasy())
+	{
+		return false;
+	}
+	
+	if(auto_remainingSpeakeasyFreeFights()>0)
+	{
+		return autoAdv($location[An Unusually Quiet Barroom Brawl]);
+	}
+	return false;
 }
 
 boolean auto_haveTrainSet()

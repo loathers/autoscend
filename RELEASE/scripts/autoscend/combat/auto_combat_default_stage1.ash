@@ -39,6 +39,13 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	retval = auto_combatWereProfessorStage1(round, enemy, text);
 	if(retval != "") return retval;
 
+	//In Avant Guard, waffle the bodyguard in Themthar Hills ASAP to replace with the Dirty Thieving Brigand
+	if(in_avantGuard() && ag_is_bodyguard() && item_amount($item[waffle]) > 0 && my_location() == $location[The Themthar Hills] && enemy != $monster[Dirty Thieving Brigand])
+	{
+		handleTracker(enemy, $item[waffle], "auto_replaces");
+		return useItems($item[waffle], $item[none]);
+	}
+
 	if(enemy == $monster[Your Shadow])
 	{
 		if(in_plumber())
@@ -132,22 +139,13 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			return useSkill($skill[Belch the Rainbow], false);
 		}
 
-		int sources = 0;
-		foreach damage in $strings[Cold Damage, Hot Damage, Sleaze Damage, Spooky Damage, Stench Damage] {
-			if(numeric_modifier(damage) > 0) {
-				sources += 1;
-			}
+		if(canUse($skill[Kneebutt], false))
+		{
+			return useSkill($skill[Kneebutt], false);
 		}
-
-		if (sources >= 4) {
-			if(canUse($skill[Headbutt], false))
-			{
-				return useSkill($skill[Headbutt], false);
-			}
-			if(canUse($skill[Clobber], false))
-			{
-				return useSkill($skill[Clobber], false);
-			}
+		if(canUse($skill[Headbutt], false))
+		{
+			return useSkill($skill[Headbutt], false);
 		}
 		return "attack with weapon";
 	}
@@ -218,13 +216,13 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		}
 	}
 
-	if (auto_canCircadianRhythm() && auto_circadianRhythmTarget(enemy) && canUse($skill[Recall Facts: %phylum Circadian Rhythms]))
+	if (auto_canCircadianRhythm() && (auto_circadianRhythmTarget(enemy) || auto_circadianRhythmTarget(monster_phylum(enemy))) && canUse($skill[Recall Facts: %phylum Circadian Rhythms]) && !ag_is_bodyguard())
 	{
-		handleTracker($skill[Recall Facts: %phylum Circadian Rhythms], enemy.phylum, "auto_otherstuff");
+		handleTracker($skill[Recall Facts: %phylum Circadian Rhythms], monster_phylum(enemy), "auto_otherstuff");
 		return useSkill($skill[Recall Facts: %phylum Circadian Rhythms]);
 	}
 
-	if (auto_canHabitat() && auto_habitatTarget(enemy) && canUse($skill[Recall Facts: Monster Habitats]))
+	if (auto_canHabitat() && auto_habitatTarget(enemy) && canUse($skill[Recall Facts: Monster Habitats]) && !ag_is_bodyguard())
 	{
 		handleTracker($skill[Recall Facts: Monster Habitats], enemy, "auto_copies");
 		return useSkill($skill[Recall Facts: Monster Habitats]);

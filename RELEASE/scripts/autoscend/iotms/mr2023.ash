@@ -45,6 +45,21 @@ boolean wantToThrowGravel(location loc, monster enemy)
 	// prevent overuse after breaking ronin or in casual
 	if(can_interact()) return false;
 
+	// only want certain enemies to free-kill in Avant Guard
+	if(in_avantGuard())
+	{
+		if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
+		{
+			return true;
+		}
+		//This is called in stage2 and auto_purple_candled is set in stage 4 so this should only ever show up on the purple candled enemy
+		if(get_property("auto_purple_candled").to_monster() == enemy)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	// many monsters in these zones with similar names
 	if(loc == $location[The Battlefield (Frat Uniform)] && 
 		(contains_text(enemy.to_string(), "War Hippy")) ||
@@ -53,6 +68,10 @@ boolean wantToThrowGravel(location loc, monster enemy)
 		return true;
 	}
 	if(loc == $location[The Battlefield (Hippy Uniform)] && contains_text(enemy.to_string(), "War Frat"))
+	{
+		return true;
+	}
+	if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
 	{
 		return true;
 	}
@@ -119,6 +138,11 @@ location auto_availableBrickRift()
 		return $location[none];
 	}
 
+	if (in_avantGuard() && !auto_haveQueuedForcedNonCombat()) //if no NC forced, don't adventure in zone
+	{
+		return $location[none];
+	}
+
 	boolean[location] riftsWithBricks = $locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary)];
 	foreach loc in riftsWithBricks
 	{
@@ -129,7 +153,7 @@ location auto_availableBrickRift()
 
 int auto_neededShadowBricks()
 {
-	if(!auto_havePayPhone())
+	if (!auto_havePayPhone() || in_avantGuard())
 	{
 		return 0;
 	}
@@ -165,8 +189,8 @@ boolean auto_doPhoneQuest()
 	{
 		return false;
 	}
-	// only accept and do quest if we can get bricks
-	if(auto_availableBrickRift() == $location[none])
+	// only accept and do quest if we can get bricks or force a noncombat
+	if(auto_availableBrickRift() == $location[none] || !auto_canForceNextNoncombat())
 	{
 		return false;
 	}
@@ -203,6 +227,17 @@ boolean auto_doPhoneQuest()
 		return true;
 	}
 
+	//Force a non combat instead of adventuring there to save turns, especially in AG
+	if(auto_haveQueuedForcedNonCombat())
+	{
+		return autoAdv(auto_availableBrickRift());
+	}
+
+	if (auto_canForceNextNoncombat() && in_avantGuard()) //in avant guard, want to avoid adventuring here unless you can force an NC
+	{
+		return auto_forceNextNoncombat(auto_availableBrickRift());
+	}
+
 	backupSetting("shadowLabyrinthGoal", "browser"); // use mafia's automation handling for the Shadow Rift NC.
 	return autoAdv(auto_availableBrickRift());
 }
@@ -234,7 +269,7 @@ boolean auto_makeMonkeyPawWish(effect wish)
 	}
 	boolean success = monkey_paw(wish);
 	if (success) {
-		handleTracker(to_string($item[cursed monkey\'s paw]), to_string(wish), "auto_wishes");
+		handleTracker(to_string($item[cursed monkey\'s paw]), my_location().to_string(), to_string(wish), "auto_wishes");
 	}
 	return success;
 }
@@ -268,7 +303,7 @@ boolean auto_makeMonkeyPawWish(string wish)
 	}
 	boolean success = monkey_paw(wish);
 	if (success) {
-		handleTracker(to_string($item[cursed monkey\'s paw]), wish, "auto_wishes");
+		handleTracker(to_string($item[cursed monkey\'s paw]), my_location().to_string(), wish, "auto_wishes");
 	}
 	return success;
 }
@@ -293,21 +328,28 @@ int auto_currentCinch()
 	return 100 - get_property("_cinchUsed").to_int();
 }
 
-int auto_cinchAfterNextRest()
+int auto_cinchFromNextRest()
 {
 	int cinchoRestsAlready = get_property("_cinchoRests").to_int();
 	// calculating for how much cinch NEXT rest will give
 	cinchoRestsAlready++;
+	return auto_cinchFromRestN(cinchoRestsAlready);
+}
 
-	int cinchGainedNextRest = 5;
-	if(cinchoRestsAlready <= 5) cinchGainedNextRest = 30;
-	else if(cinchoRestsAlready == 6) cinchGainedNextRest = 25;
-	else if(cinchoRestsAlready == 7) cinchGainedNextRest = 20;
-	else if(cinchoRestsAlready == 8) cinchGainedNextRest = 15;
-	else if(cinchoRestsAlready == 9) cinchGainedNextRest = 10;
-	// 10 and above give 5
-
-	return auto_currentCinch() + cinchGainedNextRest;
+int auto_cinchFromRestN(int n)
+{
+	int cinchGainedFromRest = 5;
+	if     (n <= 5) cinchGainedFromRest = 30;
+	else if(n == 6) cinchGainedFromRest = 25;
+	else if(n == 7) cinchGainedFromRest = 20;
+	else if(n == 8) cinchGainedFromRest = 15;
+	else if(n == 9) cinchGainedFromRest = 10;
+	
+	return cinchGainedFromRest;
+}
+int auto_cinchAfterNextRest()
+{
+	return auto_currentCinch() + auto_cinchFromNextRest();
 }
 
 boolean auto_nextRestOverCinch()
@@ -391,6 +433,23 @@ boolean shouldCinchoConfetti()
 	return true;
 }
 
+int auto_potentialMaxCinchLeft()
+{
+	int max_rests = auto_potentialMaxFreeRests();
+	int curr_free_rests_used = get_property("_cinchoRests").to_int();
+	int cinch = auto_currentCinch();
+	for (int irest = curr_free_rests_used+1 ; irest < max_rests ; irest++)
+	{
+		cinch = cinch + auto_cinchFromRestN(irest);
+	}
+	return cinch;
+}
+
+int auto_cinchForcesLeft()
+{
+	return floor(auto_potentialMaxCinchLeft()/60);
+}
+
 boolean auto_have2002Catalog()
 {
 	static item catalog = wrap_item($item[2002 Mr. Store Catalog]);
@@ -410,7 +469,14 @@ int remainingCatalogCredits()
 	if(!get_property("_2002MrStoreCreditsCollected").to_boolean())
 	{
 		// using item collects credits
-		use($item[2002 Mr. Store Catalog]);
+		if(in_lol())
+		{	//autoscend doesn't always trigger in LoL, switching to specify Replica
+			use($item[Replica 2002 Mr. Store Catalog]);
+		}
+		else
+		{
+			use($item[2002 Mr. Store Catalog]);
+		}
 	}
 	return get_property("availableMrStore2002Credits").to_int();
 }
@@ -443,22 +509,36 @@ void auto_buyFrom2002MrStore()
 		return;
 	}
 	auto_log_debug("Have " + remainingCatalogCredits() + " credit(s) to buy from Mr. Store 2002. Let's spend them!");
-	// meat butler on day 1 of run
-	item itemConsidering = $item[meat butler];
-	if(remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
-	{
-		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
-		use(itemConsidering);
-	}
+
 	// manual of secret door detection. skill: Secret door awareness
-	itemConsidering = $item[manual of secret door detection];
-	if(remainingCatalogCredits() > 0 && !auto_have_skill($skill[Secret door awareness]) && auto_is_valid(itemConsidering))
+	item itemConsidering = $item[manual of secret door detection];
+	if(can_read_skillbook(itemConsidering) && remainingCatalogCredits() > 0 && !auto_have_skill($skill[Secret door awareness]) && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
 		use(itemConsidering);
 	}
-	// giant black monlith. Mostly useful at low level for stats
-	if (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) {
+	//Pro skateboard to dupe tomb rat king drops
+	itemConsidering = $item[pro skateboard];
+	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering) && !possessEquipment(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+	}
+	//FLUDA is +25% item, and a pickpocket
+	itemConsidering = $item[Flash Liquidizer Ultra Dousing Accessory];
+	if(remainingCatalogCredits() > 0 && auto_is_valid(itemConsidering) && !possessEquipment(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+	}
+	// meat butler on day 1 of run
+	itemConsidering = $item[meat butler];
+	if(have_campground() && remainingCatalogCredits() > 0 && my_daycount() == 1 && !haveCampgroundMaid() && auto_is_valid(itemConsidering))
+	{
+		buy($coinmaster[Mr. Store 2002], 1, itemConsidering);
+		use(itemConsidering);
+	}
+	// giant black monolith. Mostly useful at low level for stats
+	if (have_campground() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) &&
+	!(auto_haveSeptEmberCenser() || auto_haveTrainSet())) {
 		itemConsidering = $item[giant black monolith];
 		if(remainingCatalogCredits() > 0 && !(auto_get_campground() contains itemConsidering) && auto_is_valid(itemConsidering))
 		{
@@ -502,6 +582,16 @@ void auto_useBlackMonolith()
 	visit_url("campground.php?action=monolith");
 }
 
+int auto_dousesRemaining()
+{
+	item fluda = $item[Flash Liquidizer Ultra Dousing Accessory];
+	if (available_amount(fluda)<1 || !auto_is_valid(fluda))
+	{
+		return 0;
+	}
+	return 3-get_property("_douseFoeUses").to_int();
+}
+
 boolean auto_haveAugustScepter()
 {
 	static item scepter = wrap_item($item[august scepter]);
@@ -518,41 +608,79 @@ void auto_scepterSkills()
 	{
 		return;
 	}
-	//Day 1 skills
-	if(my_daycount() == 1)
+	
+	if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
 	{
-		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
+		use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+	}
+	if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar())
+	{
+		familiar hundred_fam = to_familiar(get_property("auto_100familiar"));
+		if (((in_avantGuard() && in_hardcore()) || (hundred_fam != $familiar[none] && (isAttackFamiliar(hundred_fam) || hundred_fam.block))) && have_familiar(findRockFamiliarInTerrarium()))
 		{
-			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
+			use_familiar(findRockFamiliarInTerrarium());
+			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment to lower weight of attack familiar or Burly bodyguard (Avant Guard) for Gremlins
 		}
-		if(canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 30th: Beach Day!]); //Rollover adventures
-		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && pathHasFamiliar() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
+		else if(auto_needsGoodFamiliarEquipment() || in_small())
 		{
 			if(!is100FamRun())
 			{
 				use_familiar(findNonRockFamiliarInTerrarium()); //equip non-rock fam to ensure we get tiny gold medal
 			}
-			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
-		}
-	}
-	//Day 2+ skills
-	if(my_daycount() >= 2)
-	{
-		if(canUse($skill[Aug. 24th: Waffle Day!]) && !get_property("_aug24Cast").to_boolean())
-		{
-			use_skill($skill[Aug. 24th: Waffle Day!]); //get some waffles to hopefully change some bad monsters to better ones
-		}
-		if(canUse($skill[Aug. 28th: Race Your Mouse Day!]) && !get_property("_aug28Cast").to_boolean() && ((!auto_hasStillSuit() && item_amount($item[Astral pet sweater]) == 0) || in_small()))
-		{
-			if(!is100FamRun())
+			else
 			{
-				handleFamiliar("stat"); //get any familiar equipped if not in a 100% run
+				use_familiar(hundred_fam); // assuming non-rock familiar
 			}
 			use_skill($skill[Aug. 28th: Race Your Mouse Day!]); //Fam equipment
 		}
+	}
+	//see how much mana cost reduction we can get (up to 3mp)
+	maximize("-mana cost", true);
+	int manaCostMaximize = numeric_modifier("Generated:_spec", "Mana Cost");
+	if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+	}
+}
+
+void auto_scepterRollover()
+{
+	//We don't want the baywatch if our accessory slots are already filled with > 7 adventure items or we if one of the slots is the counterclockwise watch
+	boolean noWatch = ((numeric_modifier(equipped_item($slot[acc1]),"Adventures") >= 7 &&
+	numeric_modifier(equipped_item($slot[acc2]),"Adventures") >= 7 &&
+	numeric_modifier(equipped_item($slot[acc3]),"Adventures") >= 7) ||
+		((is_watch(equipped_item($slot[acc1])) && numeric_modifier(equipped_item($slot[acc1]),"Adventures") >= 7) ||
+		(is_watch(equipped_item($slot[acc2])) && numeric_modifier(equipped_item($slot[acc2]),"Adventures") >= 7) ||
+		(is_watch(equipped_item($slot[acc3])) && numeric_modifier(equipped_item($slot[acc3]),"Adventures") >= 7)));
+	if(!noWatch && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 30th: Beach Day!]); //For Rollover adventures (and -MP)
+		equipRollover(true);
+	}
+	//Get mainstats
+	if(get_property("_augSkillsCast").to_int()< 5 && my_level() < 13)
+	{
+		if(canUse($skill[Aug. 12th: Elephant Day!]) && !get_property("_aug12Cast").to_boolean() && my_primestat() == $stat[muscle])
+		{
+			use_skill($skill[Aug. 12th: Elephant Day!]); //get muscle stubstats
+		}
+		if(canUse($skill[Aug. 11th: Presidential Joke Day!]) && !get_property("_aug11Cast").to_boolean() && my_primestat() == $stat[mysticality])
+		{
+			use_skill($skill[Aug. 11th: Presidential Joke Day!]); //get mysticality stubstats
+		}
+		if(canUse($skill[Aug. 23rd: Ride the Wind Day!]) && !get_property("_aug23Cast").to_boolean() && my_primestat() == $stat[moxie])
+		{
+			use_skill($skill[Aug. 23rd: Ride the Wind Day!]); //get moxies stubstats
+		}
+	}
+	if(canUse($skill[Aug. 13th: Left\/Off Hander\'s Day!]) && !get_property("_aug13Cast").to_boolean() &&
+	get_property("_augSkillsCast").to_int()< 5 && numeric_modifier(equipped_item($slot[off-hand]),"Adventures") >  0 && weapon_hands(equipped_item($slot[off-hand])) == 0)
+	{
+		use_skill($skill[Aug. 13th: Left\/Off Hander\'s Day!]); //bump up the off-hand
+	}
+	if(canUse($skill[Aug. 27th: Just Because Day!]) && !get_property("_aug27Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	{
+		use_skill($skill[Aug. 27th: Just Because Day!]); //3 random buffs
 	}
 }
 
@@ -601,6 +729,8 @@ boolean auto_canHabitat()
 				return (fantasyBanditsFought() < 5);
 			case $monster[modern zmobie]:
 				return get_property("cyrptAlcoveEvilness").to_int() > 13;
+			case $monster[dirty old lihc]:
+				return get_property("cyrptNicheEvilness").to_int() > 13;
 			default:
 				return false;
 		}
@@ -625,9 +755,24 @@ boolean auto_habitatTarget(monster target)
 			return (fantasyBanditsFought() == 0);
 		case $monster[modern zmobie]:
 		 	// only worth it if we need 30 or more evilness reduced.
-			return (get_property("cyrptAlcoveEvilness").to_int() > 42);
+			return ((get_property("cyrptAlcoveEvilness").to_int() - (5 * (5 + cyrptEvilBonus()))) > 13);
+		case $monster[dirty old lihc]:
+		 	// only worth it if we need 18 or more evilness reduced.
+			// avant guard makes free fights cost a turn. Use DOL in place of tentacle
+			return (in_avantGuard() && (get_property("cyrptNicheEvilness").to_int() - (5 * (3 + cyrptEvilBonus()))) > 13);
+		case $monster[lobsterfrogman]:
+		 	// only worth it if we need 3+ barrels
+		 	boolean sonofa_complete = get_property("sidequestLighthouseCompleted") == "hippy" || get_property("sidequestLighthouseCompleted") == "fratboy";
+			return (!sonofa_complete && item_amount($item[barrel of gunpowder])<4);
 		case $monster[eldritch tentacle]:
-			return (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0));
+			// Max tentacles fought being free is 11, so don't habitat if we've fought more than 6
+			// This variable increments at the end of combat, so we need 5 here.
+			if (get_property("_eldritchTentaclesFoughtToday").to_int() > 5)
+			{
+				return false;
+			}
+			// don't habitat free fights in avant guard
+			return (!in_avantGuard() && (get_property("auto_habitatMonster").to_monster() == target || (get_property("_monsterHabitatsMonster").to_monster() == target && get_property("_monsterHabitatsFightsLeft").to_int() == 0)));
 		default:
 			return (get_property("auto_habitatMonster").to_monster() == target);
 	}
@@ -668,6 +813,19 @@ boolean auto_circadianRhythmTarget(monster target)
 		return false;
 	}
 	if (!($monsters[shadow bat, shadow cow, shadow devil, shadow guy, shadow hexagon, shadow orb, shadow prism, shadow slab, shadow snake, shadow spider, shadow stalk, shadow tree] contains target))
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean auto_circadianRhythmTarget(phylum target)
+{
+	if (!auto_canCircadianRhythm())
+	{
+		return false;
+	}
+	if (!($phylums[Orc, Hippy] contains target && $locations[The Battlefield (Hippy Uniform), The Battlefield (Frat Uniform)] contains my_location()))
 	{
 		return false;
 	}
@@ -751,6 +909,26 @@ void auto_handleJillOfAllTrades()
 	return;
 }
 
+boolean auto_haveEagle()
+{
+	if(auto_have_familiar($familiar[Patriotic Eagle]))
+	{
+		return true;
+	}
+	return false;
+}
+
+familiar auto_forceEagle(familiar famChoice)
+{
+	//Force the Patriotic Eagle if we used a banish recently and can't use one until we burn 11 combats with the Eagle
+	if(auto_haveEagle() && get_property("screechCombats").to_int() > 0 && !auto_queueIgnore())
+	{
+		auto_log_info("Forcing Patriotic Eagle");
+		return $familiar[Patriotic Eagle];
+	}
+	return famChoice;
+}
+
 boolean auto_haveBurningLeaves()
 {
 	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];
@@ -784,6 +962,10 @@ boolean auto_burnLeaves()
 			return use(1, $item[distilled resin]);
 		}
 		return false;
+	}
+	if (in_avantGuard() && item_amount($item[inflammable leaf]) > 86 && item_amount($item[Autumnic bomb]) == 0)
+	{
+		create(1, $item[Autumnic bomb]); //Reduces enemy hp in half, useful for bodyguards with 40K hp
 	}
 	return false;
 }
@@ -823,7 +1005,7 @@ boolean auto_handleCCSC()
 
 	if((place == $location[The Hidden Bowling Alley] && item_amount($item[Bowling Ball]) > 0 && get_property("hiddenBowlingAlleyProgress").to_int() < 5 && !get_property("candyCaneSwordBowlingAlley").to_boolean())
 	   || (place == $location[The Shore\, Inc. Travel Agency] && item_amount($item[Forged Identification Documents]) == 0 && !get_property("candyCaneSwordShore").to_boolean())
-	   || (place == $location[The eXtreme Slope] && (!possessEquipment($item[eXtreme scarf]) && !possessEquipment($item[snowboarder pants])))
+	   || (place == $location[The eXtreme Slope] && (!possessEquipment($item[eXtreme scarf]) && !possessEquipment($item[snowboarder pants]) && !auto_haveMcHugeLargeSkis()))
 	   || (place == $location[The Copperhead Club] && (item_amount($item[priceless diamond]) == 0 && item_amount($item[Red Zeppelin Ticket]) == 0) && !get_property("candyCaneSwordCopperheadClub").to_boolean())
 	   || (place == $location[The Defiled Cranny] && !get_property("candyCaneSwordDefiledCranny").to_boolean())
 	   || (place == $location[The Black Forest] && !get_property("candyCaneSwordBlackForest").to_boolean())

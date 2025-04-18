@@ -67,3 +67,7 @@ Green Pixie	prop:_absintheDrops<5
 Galloping Grill	prop:_hotAshesDrops<5
 # If all else fails, keep generating CBB ingredients
 Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
+# build up a few mini kiwis, enough for an aioli and a bikini
+Mini Kiwi	item:mini kiwi<7
+# use a Peace turkey if all else fails
+Peace Turkey

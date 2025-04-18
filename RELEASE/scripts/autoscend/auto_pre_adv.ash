@@ -85,6 +85,7 @@ void print_footer()
 		}
 	}
 	auto_log_info(next_line, "blue");
+	
 }
 
 void auto_ghost_prep(location place)
@@ -262,7 +263,7 @@ boolean auto_pre_adventure()
 	}
 	if(place == $location[The Fungus Plains])
 	{
-		buffMaintain($effect[Polka of Plenty], 30, 1, 1);
+		provideMeat(450, $location[The Fungus Plains], true);
 		addToMaximize("200meat drop 550max");
 	}
 	if(place == $location[Megalo-City])
@@ -274,8 +275,7 @@ boolean auto_pre_adventure()
 	}
 	if(place == $location[Hero\'s Field])
 	{
-		buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 30, 1, 1);
-		buffMaintain($effect[Singer\'s Faithful Ocelot], 30, 1, 1);
+		provideItem(400, $location[Hero\'s Field], true);
 		addToMaximize("200item 500max");
 	}
 
@@ -353,19 +353,18 @@ boolean auto_pre_adventure()
 	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && place == solveDelayZone());
-	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
+	boolean burningDelay = auto_burningDelay();
+	boolean gettingLucky = auto_gettingLucky();
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
-	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !zoneQueueIgnored) {
+	if (combatModifier._boolean && !auto_queueIgnore()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
 
 	boolean considerCrystalBallBonus = false;
 	if(auto_haveCrystalBall())
 	{
-		if(zoneQueueIgnored || get_property("auto_nextEncounter").to_monster() != $monster[none])
+		if(auto_queueIgnore() || get_property("auto_nextEncounter").to_monster() != $monster[none])
 		{
 			//if already forced by something else, no need to handle your ball
 		}
@@ -399,7 +398,7 @@ boolean auto_pre_adventure()
 	
 	boolean zoneHasUnwantedMonsters;
 	boolean zoneHasWantedMonsters;
-	if (!zoneQueueIgnored)	//next encounter is a monster from the zone
+	if (!auto_queueIgnore())	//next encounter is a monster from the zone
 	{
 		foreach i,mon in possible_monsters
 		{
@@ -408,8 +407,14 @@ boolean auto_pre_adventure()
 				adjustForYellowRayIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
+			if(auto_wantToBanish(monster_phylum(mon), place) && !auto_famKill($familiar[Patriotic Eagle], place))
+			{
+				// attempt to prepare for banishing, but if we can not try free running
+				adjustForBanishIfPossible(monster_phylum(mon), place);
+				zoneHasUnwantedMonsters = true;
+			}
 			boolean wantToBanish  = auto_wantToBanish(mon, place);
-			boolean wantToFreeRun = auto_wantToFreeRun(mon, place);
+			boolean wantToFreeRun = auto_wantToFreeRun(mon, place) || auto_forceFreeRun(false);
 			if(wantToBanish || wantToFreeRun)
 			{
 				// attempt to prepare for banishing, but if we can not try free running
@@ -428,6 +433,11 @@ boolean auto_pre_adventure()
 			{
 				adjustForReplaceIfPossible(mon);
 				zoneHasUnwantedMonsters = true;
+			}
+			if(auto_wantToCopy(mon, place))
+			{
+				adjustForCopyIfPossible(mon);
+				zoneHasWantedMonsters = true;
 			}
 			if(auto_wantToSniff(mon, place))
 			{
@@ -492,6 +502,12 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	if(get_property("auto_forceNonCombatSource") == "McHugeLarge left ski" && !get_property("auto_avalancheDeployed").to_boolean())
+	{
+		autoForceEquip($slot[acc2],wrap_item($item[McHugeLarge left ski]));
+		// We put it in acc2 so it can't clash with the war accessory in acc3
+	}
+	
 	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		autoForceEquip(wrap_item($item[jurassic parka])); //equips parka and forbids maximizer tampering with shirt slot
@@ -503,18 +519,30 @@ boolean auto_pre_adventure()
 		}
 	}
 	
+	item fluda = $item[Flash Liquidizer Ultra Dousing Accessory];
+	if ($locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place && auto_dousesRemaining()>0)
+	{
+		autoEquip(fluda);
+	}
+	
 	item exting = wrap_item($item[industrial fire extinguisher]);
 	if(auto_FireExtinguisherCombatString(place) != "" || $locations[The Goatlet, Twin Peak, The Hidden Bowling Alley, The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place)
 	{
 		autoEquip(exting);
 	}
-	else if(auto_availableBrickRift() == place)
+	else if(auto_availableBrickRift() == place && auto_fireExtinguisherCharges() >= 30)
 	{
-		autoEquip(exting); // polar vortex for shadow bricks
+		autoEquip(exting); // Can do at least 1 polar vortex for shadow bricks while keeping 20 for a zone specific skill
 	}
 	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
 	{
 		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 
+	}
+
+	if(place == $location[The Penultimate Fantasy Airship] && auto_haveBatWings())
+	{
+		// only here to get immateria. Get it faster with bat wings
+		autoEquip($item[Bat Wings]);
 	}
 
 
@@ -580,7 +608,7 @@ boolean auto_pre_adventure()
 	}
 
 	item dartHolster = $item[Everfull Dart Holster];
-	if(auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0)
+	if (auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0 && !in_avantGuard())
 	{
 		auto_log_info("We don't have ELR so let's hit a bullseye");
 		autoEquip($slot[acc3], dartHolster);
@@ -589,6 +617,7 @@ boolean auto_pre_adventure()
 
 	equipOverrides();
 	kolhs_preadv(place);
+	ag_bgChat();
 
 	if (is100FamRun() && my_familiar() == $familiar[none])
 	{
@@ -667,61 +696,7 @@ boolean auto_pre_adventure()
 	generic_t itemNeed = zone_needItem(place);
 	if(mayNeedItem && itemNeed._boolean)
 	{
-		addToMaximize("50item " + (ceil(itemNeed._float) + 100.0) + "max"); // maximizer treats item drop as 100 higher than it actually is for some reason.
-		simMaximize();
-		float itemDrop = simValue("Item Drop");
-		if(itemDrop < itemNeed._float)
-		{
-			if (buffMaintain($effect[Fat Leon\'s Phat Loot Lyric], 20, 1, 10))
-			{
-				itemDrop += 20.0;
-			}
-			if (buffMaintain($effect[Singer\'s Faithful Ocelot], 35, 1, 10))
-			{
-				itemDrop += 10.0;
-			}
-		}
-		if(itemDrop < itemNeed._float && !haveAsdonBuff())
-		{
-			asdonAutoFeed(37);
-			if(asdonBuff($effect[Driving Observantly]))
-			{
-				itemDrop += 50.0;
-			}
-		}
-		if(itemDrop < itemNeed._float)
-		{
-			//if general item modifier isn't enough check specific item drop bonus
-			generic_t itemFoodNeed = zone_needItemFood(place);
-			generic_t itemBoozeNeed = zone_needItemBooze(place);
-			float itemDropFood = itemDrop + simValue("Food Drop");
-			float itemDropBooze = itemDrop + simValue("Booze Drop");
-			if(itemFoodNeed._boolean && itemDropFood < itemFoodNeed._float)
-			{
-				auto_log_debug("Trying food drop supplements");
-				//max at start of an expression with item and food drop is ineffective in combining them, have to let the maximizer try to add on top
-				addToMaximize("49food drop " + ceil(itemFoodNeed._float) + "max");
-				simMaximize();
-				itemDropFood = simValue("Item Drop") + simValue("Food Drop");
-			}
-			if(itemBoozeNeed._boolean && itemDropBooze < itemBoozeNeed._float)
-			{
-				auto_log_debug("Trying booze drop supplements");
-				addToMaximize("49booze drop " + ceil(itemBoozeNeed._float) + "max");
-				simMaximize();
-				itemDropBooze = simValue("Item Drop") + simValue("Booze Drop");
-				//no zone item yet needs both food and booze, bottle of Chateau de Vinegar exception is a cooking ingredient but doesn't use food drop bonus
-			}
-			if((itemFoodNeed._boolean && itemDropFood >= itemFoodNeed._float) ||
-			(itemBoozeNeed._boolean && itemDropBooze >= itemBoozeNeed._float))
-			{
-				//the needed item was Food/Booze and need has been met with specific bonus
-			}
-			else
-			{
-				auto_log_debug("We can't cap this drop bear!", "purple");
-			}
-		}
+		provideItem(ceil(itemNeed._float),place,false);
 	}
 
 
@@ -1024,7 +999,7 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
-	utilizeStillsuit();
+	utilizeStillsuit();	
 
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");

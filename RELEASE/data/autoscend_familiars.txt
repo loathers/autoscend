@@ -89,13 +89,18 @@ drop	29	Green Pixie	prop:_absintheDrops<5
 drop	30	Galloping Grill	prop:_hotAshesDrops<5
 # If all else fails, keep generating CBB ingredients
 drop	31	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
+# build up a few mini kiwis, enough for an aioli and a bikini
+drop	32	Mini Kiwi	item:mini kiwi<7
+# use a Peace turkey if all else fails
+drop	33	Peace Turkey
 
 # We want to delevel, but don't want to deal damage
 gremlins	0	Nosy Nose
 gremlins	1	Plastic Pirate Skull
 gremlins	2	Space Jellyfish
-gremlins	3	Gelatinous Cubeling
-gremlins	4	Barrrnacle
+gremlins	3	Peace Turkey
+gremlins	4	Gelatinous Cubeling
+gremlins	5	Barrrnacle
 
 init	0	Xiblaxian Holo-Companion
 init	1	Cute Meteor
@@ -313,11 +318,12 @@ regen	29	Mini-Trainbot
 # Marginally special whelps
 #Mutant Gila Monster	grimdark:2
 regen	30	Pottery Barn Owl
+regen	31	Peace Turkey
 # Regular old whelps
-regen	31	Pet Cheezling
-regen	32	Ghuol Whelp
+regen	32	Pet Cheezling
+regen	33	Ghuol Whelp
 # The absolute default that everyone should have after their first run
-regen	33	Mosquito
+regen	34	Mosquito
 
 # Sombrero is desirable with a decent amount of ML
 stat	0	Galloping Grill	ML:>=120

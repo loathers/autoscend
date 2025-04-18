@@ -77,21 +77,26 @@ boolean auto_post_adventure()
 
 	if(get_property("auto_forceNonCombatSource") != "" && !auto_haveQueuedForcedNonCombat())
 	{
-		// possible to get desired NC when preparing spikes. Only log usage if NC was actually forced
-		if(get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean())
+		// possible to get desired NC when preparing spikes/avalanche. Only log usage if NC was actually forced
+		if((get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean()) &&
+		(get_property("auto_forceNonCombatSource") != "McHugeLarge left ski") || get_property("auto_avalancheDeployed").to_boolean())
 		{
 			auto_log_info("Encountered forced noncombat: " + get_property("lastEncounter"), "blue");
-			handleTracker(get_property("auto_forceNonCombatSource"), get_property("lastEncounter"), "auto_forcedNC");
+			handleTracker(get_property("auto_forceNonCombatSource"), my_location().to_string(), get_property("lastEncounter"), "auto_forcedNC");
 		}
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatLocation", "");
 		set_property("auto_parkaSpikesDeployed", false);
+		set_property("auto_avalancheDeployed", false);
 	}
 
 	if(get_property("auto_instakillSource") != "" && get_property("auto_instakillSuccess").to_boolean())
 	{
 		auto_log_info("Successful instakill with: " + get_property("auto_instakillSource"), "blue");
-		handleTracker(get_property("lastEncounter"), get_property("auto_instakillSource"), "auto_instakill");
+		if(get_property("lastEncounter").to_monster() == last_monster()) //only track the combat part of a combat+NC encounter (like everfull dart perks)
+		{
+			handleTracker(get_property("lastEncounter"), get_property("auto_instakillSource"), "auto_instakill");
+		}
 		set_property("auto_instakillSource", "");
 		set_property("auto_instakillSuccess", false);
 	}
@@ -916,11 +921,16 @@ boolean auto_post_adventure()
 		// items which give stats
 		buffMaintain($effect[Scorched Earth]);
 		buffMaintain($effect[Wisdom of Others]);
-		foreach it in $items[azurite, eye agate, lapis lazuli]
+		// Only use these if we've got plenty of meat and aren't max level
+		// Otherwise we'll autosell them
+		if(my_meat() > meatReserve()+1000 && my_level()<13)
 		{
-			if(item_amount(it) > 0 && auto_is_valid(it))
+			foreach it in $items[azurite, eye agate, lapis lazuli]
 			{
-				use(it, item_amount(it));
+				if(item_amount(it) > 0 && auto_is_valid(it))
+				{
+					use(it, item_amount(it));
+				}
 			}
 		}
 		

@@ -118,11 +118,11 @@ boolean auto_tavern()
 	
 	if(capped >= 3)
 	{
-		providePlusNonCombat(25, $location[Noob Cave]);
+		providePlusNonCombat(auto_combatModCap(), $location[Noob Cave]);
 	}
 	else
 	{
-		providePlusCombat(25, $location[Noob Cave]);
+		providePlusCombat(20, $location[Noob Cave]);
 	}
 
 	string tavern = get_property("tavernLayout");
@@ -143,6 +143,7 @@ boolean auto_tavern()
 		{
 			int actual = loc + 1;
 			boolean needReset = false;
+			set_property("auto_nonAdvLoc", true);
 
 			if(autoAdvBypass("cellar.php?action=explore&whichspot=" + actual, $location[The Typical Tavern Cellar]))
 			{

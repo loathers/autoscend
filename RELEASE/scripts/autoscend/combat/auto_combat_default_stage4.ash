@@ -21,12 +21,12 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	// Path = WereProfessor
 	retval = auto_combatWereProfessorStage4(round, enemy, text);
 	if(retval != "") return retval;
-	
+
 	// Skip if have drones out
 	if(get_property("auto_skipStage4").to_boolean()) return "";
 	
 	//sniffers are skills that increase the odds of encountering this same monster again in the current zone.
-	if(auto_wantToSniff(enemy, my_location()))
+	if(auto_wantToSniff(enemy, my_location()) && !ag_is_bodyguard())
 	{
 		skill sniffer = getSniffer(enemy);
 		if(sniffer != $skill[none])
@@ -51,14 +51,14 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//TODO auto_doCombatCopy property is silly. get rid of it
-	if(!haveUsed($item[Rain-Doh black box]) && (!in_heavyrains()) && (get_property("_raindohCopiesMade").to_int() < 5))
+	if(!haveUsed($item[Rain-Doh black box]) && (!in_heavyrains()) && (get_property("_raindohCopiesMade").to_int() < 5) && !ag_is_bodyguard())
 	{
 		if((enemy == $monster[Modern Zmobie]) && (get_property("auto_modernzmobiecount").to_int() < 3))
 		{
 			set_property("auto_doCombatCopy", "yes");
 		}
 	}
-	if(canUse($item[Rain-Doh black box]) && (get_property("auto_doCombatCopy") == "yes") && (enemy != $monster[gourmet gourami]))
+	if(canUse($item[Rain-Doh black box]) && (get_property("auto_doCombatCopy") == "yes") && (enemy != $monster[gourmet gourami]) && !ag_is_bodyguard())
 	{
 		set_property("auto_doCombatCopy", "no");
 		markAsUsed($item[Rain-Doh black box]); // mark even if not used so we don't spam the error message
@@ -90,7 +90,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	//iotm monster copier that works by creating wandering copies of the targetted monster
 	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !inAftercore())
 	{
-		if($monsters[Ninja Snowman Assassin, Lobsterfrogman] contains enemy)
+		if($monsters[Lobsterfrogman] contains enemy)
 		{
 			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
 			{
@@ -111,6 +111,22 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 		}
 	}
 	
+	//iotm monster duplicator that creates a chained fight of the current monster
+	if(auto_wantToCopy(enemy, my_location()) && !ag_is_bodyguard())
+	{
+		skill copier = getCopier(enemy);
+		if(copier != $skill[none] && canUse(copier))
+		{
+			if(copier == $skill[Blow the Purple Candle\!])		//mafia does not track the target of this skill so we must do so.
+			{
+				set_property("auto_purple_candled", enemy);
+			}
+			handleTracker(enemy, copier, "auto_copies");
+			combat_status_add("copied");
+			return useSkill(copier);
+		}
+	}
+
 	//accordion thief mechanic. unlike pickpocket it can be done at any round
 	if(canUse($skill[Steal Accordion]) && (my_class() == $class[Accordion Thief]) && canSurvive(2.0))
 	{
@@ -171,7 +187,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	if(wink_skill != $skill[none])		//we can wink / romatic arrow
 	{
-		if($monsters[Lobsterfrogman, Modern Zmobie, Ninja Snowman Assassin] contains enemy)
+		if($monsters[Lobsterfrogman, Modern Zmobie] contains enemy)
 		{
 			return useSkill(wink_skill);
 		}
@@ -351,11 +367,19 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 
 	// use cosmic bowling ball iotm
-	if(auto_bowlingBallCombatString(my_location(), true) != "")
+	if(auto_bowlingBallCombatString(my_location(), true) != "" && !enemy.boss)
 	{
 		return auto_bowlingBallCombatString(my_location(), false);
 	}
 
+	// prep avalanche if requested
+	if(canUse($skill[McHugeLarge Avalanche]) && get_property("auto_forceNonCombatSource") == "McHugeLarge left ski"
+		&& !get_property("auto_avalancheDeployed").to_boolean())
+	{
+		set_property("auto_avalancheDeployed", true);
+		return useSkill($skill[McHugeLarge Avalanche]);
+	}
+	
 	// prep parka NC forcing if requested
 	if(canUse($skill[Launch spikolodon spikes]) && get_property("auto_forceNonCombatSource") == "jurassic parka"
 		&& !get_property("auto_parkaSpikesDeployed").to_boolean())

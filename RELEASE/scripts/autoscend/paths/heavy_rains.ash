@@ -40,8 +40,12 @@ void heavyrains_initializeDay(int day)
 			{
 				visit_url("inv_use.php?which=3&whichitem=7648&pwd");
 				visit_url("choice.php?pwd&whichchoice=967&option=1", true);
-				visit_url("choice.php?pwd&whichchoice=967&option=3", true);
-				visit_url("choice.php?pwd&whichchoice=967&option=5", true);
+				if (item_amount($item[thunder thigh]) > 0) {
+					visit_url("choice.php?pwd&whichchoice=967&option=3", true);
+				}
+				if (item_amount($item[thunder thigh]) > 0) {
+					visit_url("choice.php?pwd&whichchoice=967&option=5", true);
+				}
 				set_property("choiceAdventure967", "7");
 			}
 
@@ -49,8 +53,12 @@ void heavyrains_initializeDay(int day)
 			{
 				visit_url("inv_use.php?which=3&whichitem=7647&pwd");
 				visit_url("choice.php?pwd&whichchoice=968&option=1", true);
-				visit_url("choice.php?pwd&whichchoice=968&option=3", true);
-				visit_url("choice.php?pwd&whichchoice=968&option=4", true);
+				if (item_amount($item[aquaconda brain]) > 0) {
+					visit_url("choice.php?pwd&whichchoice=968&option=3", true);
+				}
+				if (item_amount($item[aquaconda brain]) > 0) {
+					visit_url("choice.php?pwd&whichchoice=968&option=4", true);
+				}
 				set_property("choiceAdventure968", "2");
 			}
 
@@ -58,8 +66,12 @@ void heavyrains_initializeDay(int day)
 			{
 				visit_url("inv_use.php?which=3&whichitem=7646&pwd");
 				visit_url("choice.php?pwd&whichchoice=969&option=3", true);
-				visit_url("choice.php?pwd&whichchoice=969&option=1", true);
-				visit_url("choice.php?pwd&whichchoice=969&option=7", true);
+				if (item_amount($item[lightning milk]) > 0) {
+					visit_url("choice.php?pwd&whichchoice=969&option=1", true);
+				}
+				if (item_amount($item[lightning milk]) > 0) {
+					visit_url("choice.php?pwd&whichchoice=969&option=7", true);
+				}
 				set_property("choiceAdventure969", "2");
 			}
 

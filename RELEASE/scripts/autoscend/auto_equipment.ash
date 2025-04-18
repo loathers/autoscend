@@ -501,7 +501,7 @@ string defaultMaximizeStatement()
 
 	if(in_darkGyffte())
 	{
-		res += ",0.8hp,3hp regen";
+		res += ",0.8hp,4hp regen";
 	}
 	else
 	{
@@ -752,9 +752,10 @@ void finalizeMaximize(boolean speculative)
 			if(monseen == totalmob) nooculus = true;
 		}
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
+		//as we go through the hidden hospital we equip surgeon gear on the pants slot, so we can end up dying if we cast advanced research
 		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
-		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location())) nooculus = true;
+		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room, The Hidden Hospital] contains my_location())) nooculus = true;
 		if(!nooculus)
 		{
 			if(possessEquipment($item[biphasic molecular oculus]))
@@ -797,6 +798,10 @@ void finalizeMaximize(boolean speculative)
 		{
 			addBonusToMaximize($item[spring shoes], 200);
 		}
+		else if(my_meat() < meatReserve()) // those fruit drops can autosell for a lot
+		{
+			addBonusToMaximize($item[spring shoes], 200);
+		}
 		else if(my_hp() < 0.5*my_maxhp() && my_hp() > 0)
 		{
 			addBonusToMaximize($item[spring shoes], 200); // bonus to heal in wereprof as the werewolf after transition from Professor
@@ -806,6 +811,12 @@ void finalizeMaximize(boolean speculative)
 			addBonusToMaximize($item[spring shoes], 50);
 		}
 	}
+
+	if(auto_haveBatWings() && get_property("_batWingsFreeFights").to_int() < 5)
+	{
+		addBonusToMaximize($item[bat wings], 200); // get the 5 free fights
+	}
+
 	// We still need pixels in KoE, badly.
 	if(in_koe() && auto_hasPowerfulGlove())
 	{
@@ -998,6 +1009,10 @@ void equipMaximizedGear()
 			addToMaximize("2 dump"); // maximizer will dump a bunch of stuff to the session log with this
 			maximize(get_property("auto_maximize_current"), 2500, 0, false);
 			removeFromMaximize("2 dump");
+			if(get_property("auto_debug_maximizer").to_boolean())
+			{
+				abort("NO WEAPON WAS EQUIPPED BY THE MAXIMIZER. REPORT THIS IN DISCORD AND INCLUDE YOUR SESSION LOG! YOU CAN RE-RUN AUTOSCEND AND IT SHOULD RUN OK (possibly).");
+			}
 			if (equipped_item($slot[weapon]) == $item[none]) {
 				// workaround. equip a weapon & re-running maximizer appears to fix the issue.
 				equip(equippableWeapon);
@@ -1239,5 +1254,46 @@ boolean auto_forceEquipSword() {
 boolean is_watch(item it)
 {
 	//watches are accessories that conflict with each other. you can only equip one watch total.
-	return $items[dead guy's memento, dead guy's watch, Counterclockwise Watch, glow-in-the-dark wristwatch, grandfather watch, imitation nice watch, wristwatch of the white knight, Crimbolex watch, Sasq&trade; watch] contains it;
+	return boolean_modifier(it, $modifier[Nonstackable Watch]);
+}
+
+int[item] auto_getAllEquipabble()
+{
+	return auto_getAllEquipabble($slot[none]);
+}
+
+int[item] auto_getAllEquipabble(slot s)
+{
+	boolean ignore_slot = s==$slot[none];
+	s = (s==$slot[acc2] || s==$slot[acc3]?$slot[acc1]:s);// all accessories checked against slot 1
+	int[item] valid_and_equippable;
+	foreach it,n in get_inventory()
+	{
+		slot it_s = to_slot(it);
+		if(can_equip(it) && auto_is_valid(it) && (s==it_s || ignore_slot))
+		{
+			valid_and_equippable[it] = n;
+		}
+	}
+	// Add equipped
+	boolean[slot] my_slots;
+	if (ignore_slot)
+	{
+		my_slots = $slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	else
+	{
+		my_slots[s] = true;
+		if (s==$slot[acc1])
+		{
+			my_slots[$slot[acc2]] = true;
+			my_slots[$slot[acc3]] = true;
+		}
+	}
+	foreach my_slot in my_slots
+	{
+		item it = equipped_item(my_slot);
+		valid_and_equippable[it]++;
+	}
+	return valid_and_equippable;
 }

@@ -64,13 +64,6 @@ boolean allowSoftblockDelay()
 	return get_property("auto_delayLastLevel").to_int() < my_level();
 }
 
-boolean setSoftblockDelay()
-{
-	auto_log_warning("I was trying to avoid delay zones, but I've run out of stuff to do. Releasing softblock.", "red");
-	set_property("auto_delayLastLevel", my_level());
-	return true;
-}
-
 boolean canBurnDelay(location loc)
 {
 	// TODO: Add Digitize (Portscan?) & LOV Enamorang
@@ -102,13 +95,6 @@ boolean allowSoftblockUndergroundAdvs()
 	return get_property("auto_cmcConsultLastLevel").to_int() < my_level();
 }
 
-boolean setSoftblockUndergroundAdvs()
-{
-	auto_log_warning("I was trying to avoid underground zones, but I've run out of stuff to do. Releasing softblock.", "red");
-	set_property("auto_cmcConsultLastLevel", my_level());
-	return true;
-}
-
 int[string] getLastCombatEnvironmentCounts(int offset)
 {
 	// mafia has no char type. string will have to do.
@@ -134,7 +120,8 @@ boolean auto_reserveUndergroundAdventures()
 		return false;
 	}
 	if (get_workshed() != $item[cold medicine cabinet] && auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 &&
-	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
+	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]) &&
+	have_campground())
 	{
 		auto_log_debug("Reserving underground adventures as we will be switching to the CMC.");
 		// Don't have the CMC installed yet but we can still switch today and want to switch to it so save underground zones until then.
@@ -157,8 +144,63 @@ boolean auto_reserveUndergroundAdventures()
 	return false;
 }
 
-boolean LX_goingUnderground()
+boolean allowSoftblockOutdoorAdvs()
 {
+	return get_property("auto_breathitinLastLevel").to_int() < my_level();
+}
+
+boolean auto_reserveOutdoorAdventures()
+{
+	// this function should return true when we *don't* want to spend adventures in outdoor zones.
+	if (!allowSoftblockOutdoorAdvs() || (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() == 0 && my_daycount() > 1) || !auto_is_valid($item[cold medicine cabinet]) || get_property("breathitinCharges").to_int() > 0)
+	{
+		// softblock has been released or we have no more Breathitins to collect (or we have Breathitin charges to use).
+		return false;
+	}
+	if (get_workshed() != $item[cold medicine cabinet] && auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 &&
+	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
+	{
+		auto_log_debug("Reserving outdoor adventures as we will be switching to the CMC.");
+		// Don't have the CMC installed yet but we can still switch today and want to switch to it so save outdoor zones until then.
+		return true;
+	}
+	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0 && my_daycount() < 3) {
+		auto_log_debug("Reserving outdoor adventures as we can still get more Breathitins today.");
+		// have the CMC installed and still have consults left to grab on day 1
+		return true;
+	}
+	return false;
+}
+
+boolean auto_earlyRoutingHandling()
+{
+	// wrapper function for "early" adventure choices depending on state.
+	// updating this will be less 'scary' than updating n task order files any time we make a change
+	// this function should go very high in task orders, potentially the first thing that spends adventures.
+	// ideally nothing called before this should spend an adventure, only update state or use turn free resources.
+	
+	// Check we have flyers if war frat and war started, first because takes no turns.
+	if(!in_koe() && internalQuestStatus("questL12War") == 1 && !get_property("auto_hippyInstead").to_boolean() &&
+	  get_property("sidequestArenaCompleted")!="fratboy" && available_amount($item[rock band flyers])==0)
+	{
+		outfit("frat warrior fatigues"); // don't use the equipOutfit func here since this is just temporary, we don't want to adventure like this.
+		visit_url("bigisland.php?place=concert&pwd");
+		// Just make sure the other two quests are started too
+		visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
+		visit_url("bigisland.php?action=junkman&pwd");
+	}
+
+	// force forcing non-combats.
+	if (auto_canForceNextNoncombat()) {
+		auto_log_debug("Forcing a non-combat somewhere. Strap yourselves in, kids.");
+		if (L6_friarsGetParts() || L10_basement() || L10_topFloor() || L10_holeInTheSkyUnlock())
+		{
+			// quests where we want to force non-combats
+			return true;
+		}
+	}
+
+	// CMC routing for Breathitins
 	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0)
 	{
 		if (get_property("_nextColdMedicineConsult").to_int() - total_turns_played() < 12)
@@ -186,50 +228,13 @@ boolean LX_goingUnderground()
 			}
 		}
 	}
-	return false;
-}
-
-boolean allowSoftblockOutdoorAdvs()
-{
-	return get_property("auto_breathitinLastLevel").to_int() < my_level();
-}
-
-boolean setSoftblockOutdoorAdvs()
-{
-	auto_log_warning("I was trying to avoid outdoor zones, but I've run out of stuff to do. Releasing softblock.", "red");
-	set_property("auto_breathitinLastLevel", my_level());
-	return true;
-}
-
-boolean auto_reserveOutdoorAdventures()
-{
-	// this function should return true when we *don't* want to spend adventures in outdoor zones.
-	if (!allowSoftblockOutdoorAdvs() || (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() == 0 && my_daycount() > 1) || !auto_is_valid($item[cold medicine cabinet]) || get_property("breathitinCharges").to_int() > 0)
-	{
-		// softblock has been released or we have no more Breathitins to collect (or we have Breathitin charges to use).
-		return false;
-	}
-	if (get_workshed() != $item[cold medicine cabinet] && auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 &&
-	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
-	{
-		auto_log_debug("Reserving outdoor adventures as we will be switching to the CMC.");
-		// Don't have the CMC installed yet but we can still switch today and want to switch to it so save outdoor zones until then.
-		return true;
-	}
-	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0 && my_daycount() < 3) {
-		auto_log_debug("Reserving outdoor adventures as we can still get more Breathitins today.");
-		// have the CMC installed and still have consults left to grab on day 1
-		return true;
-	}
-	return false;
-}
-
-boolean LX_useBreathitinCharges()
-{
+	
+	// Using up Breathitin charges if we have them
 	if (get_property("breathitinCharges").to_int() > 0)
 	{
 		auto_log_debug("Have Breathitin Charges to burn. Calling a quest function with outdoor zones.");
-		if (LX_unlockHiddenTemple() || L11_hiddenCityZones() || L5_getEncryptionKey() || L10_airship() || L9_chasmBuild() || L9_highLandlord() || L6_friarsGetParts())
+		if (LX_unlockHiddenTemple() || L11_hiddenCityZones() || L5_getEncryptionKey() || L10_airship() || 
+			L9_chasmBuild() || (get_property("_auto_lastABooCycleFix").to_int() < 5 && L9_highLandlord()) || L6_friarsGetParts())
 		{
 			// quests with adventures in outdoor zones in some sort of priority order here.
 			// LX_unlockHiddenTemple unlocks the Hidden Temple by adventuring in the Spooky Forest. High priority as Hidden City has a lot of delay
@@ -249,5 +254,46 @@ boolean LX_useBreathitinCharges()
 			return true;
 		}
 	}
+	
 	return false;
+}
+
+boolean auto_softBlockHandler()
+{
+	// "catch all" function to release softblocks one by one.
+	// updating this will be less 'scary' than updating n task order files any time we make a change
+	// this function should go in task orders after the call to L13_towerAscent
+	if (allowSoftblockDelay())
+	{
+		// Delay goes first as it applies to everyone and is our "OG" softblock
+		auto_log_warning("I was trying to avoid delay zones, but I've run out of stuff to do. Releasing softblock.", "red");
+		set_property("auto_delayLastLevel", my_level());
+		return true;
+	}
+	if (allowSoftblockUndergroundAdvs())
+	{
+		// Underground is next. Currently only applies to people who have and can use the CMC.
+		auto_log_warning("I was trying to avoid underground zones, but I've run out of stuff to do. Releasing softblock.", "red");
+		set_property("auto_cmcConsultLastLevel", my_level());
+		return true;
+	}
+	if (allowSoftblockOutdoorAdvs())
+	{
+		// Outdoor goes last. Not currently used but lets add it just in case we do implement it before CMC rotates out.
+		auto_log_warning("I was trying to avoid outdoor zones, but I've run out of stuff to do. Releasing softblock.", "red");
+		set_property("auto_breathitinLastLevel", my_level());
+		return true;
+	}
+	return false;
+}
+
+item[int] auto_workshedStrategy()
+{
+	// return the worksheds, in order, that we want to use today.
+	item[int] strat;
+	if (get_property("_workshedItemUsed").to_boolean()) {
+		// we already changed workshed today. Just return whatever is in our workshed currently.
+		strat[0] = get_workshed();
+	}
+	return strat;
 }

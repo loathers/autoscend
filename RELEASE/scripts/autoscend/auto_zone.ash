@@ -173,7 +173,7 @@ generic_t zone_needItem(location loc)
 		value = 20.0;
 		break;
 	case $location[The Smut Orc Logging Camp]:
-		if(get_property("chasmBridgeProgress").to_int() < 30)
+		if(get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 		{
 			value = 10.0;
 		}
@@ -600,7 +600,7 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[The Penultimate Fantasy Airship]:
-		if(delay._int == 0)
+		if(delay._int == 0 || (auto_haveBatWings() && available_amount($item[S.O.C.K.])==0))
 		{
 			value = -80;
 		}
@@ -627,8 +627,7 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[Lair of the Ninja Snowmen]:
-		if(internalQuestStatus("questL08Trapper") < 3 &&
-		(item_amount($item[Ninja Carabiner]) == 0 || item_amount($item[Ninja Crampons]) == 0 || item_amount($item[Ninja Rope]) == 0))
+		if(internalQuestStatus("questL08Trapper") < 3 && !L8_forceExtremeInstead() && item_amount($item[Ninja Carabiner]) == 0)
 		{
 			value = 80;
 		}
@@ -641,9 +640,6 @@ generic_t zone_combatMod(location loc)
 	case $location[The Defiled Cranny]:
 	case $location[The Defiled Alcove]:
 		value = -85;
-		break;
-	case $location[The Outskirts of Cobb\'s Knob]:
-		value = 20;
 		break;
 	case $location[The Typical Tavern Cellar]:
 		//We could cut it off early if the Rat Faucet is the last one
@@ -870,7 +866,7 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[The Smut Orc Logging Camp]:
-		if (shenZones contains loc && get_property("chasmBridgeProgress").to_int() >= 30)
+		if (shenZones contains loc && get_property("chasmBridgeProgress").to_int() >= bridgeGoal())
 		{
 			value = 3 - (loc.turns_spent - shenZones[loc]);
 		}
@@ -906,25 +902,25 @@ generic_t zone_delay(location loc)
 		}
 		break;
 	case $location[Vanya\'s Castle]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && (get_property("8BitColor") == "black" || get_property("8BitColor") == ""))
+		if (need8BitPoints() && possessEquipment($item[Continuum Transfunctioner]) && (get_property("8BitColor") == "black" || get_property("8BitColor") == ""))
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[The Fungus Plains]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "red")
+		if (need8BitPoints() && possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "red")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[Megalo-City]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "blue")
+		if (need8BitPoints() && possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "blue")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
 	case $location[Hero\'s Field]:
-		if (possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "green")
+		if (need8BitPoints() && possessEquipment($item[Continuum Transfunctioner]) && get_property("8BitColor") == "green")
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
@@ -1691,7 +1687,7 @@ boolean zone_available(location loc)
 	// compare our result with Mafia's native function, log a warning if theres a difference. Ideally we can see if there are any differences between our code and Mafia's, and if not remove all of ours in favor of Mafia's
 	boolean canAdvRetval = can_adventure(loc);
 	if(canAdvRetval != retval){
-		auto_log_debug("Uh oh, autoscend and mafia's can_adventure() dont agree on whether we can adventure at " + loc + " (autoscend: "+retval+", can_adventure(): "+canAdvRetval+"). Will assume locaiton available if either is true.");
+		auto_log_debug("Uh oh, autoscend and mafia's can_adventure() dont agree on whether we can adventure at " + loc + " (autoscend: "+retval+", can_adventure(): "+canAdvRetval+"). Will assume location available if either is true.");
 		retval = retval || canAdvRetval;
 	}
 

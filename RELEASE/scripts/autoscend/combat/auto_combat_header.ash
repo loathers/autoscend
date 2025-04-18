@@ -30,14 +30,19 @@ boolean isSniffed(monster enemy, skill sk);
 boolean isSniffed(monster enemy);
 skill getSniffer(monster enemy, boolean inCombat);
 skill getSniffer(monster enemy);
+skill getCopier(monster enemy, boolean inCombat);
+skill getCopier(monster enemy);
 skill getStunner(monster enemy);
 boolean enemyCanBlocksSkills();
 boolean canSurvive(float mult, int add);
 boolean canSurvive(float mult);
 boolean hasClubEquipped();
 string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string text);				
-string findBanisher(int round, monster enemy, string text);	
+string findBanisher(int round, monster enemy, string text);
+string findPhylumBanisher(int round, phylum enemyphylum, string text);
+string banisherCombatString(phylum enemyphylum, location loc, boolean inCombat);
 string banisherCombatString(monster enemy, location loc, boolean inCombat);
+string banisherCombatString(phylum enemyphylum, location loc);
 string banisherCombatString(monster enemy, location loc);
 string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDrop);
 string yellowRayCombatString(monster target, boolean inCombat);
@@ -50,6 +55,8 @@ float turns_to_kill(float dmg);
 boolean combat_status_check(string mark);
 void combat_status_add(string mark);
 boolean wantToForceDrop(monster enemy);
+boolean wantToDouse(monster enemy);
+boolean canSurviveShootGhost(monster enemy, int shots);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash

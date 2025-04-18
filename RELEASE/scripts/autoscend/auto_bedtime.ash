@@ -623,7 +623,7 @@ boolean doBedtime()
 	while(LX_freeCombats());
 
 	// although seals can be fought drunk, it complicates code without a meaningful benefit
-	if((my_class() == $class[Seal Clubber]) && guild_store_available() && my_inebriety() <= inebriety_limit())
+	if (my_class() == $class[Seal Clubber] && guild_store_available() && my_inebriety() <= inebriety_limit() && !in_avantGuard())
 	{
 		handleFamiliar("stat");
 		int oldSeals = get_property("_sealsSummoned").to_int();
@@ -1016,8 +1016,8 @@ boolean doBedtime()
 			if(in_glover())
 			{
 				auto_sourceTerminalEnhance("damage");
-				enhances -= 1;				
-			}
+				enhances -= 1;
+		}
 			else
 			{
 				auto_sourceTerminalEnhance("items");
@@ -1203,9 +1203,29 @@ boolean doBedtime()
 			effect_to_wish = $effect[One Very Clear Eye];
 		}
 	}
-	if (auto_haveMonkeyPaw())
+	if (auto_haveMonkeyPaw() && auto_monkeyPawWishesLeft() > 0)
 	{
 		boolean success = true;
+		// if we unlocked the guild and have a meatcar, unlock Whitey's Grove so we can get bird rib / lion oil
+		if (get_property("lastGuildStoreOpen").to_int() == my_ascensions() && item_amount($item[bitchin' meatcar]) > 0) {
+			// start, then finish the meatcar quest
+			if (internalQuestStatus("questG01Meatcar") < 1) {
+				visit_url("guild.php?place=paco");
+			}
+			if (internalQuestStatus("questG01Meatcar") < 1) {
+				visit_url("guild.php?place=paco");
+			}
+			// open Whitey's Grove
+			if (internalQuestStatus("questG02Whitecastle") < 0) {
+				visit_url("guild.php?place=paco");
+				run_choice(1);
+			}
+			foreach it in $items[Lion Oil, Bird Rib]
+			{
+				if(item_amount(it) > 0) continue;
+				auto_makeMonkeyPawWish(it);
+			}
+		}
 		while (auto_monkeyPawWishesLeft() > 0 && success)
 		{
 			success = auto_makeMonkeyPawWish(effect_to_wish);
@@ -1316,6 +1336,7 @@ boolean doBedtime()
 
 		acquireMilkOfMagnesiumIfUnused(true);
 		consumeMilkOfMagnesiumIfUnused();
+		auto_scepterRollover();
 
 		if(have_skill($skill[Calculate the Universe]) && auto_is_valid($skill[Calculate the Universe]) && (get_property("_universeCalculated").to_int() < min(3, get_property("skillLevel144").to_int())))
 		{
@@ -1365,6 +1386,13 @@ boolean doBedtime()
 		{
 			auto_log_info("You have a tea tree to shake!", "blue");
 		}
+
+		if (auto_haveAugustScepter() && get_property("_augSkillsCast").to_int() < 5)
+		{
+			auto_log_info("You still have " + (5 - get_property("_augSkillsCast").to_int()) + " August Scepter casts remaining! Perhaps consider casting Aug 13th/30th for more rollover adventures, and/or 7th for a buff for tomorrow?", "blue");
+		}
+
+		meatReserveMessage();
 
 		if (get_property("spadingData") != "")
 		{

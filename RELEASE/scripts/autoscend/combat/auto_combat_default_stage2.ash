@@ -5,10 +5,17 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 	// Skip if have auto_skipStage2 is set
 	if(get_property("auto_skipStage2").to_boolean()) return "";
-	
+
+	//If in Avant Guard, want to make sure the enemy is set correctly to the bodyguard
+	monster guardee = $monster[none];
+	if(in_avantGuard() && ag_is_bodyguard())
+	{
+		guardee = to_monster(substring(get_property("lastEncounter"), index_of(get_property("lastEncounter"), " acting as the bodyguard to a ") + 30));
+	}
+
 	//if we want to olfact in stage 4 then we should delay stage 2 until we olfact.
 	//we do not want to olfact now because we should do stage 3 first to stun and/or debuff the enemy first before olfacting.
-	if(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])
+	if(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none]  && !ag_is_bodyguard())
 	{
 		auto_log_debug("Skipping stage 2 of combat for now as we intend to olfact [" +enemy+ "]");
 		return "";
@@ -69,7 +76,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 	
 	//yellowray instantly kills the enemy and makes them drop all items they can drop.
-	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()))
+	// don't yellow ray if we'll be dousing
+	skill douse = $skill[douse foe];
+	boolean isDouseTarget = wantToDouse(enemy) && round < 22; // dousing can have a low chance of success, so only do it up to round 21, then yellow
+	boolean douseAvailable = canUse(douse, false) && auto_dousesRemaining()>0;
+	boolean willDouse = isDouseTarget && douseAvailable;
+	
+	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()) && !willDouse)
 	{
 		string combatAction = yellowRayCombatString(enemy, true, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains enemy);
 		if(combatAction != "")
@@ -138,7 +151,54 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
-	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()))
+	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)
+	{
+		string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
+		if(banishAction != "")
+		{
+			auto_log_info("Looking at banishAction: " + banishAction, "green");
+			combat_status_add("banisher");
+			if(index_of(banishAction, "skill") == 0)
+			{
+				handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
+			}
+			else if(index_of(banishAction, "item") == 0)
+			{
+				handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
+			}
+			else
+			{
+				auto_log_warning("Unable to track banisher behavior: " + banishAction, "red");
+			}
+			return banishAction;
+		}
+		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
+		combat_status_add("phylumbanishercheck");
+	}
+
+	// Free run in Avant Guard from Bodyguard before banishing for a few monsters
+	if(!combat_status_check("banishercheck") && auto_wantToBanish(guardee, my_location()))
+	{
+		string freeRunAction = freeRunCombatStringPreBanish(enemy, my_location(), true);
+		if(freeRunAction != "")
+		{
+			if(index_of(freeRunAction, "skill") == 0)
+			{
+				handleTracker(enemy, to_skill(substring(freeRunAction, 6)), "auto_freeruns");
+			}
+			else if(index_of(freeRunAction, "item") == 0)
+			{
+				handleTracker(enemy, to_item(substring(freeRunAction, 5)), "auto_freeruns");
+			}
+			else
+			{
+				auto_log_warning("Unable to track runaway behavior: " + freeRunAction, "red");
+			}
+			return freeRunAction;
+		}
+	}
+
+	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(enemy, my_location()) && !ag_is_bodyguard())
 	{
 		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
@@ -167,12 +227,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 			return banishAction;
 		}
-		//we wanted to banish an enemy and failed. set a property so we do not bother trying in subsequent rounds
+		//we wanted to banish an enemy and failed or banisher did not end combat. 
+		//set a property so we do not bother trying in subsequent rounds
 		combat_status_add("banishercheck");
 	}
 
-	// Free run from monsters we want to banish but are unable to, or monsters on the free run list
-	if(!combat_status_check("freeruncheck") && (auto_wantToFreeRun(enemy, my_location()) || auto_wantToBanish(enemy, my_location())))
+	// Free run from monsters we want to banish/phylumbanish but are unable to, or monsters on the free run list
+	if(!combat_status_check("freeruncheck") && ((auto_wantToFreeRun(enemy, my_location()) || auto_forceFreeRun(true) || auto_wantToBanish(enemy, my_location()) || (auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)) || (auto_wantToFreeRun(guardee, my_location()) || auto_wantToBanish(guardee, my_location()))))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")
@@ -283,7 +344,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	
 	# Instakill handler
 	boolean couldInstaKill = true;
-	if($monsters[Smut Orc Pipelayer,Smut Orc Jacker,Smut Orc Screwer,Smut Orc Nailer] contains enemy && get_property("chasmBridgeProgress").to_int() < 30)
+	if($monsters[Smut Orc Pipelayer,Smut Orc Jacker,Smut Orc Screwer,Smut Orc Nailer] contains enemy && get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 	{
 		//want to do cold damage in stage3
 		if(my_adventures() > 6)
@@ -291,12 +352,17 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			couldInstaKill = false;
 		}
 	}
-	else if($monsters[Lobsterfrogman, Ninja Snowman Assassin] contains enemy)
+	else if($monsters[Lobsterfrogman] contains enemy)
 	{
 		if(auto_have_skill($skill[Digitize]) && (get_property("_sourceTerminalDigitizeMonster") != enemy))
 		{
 			couldInstaKill = false;
 		}
+	}
+	else if($monsters[Racecar Bob, Bob Racecar] contains enemy && item_amount($item[photograph of a dog]) == 0 && internalQuestStatus("questL11Palindome") < 2)
+	{
+		//don't want to instakill if we haven't used the disposable camera yet
+		couldInstaKill = false;
 	}
 	else if(wantToForceDrop(enemy))
 	{

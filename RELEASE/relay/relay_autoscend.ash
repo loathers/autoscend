@@ -70,27 +70,48 @@ void handleSetting(string type, int x)
 	writeln("<input type='hidden' name='"+set.name+"_oldvalue' value='"+get_property(set.name)+"' />");
 }
 
-void generateTrackingData(string tracked)
+void generateTrackingData(string tracked, string print_between, boolean stacked)
 {
 	int day = 0;
-	string[int] tracking = split_string(get_property(tracked), ",");
+	string[int] tracking = split_string(get_property(tracked), ", ");
 	if(get_property(tracked) == "")
 	{
 		return;
 	}
-	foreach x in tracking
+	string[int] tracking_stacked;
+	int[int] stack_counts;
+	int unique_idx = -1;
+	string last_event = "";
+	foreach idx,event in tracking
 	{
-		if(tracking[x] == "")
+		if (last_event != event)
+		{
+			unique_idx++;
+			tracking_stacked[unique_idx] = event;
+			stack_counts[unique_idx] = 1;
+			last_event = event;
+		}
+		else
+		{
+			stack_counts[unique_idx]++;
+		}
+	}
+	
+	string[int] tracking_to_use = (stacked?tracking_stacked:tracking);
+	
+	foreach idx,event in tracking_to_use
+	{
+		if(event == "")
 		{
 			continue;
 		}
-		matcher paren = create_matcher("[()]", tracking[x]);
-		tracking[x] = replace_all(paren, "");
-		matcher asdon = create_matcher("Asdon Martin:", tracking[x]);
-		tracking[x] = replace_all(asdon, "Asdon Martin -");
-		matcher cheat = create_matcher("CHEAT CODE:", tracking[x]);
-		tracking[x] = replace_all(cheat, "CHEAT CODE -");
-		string[int] current = split_string(tracking[x], ":");
+		matcher paren = create_matcher("[()]", event);
+		event = replace_all(paren, "");
+		matcher asdon = create_matcher("Asdon Martin:", event);
+		event = replace_all(asdon, "Asdon Martin -");
+		matcher cheat = create_matcher("CHEAT CODE:", event);
+		event = replace_all(cheat, "CHEAT CODE -");
+		string[int] current = split_string(event, ":");
 		int curDay = to_int(current[0]);
 		if(curDay > day)
 		{
@@ -99,7 +120,7 @@ void generateTrackingData(string tracked)
 			{
 				writeln("<br><br>");
 			}
-			writeln("Day " + day + ": ");
+			writeln("<b>Day " + day + ":</b>");
 		}
 		string toWrite = "(";
 		for i from 1 to count(current) - 1
@@ -110,9 +131,36 @@ void generateTrackingData(string tracked)
 				toWrite = toWrite + ":";
 			}
 		}
-		toWrite = toWrite + "),";
+		if (stacked)
+		{
+			if (stack_counts[idx] > 1)
+			{
+				toWrite = toWrite + " <b>x"+to_string(stack_counts[idx])+"</b>";
+			}
+		}
+		toWrite = toWrite + ")"+print_between;
 		writeln(toWrite);
 	}
+}
+
+void generateTrackingData(string tracked, boolean stacked)
+{
+	generateTrackingData(tracked, ",", stacked);
+}
+
+void generateTrackingData(string tracked)
+{
+	generateTrackingData(tracked, true);
+}
+
+void generateTrackingDataSplitByNewLine(string tracked, boolean stacked)
+{
+	generateTrackingData(tracked, "<br>", stacked);
+}
+
+void generateTrackingDataSplitByNewLine(string tracked)
+{
+	generateTrackingDataSplitByNewLine(tracked, true);
 }
 
 void write_familiar()
@@ -158,6 +206,32 @@ void write_settings_key()
 	writeln("<tr bgcolor=#00ff00><td>Post: settings for current ascension. Automatically reconfigured each ascension when we initialize setting for that ascension. After settings have been initialized you may change this. Under some circumstances they will be automatically changed mid ascension</td></tr>");
 	writeln("<tr bgcolor=#af6fbf><td>Action: This causes something to immediately (or when reasonable) happen.</td></tr>");
 	writeln("<tr bgcolor=#ff6644><td>Sharing: Allows sharing game data.</td></tr>");
+	writeln("</table>");
+}
+
+void write_locations_visited()
+{
+	// Display the locations we've spent turns
+	
+	// Make a list of the locations we've visited
+	location[int] ranked_list;
+	foreach loc in $locations[]
+	{
+		if (loc.turns_spent > 0)
+		{
+			ranked_list[count(ranked_list)] = loc;
+		}
+	}
+	// Sort in descending order
+	sort ranked_list by -value.turns_spent;
+	
+	// Write the table
+	writeln("<table style=\"margin-left:auto;margin-right:auto;\">");
+	writeln("<tr><th>Location</th> <th>Turns</th></tr>");
+	foreach i,loc in ranked_list
+	{
+		writeln("<tr><td>"+loc.to_string()+"</td><td>"+loc.turns_spent+"</td></tr>");
+	}
 	writeln("</table>");
 }
 
@@ -284,7 +358,7 @@ void main()
 	writeln(get_property("auto_beatenUpLocations"));
 
 	writeln("<h2>Forced Noncombats</h2>");
-	generateTrackingData("auto_forcedNC");
+	generateTrackingDataSplitByNewLine("auto_forcedNC");
 
 	writeln("<h2>Eated</h2>");
 	generateTrackingData("auto_eaten");
@@ -301,6 +375,9 @@ void main()
 		writeln("<h2>Wishes</h2>");
 		generateTrackingData("auto_wishes");
 	}
+
+	writeln("<h2>Lucky Adventures</h2>");
+	generateTrackingDataSplitByNewLine("auto_lucky");
 
 	if(isActuallyEd())
 	{
@@ -329,6 +406,12 @@ void main()
 		generateTrackingData("auto_powerfulglove");
 	}
 
+	if(get_property("auto_iotm_claim") != "")
+	{
+		writeln("<h2>IOTM Item/Effects Claimed.</h2>");
+		generateTrackingData("auto_iotm_claim");
+	}
+	
 	writeln("<h2>Other Stuff</h2>");
 	generateTrackingData("auto_otherstuff");
 
@@ -345,6 +428,9 @@ void main()
 
 	//TODO: need way to track version independent of svn branch since you can have different branches checked out
 	writeln("Autoscend Version: " + autoscend_current_version() + "<br>");
+	
+	writeln("<h2>Locations visited</h2>");
+	write_locations_visited();
 
 	writeln("<br>");
 	writeln("</body></html>");

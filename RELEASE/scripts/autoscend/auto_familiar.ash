@@ -96,6 +96,26 @@ boolean isAttackFamiliar(familiar fam)
 	return false;
 }
 
+boolean auto_famKill(familiar fam, location place)
+{
+	if(!isAttackFamiliar(fam))
+	{
+		return false;
+	}
+
+	int passiveDamage = numeric_modifier("Damage Aura") + numeric_modifier("Sporadic Damage Aura ") + numeric_modifier("Thorns") + numeric_modifier("Sporadic Thorns");
+	
+	foreach mon, freq in appearance_rates(place)
+	{
+		//Mafia doesn't output the expected damage of the familiar so going with the highest possible for most users (NPZR)
+		if(mon != $monster[none] && monster_hp(mon) < (floor(1.5 * (familiar_weight(fam) +weight_adjustment() + 3)) + passiveDamage))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 boolean pathHasFamiliar() 	// check for cases where the path bans traditional familiars.
 {
 	if(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_lta() || in_pokefam())
@@ -204,7 +224,7 @@ boolean canChangeToFamiliar(familiar target)
 	{
 		return false;
 	}
-
+	
 	// You are allowed to change to a familiar if it is also the goal of the current 100% run.
 	if(get_property("auto_100familiar").to_familiar() == target)
 	{
@@ -220,6 +240,27 @@ boolean canChangeToFamiliar(familiar target)
 		{
 			return false;
 		}
+	}
+
+	// Avant Guard specific allowance of familiars for non-adv.php zones
+	if (in_avantGuard())
+	{
+		if ($familiar[Burly Bodyguard] == target)
+		{
+			return true; // always allowed
+		}
+		else if (get_property("auto_nonAdvLoc").to_boolean())
+		{
+			if ($familiar[Gelatinous Cubeling] == target && in_hardcore())
+			{
+				return true; // don't need Gel Cube in Normal
+			}
+			else if ($familiars[Cookbookbat, Mini Kiwi] contains target)
+			{
+				return true; // might be worth farming some of these drops if we can?
+			}
+		}
+		return false;
 	}
 
 	// Don't allow switching to a target of none.
@@ -268,7 +309,29 @@ familiar findNonRockFamiliarInTerrarium()
 		{
 			continue;
 		}
-		if(in_terrarium(fam) && auto_have_familiar(fam))
+		if(in_terrarium(fam) && have_familiar(fam))
+		{
+			return fam;
+		}
+	}
+	return $familiar[none];
+}
+
+familiar findRockFamiliarInTerrarium()
+{
+	static boolean[familiar] petRockFamiliars = $familiars[pet rock,
+		toothsome rock,
+		bulky buddy box,
+		holiday log,
+		software bug,
+		bad vibe,
+		pet coral,
+		synthetic rock,
+		pixel rock];
+
+	foreach fam in $familiars[]
+	{
+		if(in_terrarium(fam) && have_familiar(fam) && petRockFamiliars contains fam)
 		{
 			return fam;
 		}
@@ -397,6 +460,29 @@ boolean autoChooseFamiliar(location place)
 		return handleFamiliar(familiar_target_100);		//do not break 100 familiar runs
 	}
 	
+	// Can only use burly bodyguard, except in non-adventure.php zones. In those, we want the Gelatinous Cubeling for Daily Dungeon drops
+	if (in_avantGuard())
+	{
+		if (get_property("auto_nonAdvLoc").to_boolean())
+		{
+			if (wantCubeling())
+			{
+				return handleFamiliar($familiar[Gelatinous Cubeling]);
+			}
+			else
+			{
+				foreach fam in $familiars[Cookbookbat, Mini Kiwi, Hobo in Sheep's Clothing]
+				{
+					if (canChangeToFamiliar(fam))
+					{
+						return handleFamiliar(fam);
+					}
+				}
+			}
+		}
+		return handleFamiliar($familiar[Burly Bodyguard]);
+	}
+	
 	//High priority checks that are too complicated for the datafile
 	familiar famChoice = $familiar[none];
 
@@ -424,11 +510,6 @@ boolean autoChooseFamiliar(location place)
 	if ($locations[Next to that Barrel with Something Burning in it, Out By that Rusted-Out Car, Over Where the Old Tires Are, Near an Abandoned Refrigerator] contains place) {
 		famChoice = lookupFamiliarDatafile("gremlins");
 	}
-
-	// places that benefit from + combat rate
-	if ($locations[Sonofa Beach, Lair of the Ninja Snowmen] contains place && zone_combatMod(place)._int > 0 && canChangeToFamiliar($familiar[Jumpsuited Hound Dog])) {
-		famChoice = $familiar[Jumpsuited Hound Dog];
-	}
 	
 	// places where item drop is required to help save adventures.
 	if ($locations[Guano Junction, The Beanbat Chamber, Cobb's Knob Harem, The Goatlet, Itznotyerzitz Mine,
@@ -447,6 +528,10 @@ boolean autoChooseFamiliar(location place)
 	}
 	if (place == auto_availableBrickRift()) {
 		famChoice = lookupFamiliarDatafile("item"); // get more shadow bricks
+	}
+	if ($location[The Defiled Cranny] == place && auto_turbo() && item_amount($item[dieting pill]) + get_property("auto_dietpills").to_int() < 3)
+	{
+		famChoice = lookupFamiliarDatafile("item"); // get dieting pills faster if in turbo
 	}
 
 	// If we're down to 1 evilness left before the boss in the Nook, it doesn't matter if we get an Evil Eye or not.
@@ -556,6 +641,8 @@ boolean autoChooseFamiliar(location place)
 	{
 		famChoice = lookupFamiliarDatafile("init");
 	}
+
+	famChoice = auto_forceEagle(famChoice); // force Patriotic Eagle if we have a >0 combats until we can screech again
 
 	//Gelatinous Cubeling drops items that save turns in the daily dungeon
 	if(famChoice == $familiar[none] &&
@@ -675,7 +762,7 @@ boolean haveSpleenFamiliar()
 boolean wantCubeling()
 {
 	//do we still want to use a gelatinous cubeling familiar specifically for it to drop the daily dungeon tools
-	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
+	if (!canChangeToFamiliar($familiar[Gelatinous Cubeling]))
 	{
 		return false;	//can not use it so we do not want it.
 	}
@@ -686,7 +773,8 @@ boolean wantCubeling()
 	
 	boolean need_lockpicks = item_amount($item[pick-o-matic lockpicks]) == 0 && item_amount($item[Platinum Yendorian Express Card]) == 0;
 	boolean need_ring = !possessEquipment($item[Ring of Detect Boring Doors]);	//do not try for a second one if you already have one
-	return item_amount($item[eleven-foot pole]) == 0 || need_ring || need_lockpicks;
+	boolean need_pole = !auto_haveCCSC() && item_amount($item[eleven-foot pole]) == 0;
+	return need_pole || need_ring || need_lockpicks;
 }
 
 void preAdvUpdateFamiliar(location place)
@@ -834,4 +922,17 @@ void preAdvUpdateFamiliar(location place)
 	{
 		mummifyFamiliar();
 	}
+}
+
+boolean auto_needsGoodFamiliarEquipment() {
+	if (possessEquipment($item[Astral pet sweater])) {
+		return false;
+	}
+	if (auto_hasStillSuit()) {
+		return false;
+	}
+	if (auto_haveCupidBow()) {
+		return false;
+	}
+	return true;
 }

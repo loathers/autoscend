@@ -62,13 +62,25 @@ string auto_combatFallOfTheDinosaursStage5(int round, monster enemy, string text
 	if(dino == "archelon")
 	{
 		// reflects damage from spells back to player. 
-		if(enemy.physical_resistance >= 80)
+		if(enemy.physical_resistance >= 80 && !haveUsed($skill[Silent Treatment]))
 		{
+			if (canUse($skill[Implode Universe]))
+			{
+				return useSkill($skill[Implode Universe], true);
+			}
+			if (canUse($skill[Silent Treatment]))
+			{
+				return useSkill($skill[Silent Treatment], true);
+			}
 			abort("Not sure how to handle a physically resistent enemy eaten by a glass-shelled archelon."); // TODO - work something out here?
 		}
 		if(canSurvive(1.5) && round < 25)
 		{
 			return "attack with weapon";
+		}
+		if (canUse($skill[Implode Universe]))
+		{
+			return useSkill($skill[Implode Universe], true);
 		}
 		abort("Not sure how to handle monster eaten by a glass-shelled archelon.");
 	}
@@ -100,6 +112,11 @@ string auto_combatFallOfTheDinosaursStage5(int round, monster enemy, string text
 	}
 	if(dino == "ghostasaurus")	// physically immune, ml-scaling elemental resistance
 	{
+		int dino_difficulty = enemy.attributes.contains_text("Scale:") ? 0 : enemy.base_attack / 1.8;
+		if (dino_difficulty >= 75 && canUse($skill[Silent Treatment]))
+		{
+			return useSkill($skill[Silent Treatment], true);
+		}
 		if(canUse($skill[Saucestorm], false))
 		{
 			return useSkill($skill[Saucestorm], false);

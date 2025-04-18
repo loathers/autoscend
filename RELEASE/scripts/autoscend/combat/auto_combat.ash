@@ -41,6 +41,7 @@ void auto_combatInitialize(int round, monster enemy, string text)
 	{
 		case $monster[Government Agent]:
 			set_property("_portscanPending", false);
+			stop_counter("portscan.edu");
 			break;
 		case $monster[possessed wine rack]:
 			set_property("auto_wineracksencountered", get_property("auto_wineracksencountered").to_int() + 1);
@@ -79,6 +80,10 @@ string auto_combatHandler(int round, monster enemy, string text)
 {
 	if(round > 25 && !($monsters[The Man, The Big Wisniewski] contains enemy))	//war bosses can go to round 50
 	{
+		if (canUse($skill[Implode Universe]))
+		{
+			return useSkill($skill[Implode Universe], true);
+		}
 		abort("Some sort of problem occurred, it is past round 25 but we are still in non-gremlin combat...");
 	}
 
@@ -114,6 +119,13 @@ string auto_combatHandler(int round, monster enemy, string text)
 		}
 	}
 
+	//If in Avant Guard, want to make sure the enemy is set correctly to the bodyguard
+	//If waffle has been used ignore and just use enemy as set in combat handler
+	if(in_avantGuard() && ag_is_bodyguard() && get_property("_auto_combatState") != "(it11311)")
+	{
+		enemy = to_monster(substring(get_property("lastEncounter"), 0, index_of(get_property("lastEncounter"), " acting as")));
+	}
+	
 	disguises_combat_helper(round, enemy, text);		//disguise delimit mask identification
 	fotd_combat_helper();				//fall of the dinosaurs dino identification
 

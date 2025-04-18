@@ -1,4 +1,4 @@
-since r27980;	// feat: beer from wiki, kiwi plurals
+since r28301;	// _eldritchTentaclesFoughtToday variable
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -49,9 +49,11 @@ import <autoscend/iotms/mr2021.ash>
 import <autoscend/iotms/mr2022.ash>
 import <autoscend/iotms/mr2023.ash>
 import <autoscend/iotms/mr2024.ash>
+import <autoscend/iotms/mr2025.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
+import <autoscend/paths/avant_guard.ash>
 import <autoscend/paths/avatar_of_boris.ash>
 import <autoscend/paths/avatar_of_jarlsberg.ash>
 import <autoscend/paths/avatar_of_sneaky_pete.ash>
@@ -174,10 +176,12 @@ void initializeSettings() {
 	remove_property("auto_beatenUpLocations");
 	set_property("auto_getBeehive", false);
 	set_property("auto_bruteForcePalindome", false);
+	set_property("auto_doWhiteys", false);
 	set_property("auto_cabinetsencountered", 0);
 	set_property("auto_chasmBusted", true);
 	set_property("auto_chewed", "");
 	set_property("auto_clanstuff", "0");
+	set_property("auto_considerCCSCShore", true);
 	set_property("auto_copies", "");
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);
@@ -215,12 +219,16 @@ void initializeSettings() {
 	set_property("auto_instakill", "");
 	set_property("auto_instakillSource", "");
 	set_property("auto_instakillSuccess", false);
+	set_property("auto_iotm_claim", "");
+	set_property("auto_lucky", "");
+	set_property("auto_luckySource", "none");
 	set_property("auto_modernzmobiecount", "");
 	set_property("auto_powerfulglove", "");
 	set_property("auto_otherstuff", "");
 	set_property("auto_paranoia", -1);
 	set_property("auto_paranoia_counter", 0);
 	set_property("auto_parkaSpikesDeployed", false);
+	set_property("auto_avalancheDeployed", false);
 	set_property("auto_priorCharpaneMode", "0");
 	set_property("auto_powerLevelAdvCount", "0");
 	set_property("auto_powerLevelLastAttempted", "0");
@@ -251,7 +259,8 @@ void initializeSettings() {
 	remove_property("auto_saveSausage");
 	remove_property("auto_saveVintage");
 	set_property("auto_dontUseCookBookBat", false);
-	beehiveConsider();
+	set_property("auto_dietpills", 0);
+	beehiveConsider(false);
 
 	eudora_initializeSettings();
 	heavyrains_initializeSettings();
@@ -282,6 +291,7 @@ void initializeSettings() {
 	lol_initializeSettings();
 	small_initializeSettings();
 	wereprof_initializeSettings();
+	ag_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -364,6 +374,7 @@ boolean LX_burnDelay()
 	boolean sausageGoblinAvailable = auto_sausageGoblin();
 	boolean backupTargetAvailable = auto_backupTarget();
 	boolean voidMonsterAvailable = auto_voidMonster();
+	boolean habitatingMonsters = auto_habitatMonster() != $monster[none];
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -465,7 +476,20 @@ boolean LX_burnDelay()
 			}
 		}
 	}
-	
+
+	if (habitatingMonsters)
+	{
+		location habitatZone = solveDelayZone(isFreeMonster(auto_habitatMonster()) && get_property("breathitinCharges").to_int() > 0);
+		if (habitatZone != $location[none])
+		{
+			auto_log_info(`Might be fighting a {auto_habitatMonster()} in {habitatZone.to_string()} to burn delay!`, "green");
+			if (autoAdv(habitatZone))
+			{
+				return true;
+			}
+		}
+	}
+
 	if (voteMonsterAvailable)
 	{
 		auto_log_warning("Had overdue voting monster but couldn't find a zone to burn delay", "red");
@@ -481,6 +505,10 @@ boolean LX_burnDelay()
 	if (voidMonsterAvailable)
 	{
 		auto_log_warning("Cursed Magnifying Glass's void monster is next but couldn't find a zone to burn delay", "red");
+	}
+	if (habitatingMonsters)
+	{
+		auto_log_warning("Habitating a monster but couldn't find a zone to burn delay", "red");
 	}
 	return false;
 }
@@ -760,6 +788,9 @@ void initializeDay(int day)
 	}
 
 	auto_floundryAction();
+	
+	auto_getClanPhotoBoothDefaultItems();
+	auto_getClanPhotoBoothEffect("space",3);
 
 	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 1))
 	{
@@ -788,10 +819,13 @@ void initializeDay(int day)
 	}
 
 	// Get emotionally chipped if you have the item.  boris\jarlsberg\sneaky pete\zombie slayer\ed cannot use this skill so excluding.
-	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && !(is_boris() || is_jarlsberg() || is_pete() || in_zombieSlayer() || isActuallyEd() || in_awol() || in_gnoob() || in_darkGyffte() || in_wereprof()))
+	if (!have_skill($skill[Emotionally Chipped]) && item_amount($item[spinal-fluid-covered emotion chip]) > 0 && can_read_skillbook($item[spinal-fluid-covered emotion chip]))
 	{
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
+	
+	// Open our duffel bag
+	auto_openMcLargeHugeSkis();
 	
 	//you must finish the Toot Oriole quest to unlock council quests.
 	tootOriole();
@@ -852,6 +886,10 @@ void initializeDay(int day)
 			{
 				use(1, $item[Xiblaxian holo-wrist-puter simcode]);
 			}
+			if(item_amount($item[baby bodyguard]) > 0 && !have_familiar($familiar[burly bodyguard])) //will only happen in Avant Guard
+			{
+				use(1, $item[baby bodyguard]);
+			}
 
 			if((auto_get_clan_lounge() contains $item[Clan Floundry]) && (item_amount($item[Fishin\' Pole]) == 0))
 			{
@@ -879,6 +917,12 @@ void initializeDay(int day)
 					if((isArmoryAvailable()) && (item_amount($item[Antique Accordion]) == 0))
 					{
 						auto_buyUpTo(1, $item[Toy Accordion]);
+					}
+					
+					if((in_koe()) && (item_amount($item[Antique Accordion]) == 0) && (koe_rmi_count() >= 10))
+					{
+						koe_acquire_rmi(10);
+						buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Antique Accordion]);
 					}
 				}
 				acquireTotem();
@@ -1030,6 +1074,10 @@ boolean dailyEvents()
 	auto_birdOfTheDay();
 	while(auto_doPrecinct());
 	handleBarrelFullOfBarrels(true);
+	
+	// Hit bastille, then council in case we levelled up (and unlocked getaway camp)
+	cheeseWarMachine(0, 0, 0, 0);
+	council();
 
 	auto_campawayGrabBuffs();
 	kgb_getMartini();
@@ -1165,6 +1213,8 @@ boolean dailyEvents()
 	auto_useBlackMonolith();
 	auto_scepterSkills();
 	auto_getAprilingBandItems();
+	auto_MayamClaimAll();
+	auto_buyFromSeptEmberStore();
 	
 	return true;
 }
@@ -1291,7 +1341,8 @@ boolean councilMaintenance()
 boolean adventureFailureHandler()
 {
 	location place = my_location();
-	if(my_location().turns_spent > 52)
+	int limit = (in_avantGuard() ? 100 : 50);
+	if(place.turns_spent > limit)
 	{
 		boolean tooManyAdventures = true;
 		
@@ -1398,7 +1449,7 @@ boolean adventureFailureHandler()
 		}
 	}
 
-	if(last_monster() == $monster[Crate] && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
+	if(last_monster() == $monster[Crate] && !(get_property("screechDelay").to_boolean()) && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
 	{
 		if(get_property("auto_newbieOverride").to_boolean())
 		{
@@ -1514,7 +1565,7 @@ boolean autosellCrap()
 	}
 	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
 	{
-		if(item_amount(it) > 1)		//for these items we want to keep 1 in stock. sell the rest
+		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. sell the rest
 		{
 			use(min(10,item_amount(it)-1), it);
 		}
@@ -1533,7 +1584,7 @@ boolean autosellCrap()
 		return false;
 	}
 
-	foreach it in $items[Anticheese, Awful Poetry Journal, Beach Glass Bead, Beer Bomb, Clay Peace-Sign Bead, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
+	foreach it in $items[Anticheese, Awful Poetry Journal, Azurite, Beach Glass Bead, Beer Bomb, Bit-o-Cactus, Clay Peace-Sign Bead, Cocoa Eggshell Fragment, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Eye Agate, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Lapis Lazuli, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Sea Honeydew, Sea Lychee, Sea Tangelo, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
 	{
 		if(item_amount(it) > 0)
 		{
@@ -1620,6 +1671,8 @@ void resetState() {
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
 	set_property("auto_nextEncounter", ""); // monster that was expected last turn
 	set_property("auto_habitatMonster", ""); // monster we want to cast Recall Facts: Monster Habitats
+	set_property("auto_purple_candled", ""); //monster we want to cast Blow the Purple Candle
+	set_property("auto_nonAdvLoc", false); // location is a non-adventure.php location
 
 	if(doNotBuffFamiliar100Run())		//some familiars are always bad
 	{
@@ -1796,6 +1849,10 @@ boolean doTasks()
 	{
 		cli_execute("refresh inv");
 	}
+	if (in_wereprof()) {
+		// wereprof doesn't update wereProfessorTransformTurns unless you hit the charpane
+		visit_url("charpane.php", false);
+	}
 
 	// actually doing stuff should start from here onwards.
 	resetState();
@@ -1814,6 +1871,7 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
 
@@ -1918,12 +1976,14 @@ boolean doTasks()
 	if(auto_autumnatonQuest())			return true;
 	if(auto_smallCampgroundGear())		return true;
 	auto_lostStomach(false);
+	autoCleanse(); //running turbo only
 	if(auto_doPhoneQuest())				return true;
 	
 	if(auto_doTempleSummit())		return true;
 	
 	if (process_tasks()) return true;
 
+	meatReserveMessage();
 	auto_log_info("I should not get here more than once because I pretty much just finished all my in-run stuff. Beep", "blue");
 	return false;
 }
@@ -1959,7 +2019,7 @@ void auto_begin()
 	}
 
 	auto_log_info("Hello " + my_name() + ", time to explode!");
-	auto_log_info("This is version: " + svn_info("autoscend").last_changed_rev + " Mafia: " + get_revision());
+	auto_log_info("This is version: " + git_info("autoscend").commit + " Mafia: " + get_revision());
 	auto_log_info("This is day " + my_daycount() + ".");
 	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
 	auto_log_info("Current Ascension: " + my_path().name);
@@ -2094,11 +2154,28 @@ void main(string... input)
 	backupSetting("printStackOnAbort", true);
 
 	// parse input
-	if(count(input) > 0 && input[0] == "sim")
+	if(count(input) > 0)
 	{
-		// display useful items/skills/perms/etc and if the user has them
-		printSim();
-		return;
+		switch(input[0])
+		{
+			case "sim":
+				// display useful items/skills/perms/etc and if the user has them
+				printSim();
+				return;
+			case "turbo":
+			// gotta go faaaaaast. Doing a double confirm because of the nature of this parameter.
+				user_confirm("This will get expensive for you. This should only be used if you are trying to go for a 1-day and don't care about expenses. Do you really want to do this? Will default to 'No' in 15 seconds.", 15000, false);
+				{
+					user_confirm("This will use UMSBs and Spice Melanges if you have them. If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+					{
+						set_property("auto_turbo", "true");
+						auto_log_info("Ka-chow! Gotta go fast.");
+						break;
+					}
+				}
+			default:
+				auto_log_info("Running normal autoscend because you didn't enter in a valid parameter");
+		}
 	}
 
 	print_help_text();
