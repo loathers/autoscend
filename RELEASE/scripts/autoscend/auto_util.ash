@@ -4898,6 +4898,10 @@ boolean auto_burnMP(int mpToBurn)
 }
 
 boolean can_read_skillbook(item it) {
+	// can't read in Picky
+	if (in_picky()) {
+		return false;
+	}
 	// all the normal classes and AoSOL classes are literate
 	if ($classes[Seal Clubber, Turtle Tamer, Sauceror, Pastamancer, Disco Bandit, Accordion Thief, Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class()) {
 		return true;
