@@ -600,6 +600,10 @@ boolean catBurglarHeist()
 
 boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 {
+	if(in_bad_moon())
+	{
+		return false;
+	}
 	if(!auto_is_valid($item[Bastille Battalion Control Rig]))
 	{
 		return false;
@@ -1385,6 +1389,10 @@ boolean fightClubSpa(int option)
 
 boolean fightClubStats()
 {
+	if(in_bad_moon())
+	{
+		return false;
+	}
 	if(!is_unrestricted($item[Boxing Day care package]))
 	{
 		return false;
