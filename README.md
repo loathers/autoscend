@@ -37,7 +37,7 @@ may not be restored properly to their pre-run values.
 ## Requirements
 
 There are a couple specific requirements to run autoscend effectively. If you run in to issues in
-a path that allows access to your normally permed skills, don't report them if you don't have these
+a path that allows access to the regular six classes, don't report them if you don't have these
 skills permed:
 
 * Saucestorm

@@ -161,6 +161,11 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			return useSkill($skill[Unleash The Greash], false);
 		}
 
+		if(canUse($skill[Surprisingly Sweet Slash], true) && auto_remainingCandyCaneSlashes() > 0)
+		{
+			return useSkill($skill[Surprisingly Sweet Slash], true);
+		}
+		
 		if(canUse($skill[Garbage Nova], false))
 		{
 			return useSkill($skill[Garbage Nova], false);
@@ -228,6 +233,12 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		return useSkill($skill[Recall Facts: Monster Habitats]);
 	}
 
+	if(auto_canRWBBlast() && auto_RWBBlastTarget(enemy) && canUse($skill[%fn\, fire a Red\, White and Blue Blast]))
+	{
+		handleTracker($skill[%fn\, fire a Red\, White and Blue Blast], enemy, "auto_copies");
+		return useSkill($skill[%fn\, fire a Red\, White and Blue Blast]);
+	}
+
 	monster backedUpMonster = get_property("lastCopyableMonster").to_monster();
 	// reserve last 2 advs for end of day free fights
 	boolean reserveAdvsForFreeFights = my_adventures() < 3 && !isFreeMonster(backedUpMonster);
@@ -256,6 +267,13 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	{
 		handleTracker($skill[%fn\, spit on them!], enemy, "auto_otherstuff");
 		return useSkill($skill[%fn\, spit on them!], true);
+	}
+
+	//[Patriotic Eagle] familiar skill that gives a useful buff
+	if (canUse($skill[%fn\, let\'s pledge allegiance to a Zone]))
+	{
+		auto_getCitizenZone(my_location(), true);
+		return useSkill($skill[%fn\, let\'s pledge allegiance to a Zone], true);
 	}
 	
 	//duplicate turns the enemy from a single enemy into a mob containing 2 copies of this enemy. Doubling their stats and doubling their drops

@@ -35,7 +35,7 @@ boolean L9_leafletQuest()
 	{
 		return false;
 	}
-	if(get_property("leafletCompleted").to_boolean())
+	if(get_property("leafletCompleted").to_boolean() || get_property("auto_leaflet_done").to_boolean())
 	{
 		return false;
 	}
@@ -56,15 +56,19 @@ boolean L9_leafletQuest()
 	}
 	
 	auto_log_info("Got a leaflet to do", "blue");
-	if(disregardInstantKarma())		//checks a user setting as well as current level
+	if (disregardInstantKarma()&&!auto_ignoreExperience())		//checks a user setting as well as current level
 	{
 		equipStatgainIncreasers();
 		cli_execute("leaflet");		//also gain +200 substats for each stat
+		if (get_property("leafletCompleted").to_boolean())
+		{
+			set_property("auto_leaflet_done", true);
+		}
 	}
 	else
 	{
-		//in plumber you eat manually and can jump from level 8 to 13 via food.
 		cli_execute("leaflet nomagic");		//no substat gains
+		set_property("auto_leaflet_done", true); // we're done here even with no stats
 	}
 	
 	return get_property("leafletCompleted").to_boolean();
@@ -330,6 +334,15 @@ boolean L9_chasmBuild()
 	if(finishBuildingSmutOrcBridge())
 	{
 		return true;
+	}
+	
+	if (auto_inRonin() || auto_haveMayamCalendar() || auto_haveSeptEmberCenser())
+	{
+		if (auto_waitForDay2())
+		{
+			auto_log_debug("Delaying Logging Camp waiting for day 2.");
+			return false;
+		}
 	}
 
 	if (shenShouldDelayZone($location[The Smut Orc Logging Camp]))
@@ -772,10 +785,10 @@ boolean prepareForTwinPeak(boolean speculative)
 		int [element] resGoal;
 		resGoal[$element[stench]] = 4;
 		// check if we can get enough stench res before we start applying anything
-		int [element] resPossible = provideResistances(resGoal, $location[Twin Peak], true, true);
+		int [element] resPossible = provideResistances(resGoal, $location[Twin Peak], true, true, true);
 		if(resPossible[$element[stench]] >= 4)
 		{
-			if(!speculative) provideResistances(resGoal, $location[Twin Peak], true);
+			if(!speculative) provideResistances(resGoal, $location[Twin Peak], true, true, false);
 			return true;
 		}
 	}

@@ -205,9 +205,11 @@ boolean auto_pre_adventure()
 	}
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " +place, "green");
-	
-	preAdvUpdateFamiliar(place);
-	ed_handleAdventureServant(place);
+
+	if (item_amount($item[Handful of split pea soup]) == 0 && creatable_amount($item[Handful of split pea soup]) > 0)
+	{
+		return create(1, $item[Handful of split pea soup]);
+	}
 
 	if(get_floundry_locations() contains place)
 	{
@@ -351,6 +353,15 @@ boolean auto_pre_adventure()
 			//	}
 		}
 	}
+	
+	// If we're zootomist, need to level, and we have +xp on our milk, cast it.
+	if (in_zootomist() && my_level()<13) {
+		foreach ef in $effects[Milk of Familiar Kindness, Milk of Familiar Cruelty] {
+			if (numeric_modifier(ef,$modifier[familiar experience]) > 0) {
+				buffMaintain(ef);
+			}
+		}
+	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
 	boolean burningDelay = auto_burningDelay();
@@ -360,6 +371,10 @@ boolean auto_pre_adventure()
 	if (combatModifier._boolean && !auto_queueIgnore()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
+
+	// Update our familiar after combat modifiers (which can set the familiar), but before Crystal Ball (familiar equip)
+	preAdvUpdateFamiliar(place);
+	ed_handleAdventureServant(place);
 
 	boolean considerCrystalBallBonus = false;
 	if(auto_haveCrystalBall())
@@ -407,7 +422,7 @@ boolean auto_pre_adventure()
 				adjustForYellowRayIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
-			if(auto_wantToBanish(monster_phylum(mon), place) && !auto_famKill($familiar[Patriotic Eagle], place))
+			if(auto_wantToBanish(monster_phylum(mon), place))
 			{
 				// attempt to prepare for banishing, but if we can not try free running
 				adjustForBanishIfPossible(monster_phylum(mon), place);
@@ -520,9 +535,17 @@ boolean auto_pre_adventure()
 	}
 	
 	item fluda = $item[Flash Liquidizer Ultra Dousing Accessory];
-	if ($locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber] contains place && auto_dousesRemaining()>0)
+	boolean[location] douse_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber];
+	if ( (douse_locs contains place || auto_allRifts() contains place) && auto_dousesRemaining()>0)
 	{
 		autoEquip(fluda);
+	}
+	
+	item bat_wings = $item[bat wings];
+	boolean[location] swoop_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber,The Hidden Temple];
+	if ( (swoop_locs contains place || auto_allRifts() contains place) && auto_swoopsRemaining()>0)
+	{
+		autoEquip(bat_wings);
 	}
 	
 	item exting = wrap_item($item[industrial fire extinguisher]);
@@ -696,7 +719,10 @@ boolean auto_pre_adventure()
 	generic_t itemNeed = zone_needItem(place);
 	if(mayNeedItem && itemNeed._boolean)
 	{
-		provideItem(ceil(itemNeed._float),place,false);
+		boolean capped = provideItem(ceil(itemNeed._float),place,false);
+		if (!capped && auto_haveCupidBow()) {
+			addBonusToMaximize($item[toy cupid bow],400);
+		}
 	}
 
 
@@ -714,7 +740,8 @@ boolean auto_pre_adventure()
 		boolean purgeML = false;
 
 	boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, The Defiled Cranny];
-	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp, Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass];
+	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp, Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass,
+		Tower Level 1, Tower Level 2, Tower Level 3];
 
 	// Generic Conditions
 	if(inAftercore())
@@ -1025,6 +1052,9 @@ void main()
 	try
 	{
 		ret = auto_pre_adventure();
+		if (pathHasFamiliar() && my_familiar()==$familiar[none] && !isFantasyRealm(my_location())) {
+			abort("Trying to adventure with no familiar.");
+		}
 	}
 	finally
 	{

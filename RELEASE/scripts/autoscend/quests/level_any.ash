@@ -51,7 +51,7 @@ void LX_handleIntroAdventures()
 			abort("You are stuck in an intro adventure which requires you to choose a path. I suggest you do so before trying to run autoscend and you may have better results.");
 		}
 
-		if ($ints[1046, 1405, 1416, 1419, 1446, 1450, 1464, 1480, 1503, 1507, 1519, 1531] contains choice)
+		if ($ints[1046, 1405, 1416, 1419, 1446, 1450, 1464, 1480, 1503, 1507, 1519, 1531, 1552] contains choice)
 		{
 			// 1046 is "Actually Ed the Undying", intro for Actually Ed the Undying (Spring 2015 challenge path).
 			// 1405 is "Let's, uh, go!", intro for Path of the Plumber (Spring 2020 challenge path).
@@ -65,6 +65,7 @@ void LX_handleIntroAdventures()
 			// 1507 is "Jumbled in the Bungle", intro for A Shrunken Adventurer am I (Fall 2023 challenge path).
 			// 1519 is "The coffee was *gasp* decaf!", intro for WereProfessor (Spring 2024 challenge path).
 			// 1531 is "A-1 Sound and the Sound's So Suardin'", intro for Avant Guard (Fall 2024 challenge path).
+			// 1552 is "Zoonopeia", intro for Z is for Zootomist (Spring 2024 challenge path).
 			// yes they really phoned some of the titles of these in.
 			run_choice(1);
 		}
@@ -1105,14 +1106,156 @@ boolean LX_dronesOut()
 	return false;
 }
 
+int freeCandyFightsLeft()
+{
+	// Map is done
+	if(get_property("_mapToACandyRichBlockUsed").to_boolean() && get_property("_auto_candyMapCompleted").to_boolean())
+	{
+		return 0;
+	}
+	if(!get_property("_mapToACandyRichBlockUsed").to_boolean() && item_amount($item[Map to a candy-rich block]) > 0 || !auto_is_valid($item[Map to a candy-rich block]))
+	{
+		return 5;
+	}
+	buffer blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+	string block = get_property("_trickOrTreatBlock");
+	matcher m = create_matcher("D",block);
+	int n_unused_dark = 0;
+	while(m.find()) {n_unused_dark++;}
+	return n_unused_dark;
+}
+
+boolean candyBlock()
+{
+	// Set choice defaults
+	set_property("choiceAdventure804","2"); // don't halt on map use
+	set_property("choiceAdventure806","1"); // grab the big bowl of candy
+	//Based on freecandy's trickTreatTasks.ts
+	if(get_property("_mapToACandyRichBlockUsed").to_boolean() && get_property("_auto_candyMapCompleted").to_boolean())
+	{
+		return false;
+	}
+	if(candyBlockOutfit("treat") == "")
+	{
+		//don't have an outfit to trick or treat in
+		return false;
+	}
+	int [int] houseNumbers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+	int [int] treatedHouse;
+	int count = 0;
+	boolean tricked = false;
+	boolean treated = false;
+
+	if(!get_property("_mapToACandyRichBlockUsed").to_boolean() && item_amount($item[Map to a candy-rich block]) > 0)
+	{
+		outfit(candyBlockOutfit("treat"));
+		use(1,$item[Map to a candy-rich block]);
+	}
+	if(get_property("_mapToACandyRichBlockUsed").to_boolean())
+	{
+		string blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+		void refreshBlock()
+		{
+			blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+		}	
+		//treat
+		auto_log_info("Get some treats");
+		foreach house in houseNumbers
+		{
+			outfit(candyBlockOutfit("treat"));
+			matcher treat = create_matcher("whichhouse=" + house + ">[^>]*?house_l", blockHtml);
+			matcher starhouse = create_matcher("whichhouse=" + house + ">[^>]*?starhouse", blockHtml);
+			//treat
+			if(treat.find())
+			{
+				treatedHouse[count] = house;
+				count += 1;
+				visit_url(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
+			}
+			if(starhouse.find())
+			{
+				treatedHouse[count] = house;
+				count += 1;
+				visit_url("place.php?whichplace=town&action=town_trickortreat");
+				visit_url(`choice.php?whichchoice=804&option=3&whichhouse={house}`);
+				visit_url("choice.php?whichchoice=806&option=2");
+				refreshBlock();
+			}
+			treated = true;
+		}
+		refreshBlock();
+		//trick
+		auto_log_info("Perform some tricks");
+		foreach house in houseNumbers
+		{
+			if(treatedHouse contains house) continue;
+			matcher trick = create_matcher("whichhouse=" + house + ">[^>]*?house_d", blockHtml);
+			//trick
+			if(trick.find())
+			{
+				autoOutfit(candyBlockOutfit("treat"));
+				tricked = autoAdvBypass(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
+				refreshBlock();
+				if (tricked) { return true; }
+			}
+			tricked = true;
+		}
+		if(treated && tricked)
+		{
+			set_property("_auto_candyMapCompleted", true);
+			return true;
+		}
+	}
+	return false;
+}
+
+string candyBlockOutfit(string type)
+{
+	if(type == "treat")
+	{
+		foreach x, fit in get_outfits()
+		{
+			if(fit == " - No Change - " || fit == "Birthday Suit" || fit == "Your Previous Outfit") continue;
+			if($strings[Legendary Regalia of the Chelonian Overlord, Legendary Regalia of the Groovelord, Legendary Regalia of the Master Squeezeboxer,
+							   Legendary Regalia of the Pasta Master, Legendary Regalia of the Saucemaestro, Legendary Regalia of the Seal Crusher, Terra Cotta Tackle,
+							   Eldritch Equipage, Filthy Hippy Disguise, Trainbot Trappings, Frat Warrior Fatigues, Black Armaments, Knob Goblin Harem Girl Disguise] contains fit)
+			{
+				return fit;
+			}
+			//if we don't have one of the bestTreatOutfits just choose the last one in the list that's an actual outfit
+			if(x == count(get_outfits()))
+			{
+				return fit;
+			}
+		}
+		if($strings[mongoose, wallaby, vole] contains my_sign().to_lower_case())
+		{
+			foreach i, it in outfit_pieces("Bugbear Costume")
+			{
+				if(possessEquipment(it)) continue;
+				buy(1, it);
+			}
+			if(possessOutfit("Bugbear Costume"))
+			{
+				return "Bugbear Costume";
+			}
+		}
+	}
+	else
+	{
+		return "";
+	}
+
+	return "";
+}
 boolean LX_lastChance()
 {
 	//miscellaneous calls that aren't powerlevelling but need to be done at some point based on certain conditions
-	if(get_property("screechDelay").to_boolean())
+	if(get_property("screechDelay") != "")
 	{
 		location banishLoc;
 		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else");
-		while(get_property("screechCombats").to_int() > 0 && my_adventures() > 2 && phylumBanishTurnsRemaining() > 0)
+		while((get_property("screechCombats").to_int() > 0 || banishLoc == $location[none]) && my_adventures() > 2 && is_banished(get_property("screechDelay").to_phylum()))
 		{
 			handleFamiliar($familiar[Patriotic Eagle]); //force eagle to be used
 			if(LX_getDigitalKey() || LX_getStarKey())
@@ -1149,8 +1292,10 @@ boolean LX_lastChance()
 			auto_log_warning("Couldn't clear screech delay without running out of adventures");
 			return false;
 		}
-		autoAdv(banishLoc); //adventure here to banish goblins or constructs and be able to progress other quests
-		set_property("screechDelay", false);
+		if (is_banished(get_property("screechDelay").to_phylum())) {
+			autoAdv(banishLoc); //adventure here to banish goblins or constructs and be able to progress other quests
+		}
+		set_property("screechDelay", "");
 		return true;
 	}
 	// Need the digital key and star key so if we have nothing to do before the L13 quest, might as well do them here

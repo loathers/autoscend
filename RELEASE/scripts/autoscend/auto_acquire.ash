@@ -627,7 +627,7 @@ int handlePulls(int day)
 			{
 				if(storage_amount(it) > 0 && auto_is_valid(it) && !pulledToday(it))
 				{
-					user_confirm("Pulling a " + it + ". If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+					if(user_confirm("Pulling a " + it + ". If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false))
 					{
 						pullXWhenHaveY(it, 1, 0);
 					}
@@ -653,6 +653,8 @@ int handlePulls(int day)
 		iluh_pulls();
 		// pulls for Avant Guard path
 		ag_pulls();
+		// pulls for Z is for Zootomist path
+		zoo_startPulls();
 
 		// generic pulls for any path are below
 		if(auto_is_valid($item[etched hourglass]))
@@ -837,10 +839,12 @@ int handlePulls(int day)
 		}
 		// pulls for Avant Guard path
 		ag_pulls();
+		zoo_d2Pulls();
+		
 	}
 
 	// do this regardless of day if we still need to complete the bridge.
-	if(canPull($item[smut orc keepsake box]) && (lumberCount() + 5 <= bridgeGoal()) && (fastenerCount() + 5 <= bridgeGoal()))
+	if(canPull($item[smut orc keepsake box]) && (get_property("chasmBridgeProgress").to_int() + min(lumberCount(),fastenerCount()) < bridgeGoal()))
 	{
 		if(pullXWhenHaveY($item[smut orc keepsake box], 1, 0))
 		{
