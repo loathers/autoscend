@@ -1592,7 +1592,7 @@ boolean L13_towerNSTowerShadow()
 				}
 				abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
 			}
-			return autoAdv($location[8-bit Realm]);
+			return autoAdv($location[The Fungus Plains]);
 		}
 	}
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
