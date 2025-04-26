@@ -1544,16 +1544,6 @@ boolean L13_towerNSTowerShadow()
 	{
 		abort("auto_towerBreak set to abort here.");
 	}
-	if(my_maxhp() < 800)
-	{
-		buffMaintain($effect[Industrial Strength Starch]);
-		buffMaintain($effect[Truly Gritty]);
-		buffMaintain($effect[Superheroic]);
-		buffMaintain($effect[Strong Grip]);
-		buffMaintain($effect[Spiky Hair]);
-	}
-	cli_execute("scripts/autoscend/auto_post_adv.ash");
-	acquireHP();
 
 	int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]) + item_amount($item[scented massage oil]);
 	if(in_plumber())
@@ -1595,6 +1585,18 @@ boolean L13_towerNSTowerShadow()
 			return autoAdv($location[The Fungus Plains]);
 		}
 	}
+
+	if(my_maxhp() < 800)
+	{
+		buffMaintain($effect[Industrial Strength Starch]);
+		buffMaintain($effect[Truly Gritty]);
+		buffMaintain($effect[Superheroic]);
+		buffMaintain($effect[Strong Grip]);
+		buffMaintain($effect[Spiky Hair]);
+	}
+	cli_execute("scripts/autoscend/auto_post_adv.ash");
+	acquireHP();
+
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 	return true;
 }
