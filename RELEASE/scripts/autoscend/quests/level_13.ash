@@ -1595,7 +1595,10 @@ boolean L13_towerNSTowerShadow()
 		buffMaintain($effect[Spiky Hair]);
 	}
 	cli_execute("scripts/autoscend/auto_post_adv.ash");
-	acquireHP();
+	if (!acquireHP())
+	{
+		abort("Failed to restore max hp for shadow");
+	}
 
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 	return true;
