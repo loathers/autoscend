@@ -309,7 +309,8 @@ boolean L13_heavyrains_towerFinal()
 	
 	//Calculate melee/ranged damage. Each element is capped at 40. assume you will be able to deal 40 physical damage.
 	cli_execute("outfit Birthday Suit");			//Need to get naked so we can check our stats properly.
-	maximize("prismatic damage, +weapon, +offhand", false);
+	addToMaximize("1000prismatic damage, +weapon, +offhand");
+	equipMaximizedGear();
 
 	int hot_dmg = min(40,numeric_modifier("hot damage"));
 	int cold_dmg = min(40,numeric_modifier("cold damage"));
@@ -325,7 +326,8 @@ boolean L13_heavyrains_towerFinal()
 	boolean want_club = false;
 	if(my_class() == $class[Seal Clubber] && auto_have_skill($skill[Lunging Thrust-Smack]))
 	{
-		maximize("prismatic damage, +weapon, +offhand, +club", false);
+		addToMaximize("prismatic damage, +weapon, +offhand, +club");
+		equipMaximizedGear();
 		int club_hot_dmg = min(40,(3*numeric_modifier("hot damage")));
 		int club_cold_dmg = min(40,(3*numeric_modifier("cold damage")));
 		int club_stench_dmg = min(40,(3*numeric_modifier("stench damage")));
@@ -423,23 +425,23 @@ boolean L13_heavyrains_towerFinal()
 		executeFlavour();
 		if(spell_extra_element)
 		{
-			maximize("spell damage percent, +weapon", false);
+			addToMaximize("spell damage percent, +weapon");
 			if(item_amount($item[Rain-Doh green lantern]) > 0)
 			{
-				equip($slot[off-hand], $item[Rain-Doh green lantern]);
+				autoEquip($slot[off-hand], $item[Rain-Doh green lantern]);
 			}
 			else if(item_amount($item[meteorb]) > 0)
 			{
-				equip($slot[off-hand], $item[meteorb]);
+				autoEquip($slot[off-hand], $item[meteorb]);
 			}
 			else if(item_amount($item[snow mobile]) > 0)
 			{
-				equip($slot[off-hand], $item[snow mobile]);
+				autoEquip($slot[off-hand], $item[snow mobile]);
 			}
 		}
 		else
 		{
-			maximize("spell damage percent, +weapon, +offhand", false);
+			addToMaximize("spell damage percent, +weapon, +offhand");
 		}
 	}
 	else
@@ -447,18 +449,18 @@ boolean L13_heavyrains_towerFinal()
 		set_property("auto_rain_king_combat", "attack");
 		if(want_club)
 		{
-			maximize("prismatic damage, +weapon, +offhand, +club", false);
+			addToMaximize("prismatic damage, +weapon, +offhand, +club");
 		}
 		else
 		{
-			maximize("prismatic damage, +weapon, +offhand", false);
+			addToMaximize("prismatic damage, +weapon, +offhand");
 		}
 	}
-	
 	//Rain King strips all equipment other than weapon and offhand.
 	//Stripped equipment can only provide you with -ML which is applied before the stripping
 	auto_buyUpTo(3, $item[water wings for babies]);
-	maximize("-ml, -weapon, -offhand", false);
+	addToMaximize("-ml, -weapon, -offhand", false);
+	equipMaximizedGear();
 	
 	//Fight!
 	//auto_disableAdventureHandling because we don't want maximize, switch familiar, change buffs, or anything else that might break our specific prepwork.
