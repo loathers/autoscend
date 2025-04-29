@@ -459,7 +459,7 @@ boolean L13_heavyrains_towerFinal()
 	//Rain King strips all equipment other than weapon and offhand.
 	//Stripped equipment can only provide you with -ML which is applied before the stripping
 	auto_buyUpTo(3, $item[water wings for babies]);
-	addToMaximize("-ml, -weapon, -offhand", false);
+	addToMaximize("-ml, -weapon, -offhand");
 	equipMaximizedGear();
 	
 	//Fight!
