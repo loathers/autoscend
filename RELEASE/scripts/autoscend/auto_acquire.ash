@@ -639,7 +639,7 @@ int handlePulls(int day)
 			{
 				foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
 				{
-					if(auto_is_valid(it) && !pulledToday(it))
+					if(canEat(it) && !pulledToday(it))
 					{
 						pullXWhenHaveY(it, 1, 0);
 					}
