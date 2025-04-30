@@ -133,6 +133,9 @@ boolean EightBitRealmHandler()
 		case "red":
 			// limited buff that is helpful for 3 of 4 8-bit zones
 			buffMaintain($effect[shadow waters]);
+			if(meat_drop_modifier() < 395){
+				auto_getCitizenZone("meat");
+			}
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
@@ -1303,6 +1306,10 @@ boolean L13_towerNSTowerMeat()
 	equipBaseline();
 	shrugAT($effect[Polka of Plenty]);
 	provideMeat(526, true, false);
+	if(meat_drop_modifier() < 475)
+	{
+		auto_getCitizenZone("meat");
+	}
 
 	if(in_zombieSlayer())
 	{
@@ -1537,16 +1544,6 @@ boolean L13_towerNSTowerShadow()
 	{
 		abort("auto_towerBreak set to abort here.");
 	}
-	if(my_maxhp() < 800)
-	{
-		buffMaintain($effect[Industrial Strength Starch]);
-		buffMaintain($effect[Truly Gritty]);
-		buffMaintain($effect[Superheroic]);
-		buffMaintain($effect[Strong Grip]);
-		buffMaintain($effect[Spiky Hair]);
-	}
-	cli_execute("scripts/autoscend/auto_post_adv.ash");
-	acquireHP();
 
 	int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]) + item_amount($item[scented massage oil]);
 	if(in_plumber())
@@ -1585,9 +1582,24 @@ boolean L13_towerNSTowerShadow()
 				}
 				abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
 			}
-			return autoAdv($location[8-bit Realm]);
+			return autoAdv($location[The Fungus Plains]);
 		}
 	}
+
+	if(my_maxhp() < 800)
+	{
+		buffMaintain($effect[Industrial Strength Starch]);
+		buffMaintain($effect[Truly Gritty]);
+		buffMaintain($effect[Superheroic]);
+		buffMaintain($effect[Strong Grip]);
+		buffMaintain($effect[Spiky Hair]);
+	}
+	cli_execute("scripts/autoscend/auto_post_adv.ash");
+	if (!acquireHP())
+	{
+		abort("Failed to restore max hp for shadow");
+	}
+
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 	return true;
 }
