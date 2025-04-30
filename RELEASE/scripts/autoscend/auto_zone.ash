@@ -2218,7 +2218,6 @@ boolean[location] monster_to_location(monster target)
 	case $location[The Typical Tavern Cellar]:
 	case $location[The Spooky Forest]:
 	case $location[The Hidden Temple]:
-	case $location[8-Bit Realm]:
 	case $location[The Black Forest]:
 	case $location[The Beanbat Chamber]:
 	case $location[The Bat Hole Entrance]:
