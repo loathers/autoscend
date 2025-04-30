@@ -572,7 +572,7 @@ boolean wantDietPill(item toEat)
 	if(minAdvPerFull(toEat) > minAdvPerFullForDietPill())
 	{
 		//Only want a dieting pill if we can use it successfully
-		if(fullness_left() > 2 * size && spleen_left() >= 3)
+		if(fullness_left() > 2 * toEat.fullness && spleen_left() >= 3)
 		{
 			pullXWhenHaveY(pill, 1, 0);
 			if(item_amount(pill) > 0)
