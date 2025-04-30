@@ -533,13 +533,8 @@ boolean consumeMilkOfMagnesiumIfUnused()
 	return use(1, $item[Milk of Magnesium]);
 }
 
-boolean wantDietPill(item toEat)
+float minAdvPerFull(item toEat)
 {
-	item pill = $item[Dieting Pill];
-	if(!auto_is_valid(pill) || !auto_is_valid(toEat))
-	{
-		return false;
-	}
 	int minAdv;
 	if(index_of(toEat.adventures, "-") < 0)
 	{
@@ -550,8 +545,31 @@ boolean wantDietPill(item toEat)
 		minAdv = substring(toEat.adventures, 0, index_of(toEat.adventures, "-")).to_int();
 	}
 	int size = toEat.fullness;
+	return minAdv/size;
+}
+
+float minAdvPerFullForDietPill()
+{
+	if(is_jarlsberg())
+	{
+		return minAdvPerFull($item[Ultimate Breakfast Sandwich]) - 0.01;
+	}
+	if(in_zombieSlayer())
+	{
+		return minAdvPerFull($item[boss brain]) - 0.01;
+	}
+	return 8.5;
+}
+
+boolean wantDietPill(item toEat)
+{
+	item pill = $item[Dieting Pill];
+	if(!auto_is_valid(pill) || !auto_is_valid(toEat))
+	{
+		return false;
+	}
 	//Use a dieting pill on only high adv/full foods
-	if(minAdv/size > 8.5)
+	if(minAdvPerFull(toEat) > minAdvPerFullForDietPill())
 	{
 		//Only want a dieting pill if we can use it successfully
 		if(fullness_left() > 2 * size && spleen_left() >= 3)
