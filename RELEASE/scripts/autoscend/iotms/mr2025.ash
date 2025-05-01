@@ -188,3 +188,31 @@ int auto_afterimagesLeft()
 {
 	return to_int(get_property("phosphorTracesUses"));
 }
+
+boolean auto_havePeridot()
+{
+	item pop = $item[Peridot of Peril];
+	return (auto_is_valid(pop) && possessEquipment(pop));
+}
+
+void peridotChoiceHandler(int choice, string page)
+{
+	if(!auto_havePeridot())
+	{
+		run_choice(2); //should never get here but might as well mitigate
+	}
+	int popchoice;
+	matcher firstmon = create_matcher("bandersnatch\" value=\"\d*",page);
+	//might as well use monsterToMap
+	if(auto_monsterToMap(my_location()) == $monster[none])
+	{
+		popchoice = firstmon.group(1).to_int();
+	}
+	else
+	{
+		popchoice = auto_monsterToMap(my_location()).id;
+	}
+	handleTracker($item[Peridot of Peril], to_monster(popchoice),"auto_otherstuff");
+	visit_url("choice.php&pwd&option=1&whichchoice=1557&bandersnatch=" + popchoice, true, true);
+	return;
+}
