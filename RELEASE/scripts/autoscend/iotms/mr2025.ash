@@ -214,19 +214,21 @@ void peridotChoiceHandler(int choice, string page)
 			break;
 		}
 	}
-	if(popchoice == 0) //Nothing found in previous find
+	while(popchoice == 0) //Nothing found in previous find
 	{
 		if(find(mons))
 		{
 			popchoice = mons.group(1).to_int();
-			break;
 		}
+		break;
 	}
-	else
+	if(popchoice == 0) //still nothing found so just peace out
 	{
+		handleTracker($item[Peridot of Peril], my_location().to_string(), "Peace out", "auto_otherstuff");
 		run_choice(2); //if no match is found, hit the exit choice
+		return;
 	}
-	handleTracker($item[Peridot of Peril], to_monster(popchoice),"auto_otherstuff");
+	if(target != $monster[none].id) handleTracker($item[Peridot of Peril], my_location().to_string(), to_monster(popchoice),"auto_otherstuff");
 	visit_url("choice.php?pwd&option=1&whichchoice=1557&bandersnatch=" + popchoice, true, true);
 	return;
 }
