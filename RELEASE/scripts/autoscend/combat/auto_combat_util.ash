@@ -952,6 +952,10 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "item " + $item[yellow rocket]; // 75 turns & 250 meat
 		}
+		if(item_amount($item[spitball]) > 0 && auto_is_valid($item[spitball]))
+		{
+			return "item " + $item[spitball]; //100 Turns and free kill
+		}
 		if(inCombat ? have_skill($skill[Blow the Yellow Candle\!]) : auto_haveRoman() && auto_can_equip($item[Roman Candelabra]) && auto_is_valid($skill[Blow the Yellow Candle\!]))
 		{
 			return "skill " + $skill[Blow the Yellow Candle\!]; //75 Turns
@@ -1000,6 +1004,12 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 	if(asdonCanMissile())
 	{
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
+	}
+
+	if(auto_canNorthernExplosionFE())
+	{
+		//With April Shower Thoughts Shield
+		return "skill " + $skill[Northern Explosion];
 	}
 
 	if(auto_canFeelEnvy())
