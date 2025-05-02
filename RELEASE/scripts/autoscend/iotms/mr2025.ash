@@ -201,18 +201,28 @@ void peridotChoiceHandler(int choice, string page)
 	{
 		run_choice(2); //should never get here but might as well mitigate
 	}
-	int popchoice;
-	matcher firstmon = create_matcher("bandersnatch\" value=\"\d*",page);
+	int popchoice = 0;
 	//might as well use monsterToMap
-	if(auto_monsterToMap(my_location()) == $monster[none])
+	int target = auto_monsterToMap(my_location()).id;
+	matcher mons = create_matcher("bandersnatch\" value=\"(\\d+)", page);
+	while(find(mons))
 	{
-		popchoice = firstmon.group(1).to_int();
+		//if target == none, will just use the first find hit. If target is a number and matches one of the finds, then assigned to popchoice
+		if(target == $monster[none].id || target == mons.group(1).to_int())
+		{
+			popchoice = mons.group(1).to_int();
+			break;
+		}
 	}
-	else
+	while(popchoice == 0) //Nothing found in previous find
 	{
-		popchoice = auto_monsterToMap(my_location()).id;
+		if(find(mons))
+		{
+			popchoice = mons.group(1).to_int();
+		}
+		run_choice(2); //if no match is found, hit the exit choice
 	}
 	handleTracker($item[Peridot of Peril], to_monster(popchoice),"auto_otherstuff");
-	visit_url("choice.php&pwd&option=1&whichchoice=1557&bandersnatch=" + popchoice, true, true);
+	visit_url("choice.php?pwd&option=1&whichchoice=1557&bandersnatch=" + popchoice, true, true);
 	return;
 }
