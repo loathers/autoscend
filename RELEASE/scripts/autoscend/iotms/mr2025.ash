@@ -214,12 +214,16 @@ void peridotChoiceHandler(int choice, string page)
 			break;
 		}
 	}
-	while(popchoice == 0) //Nothing found in previous find
+	if(popchoice == 0) //Nothing found in previous find
 	{
 		if(find(mons))
 		{
 			popchoice = mons.group(1).to_int();
+			break;
 		}
+	}
+	else
+	{
 		run_choice(2); //if no match is found, hit the exit choice
 	}
 	handleTracker($item[Peridot of Peril], to_monster(popchoice),"auto_otherstuff");
