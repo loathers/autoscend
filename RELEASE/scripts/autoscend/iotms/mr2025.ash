@@ -188,3 +188,47 @@ int auto_afterimagesLeft()
 {
 	return to_int(get_property("phosphorTracesUses"));
 }
+
+boolean auto_havePeridot()
+{
+	item pop = $item[Peridot of Peril];
+	return (auto_is_valid(pop) && possessEquipment(pop));
+}
+
+void peridotChoiceHandler(int choice, string page)
+{
+	if(!auto_havePeridot())
+	{
+		run_choice(2); //should never get here but might as well mitigate
+	}
+	int popchoice = 0;
+	//might as well use monsterToMap
+	int target = auto_monsterToMap(my_location()).id;
+	matcher mons = create_matcher("bandersnatch\" value=\"(\\d+)", page);
+	while(find(mons))
+	{
+		//if target == none, will just use the first find hit. If target is a number and matches one of the finds, then assigned to popchoice
+		if(target == $monster[none].id || target == mons.group(1).to_int())
+		{
+			popchoice = mons.group(1).to_int();
+			break;
+		}
+	}
+	while(popchoice == 0) //Nothing found in previous find
+	{
+		if(find(mons))
+		{
+			popchoice = mons.group(1).to_int();
+		}
+		break;
+	}
+	if(popchoice == 0) //still nothing found so just peace out
+	{
+		handleTracker($item[Peridot of Peril], my_location().to_string(), "Peace out", "auto_otherstuff");
+		run_choice(2); //if no match is found, hit the exit choice
+		return;
+	}
+	if(target != $monster[none].id) handleTracker($item[Peridot of Peril], my_location().to_string(), to_monster(popchoice),"auto_otherstuff");
+	visit_url("choice.php?pwd&option=1&whichchoice=1557&bandersnatch=" + popchoice, true, true);
+	return;
+}
