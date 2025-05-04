@@ -1,4 +1,4 @@
-since r28468;	// douse success variable
+since r28512;	// KoL typo was fixed in peridot choice
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

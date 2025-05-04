@@ -781,6 +781,9 @@ boolean auto_run_choice(int choice, string page)
 		case 1525:
 			dartChoiceHandler(choice, options);
 			break;
+		case 1557:  // Peering Through Your Peridot (Peridot of Peril zone monster selection choice)
+			peridotChoiceHandler(choice, page);
+			break;
 		default:
 			break;
 	}
