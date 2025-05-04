@@ -4626,7 +4626,8 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	//but I am labeling them seperate from buffs in case we ever need to split this function.
 	
 	//if you have something that reduces the cost of casting buffs, wear it now.
-	maximize("-mana cost, -tie", false);
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
 	
 	//Passive damage
 	if(passive_dmg_allowed)

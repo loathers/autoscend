@@ -223,7 +223,8 @@ boolean auto_sausageEatEmUp(int maxToEat)
 	{
 		auto_log_info("We're gonna slurp up some sausage, let's make sure we have enough max mp", "blue");
 		cli_execute("checkpoint");
-		maximize("mp,-tie", false);
+		addToMaximize("1000mp,-tie");
+		equipMaximizedGear();
 	}
 	// I could optimize this a little more by eating more sausage at once if you have enough max mp...
 	// but meh.
