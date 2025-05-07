@@ -96,7 +96,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return useSkill($skill[Air Dirty Laundry]);
 	}
 
-	if (canUse($skill[Summon Love Scarabs]))
+	if (canUse($skill[Summon Love Scarabs]) && my_mp() < my_maxmp())
 	{
 		return useSkill($skill[Summon Love Scarabs]);
 	}

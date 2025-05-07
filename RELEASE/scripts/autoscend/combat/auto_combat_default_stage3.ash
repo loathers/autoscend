@@ -579,12 +579,12 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			return useSkill($skill[Ply Reality]);
 		}
 
-		if(canUse($item[Rain-Doh indigo cup]))
+		if(canUse($item[Rain-Doh indigo cup]) && my_hp() < my_maxhp())
 		{
 			return useItem($item[Rain-Doh Indigo Cup]);
 		}
 
-		if(canUse($skill[Summon Love Mosquito]))
+		if(canUse($skill[Summon Love Mosquito]) && my_hp() < my_maxhp())
 		{
 			return useSkill($skill[Summon Love Mosquito]);
 		}
