@@ -1,4 +1,4 @@
-since r28512;	// KoL typo was fixed in peridot choice
+since r28514;	//  Fix peridot location choice parsing
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
