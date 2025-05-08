@@ -62,7 +62,7 @@ void zoo_d2Pulls()
 	
 	// Pull enough ML for oil peak, we need a provider function here.
 	int ml_target = 100.0;
-	maximize("monster level",true);
+	simMaximizeWith("monster level");
 	int curr_ml = numeric_modifier($modifier[monster level]);
 	
 	// Function to try pulling an ML item, if it improves our ML by at least 10 over best alternative.

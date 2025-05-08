@@ -509,6 +509,10 @@ string defaultMaximizeStatement()
 		res += ",0.4hp,0.2mp 1000max";
 		res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
 	}
+	if(in_bhy())
+	{
+		res += ", 1 beeosity";
+	}
 
 	//weapon handling
 	if(is_boris())
