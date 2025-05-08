@@ -566,55 +566,27 @@ boolean auto_mapTheMonsters()
 	return false;
 }
 
-monster auto_monsterToMap(location loc)
+monster auto_monsterToMap(location loc, string page)
 {
-	monster enemy = $monster[none];
-	switch (loc)
+	set_property("auto_interrupt", true);
+	matcher mons = create_matcher("heyscriptswhatsupwinkwink\" value=\"(\\d+)", page);
+	monster[int] monOpts;
+	int i = 0;
+	int bestmon = 0;
+	while(find(mons))
 	{
-		case $location[The Haunted Library]:
-			enemy = $monster[writing desk];
-			break;
-		case $location[The Defiled Niche]:
-			enemy = $monster[dirty old lihc];
-			break;
-		case $location[The Goatlet]:
-			enemy = $monster[dairy goat];
-			break;
-		case $location[Twin Peak]:
-			enemy = $monster[bearpig topiary animal];
-			break;
-		case $location[A Mob of Zeppelin Protesters]:
-			enemy = $monster[blue oyster cultist];
-			break;
-		case $location[The Red Zeppelin]:
-			enemy = $monster[red butler];
-			break;
-		case $location[Inside the Palindome]:
-			enemy = $monster[Bob Racecar];
-			break;
-		case $location[The Hidden Bowling Alley]:
-			enemy = $monster[Pygmy Bowler];
-			break;
-		case $location[The Hidden Hospital]:
-			enemy = $monster[Pygmy Witch Surgeon];
-			break;
-		case $location[The Haunted Laundry Room]:
-			enemy = $monster[cabinet of dr. limpieza];
-			break;
-		case $location[The Haunted Wine Cellar]:
-			enemy = $monster[possessed wine rack];
-			break;
-		case $location[The Middle Chamber]:
-			enemy = $monster[tomb rat];
-			break;
-		case $location[Sonofa Beach]:
-			enemy = $monster[lobsterfrogman]; // not implemented yet (will be used to saber copy in 2021)
-			break;
+		//record the possible monsters and identify the best one to target
+		monOpts[i] = mons.group(1).to_int().to_monster();
+		if(zoneRank(monOpts[i], loc) <= zoneRank(monOpts[bestmon], loc)) 
+		{
+			bestmon = i;
+		}
+		i += 1;
 	}
-	return enemy;
+	return monOpts[bestmon];
 }
 
-void cartographyChoiceHandler(int choice)
+void cartographyChoiceHandler(int choice, string page)
 {
 	auto_log_info("cartographyChoiceHandler Running choice " + choice, "blue");
 	if (choice == 1425)
@@ -715,7 +687,7 @@ void cartographyChoiceHandler(int choice)
 	}
 	else if (choice == 1435) // Leading Yourself Right to Them (Map the Monsters)
 	{
-		monster enemy = auto_monsterToMap(my_location());
+		monster enemy = auto_monsterToMap(my_location(), page);
 		if (enemy != $monster[none])
 		{
 			handleTracker($skill[Map the Monsters], enemy, "auto_otherstuff");

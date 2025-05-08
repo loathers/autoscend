@@ -201,34 +201,30 @@ void peridotChoiceHandler(int choice, string page)
 	{
 		run_choice(2); //should never get here but might as well mitigate
 	}
-	int popchoice = 0;
-	//might as well use monsterToMap
-	int target = auto_monsterToMap(my_location()).id;
+	monster popChoice;
+	location loc = my_location();
 	matcher mons = create_matcher("bandersnatch\" value=\"(\\d+)", page);
+	monster[int] monOpts;
+	int i = 0;
+	int bestmon = 0;
 	while(find(mons))
 	{
-		//if target == none, will just use the first find hit. If target is a number and matches one of the finds, then assigned to popchoice
-		if(target == $monster[none].id || target == mons.group(1).to_int())
+		//record the possible monsters and identify the best one to target
+		monOpts[i] = mons.group(1).to_int().to_monster();
+		if(zoneRank(monOpts[i], loc) <= zoneRank(monOpts[bestmon], loc)) 
 		{
-			popchoice = mons.group(1).to_int();
-			break;
+			bestmon = i;
 		}
+		i += 1;
 	}
-	while(popchoice == 0) //Nothing found in previous find
+	popChoice = monOpts[bestmon];
+	if(popChoice.to_int() == 0) //still nothing found so just peace out
 	{
-		if(find(mons))
-		{
-			popchoice = mons.group(1).to_int();
-		}
-		break;
-	}
-	if(popchoice == 0) //still nothing found so just peace out
-	{
-		handleTracker($item[Peridot of Peril], my_location().to_string(), "Peace out", "auto_otherstuff");
+		handleTracker($item[Peridot of Peril], loc.to_string(), "Peace out", "auto_otherstuff");
 		run_choice(2); //if no match is found, hit the exit choice
 		return;
 	}
-	if(target != $monster[none].id) handleTracker($item[Peridot of Peril], my_location().to_string(), to_monster(popchoice),"auto_otherstuff");
-	visit_url("choice.php?pwd&option=1&whichchoice=1557&bandersnatch=" + popchoice, true, true);
+	if(zoneRank(popChoice, loc) != 4) handleTracker($item[Peridot of Peril], loc.to_string(), popChoice.to_string(),"auto_otherstuff");
+	run_choice(1, "bandersnatch=" + popChoice.to_int());
 	return;
 }

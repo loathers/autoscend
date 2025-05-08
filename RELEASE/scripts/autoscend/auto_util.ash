@@ -3797,6 +3797,27 @@ boolean auto_wantToCopy(monster enemy)
 	return toCopy[enemy];
 }
 
+int zoneRank(monster mon, location loc)
+{
+	if(auto_wantToYellowRay(mon, loc))
+	{
+		return 1;
+	}
+	if(auto_wantToCopy(mon))
+	{
+		return 2;
+	}
+	if(auto_wantToSniff(mon, loc))
+	{
+		return 3;
+	}
+	if(auto_wantToBanish(mon, loc) || auto_wantToFreeRun(mon, loc) || auto_wantToReplace(mon, loc))
+	{
+		return 999;
+	}
+	return 4;
+}
+
 int total_items(boolean [item] items)
 {
 	int total = 0;
