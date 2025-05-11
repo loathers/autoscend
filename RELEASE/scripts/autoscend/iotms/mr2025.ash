@@ -228,3 +228,16 @@ void peridotChoiceHandler(int choice, string page)
 	run_choice(1, "bandersnatch=" + popChoice.to_int());
 	return;
 }
+
+boolean inperilLocations(int loc)
+{
+	string[int] perilLocs = split_string(get_property("_perilLocations"),",");
+	foreach i, str in perilLocs
+	{
+		if (loc == to_int(str))
+		{
+			return true;
+		}
+	}
+	return false;
+}

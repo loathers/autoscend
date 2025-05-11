@@ -653,6 +653,7 @@ int auto_punchOutsLeft();
 int auto_afterimagesLeft();
 boolean auto_havePeridot();
 void peridotChoiceHandler(int choice, string page);
+boolean inperilLocations(int loc);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
