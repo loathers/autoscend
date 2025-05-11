@@ -723,7 +723,7 @@ boolean auto_run_choice(int choice, string page)
 		case 1434: // Sneaky, Sneaky (Orcish Frat House (Verge of War)) (Cartography)
 		case 1435: // Leading Yourself Right to Them (Map the Monsters)
 		case 1436: // Billiards Room Options (Cartography)
-			cartographyChoiceHandler(choice);
+			cartographyChoiceHandler(choice, page);
 			break;
 		case 1467: // Poetic Justice (Cleaver)
 		case 1468: // Aunts not Ants (Cleaver)
