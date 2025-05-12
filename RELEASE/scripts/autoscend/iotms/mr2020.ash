@@ -568,7 +568,6 @@ boolean auto_mapTheMonsters()
 
 monster auto_monsterToMap(location loc, string page)
 {
-	set_property("auto_interrupt", true);
 	matcher mons = create_matcher("heyscriptswhatsupwinkwink\" value=\"(\\d+)", page);
 	monster[int] monOpts;
 	int i = 0;
