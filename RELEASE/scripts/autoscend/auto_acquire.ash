@@ -638,7 +638,7 @@ int handlePulls(int day)
 			{
 				foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
 				{
-					if(canEat(it) && !pulledToday(it))
+					if(can_eat() && !pulledToday(it))
 					{
 						pullXWhenHaveY(it, 1, 0);
 					}
