@@ -1075,7 +1075,7 @@ boolean LX_zootoFight()
 			return true;
 		}
 		
-		if(LX_unlockHauntedBilliardsRoom())
+		if(LX_unlockHauntedBilliardsRoom(false))
 		{
 			return true;
 		}
