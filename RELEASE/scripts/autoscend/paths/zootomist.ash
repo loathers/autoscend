@@ -392,7 +392,7 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		"heal": 5,
 		"sniff": 5
 	};
-	boolean[familiar] blacklistFams = $familiars[reassembled blackbird, reconstituted crow];
+	boolean[familiar] blacklistFams = $familiars[reassembled blackbird, reconstituted crow, homemade robot];
 	foreach fam in $familiars[]
 	{
 		//comment out below line and uncomment second below line to see all unrestricted fams
