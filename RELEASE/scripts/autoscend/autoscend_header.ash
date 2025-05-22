@@ -849,6 +849,11 @@ boolean in_ggoo();
 boolean LA_grey_goo_tasks();
 
 ########################################################################################################
+//Defined in autoscend/paths/hattrick.ash
+boolean in_hattrick();
+boolean ht_equip_hats();
+
+########################################################################################################
 //Defined in autoscend/paths/heavy_rains.ash
 boolean in_heavyrains();
 void heavyrains_initializeSettings();

@@ -773,7 +773,16 @@ boolean auto_getClanPhotoBoothDefaultItems()
 	{
 		return false;
 	}
-	boolean[item] items_to_claim = $items[fake arrow-through-the-head, astronaut helmet, oversized monocle on a stick];
+	boolean[item] items_to_claim;
+	if(!in_hattrick())
+	{
+		items_to_claim = $items[fake arrow-through-the-head, astronaut helmet, oversized monocle on a stick];
+	}
+	else
+	{
+		items_to_claim = $items[feather boa, astronaut helmet, oversized monocle on a stick];
+	}
+	
 	int orig_clan_id = get_clan_id();
 	boolean in_bafh = orig_clan_id == getBAFHID();
 	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
