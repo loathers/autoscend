@@ -13,8 +13,8 @@ boolean ht_equip_hats()
     foreach it, i in availableHats
     {
         boolean skip;
-        //don't equip the following because they can mess us up later in the run (+/- combat and Thorns)
-        foreach bl in $items[Mer-kin sneakmask] //underwater combat rate so probably won't be used but might as well exclude
+        //don't equip the following because they can mess us up later in the run or are useful for consumption (+/- combat and Thorns)
+        foreach bl in $items[Mer-kin sneakmask, coconut shell]
         {
             if(it == bl)
             {
