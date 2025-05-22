@@ -80,7 +80,7 @@ int[item] eudora_xiblaxian()
 		{
 			retval[$item[Xiblaxian xeno-detection goggles]] = min(polymer/4, crystal/2);
 		}
-		if(contains_text(canMake, "Xiblaxian stealth cowl"))
+		if(contains_text(canMake, "Xiblaxian stealth cowl") && !in_hattrick())
 		{
 			retval[$item[Xiblaxian Stealth Cowl]] = min(circuitry/4, min(polymer/9, alloy/5));
 		}

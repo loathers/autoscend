@@ -1,4 +1,4 @@
-since r28530;	//  feat: peridot power, plurals
+since r28534;	//  feat: support hats in Hat Trick
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -853,6 +853,7 @@ void initializeDay(int day)
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	jarlsberg_initializeDay(day);
+	ht_equip_hats(); //equip hats in Hat Trick
 
 	// Bulk cache mall prices
 	if(!in_hardcore() && get_property("auto_day_init").to_int() < day)
@@ -1923,6 +1924,7 @@ boolean doTasks()
 	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
+	ht_equip_hats(); //equip hats in Hat Trick
 
 	oldPeoplePlantStuff();
 	use_barrels();
