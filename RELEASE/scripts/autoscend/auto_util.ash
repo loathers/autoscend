@@ -3818,6 +3818,27 @@ boolean auto_wantToCopy(monster enemy)
 	return toCopy[enemy];
 }
 
+int zoneRank(monster mon, location loc)
+{
+	if(auto_wantToYellowRay(mon, loc))
+	{
+		return 1;
+	}
+	if(auto_wantToCopy(mon))
+	{
+		return 2;
+	}
+	if(auto_wantToSniff(mon, loc))
+	{
+		return 3;
+	}
+	if(auto_wantToBanish(mon, loc) || auto_wantToFreeRun(mon, loc) || auto_wantToReplace(mon, loc))
+	{
+		return 999;
+	}
+	return 4;
+}
+
 int total_items(boolean [item] items)
 {
 	int total = 0;
@@ -4647,7 +4668,8 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	//but I am labeling them seperate from buffs in case we ever need to split this function.
 	
 	//if you have something that reduces the cost of casting buffs, wear it now.
-	maximize("-mana cost, -tie", false);
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
 	
 	//Passive damage
 	if(passive_dmg_allowed)
@@ -4924,6 +4946,10 @@ boolean auto_burnMP(int mpToBurn)
 }
 
 boolean can_read_skillbook(item it) {
+	// can't read in Picky
+	if (in_picky()) {
+		return false;
+	}
 	// all the normal classes and AoSOL classes are literate
 	if ($classes[Seal Clubber, Turtle Tamer, Sauceror, Pastamancer, Disco Bandit, Accordion Thief, Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class()) {
 		return true;

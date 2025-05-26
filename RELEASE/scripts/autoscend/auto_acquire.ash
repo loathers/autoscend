@@ -633,15 +633,19 @@ int handlePulls(int day)
 					}
 				}
 			}
-			pullXWhenHaveY($item[Dieting Pill], 1, 0);
 			//Make sure we have the legendary pizzas if we want to/can consume them so we take full advantage of the dieting pills
 			if(!get_property("auto_dontConsumeLegendPizzas").to_boolean())
 			{
 				foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
 				{
-					if(auto_is_valid(it) && !pulledToday(it))
+					if(canEat(it) && !pulledToday(it))
 					{
 						pullXWhenHaveY(it, 1, 0);
+					}
+					// Pull at least one early dieting pill if we've acquired a legendary pizza
+					if (item_amount(it) > 0 && !pulledToday($item[Dieting Pill]))
+					{
+						pullXWhenHaveY($item[Dieting Pill], 1, 0);
 					}
 				}
 			}

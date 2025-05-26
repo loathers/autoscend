@@ -562,6 +562,12 @@ boolean auto_pre_adventure()
 		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 
 	}
 
+	if(!inperilLocations(place.id) && auto_havePeridot() && zoneHasWantedMonsters)
+	{
+		//add a large bonus to Peridot of Peril if the zone has wanted monsters and we haven't visited there yet
+		addBonusToMaximize($item[Peridot of Peril], 1000);
+	}
+
 	if(place == $location[The Penultimate Fantasy Airship] && auto_haveBatWings())
 	{
 		// only here to get immateria. Get it faster with bat wings
@@ -1052,7 +1058,7 @@ void main()
 	try
 	{
 		ret = auto_pre_adventure();
-		if (pathHasFamiliar() && my_familiar()==$familiar[none] && !isFantasyRealm(my_location())) {
+		if (pathHasFamiliar() && canChangeFamiliar() && my_familiar()==$familiar[none] && !isFantasyRealm(my_location())) {
 			abort("Trying to adventure with no familiar.");
 		}
 	}

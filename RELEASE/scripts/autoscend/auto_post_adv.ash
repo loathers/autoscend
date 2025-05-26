@@ -365,7 +365,7 @@ boolean auto_post_adventure()
 		{
 			use_skill(1, $skill[Disco Nap]);
 		}
-		else if(isGeneralStoreAvailable() && auto_is_valid($item[Anti-Anti-Antidote]))
+		else if(isGalaktikAvailable() && auto_is_valid($item[Anti-Anti-Antidote]))
 		{
 			auto_buyUpTo(1, $item[Anti-Anti-Antidote]);
 			use(1, $item[Anti-Anti-Antidote]);

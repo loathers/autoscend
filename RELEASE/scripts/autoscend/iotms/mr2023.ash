@@ -639,8 +639,9 @@ void auto_scepterSkills()
 		}
 	}
 	//see how much mana cost reduction we can get (up to 3mp)
-	maximize("-mana cost", true);
-	int manaCostMaximize = numeric_modifier("Generated:_spec", "Mana Cost");
+	simMaximizeWith("-1000mana cost");
+
+	int manaCostMaximize = simValue("Mana Cost");
 	if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
 	{
 		use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
@@ -1303,8 +1304,10 @@ boolean auto_fightFlamingLeaflet()
 		addBonusToMaximize($item[tearaway pants], 500); // plants give turns when you tearaway
 	}
 
-	visit_url("campground.php?preaction=leaves");
-	return autoAdvBypass("choice.php?pwd&whichchoice=1510&option=1&leaves=11",$location[Noob Cave]);
+	string[int] pages;
+	pages[0] = "campground.php?preaction=leaves";
+	pages[1] = "choice.php?pwd&whichchoice=1510&option=1&leaves=11";
+	return autoAdvBypass(0, pages, $location[Noob Cave], "");
 }
 
 boolean auto_haveCCSC()

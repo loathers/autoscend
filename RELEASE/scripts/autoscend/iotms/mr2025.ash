@@ -237,3 +237,55 @@ boolean auto_canNorthernExplosionFE()
 	}
 	return true;
 }
+boolean auto_havePeridot()
+{
+	item pop = $item[Peridot of Peril];
+	return (auto_is_valid(pop) && possessEquipment(pop));
+}
+
+void peridotChoiceHandler(int choice, string page)
+{
+	if(!auto_havePeridot())
+	{
+		run_choice(2); //should never get here but might as well mitigate
+	}
+	monster popChoice;
+	location loc = my_location();
+	matcher mons = create_matcher("bandersnatch\" value=\"(\\d+)", page);
+	monster[int] monOpts;
+	int i = 0;
+	int bestmon = 0;
+	while(find(mons))
+	{
+		//record the possible monsters and identify the best one to target
+		monOpts[i] = mons.group(1).to_int().to_monster();
+		if(zoneRank(monOpts[i], loc) <= zoneRank(monOpts[bestmon], loc)) 
+		{
+			bestmon = i;
+		}
+		i += 1;
+	}
+	popChoice = monOpts[bestmon];
+	if(popChoice.to_int() == 0) //still nothing found so just peace out
+	{
+		handleTracker($item[Peridot of Peril], loc.to_string(), "Peace out", "auto_otherstuff");
+		run_choice(2); //if no match is found, hit the exit choice
+		return;
+	}
+	if(zoneRank(popChoice, loc) != 4) handleTracker($item[Peridot of Peril], loc.to_string(), popChoice.to_string(),"auto_otherstuff");
+	run_choice(1, "bandersnatch=" + popChoice.to_int());
+	return;
+}
+
+boolean inperilLocations(int loc)
+{
+	string[int] perilLocs = split_string(get_property("_perilLocations"),",");
+	foreach i, str in perilLocs
+	{
+		if (loc == to_int(str))
+		{
+			return true;
+		}
+	}
+	return false;
+}

@@ -1,4 +1,4 @@
-since r28468;	// douse success variable
+since r28534;	//  feat: support hats in Hat Trick
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -69,6 +69,7 @@ import <autoscend/paths/fall_of_the_dinosaurs.ash>
 import <autoscend/paths/g_lover.ash>
 import <autoscend/paths/gelatinous_noob.ash>
 import <autoscend/paths/grey_goo.ash>
+import <autoscend/paths/hattrick.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/i_love_u_hate.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
@@ -852,6 +853,7 @@ void initializeDay(int day)
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	jarlsberg_initializeDay(day);
+	ht_equip_hats(); //equip hats in Hat Trick
 
 	// Bulk cache mall prices
 	if(!in_hardcore() && get_property("auto_day_init").to_int() < day)
@@ -1923,6 +1925,7 @@ boolean doTasks()
 	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
+	ht_equip_hats(); //equip hats in Hat Trick
 
 	oldPeoplePlantStuff();
 	use_barrels();

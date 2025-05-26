@@ -1824,10 +1824,11 @@ boolean L12_themtharHills()
 		meat_need = meat_need - 100;
 	}
 
-	if(canChangeFamiliar())
+	familiar famChoice = get_property("auto_familiarChoice").to_familiar();
+	if(canChangeFamiliar() && famChoice != $familiar[none])
 	{
 		// if we're in a 100% run, this property returns "none" which will unequip our familiar and ruin a 100% run.
-		use_familiar(to_familiar(get_property("auto_familiarChoice")));
+		use_familiar(famChoice);
 	}
 	equipMaximizedGear();
 	float meatDropHave = provideMeat(1800, true, true);
