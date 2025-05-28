@@ -511,6 +511,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Human-Fish Hybrid]:			useItem = $item[Gene Tonic: Fish];				break;
 	case $effect[Human-Human Hybrid]:			useItem = $item[Gene Tonic: Dude];				break;
 	case $effect[Human-Humanoid Hybrid]:		useItem = $item[Gene Tonic: Humanoid];			break;
+	case $effect[Human-Insect Hybrid]:			useItem = $item[Gene Tonic: Insect];			break;
 	case $effect[Human-Machine Hybrid]:			useItem = $item[Gene Tonic: Construct];			break;
 	case $effect[Human-Mer-kin Hybrid]:			useItem = $item[Gene Tonic: Mer-kin];			break;
 	case $effect[Human-Pirate Hybrid]:			useItem = $item[Gene Tonic: Pirate];			break;

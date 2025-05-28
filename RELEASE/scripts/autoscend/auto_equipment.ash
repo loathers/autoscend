@@ -1349,3 +1349,25 @@ int[item] auto_getAllEquipabble(slot s)
 	}
 	return valid_and_equippable;
 }
+
+item[int] auto_saveEquipped()
+{
+	boolean[slot] my_slots = $slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar];
+	int i = 0;
+	item[int] equipped;
+	foreach sl in my_slots
+	{
+		equipped[i] = equipped_item(sl);
+		i++;
+	}
+	return equipped;
+}
+
+boolean auto_loadEquipped(item[int] loadEquip)
+{
+	foreach i, it in loadEquip
+	{
+		equip(it);
+	}
+	return true;
+}

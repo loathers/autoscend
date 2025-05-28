@@ -1600,6 +1600,8 @@ boolean auto_forceEquipSword();
 boolean is_watch(item it);
 int[item] auto_getAllEquipabble();
 int[item] auto_getAllEquipabble(slot s);
+item[int] auto_saveEquipped();
+boolean auto_loadEquipped(item[int] loadEquip);
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
