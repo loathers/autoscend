@@ -1233,6 +1233,7 @@ boolean dailyEvents()
 	auto_getAprilingBandItems();
 	auto_MayamClaimAll();
 	auto_buyFromSeptEmberStore();
+	auto_getGlobs();
 	
 	return true;
 }
