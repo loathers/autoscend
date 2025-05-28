@@ -4934,6 +4934,8 @@ boolean auto_burnMP(int mpToBurn)
 		set_property("lastChanceBurn","cast # " + defaultSkill);
 	}
 
+	item[int] equipped = auto_saveEquipped();
+
 	if(auto_haveAprilShowerShield())
 	{
 		equip($item[April Shower Thoughts Shield]); //useful additional buffs when equipped
@@ -4942,6 +4944,7 @@ boolean auto_burnMP(int mpToBurn)
 	// record starting MP
 	int startingMP = my_mp();
 	cli_execute("burn " + mpToBurn);
+	auto_loadEquipped(equipped);
 	return startingMP != my_mp();
 }
 

@@ -1352,7 +1352,15 @@ int[item] auto_getAllEquipabble(slot s)
 
 item[int] auto_saveEquipped()
 {
-	boolean[slot] my_slots = $slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar];
+	boolean[slot] my_slots;
+	if(in_hattrick())
+	{
+		my_slots = $slots[weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	else
+	{
+		 my_slots = $slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
 	int i = 0;
 	item[int] equipped;
 	foreach sl in my_slots
