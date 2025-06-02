@@ -217,6 +217,11 @@ boolean auto_equipAprilShieldBuff()
 		return false;
 	}
 	//force equip the shield if this is called
+	if(weapon_hands(equipped_item($slot[weapon])) > 1)
+	{
+		//if a 2 handed weapon is equipped, unequip it
+		equip($item[none], $slot[weapon]);
+	}
 	return equip($item[April Shower Thoughts Shield]);
 }
 

@@ -4936,10 +4936,7 @@ boolean auto_burnMP(int mpToBurn)
 
 	item[int] equipped = auto_saveEquipped();
 
-	if(auto_haveAprilShowerShield())
-	{
-		equip($item[April Shower Thoughts Shield]); //useful additional buffs when equipped
-	}
+	auto_equipAprilShieldBuff(); //useful additional buffs when equipped
 
 	// record starting MP
 	int startingMP = my_mp();

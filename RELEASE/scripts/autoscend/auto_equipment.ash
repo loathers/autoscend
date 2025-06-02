@@ -1375,6 +1375,8 @@ boolean auto_loadEquipped(item[int] loadEquip)
 {
 	foreach i, it in loadEquip
 	{
+		//remove off-hand if we need to equip a 2 handed weapon from our saved load out
+		if(it == $item[none]) continue;
 		equip(it);
 	}
 	return true;
