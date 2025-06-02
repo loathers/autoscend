@@ -1,4 +1,4 @@
-since r28534;	//  feat: support hats in Hat Trick
+since r28545;	//  correct names for cola battlefield zones
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
