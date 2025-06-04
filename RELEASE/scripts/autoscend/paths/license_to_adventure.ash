@@ -198,8 +198,7 @@ boolean LM_bond()
 	return false;
 }
 
-item[int] bondDrinks()
-{
+static {
 	item[int] retval = itemList();
 
 	foreach it in $items[]
@@ -209,6 +208,5 @@ item[int] bondDrinks()
 			retval = retval.ListInsert(it);
 		}
 	}
-	return retval;
-
+	bondDrinks = retval;
 }
