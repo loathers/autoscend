@@ -644,7 +644,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	}
 	if(in_lta())
 	{
-		item [int] martinis = bondDrinks();
+		item [int] martinis = bondDrinks;
 		boolean found = false;
 		foreach idx, it in martinis
 		{
