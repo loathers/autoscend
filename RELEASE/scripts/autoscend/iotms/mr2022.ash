@@ -685,6 +685,7 @@ boolean auto_autumnatonQuest()
 		if(auto_sendAutumnaton($location[Guano Junction])) return false;
 		if(auto_sendAutumnaton($location[The Batrat And Ratbat Burrow])) return false;
 		if(auto_sendAutumnaton($location[The Beanbat Chamber])) return false;
+		if(auto_sendAutumnaton($location[Cobb's Knob Harem])) return false;
 		if(auto_sendAutumnaton($location[Noob Cave])) return false;
 	}
 

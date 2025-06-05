@@ -468,6 +468,9 @@ int auto_swoopsRemaining()
 
 boolean auto_haveSeptEmberCenser()
 {
+	if (in_koe()) {
+		return false; // shop is inaccessible in Kingdom of Exploathing
+	}
 	if(auto_is_valid($item[Sept-Ember Censer]) && available_amount($item[Sept-Ember Censer]) > 0 )
 	{
 		return true;
