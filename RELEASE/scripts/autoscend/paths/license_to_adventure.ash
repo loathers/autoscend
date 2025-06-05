@@ -58,25 +58,15 @@ boolean bond_buySkills()
 				points -= 1;
 			}
 		}
-		else if(!get_property("bondDrunk2").to_boolean())
+		else if(!get_property("bondAdv").to_boolean())
 		{
-			if(points >= 3)
+			if(points >= 1)
 			{
-				auto_log_info("Getting bondDrunk2", "blue");
-				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=11&w=s");
-				points -= 3;
+				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=1&w=s");
+				points -= 1;
 			}
 		}
-		else if(!get_property("bondDrunk1").to_boolean())
-		{
-			if(points >= 2)
-			{
-				auto_log_info("Getting bondDrunk1", "blue");
-				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=8&w=s");
-				points -= 2;
-			}
-		}
-		else if(!get_property("bondMartiniPlus").to_boolean())
+		else if(!get_property("bondMartiniPlus").to_boolean() && get_property("bondPoints").to_int() >= 2)
 		{
 			if(points >= 3)
 			{
@@ -94,12 +84,22 @@ boolean bond_buySkills()
 				points -= 1;
 			}
 		}
-		else if(!get_property("bondAdv").to_boolean())
+		else if(!get_property("bondDrunk2").to_boolean())
 		{
-			if(points >= 1)
+			if(points >= 3)
 			{
-				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=1&w=s");
-				points -= 1;
+				auto_log_info("Getting bondDrunk2", "blue");
+				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=11&w=s");
+				points -= 3;
+			}
+		}
+		else if(!get_property("bondDrunk1").to_boolean())
+		{
+			if(points >= 2)
+			{
+				auto_log_info("Getting bondDrunk1", "blue");
+				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=8&w=s");
+				points -= 2;
 			}
 		}
 		else if(!get_property("bondBridge").to_boolean() && (get_property("chasmBridgeProgress").to_int() < (bridgeGoal() - 2)))
