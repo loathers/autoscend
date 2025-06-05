@@ -1075,12 +1075,16 @@ boolean LX_zootoFight()
 			return true;
 		}
 		
-		if(LX_unlockHauntedBilliardsRoom())
+		if(LX_unlockHauntedBilliardsRoom(false))
 		{
 			return true;
 		}
 
 		if(LX_unlockHiddenTemple())
+		{
+			return true;
+		}
+		if(LX_lastChance()) //Should be high enough level by this point to handle these zones
 		{
 			return true;
 		}
