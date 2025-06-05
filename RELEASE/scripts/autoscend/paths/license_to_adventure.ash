@@ -49,6 +49,15 @@ boolean bond_buySkills()
 				points -= 3;
 			}
 		}
+		else if(!get_property("bondMartiniDelivery").to_boolean() && in_hardcore())
+		{
+			if(points >= 1)
+			{
+				auto_log_info("Getting bondMartiniDelivery", "blue");
+				page = visit_url("choice.php?whichchoice=1259&pwd=&option=1&k=9&w=p");
+				points -= 1;
+			}
+		}
 		else if(!get_property("bondDrunk2").to_boolean())
 		{
 			if(points >= 3)
@@ -198,7 +207,13 @@ boolean LM_bond()
 	return false;
 }
 
-static {
+item[int] cachedDrinks;
+
+item[int] bondDrinks()
+{
+	if (count(cachedDrinks) > 0) {
+		return cachedDrinks;
+	}
 	item[int] retval = itemList();
 
 	foreach it in $items[]
@@ -208,5 +223,6 @@ static {
 			retval = retval.ListInsert(it);
 		}
 	}
-	bondDrinks = retval;
+	cachedDrinks = retval;
+	return retval;
 }

@@ -937,7 +937,7 @@ boolean in_lta();
 void bond_initializeSettings();
 boolean bond_buySkills();
 boolean LM_bond();
-static item[int] bondDrinks;
+item[int] bondDrinks();
 
 ########################################################################################################
 //Defined in autoscend/paths/live_ascend_repeat.ash
