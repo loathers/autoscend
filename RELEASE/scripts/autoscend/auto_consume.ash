@@ -667,6 +667,10 @@ boolean canDrink(item toDrink)
 
 boolean canEat(item toEat, boolean checkValidity)
 {
+	if (in_lta() && toEat == $item[magical sausage]) {
+		// Mafia says spies can't eat, but they can eat sausages
+		return true;
+	}
 	if(!can_eat())
 	{
 		return false;
@@ -679,7 +683,7 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
 	}
-	if(in_nuclear() && (toEat.fullness != 1))
+	if(in_nuclear() && (toEat.fullness > 1))
 	{
 		return false;
 	}
