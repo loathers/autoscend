@@ -1,4 +1,4 @@
-since r28534;	//  feat: support hats in Hat Trick
+since r28545;	//  correct names for cola battlefield zones
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -441,8 +441,9 @@ boolean LX_burnDelay()
 
 	if (backupTargetAvailable)
 	{
-		location backupZone = solveDelayZone(isFreeMonster(get_property("lastCopyableMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0);
-		if (backupZone == $location[none])
+		boolean skipOutdoorZones = isFreeMonster(get_property("lastCopyableMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0;
+		location backupZone = solveDelayZone(skipOutdoorZones);
+		if (backupZone == $location[none] && skipOutdoorZones && !in_koe())
 		{
 			// if the monster is inherently free and we have Breathitin charges, fight it in the Noob Cave since we can't avoid it
 			// and we likely want to fight it. Noob Cave is available from turn 0 & is not outdoors so Breathitin won't trigger.
@@ -935,12 +936,11 @@ void initializeDay(int day)
 					{
 						auto_buyUpTo(1, $item[Toy Accordion]);
 					}
-					
-					if((in_koe()) && (item_amount($item[Antique Accordion]) == 0) && (koe_rmi_count() >= 10))
-					{
-						koe_acquire_rmi(10);
-						buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Antique Accordion]);
-					}
+				}
+				if((in_koe()) && (item_amount($item[Antique Accordion]) == 0) && (koe_rmi_count() >= 10))
+				{
+					koe_acquire_rmi(10);
+					buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Antique Accordion]);
 				}
 				acquireTotem();
 				if(!possessEquipment($item[Saucepan]))

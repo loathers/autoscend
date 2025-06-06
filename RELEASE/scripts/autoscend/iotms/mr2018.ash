@@ -948,7 +948,7 @@ string auto_latteDropName(location l)
 		case $location[The Sleazy Back Alley]: return "cloves";
 		case $location[The Haunted Boiler Room]: return "coal";
 		case $location[The Icy Peak]: return "cocoa";
-		case $location[Battlefield (No Uniform)]: return "diet";
+		case $location[The Cola Wars Battlefield]: return "diet";
 		case $location[Itznotyerzitz Mine]: return "dwarf";
 		case $location[The Feeding Chamber]: return "filth";
 		case $location[The Road to the White Citadel]: return "flour";
