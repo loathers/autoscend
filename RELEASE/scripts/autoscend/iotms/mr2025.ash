@@ -241,3 +241,216 @@ boolean inperilLocations(int loc)
 	}
 	return false;
 }
+
+boolean auto_havePrismaticBeret()
+{
+	item pb = $item[Prismatic Beret];
+	return (auto_is_valid(pb) && possessEquipment(pb));
+}
+
+boolean canBusk()
+{
+	if(get_property("_beretBuskingUses").to_int() < 5)
+	{
+		return true;
+	}
+	return false;
+}
+
+int[string] beretPower(item[int] allHats, item[int] allShirts, item[int] allPants)
+{
+	int hat_multiplier = 1;
+    int pant_multiplier = 1;
+    if(have_skill($skill[Tao of the Terrapin]))
+    {
+        hat_multiplier += 1;
+        pant_multiplier += 1;
+    }
+    if(have_effect($effect[Hammertime]) > 0)
+    {
+        pant_multiplier += 3;
+    }
+    int ht_hat_power = 0;
+    boolean hatrack_fam = false;
+    if(my_familiar() == $familiar[mad hatrack])
+    {
+        hatrack_fam = true;
+    }
+    if(hatrack_fam)
+    {
+        use_familiar($familiar[none]);
+    }
+    if(hatrack_fam)
+    {
+        use_familiar($familiar[mad hatrack]); //re-equip hatrack
+    }
+	int[int] hatPowers;
+	int[int] pantPowers;
+	int[int] shirtPowers;
+	int[string] powers;
+	//possible power calculations
+	if(!in_hattrick())
+	{
+		foreach h in allHats
+		{
+			hatPowers[count(hatPowers)] = get_power(h) * hat_multiplier;
+		}
+	}
+	else
+	{
+		foreach h in allHats
+		{
+			if(equipped_amount(h) >= 1)
+			{
+				hatPower[0] += get_power(h);
+			}
+		}
+	}
+	foreach p in allPants
+	{
+		pantPowers[count(pantPowers)] = get_power(p) * pant_multiplier;
+	}
+	foreach s in allShirts
+	{
+		shirtPowers[count(shirtPowers)] = get_power(s);
+	}
+	foreach hp in hatPowers
+	{
+		foreach pp in pantPowers
+		{
+			foreach sp in shirtPowers
+			{
+				string concat = hp.to_string() + "," + pp.to_string() + "," + sp.to_string();
+				powers[concat] = hp + pp + sp;
+			}
+		}
+	}
+	//power = min(hat_power + pant_power + shirt_power, 1100) + max(0,hat_power + pant_power + shirt_power - 1100) ** 0.8
+	return powers;
+}
+
+string bestBusk(int[string] powers, string effectMultiplier)
+{
+	//effectMultiplier string should be in format of "modifier1:float;modifier2:float;..."
+	if(!auto_havePrismaticBeret())
+	{
+		return 0;
+	}
+	int busk = get_property("_beretBuskingUses").to_int();
+	int score = 0;
+	int highScore = 0;
+	string highScoreString;
+	float[string] effMulti;
+	string[int] numMod;
+	if(effectMultiplier=="")
+	{
+		//based on default maximizer string
+		effMulti = {
+			"item drop": 5,
+			"meat drop": 1,
+			"initiative": 0.5,
+			"damage absorption": 0.1,
+			"damage resistance": 1,
+			"Cold Resistance": 0.5,
+			"Hot Resistance": 0.5,
+			"Sleaze Resistance": 0.5,
+			"Stench Resistance": 0.5,
+			"Spooky Resistance": 0.5,
+			my_primestat().to_string(): 1.5,
+			"fumble": -1,
+			"hp": 0.4,
+			"mp": 0.2,
+			"mp regen": 3,
+			"familiar weight": 2,
+			"familiar experience": 5};
+	}
+	foreach str in split_string(effectMultiplier,";")
+	{
+		numMod = split_string(str,":");
+		effMulti[numMod[0]] = numMod[1].to_float();
+	}
+	int[effect] buskingEffects;
+	foreach power, powerstring in powers
+	{
+		buskingEffects = beret_busking_effects(power, busk);
+		foreach eff, i in buskingEffects
+		{
+			foreach mod, multi in effMulti
+			{
+				score += numeric_modifier(eff, mod) * multi;
+			}
+		}
+		if(score > highScore)
+		{
+			highScore = score;
+			highScoreString = powerstring;
+		}
+	}
+	
+	return highScoreString;
+}
+
+boolean beretBusk(string effectMultiplier)
+{
+	if(!auto_havePrismaticBeret() || !canBusk())
+	{
+		return false;
+	}
+	item[int] allHats;
+	item[int] allShirts;
+	item[int] allPants;
+	for it in $items[]
+	{
+		//only track items we have
+		if(possessEquipment(it) > 0)
+		{
+			switch(to_slot(it))
+			{
+				case $slot[hat]:
+					allHats[count(allHats)] = it;
+				case $slot[shirt]:
+					allShirts[count(allShirts)] = it;
+				case $slot[pant]:
+					allPants[count(allPants)] = it;
+				default:
+					continue;
+			}
+		}
+	}
+	int[string] powers = beretPower(allHats, allShirts, allPants);
+	string[int] bestBusk = split_string(bestBusk(powers, effectMultiplier), ",");
+
+	if(!in_hattrick())
+	{
+		foreach hat in allHats
+		{
+			if(get_power(hat) == bestBusk[0].to_int())
+			{
+				equip(hat);
+				break;
+			}
+		}
+	}
+	foreach shirt in allShirts
+	{
+		if(get_power(shirt) == bestBusk[1].to_int())
+		{
+			equip(shirt);
+			break;
+		}
+	}
+	foreach pant in allPants
+	{
+		if(get_power(pant) == bestBusk[2].to_int())
+		{
+			equip(pant);
+			break;
+		}
+	}
+	use_skill($skill[beret busking]);
+}
+
+boolean beretBusk()
+{
+	return beretBusk("");
+}

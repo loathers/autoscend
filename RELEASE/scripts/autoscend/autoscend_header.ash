@@ -654,6 +654,12 @@ int auto_afterimagesLeft();
 boolean auto_havePeridot();
 void peridotChoiceHandler(int choice, string page);
 boolean inperilLocations(int loc);
+boolean auto_havePrismaticBeret();
+boolean canBusk();
+int[string] beretPower(item[int] allHats, item[int] allShirts, item[int] allPants);
+string bestBusk(int[string] powers, string effectMultiplier);
+boolean beretBusk(string effectMultiplier);
+boolean beretBusk();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

@@ -842,7 +842,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 	if(doEquips && canChangeFamiliar())
 	{
 		familiar resfam = $familiar[none];
-		foreach fam in $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot]
+		foreach fam in $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot, Cooler Yeti]
 		{
 			if(auto_have_familiar(fam))
 			{

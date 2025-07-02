@@ -1,4 +1,4 @@
-since r28545;	//  correct names for cola battlefield zones
+since r28569;	//   skeleton cooler yeti
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
