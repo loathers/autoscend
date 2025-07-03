@@ -1411,6 +1411,12 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 	}
 	if(pass())
 		return result();
+	if(canBusk())
+	{
+		beretBusk("meat drop");
+	}
+	if(pass())
+		return result();
 	if(bat_formWolf(speculative))
 	{
 		//150% meat, 150% muscle
@@ -1778,6 +1784,12 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		if(!speculative)
 			asdonBuff($effect[Driving Observantly]);
 		handleEffect($effect[Driving Observantly]);
+	}
+	if(pass())
+		return result();
+	if(canBusk())
+	{
+		beretBusk("item drop");
 	}
 	if(pass())
 		return result();

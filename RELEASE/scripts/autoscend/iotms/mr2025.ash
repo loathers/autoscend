@@ -291,37 +291,63 @@ int[string] beretPower(item[int] allHats, item[int] allShirts, item[int] allPant
 	//possible power calculations
 	if(!in_hattrick())
 	{
-		foreach h in allHats
+		foreach i, h in allHats
 		{
 			hatPowers[count(hatPowers)] = get_power(h) * hat_multiplier;
 		}
 	}
 	else
 	{
-		foreach h in allHats
+		foreach i, h in allHats
 		{
 			if(equipped_amount(h) >= 1)
 			{
-				hatPower[0] += get_power(h);
+				hatPowers[0] += get_power(h);
 			}
 		}
 	}
-	foreach p in allPants
+	foreach i, p in allPants
 	{
 		pantPowers[count(pantPowers)] = get_power(p) * pant_multiplier;
 	}
-	foreach s in allShirts
+	foreach i, s in allShirts
 	{
 		shirtPowers[count(shirtPowers)] = get_power(s);
 	}
-	foreach hp in hatPowers
+	if(count(hatPowers) == 0)
 	{
-		foreach pp in pantPowers
+		hatPowers[0] = 0;
+	}
+	if(count(pantPowers) == 0)
+	{
+		pantPowers[0] = 0;
+	}
+	if(count(shirtPowers) == 0)
+	{
+		shirtPowers[0] = 0;
+	}
+	if(!in_hattrick())
+	{
+		foreach i, hp in hatPowers
 		{
-			foreach sp in shirtPowers
+			foreach i, pp in pantPowers
 			{
-				string concat = hp.to_string() + "," + pp.to_string() + "," + sp.to_string();
-				powers[concat] = hp + pp + sp;
+				foreach i, sp in shirtPowers
+				{
+					string concat = (hp / hat_multiplier).to_string() + "," + (pp / pant_multiplier).to_string() + "," + sp.to_string();
+					powers[concat] = hp + pp + sp;
+				}
+			}
+		}
+	}
+	else
+	{	
+		foreach i, pp in pantPowers
+		{
+			foreach i, sp in shirtPowers
+			{
+				string concat = (pp / pant_multiplier).to_string() + "," + sp.to_string();
+				powers[concat] = hatPowers[0] + pp + sp;
 			}
 		}
 	}
@@ -331,14 +357,16 @@ int[string] beretPower(item[int] allHats, item[int] allShirts, item[int] allPant
 
 string bestBusk(int[string] powers, string effectMultiplier)
 {
-	//effectMultiplier string should be in format of "modifier1:float;modifier2:float;..."
+	//effectMultiplier string should be in format of "modifier1:float;modifier2:float;..." if multiple modifiers
+	//if single modifier, does not need a multiplier
+	//Do not use an ending ; if effectMultiplier
 	if(!auto_havePrismaticBeret())
 	{
 		return 0;
 	}
-	int busk = get_property("_beretBuskingUses").to_int();
-	int score = 0;
-	int highScore = 0;
+	int busk = get_property("_beretBuskingUses").to_int() + 1;
+	float score;
+	float highScore = 0.0;
 	string highScoreString;
 	float[string] effMulti;
 	string[int] numMod;
@@ -364,20 +392,39 @@ string bestBusk(int[string] powers, string effectMultiplier)
 			"familiar weight": 2,
 			"familiar experience": 5};
 	}
-	foreach str in split_string(effectMultiplier,";")
+	else
 	{
-		numMod = split_string(str,":");
-		effMulti[numMod[0]] = numMod[1].to_float();
+		if(contains_text(effectMultiplier, ";"))
+		{
+			foreach str in split_string(effectMultiplier,";")
+			{
+				numMod = split_string(str,":");
+				effMulti[numMod[0]] = numMod[1].to_float();
+			}
+		}
+		else if(contains_text(effectMultiplier, ":"))
+		{
+			numMod = split_string(effectMultiplier, ":");
+			effMulti[numMod[0]]  = numMod[1].to_float();
+		}
+		else
+		{
+			effMulti[effectMultiplier] = 5.0;
+		}
 	}
 	int[effect] buskingEffects;
-	foreach power, powerstring in powers
+	foreach powerstring, power in powers
 	{
-		buskingEffects = beret_busking_effects(power, busk);
+		score = 0.0;
+		buskingEffects = beret_busking_effects(power.to_int(), busk);
 		foreach eff, i in buskingEffects
 		{
-			foreach mod, multi in effMulti
+			if(eff != $effect[none])
 			{
-				score += numeric_modifier(eff, mod) * multi;
+				foreach mod, multi in effMulti
+				{
+					score += numeric_modifier(eff, mod) * multi;
+				}
 			}
 		}
 		if(score > highScore)
@@ -386,8 +433,11 @@ string bestBusk(int[string] powers, string effectMultiplier)
 			highScoreString = powerstring;
 		}
 	}
-	
-	return highScoreString;
+	if(highScore > 0)
+	{
+		return highScoreString;
+	}
+	return "";
 }
 
 boolean beretBusk(string effectMultiplier)
@@ -399,55 +449,74 @@ boolean beretBusk(string effectMultiplier)
 	item[int] allHats;
 	item[int] allShirts;
 	item[int] allPants;
-	for it in $items[]
+	foreach it in $items[]
 	{
 		//only track items we have
-		if(possessEquipment(it) > 0)
+		if(possessEquipment(it))
 		{
 			switch(to_slot(it))
 			{
 				case $slot[hat]:
 					allHats[count(allHats)] = it;
+					break;
 				case $slot[shirt]:
 					allShirts[count(allShirts)] = it;
-				case $slot[pant]:
+					break;
+				case $slot[pants]:
 					allPants[count(allPants)] = it;
+					break;
 				default:
 					continue;
 			}
 		}
 	}
 	int[string] powers = beretPower(allHats, allShirts, allPants);
-	string[int] bestBusk = split_string(bestBusk(powers, effectMultiplier), ",");
-
+	string bestBuskPowers = bestBusk(powers, effectMultiplier);
+	if(bestBuskPowers == "")
+	{
+		return false;
+	}
+	string[int] bestBuskPowersSplit = split_string(bestBuskPowers, ",");
+	int bestBuskHTOffset = (in_hattrick() ? 1 : 0);
 	if(!in_hattrick())
 	{
-		foreach hat in allHats
+		if(count(allHats) > 0)
 		{
-			if(get_power(hat) == bestBusk[0].to_int())
+			foreach i, hat in allHats
 			{
-				equip(hat);
+				if(get_power(hat) == bestBuskPowersSplit[0].to_int())
+				{
+					equip(hat);
+					break;
+				}
+			}
+		}
+	}
+	if(count(allPants) > 0)
+	{
+		foreach i, pant in allPants
+		{
+			if(get_power(pant) == bestBuskPowersSplit[1 - bestBuskHTOffset].to_int())
+			{
+				equip(pant);
 				break;
 			}
 		}
 	}
-	foreach shirt in allShirts
+	if(count(allShirts) > 0)
 	{
-		if(get_power(shirt) == bestBusk[1].to_int())
+		foreach i, shirt in allShirts
 		{
-			equip(shirt);
-			break;
+			if(get_power(shirt) == bestBuskPowersSplit[2 - bestBuskHTOffset].to_int())
+			{
+				equip(shirt);
+				break;
+			}
 		}
 	}
-	foreach pant in allPants
-	{
-		if(get_power(pant) == bestBusk[2].to_int())
-		{
-			equip(pant);
-			break;
-		}
-	}
-	use_skill($skill[beret busking]);
+	//return use_skill(1, $skill[beret busking]);
+	return true;
+	
 }
 
 boolean beretBusk()

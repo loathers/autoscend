@@ -2,10 +2,10 @@
 /*
 Below are relevant locations for the war.
 war not started or finished with this side undefeated:
-[Frat House]
-[Frat House (Frat Disguise)]	//r26631 changed from [Frat House In Disguise]
-[Hippy Camp]
-[Hippy Camp (Hippy Disguise)]	//r26631 changed from [Hippy Camp In Disguise]
+[The Orcish Frat House]
+[The Orcish Frat House (In Disguise)]	//r26631 changed from [Frat House In Disguise]
+[The Hippy Camp]
+[The Hippy Camp (In Disguise)]	//r26631 changed from [Hippy Camp In Disguise]
 
 War started:
 [Wartime Frat House]
@@ -637,7 +637,7 @@ boolean L12_getOutfit()
 	{
 		autoOutfit("Filthy Hippy Disguise");
 		//this should go to [Wartime Frat House (Hippy Disguise)] (despite war not started)
-		return autoAdv($location[Frat House]);
+		return autoAdv($location[The Orcish Frat House]);
 	}
 	
 	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
@@ -645,7 +645,7 @@ boolean L12_getOutfit()
 	{
 		autoOutfit("Frat Boy Ensemble");
 		//this should go to [Wartime Hippy Camp (Frat Disguise)] (despite war not started)
-		return autoAdv($location[Hippy Camp]);
+		return autoAdv($location[The Hippy Camp]);
 	}
 	
 	if(L12_preOutfit())
@@ -730,7 +730,7 @@ boolean L12_preOutfit()
 		auto_log_info("Trying to acquire a filthy hippy outfit", "blue");
 		if(internalQuestStatus("questL12War") == -1)
 		{
-			adventure_status = autoAdv(1, $location[Hippy Camp]);
+			adventure_status = autoAdv(1, $location[The Hippy Camp]);
 		}
 		else
 		{
@@ -743,7 +743,7 @@ boolean L12_preOutfit()
 		auto_log_info("Trying to acquire a frat boy ensemble", "blue");
 		if(internalQuestStatus("questL12War") == -1)
 		{
-			adventure_status = autoAdv(1, $location[Frat House]);
+			adventure_status = autoAdv(1, $location[The Orcish Frat House]);
 		}
 		else
 		{

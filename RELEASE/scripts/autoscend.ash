@@ -814,7 +814,7 @@ void initializeDay(int day)
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174&confirm=Yep.", true);
 		set_property("auto_disableAdventureHandling", true);
-		autoAdv(1, $location[Video Game Level 1]);
+		autoAdv(1, $location[[DungeonFAQ - Level 1]]);
 		set_property("auto_disableAdventureHandling", false);
 		if(item_amount($item[Dungeoneering Kit]) > 0)
 		{
@@ -1397,7 +1397,7 @@ boolean adventureFailureHandler()
 
 		if(tooManyAdventures && isActuallyEd())
 		{
-			if ($location[Hippy Camp] == place)
+			if ($location[The Hippy Camp] == place)
 			{
 				tooManyAdventures = false;
 			}
