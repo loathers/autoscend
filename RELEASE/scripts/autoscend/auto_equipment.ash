@@ -1349,3 +1349,35 @@ int[item] auto_getAllEquipabble(slot s)
 	}
 	return valid_and_equippable;
 }
+
+item[int] auto_saveEquipped()
+{
+	boolean[slot] my_slots;
+	if(in_hattrick())
+	{
+		my_slots = $slots[weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	else
+	{
+		 my_slots = $slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	int i = 0;
+	item[int] equipped;
+	foreach sl in my_slots
+	{
+		equipped[i] = equipped_item(sl);
+		i++;
+	}
+	return equipped;
+}
+
+boolean auto_loadEquipped(item[int] loadEquip)
+{
+	foreach i, it in loadEquip
+	{
+		//remove off-hand if we need to equip a 2 handed weapon from our saved load out
+		if(it == $item[none]) continue;
+		equip(it);
+	}
+	return true;
+}
