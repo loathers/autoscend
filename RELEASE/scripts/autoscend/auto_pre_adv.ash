@@ -919,7 +919,7 @@ boolean auto_pre_adventure()
 		plumber_forceEquipTool();
 	}
 
-	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
+	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[The Hippy Camp]) {
 		equip($slot[Pants], $item[None]);
 		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
 		if (is_wearing_outfit("Filthy Hippy Disguise")) {

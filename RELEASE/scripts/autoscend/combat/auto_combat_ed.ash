@@ -40,7 +40,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 
 	set_property("auto_edCombatRoundCount", 1 + get_property("auto_edCombatRoundCount").to_int());
 
-	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location())
+	if ($locations[The Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest] contains my_location())
 	{
 		if (my_mp() < mp_cost($skill[Fist Of The Mummy]) && get_property("_edDefeats").to_int() < 2)
 		{
@@ -570,7 +570,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 				doLash = true;
 			}
 		}
-		if ((my_location() == $location[Hippy Camp] || my_location() == $location[Wartime Hippy Camp]) && contains_text(enemy, "hippy") && my_level() >= 12)
+		if ((my_location() == $location[The Hippy Camp] || my_location() == $location[Wartime Hippy Camp]) && contains_text(enemy, "hippy") && my_level() >= 12)
 		{
 			if(!possessEquipment($item[Filthy Knitted Dread Sack]) || !possessEquipment($item[Filthy Corduroys]))
 			{
@@ -872,7 +872,7 @@ string auto_edCombatHandler(int round, monster enemy, string text)
 		return useSkill($skill[Storm Of The Scarab], false);
 	}
 
-	if ($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest, The Batrat and Ratbat Burrow, The Boss Bat\'s Lair, Cobb\'s Knob Harem] contains my_location() && canUse($skill[Fist Of The Mummy], false))
+	if ($locations[The Hippy Camp, The Outskirts Of Cobb\'s Knob, The Spooky Forest, The Batrat and Ratbat Burrow, The Boss Bat\'s Lair, Cobb\'s Knob Harem] contains my_location() && canUse($skill[Fist Of The Mummy], false))
 	{
 		return useSkill($skill[Fist Of The Mummy], false);
 	}

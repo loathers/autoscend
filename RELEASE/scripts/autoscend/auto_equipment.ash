@@ -765,7 +765,7 @@ void finalizeMaximize(boolean speculative)
 		}
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
 		//as we go through the hidden hospital we equip surgeon gear on the pants slot, so we can end up dying if we cast advanced research
-		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
+		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Orcish Frat House, The Hippy Camp, The Orcish Frat House (In Disguise), The Hippy Camp (In Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
 		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room, The Hidden Hospital] contains my_location())) nooculus = true;
 		if(!nooculus)
@@ -784,7 +784,7 @@ void finalizeMaximize(boolean speculative)
 	if(is_professor() && (possessEquipment($item[high-tension exoskeleton]) || possessEquipment($item[ultra-high-tension exoskeleton]) || possessEquipment($item[irresponsible-tension exoskeleton]))) //Want that damage avoidance
 	{
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
-		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
+		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Orcish Frat House, The Hippy Camp, The Orcish Frat House (In Disguise), The Hippy Camp (In Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
 		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location()))
 		{
