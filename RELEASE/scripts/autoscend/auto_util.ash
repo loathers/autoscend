@@ -4718,6 +4718,7 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	buffMaintain($effect[Ghostly Shell]);						//6 MP
 	buffMaintain($effect[Tenacity of the Snapper]);			//8 MP
 	buffMaintain($effect[Empathy]);							//15 MP
+	buffMaintain($effect[Thoughtful Empathy]);				//15 MP
 	buffMaintain($effect[Reptilian Fortitude]);				//8 MP
 	buffMaintain($effect[Astral Shell]);						//10 MP
 	buffMaintain($effect[Jingle Jangle Jingle]);				//5 MP

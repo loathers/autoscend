@@ -222,7 +222,18 @@ boolean auto_equipAprilShieldBuff()
 		//if a 2 handed weapon is equipped, unequip it
 		equip($item[none], $slot[weapon]);
 	}
-	return equip($item[April Shower Thoughts Shield]);
+	return autoForceEquip($item[April Shower Thoughts Shield], true);
+}
+
+boolean auto_unequipAprilShieldBuff()
+{
+	//Because Empathy gets replaced by Thoughtful Empathy when cast with the Shield equipped,
+	//we need to make sure this is unequipped if we want to have both Empathy and Thoughtful Empathy
+	if(have_equipped($item[April Shower Thoughts Shield]))
+	{
+		return autoForceEquip($slot[off-hand], $item[none], true);
+	}
+	return true;
 }
 
 boolean auto_canNorthernExplosionFE()
@@ -236,7 +247,7 @@ boolean auto_canNorthernExplosionFE()
 	{
 		return false;
 	}
-	if(get_property("_autoNorthernExplosionFEUsed").to_boolean()) //update this once Mafia has the preference
+	if(get_property("_aprilShowerNorthernExplosion").to_boolean())
 	{
 		return false;
 	}
