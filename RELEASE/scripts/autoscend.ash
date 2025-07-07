@@ -1,4 +1,4 @@
-since r28569;	//   skeleton cooler yeti
+since r28569;	// yeti cooler outline
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

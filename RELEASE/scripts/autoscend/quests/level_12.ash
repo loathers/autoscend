@@ -2,9 +2,9 @@
 /*
 Below are relevant locations for the war.
 war not started or finished with this side undefeated:
-[The Orcish Frat House]
+[Frat House]
 [The Orcish Frat House (In Disguise)]	//r26631 changed from [Frat House In Disguise]
-[The Hippy Camp]
+[Hippy Camp]
 [The Hippy Camp (In Disguise)]	//r26631 changed from [Hippy Camp In Disguise]
 
 War started:
