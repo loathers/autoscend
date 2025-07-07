@@ -660,6 +660,7 @@ int[string] beretPower(item[int] allHats, item[int] allShirts, item[int] allPant
 string bestBusk(int[string] powers, string effectMultiplier);
 boolean beretBusk(string effectMultiplier);
 boolean beretBusk();
+boolean auto_haveCoolerYeti();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

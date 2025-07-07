@@ -449,6 +449,8 @@ boolean beretBusk(string effectMultiplier)
 	item[int] allHats;
 	item[int] allShirts;
 	item[int] allPants;
+	int bestBuskHTOffset = (in_hattrick() ? 1 : 0);
+	int buskPower = 0;
 	foreach it in $items[]
 	{
 		//only track items we have
@@ -477,7 +479,6 @@ boolean beretBusk(string effectMultiplier)
 		return false;
 	}
 	string[int] bestBuskPowersSplit = split_string(bestBuskPowers, ",");
-	int bestBuskHTOffset = (in_hattrick() ? 1 : 0);
 	if(!in_hattrick())
 	{
 		if(count(allHats) > 0)
@@ -514,12 +515,47 @@ boolean beretBusk(string effectMultiplier)
 			}
 		}
 	}
-	//return use_skill(1, $skill[beret busking]);
-	return true;
+	foreach i, h in allHats
+	{
+		if(equipped_amount(h) >= 1)
+		{
+			buskPower += get_power(h);
+		}
+	}
+	buskPower = buskPower + get_power(equipped_item($slot[pants])) + get_power(equipped_item($slot[shirt]));
+	if(use_skill(1, $skill[beret busking]))
+	{
+		handleTracker($item[prismatic beret], my_location().to_string(), "Beret busk " + get_property("_beretBuskingUses") + " at " + buskPower + "power", "auto_otherstuff");
+		return true;
+	}
 	
+	return false;
 }
 
 boolean beretBusk()
 {
 	return beretBusk("");
+}
+
+boolean auto_haveCoolerYeti()
+{
+	if(auto_have_familiar($familiar[Cooler Yeti]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean coolerYetiChat(string goal)
+{
+	if(!auto_haveCoolerYeti())
+	{
+		return false;
+	}
+	if(goal == "boozeadv")
+	{
+		visit_url("main.php?talktoyeti=1");
+	}
+
+	return false;
 }
