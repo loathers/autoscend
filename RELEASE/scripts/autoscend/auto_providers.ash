@@ -853,7 +853,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		if(resfam != $familiar[none])
 		{
 			//Manual override for the resfam to be the Cooler Yeti when we ONLY want Cold Resistance and it is better than what we already chose from one of the multi-res fams
-			if(auto_haveCoolerYeti() && count(amt) == 1 && amt[$element[Cold Resistance]] > 0)
+			if(auto_haveCoolerYeti() && count(amt) == 1 && amt[$element[Cold]] > 0)
 			{
 				if(((resfam == $familiar[Mu] || resfam == $familiar[Exotic Parrot]) && floor((familiar_weight(resfam) + weight_adjustment() - 5) / 20 + 1) < floor((familiar_weight($familiar[cooler yeti]) + weight_adjustment())/11)) || (5 < floor((familiar_weight($familiar[cooler yeti]) + weight_adjustment())/11)))
 				{

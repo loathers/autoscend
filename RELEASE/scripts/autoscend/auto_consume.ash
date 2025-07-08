@@ -182,11 +182,7 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 	{
 		//only want to yeti chat if the booze is also Ode-able and we don't need to level via sept-ember censer or using it won't affect our fam weight
 		use_familiar($familiar[cooler yeti]);
-		if(goal == "boozeadv" && familiar_weight($familiar[cooler yeti]) == 20)
-		{
-			visit_url("choice.php?pwd=&whichchoice=1560&option=2");
-		}
-		coolerYetiChat("boozeadv");
+		visit_url("choice.php?pwd=&whichchoice=1560&option=2");
 	}
 
 	int expectedInebriety = toDrink.inebriety * howMany;
