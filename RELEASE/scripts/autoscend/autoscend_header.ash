@@ -1603,6 +1603,7 @@ boolean auto_forceEquipSword();
 boolean is_watch(item it);
 int[item] auto_getAllEquipabble();
 int[item] auto_getAllEquipabble(slot s);
+int[slot] powerMultipliers();
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash

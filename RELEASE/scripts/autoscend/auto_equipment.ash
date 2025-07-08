@@ -1349,3 +1349,21 @@ int[item] auto_getAllEquipabble(slot s)
 	}
 	return valid_and_equippable;
 }
+
+int[slot] powerMultipliers()
+{
+	int[slot] multiplier;
+	multiplier[$slot[hat]] = 1;
+    multiplier[$slot[pants]] = 1;
+    if(have_skill($skill[Tao of the Terrapin]))
+    {
+        multiplier[$slot[hat]] += 1;
+        multiplier[$slot[pants]] += 1;
+    }
+    if(have_effect($effect[Hammertime]) > 0)
+    {
+        multiplier[$slot[pants]] += 3;
+    }
+
+	return multiplier;
+}
