@@ -513,17 +513,18 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 	}
 
 	if(tryEffects($effects[
-		Cletus's Canticle of Celerity,
-		Springy Fusilli,
-		Soulerskates,
-		Walberg's Dim Bulb,
-		Song of Slowness,
-		Your Fifteen Minutes,
-		Suspicious Gaze,
-		Bone Springs,
-		Living Fast,
-		Nearly Silent Hunting,
-		Stretched,
+		//organized by %/mp and %. Skills
+		Living Fast, //100%, 5mp
+		Stretched, //75%, 10mp
+		Cletus's Canticle of Celerity, //20%, 4mp
+		Springy Fusilli, //40%, 10mp
+		Soulerskates, //30%, 25 soulsauce
+		Bone Springs, //20%, 10mp
+		Walberg's Dim Bulb, //10%, 5mp
+		Suspicious Gaze, //10%, 10mp
+		Song of Slowness, //50%, 100mp
+		Nearly Silent Hunting, //25%, 50mp
+		Your Fifteen Minutes, //15%, 50mp	
 	]))
 		return result();
 
@@ -572,19 +573,20 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 	}
 	
 	boolean[effect] ef_to_try = $effects[
-		Adorable Lookout,
-		Alacri Tea,
-		All Fired Up,
-		Clear Ears\, Can't Lose,
-		Fishy\, Oily,
-		The Glistening,
-		Human-Machine Hybrid,
-		Patent Alacrity,
-		Sepia Tan,
-		Sugar Rush,
-		Ticking Clock,
-		Well-Swabbed Ear,
-		Poppy Performance
+		//organized by %/turn and %. Items
+		Clear Ears\, Can't Lose, //100%, 80 turns
+		Poppy Performance, //100%, 30 turns
+		Patent Alacrity, //100%, 20 turns
+		Fishy\, Oily, //60%, 40 turns
+		Alacri Tea, //50%, 30 turns
+		Adorable Lookout, //30%, 10 turns
+		All Fired Up, //30%, 10 turns
+		Ticking Clock, //30%, 10 turns
+		Well-Swabbed Ear, //30%, 10 turns
+		Human-Insect Hybrid, //25%, 30 turns
+		Sepia Tan, //20%, 25 turns
+		The Glistening, //20%, 15 turns
+		Sugar Rush, //20%, 1-15 turns
 	]; // eff_to_try
 	if(tryEffects(ef_to_try))
 		return result();
@@ -1478,6 +1480,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Bet Your Autumn Dollar, //50% meat
 		The Grass... \ Is Blue..., //40% meat, 20% item
 		Greedy Resolve, //30% meat
+		Tubes of Universal Meat, //30% meat
 		Worth Your Salt, //25% meat, max hp +25
 		Human-Fish Hybrid, //10 fam
 		Human-Humanoid Hybrid, //20% meat, 10% all stats
@@ -1839,6 +1842,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		Juiced and Jacked, //20% item
 		The Grass... \ Is Blue..., //40% meat, 20% item
 		Joyful Resolve, //15% item
+		Lubricating Sauce, //15% item
 		Fortunate Resolve, //10% item
 		Human-Human Hybrid, //10% item
 		Heart of Lavender, //10% item
