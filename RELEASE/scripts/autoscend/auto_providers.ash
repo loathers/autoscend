@@ -751,7 +751,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			if(!pass(ele))
 				return false;
 		}
-		if (canChangeFamiliar() && $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot] contains my_familiar()) {
+		if (canChangeFamiliar() && $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot, Cooler Yeti] contains my_familiar()) {
 			// if we pass while having a resist familiar equipped, make sure we keep it equipped
 			// otherwise we may end up flip-flopping from the resist familiar and something else
 			// which could cost us adventures if switching familiars affects our resistances enough
@@ -842,7 +842,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 	if(doEquips && canChangeFamiliar())
 	{
 		familiar resfam = $familiar[none];
-		foreach fam in $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot, Cooler Yeti]
+		foreach fam in $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot]
 		{
 			if(auto_have_familiar(fam))
 			{
@@ -852,8 +852,19 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		}
 		if(resfam != $familiar[none])
 		{
+			//Manual override for the resfam to be the Cooler Yeti when we ONLY want Cold Resistance and it is better than what we already chose from one of the multi-res fams
+			if(auto_haveCoolerYeti() && count(amt) == 1 && amt[$element[Cold Resistance]] > 0)
+			{
+				if(((resfam == $familiar[Mu] || resfam == $familiar[Exotic Parrot]) && floor((familiar_weight(resfam) + weight_adjustment() - 5) / 20 + 1) < floor((familiar_weight($familiar[cooler yeti]) + weight_adjustment())/11)) || (5 < floor((familiar_weight($familiar[cooler yeti]) + weight_adjustment())/11)))
+				{
+					resfam = $familiar[Cooler Yeti];
+				}
+			}
 			// need to use now so maximizer will see it
 			use_familiar(resfam);
+			buffMaintain($effect[Leash of Linguini]);
+			buffMaintain($effect[Empathy]);
+			buffMaintain($effect[Blood Bond]);
 			if(resfam == $familiar[Trick-or-Treating Tot])
 			{
 				cli_execute("acquire 1 li'l candy corn costume");

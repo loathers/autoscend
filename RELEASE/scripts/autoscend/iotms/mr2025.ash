@@ -545,17 +545,3 @@ boolean auto_haveCoolerYeti()
 	}
 	return false;
 }
-
-boolean coolerYetiChat(string goal)
-{
-	if(!auto_haveCoolerYeti())
-	{
-		return false;
-	}
-	if(goal == "boozeadv")
-	{
-		visit_url("main.php?talktoyeti=1");
-	}
-
-	return false;
-}

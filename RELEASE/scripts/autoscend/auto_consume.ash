@@ -178,6 +178,17 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		use(1, $item[hard rock]);
 	}
 
+	if(canOde(toDrink) && $familiar[cooler yeti].experience >= 400 && (((auto_haveSeptEmberCenser() && my_level() >= 15) || $familiar[cooler yeti].experience > 800) || (!auto_haveSeptEmberCenser())))
+	{
+		//only want to yeti chat if the booze is also Ode-able and we don't need to level via sept-ember censer or using it won't affect our fam weight
+		use_familiar($familiar[cooler yeti]);
+		if(goal == "boozeadv" && familiar_weight($familiar[cooler yeti]) == 20)
+		{
+			visit_url("choice.php?pwd=&whichchoice=1560&option=2");
+		}
+		coolerYetiChat("boozeadv");
+	}
+
 	int expectedInebriety = toDrink.inebriety * howMany;
 
 	if(canOde(toDrink) && possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
