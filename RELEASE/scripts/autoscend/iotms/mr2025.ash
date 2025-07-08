@@ -476,7 +476,7 @@ boolean beretBusk(string effectMultiplier)
 	item[int] allHats;
 	item[int] allShirts;
 	item[int] allPants;
-	int bestBuskHROffset = (auto_have_familiar($familiar[Mad Hatrack]) ? 1 : 0);
+	int bestBuskHROffset = (auto_have_familiar($familiar[Mad Hatrack]) ? 0 : 1);
 	int buskPower = 0;
 	foreach it in $items[]
 	{
@@ -515,10 +515,13 @@ boolean beretBusk(string effectMultiplier)
 				if(get_power(hat) == bestBuskPowersSplit[0].to_int() && hat != $item[prismatic beret])
 				{
 					//equip the hat and put the beret on the Hatrack to be able to busk
-					equip(hat);
+					autoForceEquip(hat, true);
 					buskPower += get_power(hat) * multipliers[$slot[hat]];
-					use_familiar($familiar[Mad Hatrack]);
-					equip($slot[familiar], $item[prismatic beret]);
+					if(use_familiar($familiar[Mad Hatrack]))
+					{
+						//Force the beret to the Hatrack if we were able to use the Hatrack.
+						autoForceEquip($slot[familiar], $item[prismatic beret], true);
+					}
 					break;
 				}
 				else if(hat == $item[prismatic beret])
@@ -531,7 +534,7 @@ boolean beretBusk(string effectMultiplier)
 		if(!have_equipped($item[prismatic beret]))
 		{
 			//equip the beret if it is not equipped anywhere else
-			equip($slot[hat],$item[prismatic beret]);
+			autoForceEquip($slot[hat],$item[prismatic beret], true);
 			buskPower += get_power($item[prismatic beret]) * multipliers[$slot[hat]];
 		}
 	}
@@ -548,28 +551,43 @@ boolean beretBusk(string effectMultiplier)
 	}
 	if(count(allPants) > 0) //only check if we have pants available
 	{
-		foreach i, pant in allPants
+		if(bestBuskPowersSplit[1 - bestBuskHROffset].to_int() == 0)
 		{
-			if(get_power(pant) == bestBuskPowersSplit[1 - bestBuskHROffset].to_int())
+			autoForceEquip($slot[pants], $item[none], true);
+		}
+		else
+		{
+			foreach i, pant in allPants
 			{
-				equip(pant);
-				buskPower += get_power(pant) * multipliers[$slot[pants]];
-				break;
+				if(get_power(pant) == bestBuskPowersSplit[1 - bestBuskHROffset].to_int())
+				{
+					autoForceEquip(pant, true);
+					buskPower += get_power(pant) * multipliers[$slot[pants]];
+					break;
+				}
 			}
 		}
 	}
 	if(count(allShirts) > 0) //only check if we have shirts available
 	{
-		foreach i, shirt in allShirts
+		if(bestBuskPowersSplit[2 - bestBuskHROffset].to_int() == 0)
 		{
-			if(get_power(shirt) == bestBuskPowersSplit[2 - bestBuskHROffset].to_int())
+			autoForceEquip($slot[shirt], $item[none], true);
+		}
+		else
+		{
+			foreach i, shirt in allShirts
 			{
-				equip(shirt);
-				buskPower += get_power(shirt);
-				break;
+				if(get_power(shirt) == bestBuskPowersSplit[2 - bestBuskHROffset].to_int())
+				{
+					autoForceEquip(shirt, true);
+					buskPower += get_power(shirt);
+					break;
+				}
 			}
 		}
 	}
+
 	if(use_skill(1, $skill[beret busking]))
 	{
 		handleTracker($item[prismatic beret], my_location().to_string(), "Beret busk " + get_property("_beretBuskingUses") + " at " + buskPower + " power", "auto_otherstuff");

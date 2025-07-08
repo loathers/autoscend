@@ -1801,12 +1801,6 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 	}
 	if(pass())
 		return result();
-	if(canBusk())
-	{
-		beretBusk("item drop");
-	}
-	if(pass())
-		return result();
 
 	if(!bat_wantHowl(loc) && bat_formBats(speculative))
 	{
@@ -1954,6 +1948,14 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		]))
 			if(pass())
 				return result();
+		
+		//beret busk if possible
+		if(canBusk())
+		{
+			beretBusk("item drop");
+		}
+		if(pass())
+			return result();
 		if(zataraAvailable() && (0 == have_effect($effect[There\'s no N in Love])) & auto_is_valid($effect[There\'s no N in Love]))
 		{
 			if(!speculative)

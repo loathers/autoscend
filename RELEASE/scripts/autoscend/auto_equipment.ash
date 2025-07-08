@@ -60,6 +60,10 @@ boolean autoEquip(item it)
 // mostly for the Antique Machete and unstable fulminate
 boolean autoForceEquip(slot s, item it, boolean noMaximize)
 {
+	if(it == $item[none])
+	{
+		return equip(s, it);
+	}
 	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
 		return false;
