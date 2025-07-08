@@ -651,6 +651,11 @@ boolean auto_setLeprecondo();
 boolean auto_useLeprecondoDrops();
 int auto_punchOutsLeft();
 int auto_afterimagesLeft();
+boolean auto_haveAprilShowerShield();
+boolean auto_getGlobs();
+boolean auto_equipAprilShieldBuff();
+boolean auto_unequipAprilShieldBuff();
+boolean auto_canNorthernExplosionFE();
 boolean auto_havePeridot();
 void peridotChoiceHandler(int choice, string page);
 boolean inperilLocations(int loc);
@@ -1561,7 +1566,9 @@ boolean auto_craftIfFree(item it);
 string getMaximizeSlotPref(slot s);
 boolean autoEquip(slot s, item it);
 boolean autoEquip(item it);
+boolean autoForceEquip(slot s, item it, boolean noMaximize);
 boolean autoForceEquip(slot s, item it);
+boolean autoForceEquip(item it, boolean noMaximize);
 boolean autoForceEquip(item it);
 boolean autoOutfit(string toWear);
 boolean autoStripOutfit(string toRemove);
@@ -1596,6 +1603,8 @@ boolean auto_forceEquipSword();
 boolean is_watch(item it);
 int[item] auto_getAllEquipabble();
 int[item] auto_getAllEquipabble(slot s);
+item[int] auto_saveEquipped();
+boolean auto_loadEquipped(item[int] loadEquip);
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash

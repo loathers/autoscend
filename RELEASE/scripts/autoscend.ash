@@ -1,4 +1,4 @@
-since r28569;	// yeti cooler outline
+since r28571;	// fix: robots can also just buy torso awareness by
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1233,6 +1233,7 @@ boolean dailyEvents()
 	auto_getAprilingBandItems();
 	auto_MayamClaimAll();
 	auto_buyFromSeptEmberStore();
+	auto_getGlobs();
 	
 	return true;
 }

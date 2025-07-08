@@ -189,6 +189,70 @@ int auto_afterimagesLeft()
 	return to_int(get_property("phosphorTracesUses"));
 }
 
+boolean auto_haveAprilShowerShield()
+{
+	item shield = $item[April Shower Thoughts shield];
+	return (auto_is_valid(shield) && possessEquipment(shield));
+}
+
+boolean auto_getGlobs()
+{
+	if(!auto_haveAprilShowerShield())
+	{
+		return false;
+	}
+	//if breakfast hasn't run yet or they haven't been manually collected
+	if(!get_property("_aprilShowerGlobsCollected").to_boolean())
+	{
+		visit_url('inventory.php?action=shower');
+		return true;
+	}
+	return false;
+}
+
+boolean auto_equipAprilShieldBuff()
+{
+	if(!auto_haveAprilShowerShield())
+	{
+		return false;
+	}
+	//force equip the shield if this is called
+	if(weapon_hands(equipped_item($slot[weapon])) > 1)
+	{
+		//if a 2 handed weapon is equipped, unequip it
+		equip($item[none], $slot[weapon]);
+	}
+	return autoForceEquip($item[April Shower Thoughts Shield], true);
+}
+
+boolean auto_unequipAprilShieldBuff()
+{
+	//Because Empathy gets replaced by Thoughtful Empathy when cast with the Shield equipped,
+	//we need to make sure this is unequipped if we want to have both Empathy and Thoughtful Empathy
+	if(have_equipped($item[April Shower Thoughts Shield]))
+	{
+		return autoForceEquip($slot[off-hand], $item[none], true);
+	}
+	return true;
+}
+
+boolean auto_canNorthernExplosionFE()
+{
+	//Northern Explosion becomes Feel Envy-adjacent once per day
+	if(!auto_haveAprilShowerShield())
+	{
+		return false;
+	}
+	if(!auto_have_skill($skill[Northern Explosion]))
+	{
+		return false;
+	}
+	if(get_property("_aprilShowerNorthernExplosion").to_boolean())
+	{
+		return false;
+	}
+	return true;
+}
 boolean auto_havePeridot()
 {
 	item pop = $item[Peridot of Peril];

@@ -58,7 +58,7 @@ boolean autoEquip(item it)
 // specifically intended for forcing something in to a specific slot,
 // instead of just forcing it to be equipped in general
 // mostly for the Antique Machete and unstable fulminate
-boolean autoForceEquip(slot s, item it)
+boolean autoForceEquip(slot s, item it, boolean noMaximize)
 {
 	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
@@ -68,20 +68,42 @@ boolean autoForceEquip(slot s, item it)
 	{
 		if (weapon_hands(equipped_item($slot[weapon])) > 1)
 		{
-			removeFromMaximize("+equip " + equipped_item($slot[weapon]));
+			if(!noMaximize) removeFromMaximize("+equip " + equipped_item($slot[weapon]));
 			equip($slot[weapon], $item[none]);
 		}
-		removeFromMaximize("-equip " + it);
-		addToMaximize("-off-hand, 1hand");
+		if(!noMaximize)
+		{
+			removeFromMaximize("-equip " + it);
+			addToMaximize("-off-hand, 1hand");
+		}
 		return equip($slot[off-hand], it);
 	}
 	if(equip(s, it))
 	{
-		removeFromMaximize("-equip " + it);
-		addToMaximize("-" + s);
+		if(!noMaximize)
+		{
+			removeFromMaximize("-equip " + it);
+			addToMaximize("-" + s);
+		}
 		return true;
 	}
 	return false;
+}
+
+boolean autoForceEquip(slot s, item it)
+{
+	return autoForceEquip(s, it, false);
+}
+
+boolean autoForceEquip(item it, boolean noMaximize)
+{
+	// Maximizer will put its preferred accessories in order acc1,acc2,acc3
+	// So for accessories, use acc3 for a force as that will get the best remaining maximizer score.
+	if (it.to_slot()==$slot[acc1])
+	{
+		return autoForceEquip($slot[acc3], it, noMaximize);
+	}
+	return autoForceEquip(it.to_slot(), it, noMaximize);
 }
 
 boolean autoForceEquip(item it)
@@ -92,7 +114,7 @@ boolean autoForceEquip(item it)
 	{
 		return autoForceEquip($slot[acc3], it);
 	}
-	return autoForceEquip(it.to_slot(), it);
+	return autoForceEquip(it, false);
 }
 
 boolean autoOutfit(string toWear)
@@ -1348,4 +1370,60 @@ int[item] auto_getAllEquipabble(slot s)
 		valid_and_equippable[it]++;
 	}
 	return valid_and_equippable;
+}
+
+item[int] auto_saveEquipped()
+{
+	boolean[slot] my_slots;
+	if(in_hattrick())
+	{
+		my_slots = $slots[off-hand, weapon, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	else
+	{
+		 my_slots = $slots[hat, off-hand, weapon, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	int i = 0;
+	item[int] equipped;
+	foreach sl in my_slots
+	{
+		equipped[count(equipped)] = equipped_item(sl);
+	}
+	return equipped;
+}
+
+boolean auto_loadEquipped(item[int] loadEquip)
+{
+	int loadAccCount = 0;
+	int accCount = 0;
+	foreach i, it in loadEquip
+	{
+		if(it.to_slot() == $slot[acc1]) loadAccCount += 1;
+	}
+	foreach i, it in loadEquip
+	{
+		//remove off-hand if we need to equip a 2 handed weapon from our saved load out
+		if (it == $item[none]) continue;
+		if(loadAccCount > 0 && it.to_slot() == $slot[acc1] && (it != equipped_item($slot[acc1]) || it != equipped_item($slot[acc2]) || it != equipped_item($slot[acc3])))
+		{
+			accCount += 1;
+			switch(accCount)
+			{				
+				case 1:
+					autoForceEquip($slot[acc1], it, true);
+					break;
+				case 2:
+					autoForceEquip($slot[acc2], it, true);
+					break;
+				default:
+					autoForceEquip($slot[acc3], it, true);
+					break;
+			}
+		}
+		else
+		{
+			autoForceEquip(it, true);
+		}
+	}
+	return true;
 }
