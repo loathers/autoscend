@@ -1516,6 +1516,7 @@ boolean autoCleanse();
 boolean autoDrink(int howMany, item toDrink);
 boolean autoDrink(int howMany, item toDrink, boolean silent);
 boolean autoOverdrink(int howMany, item toOverdrink);
+float minAdvPerDrunk(item toDrink);
 string cafeFoodName(int id);
 string cafeDrinkName(int id);
 boolean autoDrinkCafe(int howmany, int id);
