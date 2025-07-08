@@ -508,7 +508,7 @@ boolean beretBusk(string effectMultiplier)
 	}
 	if(use_skill(1, $skill[beret busking]))
 	{
-		handleTracker($item[prismatic beret], my_location().to_string(), "Beret busk " + get_property("_beretBuskingUses") + " at " + buskPower + "power", "auto_otherstuff");
+		handleTracker($item[prismatic beret], my_location().to_string(), "Beret busk " + get_property("_beretBuskingUses") + " at " + buskPower + " power", "auto_otherstuff");
 		return true;
 	}
 	
