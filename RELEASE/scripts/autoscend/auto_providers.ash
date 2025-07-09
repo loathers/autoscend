@@ -854,6 +854,10 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		}
 		if(resfam != $familiar[none])
 		{
+			//Buff fam weight early
+			buffMaintain($effect[Leash of Linguini]);
+			buffMaintain($effect[Empathy]);
+			buffMaintain($effect[Blood Bond]);
 			//Manual override for the resfam to be the Cooler Yeti when we ONLY want Cold Resistance and it is better than what we already chose from one of the multi-res fams
 			if(auto_haveCoolerYeti() && count(amt) == 1 && amt[$element[Cold]] > 0)
 			{
@@ -864,9 +868,6 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			}
 			// need to use now so maximizer will see it
 			use_familiar(resfam);
-			buffMaintain($effect[Leash of Linguini]);
-			buffMaintain($effect[Empathy]);
-			buffMaintain($effect[Blood Bond]);
 			if(resfam == $familiar[Trick-or-Treating Tot])
 			{
 				cli_execute("acquire 1 li'l candy corn costume");
