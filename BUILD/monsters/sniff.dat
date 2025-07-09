@@ -11,7 +11,6 @@ Tomb Rat
 Bob Racecar	!sniffed:Racecar Bob
 Racecar Bob	!sniffed:Bob Racecar
 Government Scientist	class:Ed the Undying
-Green Ops Soldier	!path:Kingdom of Exploathing;prop:hippiesDefeated>399
 War Hippy Naturopathic Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;!sniffed:War Hippy Homeopath
 War Hippy Homeopath	path:Kingdom of Exploathing;item:filthy poultice<5;!sniffed:War Hippy Naturopathic Homeopath
 Naughty Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Sorority Nurse
@@ -19,7 +18,7 @@ Sorority Nurse	path:G-Lover;item:gauze garter<5;!sniffed:Naughty Sorority Nurse
 Possessed Wine Rack
 Blue Oyster cultist
 Dirty Old Lihc	prop:cyrptNicheEvilness>17
-Possibility Giant	loc:The Castle in the Clouds in the Sky \(Ground Floor\);prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover;!itemdropcapped:20=chaos butterfly
+Possibility Giant	loc:The Castle in the Clouds in the Sky \(Ground Floor\);prop:auto_hippyInstead=true;prop:auto_skipL12Farm=false;prop:chaosButterflyThrown=false;item:chaos butterfly<1;!path:Bees Hate You;!path:Pocket Familiars;!path:G-Lover;!itemdropcapped:20=chaos butterfly
 bearpig topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:spider (duck?) topiary animal
 elephant (meatcar?) topiary animal	!familiar:Melodramedary;!sniffed:bearpig topiary animal;!sniffed:spider (duck?) topiary animal
 spider (duck?) topiary animal	!familiar:Melodramedary;!sniffed:elephant (meatcar?) topiary animal;!sniffed:bearpig topiary animal

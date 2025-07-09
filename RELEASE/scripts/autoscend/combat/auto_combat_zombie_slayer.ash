@@ -154,7 +154,7 @@ string auto_combatZombieSlayerStage4(int round, monster enemy, string text)
 				doSmash = true;
 			}
 		}
-		if ((my_location() == $location[Hippy Camp] || my_location() == $location[Wartime Hippy Camp]) && contains_text(enemy, "hippy") && my_level() >= 12)
+		if ((my_location() == $location[The Hippy Camp] || my_location() == $location[Wartime Hippy Camp]) && contains_text(enemy, "hippy") && my_level() >= 12)
 		{
 			if(!possessEquipment($item[Filthy Knitted Dread Sack]) || !possessEquipment($item[Filthy Corduroys]))
 			{

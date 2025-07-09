@@ -1750,7 +1750,7 @@ boolean makeGenieWish(string wish)
 		return false;
 	}
 
-	handleTracker(to_item(wish_provider), wish, "auto_wishes");
+	handleTracker(to_item(wish_provider), my_location().to_string(), wish, "auto_wishes");
 	return true;
 }
 
@@ -1807,7 +1807,7 @@ boolean canGenieCombat(monster mon)
 	}
 	// Per wiki page these can't be wished. Didn't bother to add other crypt monsters as we don't summon them
 	// https://kol.coldfront.net/thekolwiki/index.php/Rubbed_it_the_Right_Way
-	if ($monsters[Fantasy Bandit, Ninja Snowman Assassin, Modern Zmobie] contains mon)
+	if ($monsters[Fantasy Bandit, Modern Zmobie] contains mon)
 	{
 		return false;
 	}
@@ -1848,7 +1848,7 @@ boolean makeGenieCombat(monster mon, string option)
 		return false;
 	}
 	handleTracker(mon, to_item(wish_provider), "auto_copies");
-	handleTracker(to_item(wish_provider), wish, "auto_wishes");
+	handleTracker(to_item(wish_provider), my_location().to_string(), wish, "auto_wishes");
 	return true;
 }
 

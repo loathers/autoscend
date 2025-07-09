@@ -51,7 +51,7 @@ void LX_handleIntroAdventures()
 			abort("You are stuck in an intro adventure which requires you to choose a path. I suggest you do so before trying to run autoscend and you may have better results.");
 		}
 
-		if ($ints[1046, 1405, 1416, 1419, 1446, 1450, 1464, 1480, 1503, 1507, 1519, 1531] contains choice)
+		if ($ints[1046, 1405, 1416, 1419, 1446, 1450, 1464, 1480, 1503, 1507, 1519, 1531, 1552, 1559] contains choice)
 		{
 			// 1046 is "Actually Ed the Undying", intro for Actually Ed the Undying (Spring 2015 challenge path).
 			// 1405 is "Let's, uh, go!", intro for Path of the Plumber (Spring 2020 challenge path).
@@ -65,6 +65,8 @@ void LX_handleIntroAdventures()
 			// 1507 is "Jumbled in the Bungle", intro for A Shrunken Adventurer am I (Fall 2023 challenge path).
 			// 1519 is "The coffee was *gasp* decaf!", intro for WereProfessor (Spring 2024 challenge path).
 			// 1531 is "A-1 Sound and the Sound's So Suardin'", intro for Avant Guard (Fall 2024 challenge path).
+			// 1552 is "Zoonopeia", intro for Z is for Zootomist (Spring 2025 challenge path).
+			// 1559 is "Hat Trick!", intro for Hat Trick (Summer 2025 challenge path).
 			// yes they really phoned some of the titles of these in.
 			run_choice(1);
 		}
@@ -265,6 +267,11 @@ boolean LX_islandAccess()
 		return LX_hippyBoatman();
 	}
 
+	if (get_property("lastIslandUnlock").to_int() < my_ascensions() && item_amount($item[pirate dinghy]) > 0 && !get_property("_pirateDinghyUsed").to_boolean()) {
+		use(1, $item[pirate dinghy]);
+		return true;
+	}
+
 	boolean canDesert = (get_property("lastDesertUnlock").to_int() == my_ascensions());
 
 	if((item_amount($item[Shore Inc. Ship Trip Scrip]) >= 3) && (get_property("lastIslandUnlock").to_int() != my_ascensions()) && (my_meat() >= npc_price($item[dingy planks])) && isGeneralStoreAvailable())
@@ -280,7 +287,7 @@ boolean LX_islandAccess()
 		if(get_property("lastIslandUnlock").to_int() == my_ascensions())
 		{
 			boolean reallyUnlocked = false;
-			foreach it in $items[Dingy Dinghy, Skeletal Skiff, Yellow Submarine]
+			foreach it in $items[Dingy Dinghy, Skeletal Skiff, Yellow Submarine, pirate dinghy]
 			{
 				if(item_amount(it) > 0)
 				{
@@ -609,9 +616,18 @@ boolean LX_dailyDungeonToken()
 		return false;	//can switch to cubeling so wait until we have all the tool drops before doing daily dungeon
 	}
 
+	boolean needPole = true;
+	if(auto_haveCCSC())
+	{
+		needPole = false; // candy cane sword cane can act as an eleven-foot pole so don't buy if we already have it
+	}
+
 	if(can_interact())		//if you can not use cubeling then mallbuy missing tools in casual and postronin
 	{
-		auto_buyUpTo(1, $item[Eleven-Foot Pole]);
+		if(needPole)
+		{
+			auto_buyUpTo(1, $item[Eleven-Foot Pole]);
+		}
 		auto_buyUpTo(1, $item[Pick-O-Matic Lockpicks]);
 		if(!possessEquipment($item[Ring of Detect Boring Doors]))	//do not buy a second one if already equipped
 		{
@@ -620,7 +636,8 @@ boolean LX_dailyDungeonToken()
 	}
 	
 	//if you can not use the cubeling then pull the missing tools if possible
-	if (!auto_haveCCSC() && item_amount($item[Eleven-Foot Pole]) == 0) {
+	if(needPole)
+	{
 		// don't need the Eleven-foot Pole if we have the Candy Cane Sword Cane as it adds turn free NCs.
 		pullXWhenHaveY($item[Eleven-Foot Pole], 1, 0);
 	}
@@ -811,6 +828,8 @@ item LX_getDesiredWorkshed(){
 	//return the actual item name in case a shorthand is used
 	switch(currentWorkshed)
 	{
+		case "takerspace":
+			return $item[TakerSpace letter of Marque];
 		case "model train set":
 		case "train":
 			return $item[model train set];
@@ -878,31 +897,37 @@ boolean LX_setWorkshed(){
 		//Check if there is an existing shed. We only want to go into this if statement once to use the best available workshed
 		if(existingShed == $item[none])
 		{
-			if ((auto_is_valid($item[model train set])) && (item_amount($item[model train set]) > 0))
+			if (canSetWorkshed($item[model train set]))
 			{
 				use(1, $item[model train set]);
 				auto_log_info("Installed your model train set");
 				return true;
 			}
-			if ((auto_is_valid($item[Asdon Martin keyfob (on ring)])) && (item_amount($item[Asdon Martin keyfob (on ring)]) > 0))
+			if (canSetWorkshed($item[Asdon Martin keyfob (on ring)]))
 			{
 				use(1, $item[Asdon Martin keyfob (on ring)]);
 				auto_log_info("Installed your Asdon Martin keyfob");
 				return true;
 			}
-			if ((auto_is_valid($item[cold medicine cabinet])) && (item_amount($item[cold medicine cabinet]) > 0))
+			if (canSetWorkshed($item[cold medicine cabinet]))
 			{
 				use(1, $item[cold medicine cabinet]);
 				auto_log_info("Installed your cold medicine cabinet");
 				return true;
 			}
-			if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0))
+			if (canSetWorkshed($item[TakerSpace letter of Marque]))
+			{
+				use(1, $item[TakerSpace letter of Marque]);
+				auto_log_info("Installed your TakerSpace letter of Marque");
+				return true;
+			}
+			if (canSetWorkshed($item[little geneticist dna-splicing lab]))
 			{
 				use(1, $item[little geneticist dna-splicing lab]);
 				auto_log_info("Installed your little geneticist dna-splicing lab");
 				return true;
 			}
-			if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
+			if (canSetWorkshed($item[portable mayo clinic]))
 			{
 				use(1, $item[portable mayo clinic]);
 				auto_log_info("Installed your portable mayo clinic");
@@ -914,25 +939,25 @@ boolean LX_setWorkshed(){
 		//once we have enough fasteners and only if we are currently using the model train set
 		if((fastenerCount() >= 30 && lumberCount() >= 30) && existingShed == $item[model train set])
 		{
-			if ((auto_is_valid($item[Asdon Martin keyfob (on ring)])) && (item_amount($item[Asdon Martin keyfob (on ring)]) > 0))
+			if (canSetWorkshed($item[Asdon Martin keyfob (on ring)]))
 			{
 				use(1, $item[Asdon Martin keyfob (on ring)]);
 				auto_log_info("Changed your workshed to Asdon Martin keyfob");
 				return true;
 			}
-			if ((auto_is_valid($item[cold medicine cabinet])) && (item_amount($item[cold medicine cabinet]) > 0))
+			if (canSetWorkshed($item[cold medicine cabinet]))
 			{
 				use(1, $item[cold medicine cabinet]);
 				auto_log_info("Changed your workshed to cold medicine cabinet");
 				return true;
 			}
-			if ((auto_is_valid($item[little geneticist dna-splicing lab])) && (item_amount($item[little geneticist dna-splicing lab]) > 0))
+			if (canSetWorkshed($item[little geneticist dna-splicing lab]))
 			{
 				use(1, $item[little geneticist dna-splicing lab]);
 				auto_log_info("Changed your workshed to little geneticist dna-splicing lab");
 				return true;
 			}
-			if ((auto_is_valid($item[portable mayo clinic])) && (item_amount($item[portable mayo clinic]) > 0))
+			if (canSetWorkshed($item[portable mayo clinic]))
 			{
 				use(1, $item[portable mayo clinic]);
 				auto_log_info("Changed your workshed to portable mayo clinic");
@@ -940,13 +965,21 @@ boolean LX_setWorkshed(){
 			}
 			auto_log_warning("You have no workshed to change to so leaving it as " + get_workshed().to_string());
 			return false; //return false if no other workshed is available
-		}		
+		}
 	}
 	return false;
 }
 
+boolean canSetWorkshed(item it) {
+	return (auto_is_valid(it)) && (item_amount(it) > 0);
+}
+
 boolean LX_ForceNC()
 {
+	if(get_property("auto_forceNonCombatSource") != "McHugeLarge left ski" || !get_property("auto_avalancheDeployed").to_boolean())
+	{
+		return false;
+	}
 	if(get_property("auto_forceNonCombatSource") != "jurassic parka" || !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		return false;
@@ -976,6 +1009,8 @@ boolean LX_ForceNC()
 		case $location[The Hidden Apartment Building]:
 		case $location[The Hidden Office Building]:
 			return L11_hiddenCity();
+		case $location[The eXtreme Slope]:
+			return L8_trapperQuest();
 		default:
 			auto_log_warning("Attempted to force NC in unexpected location: " + desiredNCLocation);
 			return false;
@@ -1068,6 +1103,206 @@ boolean LX_dronesOut()
 	{
 		auto_log_info("Summoning Baa baa buran");
 		return summonMonster($monster[Baa\'baa\'bu\'ran]); //Stone wool
+	}
+	return false;
+}
+
+int freeCandyFightsLeft()
+{
+	// Map is done
+	if(get_property("_mapToACandyRichBlockUsed").to_boolean() && get_property("_auto_candyMapCompleted").to_boolean())
+	{
+		return 0;
+	}
+	if(!get_property("_mapToACandyRichBlockUsed").to_boolean() && item_amount($item[Map to a candy-rich block]) > 0 || !auto_is_valid($item[Map to a candy-rich block]))
+	{
+		return 5;
+	}
+	buffer blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+	string block = get_property("_trickOrTreatBlock");
+	matcher m = create_matcher("D",block);
+	int n_unused_dark = 0;
+	while(m.find()) {n_unused_dark++;}
+	return n_unused_dark;
+}
+
+boolean candyBlock()
+{
+	// Set choice defaults
+	set_property("choiceAdventure804","2"); // don't halt on map use
+	set_property("choiceAdventure806","1"); // grab the big bowl of candy
+	//Based on freecandy's trickTreatTasks.ts
+	if(get_property("_mapToACandyRichBlockUsed").to_boolean() && get_property("_auto_candyMapCompleted").to_boolean())
+	{
+		return false;
+	}
+	if(candyBlockOutfit("treat") == "")
+	{
+		//don't have an outfit to trick or treat in
+		return false;
+	}
+	int [int] houseNumbers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+	int [int] treatedHouse;
+	int count = 0;
+	boolean tricked = false;
+	boolean treated = false;
+
+	if(!get_property("_mapToACandyRichBlockUsed").to_boolean() && item_amount($item[Map to a candy-rich block]) > 0)
+	{
+		outfit(candyBlockOutfit("treat"));
+		use(1,$item[Map to a candy-rich block]);
+	}
+	if(get_property("_mapToACandyRichBlockUsed").to_boolean())
+	{
+		string blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+		void refreshBlock()
+		{
+			blockHtml = visit_url("place.php?whichplace=town&action=town_trickortreat");
+		}	
+		//treat
+		auto_log_info("Get some treats");
+		foreach house in houseNumbers
+		{
+			outfit(candyBlockOutfit("treat"));
+			matcher treat = create_matcher("whichhouse=" + house + ">[^>]*?house_l", blockHtml);
+			matcher starhouse = create_matcher("whichhouse=" + house + ">[^>]*?starhouse", blockHtml);
+			//treat
+			if(treat.find())
+			{
+				treatedHouse[count] = house;
+				count += 1;
+				visit_url(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
+			}
+			if(starhouse.find())
+			{
+				treatedHouse[count] = house;
+				count += 1;
+				visit_url("place.php?whichplace=town&action=town_trickortreat");
+				visit_url(`choice.php?whichchoice=804&option=3&whichhouse={house}`);
+				visit_url("choice.php?whichchoice=806&option=2");
+				refreshBlock();
+			}
+			treated = true;
+		}
+		refreshBlock();
+		//trick
+		auto_log_info("Perform some tricks");
+		foreach house in houseNumbers
+		{
+			if(treatedHouse contains house) continue;
+			matcher trick = create_matcher("whichhouse=" + house + ">[^>]*?house_d", blockHtml);
+			//trick
+			if(trick.find())
+			{
+				autoOutfit(candyBlockOutfit("treat"));
+				tricked = autoAdvBypass(`choice.php?whichchoice=804&option=3&whichhouse={house}&pwd`);
+				refreshBlock();
+				if (tricked) { return true; }
+			}
+			tricked = true;
+		}
+		if(treated && tricked)
+		{
+			set_property("_auto_candyMapCompleted", true);
+			return true;
+		}
+	}
+	return false;
+}
+
+string candyBlockOutfit(string type)
+{
+	if(type == "treat")
+	{
+		foreach x, fit in get_outfits()
+		{
+			if(fit == " - No Change - " || fit == "Birthday Suit" || fit == "Your Previous Outfit") continue;
+			if($strings[Legendary Regalia of the Chelonian Overlord, Legendary Regalia of the Groovelord, Legendary Regalia of the Master Squeezeboxer,
+							   Legendary Regalia of the Pasta Master, Legendary Regalia of the Saucemaestro, Legendary Regalia of the Seal Crusher, Terra Cotta Tackle,
+							   Eldritch Equipage, Filthy Hippy Disguise, Trainbot Trappings, Frat Warrior Fatigues, Black Armaments, Knob Goblin Harem Girl Disguise] contains fit)
+			{
+				return fit;
+			}
+			//if we don't have one of the bestTreatOutfits just choose the last one in the list that's an actual outfit
+			if(x == count(get_outfits()))
+			{
+				return fit;
+			}
+		}
+		if($strings[mongoose, wallaby, vole] contains my_sign().to_lower_case())
+		{
+			foreach i, it in outfit_pieces("Bugbear Costume")
+			{
+				if(possessEquipment(it)) continue;
+				buy(1, it);
+			}
+			if(possessOutfit("Bugbear Costume"))
+			{
+				return "Bugbear Costume";
+			}
+		}
+	}
+	else
+	{
+		return "";
+	}
+
+	return "";
+}
+boolean LX_lastChance()
+{
+	//miscellaneous calls that aren't powerlevelling but need to be done at some point based on certain conditions
+	if(get_property("screechDelay") != "")
+	{
+		location banishLoc;
+		auto_log_warning("Patriotic Eagle's screech banished something we need and we can't adventure anywhere else");
+		while((get_property("screechCombats").to_int() > 0 || banishLoc == $location[none]) && my_adventures() > 2 && is_banished(get_property("screechDelay").to_phylum()))
+		{
+			handleFamiliar($familiar[Patriotic Eagle]); //force eagle to be used
+			if(LX_getDigitalKey() || LX_getStarKey())
+			{
+				continue;
+			}
+			else
+			{
+				if(LX_unlockManorSecondFloor() && L11_mauriceSpookyraven())
+				{
+					banishLoc = $location[Noob Cave];
+					autoAdv(banishLoc); //adventure here to banish constructs and be able to progress other quests after we no longer need constructs
+				}
+				else if(can_adventure($location[Cobb\'s Knob Harem]) && !is_banished($phylum[goblin]))
+				{
+					banishLoc = $location[Cobb\'s Knob Harem];
+					autoAdv(banishLoc);
+				}
+				else if(can_adventure($location[The Outskirts of Cobb\'s Knob]) && !is_banished($phylum[goblin]))
+				{
+					//to open up access to the Harem. Not banishing in the Outskirts so that we can get the combat in the Harem if needed
+					autoAdv($location[The Outskirts of Cobb\'s Knob]); 
+				}
+				else
+				{
+					//Nothing else to do but abort and have the user manually clear it
+					abort("You should manually clear the Eagle Screech counter. We recommend some other required zone you haven't been to yet or Noob Cave if all else fails");
+					continue;
+				}
+			}
+		}
+		if(get_property("screechCombats").to_int() > 0)
+		{
+			auto_log_warning("Couldn't clear screech delay without running out of adventures");
+			return false;
+		}
+		if (is_banished(get_property("screechDelay").to_phylum())) {
+			autoAdv(banishLoc); //adventure here to banish goblins or constructs and be able to progress other quests
+		}
+		set_property("screechDelay", "");
+		return true;
+	}
+	// Need the digital key and star key so if we have nothing to do before the L13 quest, might as well do them here
+	if (LX_getDigitalKey() || LX_getStarKey())
+	{
+		return true;
 	}
 	return false;
 }

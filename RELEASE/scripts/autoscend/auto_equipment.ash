@@ -58,7 +58,7 @@ boolean autoEquip(item it)
 // specifically intended for forcing something in to a specific slot,
 // instead of just forcing it to be equipped in general
 // mostly for the Antique Machete and unstable fulminate
-boolean autoForceEquip(slot s, item it)
+boolean autoForceEquip(slot s, item it, boolean noMaximize)
 {
 	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
@@ -68,20 +68,42 @@ boolean autoForceEquip(slot s, item it)
 	{
 		if (weapon_hands(equipped_item($slot[weapon])) > 1)
 		{
-			removeFromMaximize("+equip " + equipped_item($slot[weapon]));
+			if(!noMaximize) removeFromMaximize("+equip " + equipped_item($slot[weapon]));
 			equip($slot[weapon], $item[none]);
 		}
-		removeFromMaximize("-equip " + it);
-		addToMaximize("-off-hand, 1hand");
+		if(!noMaximize)
+		{
+			removeFromMaximize("-equip " + it);
+			addToMaximize("-off-hand, 1hand");
+		}
 		return equip($slot[off-hand], it);
 	}
 	if(equip(s, it))
 	{
-		removeFromMaximize("-equip " + it);
-		addToMaximize("-" + s);
+		if(!noMaximize)
+		{
+			removeFromMaximize("-equip " + it);
+			addToMaximize("-" + s);
+		}
 		return true;
 	}
 	return false;
+}
+
+boolean autoForceEquip(slot s, item it)
+{
+	return autoForceEquip(s, it, false);
+}
+
+boolean autoForceEquip(item it, boolean noMaximize)
+{
+	// Maximizer will put its preferred accessories in order acc1,acc2,acc3
+	// So for accessories, use acc3 for a force as that will get the best remaining maximizer score.
+	if (it.to_slot()==$slot[acc1])
+	{
+		return autoForceEquip($slot[acc3], it, noMaximize);
+	}
+	return autoForceEquip(it.to_slot(), it, noMaximize);
 }
 
 boolean autoForceEquip(item it)
@@ -92,7 +114,7 @@ boolean autoForceEquip(item it)
 	{
 		return autoForceEquip($slot[acc3], it);
 	}
-	return autoForceEquip(it.to_slot(), it);
+	return autoForceEquip(it, false);
 }
 
 boolean autoOutfit(string toWear)
@@ -281,6 +303,7 @@ item[slot] speculatedMaximizerEquipment(string statement)
 
 void equipStatgainIncreasers(boolean[stat] increaseThisStat, boolean alwaysEquip)
 {
+	if (auto_ignoreExperience()) { return; }
 	//want to equip best equipment that increases specified stat gains including out of combat
 	//should be frequently called by consume actions so try not to lose HP or MP, but will equip anyway if argument alwaysEquip is true
 	string maximizerStatement;
@@ -508,6 +531,10 @@ string defaultMaximizeStatement()
 		res += ",0.4hp,0.2mp 1000max";
 		res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
 	}
+	if(in_bhy())
+	{
+		res += ", 1 beeosity";
+	}
 
 	//weapon handling
 	if(is_boris())
@@ -515,7 +542,7 @@ string defaultMaximizeStatement()
 		borisTrusty();						//forceequip trusty. the modification it makes to the maximizer string will be lost so also do next line
 		res +=	",-weapon,-offhand";		//we do not want maximizer trying to touch weapon or offhand slot in boris
 	}
-	else if(!in_plumber())
+	else if(!(in_plumber() || in_zootomist()))
 	{
 		if(my_primestat() == $stat[Mysticality])
 		{
@@ -529,7 +556,10 @@ string defaultMaximizeStatement()
 
 	if(pathHasFamiliar())
 	{
-		res += ",2familiar weight";
+		if(!(in_zootomist() && my_level() < 13))
+		{
+			res += ",2familiar weight";
+		}
 		if(my_familiar().familiar_weight() < 20)
 		{
 			res += ",5familiar exp";
@@ -548,6 +578,10 @@ string defaultMaximizeStatement()
 	if(in_plumber())
 	{
 		res += ",plumber,-ml";
+	}
+	else if(auto_ignoreExperience())
+	{
+		// Nothing to do here
 	}
 	else if((my_level() < 13) || (get_property("auto_disregardInstantKarma").to_boolean()))
 	{
@@ -757,7 +791,7 @@ void finalizeMaximize(boolean speculative)
 		}
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
 		//as we go through the hidden hospital we equip surgeon gear on the pants slot, so we can end up dying if we cast advanced research
-		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
+		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Orcish Frat House, The Hippy Camp, The Orcish Frat House (In Disguise), The Hippy Camp (In Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
 		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room, The Hidden Hospital] contains my_location())) nooculus = true;
 		if(!nooculus)
@@ -776,7 +810,7 @@ void finalizeMaximize(boolean speculative)
 	if(is_professor() && (possessEquipment($item[high-tension exoskeleton]) || possessEquipment($item[ultra-high-tension exoskeleton]) || possessEquipment($item[irresponsible-tension exoskeleton]))) //Want that damage avoidance
 	{
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
-		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
+		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Orcish Frat House, The Hippy Camp, The Orcish Frat House (In Disguise), The Hippy Camp (In Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
 		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location()))
 		{
@@ -883,9 +917,44 @@ void finalizeMaximize(boolean speculative)
 		{
 			addToMaximize("club");
 		}
+		else if (in_zootomist() && getZooBestPunch()!=$skill[none])
+		{
+			// Nothing to do here. Should be a more general case of "classes that never attack with weapon"?
+		}
 		else
 		{
 			addToMaximize("effective");
+		}
+	}
+	
+	if ( auto_haveCupidBow() && !maximizeContains("bonus "+$item[toy cupid bow]) )
+	{	// Small bonus here, we have a big bonus in pre_adv if we need a drop we can't cap.
+		addBonusToMaximize($item[toy cupid bow],100);
+	}
+	
+	if (auto_haveBurningLeaves() && item_amount($item[inflammable leaf]) < 111)
+	{
+		int bonus = 20;
+		if (in_zootomist() && my_level()<13)
+		{
+			bonus = 100;
+		}
+		foreach it in $items[rake,tiny rake]
+		{
+			if (!maximizeContains("bonus "+it))
+			{
+				addBonusToMaximize(it,bonus);
+			}
+		}
+	}
+	
+	// We could have added LED Candle to maximizer earlier when Jill was our familiar, but it's been replaced.
+	if (my_familiar()!=$familiar[jill-of-all-trades])
+	{
+		string candle_force = "+equip "+$item[LED candle];
+		if (maximizeContains(candle_force))
+		{
+			removeFromMaximize(candle_force);
 		}
 	}
 }
@@ -988,6 +1057,11 @@ boolean simMaximizeWith(string add)
 }
 
 float simValue(string mod)
+{
+	return numeric_modifier("Generated:_spec", mod);
+}
+
+float simValue(modifier mod)
 {
 	return numeric_modifier("Generated:_spec", mod);
 }
@@ -1258,5 +1332,102 @@ boolean auto_forceEquipSword() {
 boolean is_watch(item it)
 {
 	//watches are accessories that conflict with each other. you can only equip one watch total.
-	return $items[dead guy's memento, dead guy's watch, Counterclockwise Watch, glow-in-the-dark wristwatch, grandfather watch, imitation nice watch, wristwatch of the white knight, Crimbolex watch, Sasq&trade; watch] contains it;
+	return boolean_modifier(it, $modifier[Nonstackable Watch]);
+}
+
+int[item] auto_getAllEquipabble()
+{
+	return auto_getAllEquipabble($slot[none]);
+}
+
+int[item] auto_getAllEquipabble(slot s)
+{
+	boolean ignore_slot = s==$slot[none];
+	s = (s==$slot[acc2] || s==$slot[acc3]?$slot[acc1]:s);// all accessories checked against slot 1
+	int[item] valid_and_equippable;
+	foreach it,n in get_inventory()
+	{
+		slot it_s = to_slot(it);
+		if(can_equip(it) && auto_is_valid(it) && (s==it_s || ignore_slot))
+		{
+			valid_and_equippable[it] = n;
+		}
+	}
+	// Add equipped
+	boolean[slot] my_slots;
+	if (ignore_slot)
+	{
+		my_slots = $slots[hat, weapon, off-hand, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	else
+	{
+		my_slots[s] = true;
+		if (s==$slot[acc1])
+		{
+			my_slots[$slot[acc2]] = true;
+			my_slots[$slot[acc3]] = true;
+		}
+	}
+	foreach my_slot in my_slots
+	{
+		item it = equipped_item(my_slot);
+		valid_and_equippable[it]++;
+	}
+	return valid_and_equippable;
+}
+
+item[int] auto_saveEquipped()
+{
+	boolean[slot] my_slots;
+	if(in_hattrick())
+	{
+		my_slots = $slots[off-hand, weapon, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	else
+	{
+		 my_slots = $slots[hat, off-hand, weapon, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	int i = 0;
+	item[int] equipped;
+	foreach sl in my_slots
+	{
+		equipped[count(equipped)] = equipped_item(sl);
+	}
+	return equipped;
+}
+
+boolean auto_loadEquipped(item[int] loadEquip)
+{
+	int loadAccCount = 0;
+	int accCount = 0;
+	foreach i, it in loadEquip
+	{
+		if(it.to_slot() == $slot[acc1]) loadAccCount += 1;
+	}
+	foreach i, it in loadEquip
+	{
+		//remove off-hand if we need to equip a 2 handed weapon from our saved load out
+		if (it == $item[none]) continue;
+		if(loadAccCount > 0 && it.to_slot() == $slot[acc1] && (it != equipped_item($slot[acc1]) || it != equipped_item($slot[acc2]) || it != equipped_item($slot[acc3])))
+		{
+			accCount += 1;
+			switch(accCount)
+			{				
+				case 1:
+					autoForceEquip($slot[acc1], it, true);
+					break;
+				case 2:
+					autoForceEquip($slot[acc2], it, true);
+					break;
+				default:
+					autoForceEquip($slot[acc3], it, true);
+					break;
+			}
+		}
+		else
+		{
+			autoForceEquip(it, true);
+		}
+	}
+	return true;
 }

@@ -74,15 +74,47 @@ boolean auto_getAprilingBandItems()
 	if(!auto_haveAprilingBandHelmet()) {return false;}
 	boolean have_sax  = available_amount($item[Apriling band saxophone]) > 0;
 	boolean have_tuba = available_amount($item[Apriling band tuba]     ) > 0;
-	int instruments_so_far = get_property("_aprilBandInstruments").to_int();
-	if (!have_tuba && instruments_so_far < 2) { cli_execute("aprilband item tuba"); }
-	instruments_so_far = get_property("_aprilBandInstruments").to_int();
-	if (!have_sax && instruments_so_far < 2) { cli_execute("aprilband item saxophone"); }
+	boolean have_picc = available_amount($item[Apriling band piccolo]  ) > 0;
+	int instruments_so_far()
+	{
+		return get_property("_aprilBandInstruments").to_int();
+	}
+	void track(item it)
+	{
+		if (available_amount(it)>0) { handleTracker($item[Apriling Band Helmet],"Claimed "+it,"auto_iotm_claim");}
+	}
+	if (in_zootomist() && my_level()<13)
+	{
+		if (!have_picc && instruments_so_far() < 2) {
+			cli_execute("aprilband item piccolo");
+			track($item[Apriling band piccolo]);
+		}
+	}
+	if (!have_tuba && instruments_so_far() < 2) {
+		cli_execute("aprilband item tuba");
+		track($item[Apriling band tuba]);
+	}
+	if (!have_sax  && instruments_so_far() < 2) {
+		cli_execute("aprilband item saxophone");
+		track($item[Apriling band saxophone]);
+	}
 	
-	have_sax  = available_amount($item[Apriling band saxophone]) > 0;
-	have_tuba = available_amount($item[Apriling band tuba]     ) > 0;
-	
-	return have_sax && have_tuba;
+	return instruments_so_far()==2;
+}
+
+boolean auto_playAprilPiccolo()
+{
+	familiar f = my_familiar();
+	boolean success = false;
+	if (f!=$familiar[none])
+	{
+		int startexp = f.experience;
+		cli_execute("aprilband play piccolo");
+		success = f.experience > startexp;
+	}
+	string tracker = in_zootomist()?"auto_tracker_path":"auto_otherstuff";
+	handleTracker($item[apriling band piccolo],(success?"Played":"Failed to play")+" to "+f,tracker);
+	return success;
 }
 
 boolean auto_playAprilSax()
@@ -133,6 +165,13 @@ int auto_AprilTubaForcesLeft()
 	if(!auto_haveAprilingBandHelmet()) {return 0;}
 	if(available_amount($item[Apriling band tuba]) == 0) {return 0;}
 	return 3-get_property("_aprilBandTubaUses").to_int();
+}
+
+int auto_AprilPiccoloBoostsLeft()
+{
+	if(!auto_haveAprilingBandHelmet()) {return 0;}
+	if(available_amount($item[Apriling band piccolo]) == 0) {return 0;}
+	return 3-get_property("_aprilBandPiccoloUses").to_int();
 }
 
 boolean auto_haveDarts()
@@ -257,6 +296,22 @@ boolean auto_MayamAllUsed()
 	return auto_MayamIsUsed("yam4") && auto_MayamIsUsed("clock") && auto_MayamIsUsed("explosion");
 }
 
+boolean auto_MayamClaim(string str)
+{
+	if(!auto_haveMayamCalendar())
+	{
+		return false;
+	}
+	string[int] rings = split_string(str," ");
+	foreach i, s in rings
+	{
+		if(auto_MayamIsUsed(s)) return false;
+	}
+	cli_execute("mayam rings " + str);
+	handleTracker("Mayam Calendar", "Claimed " + str, "auto_iotm_claim");
+	return true;
+}
+
 boolean auto_MayamClaimStinkBomb()
 {
 	if(!auto_haveMayamCalendar())
@@ -270,8 +325,15 @@ boolean auto_MayamClaimStinkBomb()
 	{
 		return false;
 	}
+	item it = $item[stuffed yam stinkbomb];
+	int n_start = available_amount(it);
 	cli_execute("mayam rings vessel yam cheese explosion");
-	return true;
+	if (available_amount(it)>n_start)
+	{
+		handleTracker("Mayam Calendar","Claimed "+it, "auto_iotm_claim");
+		return true;
+	}
+	return false;
 }
 
 boolean auto_MayamClaimBelt()
@@ -287,8 +349,15 @@ boolean auto_MayamClaimBelt()
 	{
 		return false;
 	}
+	item it = $item[yamtility belt];
+	int n_start = available_amount(it);
 	cli_execute("mayam rings yam meat eyepatch yam");
-	return true;
+	if (available_amount(it)>n_start)
+	{
+		handleTracker("Mayam Calendar","Claimed "+it, "auto_iotm_claim");
+		return true;
+	}
+	return false;
 }
 
 boolean auto_MayamClaimWhatever()
@@ -314,7 +383,9 @@ boolean auto_MayamClaimWhatever()
 	else if (!auto_MayamIsUsed("meat"))   { ring2 = "meat"; }
 	else { failure = true; }
 	
-	if      (!auto_MayamIsUsed("yam3"))   { ring3 = "yam"; }
+	boolean going_to_use_mouthwash = my_level()<13 && remainingEmbers() >= 2;
+	if (going_to_use_mouthwash && !auto_MayamIsUsed("wall")) { ring3 = "wall"; }
+	else if (!auto_MayamIsUsed("yam3"))   { ring3 = "yam"; }
 	else if (!auto_MayamIsUsed("cheese")) { ring3 = "cheese"; }
 	else if (!auto_MayamIsUsed("wall"))   { ring3 = "wall"; }
 	else { failure = true; }
@@ -345,9 +416,13 @@ boolean auto_MayamClaimAll()
 	auto_log_info("Claiming mayam calendar items");
 	auto_MayamClaimStinkBomb();
 	auto_MayamClaimBelt();
-	auto_MayamClaimWhatever();
-	auto_MayamClaimWhatever();
-	auto_MayamClaimWhatever();
+	
+	if (!in_zootomist() || my_level() >= 13)
+	{
+		auto_MayamClaimWhatever();
+		auto_MayamClaimWhatever();
+		auto_MayamClaimWhatever();
+	}
 	return true;
 }
 
@@ -383,8 +458,20 @@ boolean auto_canLeapBridge()
 	return true;
 }
 
+int auto_swoopsRemaining()
+{
+	if (!auto_haveBatWings())
+	{
+		return 0;
+	}
+	return 11-get_property("_batWingsSwoopUsed").to_int();
+}
+
 boolean auto_haveSeptEmberCenser()
 {
+	if (in_koe()) {
+		return false; // shop is inaccessible in Kingdom of Exploathing
+	}
 	if(auto_is_valid($item[Sept-Ember Censer]) && available_amount($item[Sept-Ember Censer]) > 0 )
 	{
 		return true;
@@ -406,12 +493,91 @@ int remainingEmbers()
 	return get_property("availableSeptEmbers").to_int();
 }
 
+boolean auto_goingToMouthwashLevel()
+{
+	if(!auto_haveSeptEmberCenser())
+	{
+		return false;
+	}
+	if(auto_ignoreExperience())
+	{
+		return false;
+	}
+	if(in_glover() || in_bhy() || in_plumber())
+	{
+		return false;
+	}
+	boolean disregard_karma = get_property("auto_disregardInstantKarma").to_boolean();
+	// If we have at least 4 embers remaining, don't overlevel, they can be used for something else
+	boolean happy_to_overlevel = disregard_karma && remainingEmbers() < 4;
+	boolean want_to_mouthwash_level = (my_level() < 13 || happy_to_overlevel);
+	// Even disregarding karma, never level above 15 using mouthwash as a sanity limit
+	want_to_mouthwash_level = want_to_mouthwash_level && my_level()<15;
+	return (remainingEmbers() >= 2 && want_to_mouthwash_level);
+}
+
 void auto_buyFromSeptEmberStore()
 {
+	if(!auto_haveSeptEmberCenser())
+	{
+		return;
+	}
 	if(remainingEmbers() == 0)
 	{
 		return;
 	}
+
+	// mouthwash for leveling
+	item mouthwash = $item[Mmm-brr! brand mouthwash];
+	auto_openMcLargeHugeSkis(); // make sure our skis are open for cold res
+	for (int imw = 0 ; imw < 3 ; imw++) // We can use up to 3 mouthwash
+	{
+		float last_res = 0;
+		if (auto_goingToMouthwashLevel())
+		{
+			// get as much cold res as possible
+			int [element] resGoal;
+			resGoal[$element[cold]] = 100;
+			// get cold res. Use noob cave as generic place holder
+			
+			// get 1 bembershoot to support mouthwash leveling or general quest help
+			item bember = $item[bembershoot];
+			if (remainingEmbers() % 2 == 1 && !possessEquipment(bember) && auto_is_valid(bember))
+			{
+				buy($coinmaster[Sept-Ember Censer], 1, bember);
+			}
+			
+			provideResistances(resGoal, $location[noob cave], true, true, false);
+			equipMaximizedGear();
+			
+			// We could have left-hand if our off-hand is strong enough
+			float cold_res_from_oh = numeric_modifier(equipped_item($slot[off-hand]),$modifier[cold resistance]);
+			// McHugeLarge outfit off-hand is +3 cold res when whole outfit equipped, but not reported by Mafia with above check
+			boolean using_mchugelarge_oh = equipped_item($slot[off-hand]) == $item[McHugeLarge left pole];
+			if (using_mchugelarge_oh || cold_res_from_oh > 2.9)
+			{
+				skill lefty = $skill[Aug. 13th: Left/Off Hander's Day!];
+				if(canUse(lefty) && !get_property("_aug13Cast").to_boolean())
+				{
+					use_skill(lefty);
+				}
+			}
+			
+			if (expected_level_after_mouthwash()<13) // use a wish if really need it
+			{
+				auto_wishForEffectIfNeeded($effect[Fever From the Flavor]);
+			}
+			if (expected_level_after_mouthwash()<13) // get Citizen of Outskirts of Cobb's Knob (+4 prismatic res) if we really need it
+			{
+				auto_getCitizenZone("spec");
+			}
+			// buy mouthwash and use it
+			buy($coinmaster[Sept-Ember Censer], 1, mouthwash);
+			auto_log_debug(`Using mouthwash with {numeric_modifier($modifier[cold resistance])} cold resistance`);
+			use(mouthwash);
+		}
+	}
+	
 	auto_log_debug("Have " + remainingEmbers() + " embers(s) to buy from Sept-Ember Censer. Let's spend them!");
 	// get structural ember if can't cross bridge
 	item itemConsidering = $item[Structural ember];
@@ -421,36 +587,53 @@ void auto_buyFromSeptEmberStore()
 		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
 		use(itemConsidering);
 	}
-	// get 1 bembershoot to support mouthwash leveling or general quest help
-	itemConsidering = $item[bembershoot];
-	if(remainingEmbers() >= 1 && !possessEquipment(itemConsidering) && auto_is_valid(itemConsidering))
+	
+	// Spend any remaining pairs on Septapus summoning charms
+	while (remainingEmbers() >= 2)
 	{
-		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
+		buy($coinmaster[Sept-Ember Censer], 1, $item[Septapus summoning charm]);
 	}
-	// mouthwash for leveling
-	itemConsidering = $item[Mmm-brr! brand mouthwash];
-	if(remainingEmbers() >= 2 && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean()) && auto_is_valid(itemConsidering))
-	{
-		// get as much cold res as possible
-		int [element] resGoal;
-		resGoal[$element[cold]] = 100;
-		// get cold res. Use noob cave as generic place holder
-		auto_wishForEffect($effect[Fever From the Flavor]);
-		provideResistances(resGoal, $location[noob cave], true);
-		equipMaximizedGear();
-		// buy mouthwash and use it
-		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
-		auto_log_debug(`Using mouthwash with {numeric_modifier("cold Resistance")} cold resistance`);
-		use(itemConsidering);
-	}
+	
 	// if still have embers, get hat for mp regen
 	itemConsidering = $item[Hat of remembering];
 	if(remainingEmbers() >= 1 && !possessEquipment(itemConsidering) && auto_is_valid(itemConsidering))
 	{
 		buy($coinmaster[Sept-Ember Censer], 1, itemConsidering);
 	}
-	// consider throwin' ember for banish or summoning charm for pickpocket in future PR
+	
+	return;
 }
+
+float expected_mouthwash_main_substat()
+{
+	return expected_mouthwash_main_substat(numeric_modifier($modifier[cold resistance]));
+}
+
+float expected_mouthwash_main_substat(float cold_res)
+{
+	float boost_factor = 1+stat_exp_percent(my_primestat())/100;
+	return boost_factor * 14 * (cold_res**1.7) / 2;
+}
+
+float expected_level_after_mouthwash()
+{
+	return expected_level_after_mouthwash(1, numeric_modifier($modifier[cold resistance]));
+}
+
+float expected_level_after_mouthwash(int n_mouthwash)
+{
+	return expected_level_after_mouthwash(n_mouthwash,numeric_modifier($modifier[cold resistance]));
+}
+
+float expected_level_after_mouthwash(int n_mouthwash, float cold_res)
+{
+	float gained_main_substats = n_mouthwash * expected_mouthwash_main_substat(cold_res);
+	int old_main_substats = my_basestat(stat_to_substat(my_primestat()));
+	float new_main_substats = old_main_substats + gained_main_substats;
+	float level = substat_to_level(new_main_substats);
+	return level;
+}
+
 
 boolean auto_haveTearawayPants()
 {
@@ -458,6 +641,330 @@ boolean auto_haveTearawayPants()
 	{
 		return true;
 	}
+	return false;
+}
+
+boolean auto_haveTakerSpace()
+{
+	return auto_get_campground() contains $item[TakerSpace letter of Marque] && auto_is_valid($item[TakerSpace letter of Marque]);
+}
+
+void auto_checkTakerSpace()
+{
+	if(!auto_haveTakerSpace()) return;
+	static item ts_letter = $item[TakerSpace letter of Marque];
+	if(!get_property("_takerSpaceSuppliesDelivered").to_boolean()) {
+		// visit the workshed to get the supplies
+		visit_url("campground.php?action=workshed");
+	}
+	// unlock the island if we can (6 turn save)
+	if(get_property("lastIslandUnlock").to_int() < my_ascensions() && item_amount($item[pirate dinghy]) == 0 && creatable_amount($item[pirate dinghy]) > 0) {
+		if (create(1, $item[pirate dinghy])) {
+			handleTracker(to_string(ts_letter),$item[pirate dinghy],"auto_iotm_claim");
+		}
+	}
+	// deft pirate hook would be worth it but hard for autoscend to use
+	// anchor bomb is a free banish but only for 30 turns, if we have Spring Kick we won't use it
+	if(!(auto_haveSpringShoes() && auto_is_valid($skill[Spring Kick])) && creatable_amount($item[anchor bomb]) > 0) {
+		if (create(1, $item[anchor bomb])) {
+			handleTracker(to_string(ts_letter),$item[anchor bomb],"auto_iotm_claim");
+		}
+	}
+	// goldschlepper is EPIC booze
+	int createable = creatable_amount($item[tankard of spiced Goldschlepper]);
+	if(createable > 0) {
+		if (create(1, $item[tankard of spiced Goldschlepper])) {
+			handleTracker(to_string(ts_letter),$item[tankard of spiced Goldschlepper],"auto_iotm_claim");
+		}
+	}
+	// tankard of spiced rum is awesome booze
+	createable = creatable_amount($item[tankard of spiced rum]);
+	if(createable > 0) {
+		if (create(1, $item[tankard of spiced rum])) {
+			handleTracker(to_string(ts_letter),$item[tankard of spiced rum],"auto_iotm_claim");
+		}
+	}
+	// cursed Aztec tamale is awesome food, and only uses spices
+	createable = creatable_amount($item[cursed Aztec tamale]);
+	if(createable > 0) {
+		if (create(1, $item[cursed Aztec tamale])) {
+			handleTracker(to_string(ts_letter),$item[cursed Aztec tamale],"auto_iotm_claim");
+		}
+	}
+}
+
+boolean auto_haveClanPhotoBoothHere()
+{
+	if(available_amount($item[Clan VIP Lounge Key]) == 0)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	return auto_get_clan_lounge() contains $item[photo booth sized crate];
+}
+
+boolean auto_haveClanPhotoBooth()
+{
+	if(available_amount($item[Clan VIP Lounge Key]) == 0)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	return bafh_available || auto_haveClanPhotoBoothHere();
+}
+
+boolean auto_isClanPhotoBoothItem(item it)
+{
+	switch (it)
+	{
+		case $item[photo booth supply list]:
+		case $item[fake arrow-through-the-head]:
+		case $item[fake huge beard]:
+		case $item[astronaut helmet]:
+		case $item[cheap plastic pipe]:
+		case $item[oversized monocle on a stick]:
+		case $item[giant bow tie]:
+		case $item[feather boa]:
+		case $item[Sheriff badge]:
+		case $item[Sheriff pistol]:
+		case $item[Sheriff moustache]:
+			return true;
+	}
+	return false;
+}
+
+boolean auto_thisClanPhotoBoothHasItem(item it)
+{
+	// This should work but it's not implemented by Mafia, sounds like it won't be
+	//~ return (auto_get_clan_lounge() contains it)
+	
+	// Instead just assume BAFH has everything, everyone else has nothing that needs unlocking
+	if (get_clan_id() == getBAFHID())
+	{
+		return auto_isClanPhotoBoothItem(it);
+	}
+	switch (it)
+	{
+		case $item[photo booth supply list]:
+		case $item[fake arrow-through-the-head]:
+		case $item[fake huge beard]:
+		case $item[astronaut helmet]:
+			return true;
+	}
+	return false;
+}
+
+boolean auto_thisClanPhotoBoothHasItems(boolean[item] its)
+{
+	boolean success = true;
+	foreach it,b in its
+	{
+		success = success && auto_thisClanPhotoBoothHasItem(it);
+	}
+	return false;
+}
+
+boolean auto_getClanPhotoBoothDefaultItems()
+{
+	if (!auto_haveClanPhotoBooth())
+	{
+		return false;
+	}
+	boolean[item] items_to_claim;
+	if(!in_hattrick())
+	{
+		items_to_claim = $items[fake arrow-through-the-head, astronaut helmet, oversized monocle on a stick];
+	}
+	else
+	{
+		items_to_claim = $items[feather boa, astronaut helmet, oversized monocle on a stick];
+	}
+	
+	int orig_clan_id = get_clan_id();
+	boolean in_bafh = orig_clan_id == getBAFHID();
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	if (bafh_available && !in_bafh && !auto_thisClanPhotoBoothHasItems(items_to_claim))
+	{
+		changeClan();
+	}
+	boolean success = true;
+	foreach it,b in items_to_claim
+	{
+		success = success && auto_getClanPhotoBoothItem(it);
+	}
+	if (orig_clan_id != get_clan_id())
+	{
+		changeClan(orig_clan_id);
+	}
+	return success;
+}
+
+boolean auto_getClanPhotoBoothItem(item it)
+{
+	if (!auto_haveClanPhotoBooth())
+	{
+		return false;
+	}
+	if (!auto_isClanPhotoBoothItem(it))
+	{
+		return false;
+	}
+	if (available_amount(it)>0)
+	{
+		return true;
+	}
+	// Handle whether we want to jump to BAFH for the item
+	int orig_clan_id = get_clan_id();
+	boolean in_bafh = orig_clan_id == getBAFHID();
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	if (bafh_available && !in_bafh && !auto_thisClanPhotoBoothHasItem(it))
+	{
+		changeClan();
+	}
+	
+	// Actually claim the item
+	cli_execute("photobooth item "+to_string(it));
+	handleTracker("Clan Photo Booth","Claimed "+it, "auto_iotm_claim");
+	
+	// Go home if we BAFH'd it
+	if (orig_clan_id != get_clan_id())
+	{
+		changeClan(orig_clan_id);
+	}
+	
+	if (available_amount(it)>0)
+	{
+		return true;
+	}
+	return false;
+}
+
+int auto_remainingClanPhotoBoothEffects()
+{
+	if (!auto_haveClanPhotoBooth())
+	{
+		return 0;
+	}
+	return 3-get_property("_photoBoothEffects").to_int();
+}
+
+string auto_getClanPhotoBoothEffectString(effect ef)
+{
+	switch(ef)
+	{
+		case $effect[Wild and Westy!]:
+			return "wild";
+		case $effect[Towering Muscles]:
+			return "tower";
+		case $effect[Spaced Out]:
+			return "space";
+	}
+	return "none";
+}
+
+boolean auto_getClanPhotoBoothEffect(effect ef)
+{
+	return auto_getClanPhotoBoothEffect(ef,1);
+}
+
+boolean auto_getClanPhotoBoothEffect(effect ef, int n_times)
+{
+	string effect_string = auto_getClanPhotoBoothEffectString(ef);
+	if (effect_string == "none")
+	{
+		auto_log_error("Invalid effect for photo booth "+ef.to_string());
+		return false;
+	}
+	return auto_getClanPhotoBoothEffect(effect_string);
+}
+
+boolean auto_getClanPhotoBoothEffect(string ef_string)
+{
+	return auto_getClanPhotoBoothEffect(ef_string,1);
+}
+
+boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
+{
+	if(available_amount($item[Clan VIP Lounge Key]) == 0)
+	{
+		return false;
+	}
+	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	
+	n_times = min(n_times,auto_remainingClanPhotoBoothEffects());
+	if (n_times < 1)
+	{
+		return false;
+	}
+	
+	// Handle whether we want to jump to BAFH
+	int orig_clan_id = get_clan_id();
+	boolean in_bafh = orig_clan_id == getBAFHID();
+	boolean bafh_available = isWhitelistedToBAFH() && canReturnToCurrentClan(); // bafh has it fully stocked
+	
+	if (!auto_haveClanPhotoBoothHere() && bafh_available)
+	{
+		changeClan(); // Jump to BAFH
+	}
+	
+	boolean success = false;
+	effect west_ef  = $effect[Wild and Westy!];
+	effect tower_ef = $effect[Towering Muscles];
+	effect space_ef = $effect[Spaced Out];
+	string west_string  = to_lower_case(to_string(west_ef ));
+	string tower_string = to_lower_case(to_string(tower_ef));
+	string space_string = to_lower_case(to_string(space_ef));
+	switch(to_lower_case(ef_string))
+	{
+		case "wild":
+		case west_string:
+			for (int i = 0 ; i < n_times ; i++)
+			{
+				cli_execute("photobooth effect wild");
+				handleTracker("Clan Photo Booth","Claimed "+west_ef, "auto_iotm_claim");
+			}
+			success = to_boolean(have_effect(west_ef));
+			break;
+		case "tower":
+		case tower_string:
+			for (int i = 0 ; i < n_times ; i++)
+			{
+				cli_execute("photobooth effect tower");
+				handleTracker("Clan Photo Booth","Claimed "+tower_ef, "auto_iotm_claim");
+			}
+			success = to_boolean(have_effect(tower_ef));
+			break;
+		case "space":
+		case space_string:
+			for (int i = 0 ; i < n_times ; i++)
+			{
+				cli_execute("photobooth effect space");
+				handleTracker("Clan Photo Booth","Claimed "+space_ef, "auto_iotm_claim");
+			}
+			success = to_boolean(have_effect(space_ef));
+			break;
+	}
+	// Go home if we BAFH'd it
+	if (orig_clan_id != get_clan_id())
+	{
+		changeClan(orig_clan_id);
+	}
+	
+	if (success)
+	{
+		return true;
+	}
+	auto_log_error("Invalid effect string for photo booth "+ef_string);
 	return false;
 }
 

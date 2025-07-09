@@ -9,6 +9,7 @@ string auto_combatHandler(int round, monster enemy, string text);
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_util.ash
+int defaultRoundLimit();
 boolean haveUsed(skill sk);
 boolean haveUsed(item it);
 int usedCount(skill sk);
@@ -38,8 +39,11 @@ boolean canSurvive(float mult, int add);
 boolean canSurvive(float mult);
 boolean hasClubEquipped();
 string auto_saberTrickMeteorShowerCombatHandler(int round, monster enemy, string text);				
-string findBanisher(int round, monster enemy, string text);	
+string findBanisher(int round, monster enemy, string text);
+string findPhylumBanisher(int round, phylum enemyphylum, string text);
+string banisherCombatString(phylum enemyphylum, location loc, boolean inCombat);
 string banisherCombatString(monster enemy, location loc, boolean inCombat);
+string banisherCombatString(phylum enemyphylum, location loc);
 string banisherCombatString(monster enemy, location loc);
 string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDrop);
 string yellowRayCombatString(monster target, boolean inCombat);
@@ -52,7 +56,10 @@ float turns_to_kill(float dmg);
 boolean combat_status_check(string mark);
 void combat_status_add(string mark);
 boolean wantToForceDrop(monster enemy);
+boolean wantToDouse(monster enemy);
+int maxRoundsToDouse(monster enemy);
 boolean canSurviveShootGhost(monster enemy, int shots);
+int auto_remainingMildEvilUses();
 
 #####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash

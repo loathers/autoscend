@@ -1,4 +1,4 @@
-since r28114;	// feat: track split pea soup banish
+since r28571;	// fix: robots can also just buy torso awareness by
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -49,6 +49,7 @@ import <autoscend/iotms/mr2021.ash>
 import <autoscend/iotms/mr2022.ash>
 import <autoscend/iotms/mr2023.ash>
 import <autoscend/iotms/mr2024.ash>
+import <autoscend/iotms/mr2025.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
@@ -68,6 +69,7 @@ import <autoscend/paths/fall_of_the_dinosaurs.ash>
 import <autoscend/paths/g_lover.ash>
 import <autoscend/paths/gelatinous_noob.ash>
 import <autoscend/paths/grey_goo.ash>
+import <autoscend/paths/hattrick.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/i_love_u_hate.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
@@ -90,6 +92,7 @@ import <autoscend/paths/wereprofessor.ash>
 import <autoscend/paths/wildfire.ash>
 import <autoscend/paths/you_robot.ash>
 import <autoscend/paths/zombie_slayer.ash>
+import <autoscend/paths/zootomist.ash>
 
 import <autoscend/quests/level_01.ash>
 import <autoscend/quests/level_02.ash>
@@ -168,6 +171,7 @@ void initializeSettings() {
 
 	set_property("auto_abooclover", true);
 	set_property("auto_aboopending", 0);
+	set_property("auto_avalancheDeployed", false);
 	set_property("auto_banishes", "");
 	set_property("auto_batoomerangDay", 0);
 	set_property("auto_beatenUpCount", 0);
@@ -175,17 +179,21 @@ void initializeSettings() {
 	remove_property("auto_beatenUpLocations");
 	set_property("auto_getBeehive", false);
 	set_property("auto_bruteForcePalindome", false);
+	set_property("auto_doWhiteys", false);
 	set_property("auto_cabinetsencountered", 0);
 	set_property("auto_chasmBusted", true);
 	set_property("auto_chewed", "");
 	set_property("auto_clanstuff", "0");
+	set_property("auto_considerCCSCShore", true);
 	set_property("auto_copies", "");
 	set_property("auto_dakotaFanning", false);
 	set_property("auto_day_init", 0);
 	set_property("auto_day1_dna", "");
+	set_property("auto_day2WaitLastLevel", "0");
 	set_property("auto_debuffAsdonDelay", 0);
 	set_property("auto_disableAdventureHandling", false);
 	set_property("auto_doCombatCopy", "no");
+	set_property("auto_dontPhylumBanish", false);
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
@@ -216,6 +224,10 @@ void initializeSettings() {
 	set_property("auto_instakill", "");
 	set_property("auto_instakillSource", "");
 	set_property("auto_instakillSuccess", false);
+	set_property("auto_iotm_claim", "");
+	set_property("auto_leaflet_done", false);
+	set_property("auto_lucky", "");
+	set_property("auto_luckySource", "none");
 	set_property("auto_modernzmobiecount", "");
 	set_property("auto_powerfulglove", "");
 	set_property("auto_otherstuff", "");
@@ -230,6 +242,7 @@ void initializeSettings() {
 	remove_property("auto_lastShenTurn");
 	set_property("auto_sniffs", "");
 	set_property("auto_stopMinutesToRollover", "5");
+	set_property("auto_tracker_path","");
 	set_property("auto_wandOfNagamar", true);
 	set_property("auto_wineracksencountered", 0);
 	set_property("auto_wishes", "");
@@ -253,7 +266,8 @@ void initializeSettings() {
 	remove_property("auto_saveVintage");
 	set_property("auto_dontUseCookBookBat", false);
 	set_property("auto_dietpills", 0);
-	beehiveConsider();
+	set_property("_auto_candyMapCompleted", false);
+	beehiveConsider(false);
 
 	eudora_initializeSettings();
 	heavyrains_initializeSettings();
@@ -427,8 +441,9 @@ boolean LX_burnDelay()
 
 	if (backupTargetAvailable)
 	{
-		location backupZone = solveDelayZone(isFreeMonster(get_property("lastCopyableMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0);
-		if (backupZone == $location[none])
+		boolean skipOutdoorZones = isFreeMonster(get_property("lastCopyableMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0;
+		location backupZone = solveDelayZone(skipOutdoorZones);
+		if (backupZone == $location[none] && skipOutdoorZones && !in_koe())
 		{
 			// if the monster is inherently free and we have Breathitin charges, fight it in the Noob Cave since we can't avoid it
 			// and we likely want to fight it. Noob Cave is available from turn 0 & is not outdoors so Breathitin won't trigger.
@@ -644,7 +659,7 @@ boolean LX_doVacation()
 
 boolean auto_doTempleSummit()
 {
-	if(!hidden_temple_unlocked() || internalQuestStatus("questL11Worship") < 3)
+	if(!hidden_temple_unlocked())
 	{
 		return false;
 	}
@@ -654,6 +669,11 @@ boolean auto_doTempleSummit()
 	}
 	if (get_property("lastTempleAdventures").to_int()>=my_ascensions())
 	{
+		return false;
+	}
+	if (auto_haveMayamCalendar() && !auto_MayamAllUsed())
+	{
+		auto_log_info("Not getting temple summit adventures since our Mayam calendar isn't spent.");
 		return false;
 	}
 	buffMaintain($effect[Stone-Faced]);
@@ -679,6 +699,7 @@ void initializeDay(int day)
 		set_property("auto_delayLastLevel", "0");
 		set_property("auto_cmcConsultLastLevel", "0");
 		set_property("auto_breathitinLastLevel", "0");
+		set_property("_auto_candyMapCompleted", false);
 	}
 
 	if(!possessEquipment($item[Your Cowboy Boots]) && get_property("telegraphOfficeAvailable").to_boolean() && is_unrestricted($item[LT&T Telegraph Office Deed]))
@@ -781,13 +802,19 @@ void initializeDay(int day)
 	}
 
 	auto_floundryAction();
+	
+	auto_MayamClaimAll(); // Want Mayam before booth to decide if we want a feather boa given yamtility.
+	auto_getClanPhotoBoothDefaultItems();
+	auto_getClanPhotoBoothEffect("space",3);
+
+	auto_initBurningLeaves();
 
 	if((item_amount($item[GameInformPowerDailyPro Magazine]) > 0) && (my_daycount() == 1))
 	{
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174&confirm=Yep.", true);
 		set_property("auto_disableAdventureHandling", true);
-		autoAdv(1, $location[Video Game Level 1]);
+		autoAdv(1, $location[[DungeonFAQ - Level 1]]);
 		set_property("auto_disableAdventureHandling", false);
 		if(item_amount($item[Dungeoneering Kit]) > 0)
 		{
@@ -814,6 +841,9 @@ void initializeDay(int day)
 		use(1, $item[spinal-fluid-covered emotion chip]);
 	}
 	
+	// Open our duffel bag
+	auto_openMcLargeHugeSkis();
+	
 	//you must finish the Toot Oriole quest to unlock council quests.
 	tootOriole();
 
@@ -824,6 +854,7 @@ void initializeDay(int day)
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	jarlsberg_initializeDay(day);
+	ht_equip_hats(); //equip hats in Hat Trick
 
 	// Bulk cache mall prices
 	if(!in_hardcore() && get_property("auto_day_init").to_int() < day)
@@ -891,7 +922,7 @@ void initializeDay(int day)
 			{
 				acquireGumItem($item[disco ball]);
 			}
-			if(!(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber() || in_wereprof()))
+			if(auto_needAccordion())
 			{
 				if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && (auto_predictAccordionTurns() < 5) && ((my_meat() > npc_price($item[Toy Accordion])) && (npc_price($item[Toy Accordion]) != 0)))
 				{
@@ -905,12 +936,11 @@ void initializeDay(int day)
 					{
 						auto_buyUpTo(1, $item[Toy Accordion]);
 					}
-					
-					if((in_koe()) && (item_amount($item[Antique Accordion]) == 0) && (koe_rmi_count() >= 10))
-					{
-						koe_acquire_rmi(10);
-						buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Antique Accordion]);
-					}
+				}
+				if((in_koe()) && (item_amount($item[Antique Accordion]) == 0) && (koe_rmi_count() >= 10))
+				{
+					koe_acquire_rmi(10);
+					buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Antique Accordion]);
 				}
 				acquireTotem();
 				if(!possessEquipment($item[Saucepan]))
@@ -1061,6 +1091,10 @@ boolean dailyEvents()
 	auto_birdOfTheDay();
 	while(auto_doPrecinct());
 	handleBarrelFullOfBarrels(true);
+	
+	// Hit bastille, then council in case we levelled up (and unlocked getaway camp)
+	cheeseWarMachine(0, 0, 0, 0);
+	council();
 
 	auto_campawayGrabBuffs();
 	kgb_getMartini();
@@ -1128,11 +1162,12 @@ boolean dailyEvents()
 
 	if(item_amount($item[Clan VIP Lounge Key]) > 0)
 	{
-		if(!get_property("_olympicSwimmingPoolItemFound").to_boolean() && is_unrestricted($item[Olympic-sized Clan Crate]))
+		int[item] furn = auto_get_clan_lounge();
+		if(furn contains $item[Olympic-sized Clan crate] && !get_property("_olympicSwimmingPoolItemFound").to_boolean() && is_unrestricted($item[Olympic-sized Clan Crate]))
 		{
 			cli_execute("swim item");
 		}
-		if(!get_property("_lookingGlass").to_boolean() && is_unrestricted($item[Clan Looking Glass]))
+		if(furn contains $item[Clan looking glass] && !get_property("_lookingGlass").to_boolean() && is_unrestricted($item[Clan Looking Glass]))
 		{
 			string temp = visit_url("clan_viplounge.php?action=lookingglass");
 		}
@@ -1142,7 +1177,7 @@ boolean dailyEvents()
 			cli_execute("clan_viplounge.php?action=klaw");
 			cli_execute("clan_viplounge.php?action=klaw");
 		}
-		if(!get_property("_crimboTree").to_boolean() && is_unrestricted($item[Crimbough]))
+		if(furn contains $item[Crimbough] && furn[$item[Crimbough]]==5 && !get_property("_crimboTree").to_boolean() && is_unrestricted($item[Crimbough]))
 		{
 			cli_execute("crimbotree get");
 		}
@@ -1196,7 +1231,9 @@ boolean dailyEvents()
 	auto_useBlackMonolith();
 	auto_scepterSkills();
 	auto_getAprilingBandItems();
+	auto_MayamClaimAll();
 	auto_buyFromSeptEmberStore();
+	auto_getGlobs();
 	
 	return true;
 }
@@ -1361,7 +1398,7 @@ boolean adventureFailureHandler()
 
 		if(tooManyAdventures && isActuallyEd())
 		{
-			if ($location[Hippy Camp] == place)
+			if ($location[The Hippy Camp] == place)
 			{
 				tooManyAdventures = false;
 			}
@@ -1431,7 +1468,7 @@ boolean adventureFailureHandler()
 		}
 	}
 
-	if(last_monster() == $monster[Crate] && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
+	if(last_monster() == $monster[Crate] && get_property("screechDelay") != "" && (in_wereprof() && !($location[Noob Cave].turns_spent < 8))) //want 7 turns of Noob Cave in Wereprof for Smashed Scientific Equipment
 	{
 		if(get_property("auto_newbieOverride").to_boolean())
 		{
@@ -1528,16 +1565,7 @@ boolean autosellCrap()
 	{
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
-	foreach it in $items[dense meat stack, meat stack,  //quest rewards that are better off as meat. If we ever need it we can freely recreate them at no loss.
-	Blue Money Bag, Red Money Bag, White Money Bag,  //vampyre path boss rewards and major source of meat in run.
-	Space Blanket, //can be inside MayDay package. Only purpose is to sell for meat
-	Void Stone] //dropped by Void Fights when Cursed Magnifying Glass is equiped. Only purpose is to sell for meat
-	{
-		if(item_amount(it) > 0)
-		{
-			auto_autosell(min(10,item_amount(it)), it);		//autosell all of this item
-		}
-	}
+
 	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
 	{
 		if(item_amount(it) > 0 && auto_is_valid(it))
@@ -1547,40 +1575,79 @@ boolean autosellCrap()
 	}
 	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
 	{
-		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. sell the rest
+		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. use the rest
 		{
 			use(min(10,item_amount(it)-1), it);
 		}
 	}
-	foreach it in $items[elegant nightstick]		//keeping 2 nightsticks in stock for double fisting
+	
+	// Function to sell all of our items, optionally keeping some.
+	void sell_except(int n_to_keep, boolean[item] items_to_sell)
 	{
-		if(item_amount(it) > 2)		//for these items we want to keep 2 in stock. sell the rest
+		foreach it in items_to_sell
 		{
-			auto_autosell(min(10,item_amount(it)-2), it);
+			if(item_amount(it) > n_to_keep)
+			{
+				auto_autosell(min(10,item_amount(it)-n_to_keep), it);
+			}
 		}
 	}
+	
+	// keep none of these
+	boolean[item] items_considered = $items[dense meat stack, meat stack,  //quest rewards that are better off as meat. If we ever need it we can freely recreate them at no loss.
+	  Blue Money Bag, Red Money Bag, White Money Bag,  //vampyre path boss rewards and major source of meat in run.
+	  Space Blanket, //can be inside MayDay package. Only purpose is to sell for meat
+	  Void Stone];//dropped by Void Fights when Cursed Magnifying Glass is equiped. Only purpose is to sell for meat
+	
+	sell_except(0,items_considered);
 
-	//bellow this point are items we only want to sell if we are desperate for meat.
-	if(my_meat() > meatReserve())
+	sell_except(2,$items[elegant nightstick]);	//keeping 2 nightsticks in stock for double fisting
+
+	// below this point are items we only want to sell if we are desperate for meat.
+	if(auto_amIRich())
 	{
 		return false;
 	}
+	
+	// Keep none
+	items_considered = $items[Anticheese, Awful Poetry Journal, Azurite, Beach Glass Bead, Beer Bomb, Bit-o-Cactus,
+	  Clay Peace-Sign Bead, Clockwork key, Cocoa Eggshell Fragment, Datastick, Decorative Fountain, Dense Meat Stack,
+	  Empty Cloaca-Cola Bottle, Enchanted Barbell, Eye Agate, Fancy Bath Salts, Frigid Ninja Stars,
+	  Feng Shui For Big Dumb Idiots, Frat Army FGF, Giant Moxie Weed, Half of a Gold Tooth,
+	  Headless Sparrow, Keel-Haulin\' Knife, Knob Goblin pants, Knob goblin scimitar, Knob Goblin tongs,
+	  Kokomo Resort Pass, Lapis Lazuli, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita,
+	  Meat Paste, Mineapple, Moxie Weed, PADL Phone, Patchouli Incense Stick, Phat Turquoise Bead,
+	  Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Sausage Bomb,
+	  Sea Honeydew, Sea Lychee, Sea Persimmon, Sea Tangelo,
+	  Shiny Hood Ornament, Slingshot, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Spooky Stick,
+	  Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes];
+	  
+	sell_except(0,items_considered);
 
-	foreach it in $items[Anticheese, Awful Poetry Journal, Azurite, Beach Glass Bead, Beer Bomb, Bit-o-Cactus, Clay Peace-Sign Bead, Cocoa Eggshell Fragment, Decorative Fountain, Dense Meat Stack, Empty Cloaca-Cola Bottle, Enchanted Barbell, Eye Agate, Fancy Bath Salts, Frigid Ninja Stars, Feng Shui For Big Dumb Idiots, Giant Moxie Weed, Half of a Gold Tooth, Headless Sparrow, Imp Ale, Keel-Haulin\' Knife, Kokomo Resort Pass, Lapis Lazuli, Leftovers Of Indeterminate Origin, Mad Train Wine, Mangled Squirrel, Margarita, Meat Paste, Mineapple, Moxie Weed, Patchouli Incense Stick, Phat Turquoise Bead, Photoprotoneutron Torpedo, Plot Hole, Procrastination Potion, Rat Carcass, Sea Honeydew, Sea Lychee, Sea Tangelo, Smelted Roe, Spicy Jumping Bean Burrito, Spicy Bean Burrito, Strongness Elixir, Sunken Chest, Tambourine Bells, Tequila Sunrise, Uncle Jick\'s Brownie Mix, Windchimes]
+	if(auto_amIRich())
 	{
-		if(item_amount(it) > 0)
-		{
-			auto_autosell(min(5,item_amount(it)), it);
-		}
+		return false;
 	}
-	if(item_amount($item[hot wing]) > 3)
+	
+	// Pixels, keep all in KoE, none otherwise (black and red saved for red pixel potions)
+	if (!in_koe())
 	{
-		auto_autosell(item_amount($item[hot wing]) - 3, $item[hot wing]);
+		items_considered = $items[blue pixel, green pixel, white pixel];
+		sell_except(0,items_considered);
 	}
-	if(item_amount($item[Chaos Butterfly]) > 1)
-	{
-		auto_autosell(item_amount($item[Chaos Butterfly]) - 1, $item[Chaos Butterfly]);
-	}
+	
+	// Keep none
+	items_considered = $items[Imp ale, Shot of grapefruit schnapps, shot of orange schnapps, shot of tomato schnapps];
+	sell_except(0,items_considered);
+	
+	// Keep one
+	items_considered = $items[Big Hot Pepper, Chaos Butterfly];
+	sell_except(1,items_considered);
+	
+	// Keep three
+	items_considered = $items[energized spores, hot wing];
+	sell_except(3,items_considered);
+
 	return true;
 }
 
@@ -1841,6 +1908,8 @@ boolean doTasks()
 
 	basicAdjustML();
 
+	if (zoo_GraftFam()) { return true; }
+
 	finishBuildingSmutOrcBridge();
 	councilMaintenance();
 	auto_buySkills();		// formerly picky_buyskills() now moved here
@@ -1856,6 +1925,7 @@ boolean doTasks()
 	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
+	ht_equip_hats(); //equip hats in Hat Trick
 
 	oldPeoplePlantStuff();
 	use_barrels();
@@ -1882,10 +1952,16 @@ boolean doTasks()
 	prioritizeChestMimic();
 	auto_useWardrobe();
 	auto_MayamClaimAll();
+	auto_defaultBurnLeaves();
 	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
 	lar_safeguard();
+	
+	auto_setLeprecondo();
+	auto_useLeprecondoDrops();
+
+	if (LX_zootoFight()) { return true; }
 
 
 	//Early adventure options that we probably want
@@ -1945,7 +2021,6 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if (auto_juneCleaverAdventure()) { return true; }
-	if (auto_burnLeaves()) { return true; }
 	if(LX_ForceNC())					return true;
 	if(LX_dronesOut())					return true;
 	if(LM_bond())						return true;
@@ -1963,9 +2038,11 @@ boolean doTasks()
 	if(auto_doPhoneQuest())				return true;
 	
 	if(auto_doTempleSummit())		return true;
+	if(L8_mountainManSummon())		return true;
 	
 	if (process_tasks()) return true;
 
+	meatReserveMessage();
 	auto_log_info("I should not get here more than once because I pretty much just finished all my in-run stuff. Beep", "blue");
 	return false;
 }
@@ -1990,6 +2067,13 @@ void auto_begin()
 		abort("Community Service is no longer supported.");
 	}
 
+	if (in_bad_moon())
+	{
+		boolean nope = user_confirm("Bad moon is not a thing we will ever support even if you can somehow meet the scripts minimum requirements. Do you understand?");
+		string failure = (nope ? "Just no." : "Even if you don't understand, it's still no.");
+		abort(failure);
+	}
+
 	LX_handleIntroAdventures(); // handle early non-combats in challenge paths.
 	cli_execute("refresh all");
 
@@ -2001,7 +2085,7 @@ void auto_begin()
 	}
 
 	auto_log_info("Hello " + my_name() + ", time to explode!");
-	auto_log_info("This is version: " + svn_info("autoscend").last_changed_rev + " Mafia: " + get_revision());
+	auto_log_info("This is version: " + git_info("autoscend").commit + " Mafia: " + get_revision());
 	auto_log_info("This is day " + my_daycount() + ".");
 	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
 	auto_log_info("Current Ascension: " + my_path().name);
@@ -2146,9 +2230,9 @@ void main(string... input)
 				return;
 			case "turbo":
 			// gotta go faaaaaast. Doing a double confirm because of the nature of this parameter.
-				user_confirm("This will get expensive for you. This should only be used if you are trying to go for a 1-day and don't care about expenses. Do you really want to do this? Will default to 'No' in 15 seconds.", 15000, false);
+				if(user_confirm("This will get expensive for you. This should only be used if you are trying to go for a 1-day and don't care about expenses. Do you really want to do this? Will default to 'No' in 15 seconds.", 15000, false))
 				{
-					user_confirm("This will use UMSBs and Spice Melanges if you have them. If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+					if(user_confirm("This will use UMSBs and Spice Melanges if you have them. If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false))
 					{
 						set_property("auto_turbo", "true");
 						auto_log_info("Ka-chow! Gotta go fast.");

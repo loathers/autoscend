@@ -6,10 +6,11 @@
 
 boolean L5_getEncryptionKey()
 {
-	if(internalQuestStatus("questL05Goblin") != 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)
+	if(internalQuestStatus("questL05Goblin") > 0 || item_amount($item[Knob Goblin Encryption Key]) > 0)
 	{
 		return false;
 	}
+
 	if(item_amount($item[11-inch knob sausage]) == 1)
 	{
 		visit_url("guild.php?place=challenge");
@@ -17,7 +18,9 @@ boolean L5_getEncryptionKey()
 	}
 
 	// want to fight goblin king quickly in legacy of loathing to get another replica mr a
-	if(!in_lol() && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
+	// In LKS, important keys are gated behind here, and we have tonnes of delay
+	// in Zootomist it's a valuable levelling zone that drops wishes
+	if(!(in_lol() || in_lowkeysummer() || in_zootomist()) && canBurnDelay($location[The Outskirts of Cobb\'s Knob]))
 	{
 		return false;
 	}
@@ -61,6 +64,13 @@ boolean L5_haremOutfit()
 	if(possessOutfit("Knob Goblin Harem Girl Disguise"))
 	{
 		return false;
+	}
+
+	// Just pull it if d2
+	if (my_daycount()>1)
+	{
+		pullXWhenHaveY($item[knob goblin harem veil ], 1, 0);
+		pullXWhenHaveY($item[knob goblin harem pants], 1, 0);
 	}
 
 	// want to fight goblin king quickly in legacy of loathing to get another replica mr a

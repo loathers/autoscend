@@ -77,21 +77,26 @@ boolean auto_post_adventure()
 
 	if(get_property("auto_forceNonCombatSource") != "" && !auto_haveQueuedForcedNonCombat())
 	{
-		// possible to get desired NC when preparing spikes. Only log usage if NC was actually forced
-		if(get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean())
+		// possible to get desired NC when preparing spikes/avalanche. Only log usage if NC was actually forced
+		if((get_property("auto_forceNonCombatSource") != "jurassic parka" || get_property("auto_parkaSpikesDeployed").to_boolean()) &&
+		(get_property("auto_forceNonCombatSource") != "McHugeLarge left ski") || get_property("auto_avalancheDeployed").to_boolean())
 		{
 			auto_log_info("Encountered forced noncombat: " + get_property("lastEncounter"), "blue");
-			handleTracker(get_property("auto_forceNonCombatSource"), get_property("lastEncounter"), "auto_forcedNC");
+			handleTracker(get_property("auto_forceNonCombatSource"), my_location().to_string(), get_property("lastEncounter"), "auto_forcedNC");
 		}
 		set_property("auto_forceNonCombatSource", "");
 		set_property("auto_forceNonCombatLocation", "");
 		set_property("auto_parkaSpikesDeployed", false);
+		set_property("auto_avalancheDeployed", false);
 	}
 
 	if(get_property("auto_instakillSource") != "" && get_property("auto_instakillSuccess").to_boolean())
 	{
 		auto_log_info("Successful instakill with: " + get_property("auto_instakillSource"), "blue");
-		handleTracker(get_property("lastEncounter"), get_property("auto_instakillSource"), "auto_instakill");
+		if(get_property("lastEncounter").to_monster() == last_monster()) //only track the combat part of a combat+NC encounter (like everfull dart perks)
+		{
+			handleTracker(get_property("lastEncounter"), get_property("auto_instakillSource"), "auto_instakill");
+		}
 		set_property("auto_instakillSource", "");
 		set_property("auto_instakillSuccess", false);
 	}
@@ -360,7 +365,7 @@ boolean auto_post_adventure()
 		{
 			use_skill(1, $skill[Disco Nap]);
 		}
-		else if(isGeneralStoreAvailable() && auto_is_valid($item[Anti-Anti-Antidote]))
+		else if(isGalaktikAvailable() && auto_is_valid($item[Anti-Anti-Antidote]))
 		{
 			auto_buyUpTo(1, $item[Anti-Anti-Antidote]);
 			use(1, $item[Anti-Anti-Antidote]);
@@ -502,6 +507,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Leash of Linguini], 20, 1, 10);
 			if(regen > 10.0)
 			{
+				buffMaintain($effect[Thoughtful Empathy], 25, 1, 10);
 				buffMaintain($effect[Empathy], 25, 1, 10);
 			}
 		}
@@ -563,6 +569,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Leash of Linguini], 30, 1, 10);
 			if(regen > 10.0)
 			{
+				buffMaintain($effect[Thoughtful Empathy], 35, 1, 10);
 				buffMaintain($effect[Empathy], 35, 1, 10);
 			}
 		}
@@ -630,6 +637,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
 			if(regen > 4.0)
 			{
+				buffMaintain($effect[Thoughtful Empathy], 50, 1, 10);
 				buffMaintain($effect[Empathy], 50, 1, 10);
 			}
 		}
@@ -741,6 +749,7 @@ boolean auto_post_adventure()
 		if(buff_familiar)
 		{
 			buffMaintain($effect[Empathy], 50, 1, 10);
+			buffMaintain($effect[Thoughtful Empathy], 50, 1, 10);
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
 		}
 
@@ -918,7 +927,7 @@ boolean auto_post_adventure()
 		buffMaintain($effect[Wisdom of Others]);
 		// Only use these if we've got plenty of meat and aren't max level
 		// Otherwise we'll autosell them
-		if(my_meat() > meatReserve()+1000 && my_level()<13)
+		if(!auto_ignoreExperience() && my_level()<13)
 		{
 			foreach it in $items[azurite, eye agate, lapis lazuli]
 			{

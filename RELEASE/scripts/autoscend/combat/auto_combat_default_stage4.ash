@@ -90,7 +90,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	//iotm monster copier that works by creating wandering copies of the targetted monster
 	if(canUse($skill[Digitize]) && (get_property("_sourceTerminalDigitizeUses").to_int() == 0) && !inAftercore())
 	{
-		if($monsters[Ninja Snowman Assassin, Lobsterfrogman] contains enemy)
+		if($monsters[Lobsterfrogman] contains enemy)
 		{
 			if(get_property("_sourceTerminalDigitizeMonster") != enemy)
 			{
@@ -112,14 +112,6 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//iotm monster duplicator that creates a chained fight of the current monster
-	if(have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!]) && have_effect($effect[Everything Looks Purple]) == 0 && !ag_is_bodyguard())
-	{
-		if(enemy == $monster[Ninja Snowman Assassin])
-		{
-			handleTracker(enemy, $skill[Blow the Purple Candle\!], "auto_copies");
-			return useSkill($skill[Blow the Purple Candle\!]);
-		}
-	}
 	if(auto_wantToCopy(enemy, my_location()) && !ag_is_bodyguard())
 	{
 		skill copier = getCopier(enemy);
@@ -195,7 +187,7 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	if(wink_skill != $skill[none])		//we can wink / romatic arrow
 	{
-		if($monsters[Lobsterfrogman, Modern Zmobie, Ninja Snowman Assassin] contains enemy)
+		if($monsters[Lobsterfrogman, Modern Zmobie] contains enemy)
 		{
 			return useSkill(wink_skill);
 		}
@@ -380,6 +372,14 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 		return auto_bowlingBallCombatString(my_location(), false);
 	}
 
+	// prep avalanche if requested
+	if(canUse($skill[McHugeLarge Avalanche]) && get_property("auto_forceNonCombatSource") == "McHugeLarge left ski"
+		&& !get_property("auto_avalancheDeployed").to_boolean())
+	{
+		set_property("auto_avalancheDeployed", true);
+		return useSkill($skill[McHugeLarge Avalanche]);
+	}
+	
 	// prep parka NC forcing if requested
 	if(canUse($skill[Launch spikolodon spikes]) && get_property("auto_forceNonCombatSource") == "jurassic parka"
 		&& !get_property("auto_parkaSpikesDeployed").to_boolean())

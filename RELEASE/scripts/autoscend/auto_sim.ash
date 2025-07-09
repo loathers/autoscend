@@ -53,8 +53,6 @@ void printSimSuggested()
 		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Fighting 5x in a day will get you a fat loot token");
 		mon = $monster[screambat];
 		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Lets you break a wall in the Bat Hole");
-		mon = $monster[ninja snowman assassin];
-		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Fighting 3x is optimal for L8 quest");
 		mon = $monster[lobsterfrogman];
 		formattedSimPrint(auto_monsterInLocket(mon), `Locket Monster: {mon.to_string()}`, "Need 5x for war sidequest");
 		mon = $monster[Astronomer];

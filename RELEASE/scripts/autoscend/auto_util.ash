@@ -1,5 +1,10 @@
 //A file full of utility functions which we import into autoscend.ash
 
+int auto_combatModCap()
+{
+	return 32;
+}
+
 boolean almostRollover()
 {
 	int warning_time = get_property("auto_stopMinutesToRollover").to_int() * 60;
@@ -329,6 +334,22 @@ void handleTracker(string used, string detail, string tracker)
 	set_property(tracker, cur);
 }
 
+void handleTracker(string used, string loc, string detail, string tracker)
+{
+	string cur = get_property(tracker);
+	if(cur != "")
+	{
+		cur = cur + ", ";
+	}
+	if(loc == "none")
+	{
+		handleTracker(used,detail,tracker);
+		return;
+	}
+	cur = cur + "(" + my_daycount() + ":" + safeString(used) + ":" + safeString(loc) + ":" + safeString(detail) + ":" + my_turncount() + ")";
+	set_property(tracker, cur);
+}
+
 boolean organsFull()
 {
 	if(my_fullness() < fullness_limit())
@@ -500,6 +521,41 @@ boolean isBanished(monster enemy)
 	return (banishedMonsters() contains enemy);
 }
 
+int[phylum] banishedPhyla()
+{
+	int[phylum] retval;
+	string[int] data = split_string(get_property("banishedPhyla"), ":");
+
+	if(get_property("banishedPhyla") == "")
+	{
+		return retval;
+	}
+
+	int i=0;
+	while(i<count(data))
+	{
+		retval[to_phylum(data[i])] = to_int(data[i+2]);
+		i += 3;
+	}
+
+	return retval;
+}
+
+int phylumBanishTurnsRemaining()
+{
+	int[phylum] banishedPhy = banishedPhyla();
+
+	foreach banPhy, i in banishedPhy
+	{
+		if(banPhy.to_string() != "")
+		{
+			return 99 - (my_turncount() - banishedPhy[banPhy]);
+		}
+	}
+
+	return 0;
+}
+
 int autoCraft(string mode, int count, item item1, item item2)
 {
 	if((mode == "combine") && !knoll_available())
@@ -553,8 +609,13 @@ boolean canYellowRay(monster target)
 
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
-		
-		// first, do any necessary prep to use a yellow ray
+		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
+		if(auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]) && hasTorso())
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
+		}
+
+		// Get a yellow rocket if we don't have a parka
 		if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
 			get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
 			item_amount($item[yellow rocket]) == 0 &&		// Don't buy if we already have one
@@ -564,18 +625,30 @@ boolean canYellowRay(monster target)
 			cli_execute("acquire " + $item[yellow rocket]);
 		}
 
-		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
-		if(auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]) && hasTorso())
-		{
-			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
-		}
-
 		// Yellow rocket has the lowest cooldown, and is unlimited, so prioritize over other sources
 		if (item_amount($item[yellow rocket]) > 0 &&
 			auto_is_valid($item[yellow rocket]) &&
 			yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "")
 		{
 			return true;
+		}
+
+		// acquire a spitball if we haven't gotten any of the above
+		if(auto_haveAprilShowerShield() &&			//need April Shower Thoughts Shield
+		item_amount($item[spitball]) == 0 &&		//don't buy if we already have one
+		auto_is_valid($item[spitball]) &&			//or if it's not valid
+		item_amount($item[glob of wet paper]) > 0)	//need at least 1 glob of wet paper to buy one
+		{
+			if(buy($coinmaster[Using your Shower Thoughts], 1, $item[spitball]))
+			{
+				handleTracker($item[April Shower Thoughts Shield],$item[spitball],"auto_iotm_claim");
+			}
+		}
+
+		// Spitball from April Shower Thoughts Shiled has a 100 turn cd, but is a free-kill but is not unlimited
+		if(auto_is_valid($item[spitball]) && item_amount($item[spitball]) > 0)
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 		}
 		
 		// roman candelabra, also a 75 turn cooldown
@@ -635,7 +708,7 @@ float [monster] auto_combat_appearance_rates(location place, boolean queue)
 	{
 		if(mob != $monster[none])
 		{
-			res_excluding_noncombat[mob] = freq / (100 - noncombat_frequency);
+			res_excluding_noncombat[mob] = freq / (100 - noncombat_frequency) * 100;
 		}
 	}
 	return res_excluding_noncombat;
@@ -699,13 +772,34 @@ boolean auto_wantToBanish(monster enemy, location loc)
 	return monstersToBanish[enemy];
 }
 
+boolean auto_wantToBanish(phylum enemyphylum, location loc)
+{
+	if (get_property("auto_dontPhylumBanish").to_boolean()) {
+		return false;
+	}
+	location locCache = my_location();
+	set_location(loc);
+	boolean [phylum] phylumToBanish = auto_getPhylum("banish");
+	set_location(locCache);
+	return phylumToBanish[enemyphylum];
+}
+
 boolean canBanish(monster enemy, location loc)
 {
 	return banisherCombatString(enemy, loc) != "";
 }
 
+boolean canBanish(phylum enemyphylum, location loc)
+{
+	return banisherCombatString(enemyphylum, loc) != "";
+}
+
 boolean adjustForBanish(string combat_string)
 {
+	if(combat_string == "skill" + $skill[%fn\, Release the Patriotic Screech!])
+	{
+		return use_familiar($familiar[Patriotic Eagle]);
+	}
 	if(combat_string == "skill " + $skill[Throw Latte on Opponent])
 	{
 		return autoEquip($item[latte lovers member\'s mug]);
@@ -771,6 +865,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return create(1, $item[Handful of split pea soup]);
 	}
+	if(combat_string == "skill "+$skill[Punch Out Your Foe] && auto_punchOutsLeft() == 0 && available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3)
+	{
+		return autoChew(1, $item[scoop of pre-workout powder]);
+	}
 	return true;
 }
 
@@ -781,6 +879,31 @@ boolean adjustForBanishIfPossible(monster enemy, location loc)
 		string banish_string = banisherCombatString(enemy, loc);
 		auto_log_info("Adjusting to have banisher available for " + enemy + ": " + banish_string, "blue");
 		return adjustForBanish(banish_string);
+	}
+	return false;
+}
+
+boolean adjustForBanishIfPossible(phylum enemyphylum, location loc)
+{
+	if(canBanish(enemyphylum, loc))
+	{
+		string banish_string = banisherCombatString(enemyphylum, loc);
+		auto_log_info("Adjusting to have phylum banisher available for " + enemyphylum + ": " + banish_string, "blue");
+		return adjustForBanish(banish_string);
+	}
+	return false;
+}
+boolean auto_forceFreeRun(boolean combat)
+{
+	if(get_property("auto_forceFreeRun").to_boolean() && combat)
+	{
+		set_property("auto_forceFreeRun", false); //want to reset as soon as we see it as true while in combat
+		return true;
+	}
+	if(get_property("auto_forceFreeRun").to_boolean())
+	{
+		//don't need to reset it because we haven't taken a turn to freeRun yet
+		return true;
 	}
 	return false;
 }
@@ -968,6 +1091,13 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Bowl a Curveball];
 	}
 
+	// We have a lot of banishes - we can use handful of split pea soup as runaway, but not our last
+	int potential_split_pea_soup = available_amount($item[whirled peas])/2 + available_amount($item[handful of split pea soup]);
+	if(potential_split_pea_soup > 1 && auto_is_valid($item[handful of split pea soup]))
+	{
+		return "item " + $item[handful of split pea soup];
+	}
+
 	//Non-standard free-runs
 	if(!inAftercore())
 	{
@@ -1032,6 +1162,10 @@ boolean adjustForYellowRay(string combat_string)
 		{
 			auto_log_error("Failed to prepare a yellow ray. yellowRayCombatString thinks we can craft a 9-volt battery but we actually could not");
 		}
+	}
+	if(combat_string == "skill " + $skill[Northern Explosion])
+	{
+		return autoEquip($item[April Shower Thoughts Shield]);
 	}
 	return true;
 }
@@ -1105,6 +1239,10 @@ boolean canSniff(monster enemy, location loc)
 boolean adjustForSniffingIfPossible(monster target)
 {
 	skill sniffer = getSniffer(target, false);
+	if(sniffer == $skill[McHugeLarge Slash])
+	{
+		return autoEquip($item[McHugeLarge left pole]);
+	}
 	if(sniffer == $skill[Monkey Point])
 	{
 		return autoEquip($item[cursed monkey\'s paw]);
@@ -1136,6 +1274,10 @@ boolean adjustForCopyIfPossible(monster target)
 	if(copier == $skill[Blow the Purple Candle\!])
 	{
 		return autoEquip($item[Roman Candelabra]);
+	}
+	if(copier == $skill[%fn\, fire a Red\, White and Blue Blast])
+	{
+		handleFamiliar($familiar[Patriotic Eagle]);
 	}
 	return false;
 }
@@ -1351,10 +1493,13 @@ boolean cloverUsageInit(boolean override)
 		return true;
 	}
 	
+	set_property("auto_luckySource","none");
+	
 	if (auto_AprilSaxLuckyLeft() > 0)
 	{
 		if (auto_playAprilSax()) {
 			auto_log_info("Clover usage initialized, using Apriling sax.");
+			set_property("auto_luckySource",to_string($item[Apriling Band Saxophone]));
 			return true;
 		}
 		else
@@ -1369,7 +1514,8 @@ boolean cloverUsageInit(boolean override)
 		use_skill($skill[Aug. 2nd: Find an Eleven-Leaf Clover Day]);
 		if (have_effect($effect[Lucky!]) > 0)
 		{
-			auto_log_info("Clover usage initialized");
+			auto_log_info("Clover usage initialized using August Scepter.");
+			set_property("auto_luckySource",to_string($item[August Scepter]));
 			return true;
 		}
 		else
@@ -1389,7 +1535,8 @@ boolean cloverUsageInit(boolean override)
 		use(1, $item[11-Leaf Clover]);
 		if (have_effect($effect[Lucky!]) > 0)
 		{
-			auto_log_info("Clover usage initialized");
+			auto_log_info("Clover usage initialized using clover.");
+			set_property("auto_luckySource",to_string($item[11-Leaf Clover]));
 			return true;
 		}
 		else
@@ -1411,7 +1558,8 @@ boolean cloverUsageInit(boolean override)
 			chew(1, $item[[10883]Astral Energy Drink]);
 			if (have_effect($effect[Lucky!]) > 0)
 			{
-				auto_log_info("Clover usage initialized");
+				auto_log_info("Clover usage initialized using Astral Energy Drink");
+				set_property("auto_luckySource",to_string($item[[10883]Astral Energy Drink]));
 				return true;
 			}
 			else
@@ -1450,6 +1598,11 @@ boolean cloverUsageFinish()
 	if(have_effect($effect[Lucky!]) > 0)
 	{
 		abort("Wandering adventure interrupted our clover adventure (" + my_location() + ").");
+	}
+	else
+	{
+		handleTracker(get_property("auto_luckySource"), my_location().to_string(), get_property("lastEncounter"), "auto_lucky");
+		set_property("auto_luckySource", "none");
 	}
 	return true;
 }
@@ -1822,7 +1975,32 @@ boolean isFreeMonster(monster mon, location loc)
 	return false;
 }
 
+boolean auto_burningDelay()
+{
+	if((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && my_location() == solveDelayZone())
+	{
+		return true;
+	}
+	return false;
+}
 
+boolean auto_gettingLucky()
+{
+	if(have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(my_location()))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_queueIgnore()
+{
+	if(auto_burningDelay() || auto_gettingLucky() || auto_haveQueuedForcedNonCombat())
+	{
+		return true;
+	}
+	return false;
+}
 
 boolean auto_deleteMail(kmailObject msg)
 {
@@ -1881,19 +2059,6 @@ boolean LX_summonMonster()
 		if(summonMonster($monster[mountain man])) return true;
 	}
 
-	// only summon NSA if in hardcore as we will pull items in normal runs
-	if(internalQuestStatus("questL08Trapper") < 3 && in_hardcore() && my_level() >= 8 && !get_property("auto_L8_extremeInstead").to_boolean())
-	{
-		auto_log_debug("Thinking about summoning ninja snowman assassin");
-		boolean wantSummonNSA = item_amount($item[ninja rope]) < 1 || 
-			item_amount($item[ninja carabiner]) < 1 || 
-			item_amount($item[ninja crampons]) < 1;
-		if(wantSummonNSA && canSummonMonster($monster[Ninja Snowman Assassin]))
-		{
-			if(summonMonster($monster[Ninja Snowman Assassin])) return true;
-		}
-	}
-
 	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && my_level() >= 9 && 
 		(lumberCount() < 30 || fastenerCount() < 30) && canSummonMonster($monster[smut orc pervert]))
 	{
@@ -1905,8 +2070,15 @@ boolean LX_summonMonster()
 	}
 
 	// summon LFM if don't have autumnaton since that guarantees 1 turn to get 5 barrels
-	if(item_amount($item[barrel of gunpowder]) < 5 && get_property("sidequestLighthouseCompleted") == "none" && 
-	my_level() >= 12 && !auto_hasAutumnaton() && canSummonMonster($monster[lobsterfrogman]))
+	int gunpowder_left = 5-item_amount($item[barrel of gunpowder]);
+	boolean canCopyLFM()
+	{
+		return (auto_canHabitat() || auto_backupUsesLeft() >= max(gunpowder_left-1,0));
+	}
+	if(get_property("sidequestLighthouseCompleted") == "none" && gunpowder_left > 0 &&
+	   my_level() >= 12 && canSummonMonster($monster[lobsterfrogman]) && 
+	   (canCopyLFM() || gunpowder_left == 1) && !(auto_habitatMonster() == $monster[lobsterfrogman]) &&
+	   (get_property("lastEncounter")!=$monster[lobsterfrogman]) && !auto_hasAutumnaton())
 	{
 		if(summonMonster($monster[lobsterfrogman])) return true;
 	}
@@ -1939,12 +2111,6 @@ boolean LX_summonMonster()
 	if (needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]) && (in_hardcore() || pulls_remaining() < 1))
 	{
 		if(summonMonster($monster[Astronomer])) return true;
-	}
-
-	// summon grops to start copy chain. Goal is to copy into delay zones and get war progress at same time. Bonus if we get smoke bombs
-	if(!summonedMonsterToday($monster[Green Ops Soldier]) && get_property("hippiesDefeated").to_int() > 399 && get_property("hippiesDefeated").to_int() < 1000 && !in_koe() && auto_backupUsesLeft() > 0)
-	{
-		if(summonMonster($monster[Green Ops Soldier])) return true;
 	}
 
 	// summon additional monsters in heavy rains with rain man when available
@@ -1985,10 +2151,9 @@ boolean summonMonster(monster mon)
 
 boolean summonMonster(monster mon, boolean speculative)
 {
-	auto_log_debug((speculative ? "Checking if we can" : "Trying to") + " summon " + mon, "blue");
-
 	if(!speculative)
 	{
+		auto_log_debug("Trying to summon " + mon, "blue");
 		set_property("auto_nonAdvLoc", true);
 	}
 
@@ -2165,11 +2330,11 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 {
 	if(amt < 0)
 	{
-		return providePlusNonCombat(min(25, -1 * amt), doEquips);
+		return providePlusNonCombat(min(auto_combatModCap(), -1 * amt), doEquips);
 	}
 	else if(amt > 0)
 	{
-		return providePlusCombat(min(25, amt), doEquips);
+		return providePlusCombat(min(auto_combatModCap(), amt), doEquips);
 	}
 	return true;
 }
@@ -2602,6 +2767,95 @@ int doNumberology(string goal, boolean doIt, string option)
 	return -1;
 }
 
+boolean candyEggDeviler()
+{
+	if(!(item_amount($item[Candy Egg Deviler]) > 0 || storage_amount($item[Candy Egg Deviler]) > 0))
+	{
+		//do we have a Candy Egg Deviler?
+		return false;
+	}
+	if(!(get_property("_candyEggsDeviled").to_int() < 3))
+	{
+		//already generated our 3 deviled candy eggs today
+		return false;
+	}
+
+	if(storage_amount($item[Candy Egg Deviler]) > 0)
+	{
+		pullXWhenHaveY($item[Candy Egg Deviler], 1, 0);
+	}
+
+	//Below is modified from the synthesis code
+	int maxprice = 2500;
+	if(get_property("auto_maxCandyPrice").to_int() != 0)
+	{
+		maxprice = get_property("auto_maxCandyPrice").to_int();
+	}
+
+	item[int] candyList;
+	foreach it in $items[]
+	{
+		foreach ut in $items[Comet Pop, Black Candy Heart, Explosion-flavored chewing gum]
+		{
+			if(it == ut && (item_amount(it) > 0))
+			{
+				candyList[count(candyList)] = it;
+			}
+		}
+		if(it.candy && (item_amount(it) > 0) && (auto_mall_price(it) <= maxprice) && it.tradeable)
+		{
+			candyList[count(candyList)] = it;
+		}
+	}
+	if(count(candyList) == 0)
+	{
+		getCandy();
+		foreach it in $items[]
+		{
+			foreach ut in $items[Comet Pop, Black Candy Heart, Explosion-flavored chewing gum]
+			{
+				if(it == ut && (item_amount(it) > 0))
+				{
+					candyList[count(candyList)] = it;
+				}
+			}
+			if(it.candy && (item_amount(it) > 0) && (auto_mall_price(it) <= maxprice) && it.tradeable)
+			{
+				candyList[count(candyList)] = it;
+			}
+		}
+		if(count(candyList) == 0)
+		{
+			auto_log_info("No candy for a devilled candy egg");
+			return false;
+		}
+	}
+	sort candyList by auto_mall_price(value);
+	item[int] candyL = List(candyList);
+	return cli_execute('devilcandyegg ' + candyL[0]);
+}
+
+void getCandy()
+{
+	foreach sk in $skills[Summon Crimbo Candy, Summon Candy Heart, Chubby and Plump, Summon Hilarious Objects]
+	{
+		//use a skill if we can
+		if(auto_have_skill(sk))
+		{
+			use_skill(1, sk);
+			return;
+		}
+	}
+	if($strings[wombat, blender, packrat] contains my_sign().to_lower_case() && can_adventure($location[South of the Border]))
+	{
+		//buy some candy from gno-mart if we have gnomes
+		if(auto_buyUpTo(1, $item[lime-and-chile-flavored chewing gum])) return;
+	}
+	if(candyBlock()) return;
+	auto_log_info("Can't get any candy");
+	return;
+}
+
 boolean auto_have_skill(skill sk)
 {
 	return auto_is_valid(sk) && have_skill(sk);
@@ -2622,6 +2876,10 @@ boolean have_skills(boolean[skill] array)
 //From Bale\'s woods.ash relay script.
 boolean woods_questStart()
 {
+	if (my_level() < 2)
+	{
+		return false;
+	}
 	if(internalQuestStatus("questL02Larva") < 0 && internalQuestStatus("questG02Whitecastle") < 0)
 	{
 		// distant woods access is gated behind level 2 quest & whitey's grove quest.
@@ -3497,6 +3755,27 @@ boolean [monster] auto_getMonsters(string category)
 	return res;
 }
 
+boolean [phylum] auto_getPhylum(string category)
+{
+	boolean [phylum] res;
+	string [string,int,string] phylum_text;
+	if(!file_to_map("autoscend_phylums.txt", phylum_text))
+		auto_log_error("Could not load autoscend_phylums.txt. This is bad!");
+	foreach i,name,conds in phylum_text[category]
+	{
+		phylum thisPhylum = name.to_phylum();
+		if(thisPhylum == $phylum[none])
+		{
+			auto_log_warning('"' + name + '" does not convert to a phylum properly!', "red");
+			continue;
+		}
+		if(!auto_check_conditions(conds))
+			continue;
+		res[thisPhylum] = true;
+	}
+	return res;
+}
+
 boolean auto_wantToSniff(monster enemy, location loc)
 {
 	location locCache = my_location();
@@ -3544,6 +3823,27 @@ boolean auto_wantToCopy(monster enemy)
 	return toCopy[enemy];
 }
 
+int zoneRank(monster mon, location loc)
+{
+	if(auto_wantToYellowRay(mon, loc))
+	{
+		return 1;
+	}
+	if(auto_wantToCopy(mon))
+	{
+		return 2;
+	}
+	if(auto_wantToSniff(mon, loc))
+	{
+		return 3;
+	}
+	if(auto_wantToBanish(mon, loc) || auto_wantToFreeRun(mon, loc) || auto_wantToReplace(mon, loc))
+	{
+		return 999;
+	}
+	return 4;
+}
+
 int total_items(boolean [item] items)
 {
 	int total = 0;
@@ -3585,12 +3885,23 @@ boolean auto_badassBelt()
 	}
 }
 
+void meatReserveMessage()
+{
+	int reserve = meatReserve();
+	if(reserve > 0)
+	{
+		auto_log_info("Autoscend thinks that you need " + reserve + " meat for remaining quest requirements this ascension.");
+	}
+	return;
+}
+
 void auto_interruptCheck(boolean debug)
 {
 	if(get_property("auto_interrupt").to_boolean())
 	{
 		set_property("auto_interrupt", false);
 		restoreAllSettings();
+		meatReserveMessage();
 		abort("auto_interrupt detected and aborting, auto_interrupt disabled.");
 	}
 	else if (get_property("auto_debugging").to_boolean() && debug)
@@ -4210,6 +4521,16 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "Apriling tuba");
 		return true;
 	}
+	else if(auto_haveMcHugeLargeSkis() && get_property("_mcHugeLargeAvalancheUses") < 3 && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the spikes
+	{
+		if(speculative) return true;
+		// avalanche require a combat to active
+		// this property will cause the left ski to be eqipped and avalanche deployed next combat
+		set_property("auto_forceNonCombatSource", "McHugeLarge left ski");
+		// track desired NC location so we know where to go when avalanche is ready
+		set_property("auto_forceNonCombatLocation", loc);
+		return true;
+	}
 	else if(auto_hasParka() && get_property("_spikolodonSpikeUses") < 5 && hasTorso() && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the spikes
 	{
 		if(speculative) return true;
@@ -4352,7 +4673,8 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	//but I am labeling them seperate from buffs in case we ever need to split this function.
 	
 	//if you have something that reduces the cost of casting buffs, wear it now.
-	maximize("-mana cost, -tie", false);
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
 	
 	//Passive damage
 	if(passive_dmg_allowed)
@@ -4401,6 +4723,7 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	buffMaintain($effect[Ghostly Shell]);						//6 MP
 	buffMaintain($effect[Tenacity of the Snapper]);			//8 MP
 	buffMaintain($effect[Empathy]);							//15 MP
+	buffMaintain($effect[Thoughtful Empathy]);				//15 MP
 	buffMaintain($effect[Reptilian Fortitude]);				//8 MP
 	buffMaintain($effect[Astral Shell]);						//10 MP
 	buffMaintain($effect[Jingle Jangle Jingle]);				//5 MP
@@ -4451,7 +4774,7 @@ int poolSkillPracticeGains()
 boolean hasUsefulShirt()
 {
 	int amtUsefulShirts = 0;
-	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac, jurassic parka]
+	foreach it in $items[January\'s Garbage Tote, astral shirt, Shoe ad T-shirt, Fresh coat of paint, tunac, jurassic parka, hairshirt, futuristic shirt]
 	{
 		item w_it = wrap_item(it);
 		if(item_amount(w_it) != 0 && is_unrestricted(w_it)) amtUsefulShirts += 1;
@@ -4559,6 +4882,15 @@ int meatReserve()
 	return reserve_gnasir + reserve_diary + reserve_zeppelin + reserve_palindome + reserve_island + reserve_extra;
 }
 
+boolean auto_wishForEffectIfNeeded(effect wish)
+{
+	if (have_effect(wish)>0)
+	{
+		return true;
+	}
+	return auto_wishForEffect(wish);
+}
+
 boolean auto_wishForEffect(effect wish)
 {
 	// First try to use the monkey paw
@@ -4608,13 +4940,22 @@ boolean auto_burnMP(int mpToBurn)
 		set_property("lastChanceBurn","cast # " + defaultSkill);
 	}
 
+	item[int] equipped = auto_saveEquipped();
+
+	auto_equipAprilShieldBuff(); //useful additional buffs when equipped
+
 	// record starting MP
 	int startingMP = my_mp();
 	cli_execute("burn " + mpToBurn);
+	auto_loadEquipped(equipped);
 	return startingMP != my_mp();
 }
 
 boolean can_read_skillbook(item it) {
+	// can't read in Picky
+	if (in_picky()) {
+		return false;
+	}
 	// all the normal classes and AoSOL classes are literate
 	if ($classes[Seal Clubber, Turtle Tamer, Sauceror, Pastamancer, Disco Bandit, Accordion Thief, Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class()) {
 		return true;
@@ -4637,4 +4978,383 @@ boolean have_workshed() {
 		return false;
 	}
 	return true;
+}
+
+int baseNCForcesToday()
+{
+	int forces = 0;
+	if (auto_havePillKeeper()) {forces = forces + 6;}
+	if (auto_haveAprilingBandHelmet() && available_amount($item[apriling band saxophone])>0) {forces = forces + 3;}
+	if (auto_haveMcHugeLargeSkis()) {forces = forces + 3;}
+	if (auto_hasParka()) {forces = forces + 5;}
+	if (auto_haveCincho()) {forces = forces + 3;} // Not important to calculate this properly here.
+	
+	return forces;
+}
+
+int remainingNCForcesToday()
+{
+	int forces = 0;
+	forces = forces + auto_pillKeeperUses();
+	forces = forces + auto_AprilTubaForcesLeft();
+	forces = forces + auto_McLargeHugeForcesLeft();
+	forces = forces + auto_ParkaSpikeForcesLeft();
+	forces = forces + auto_cinchForcesLeft();
+	
+	return forces;
+}
+
+int turnsUsedByRemainingNCForcesToday()
+{
+	int forces = 0;
+	forces = forces + auto_pillKeeperUses();
+	forces = forces + auto_AprilTubaForcesLeft();
+	forces = forces + 2 * auto_McLargeHugeForcesLeft();
+	forces = forces + 2 * auto_ParkaSpikeForcesLeft();
+	forces = forces + auto_cinchForcesLeft();
+	
+	return forces;
+}
+
+float substat_to_level()
+{
+	return substat_to_level(my_basestat(stat_to_substat(my_primestat())));
+}
+
+float substat_to_level(int n)
+{
+	if(n <= 16)
+	{
+		return 1; // All substats less than 16 are level 1, before the formula takes effect
+	}
+	return square_root( square_root(n) - 4 ) + 1;
+}
+
+stat stat_to_substat(stat s)
+{
+	switch(s)
+	{
+		case $stat[muscle]:
+			return $stat[submuscle];
+		case $stat[mysticality]:
+			return $stat[submysticality];
+		case $stat[moxie]:
+			return $stat[submoxie];
+	}
+	return s;
+}
+
+float stat_exp_percent(stat s)
+{
+	switch(s)
+	{
+		case $stat[muscle]:
+		case $stat[submuscle]:
+			return numeric_modifier($modifier[muscle experience percent]);
+		case $stat[mysticality]:
+		case $stat[submysticality]:
+			return numeric_modifier($modifier[mysticality experience percent]);
+		case $stat[moxie]:
+		case $stat[submoxie]:
+			return numeric_modifier($modifier[moxie experience percent]);
+	}
+	return 0;
+}
+
+boolean auto_equalizeStats()
+{
+	stat highest_basestat = my_primestat();
+	int highest_basestat_val = my_basestat(highest_basestat);
+	foreach s in $stats[muscle,mysticality,moxie]
+	{
+		int val = my_basestat(s);
+		if (val > highest_basestat_val)
+		{
+			highest_basestat_val = val;
+			highest_basestat = s;
+		}
+	}
+	switch(highest_basestat)
+	{
+		case $stat[muscle]:
+			return buffMaintain($effect[Stabilizing Oiliness]);
+		case $stat[mysticality]:
+			return buffMaintain($effect[Expert Oiliness]);
+		case $stat[moxie]:
+			return buffMaintain($effect[Slippery Oiliness]);
+	}
+	return false;
+}
+
+item[int] auto_getListOfNonDamagingFamiliarEquipment()
+{
+	// Returns items of generic familiar equipment that do not cause damage when equipped to a non-damage familiar
+	// Sorted by familiar weight boost, highest to lowest
+	boolean[item] base_list = $items[astral pet sweater, tiny stillsuit, tiny gold medal, lead necklace,
+	  futuristic collar, miniature crystal ball, tiny rake, toy cupid bow];
+	boolean[item] valid_and_available;
+	foreach it in base_list
+	{
+		if(auto_is_valid(it) && available_amount(it)>0)
+		{
+			valid_and_available[it] = true;
+		}
+	}
+	// Have to sort each time because futuristic collar changes
+	return auto_sortedByModifier(valid_and_available,$modifier[familiar weight],true);
+}
+
+stat auto_getOffStatChallengeFromTelescope()
+{
+	string musc  = "standing around flexing";
+	string myst  = "sitting around playing chess";
+	string moxie = "all wearing sunglasses and dancing";
+	string scope = get_property("telescope1");
+	
+	if (contains_text(scope,musc))
+	{
+		return $stat[muscle];
+	}
+	else if (contains_text(scope,myst))
+	{
+		return $stat[mysticality];
+	}
+	else if (contains_text(scope,moxie))
+	{
+		return $stat[moxie];
+	}
+	return $stat[none];
+}
+
+element auto_getElementChallengeFromTelescope()
+{
+	string hot    = "fire";
+	string cold   = "igloos";
+	string spooky = "eldritch";
+	string sleaze = "greasy";
+	string stench = "garbage";
+	string scope = get_property("telescope2");
+	
+	if (contains_text(scope,hot))
+	{
+		return $element[hot];
+	}
+	else if (contains_text(scope,cold))
+	{
+		return $element[cold];
+	}
+	else if (contains_text(scope,spooky))
+	{
+		return $element[spooky];
+	}
+	else if (contains_text(scope,sleaze))
+	{
+		return $element[sleaze];
+	}
+	else if (contains_text(scope,stench))
+	{
+		return $element[stench];
+	}
+	return $element[none];
+}
+
+boolean auto_amIRich()
+{
+	return my_meat() > meatReserve()+5000;
+}
+
+int auto_roughExpectedTurnsLeftToday()
+{
+	// Not designed to be accurate, just simple.
+	// Designed to be relatively stable, and more likely to come in low than high.
+	// If you want to improve the accuracy, please keep the above two principles in mind.
+	if (my_inebriety() > inebriety_limit()) {return 0;}
+	float min_adv = get_property("auto_consumeMinAdvPerFill").to_float();
+	boolean use_min_adv = min_adv > 0.0;
+	path p = my_path();
+	float eat_val   = (use_min_adv ? min_adv : 3.0);
+	float drink_val = (use_min_adv ? min_adv : 3.5);
+	float spl_val = ( haveSpleenFamiliar() ? 2 : 0);
+	int curr = my_adventures();
+	int stom = stomach_left();
+	int liv  = inebriety_left();
+	int spl  = spleen_left();
+	if (p == $path[Dark Gyffte])
+	{
+		return curr + floor(7 * available_amount($item[blood bag]));
+	}
+	else if (p == $path[Slow and Steady])
+	{
+		return curr;
+	}
+	else if (p == $path[A Shrunken Adventurer am I])
+	{
+		return curr + floor(10*stom*eat_val + 10*liv*drink_val + spl*spl_val);
+	}
+	else if (p == $path[actually ed the undying])
+	{
+		spl_val = 5.0;
+	}
+	else if (p == $path[avatar of jarlsberg])
+	{
+		drink_val = 1.0;
+	}
+	else if (p == $path[KOLHS])
+	{
+		drink_val = 2.5;
+	}
+	return curr + floor(stom*eat_val + liv*drink_val + spl*spl_val);
+}
+
+boolean auto_wantToFreeKillWithNoDrops(location loc, monster enemy)
+{
+	// only want certain enemies to free-kill in Avant Guard
+	if(in_avantGuard())
+	{
+		if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
+		{
+			return true;
+		}
+		//This is called in stage2 and auto_purple_candled is set in stage 4 so this should only ever show up on the purple candled enemy
+		if(get_property("auto_purple_candled").to_monster() == enemy)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	// many monsters in these zones with similar names
+	if(loc == $location[The Battlefield (Frat Uniform)] && 
+		(contains_text(enemy.to_string(), "War Hippy")) ||
+		$strings[Bailey's Beetle, Mobile Armored Sweat Lodge] contains enemy)
+	{
+		return true;
+	}
+	if(loc == $location[The Battlefield (Hippy Uniform)] && contains_text(enemy.to_string(), "War Frat"))
+	{
+		return true;
+	}
+	if(enemy.physical_resistance >= 100 && enemy.elemental_resistance >= 100)
+	{
+		return true;
+	}
+
+	// look for specific monsters in zones where some monsters we do care about
+	static boolean[string] targets = $strings[
+		// The Haunted Bathroom
+		claw-foot bathtub,
+		malevolent hair clog,
+		toilet papergeist,
+
+		// The Haunted Gallery
+		cubist bull,
+		empty suit of armor,
+		guy with a pitchfork, and his wife,
+
+		// The Haunted Bedroom
+		animated mahogany nightstand,
+		animated ornate nightstand,
+		animated rustic nightstand,
+		elegant animated nightstand,
+		Wardr&ouml;b nightstand,
+		
+		// The Haunted Wine Cellar
+		skeletal sommelier,
+
+		// The Haunted Laundry Room
+		plaid ghost,
+		possessed laundry press,
+
+		// The Haunted Boiler Room
+		coaltergeist,
+		steam elemental,
+		
+		// The 8-bit realm
+		octorok,
+		keese,
+		tektite,
+		zol,
+		blader,
+		met,
+		tackle fire,
+		blooper,
+		bullet bill,
+		buzzy beetle,
+		goomba,
+		koopa troopa,
+		fleaman,
+		ghost,
+		medusa
+	];
+	return targets contains enemy;
+}
+
+boolean auto_ignoreExperience()
+{
+	return in_zootomist();
+}
+
+boolean auto_needAccordion()
+{
+	if (is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() ||
+	    in_darkGyffte() || in_plumber() || in_wereprof() || in_zootomist())
+	{
+		return false;
+	}
+	return true;
+}
+
+boolean auto_inRonin()
+{
+	return !(can_interact() || in_hardcore());
+}
+
+modifier resistanceModifier(element el)
+{
+	switch(el)
+	{
+		case $element[hot   ]: return $modifier[hot resistance];
+		case $element[cold  ]: return $modifier[cold resistance];
+		case $element[stench]: return $modifier[stench resistance];
+		case $element[spooky]: return $modifier[spooky resistance];
+		case $element[sleaze]: return $modifier[sleaze resistance];
+	}
+	return $modifier[none];
+}
+
+modifier damageModifier(element el)
+{
+	switch(el)
+	{
+		case $element[hot   ]: return $modifier[hot damage];
+		case $element[cold  ]: return $modifier[cold damage];
+		case $element[stench]: return $modifier[stench damage];
+		case $element[spooky]: return $modifier[spooky damage];
+		case $element[sleaze]: return $modifier[sleaze damage];
+	}
+	return $modifier[none];
+}
+
+modifier spellDamageModifier(element el)
+{
+	switch(el)
+	{
+		case $element[hot   ]: return $modifier[hot spell damage];
+		case $element[cold  ]: return $modifier[cold spell damage];
+		case $element[stench]: return $modifier[stench spell damage];
+		case $element[spooky]: return $modifier[spooky spell damage];
+		case $element[sleaze]: return $modifier[sleaze spell damage];
+	}
+	return $modifier[none];
+}
+
+float auto_getElementalDamageMultiplier(element source, element target)
+{
+	if (source == target) { return 0.0; }
+	if (source == $element[cold  ] && $elements[sleaze, stench] contains target) { return 2.0; }
+	if (source == $element[hot   ] && $elements[cold  , spooky] contains target) { return 2.0; }
+	if (source == $element[sleaze] && $elements[hot   , stench] contains target) { return 2.0; }
+	if (source == $element[spooky] && $elements[cold  , sleaze] contains target) { return 2.0; }
+	if (source == $element[stench] && $elements[hot   , spooky] contains target) { return 2.0; }
+	return 1.0;
 }

@@ -153,24 +153,59 @@ boolean [location] get_floundry_locations()
 	return floundryLocations;
 }
 
-int changeClan(string clanName)
+int getBAFHID()
 {
-	int toClan = 0;
-	boolean canReturn = false;
+	return 90485;
+}
+
+boolean isWhitelistedToClan(int clanID)
+{
 	string page = visit_url("clan_signup.php");
 	matcher clan_matcher = create_matcher("<option value=(\\d\\d\\d+)>(.*?)</option>", page);
 	while(clan_matcher.find())
 	{
-		if(clan_matcher.group(1) == get_clan_id())
+		if(clan_matcher.group(1).to_int() == clanID)
 		{
-			canReturn = true;
+			#~ auto_log_debug("Found clan " + clanID + " and name: " + clan_matcher.group(2));
+			return true;
 		}
+	}
+	return false;
+}
+
+boolean isWhitelistedToBAFH()
+{
+	return isWhitelistedToClan(getBAFHID());
+}
+
+int whitelistedClanToID(string clanName)
+{
+	string page = visit_url("clan_signup.php");
+	matcher clan_matcher = create_matcher("<option value=(\\d\\d\\d+)>(.*?)</option>", page);
+	int clanID = 0;
+	while(clan_matcher.find())
+	{
 		if(clan_matcher.group(2) ≈ clanName)
 		{
-			toClan = to_int(clan_matcher.group(1));
+			clanID = to_int(clan_matcher.group(1));
+			auto_log_debug("Found clan " + clan_matcher.group(1) + " and name: " + clan_matcher.group(2));
+			break;
 		}
-		auto_log_info("Found clan " + clan_matcher.group(1) + " and name: " + clan_matcher.group(2));
 	}
+	return clanID;
+}
+
+boolean canReturnToCurrentClan()
+{
+	return isWhitelistedToClan(get_clan_id());
+}
+
+int changeClan(string clanName)
+{
+	int toClan = 0;
+	boolean canReturn = canReturnToCurrentClan();
+	
+	toClan = whitelistedClanToID(clanName);
 
 	if(toClan == 0)
 	{
@@ -234,7 +269,7 @@ int changeClan(int toClan)
 
 int changeClan()		//To BAFH
 {
-	return changeClan(90485);
+	return changeClan(getBAFHID());
 }
 
 

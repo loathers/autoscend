@@ -288,6 +288,56 @@ boolean L8_getGoatCheese()
 	return retval;
 }
 
+boolean L8_mountainManSummon()
+{
+	if(internalQuestStatus("questL08Trapper") < 1 && my_level() >= 8)
+	{
+		L8_trapperTalk();
+	}
+	if(internalQuestStatus("questL08Trapper") != 1) // step1 = we spoke to trapper to learn what ores he wants
+	{
+		return false;
+	}
+	item oreGoal = get_property("trapperOre").to_item();
+	int current_ore = item_amount(oreGoal);
+	if(current_ore >= 3)
+	{
+		return false;
+	}
+	
+	// use a summon if we can guarantee it will be enough via cat burglar
+	if(canSummonMonster($monster[mountain man]) && catBurglarHeistsLeft() > 1)
+	{
+		auto_log_info("Trying to summon a mountain man, which the cat will then burgle, hopefully.");
+		handleFamiliar($familiar[cat burglar]);
+		return summonMonster($monster[mountain man]);
+	}
+	
+	// use a summon if we can guarantee it will be enough via pro skateboard and YR
+	if(canSummonMonster($monster[mountain man]) && canYellowRay())
+	{
+		boolean need_dupe    = current_ore < 1;
+		boolean can_mctwist  = auto_can_equip($item[pro skateboard]) && !get_property("_epicMcTwistUsed").to_boolean();
+		boolean will_mctwist = can_mctwist && need_dupe;
+		auto_log_info("Trying to summon a mountain man, which we will YR"+(will_mctwist?" and McTwist.":"."));
+		adjustForYellowRayIfPossible();
+		if (will_mctwist)
+		{
+			autoEquip($item[pro skateboard]);
+			return summonMonster($monster[mountain man]);
+		}
+		else if (!need_dupe)
+		{
+			return summonMonster($monster[mountain man]);
+		}
+		else
+		{
+			return false; // if we need to dupe drops but can't, don't summon.
+		}
+	}
+	return false;
+}
+
 boolean L8_getMineOres()
 {
 	if(internalQuestStatus("questL08Trapper") != 1) // step1 = we spoke to trapper to learn what ores he wants
@@ -308,6 +358,8 @@ boolean L8_getMineOres()
 		return false;
 	}
 
+	L8_mountainManSummon();
+
 	// in softcore we want to pull an ore
 	if(canPull(oreGoal))
 	{
@@ -321,14 +373,6 @@ boolean L8_getMineOres()
 	if(auto_haveTrainSet() && item_amount(oreGoal) < 3)
 	{
 		return false; //will get ore organically through the train set so no need to adventure for it
-	}
-	
-	// use a summon if we can guarentee it will be enough via cat burglar
-	if(canSummonMonster($monster[mountain man]) && catBurglarHeistsLeft() > 1)
-	{
-		auto_log_info("Trying to summon a mountain man, which the cat will then burgle, hopefully.");
-		handleFamiliar($familiar[cat burglar]);
-		return summonMonster($monster[mountain man]);
 	}
 	
 	// try to clover for the ore
@@ -447,13 +491,19 @@ boolean L8_trapperExtreme()
 	{
 		return true; //successfully finished this part of the quest
 	}
-	if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
-	{
-		return false;
-	}
 	
+	// First choice is the MtLargeHuge IOTM equipment
+	if(auto_haveMcHugeLargeSkis())
+	{
+		auto_equipAllMcHugeLarge();
+		// plumber literally wont let you adventure if you have no way to fight in plumber.
+			if(in_plumber())
+			{
+				equip($slot[acc3], $item[work boots]);
+			}
+	}
 	// we should equip the extreme outfit if we have it
-	if(possessOutfit("eXtreme Cold-Weather Gear", true)) // own and can equip
+	else if(possessOutfit("eXtreme Cold-Weather Gear", true)) // own and can equip
 	{
 		autoOutfit("eXtreme Cold-Weather Gear");
 	}
@@ -461,6 +511,14 @@ boolean L8_trapperExtreme()
 	{
 		auto_log_warning("I can not wear the eXtreme Gear, I'm just not awesome enough :(", "red");
 		return false;
+	}
+	
+	// We don't need to force the first NC, it''s superlikely. The other two we can.
+	int currentExtremity = get_property("currentExtremity").to_int();
+	if (currentExtremity == 1 || currentExtremity == 2)
+	{
+		boolean NCForced = auto_forceNextNoncombat($location[The eXtreme Slope]);
+		auto_log_info("Trying to force NC at extreme slope: "+NCForced.to_string(), "blue");
 	}
 	
 	// try to get extreme points
@@ -553,43 +611,6 @@ void theeXtremeSlopeChoiceHandler(int choice)
 	}
 }
 
-boolean L8_trapperSlopeSoftcore()
-{
-	// slope handling for softcore. we want to pull the ninja climbing gear. unless we are copying ninja assassins. in which case we want to go do something else.
-	
-	// special path or IOTM handling
-	if(!get_property("auto_L8_ninjaAssassinFail").to_boolean()) // can defeat assassins
-	{
-		if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
-		{
-			auto_log_info("Delay pulling ninja climbing gear. we have already digitized [ninja snowman assassin]", "blue");
-			return false;
-		}
-	}
-
-	// pull ninja climbing gear to skip the slope.
-	foreach it in $items[Ninja Carabiner, Ninja Crampons, Ninja Rope]
-	{
-		pullXWhenHaveY(it, 1, 0);
-		if(pulls_remaining() == 0 && item_amount(it) == 0)
-		{
-			return false; // out of pulls in softcore. come back tomorrow
-		}
-	}
-	
-	// if we reached this point we have all the climbing gear. only need 5 cold res to progress
-	if(L8_trapperPeak()) // try to unlock peak with the pulled items
-	{
-		return true; // successfully finished this part of the quest
-	}
-	else if(!in_robot()) // robots need too many bodyparts for outfit.
-	{
-		// if we failed to unlock at this point it is because we do not have 5 cold res. So grab the outfit for that +5 cold res
-		return L8_trapperExtreme();
-	}
-	return false; // must have a return value. fallback option. should never actually be reached
-}
-
 boolean L8_trapperNinjaLair()
 {
 	// adventure in the lair of the ninja snowmen to find and fight ninja snowman assassins.
@@ -629,12 +650,6 @@ boolean L8_trapperNinjaLair()
 		}
 	}
 
-	if(get_property("_sourceTerminalDigitizeMonster") == $monster[Ninja Snowman Assassin])
-	{
-		auto_log_info("Have a digitized Ninja Snowman Assassin, let's put off the Ninja Snowmen Lair", "blue");
-		return false;
-	}
-
 	if(have_effect($effect[Thrice-Cursed]) > 0 || have_effect($effect[Twice-Cursed]) > 0 || have_effect($effect[Once-Cursed]) > 0)
 	{
 		return false;
@@ -647,7 +662,7 @@ boolean L8_trapperNinjaLair()
 	}
 
 	// can we provide enough combat bonus to encounter snowman assassins?
-	if(providePlusCombat(25, $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
+	if(providePlusCombat(auto_combatModCap(), $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
 	{
 		if(isAboutToPowerlevel())
 		{
@@ -667,6 +682,8 @@ boolean L8_trapperNinjaLair()
 	{
 		adjustEdHat("myst");
 	}
+
+	auto_getCitizenZone($location[Lair of the Ninja Snowmen]); //since we want to adventure in the Lair anyway
 	
 	if(autoAdv($location[Lair of the Ninja Snowmen]))
 	{
@@ -814,6 +831,16 @@ boolean L8_trapperPeak()
 	// unlock peak using extremeness
 	if(get_property("currentExtremity").to_int() >= 3)
 	{
+		if (auto_haveMcHugeLargeSkis())
+		{
+			equip($slot[back]    , $item[McHugeLarge duffel bag]);
+			equip($slot[weapon]  , $item[McHugeLarge right pole]);
+			equip($slot[off-hand], $item[McHugeLarge left pole]);
+			equip($slot[acc1]    , $item[McHugeLarge left ski]);
+			equip($slot[acc2]    , $item[McHugeLarge right ski]);
+			visit_url("place.php?whichplace=mclargehuge&action=cloudypeak");
+			return true;
+		}
 		// TODO: There are some reports of this breaking in TCRS, when cold-weather
 		// gear is not sufficient to have 5 cold resistance. Use a maximizer statement?
 		if(outfit("eXtreme Cold-Weather Gear"))
@@ -824,6 +851,15 @@ boolean L8_trapperPeak()
 	}
 	
 	return false;
+}
+
+boolean L8_forceExtremeInstead()
+{
+	// If for some reason we've already got 2 ninja items, no need to get forcey
+	if(available_amount($item[ninja crampons]) > 0) { return false; }
+	// Set the variable if we're doing McHugeLarge items
+	if (auto_canEquipAllMcHugeLarge()) { set_property("auto_L8_extremeInstead", true); }
+	return get_property("auto_L8_extremeInstead").to_boolean();
 }
 
 boolean L8_trapperSlope()
@@ -838,10 +874,6 @@ boolean L8_trapperSlope()
 	{
 		return L8_slopeCasual(); // mallbuy everything. or go do something else if too poor to do so
 	}
-	else if(!in_hardcore() && !in_lol()) // !casual && !postronin && !hardcore == in softcore. which requires special handling. LoL can't pull ninja gear
-	{
-		return L8_trapperSlopeSoftcore(); // pull ninja climbing gear. unless assassins are being copied, then go do something else
-	}
 	if(L8_trapperPeak()) // try to finish step2 of the quest.
 	{
 		return true;
@@ -850,6 +882,11 @@ boolean L8_trapperSlope()
 	if(robot_delay("outfit"))
 	{
 		return false; // delay for You, Robot path
+	}
+	// Checks for McHugeLarge skis
+	if (L8_forceExtremeInstead())
+	{
+		if(L8_trapperExtreme()) return true; // try to climb slope via extreme path
 	}
 	if(get_property("auto_L8_extremeInstead").to_boolean()) // we decided we do not want to adventure in the ninja lair
 	{

@@ -578,6 +578,16 @@ boolean auto_handleParka()
 	return get_property("parkaMode") == tempDino && have_equipped(parka);
 }
 
+int auto_ParkaSpikeForcesLeft()
+{
+	if (!auto_hasParka())
+	{
+		return 0;
+	}
+	int spike_uses = get_property("_spikolodonSpikeUses").to_int();
+	return 5-spike_uses;
+}
+
 boolean auto_hasAutumnaton()
 {
 	return get_property("hasAutumnaton").to_boolean() && auto_is_valid($item[autumn-aton]) && !in_pokefam();
@@ -675,6 +685,7 @@ boolean auto_autumnatonQuest()
 		if(auto_sendAutumnaton($location[Guano Junction])) return false;
 		if(auto_sendAutumnaton($location[The Batrat And Ratbat Burrow])) return false;
 		if(auto_sendAutumnaton($location[The Beanbat Chamber])) return false;
+		if(auto_sendAutumnaton($location[Cobb's Knob Harem])) return false;
 		if(auto_sendAutumnaton($location[Noob Cave])) return false;
 	}
 

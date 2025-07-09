@@ -55,25 +55,6 @@ boolean handleRainDoh()
 		}
 	}
 
-	if(enemy == $monster[Ninja Snowman Assassin])
-	{
-		int count = item_amount($item[ninja rope]);
-		count += item_amount($item[ninja crampons]);
-		count += item_amount($item[ninja carabiner]);
-
-		if((count <= 1) && (get_property("_raindohCopiesMade").to_int() < 5))
-		{
-			set_property("auto_doCombatCopy", "yes");
-		}
-		handleCopiedMonster($item[Rain-Doh Box Full of Monster]);
-		validate_rainDohBox();
-		set_property("auto_doCombatCopy", "no");
-		if(count == 3)
-		{
-			set_property("auto_ninjasnowmanassassin", true);
-		}
-		return true;
-	}
 	if(enemy == $monster[Lobsterfrogman])
 	{
 		if(have_skill($skill[Rain Man]) && (item_amount($item[barrel of gunpowder]) < 4))

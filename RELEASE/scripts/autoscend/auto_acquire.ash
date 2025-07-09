@@ -627,21 +627,25 @@ int handlePulls(int day)
 			{
 				if(storage_amount(it) > 0 && auto_is_valid(it) && !pulledToday(it))
 				{
-					user_confirm("Pulling a " + it + ". If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+					if(user_confirm("Pulling a " + it + ". If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false))
 					{
 						pullXWhenHaveY(it, 1, 0);
 					}
 				}
 			}
-			pullXWhenHaveY($item[Dieting Pill], 1, 0);
 			//Make sure we have the legendary pizzas if we want to/can consume them so we take full advantage of the dieting pills
 			if(!get_property("auto_dontConsumeLegendPizzas").to_boolean())
 			{
 				foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
 				{
-					if(auto_is_valid(it) && !pulledToday(it))
+					if(canEat(it) && !pulledToday(it))
 					{
 						pullXWhenHaveY(it, 1, 0);
+					}
+					// Pull at least one early dieting pill if we've acquired a legendary pizza
+					if (item_amount(it) > 0 && !pulledToday($item[Dieting Pill]))
+					{
+						pullXWhenHaveY($item[Dieting Pill], 1, 0);
 					}
 				}
 			}
@@ -653,6 +657,8 @@ int handlePulls(int day)
 		iluh_pulls();
 		// pulls for Avant Guard path
 		ag_pulls();
+		// pulls for Z is for Zootomist path
+		zoo_startPulls();
 
 		// generic pulls for any path are below
 		if(auto_is_valid($item[etched hourglass]))
@@ -837,10 +843,12 @@ int handlePulls(int day)
 		}
 		// pulls for Avant Guard path
 		ag_pulls();
+		zoo_d2Pulls();
+		
 	}
 
 	// do this regardless of day if we still need to complete the bridge.
-	if(canPull($item[smut orc keepsake box]) && (lumberCount() + 5 <= bridgeGoal()) && (fastenerCount() + 5 <= bridgeGoal()))
+	if(canPull($item[smut orc keepsake box]) && (get_property("chasmBridgeProgress").to_int() + min(lumberCount(),fastenerCount()) < bridgeGoal()))
 	{
 		if(pullXWhenHaveY($item[smut orc keepsake box], 1, 0))
 		{
@@ -1014,6 +1022,7 @@ boolean LX_craftAcquireItems()
 
 	LX_dolphinKingMap();
 	auto_mayoItems();
+	auto_checkTakerSpace();
 
 	if(item_amount($item[Metal Meteoroid]) > 0 && !in_tcrs())
 	{

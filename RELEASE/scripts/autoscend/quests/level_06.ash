@@ -44,6 +44,22 @@ boolean L6_friarsGetParts()
 			handleFamiliar($familiar[Robortender]);
 		}
 	}
+	
+	// Don't burn all our NC forces early on d1 unless we are running low on turns.
+	if(my_daycount() == 1 && !isAboutToPowerlevel() && !get_property("auto_getSteelOrgan").to_boolean())
+	{
+		location forced_loc = to_location(get_property("auto_forceNonCombatLocation"));
+		boolean forced_here = $locations[The Dark Neck of the Woods, The Dark Elbow of the Woods, The Dark Heart of the Woods] contains forced_loc;
+		boolean running_low_on_turns = auto_roughExpectedTurnsLeftToday() < 10 + turnsUsedByRemainingNCForcesToday();
+		// Probably need to make sure we still have other stuff to do? Softblock?
+		// Could probably then make this run every day.
+		int total_daily_forces = baseNCForcesToday();
+		if(!forced_here && total_daily_forces > 0 && !running_low_on_turns)
+		{
+			auto_log_debug("Friars: delaying to save NC forces for later today.", "blue");
+			return false;
+		}
+	}
 
 	if(item_amount($item[dodecagram]) == 0)
 	{

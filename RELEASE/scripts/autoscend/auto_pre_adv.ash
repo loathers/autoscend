@@ -205,9 +205,11 @@ boolean auto_pre_adventure()
 	}
 	auto_log_info("Starting preadventure script...", "green");
 	auto_log_debug("Adventuring at " +place, "green");
-	
-	preAdvUpdateFamiliar(place);
-	ed_handleAdventureServant(place);
+
+	if (item_amount($item[Handful of split pea soup]) == 0 && creatable_amount($item[Handful of split pea soup]) > 0)
+	{
+		return create(1, $item[Handful of split pea soup]);
+	}
 
 	if(get_floundry_locations() contains place)
 	{
@@ -351,21 +353,33 @@ boolean auto_pre_adventure()
 			//	}
 		}
 	}
+	
+	// If we're zootomist, need to level, and we have +xp on our milk, cast it.
+	if (in_zootomist() && my_level()<13) {
+		foreach ef in $effects[Milk of Familiar Kindness, Milk of Familiar Cruelty] {
+			if (numeric_modifier(ef,$modifier[familiar experience]) > 0) {
+				buffMaintain(ef);
+			}
+		}
+	}
 
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
-	boolean burningDelay = ((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && place == solveDelayZone());
-	boolean gettingLucky = (have_effect($effect[Lucky!]) > 0 && zone_hasLuckyAdventure(place));
+	boolean burningDelay = auto_burningDelay();
+	boolean gettingLucky = auto_gettingLucky();
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
-	boolean zoneQueueIgnored = (burningDelay || gettingLucky || forcedNonCombat);
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !zoneQueueIgnored) {
+	if (combatModifier._boolean && !auto_queueIgnore()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
+
+	// Update our familiar after combat modifiers (which can set the familiar), but before Crystal Ball (familiar equip)
+	preAdvUpdateFamiliar(place);
+	ed_handleAdventureServant(place);
 
 	boolean considerCrystalBallBonus = false;
 	if(auto_haveCrystalBall())
 	{
-		if(zoneQueueIgnored || get_property("auto_nextEncounter").to_monster() != $monster[none])
+		if(auto_queueIgnore() || get_property("auto_nextEncounter").to_monster() != $monster[none])
 		{
 			//if already forced by something else, no need to handle your ball
 		}
@@ -399,7 +413,7 @@ boolean auto_pre_adventure()
 	
 	boolean zoneHasUnwantedMonsters;
 	boolean zoneHasWantedMonsters;
-	if (!zoneQueueIgnored)	//next encounter is a monster from the zone
+	if (!auto_queueIgnore())	//next encounter is a monster from the zone
 	{
 		foreach i,mon in possible_monsters
 		{
@@ -408,8 +422,14 @@ boolean auto_pre_adventure()
 				adjustForYellowRayIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
+			if(auto_wantToBanish(monster_phylum(mon), place))
+			{
+				// attempt to prepare for banishing, but if we can not try free running
+				adjustForBanishIfPossible(monster_phylum(mon), place);
+				zoneHasUnwantedMonsters = true;
+			}
 			boolean wantToBanish  = auto_wantToBanish(mon, place);
-			boolean wantToFreeRun = auto_wantToFreeRun(mon, place);
+			boolean wantToFreeRun = auto_wantToFreeRun(mon, place) || auto_forceFreeRun(false);
 			if(wantToBanish || wantToFreeRun)
 			{
 				// attempt to prepare for banishing, but if we can not try free running
@@ -497,6 +517,12 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	if(get_property("auto_forceNonCombatSource") == "McHugeLarge left ski" && !get_property("auto_avalancheDeployed").to_boolean())
+	{
+		autoForceEquip($slot[acc2],wrap_item($item[McHugeLarge left ski]));
+		// We put it in acc2 so it can't clash with the war accessory in acc3
+	}
+	
 	if(get_property("auto_forceNonCombatSource") == "jurassic parka" && !get_property("auto_parkaSpikesDeployed").to_boolean())
 	{
 		autoForceEquip(wrap_item($item[jurassic parka])); //equips parka and forbids maximizer tampering with shirt slot
@@ -506,6 +532,20 @@ boolean auto_pre_adventure()
 		{
 			cli_execute(`parka spikolodon`);
 		}
+	}
+	
+	item fluda = $item[Flash Liquidizer Ultra Dousing Accessory];
+	boolean[location] douse_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber];
+	if ( (douse_locs contains place || auto_allRifts() contains place) && auto_dousesRemaining()>0)
+	{
+		autoEquip(fluda);
+	}
+	
+	item bat_wings = $item[bat wings];
+	boolean[location] swoop_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber,The Hidden Temple];
+	if ( (swoop_locs contains place || auto_allRifts() contains place) && auto_swoopsRemaining()>0)
+	{
+		autoEquip(bat_wings);
 	}
 	
 	item exting = wrap_item($item[industrial fire extinguisher]);
@@ -520,6 +560,12 @@ boolean auto_pre_adventure()
 	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
 	{
 		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 
+	}
+
+	if(!inperilLocations(place.id) && auto_havePeridot() && zoneHasWantedMonsters)
+	{
+		//add a large bonus to Peridot of Peril if the zone has wanted monsters and we haven't visited there yet
+		addBonusToMaximize($item[Peridot of Peril], 1000);
 	}
 
 	if(place == $location[The Penultimate Fantasy Airship] && auto_haveBatWings())
@@ -679,7 +725,10 @@ boolean auto_pre_adventure()
 	generic_t itemNeed = zone_needItem(place);
 	if(mayNeedItem && itemNeed._boolean)
 	{
-		provideItem(ceil(itemNeed._float),place,false);
+		boolean capped = provideItem(ceil(itemNeed._float),place,false);
+		if (!capped && auto_haveCupidBow()) {
+			addBonusToMaximize($item[toy cupid bow],400);
+		}
 	}
 
 
@@ -697,7 +746,8 @@ boolean auto_pre_adventure()
 		boolean purgeML = false;
 
 	boolean[location] highMLZones = $locations[Oil Peak, The Typical Tavern Cellar, The Haunted Boiler Room, The Defiled Cranny];
-	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp, Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass];
+	boolean[location] lowMLZones = $locations[The Smut Orc Logging Camp, Fight in the Dirt, Fight in the Tall Grass, Fight in the Very Tall Grass,
+		Tower Level 1, Tower Level 2, Tower Level 3];
 
 	// Generic Conditions
 	if(inAftercore())
@@ -869,7 +919,7 @@ boolean auto_pre_adventure()
 		plumber_forceEquipTool();
 	}
 
-	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
+	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[The Hippy Camp]) {
 		equip($slot[Pants], $item[None]);
 		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
 		if (is_wearing_outfit("Filthy Hippy Disguise")) {
@@ -982,7 +1032,7 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
-	utilizeStillsuit();
+	utilizeStillsuit();	
 
 	set_property("auto_priorLocation", place);
 	auto_log_info("Pre Adventure at " + place + " done, beep.", "blue");
@@ -1008,6 +1058,9 @@ void main()
 	try
 	{
 		ret = auto_pre_adventure();
+		if (pathHasFamiliar() && canChangeFamiliar() && my_familiar()==$familiar[none] && !isFantasyRealm(my_location())) {
+			abort("Trying to adventure with no familiar.");
+		}
 	}
 	finally
 	{

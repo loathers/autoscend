@@ -523,6 +523,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			restored_amount += numeric_modifier("Bonus Resting MP");
 		}
 
+		if (metadata.name == "disco nap" && auto_haveAprilShowerShield() && get_property("_aprilShowerDiscoNap").to_int() < 5)
+		{
+			restored_amount = 100 - 20 * get_property("_aprilShowerDiscoNap").to_int();
+		}
+
 		return restored_amount;
 	}
 
@@ -934,6 +939,9 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 		if(metadata.type == "item")
 		{
 			item i = to_item(metadata.name);
+			if (i.dailyusesleft == 0) {
+				return false;
+			}
 			boolean mall_buyable = can_interact() && auto_mall_price(i) > 0;
 			boolean npc_meat_buyable = npc_price(i) > 0;
 			boolean coinmaster_buyable = i.seller != $coinmaster[none] && is_accessible(i.seller) && get_property("autoSatisfyWithCoinmasters").to_boolean();
@@ -1708,6 +1716,20 @@ boolean __restore(string resource_type, int goal, int meat_reserve, boolean useF
 
 		if(!success)
 		{
+			// did we have exactly one option and fail to cast rest upside down because we have a back item with +HP/MP?
+			if (count(options) == 1 && options[0].metadata.name == "rest upside down") {
+				item current_back = equipped_item($slot[back]);
+				// do we have less than max minus what the back item provides
+				if (current_resource() < max_resource() - numeric_modifier(current_back, "Maximum " + resource_type))
+				{
+					auto_log_info("Manually equipping the bat wings");
+					equip($item[bat wings]);
+					recover_discount_pants();
+					success = use_skill(1, $skill[rest upside down]);
+					equip(current_back);
+					return success;
+				}
+			}
 			auto_log_warning("Target "+resource_type+" => " + goal + " - Uh oh. All restore options tried ("+count(options)+") failed. Sorry.", "red");
 			recover_discount_pants();
 			return false;
@@ -1816,10 +1838,15 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	//since we need to restore, lets reduce MP cost of future skills
 	buffMaintain($effect[The Odour of Magick]);
 	buffMaintain($effect[Using Protection]);
-	//also use items which give mp regen
+	//also use items/skills which give free mp regen
 	buffMaintain($effect[Tingly Tongue]);
 	buffMaintain($effect[Tingling Insides]);
 	buffMaintain($effect[Wisdom of the Autumn Years]);
+	if(auto_equipAprilShieldBuff() && !(get_property("_aprilShowerSimmer").to_boolean()))
+	{
+		//Free mp regen on the first cast of the day with the April Shower Thoughts Shield equipped
+		buffMaintain($effect[Simmering]);
+	}
 
 	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
 	// TODO: move this to general effectiveness method
@@ -2055,6 +2082,15 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 	}
 	else
 	{
+		// Simplifies restoration massively, make that our first choice
+		if (have_skill($skill[Cannelloni Cocoon]))
+		{
+			int coc_tries = 0;
+			while (goal-my_hp() > 20 && coc_tries++ < 3)
+			{
+				use_skill($skill[Cannelloni Cocoon]);
+			}
+		}
 		__restore("hp", goal, meat_reserve, useFreeRests);
 	}
 

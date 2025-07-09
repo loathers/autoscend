@@ -19,6 +19,8 @@ LX_lowkeySummer
 L11_aridDesert	L11_hasUltrahydrated
 # Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
 L11_shenStartQuest
+# If we have everything to start the war instantly, just do it so we can start flyering.
+L12_opportunisticWarStart
 # Build the Bridge when we have enough parts as we may want to spend daily resources at the peaks.
 finishBuildingSmutOrcBridge
 # Call quest handlers based on current state if applicable
@@ -88,6 +90,8 @@ L2_mosquito
 LX_koeInvaderHandler
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 L13_towerAscent
+# not powerlevelling but something that needs to be done if nothing else is available
+LX_lastChance
 # release the hounds!
 auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.

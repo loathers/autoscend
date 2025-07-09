@@ -41,9 +41,9 @@ zombie hippy	!outfit:Filthy Hippy Disguise
 War Hippy Spy	!outfit:War Hippy Fatigues;!itemdropcapped:30=round purple sunglasses;prop:auto_hippyInstead=true
 War Hippy Airborne Commander	!outfit:War Hippy Fatigues;prop:auto_hippyInstead=true
 # And we want filthworm glands, but not if we're gonna hugpocket them
-larval filthworm	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
-filthworm drone	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
-filthworm royal guard	!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm royal guard scent gland
+larval filthworm	item:filthworm hatchling scent gland<1;!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm hatchling scent gland
+filthworm drone	item:filthworm drone scent gland<1;!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm drone scent gland
+filthworm royal guard	item:filthworm royal guard scent gland<1;!familiar:XO Skeleton;!class:Ed the Undying;!itemdropcapped:10=filthworm royal guard scent gland
 Knight (Snake)	class:Ed the Undying
 bearpig topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers
 elephant (meatcar?) topiary animal	familiar:Melodramedary;!itemdropcapped:15=rusty hedge trimmers

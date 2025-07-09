@@ -24,6 +24,12 @@ location solveDelayZone(boolean skipOutdoorZones)
 		}
 	}
 
+	// If we're going to Megalo-city, do the prep work to acquire enough DA
+	if (burnZone == $location[Megalo-city])
+	{
+		prepForMegaloCity();
+	}
+
 	if (burnZone != $location[none])
 	{
 		return burnZone;
@@ -95,6 +101,11 @@ boolean allowSoftblockUndergroundAdvs()
 	return get_property("auto_cmcConsultLastLevel").to_int() < my_level();
 }
 
+boolean allowSoftblockDay2Wait()
+{
+	return get_property("auto_day2WaitLastLevel").to_int() < my_level();
+}
+
 int[string] getLastCombatEnvironmentCounts(int offset)
 {
 	// mafia has no char type. string will have to do.
@@ -120,7 +131,8 @@ boolean auto_reserveUndergroundAdventures()
 		return false;
 	}
 	if (get_workshed() != $item[cold medicine cabinet] && auto_is_valid($item[cold medicine cabinet]) && item_amount($item[cold medicine cabinet]) > 0 &&
-	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]))
+	!get_property("_workshedItemUsed").to_boolean() && (LX_getDesiredWorkshed() == $item[cold medicine cabinet] || LX_getDesiredWorkshed() == $item[none]) &&
+	have_campground())
 	{
 		auto_log_debug("Reserving underground adventures as we will be switching to the CMC.");
 		// Don't have the CMC installed yet but we can still switch today and want to switch to it so save underground zones until then.
@@ -141,6 +153,15 @@ boolean auto_reserveUndergroundAdventures()
 		}
 	}
 	return false;
+}
+
+boolean auto_waitForDay2()
+{
+	if (auto_turbo()             ) { return false;}
+	if (my_daycount() > 1        ) { return false;}
+	if (!allowSoftblockDay2Wait()) { return false;}
+	auto_log_debug("Waiting for day 2 for this.");
+	return true;
 }
 
 boolean allowSoftblockOutdoorAdvs()
@@ -177,6 +198,17 @@ boolean auto_earlyRoutingHandling()
 	// updating this will be less 'scary' than updating n task order files any time we make a change
 	// this function should go very high in task orders, potentially the first thing that spends adventures.
 	// ideally nothing called before this should spend an adventure, only update state or use turn free resources.
+	
+	// Check we have flyers if war frat and war started, first because takes no turns.
+	if(!in_koe() && internalQuestStatus("questL12War") == 1 && !get_property("auto_hippyInstead").to_boolean() &&
+	  get_property("sidequestArenaCompleted")!="fratboy" && available_amount($item[rock band flyers])==0)
+	{
+		outfit("frat warrior fatigues"); // don't use the equipOutfit func here since this is just temporary, we don't want to adventure like this.
+		visit_url("bigisland.php?place=concert&pwd");
+		// Just make sure the other two quests are started too
+		visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
+		visit_url("bigisland.php?action=junkman&pwd");
+	}
 
 	// force forcing non-combats.
 	if (auto_canForceNextNoncombat()) {
@@ -242,6 +274,7 @@ boolean auto_earlyRoutingHandling()
 			return true;
 		}
 	}
+	
 	return false;
 }
 
@@ -255,6 +288,12 @@ boolean auto_softBlockHandler()
 		// Delay goes first as it applies to everyone and is our "OG" softblock
 		auto_log_warning("I was trying to avoid delay zones, but I've run out of stuff to do. Releasing softblock.", "red");
 		set_property("auto_delayLastLevel", my_level());
+		return true;
+	}
+	if (allowSoftblockDay2Wait())
+	{
+		auto_log_warning("I was trying to avoid quests that would benefit from day 2 dailies, but I've run out of stuff to do. Releasing softblock.", "red");
+		set_property("auto_day2WaitLastLevel", my_level());
 		return true;
 	}
 	if (allowSoftblockUndergroundAdvs())
