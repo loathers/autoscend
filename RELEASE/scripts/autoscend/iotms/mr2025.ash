@@ -388,7 +388,7 @@ string bestBusk(int[string] powers, string effectMultiplier)
 	{
 		return 0;
 	}
-	int busk = get_property("_beretBuskingUses").to_int() + 1;
+	int busksUsed = get_property("_beretBuskingUses").to_int();
 	float score;
 	float highScore = 0.0;
 	string highScoreString;
@@ -442,7 +442,7 @@ string bestBusk(int[string] powers, string effectMultiplier)
 	{
 		//Evaluate all power combinations calculated in beretPower to find the highest scoring one after multiplier is applied
 		score = 0.0;
-		buskingEffects = beret_busking_effects(power.to_int(), busk);
+		buskingEffects = beret_busking_effects(power.to_int(), busksUsed);
 		foreach eff, i in buskingEffects
 		{
 			if(eff != $effect[none])
