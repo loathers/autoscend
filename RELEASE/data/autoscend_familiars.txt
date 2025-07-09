@@ -149,52 +149,54 @@ item	17	Garbage Fire
 item	18	Dandy Lion
 item	19	Choctopus
 # Fairychauns
-item	20	Fist Turkey
-item	21	Cat Burglar
-item	22	Angry Jung Man
-item	23	Grimstone Golem
-item	24	Adventurous Spelunker
-item	25	Blavious Kloop
-item	26	Hippo Ballerina
-item	27	Dancing Frog
-item	28	Coffee Pixie
-item	29	Attention-Deficit Demon
-item	30	Jitterbug
-item	31	Casagnova Gnome
-item	32	Psychedelic Bear
-item	33	Piano Cat
+item	20	Chest Mimic prop:_mimicEggsObtained<11
+item	21	Fist Turkey
+item	22	Cat Burglar
+item	23	Angry Jung Man
+item	24	Grimstone Golem
+item	25	Adventurous Spelunker
+item	26	Blavious Kloop
+item	27	Hippo Ballerina
+item	28	Dancing Frog
+item	29	Chest Mimic
+item	30	Coffee Pixie
+item	31	Attention-Deficit Demon
+item	32	Jitterbug
+item	33	Casagnova Gnome
+item	34	Psychedelic Bear
+item	35	Piano Cat
 # Slightly special fairies
-item	34	Grey Goose
-item	35	Ghost of Crimbo Carols
-item	36	Red-Nosed Snapper
-item	37	Pair of Stomping Boots	!path:G-Lover
-item	38	Cooler Yeti
-item	39	Gelatinous Cubeling
-item	40	Steam-Powered Cheerleader
-item	41	Obtuse Angel
-item	42	Green Pixie
+item	36	Grey Goose
+item	37	Ghost of Crimbo Carols
+item	38	Red-Nosed Snapper
+item	39	Pair of Stomping Boots	!path:G-Lover
+item	40	Cooler Yeti
+item	41	Gelatinous Cubeling
+item	42	Steam-Powered Cheerleader
+item	43	Obtuse Angel
+item	44	Green Pixie
 # Elemental fairies
-item	43	Sleazy Gravy Fairy
-item	44	Stinky Gravy Fairy
-item	45	Flaming Gravy Fairy
-item	46	Frozen Gravy Fairy
-item	47	Spooky Gravy Fairy
+item	45	Sleazy Gravy Fairy
+item	46	Stinky Gravy Fairy
+item	47	Flaming Gravy Fairy
+item	48	Frozen Gravy Fairy
+item	49	Spooky Gravy Fairy
 # Physical damage fairy
-item	48	Bowlet
-item	49	Crimbo Elf
+item	50	Bowlet
+item	51	Crimbo Elf
 # Barely special fairies
-item	50	Mechanical Songbird
-item	51	Grouper Groupie
-item	52	Peppermint Rhino
+item	52	Mechanical Songbird
+item	53	Grouper Groupie
+item	54	Peppermint Rhino
 # Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
-item	53	Slimeling
+item	55	Slimeling
 # Turtles are cute
-item	54	Syncopated Turtle
+item	56	Syncopated Turtle
 # The original
-item	55	Baby Gravy Fairy
+item	57	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
-item	56	Mutant Fire Ant
+item	58	Mutant Fire Ant
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
@@ -237,31 +239,35 @@ meat	23	Nervous Tick
 meat	24	Cymbal-Playing Monkey
 meat	25	Cheshire Bat
 # Fairychauns
-meat	26	Cat Burglar
-meat	27	Blavious Kloop
-meat	28	Adventurous Spelunker
-meat	29	Hippo Ballerina
-meat	30	Dancing Frog
-meat	31	Cheshire Bat
-meat	32	Piano Cat
-meat	33	Psychedelic Bear
-meat	34	Casagnova Gnome
-meat	35	Jitterbug
-meat	36	Attention-Deficit Demon
-meat	37	Coffee Pixie
+meat	26	Chest Mimic prop:_mimicEggsObtained<11
+meat	27	Fist Turkey
+meat	28	Cat Burglar
+meat	29	Angry Jung Man
+meat	30	Grimstone Golem
+meat	31	Adventurous Spelunker
+meat	32	Blavious Kloop
+meat	33	Hippo Ballerina
+meat	34	Dancing Frog
+meat	35	Chest Mimic
+meat	36	Coffee Pixie
+meat	37	Attention-Deficit Demon
+meat	38	Jitterbug
+meat	39	Casagnova Gnome
+meat	40	Psychedelic Bear
+meat	41	Piano Cat
 # Wowee
-meat	38	Hand Turkey
+meat	42	Hand Turkey
 # Sorry, we don't use him for yellow rays but we can at least use him for meat I guess
-meat	39	He-Boulder
+meat	43	He-Boulder
 # Marginally special leprechauns
-meat	40	Ghost of Crimbo Commerce
-meat	41	Knob Goblin Organ Grinder
+meat	44	Ghost of Crimbo Commerce
+meat	45	Knob Goblin Organ Grinder
 #Mutant Cactus Bud	grimdark:2
-meat	42	Urchin Urchin
+meat	46	Urchin Urchin
 # Memes, doesn't actually give substats apparently
-meat	43	Cornbeefadon
+meat	47	Cornbeefadon
 # The original
-meat	44	Leprechaun
+meat	48	Leprechaun
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)
