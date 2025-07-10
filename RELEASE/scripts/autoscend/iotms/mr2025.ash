@@ -421,16 +421,16 @@ string bestBusk(int[string] powers, string effectMultiplier)
 		if(contains_text(effectMultiplier, ";"))
 		{
 			//split effectMultiplier into multiple effects if needed
-			foreach str in split_string(effectMultiplier,";")
+			foreach i, str in split_string(effectMultiplier,";")
 			{
 				numMod = split_string(str,":");
-				effMulti[numMod[0]] = numMod[1].to_float();
+				effMulti[numMod[1]] = numMod[0].to_float();
 			}
 		}
 		else if(contains_text(effectMultiplier, ":"))
 		{
 			numMod = split_string(effectMultiplier, ":");
-			effMulti[numMod[0]]  = numMod[1].to_float();
+			effMulti[numMod[1]]  = numMod[0].to_float();
 		}
 		else
 		{
@@ -593,7 +593,7 @@ boolean beretBusk(string effectMultiplier)
 		handleTracker($item[prismatic beret], my_location().to_string(), "Beret busk " + get_property("_beretBuskingUses") + " at " + buskPower + " power", "auto_otherstuff");
 		return true;
 	}
-	
+
 	return false;
 }
 
