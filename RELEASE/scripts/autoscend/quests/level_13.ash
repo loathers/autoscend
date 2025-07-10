@@ -659,6 +659,8 @@ boolean L13_towerNSContests()
 				autoMaximize(challenge + " dmg, " + challenge + " spell dmg -equip snow suit", 1500, 0, false);
 			}
 
+			beretBusk("5.0:Spell Damage;5.0:" + challenge + " Damage;5.0:" + challenge + " Spell Damage");
+
 			if(crowd3Insufficient()) buffMaintain($effect[All Glory To the Toad]);
 			if(crowd3Insufficient()) buffMaintain($effect[Bendin\' Hell], 120, 1, 1);
 			switch(challenge)
@@ -750,6 +752,8 @@ boolean L13_towerNSContests()
 					break;
 				}
 			}
+			//Busk one final time to try to be sufficient
+			if(crowd3Insufficient()) beretBusk("5.0:Spell Damage;5.0:" + challenge + " Damage;5.0:" + challenge + " Spell Damage");
 
 			if(crowd3Insufficient())
 			{

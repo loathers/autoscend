@@ -753,7 +753,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			if(!pass(ele))
 				return false;
 		}
-		if (canChangeFamiliar() && $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot] contains my_familiar()) {
+		if (canChangeFamiliar() && $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot, Cooler Yeti] contains my_familiar()) {
 			// if we pass while having a resist familiar equipped, make sure we keep it equipped
 			// otherwise we may end up flip-flopping from the resist familiar and something else
 			// which could cost us adventures if switching familiars affects our resistances enough
@@ -854,6 +854,18 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		}
 		if(resfam != $familiar[none])
 		{
+			//Buff fam weight early
+			buffMaintain($effect[Leash of Linguini]);
+			buffMaintain($effect[Empathy]);
+			buffMaintain($effect[Blood Bond]);
+			//Manual override for the resfam to be the Cooler Yeti when we ONLY want Cold Resistance and it is better than what we already chose from one of the multi-res fams
+			if(auto_haveCoolerYeti() && count(amt) == 1 && amt[$element[Cold]] > 0)
+			{
+				if(((resfam == $familiar[Mu] || resfam == $familiar[Exotic Parrot]) && floor((familiar_weight(resfam) + weight_adjustment() - 5) / 20 + 1) < floor((familiar_weight($familiar[cooler yeti]) + weight_adjustment())/11)) || (5 < floor((familiar_weight($familiar[cooler yeti]) + weight_adjustment())/11)))
+				{
+					resfam = $familiar[Cooler Yeti];
+				}
+			}
 			// need to use now so maximizer will see it
 			use_familiar(resfam);
 			if(resfam == $familiar[Trick-or-Treating Tot])
@@ -1413,6 +1425,12 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 	}
 	if(pass())
 		return result();
+	if(canBusk())
+	{
+		beretBusk("meat drop");
+	}
+	if(pass())
+		return result();
 	if(bat_formWolf(speculative))
 	{
 		//150% meat, 150% muscle
@@ -1931,6 +1949,14 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		]))
 			if(pass())
 				return result();
+		
+		//beret busk if possible
+		if(canBusk())
+		{
+			beretBusk("item drop");
+		}
+		if(pass())
+			return result();
 		if(zataraAvailable() && (0 == have_effect($effect[There\'s no N in Love])) & auto_is_valid($effect[There\'s no N in Love]))
 		{
 			if(!speculative)

@@ -570,6 +570,10 @@ void auto_buyFromSeptEmberStore()
 			{
 				auto_getCitizenZone("spec");
 			}
+			if (expected_level_after_mouthwash()<13) // Beret busk if possible for more cold res
+			{
+				beretBusk("cold resistance");
+			}
 			// buy mouthwash and use it
 			buy($coinmaster[Sept-Ember Censer], 1, mouthwash);
 			auto_log_debug(`Using mouthwash with {numeric_modifier($modifier[cold resistance])} cold resistance`);
