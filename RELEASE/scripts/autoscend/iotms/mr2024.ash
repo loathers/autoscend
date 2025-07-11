@@ -1,6 +1,7 @@
 # This is meant for items that have a date of 2024
 
 import <c2t_apron.ash>// used in consumeBlackAndWhiteApronKit()
+import <c2t_megg.ash>// used in chest mimic
 
 boolean consumeBlackAndWhiteApronKit()
 {
@@ -371,8 +372,8 @@ boolean auto_MayamClaimWhatever()
 	string ring4 = "BAD_VALUE";
 	boolean failure = false;
 	
-	if      (!auto_MayamIsUsed("chair") && auto_haveCincho())   { ring1 = "chair"; }
-	// todo: add support for giving appropriate fam 100xp with fur option
+	if (!auto_MayamIsUsed("fur") && auto_haveChestMimic() && $familiar[chest mimic].experience <= 300)   { ring1 = "fur"; use_familiar($familiar[chest mimic]); }
+	else if (!auto_MayamIsUsed("chair") && auto_haveCincho())   { ring1 = "chair"; }
 	else if (!auto_MayamIsUsed("eye"))    { ring1 = "eye"; }
 	else if (!auto_MayamIsUsed("vessel")) { ring1 = "vessel"; }
 	else { failure = true; }
@@ -965,4 +966,52 @@ boolean auto_getClanPhotoBoothEffect(string ef_string, int n_times)
 	}
 	auto_log_error("Invalid effect string for photo booth "+ef_string);
 	return false;
+}
+
+boolean auto_haveChestMimic()
+{
+	if(auto_have_familiar($familiar[chest mimic]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_haveMeggEgg(monster mon)
+{
+	foreach megg_mon, i in c2t_megg_eggs()
+		{
+			if (megg_mon == mon)
+			{
+				return true;
+			}
+		}
+	return false;
+}
+
+
+boolean auto_meggFight(monster mon, boolean speculative)
+{
+	if (!auto_haveChestMimic())
+	{
+		return false;
+	}
+	if(!auto_haveMeggEgg(mon))
+	{
+		c2t_megg_preAdv();
+		c2t_megg_extract(mon);
+	}
+	if(!auto_haveMeggEgg(mon))
+	{
+		return false;
+	}
+
+	if(speculative)
+	{
+		return true;
+	}
+	
+	handleTracker(mon, $familiar[chest mimic], "auto_copies");
+
+	return c2t_megg_fight(mon);
 }
