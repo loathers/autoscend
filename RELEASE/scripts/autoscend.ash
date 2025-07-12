@@ -1,4 +1,4 @@
-since r28571;	// fix: robots can also just buy torso awareness by
+since r28573;	// prismatic beret soft cap
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

@@ -149,51 +149,53 @@ item	17	Garbage Fire
 item	18	Dandy Lion
 item	19	Choctopus
 # Fairychauns
-item	20	Fist Turkey
-item	21	Cat Burglar
-item	22	Angry Jung Man
-item	23	Grimstone Golem
-item	24	Adventurous Spelunker
-item	25	Blavious Kloop
-item	26	Hippo Ballerina
-item	27	Dancing Frog
-item	28	Coffee Pixie
-item	29	Attention-Deficit Demon
-item	30	Jitterbug
-item	31	Casagnova Gnome
-item	32	Psychedelic Bear
-item	33	Piano Cat
+item	20	Chest Mimic
+item	21	Fist Turkey
+item	22	Cat Burglar
+item	23	Angry Jung Man
+item	24	Grimstone Golem
+item	25	Adventurous Spelunker
+item	26	Blavious Kloop
+item	27	Hippo Ballerina
+item	28	Dancing Frog
+item	29	Coffee Pixie
+item	30	Attention-Deficit Demon
+item	31	Jitterbug
+item	32	Casagnova Gnome
+item	33	Psychedelic Bear
+item	34	Piano Cat
 # Slightly special fairies
-item	34	Grey Goose
-item	35	Ghost of Crimbo Carols
-item	36	Red-Nosed Snapper
-item	37	Pair of Stomping Boots	!path:G-Lover
-item	38	Gelatinous Cubeling
-item	39	Steam-Powered Cheerleader
-item	40	Obtuse Angel
-item	41	Green Pixie
+item	35	Grey Goose
+item	36	Ghost of Crimbo Carols
+item	37	Red-Nosed Snapper
+item	38	Pair of Stomping Boots	!path:G-Lover
+item	39	Cooler Yeti
+item	40	Gelatinous Cubeling
+item	41	Steam-Powered Cheerleader
+item	42	Obtuse Angel
+item	43	Green Pixie
 # Elemental fairies
-item	42	Sleazy Gravy Fairy
-item	43	Stinky Gravy Fairy
-item	44	Flaming Gravy Fairy
-item	45	Frozen Gravy Fairy
-item	46	Spooky Gravy Fairy
+item	44	Sleazy Gravy Fairy
+item	45	Stinky Gravy Fairy
+item	46	Flaming Gravy Fairy
+item	47	Frozen Gravy Fairy
+item	48	Spooky Gravy Fairy
 # Physical damage fairy
-item	47	Bowlet
-item	48	Crimbo Elf
+item	49	Bowlet
+item	50	Crimbo Elf
 # Barely special fairies
-item	49	Mechanical Songbird
-item	50	Grouper Groupie
-item	51	Peppermint Rhino
+item	51	Mechanical Songbird
+item	52	Grouper Groupie
+item	53	Peppermint Rhino
 # Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
-item	52	Slimeling
+item	54	Slimeling
 # Turtles are cute
-item	53	Syncopated Turtle
+item	55	Syncopated Turtle
 # The original
-item	54	Baby Gravy Fairy
+item	56	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
-item	55	Mutant Fire Ant
+item	57	Mutant Fire Ant
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
@@ -236,31 +238,34 @@ meat	23	Nervous Tick
 meat	24	Cymbal-Playing Monkey
 meat	25	Cheshire Bat
 # Fairychauns
-meat	26	Cat Burglar
-meat	27	Blavious Kloop
-meat	28	Adventurous Spelunker
-meat	29	Hippo Ballerina
-meat	30	Dancing Frog
-meat	31	Cheshire Bat
-meat	32	Piano Cat
-meat	33	Psychedelic Bear
-meat	34	Casagnova Gnome
-meat	35	Jitterbug
+meat	26	Chest Mimic
+meat	27	Fist Turkey
+meat	28	Cat Burglar
+meat	29	Angry Jung Man
+meat	30	Grimstone Golem
+meat	31	Adventurous Spelunker
+meat	32	Blavious Kloop
+meat	33	Hippo Ballerina
+meat	34	Dancing Frog
+meat	35	Coffee Pixie
 meat	36	Attention-Deficit Demon
-meat	37	Coffee Pixie
+meat	37	Jitterbug
+meat	38	Casagnova Gnome
+meat	39	Psychedelic Bear
+meat	40	Piano Cat
 # Wowee
-meat	38	Hand Turkey
+meat	41	Hand Turkey
 # Sorry, we don't use him for yellow rays but we can at least use him for meat I guess
-meat	39	He-Boulder
+meat	42	He-Boulder
 # Marginally special leprechauns
-meat	40	Ghost of Crimbo Commerce
-meat	41	Knob Goblin Organ Grinder
+meat	43	Ghost of Crimbo Commerce
+meat	44	Knob Goblin Organ Grinder
 #Mutant Cactus Bud	grimdark:2
-meat	42	Urchin Urchin
+meat	45	Urchin Urchin
 # Memes, doesn't actually give substats apparently
-meat	43	Cornbeefadon
+meat	46	Cornbeefadon
 # The original
-meat	44	Leprechaun
+meat	47	Leprechaun
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)
