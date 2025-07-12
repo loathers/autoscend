@@ -2202,7 +2202,7 @@ float provideFamExp(int amt, location loc, boolean doEquips, boolean doEverythin
 				Blue Swayed, //+X/5, decreasing by 5 every 5 turns
 				Warm Shoulders, //+5
 			]{
-				while(have_effect(eff) == 0 || (eff == $effect[Blue Swayed] && have_effect(eff) < 31))
+				while(have_effect(eff) == 0 || (eff == $effect[Blue Swayed] && have_effect(eff) < 31) && auto_totalEffectWishesAvailable() > 0)
 				{
 					if(!speculative)
 						success = auto_wishForEffect(eff);
