@@ -996,10 +996,29 @@ boolean auto_meggFight(monster mon, boolean speculative)
 	{
 		return false;
 	}
-	if(!auto_haveMeggEgg(mon))
+
+	if(speculative)
 	{
 		c2t_megg_preAdv();
-		c2t_megg_extract(mon);
+		if(auto_haveMeggEgg(mon) || (c2t_megg_maxed() contains mon && $familiar[chest mimic].experience >= 100))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	if(!auto_haveMeggEgg(mon))
+	{
+		if ($familiar[chest mimic].experience >= 100)
+		{
+			c2t_megg_extract(mon);
+		}
+		else
+		{
+			return false;
+		}
 	}
 	if(!auto_haveMeggEgg(mon))
 	{
@@ -1012,6 +1031,28 @@ boolean auto_meggFight(monster mon, boolean speculative)
 	}
 	
 	handleTracker(mon, $familiar[chest mimic], "auto_copies");
+	
+	// From here adapted from c2t_megg_fight
+	item egg = $item[mimic egg];
+	buffer page;
+	string monstring;
+	//go
+	page = visit_url(`inv_use.php?pwd={my_hash()}&which=3&whichitem={egg.id}`,false,true);
 
-	return c2t_megg_fight(mon);
+	//choice check
+	if (!handling_choice() || last_choice() != 1516)
+	{
+		auto_log_error("Couldn't enter choice adventure to fight eggs.");
+		return false;
+	}
+
+	//check if available
+	monstring = mon.id.to_string();
+	if (!page.contains_text(`<option value="{monstring}">`)) {
+		visit_url("main.php",false,true);//don't get stuck in choice
+		auto_log_error(`{mon} not found to fight`);
+		return false;
+	}
+
+	return autoAdvBypass(`choice.php?pwd&whichchoice=1516&option=1&mid={monstring}`);
 }
