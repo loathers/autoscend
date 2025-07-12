@@ -296,7 +296,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Power of Heka], 10, 1, 10);
 			buffMaintain($effect[Hide of Sobek], 10, 1, 10);
 
-			if(!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, Pirates of the Garbage Barges, The Secret Government Laboratory] contains my_location()))
+			if(!($locations[The Hippy Camp, The Outskirts Of Cobb\'s Knob, Pirates of the Garbage Barges, The Secret Government Laboratory] contains my_location()))
 			{
 				buffMaintain($effect[Bounty of Renenutet], 10, 1, 10);
 			}

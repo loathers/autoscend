@@ -45,6 +45,10 @@ boolean ht_equip_hats()
                 skip = true;
             }
         }
+        if(equipped_amount(it) > 0)
+        {
+            skip = true;
+        }
         if(!skip && auto_can_equip(it))
         {
             equip(it);
