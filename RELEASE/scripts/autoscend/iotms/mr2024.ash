@@ -1015,6 +1015,7 @@ boolean auto_meggFight(monster mon, boolean speculative)
 	}
 	if(!auto_haveMeggEgg(mon))
 	{
+		c2t_megg_preAdv();
 		if ($familiar[chest mimic].experience >= 100)
 		{
 			c2t_megg_extract(mon);
