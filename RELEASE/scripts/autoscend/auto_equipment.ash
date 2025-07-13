@@ -60,6 +60,10 @@ boolean autoEquip(item it)
 // mostly for the Antique Machete and unstable fulminate
 boolean autoForceEquip(slot s, item it, boolean noMaximize)
 {
+	if(it == $item[none])
+	{
+		return equip(s, it);
+	}
 	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
 		return false;
@@ -1426,4 +1430,22 @@ boolean auto_loadEquipped(item[int] loadEquip)
 		}
 	}
 	return true;
+}
+
+int[slot] powerMultipliers()
+{
+	int[slot] multiplier;
+	multiplier[$slot[hat]] = 1;
+    multiplier[$slot[pants]] = 1;
+    if(have_skill($skill[Tao of the Terrapin]))
+    {
+        multiplier[$slot[hat]] += 1;
+        multiplier[$slot[pants]] += 1;
+    }
+    if(have_effect($effect[Hammertime]) > 0)
+    {
+        multiplier[$slot[pants]] += 3;
+    }
+
+	return multiplier;
 }
