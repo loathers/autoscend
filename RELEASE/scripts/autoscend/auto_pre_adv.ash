@@ -248,6 +248,11 @@ boolean auto_pre_adventure()
 		use_skill($skill[Dismiss Pasta Thrall]);
 	}
 
+	//save some MP while buffing
+	item[int] beforeBuffs = auto_saveEquipped();
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
+
 	if(place == $location[The Smut Orc Logging Camp])
 	{
 		prepareForSmutOrcs();
@@ -890,6 +895,8 @@ boolean auto_pre_adventure()
 	{
 		januaryToteAcquire($item[Wad Of Used Tape]);
 	}
+
+	removeFromMaximize("-1000mana cost");
 
 	// EQUIP MAXIMIZED GEAR
 	auto_ghost_prep(place);
