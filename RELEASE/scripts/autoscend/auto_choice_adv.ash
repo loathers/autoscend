@@ -324,7 +324,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // always advance to next option via choice 1
 			break;
 		case 606: // Lost in the Great Overlook Lodge
-			if(in_bhy() || in_glover() && item_amount($item[Jar Of Oil]) == 0)
+			if(in_bhy() || in_glover() && options contains 3 && item_amount($item[Jar Of Oil]) == 0)
 			{
 				// we can't make an oil jar to solve the quest, just adventure until the hotel is burned down
 				run_choice(6); // and flee the music NC
