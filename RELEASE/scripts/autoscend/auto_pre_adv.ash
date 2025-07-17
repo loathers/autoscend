@@ -896,10 +896,7 @@ boolean auto_pre_adventure()
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	auto_handleParka(); //same as retrocape above
-	if(auto_handleCCSC() && !have_equipped($item[Candy Cane Sword Cane]))
-	{
-		autoForceEquip($item[Candy Cane Sword Cane]); // Force the candy cane sword cane if June cleaver has been buffed beyond the 1000 bonus boost
-	}
+
 	cli_execute("checkpoint clear");
 
 	//before guaranteed non combats that give stats, overrule maximized equipment to increase stat gains
@@ -917,6 +914,10 @@ boolean auto_pre_adventure()
 	{
 		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat or all stats
 		plumber_forceEquipTool();
+	}
+	if(auto_handleCCSC() && !have_equipped($item[Candy Cane Sword Cane]))
+	{
+		autoForceEquip($item[Candy Cane Sword Cane]); // Force the candy cane sword cane if June cleaver has been buffed beyond the 1000 bonus boost
 	}
 
 	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[The Hippy Camp]) {
