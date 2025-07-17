@@ -523,7 +523,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			restored_amount += numeric_modifier("Bonus Resting MP");
 		}
 
-		if (metadata.name == "disco nap" && auto_haveAprilShowerShield() && get_property("_aprilShowerDiscoNap").to_int() < 5)
+		if (metadata.name == "disco nap" && auto_haveAprilShowerShield() && get_property("_aprilShowerDiscoNap").to_int() < 5 && my_mp() > mp_cost($skill[disco nap]))
 		{
 			restored_amount = 100 - 20 * get_property("_aprilShowerDiscoNap").to_int();
 		}
