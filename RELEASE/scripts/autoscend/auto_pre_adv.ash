@@ -136,8 +136,10 @@ void auto_ghost_prep(location place)
 	int m_spooky = 1;
 	int m_sleaze = 1;
 	int m_stench = 1;
+	float [monster] apprates = auto_combat_appearance_rates(place, true);
 	foreach idx, mob in get_monsters(place)
 	{
+		if(apprates[mob] <= 0) continue; //won't show up because banished or req's not fulfilled
 		if(mob.physical_resistance >= 80)
 		{
 			switch(monster_element(mob))
