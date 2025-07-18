@@ -749,6 +749,14 @@ boolean L8_trapperGroar()
 			set_property("auto_nextEncounter","panicking Knott Yeti");
 		}
 		set_property("auto_nonAdvLoc", true);
+		
+		// Let's whack some free XP on our Chest Mimic (it's a chaun)
+		if (auto_haveChestMimic())
+		{
+			handleFamiliar($familiar[Chest Mimic]);
+			provideFamExp(50, $location[The Boss Bat\'s Lair], true, false);
+		}
+		
 		retval = autoAdv($location[Mist-shrouded Peak]);
 	}
 	if(retval && initial_adv == my_session_adv())

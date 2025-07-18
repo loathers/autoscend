@@ -2056,6 +2056,14 @@ boolean LX_summonMonster()
 		item_amount(oreGoal) < 2 && canYellowRay() && canSummonMonster($monster[mountain man]))
 	{
 		adjustForYellowRayIfPossible();
+		boolean need_dupe    = item_amount(oreGoal) < 1;
+		boolean can_mctwist  = auto_can_equip($item[pro skateboard]) && !get_property("_epicMcTwistUsed").to_boolean();
+		boolean will_mctwist = can_mctwist && need_dupe;
+		auto_log_info("Trying to summon a mountain man"+(will_mctwist?" which we will McTwist.":"."));
+		if (will_mctwist)
+		{
+			autoEquip($item[pro skateboard]);
+		}
 		if(summonMonster($monster[mountain man])) return true;
 	}
 
@@ -2194,6 +2202,12 @@ boolean summonMonster(monster mon, boolean speculative)
 		return true;
 	}
 	// methods which can only summon monsters should be attempted first
+	if(auto_meggFight(mon, speculative))
+	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via chest mimics", "blue");
+		return true;
+	}
+	
 	if(auto_fightLocketMonster(mon, speculative))
 	{
 		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via combat lover's locket", "blue");
