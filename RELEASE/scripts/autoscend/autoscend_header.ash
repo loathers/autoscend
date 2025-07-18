@@ -1891,6 +1891,7 @@ item[int] drops_available();
 item[int] hugpocket_available();
 boolean is_ghost_in_zone(location loc);
 boolean[location] monster_to_location(monster target);
+boolean[location] auto_swoopLocations();
 
 ########################################################################################################
 //Defined in autoscend/auto_util.ash

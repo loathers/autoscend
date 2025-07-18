@@ -542,7 +542,7 @@ boolean auto_pre_adventure()
 	}
 	
 	item bat_wings = $item[bat wings];
-	boolean[location] swoop_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber,The Hidden Temple];
+	boolean[location] swoop_locs = auto_swoopLocations();
 	if ( (swoop_locs contains place || auto_allRifts() contains place) && auto_swoopsRemaining()>0)
 	{
 		autoEquip(bat_wings);
