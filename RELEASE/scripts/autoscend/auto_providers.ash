@@ -24,7 +24,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	}
 
 	if (doEquips) {
-		string max = "200combat " + amt + "max";
+		string max = "201combat " + amt + "max";
 		if (speculative) {
 			simMaximizeWith(loc, max);
 		} else {
