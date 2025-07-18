@@ -721,6 +721,13 @@ boolean autoChooseFamiliar(location place)
 	{
 		famChoice = lookupFamiliarDatafile("drop");
 	}
+
+	//If a fam was selected that is contrary to the Combat Rate we want, deselect it. Probably won't select it in stat or regen but user should get better free-ish fams if it does
+	float famComRate = numeric_modifier(famChoice, "Combat Rate", familiar_weight(famChoice) + weight_adjustment(), familiar_equipped_equipment(famChoice));
+	if((contains_text(get_property("auto_maximize_current"), "-200Combat") && famComRate > 0) || (contains_text(get_property("auto_maximize_current"), "200Combat") && famComRate > 0))
+	{
+		famChoice = $familiar[none];
+	}
 	
 	// Stats from combats makes runs go faster apparently.
 	if (famChoice == $familiar[none] && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {

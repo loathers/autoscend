@@ -2,6 +2,12 @@
 float providePlusCombat(int amt, location loc, boolean doEquips, boolean speculative) {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
+	//if the fam is important enough to add, it will be caught in preAdvUpdateFamiliar
+	if(numeric_modifier(my_familiar(), "Combat Rate", familiar_weight(my_familiar()) + weight_adjustment(), familiar_equipped_equipment(my_familiar())) < 0)
+	{
+		use_familiar($familiar[none]);
+	}
+
 	float alreadyHave = numeric_modifier("Combat Rate");
 	float need = amt - alreadyHave;
 
@@ -72,6 +78,9 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 			if (eff == $effect[Musk of the Moose] && have_effect($effect[Smooth Movements]) > 0) {
 				delta += (-1.0 * numeric_modifier($effect[Smooth Movements], "Combat Rate")); // numeric_modifer doesn't take into account uneffecting the opposite skill so we have to add it manually.
 			}
+			if(eff == $effect[Carlweather\'s Cantata Of Confrontation] && have_effect($effect[The Sonata of Sneakiness]) > 0) {
+				delta += (-1.0 * numeric_modifier($effect[The Sonata of Sneakiness], "Combat Rate"));
+			}
 		}
 		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
 	}
@@ -91,7 +100,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	// Now handle buffs that cost MP, items or other resources
 	
 	// Cheap effects
-	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
+	if(!speculative) shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
 	if (tryEffects($effects[
 		Musk of the Moose,
 		Carlweather's Cantata of Confrontation,
@@ -195,6 +204,12 @@ boolean providePlusCombat(int amt)
 
 float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean speculative) {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " negative combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
+
+	//if the fam is important enough to add, it will be caught in preAdvUpdateFamiliar
+	if(numeric_modifier(my_familiar(), "Combat Rate", familiar_weight(my_familiar()) + weight_adjustment(), familiar_equipped_equipment(my_familiar())) > 0)
+	{
+		use_familiar($familiar[none]);
+	}
 
 	// numeric_modifier will return -combat as a negative value and +combat as a positive value
 	// so we will need to invert the return values otherwise this will be wrong (since amt is supposed to be positive).
@@ -305,7 +320,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 
 	// Now handle buffs that cost MP, items or other resources
 
-	shrugAT($effect[The Sonata of Sneakiness]);
+	if(!speculative) shrugAT($effect[The Sonata of Sneakiness]);
 	if (tryEffects($effects[
 		Shelter Of Shed,
 		Brooding,
