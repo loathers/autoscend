@@ -2156,10 +2156,13 @@ boolean is_ghost_in_zone(location loc)
 		
 	default:
 		//for all other zones
+		float [monster] apprates = auto_combat_appearance_rates(loc, true);
 		foreach idx, mob in get_monsters(loc)
 		{
+			if(apprates[mob] <= 0) continue; //won't show up because banished or req's not fulfilled
 			if (mob.physical_resistance >= 80)
 			{
+				auto_log_info(mob + " is physically resistant");
 				return true;
 			}
 		}
