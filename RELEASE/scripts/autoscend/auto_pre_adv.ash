@@ -814,7 +814,7 @@ boolean auto_pre_adventure()
 	}
 
 	// Path Specific Conditions
-	if(is_professor())  //WereProfessor professor doesn't like ML
+	if(is_professor() || in_plumber())  //Path of the Plumber doesn't need ML and WereProfessor professor doesn't like ML
 	{
 		doML = false;
 		removeML = true;
