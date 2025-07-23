@@ -35,8 +35,7 @@ boolean L8_slopeCasual()
 	{
 		return false;	//does not have unrestricted mall access. we are not in casual or postronin
 	}
-	foreach it in $items[Ninja Carabiner, Ninja Crampons, Ninja Rope,		//ninja climbing gear needed to climb the slope
-	eXtreme scarf, eXtreme mittens, snowboarder pants]						//outfit ensures you can reach 5 cold res needed
+	foreach it in $items[eXtreme scarf, eXtreme mittens, snowboarder pants]						//outfit ensures you can reach 5 cold res needed
 	{
 		if(!auto_buyUpTo(1, it))	//try to buy it or verify we already own it. if fails then do as below
 		{
