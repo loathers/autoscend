@@ -2079,6 +2079,11 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 			retrieve_item(1, $item[super deluxe mushroom]);
 			use(1, $item[super deluxe mushroom]);
 		}
+		if(my_hp() <= 10)
+		{
+			auto_log_info("Spending a turn to heal.");
+			visit_url("place.php?whichplace=mario&action=mush_saveblock");
+		}
 	}
 	else
 	{
