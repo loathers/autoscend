@@ -4947,8 +4947,8 @@ boolean auto_burnMP(int mpToBurn)
 }
 
 boolean can_read_skillbook(item it) {
-	// can't read in Picky
-	if (in_picky()) {
+	// can't read in Picky, Pokefam, Class Act or Journeyman
+	if (in_picky() || in_pokefam() || my_path() == $path[Class Act] || my_path() == $path[Class Act II: A Class For Pigs] || my_path() == $path[Journeyman]) {
 		return false;
 	}
 	// all the normal classes and AoSOL classes are literate
@@ -4979,7 +4979,7 @@ int baseNCForcesToday()
 {
 	int forces = 0;
 	if (auto_havePillKeeper()) {forces = forces + 6;}
-	if (auto_haveAprilingBandHelmet() && available_amount($item[apriling band saxophone])>0) {forces = forces + 3;}
+	if (auto_haveAprilingBandHelmet() && available_amount($item[apriling band tuba])>0) {forces = forces + 3;}
 	if (auto_haveMcHugeLargeSkis()) {forces = forces + 3;}
 	if (auto_hasParka()) {forces = forces + 5;}
 	if (auto_haveCincho()) {forces = forces + 3;} // Not important to calculate this properly here.
