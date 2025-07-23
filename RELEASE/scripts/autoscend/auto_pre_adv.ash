@@ -136,8 +136,10 @@ void auto_ghost_prep(location place)
 	int m_spooky = 1;
 	int m_sleaze = 1;
 	int m_stench = 1;
+	float [monster] apprates = auto_combat_appearance_rates(place, true);
 	foreach idx, mob in get_monsters(place)
 	{
+		if(apprates[mob] <= 0) continue; //won't show up because banished or req's not fulfilled
 		if(mob.physical_resistance >= 80)
 		{
 			switch(monster_element(mob))
@@ -812,7 +814,7 @@ boolean auto_pre_adventure()
 	}
 
 	// Path Specific Conditions
-	if(is_professor())  //WereProfessor professor doesn't like ML
+	if(is_professor() || in_plumber())  //Path of the Plumber doesn't need ML and WereProfessor professor doesn't like ML
 	{
 		doML = false;
 		removeML = true;
