@@ -2067,6 +2067,7 @@ boolean auto_badassBelt();
 void meatReserveMessage();
 void auto_interruptCheck(boolean debug);
 void auto_interruptCheck();
+void auto_interrupt();
 element currentFlavour();
 boolean setFlavour(element ele);
 boolean executeFlavour();
