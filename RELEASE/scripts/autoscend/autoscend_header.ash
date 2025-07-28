@@ -634,6 +634,9 @@ boolean auto_getClanPhotoBoothEffect(effect ef);
 boolean auto_getClanPhotoBoothEffect(effect ef, int n_times);
 boolean auto_getClanPhotoBoothEffect(string ef);
 boolean auto_getClanPhotoBoothEffect(string ef, int n_times);
+boolean auto_haveChestMimic();
+boolean auto_haveMeggEgg(monster mon);
+boolean auto_meggFight(monster mon, boolean speculative);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2025.ash
@@ -1888,6 +1891,7 @@ item[int] drops_available();
 item[int] hugpocket_available();
 boolean is_ghost_in_zone(location loc);
 boolean[location] monster_to_location(monster target);
+boolean[location] auto_swoopLocations();
 
 ########################################################################################################
 //Defined in autoscend/auto_util.ash

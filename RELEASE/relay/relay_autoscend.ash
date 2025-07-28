@@ -418,6 +418,12 @@ void main()
 		generateTrackingData("auto_iotm_claim");
 	}
 	
+	if(get_property("auto_mapperidot") != "")
+	{
+		writeln("<h2>Map the Monsters/Peridot of Peril</h2>");
+		generateTrackingData("auto_mapperidot");
+	}
+	
 	writeln("<h2>Other Stuff</h2>");
 	generateTrackingData("auto_otherstuff");
 
