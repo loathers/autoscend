@@ -861,6 +861,10 @@ boolean in_ggoo();
 boolean LA_grey_goo_tasks();
 
 ########################################################################################################
+//Defined in autoscend/paths/grey_goo.ash
+boolean in_gyou();
+
+########################################################################################################
 //Defined in autoscend/paths/hattrick.ash
 boolean in_hattrick();
 boolean ht_equip_hats();
