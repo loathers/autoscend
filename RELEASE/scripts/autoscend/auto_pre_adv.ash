@@ -615,7 +615,7 @@ boolean auto_pre_adventure()
 		}
 		else if($locations[Vanya's Castle, The Fungus Plains, Megalo-City, Hero's Field, The Palindome] contains place)
 		{
-			//Don't conflict with continuum transfunctioner or talisman o' namislat so equip the flower or hammer instead
+			//Don't want conflict with continuum transfunctioner or talisman o' namislat so equip the flower or hammer instead
 			if(plumber_haveFlower())
 			{
 				auto_log_info("Potential conflict with boots so doing fire flower");
