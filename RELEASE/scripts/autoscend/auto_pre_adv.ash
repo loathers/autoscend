@@ -613,7 +613,7 @@ boolean auto_pre_adventure()
 				abort("I'm scared to adventure in a zone with ghosts without a fire flower. Please fight a bit and buy me a fire flower.");
 			}
 		}
-		else if($locations[Vanya's Castle, The Fungus Plains, Megalo-City, Hero's Field, The Palindome] contains place)
+		else if($locations[Vanya's Castle, The Fungus Plains, Megalo-City, Hero's Field, Inside The Palindome] contains place)
 		{
 			//Don't want conflict with continuum transfunctioner or talisman o' namislat so equip the flower or hammer instead
 			if(plumber_haveFlower())
