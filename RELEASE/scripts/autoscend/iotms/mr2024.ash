@@ -74,6 +74,7 @@ boolean auto_getAprilingBandItems()
 	boolean have_sax  = available_amount($item[Apriling band saxophone]) > 0;
 	boolean have_tuba = available_amount($item[Apriling band tuba]     ) > 0;
 	boolean have_picc = available_amount($item[Apriling band piccolo]  ) > 0;
+	boolean have_toms = available_amount($item[Apriling band quad tom] ) > 0;
 	int instruments_so_far()
 	{
 		return get_property("_aprilBandInstruments").to_int();
@@ -87,6 +88,14 @@ boolean auto_getAprilingBandItems()
 		if (!have_picc && instruments_so_far() < 2) {
 			cli_execute("aprilband item piccolo");
 			track($item[Apriling band piccolo]);
+		}
+	}
+	if (!isHermitAvailable())
+	{
+		//can hopefully get spices for the gremlins and food and also not have to use a drum machine
+		if (!have_toms && instruments_so_far() < 2) {
+			cli_execute("aprilband item tom");
+			track($item[Apriling band quad tom]);
 		}
 	}
 	if (!have_tuba && instruments_so_far() < 2) {
@@ -126,6 +135,24 @@ boolean auto_playAprilTuba()
 {
 	cli_execute("aprilband play tuba");
 	return get_property("noncombatForcerActive").to_boolean();
+}
+
+boolean auto_playAprilTom()
+{
+	int initialTomCount = get_property("_aprilBandTomUses").to_int();
+	string[int] pages;
+	pages[0] = "inventory.php?pwd&iid=11567&action=aprilplay";
+	pages[1] = "main.php";
+	
+	if(autoAdvBypass(0, pages, $location[Noob Cave],""))
+	{
+		if(get_property("_aprilBandTomUses").to_int() > initialTomCount)
+		{
+			handleTracker($monster[Giant Sandworm], $item[Apriling Band quad tom], "auto_copies");
+			return true;
+		}
+	}
+	return false;
 }
 
 boolean auto_setAprilBandNonCombat()
@@ -171,6 +198,13 @@ int auto_AprilPiccoloBoostsLeft()
 	if(!auto_haveAprilingBandHelmet()) {return 0;}
 	if(available_amount($item[Apriling band piccolo]) == 0) {return 0;}
 	return 3-get_property("_aprilBandPiccoloUses").to_int();
+}
+
+int auto_AprilSandwormsLeft()
+{
+	if(!auto_haveAprilingBandHelmet()) {return 0;}
+	if(available_amount($item[Apriling band quad tom]) == 0) {return 0;}
+	return 3-get_property("_aprilBandTomUses").to_int();
 }
 
 boolean auto_haveDarts()

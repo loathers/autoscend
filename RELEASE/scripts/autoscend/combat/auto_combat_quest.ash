@@ -176,7 +176,7 @@ string auto_JunkyardCombatHandler(int round, monster enemy, string text)
 		}
 	}
 
-	foreach it in $items[Seal Tooth, Spectre Scepter, Doc Galaktik\'s Pungent Unguent]
+	foreach it in $items[Seal Tooth, Spices, Spectre Scepter, Doc Galaktik\'s Pungent Unguent]
 	{
 		if(canUse(it, false) && glover_usable(it))
 		{
