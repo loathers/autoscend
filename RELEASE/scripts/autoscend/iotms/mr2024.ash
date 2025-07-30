@@ -141,10 +141,10 @@ boolean auto_playAprilTom()
 {
 	int initialTomCount = get_property("_aprilBandTomUses").to_int();
 	string[int] pages;
-	pages[0] = "inventory.php?pwd&iid=11567&action=aprilplay";
+	pages[0] = `inventory.php?pwd={my_hash()}&iid=11567&action=aprilplay`;
 	pages[1] = "main.php";
 	
-	if(autoAdvBypass(0, pages, $location[Noob Cave],""))
+	if(autoAdvBypass(1, pages, $location[Noob Cave],""))
 	{
 		if(get_property("_aprilBandTomUses").to_int() > initialTomCount)
 		{
