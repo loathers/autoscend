@@ -966,6 +966,7 @@ void nuclear_initializeSettings();
 void nuclear_initializeDay(int day);
 boolean nuclear_buySkills();
 boolean LM_nuclear();
+int nuclear_accessLevels();
 
 ########################################################################################################
 //Defined in autoscend/paths/one_crazy_random_summer.ash

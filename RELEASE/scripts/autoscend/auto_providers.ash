@@ -868,7 +868,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			}
 			// need to use now so maximizer will see it
 			use_familiar(resfam);
-			if(resfam == $familiar[Trick-or-Treating Tot])
+			if(resfam == $familiar[Trick-or-Treating Tot] && (!in_nuclear() || (in_nuclear() && nuclear_accessLevels() > 1)))
 			{
 				cli_execute("acquire 1 li'l candy corn costume");
 			}
