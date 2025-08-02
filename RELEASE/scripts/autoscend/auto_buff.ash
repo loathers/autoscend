@@ -370,7 +370,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[El Aroma de Salsa]:			useItem = $item[Salsa Caliente&trade; candle];	break;
 	case $effect[Eldritch Alignment]:			useItem = $item[Eldritch Alignment Spray];		break;
 	case $effect[Elemental Saucesphere]:		useSkill = $skill[Elemental Saucesphere];		break;
-	case $effect[Ellipsoidtine]:
+	case $effect[Ellipsoidtined]:
 		if(auto_canARBSupplyDrop())
 		{
 			if(speculative)
@@ -605,14 +605,14 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[Mariachi Mood]:				useSkill = $skill[Moxie of the Mariachi];		break;
 	case $effect[Marinated]:					useItem = $item[Bowl of Marinade];				break;
-	case $effect[Material Intel]:
+	case $effect[Materiel Intel]:
 		if(auto_canARBSupplyDrop())
 		{
 			if(speculative)
 			{
 				return true;
 			}
-			ARBSupplyDrop("material intel");
+			ARBSupplyDrop("materiel intel");
 			ret = true;
 		}																						break;
 	case $effect[Mathematically Precise]:

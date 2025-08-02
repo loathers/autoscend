@@ -889,7 +889,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		// effects from items that we'd have to buy or have found, organized by cost per res/all res as of 8/2/25
 		if(tryEffects($effects[
 			minor invulnerability, //+3 all res, 5 meat/adv, 33 meat/res, 6.7 meat/all res
-			Incredibly Healthy //+3 all res, 78.6 meat/adv, 131 meat/res, 26.2 meat/all res
+			Incredibly Healthy, //+3 all res, 78.6 meat/adv, 131 meat/res, 26.2 meat/all res
 			Oiled-Up, //+2 all res, 14.6 meat/adv, 196 meat/res, 29.2 meat/all res
 			Well-Oiled, //+1 all res, 78.6 meat/adv, 393 meat/res, 78.6 meat/all res
 			Red Door Syndrome, //+2 all res, 100 meat/adv, 500 meat/res, 100 meat/all res

@@ -105,8 +105,8 @@ boolean ARBSupplyDrop(string req)
             break;
         case "item drop":
         case "item":
-        case "material intel":
-            radio = "material intel";
+        case "materiel intel":
+            radio = "materiel intel";
             break;
         case "res":
         case "wsb":
