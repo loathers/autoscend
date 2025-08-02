@@ -106,10 +106,18 @@ boolean ARBSupplyDrop(string req)
         case "item drop":
         case "item":
         case "materiel intel":
+            if(get_property("_alliedRadioMaterielIntel").to_boolean())
+            {
+                return false;
+            }
             radio = "materiel intel";
             break;
         case "res":
         case "wsb":
+            if(get_property("_alliedRadioWildsunBoon").to_boolean())
+            {
+                return false;
+            }
             radio = "wildsun boon";
             break;
         case "food":
@@ -128,7 +136,7 @@ boolean ARBSupplyDrop(string req)
             radio = "radio";
             break;
     }
-    if (cli_execute(`allied_radio({radio})`))
+    if (allied_radio(radio))
     {
         handleTracker($item[Allied Radio Backpack], radio, "auto_iotm_claim");
         return true;
