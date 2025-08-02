@@ -4516,7 +4516,7 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "Apriling tuba");
 		return true;
 	}
-	else if(auto_haveMcHugeLargeSkis() && get_property("_mcHugeLargeAvalancheUses") < 3 && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the spikes
+	else if(auto_haveMcHugeLargeSkis() && get_property("_mcHugeLargeAvalancheUses") < 3 && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the skis
 	{
 		if(speculative) return true;
 		// avalanche require a combat to active
@@ -4534,6 +4534,17 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "jurassic parka");
 		// track desired NC location so we know where to go when parka spikes are preped
 		set_property("auto_forceNonCombatLocation", loc);
+		return true;
+	}
+	else if(auto_canARBSupplyDrop())
+	{
+		if(speculative) return true;
+		ARBSupplyDrop("sniper support");
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [Allied Radio Backpack] but was unable to.");
+		}
+		set_property("auto_forceNonCombatSource", "Allied Radio Backpack");
 		return true;
 	}
 	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && !isActuallyEd()

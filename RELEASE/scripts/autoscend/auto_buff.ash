@@ -370,6 +370,16 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[El Aroma de Salsa]:			useItem = $item[Salsa Caliente&trade; candle];	break;
 	case $effect[Eldritch Alignment]:			useItem = $item[Eldritch Alignment Spray];		break;
 	case $effect[Elemental Saucesphere]:		useSkill = $skill[Elemental Saucesphere];		break;
+	case $effect[Ellipsoidtine]:
+		if(auto_canARBSupplyDrop())
+		{
+			if(speculative)
+			{
+				return true;
+			}
+			ARBSupplyDrop("ellipsoidtine");
+			ret = true;
+		}																						break;
 	case $effect[Empathy]:
 		if(pathHasFamiliar() && auto_have_skill($skill[Empathy of the Newt]) && acquireTotem() && auto_unequipAprilShieldBuff())
 		{
@@ -595,6 +605,16 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[Mariachi Mood]:				useSkill = $skill[Moxie of the Mariachi];		break;
 	case $effect[Marinated]:					useItem = $item[Bowl of Marinade];				break;
+	case $effect[Material Intel]:
+		if(auto_canARBSupplyDrop())
+		{
+			if(speculative)
+			{
+				return true;
+			}
+			ARBSupplyDrop("material intel");
+			ret = true;
+		}																						break;
 	case $effect[Mathematically Precise]:
 		if(is_unrestricted($item[Crimbot ROM: Mathematical Precision]))
 		{
@@ -1003,6 +1023,16 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Well-Swabbed Ear]:				useItem = $item[Swabbie&trade; Swab];			break;
 	case $effect[Wet and Greedy]:				useItem = $item[Goblin Water];					break;
 	case $effect[Whispering Strands]:			useSkill = $skill[none];						break;
+	case $effect[Wildsun Boon]:
+		if(auto_canARBSupplyDrop())
+		{
+			if(speculative)
+			{
+				return true;
+			}
+			ARBSupplyDrop("wsb");
+			ret = true;
+		}																						break;
 	case $effect[Wisdom of Others]:				useItem = $item[filled mosquito];				break;
 	case $effect[Wisdom of the Autumn Years]:	useItem = $item[Autumn years wisdom];			break;
 	case $effect[Wisdom of Thoth]:				useSkill = $skill[Wisdom of Thoth];				break;
