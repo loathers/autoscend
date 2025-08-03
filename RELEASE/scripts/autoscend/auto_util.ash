@@ -923,7 +923,10 @@ boolean auto_wantToFreeRun(monster enemy, location loc)
 
 boolean canFreeRun(monster enemy, location loc)
 {
-	// are there any restrictions on free running?
+	// pokefam cannot use skills or items
+	if (in_pokefam()) {
+		return false;
+	}
 	return true;
 }
 
