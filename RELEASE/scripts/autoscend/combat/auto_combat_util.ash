@@ -1053,6 +1053,10 @@ string yellowRayCombatString()
 
 string replaceMonsterCombatString(monster target, boolean inCombat)
 {
+	if(in_pokefam())
+	{
+		return "";
+	}
 	if(auto_macrometeoritesAvailable() > 0 && auto_is_valid($skill[Macrometeorite]))
 	{
 		return "skill " + $skill[Macrometeorite];
