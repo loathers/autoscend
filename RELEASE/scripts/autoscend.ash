@@ -1,4 +1,4 @@
-since r28545;	//  correct names for cola battlefield zones
+since r28573;	// prismatic beret soft cap
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -814,7 +814,7 @@ void initializeDay(int day)
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174&confirm=Yep.", true);
 		set_property("auto_disableAdventureHandling", true);
-		autoAdv(1, $location[Video Game Level 1]);
+		autoAdv(1, $location[[DungeonFAQ - Level 1]]);
 		set_property("auto_disableAdventureHandling", false);
 		if(item_amount($item[Dungeoneering Kit]) > 0)
 		{
@@ -1233,6 +1233,7 @@ boolean dailyEvents()
 	auto_getAprilingBandItems();
 	auto_MayamClaimAll();
 	auto_buyFromSeptEmberStore();
+	auto_getGlobs();
 	
 	return true;
 }
@@ -1397,7 +1398,7 @@ boolean adventureFailureHandler()
 
 		if(tooManyAdventures && isActuallyEd())
 		{
-			if ($location[Hippy Camp] == place)
+			if ($location[The Hippy Camp] == place)
 			{
 				tooManyAdventures = false;
 			}

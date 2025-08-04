@@ -1071,8 +1071,8 @@ boolean[location] citizenZones(string goal)
 	}
 	if(goal == "mp")
 	{
-		return $locations[The Upper Chamber, Inside the Palindome, A-boo Peak, Hippy Camp, Megalo-City, Shadow Rift, Vanya's Castle,
-		The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,	The Haunted Ballroom,
+		return $locations[The Upper Chamber, Inside the Palindome, A-boo Peak, The Hippy Camp, Megalo-City, Shadow Rift, Vanya's Castle,
+		The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), The Orcish Frat House, The Middle Chamber, The Black Forest,	The Haunted Ballroom,
 		The Red Zeppelin, The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
 	}
 	if(goal == "spec")

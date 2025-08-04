@@ -265,7 +265,7 @@ void oldPeoplePlantStuff()
 		cli_execute("florist plant Pitcher Plant");
 		cli_execute("florist plant Canned Spinach");
 	}
-	else if((my_location() == $location[Hippy Camp]) && (my_daycount() == 1))
+	else if((my_location() == $location[The Hippy Camp]) && (my_daycount() == 1))
 	{
 		cli_execute("florist plant Seltzer Watercress");
 		cli_execute("florist plant Rad-ish Radish");

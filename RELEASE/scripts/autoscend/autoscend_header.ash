@@ -651,9 +651,21 @@ boolean auto_setLeprecondo();
 boolean auto_useLeprecondoDrops();
 int auto_punchOutsLeft();
 int auto_afterimagesLeft();
+boolean auto_haveAprilShowerShield();
+boolean auto_getGlobs();
+boolean auto_equipAprilShieldBuff();
+boolean auto_unequipAprilShieldBuff();
+boolean auto_canNorthernExplosionFE();
 boolean auto_havePeridot();
 void peridotChoiceHandler(int choice, string page);
 boolean inperilLocations(int loc);
+boolean auto_havePrismaticBeret();
+boolean canBusk();
+int[string] beretPower(item[int] allHats, item[int] allShirts, item[int] allPants);
+string bestBusk(int[string] powers, string effectMultiplier);
+boolean beretBusk(string effectMultiplier);
+boolean beretBusk();
+boolean auto_haveCoolerYeti();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1509,6 +1521,7 @@ boolean autoCleanse();
 boolean autoDrink(int howMany, item toDrink);
 boolean autoDrink(int howMany, item toDrink, boolean silent);
 boolean autoOverdrink(int howMany, item toOverdrink);
+float minAdvPerDrunk(item toDrink);
 string cafeFoodName(int id);
 string cafeDrinkName(int id);
 boolean autoDrinkCafe(int howmany, int id);
@@ -1561,7 +1574,9 @@ boolean auto_craftIfFree(item it);
 string getMaximizeSlotPref(slot s);
 boolean autoEquip(slot s, item it);
 boolean autoEquip(item it);
+boolean autoForceEquip(slot s, item it, boolean noMaximize);
 boolean autoForceEquip(slot s, item it);
+boolean autoForceEquip(item it, boolean noMaximize);
 boolean autoForceEquip(item it);
 boolean autoOutfit(string toWear);
 boolean autoStripOutfit(string toRemove);
@@ -1596,6 +1611,9 @@ boolean auto_forceEquipSword();
 boolean is_watch(item it);
 int[item] auto_getAllEquipabble();
 int[item] auto_getAllEquipabble(slot s);
+item[int] auto_saveEquipped();
+boolean auto_loadEquipped(item[int] loadEquip);
+int[slot] powerMultipliers();
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash

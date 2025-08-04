@@ -296,7 +296,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Power of Heka], 10, 1, 10);
 			buffMaintain($effect[Hide of Sobek], 10, 1, 10);
 
-			if(!($locations[Hippy Camp, The Outskirts Of Cobb\'s Knob, Pirates of the Garbage Barges, The Secret Government Laboratory] contains my_location()))
+			if(!($locations[The Hippy Camp, The Outskirts Of Cobb\'s Knob, Pirates of the Garbage Barges, The Secret Government Laboratory] contains my_location()))
 			{
 				buffMaintain($effect[Bounty of Renenutet], 10, 1, 10);
 			}
@@ -507,6 +507,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Leash of Linguini], 20, 1, 10);
 			if(regen > 10.0)
 			{
+				buffMaintain($effect[Thoughtful Empathy], 25, 1, 10);
 				buffMaintain($effect[Empathy], 25, 1, 10);
 			}
 		}
@@ -568,6 +569,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Leash of Linguini], 30, 1, 10);
 			if(regen > 10.0)
 			{
+				buffMaintain($effect[Thoughtful Empathy], 35, 1, 10);
 				buffMaintain($effect[Empathy], 35, 1, 10);
 			}
 		}
@@ -635,6 +637,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
 			if(regen > 4.0)
 			{
+				buffMaintain($effect[Thoughtful Empathy], 50, 1, 10);
 				buffMaintain($effect[Empathy], 50, 1, 10);
 			}
 		}
@@ -746,6 +749,7 @@ boolean auto_post_adventure()
 		if(buff_familiar)
 		{
 			buffMaintain($effect[Empathy], 50, 1, 10);
+			buffMaintain($effect[Thoughtful Empathy], 50, 1, 10);
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
 		}
 
