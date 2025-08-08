@@ -77,16 +77,16 @@ void auto_useWardrobe()
 }
 
 boolean auto_canARBSupplyDrop()
-{
-    if(!(possessEquipment($item[Allied Radio Backpack]) || item_amount($item[handheld Allied radio]) > 0))
+{    if(item_amount($item[handheld Allied radio]) > 0)
     {
-        return false;
+        return true;
     }
-    if(get_property("_alliedRadioDropsUsed").to_int() < 3 || item_amount($item[handheld Allied radio]) > 0)
+    if(get_property("_alliedRadioDropsUsed").to_int() < 3 && possessEquipment($item[Allied Radio Backpack]))
     {
         return true;
     }
     return false;
+
 }
 
 boolean ARBSupplyDrop(string req)
