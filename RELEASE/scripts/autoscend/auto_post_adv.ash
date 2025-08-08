@@ -199,6 +199,11 @@ boolean auto_post_adventure()
 		return true;
 	}
 
+	//save some MP while buffing
+	item[int] beforeBuffs = auto_saveEquipped();
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
+
 	if(have_effect($effect[Cunctatitis]) > 0)
 	{
 		if((my_mp() >= 12) && auto_have_skill($skill[Disco Nap]))
@@ -851,9 +856,12 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);		//familiar acts more often
 		}
 		buffMaintain($effect[A Few Extra Pounds], 200, 1, 2);
-		buffMaintain($effect[Boon of the War Snapper], 200, 1, 5);
-		buffMaintain($effect[Boon of She-Who-Was], 200, 1, 5);
-		buffMaintain($effect[Boon of the Storm Tortoise], 200, 1, 5);
+		if(my_class() == $class[Turtle Tamer])
+		{
+			buffMaintain($effect[Boon of the War Snapper], 200, 1, 5);
+			buffMaintain($effect[Boon of She-Who-Was], 200, 1, 5);
+			buffMaintain($effect[Boon of the Storm Tortoise], 200, 1, 5);
+		}
 
 		buffMaintain($effect[Ruthlessly Efficient], 50, 1, 5);
 		buffMaintain($effect[Mathematically Precise], 150, 1, 5);
@@ -1105,7 +1113,9 @@ boolean auto_post_adventure()
 			abort("We have been disavowed...");
 		}
 	}
-
+	
+	//Remove the mana cost reduction from maximize statement
+	removeFromMaximize("-1000mana cost");
 	remove_property("auto_combatDirective");
 	remove_property("auto_digitizeDirective");
 	
