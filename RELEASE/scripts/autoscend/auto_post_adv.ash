@@ -547,6 +547,8 @@ boolean auto_post_adventure()
 		{
 			buffMaintain($effect[Disco Fever], 40, 1, 10);
 		}
+		item[int] preShield = auto_saveEquipped();
+		auto_equipAprilShieldBuff(); //get secondary buffs provided by shield when the trivial class skills are used
 		buffMaintain($effect[Saucemastery], 25, 1, 4);
 		buffMaintain($effect[Pasta Oneness], 25, 1, 4);
 
@@ -557,6 +559,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Mariachi Mood], 25, 1, 4);
 			buffMaintain($effect[Disco State of Mind], 25, 1, 4);
 		}
+		auto_loadEquipped(preShield);
 	}
 	else if(my_maxmp() < 80)
 	{
@@ -615,6 +618,8 @@ boolean auto_post_adventure()
 		{
 			buffMaintain($effect[Disco Fever], 60, 1, 10);
 		}
+		item[int] preShield = auto_saveEquipped();
+		auto_equipAprilShieldBuff(); //get secondary buffs provided by shield when the trivial class skills are used
 		buffMaintain($effect[Saucemastery], 50, 3, 4);
 		buffMaintain($effect[Pasta Oneness], 50, 3, 4);
 		if(regen > 8.2)
@@ -624,6 +629,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Mariachi Mood], 50, 3, 4);
 			buffMaintain($effect[Disco State of Mind], 50, 3, 4);
 		}
+		auto_loadEquipped(preShield);
 	}
 	else if(my_maxmp() < 170)
 	{
@@ -816,6 +822,8 @@ boolean auto_post_adventure()
 		{
 			buffMaintain($effect[Disco Fever], 120, 1, 10);
 		}
+		item[int] preShield = auto_saveEquipped();
+		auto_equipAprilShieldBuff(); //get secondary buffs provided by shield when the trivial class skills are used
 		if(my_primestat() == $stat[Muscle])
 		{
 			buffMaintain($effect[Seal Clubbing Frenzy], 200, 5, 4);
@@ -831,6 +839,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Saucemastery], 200, 5, 4);
 			buffMaintain($effect[Pasta Oneness], 200, 5, 4);
 		}
+		auto_loadEquipped(preShield);
 		if(familiar_weight(my_familiar()) < 20)
 		{
 			buffMaintain($effect[Curiosity of Br\'er Tarrypin], 50, 1, 2);
