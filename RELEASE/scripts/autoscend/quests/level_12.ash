@@ -100,30 +100,13 @@ int auto_warEnemiesRemaining()
 	// Returns the number of enemies left to defeat in the fratboy-hippy war.
 	
 	int enemiesRemaining = 1000;
-	if(in_pokefam())
+	if(auto_warSide() == "hippy")
 	{
-		//Pokefam only has 500 total to defeat with all 6 sidequests immediately accessible.
-		//TODO: find out if pokefam starts with 500 enemies defeated out of 1000 total. or 0 defeated out of 500 total
-		//current code assumes it starts with 0 defeated out of 500 total. this is a guess.
-		if(auto_warSide() == "hippy")
-		{
-			enemiesRemaining = 500 - get_property("fratboysDefeated").to_int();
-		}
-		else
-		{
-			enemiesRemaining = 500 - get_property("hippiesDefeated").to_int();
-		}
+		enemiesRemaining = 1000 - get_property("fratboysDefeated").to_int();
 	}
 	else
 	{
-		if(auto_warSide() == "hippy")
-		{
-			enemiesRemaining = 1000 - get_property("fratboysDefeated").to_int();
-		}
-		else
-		{
-			enemiesRemaining = 1000 - get_property("hippiesDefeated").to_int();
-		}
+		enemiesRemaining = 1000 - get_property("hippiesDefeated").to_int();
 	}
 	return enemiesRemaining;
 }
