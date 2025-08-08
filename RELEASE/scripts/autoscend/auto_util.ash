@@ -4948,12 +4948,15 @@ boolean auto_burnMP(int mpToBurn)
 
 	item[int] equipped = auto_saveEquipped();
 
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
 	auto_equipAprilShieldBuff(); //useful additional buffs when equipped
 
 	// record starting MP
 	int startingMP = my_mp();
 	cli_execute("burn " + mpToBurn);
 	auto_loadEquipped(equipped);
+	removeFromMaximize("-1000mana cost");
 	return startingMP != my_mp();
 }
 
