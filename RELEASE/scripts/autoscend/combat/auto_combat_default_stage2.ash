@@ -178,11 +178,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			combat_status_add("banisher");
 			if(index_of(banishAction, "skill") == 0)
 			{
-				handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
+				handleTracker(monster_phylum(enemy), my_location(), to_skill(substring(banishAction, 6)), "auto_banishes");
 			}
 			else if(index_of(banishAction, "item") == 0)
 			{
-				handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
+				handleTracker(monster_phylum(enemy), my_location(), to_item(substring(banishAction, 5)), "auto_banishes");
 			}
 			else
 			{
