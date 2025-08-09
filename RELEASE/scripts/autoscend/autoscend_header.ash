@@ -85,7 +85,6 @@ boolean elementalPlanes_takeJob(element ele);
 boolean eudora_available();
 boolean[item] eudora_initializeSettings();
 item eudora_current();
-int[item] eudora_xiblaxian();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2007.ash
@@ -575,7 +574,6 @@ boolean auto_haveCCSC();
 boolean auto_handleCCSC();
 int auto_remainingCandyCaneSlashes();
 int auto_remainingCandyCaneStabs();
-void auto_useWardrobe();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2024.ash
@@ -666,6 +664,13 @@ string bestBusk(int[string] powers, string effectMultiplier);
 boolean beretBusk(string effectMultiplier);
 boolean beretBusk();
 boolean auto_haveCoolerYeti();
+
+########################################################################################################
+//Defined in autoscend/iotms/ttt.ash
+int[item] eudora_xiblaxian();
+void auto_useWardrobe();
+boolean auto_canARBSupplyDrop();
+boolean ARBSupplyDrop(string req);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
