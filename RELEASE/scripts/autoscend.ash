@@ -1,4 +1,4 @@
-since r28573;	// prismatic beret soft cap
+since r28604;	// wildsun boon is once/day, allied radio accepts uppercase
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -50,6 +50,7 @@ import <autoscend/iotms/mr2022.ash>
 import <autoscend/iotms/mr2023.ash>
 import <autoscend/iotms/mr2024.ash>
 import <autoscend/iotms/mr2025.ash>
+import <autoscend/iotms/ttt.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>

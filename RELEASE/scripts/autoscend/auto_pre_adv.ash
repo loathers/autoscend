@@ -136,8 +136,10 @@ void auto_ghost_prep(location place)
 	int m_spooky = 1;
 	int m_sleaze = 1;
 	int m_stench = 1;
+	float [monster] apprates = auto_combat_appearance_rates(place, true);
 	foreach idx, mob in get_monsters(place)
 	{
+		if(apprates[mob] <= 0) continue; //won't show up because banished or req's not fulfilled
 		if(mob.physical_resistance >= 80)
 		{
 			switch(monster_element(mob))
@@ -247,6 +249,11 @@ boolean auto_pre_adventure()
 		// vampieroghi can dispell the shaman curse, preventing us from making quest progress
 		use_skill($skill[Dismiss Pasta Thrall]);
 	}
+
+	//save some MP while buffing
+	item[int] beforeBuffs = auto_saveEquipped();
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
 
 	if(place == $location[The Smut Orc Logging Camp])
 	{
@@ -812,7 +819,7 @@ boolean auto_pre_adventure()
 	}
 
 	// Path Specific Conditions
-	if(is_professor())  //WereProfessor professor doesn't like ML
+	if(is_professor() || in_plumber())  //Path of the Plumber doesn't need ML and WereProfessor professor doesn't like ML
 	{
 		doML = false;
 		removeML = true;
@@ -891,15 +898,14 @@ boolean auto_pre_adventure()
 		januaryToteAcquire($item[Wad Of Used Tape]);
 	}
 
+	removeFromMaximize("-1000mana cost");
+
 	// EQUIP MAXIMIZED GEAR
 	auto_ghost_prep(place);
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	auto_handleParka(); //same as retrocape above
-	if(auto_handleCCSC() && !have_equipped($item[Candy Cane Sword Cane]))
-	{
-		autoForceEquip($item[Candy Cane Sword Cane]); // Force the candy cane sword cane if June cleaver has been buffed beyond the 1000 bonus boost
-	}
+
 	cli_execute("checkpoint clear");
 
 	//before guaranteed non combats that give stats, overrule maximized equipment to increase stat gains
@@ -917,6 +923,10 @@ boolean auto_pre_adventure()
 	{
 		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat or all stats
 		plumber_forceEquipTool();
+	}
+	if(auto_handleCCSC() && !have_equipped($item[Candy Cane Sword Cane]))
+	{
+		autoForceEquip($item[Candy Cane Sword Cane]); // Force the candy cane sword cane if June cleaver has been buffed beyond the 1000 bonus boost
 	}
 
 	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[The Hippy Camp]) {
