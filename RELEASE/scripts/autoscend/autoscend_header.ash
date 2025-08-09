@@ -1832,6 +1832,7 @@ boolean acquireHP(int goal, int meat_reserve, boolean freeRest);
 boolean acquireHP(float goalPercent);
 boolean acquireHP(float goalPercent, int meat_reserve);
 boolean acquireHP(float goalPercent, int meat_reserve, boolean freeRest);
+boolean acquireFullHP();
 float mp_regen();
 float hp_regen();
 int doRest();
