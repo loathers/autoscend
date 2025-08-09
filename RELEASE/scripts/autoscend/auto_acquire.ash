@@ -774,7 +774,7 @@ int handlePulls(int day)
 			{
 				pullXWhenHaveY($item[Fake Washboard], 1, 0);
 			}
-			if((item_amount($item[Fake Washboard]) == 0) && (closet_amount($item[Fake Washboard]) == 0))
+			if((item_amount($item[Fake Washboard]) == 0) && (closet_amount($item[Fake Washboard]) == 0) && !auto_turbo())
 			{
 				pullXWhenHaveY($item[numberwang], 1, 0);
 			}
