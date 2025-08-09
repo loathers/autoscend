@@ -2186,7 +2186,7 @@ boolean[location] monster_to_location(monster target)
 
 boolean[location] auto_swoopLocations()
 {
-	return $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber,The Hidden Temple];
+	return $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber, The Hidden Temple, The Goatlet];
 }
 
 
