@@ -689,7 +689,7 @@ void cartographyChoiceHandler(int choice, string page)
 		monster enemy = auto_monsterToMap(my_location(), page);
 		if (enemy != $monster[none])
 		{
-			handleTracker($skill[Map the Monsters], enemy, "auto_otherstuff");
+			handleTracker($skill[Map the Monsters], enemy, "auto_mapperidot");
 			run_choice(1, `heyscriptswhatsupwinkwink={enemy.to_int()}`);
 		}
 		else

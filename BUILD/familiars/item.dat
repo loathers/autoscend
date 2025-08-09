@@ -58,6 +58,9 @@ Grey Goose
 Ghost of Crimbo Carols
 Red-Nosed Snapper
 Pair of Stomping Boots	!path:G-Lover
+# Fairy that gives extra equipment drops. Works as starfish if fed, but we don't feed it.
+Slimeling
+# More slightly special fairies
 Cooler Yeti
 Gelatinous Cubeling
 Steam-Powered Cheerleader
@@ -76,8 +79,6 @@ Crimbo Elf
 Mechanical Songbird
 Grouper Groupie
 Peppermint Rhino
-# Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
-Slimeling
 # Turtles are cute
 Syncopated Turtle
 # The original

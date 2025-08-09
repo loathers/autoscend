@@ -71,3 +71,5 @@ Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
 Mini Kiwi	item:mini kiwi<7
 # use a Peace turkey if all else fails
 Peace Turkey
+# eh, may as well put some XP on the mimic if there's no other drop familiars
+Chest Mimic

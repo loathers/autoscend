@@ -253,10 +253,31 @@ boolean auto_canNorthernExplosionFE()
 	}
 	return true;
 }
+
 boolean auto_havePeridot()
 {
 	item pop = $item[Peridot of Peril];
 	return (auto_is_valid(pop) && possessEquipment(pop));
+}
+
+boolean[monster] peridotManuallyDesiredMonsters()
+{
+	// manually specify some favoured monsters
+	boolean[monster] desired_monsters;
+	desired_monsters[$monster[lobsterfrogman]] = true;
+	desired_monsters[$monster[black panther]] = true;
+	desired_monsters[$monster[white lion]] = true;
+	desired_monsters[$monster[monstrous boiler]] = true;
+	desired_monsters[$monster[modern zmobie]] = true;
+	desired_monsters[$monster[dairy goat]] = true;
+	desired_monsters[$monster[writing desk]] = true;
+	// Quest gremlins need IDs because there's multiple
+	desired_monsters[$monster[547]] = true; // erudite gremlin (tool) 
+	desired_monsters[$monster[549]] = true; // batwinged gremlin (tool)
+	desired_monsters[$monster[551]] = true; // vegetable gremlin (tool)
+	desired_monsters[$monster[553]] = true; // spider gremlin (tool)
+
+	return desired_monsters;
 }
 
 void peridotChoiceHandler(int choice, string page)
@@ -265,6 +286,7 @@ void peridotChoiceHandler(int choice, string page)
 	{
 		run_choice(2); //should never get here but might as well mitigate
 	}
+	
 	monster popChoice;
 	location loc = my_location();
 	matcher mons = create_matcher("bandersnatch\" value=\"(\\d+)", page);
@@ -275,6 +297,12 @@ void peridotChoiceHandler(int choice, string page)
 	{
 		//record the possible monsters and identify the best one to target
 		monOpts[i] = mons.group(1).to_int().to_monster();
+		// Manual monster specifications
+		if (peridotManuallyDesiredMonsters() contains monOpts[i])
+		{
+			bestmon = i;
+			break; // if we've got a force desired monster, don't bother with the rankings any more
+		}
 		if(zoneRank(monOpts[i], loc) <= zoneRank(monOpts[bestmon], loc)) 
 		{
 			bestmon = i;
@@ -284,16 +312,16 @@ void peridotChoiceHandler(int choice, string page)
 	popChoice = monOpts[bestmon];
 	if(popChoice.to_int() == 0) //still nothing found so just peace out
 	{
-		handleTracker($item[Peridot of Peril], loc.to_string(), "Peace out", "auto_otherstuff");
+		handleTracker($item[Peridot of Peril], loc.to_string(), "Peace out", "auto_mapperidot");
 		run_choice(2); //if no match is found, hit the exit choice
 		return;
 	}
-	if(zoneRank(popChoice, loc) != 4) handleTracker($item[Peridot of Peril], loc.to_string(), popChoice.to_string(),"auto_otherstuff");
+	handleTracker($item[Peridot of Peril], loc.to_string(), popChoice.to_string(),"auto_mapperidot");
 	run_choice(1, "bandersnatch=" + popChoice.to_int());
 	return;
 }
 
-boolean inperilLocations(int loc)
+boolean haveUsedPeridot(int loc)
 {
 	string[int] perilLocs = split_string(get_property("_perilLocations"),",");
 	foreach i, str in perilLocs
@@ -304,6 +332,11 @@ boolean inperilLocations(int loc)
 		}
 	}
 	return false;
+}
+
+boolean haveUsedPeridot(location loc)
+{
+	return haveUsedPeridot(loc.to_int());
 }
 
 boolean auto_havePrismaticBeret()

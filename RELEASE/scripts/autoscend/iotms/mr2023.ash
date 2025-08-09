@@ -642,9 +642,12 @@ void auto_scepterSkills()
 	simMaximizeWith("-1000mana cost");
 
 	int manaCostMaximize = simValue("Mana Cost");
-	if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	if (!auto_turbo())
 	{
-		use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+		if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+		{
+			use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+		}
 	}
 }
 

@@ -466,6 +466,10 @@ boolean auto_pre_adventure()
 				adjustForSniffingIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
+			if (auto_havePeridot() && peridotManuallyDesiredMonsters() contains mon && !haveUsedPeridot(place))
+			{
+				zoneHasWantedMonsters = true;
+			}
 		}
 	}
 	if(considerCrystalBallBonus)
@@ -549,7 +553,7 @@ boolean auto_pre_adventure()
 	}
 	
 	item bat_wings = $item[bat wings];
-	boolean[location] swoop_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber,The Hidden Temple];
+	boolean[location] swoop_locs = auto_swoopLocations();
 	if ( (swoop_locs contains place || auto_allRifts() contains place) && auto_swoopsRemaining()>0)
 	{
 		autoEquip(bat_wings);
@@ -569,7 +573,7 @@ boolean auto_pre_adventure()
 		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 
 	}
 
-	if(!inperilLocations(place.id) && auto_havePeridot() && zoneHasWantedMonsters)
+	if(!haveUsedPeridot(place) && auto_havePeridot() && zoneHasWantedMonsters)
 	{
 		//add a large bonus to Peridot of Peril if the zone has wanted monsters and we haven't visited there yet
 		addBonusToMaximize($item[Peridot of Peril], 1000);
@@ -740,8 +744,9 @@ boolean auto_pre_adventure()
 
 
 	// Only cast Paul's pop song if we expect it to more than pay for its own casting.
-	//	Casting before ML variation ensures that this, the more important buff, is cast before ML.
-	if(auto_predictAccordionTurns() >= 8)
+	// Casting before ML variation ensures that this, the more important buff, is cast before ML.
+	// Also check we're not regenning loads of MP already
+	if(auto_predictAccordionTurns() >= 8 && numeric_modifier($modifier[MP Regen Min]) < 5)
 	{
 		buffMaintain($effect[Paul\'s Passionate Pop Song]);
 	}
