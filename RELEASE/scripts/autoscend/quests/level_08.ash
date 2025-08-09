@@ -754,7 +754,7 @@ boolean L8_trapperGroar()
 		if (auto_haveChestMimic())
 		{
 			handleFamiliar($familiar[Chest Mimic]);
-			provideFamExp(50, $location[The Boss Bat\'s Lair], true, false);
+			provideFamExp(50, $location[Mist-shrouded Peak], true, false);
 		}
 		
 		retval = autoAdv($location[Mist-shrouded Peak]);
