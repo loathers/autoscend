@@ -673,7 +673,9 @@ boolean auto_haveCoolerYeti();
 //Defined in autoscend/iotms/ttt.ash
 int[item] eudora_xiblaxian();
 void auto_useWardrobe();
+boolean auto_haveARB();
 boolean auto_canARBSupplyDrop();
+int auto_ARBSupplyDropsLeft();
 boolean ARBSupplyDrop(string req);
 
 ########################################################################################################

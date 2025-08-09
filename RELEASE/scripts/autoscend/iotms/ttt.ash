@@ -76,17 +76,24 @@ void auto_useWardrobe()
 	use($item[wardrobe-o-matic]);
 }
 
-boolean auto_canARBSupplyDrop()
-{    if(item_amount($item[handheld Allied radio]) > 0)
-    {
-        return true;
-    }
-    if(get_property("_alliedRadioDropsUsed").to_int() < 3 && possessEquipment($item[Allied Radio Backpack]))
-    {
-        return true;
-    }
-    return false;
+boolean auto_haveARB()
+{
+    return possessEquipment($item[Allied Radio Backpack]) && auto_is_valid($item[Allied Radio Backpack]);
+}
 
+boolean auto_canARBSupplyDrop()
+{
+    return auto_ARBSupplyDropsLeft() > 0;
+}
+
+int auto_ARBSupplyDropsLeft()
+{
+    if (!auto_is_valid($item[Allied Radio Backpack]))
+    {
+        return 0;
+    }
+    int n_backpack_left = auto_haveARB() ? 3-get_property("_alliedRadioDropsUsed").to_int() : 0;
+    return n_backpack_left + item_amount($item[handheld Allied radio]);
 }
 
 boolean ARBSupplyDrop(string req)

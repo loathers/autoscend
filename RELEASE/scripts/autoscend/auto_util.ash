@@ -5011,7 +5011,7 @@ int baseNCForcesToday()
 	if (auto_haveMcHugeLargeSkis()) {forces = forces + 3;}
 	if (auto_hasParka()) {forces = forces + 5;}
 	if (auto_haveCincho()) {forces = forces + 3;} // Not important to calculate this properly here.
-	
+	if (auto_haveARB()) {forces = forces + 3;}
 	return forces;
 }
 
@@ -5023,6 +5023,7 @@ int remainingNCForcesToday()
 	forces = forces + auto_McLargeHugeForcesLeft();
 	forces = forces + auto_ParkaSpikeForcesLeft();
 	forces = forces + auto_cinchForcesLeft();
+	forces = forces + auto_ARBSupplyDropsLeft();
 	
 	return forces;
 }
@@ -5035,6 +5036,7 @@ int turnsUsedByRemainingNCForcesToday()
 	forces = forces + 2 * auto_McLargeHugeForcesLeft();
 	forces = forces + 2 * auto_ParkaSpikeForcesLeft();
 	forces = forces + auto_cinchForcesLeft();
+	forces = forces + auto_ARBSupplyDropsLeft();
 	
 	return forces;
 }
