@@ -1965,7 +1965,7 @@ boolean acquireMP(float goalPercent, int meat_reserve, boolean useFreeRests)
  */
 boolean acquireHP()
 {
-	return acquireHP(my_maxhp());
+	return acquireHP(min(my_maxhp(),800));
 }
 
 /**
