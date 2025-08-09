@@ -333,19 +333,19 @@ boolean beehiveConsider(boolean at_tower) // returns true if we can kill without
 	int damage_sources = 1; // basic hit
 	
 	// Familiars
-	if (have_familiar($familiar[glover]) && auto_is_valid($familiar[glover]))
+	if (auto_have_familiar($familiar[glover]))
 	{
 		damage_sources += 11;
 	}
-	if (have_familiar($familiar[shorter-order cook]) && auto_is_valid($familiar[shorter-order cook]))
+	if (auto_have_familiar($familiar[shorter-order cook]))
 	{
 		damage_sources += 6;
 	}
-	else if (have_familiar($familiar[mu]) && auto_is_valid($familiar[mu]))
+	else if (auto_have_familiar($familiar[mu]))
 	{
 		damage_sources += 5;
 	}
-	else if (have_familiar($familiar[imitation crab]) && auto_is_valid($familiar[imitation crab]))
+	else if (auto_have_familiar($familiar[imitation crab]))
 	{
 		damage_sources += 4;
 	}
@@ -1151,7 +1151,7 @@ boolean L13_towerNSTowerSkin()
 	
 	foreach fam in $familiars[glover, shorter-order cook, mu, imitation crab] // crab is evergreen, buy one
 	{
-		if (have_familiar(fam) && auto_is_valid(fam))
+		if (auto_have_familiar(fam))
 		{
 			handleFamiliar(fam);
 			use_familiar(fam);
@@ -1164,7 +1164,7 @@ boolean L13_towerNSTowerSkin()
 	{
 		foreach fam in $familiars[angry goat, MagiMechTech MicroMechaMech, star starfish, mosquito]
 		{
-			if (have_familiar(fam) && auto_is_valid(fam))
+			if (auto_have_familiar(fam))
 			{
 				handleFamiliar(fam);
 				use_familiar(fam);
