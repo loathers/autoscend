@@ -649,6 +649,15 @@ int handlePulls(int day)
 					}
 				}
 			}
+			
+			// get a wet stew
+			foreach it in $items[wet stew]
+			{
+				if (!pulledToday(it))
+				{
+					pullXWhenHaveY(it, 1, 0);
+				}
+			}
 		}
 
 		// pulls for small path
