@@ -1035,8 +1035,6 @@ boolean auto_meggFight(monster mon, boolean speculative)
 		return true;
 	}
 	
-	handleTracker(mon, $familiar[chest mimic], "auto_copies");
-	
 	// From here adapted from c2t_megg_fight
 	item egg = $item[mimic egg];
 	buffer page;
@@ -1059,5 +1057,10 @@ boolean auto_meggFight(monster mon, boolean speculative)
 		return false;
 	}
 
-	return autoAdvBypass(`choice.php?pwd&whichchoice=1516&option=1&mid={monstring}`);
+	if(autoAdvBypass(`choice.php?pwd&whichchoice=1516&option=1&mid={monstring}`))
+	{
+		handleTracker(mon, $familiar[chest mimic], "auto_copies");
+		return true;
+	}
+	return false;
 }
