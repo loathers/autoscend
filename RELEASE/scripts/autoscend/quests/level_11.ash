@@ -1641,10 +1641,6 @@ void hiddenCityChoiceHandler(int choice)
 		{
 			run_choice(1); // fight the spirit
 		}
-		else if(in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions())
-		{
-			run_choice(3); // relocate lawyers to park
-		}
 		else if(available_choice_options() contains 4 && have_effect($effect[Thrice-Cursed]) == 0) // Use CCSC to get Cursed +1
 		{
 			run_choice(4);
