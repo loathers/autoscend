@@ -633,7 +633,10 @@ boolean LX_getLadySpookyravensFinestGown() {
 	if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 		needSpectacles = false;
 	}
-	else if(needCamera && needSpectacles) {
+	if (in_pokefam()) {
+		needCamera = false;
+	}
+	if(needCamera && needSpectacles) {
 		// if in a path that needs both you want a two night stand with ornate, olfacting ornate nightstand is a problem
 		// for the script because it will work against the elegant nightstand and most olfaction skills aren't cancelled
 		// easily without changing locations, but Nosy Nose will be turned off once it's no longer the used familiar
