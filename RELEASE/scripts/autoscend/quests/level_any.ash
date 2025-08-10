@@ -548,7 +548,7 @@ boolean LX_fatLootToken()
 		//wait until daily dungeon is done before considering doing fantasy realm
 		if(fantasyRealmToken()) return true;
 	}
-	if(internalQuestStatus("questL13Final") == 5 || auto_turbo())
+	if(towerKeyCount(false) < 3 && (internalQuestStatus("questL13Final") == 5 || auto_turbo()))
 	{
 		// at NS tower door and still need hero keys or going for turbo
 

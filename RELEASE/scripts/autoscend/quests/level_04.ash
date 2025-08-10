@@ -122,6 +122,13 @@ boolean L4_batCave()
 		}
 		int batskinBelt = item_amount($item[Batskin Belt]);
 		auto_change_mcd(4); // get the pants from the Boss Bat.
+		
+		// Let's whack some free XP on our Chest Mimic (it's a chaun)
+		if (auto_haveChestMimic())
+		{
+			handleFamiliar($familiar[Chest Mimic]);
+			provideFamExp(50, $location[The Boss Bat\'s Lair], true, false);
+		}
 		autoAdv($location[The Boss Bat\'s Lair]);
 		# POCKET FAMILIARS remove once mafia tracks this
 		if(item_amount($item[Batskin Belt]) != batskinBelt)
