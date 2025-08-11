@@ -1014,6 +1014,7 @@ void picky_startAscension();
 boolean in_pokefam();
 void pokefam_initializeSettings();
 string pokefam_defaultMaximizeStatement();
+void pokefam_getHats();
 boolean pokefam_makeTeam();
 boolean L12_pokefam_clearBattlefield();
 

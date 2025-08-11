@@ -30,6 +30,23 @@ string pokefam_defaultMaximizeStatement()
 	return res;
 }
 
+void pokefam_getHats()
+{
+	if (!in_pokefam()) {
+		return;
+	}
+	if (item_amount($item[1,960 pok&eacute;dollar bill]) < 50) {
+		return;
+	}
+	foreach it in $items[Team Avarice cap, Team Sloth cap, Team Wrath cap, Mu cap]
+	{
+		if(!possessEquipment(it))
+		{
+			retrieve_item(1, it);
+		}
+	}
+}
+
 boolean pokefam_makeTeam()
 {
 	if(in_pokefam())

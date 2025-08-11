@@ -1932,6 +1932,7 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	pokefam_getHats();
 	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
