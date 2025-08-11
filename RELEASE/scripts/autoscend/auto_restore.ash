@@ -2022,10 +2022,12 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 	}
 	
 	// HP is irrelevant in Pocket Familiars, this removes the function to restore HP
-	if(in_pokefam())
+	// except in the case of A-Boo Peak, meeting Dr. Awkward, and the hedge maze
+	if(in_pokefam() && !get_property("_auto_forcePokefamRestore").to_boolean())
 	{
 		return false;
 	}
+	set_property("_auto_forcePokefamRestore", false);
 
 	//owning a hand in glove breaks maxHP tracking. need to check possession rather than equipped because unequipping it also breaks it. in fact it causes us to get stuck in an infinite loop of trying to restore hp when already at max HP.
 	//mafia devs think it is actually a kol bug so they won't fix it. https://kolmafia.us/showthread.php?25214

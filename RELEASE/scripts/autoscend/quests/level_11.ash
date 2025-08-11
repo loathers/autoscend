@@ -3166,6 +3166,7 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				auto_log_info("Oh no, we died from reading a book. I'm going to take a nap.", "blue");
+				set_property("_auto_forcePokefamRestore", true);
 				acquireHP();
 				bat_reallyPickSkills(20);
 			}

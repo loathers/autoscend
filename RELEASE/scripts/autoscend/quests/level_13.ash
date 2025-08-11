@@ -916,6 +916,7 @@ boolean L13_towerNSHedge()
 
 	maximize_hedge();
 	cli_execute("auto_pre_adv");
+	set_property("_auto_forcePokefamRestore", true);
 	if(!acquireFullHP())
 	{
 		// couldn't heal so do slow route. May die to fast route

@@ -672,7 +672,8 @@ boolean L9_aBooPeak()
 					set_property("auto_aboopending", 0);
 				}
 			}
-			acquireHP();
+			set_property("_auto_forcePokefamRestore", true);
+			acquireFullHP();
 			if ((my_hp() * 4) < my_maxhp() && item_amount($item[Scroll of Drastic Healing]) > 0 && (!isActuallyEd() || !in_darkGyffte()))
 			{
 				use(1, $item[Scroll of Drastic Healing]);
