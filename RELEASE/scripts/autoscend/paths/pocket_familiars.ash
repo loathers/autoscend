@@ -35,12 +35,13 @@ void pokefam_getHats()
 	if (!in_pokefam()) {
 		return;
 	}
+	visit_url("shop.php?whichshop=pokefam");
 	if (item_amount($item[1,960 pok&eacute;dollar bill]) < 50) {
 		return;
 	}
 	foreach it in $items[Team Avarice cap, Team Sloth cap, Team Wrath cap, Mu cap]
 	{
-		if(!possessEquipment(it))
+		if(!possessEquipment(it) && item_amount($item[1,960 pok&eacute;dollar bill]) >= 50)
 		{
 			retrieve_item(1, it);
 		}
