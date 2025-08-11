@@ -1618,6 +1618,10 @@ boolean L11_hiddenTavernUnlock(boolean force)
 		if(!in_hardcore())
 		{
 			pullXWhenHaveY($item[Book of Matches], 1, 0);
+			if(item_amount($item[Book of Matches]) == 0)
+			{
+				auto_makeMonkeyPawWish($item[Book of Matches]);
+			}
 		}
 	}
 
