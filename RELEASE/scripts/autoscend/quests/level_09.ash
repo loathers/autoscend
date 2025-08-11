@@ -844,7 +844,7 @@ boolean L9_twinPeak()
 
 	auto_log_info("Twin Peak", "blue");
 
-	if(item_amount($item[Rusty Hedge Trimmers]) == 0 && $location[Twin Peak].turns_spent == 0)
+	if(item_amount($item[Rusty Hedge Trimmers]) == 0 && $location[Twin Peak].turns_spent == 0 && auto_hasAutumnaton())
 	{
 		// wish for trimmer so we can later send fallbot for the rest
 		auto_makeMonkeyPawWish($item[Rusty Hedge Trimmers]);
