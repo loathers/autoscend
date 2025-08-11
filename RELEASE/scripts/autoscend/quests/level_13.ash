@@ -1544,9 +1544,16 @@ boolean L13_towerNSTowerShadow()
 	{
 		abort("Robot shadow not currently automated. Pleasae kill your shadow manually then run me again");
 	}
+
 	if (get_property("auto_towerBreak").to_lower_case() == "shadow" || get_property("auto_towerBreak").to_lower_case() == "the shadow" || get_property("auto_towerBreak").to_lower_case() == "level 5")
 	{
 		abort("auto_towerBreak set to abort here.");
+	}
+
+	if (in_pokefam()) {
+		// challenge shadow to pokefam battle
+		autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
+		return true;
 	}
 
 	int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]) + item_amount($item[scented massage oil]);
