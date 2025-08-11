@@ -1128,7 +1128,7 @@ boolean L13_towerNSTowerSkin()
 	{
 		abort("auto_towerBreak set to abort here.");
 	}
-	if (item_amount($item[Beehive]) > 0)
+	if (item_amount($item[Beehive]) > 0 || in_pokefam())
 	{
 		return autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 	}
