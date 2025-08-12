@@ -1198,14 +1198,33 @@ boolean L12_gremlins()
 			auto_buyUpTo(30, $item[Doc Galaktik\'s Pungent Unguent]);
 		}
 	}
-	else
+	else if(item_amount($item[Seal Tooth]) == 0)
 	{
+		acquireHermitItem($item[Seal Tooth]);
 		if(item_amount($item[Seal Tooth]) == 0)
 		{
-			acquireHermitItem($item[Seal Tooth]);
-			if(item_amount($item[Seal Tooth]) == 0)
+			abort("We don't have a seal tooth. Stasising Gremlins is not going to go well if you lack something to stasis them with.");
+		}
+	}
+	else
+	{
+		if(item_amount($item[spices]) == 0)
+		{
+			if(hidden_temple_unlocked())
 			{
-				abort("We don't have a seal tooth. Stasising Gremlins is not going to go well if you lack something to stasis them with.");
+				autoAdv($location[The Spooky Forest]); //Try to get Arboreal Respite so we can get spices
+			}
+			if(available_amount($item[Apriling band quad tom]) > 0)
+			{
+				int needDesert = 0;
+				if(get_property("desertExploration").to_int() < 100)
+				{
+					needDesert = 1;
+				}
+				while(auto_AprilSandwormsLeft() > needDesert)
+				{
+					auto_playAprilTom(); //use apriling band quad tom to maybe get spices from a sandworm while keeping a tom playing to summon a sandworm
+				}
 			}
 		}
 	}
