@@ -5,3 +5,4 @@ github Ezandora/Voting-Booth
 github loathers/excavator release
 github loathers/combo release
 github C2Talon/c2t_apron master
+github C2Talon/c2t_megg master

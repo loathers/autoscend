@@ -250,6 +250,11 @@ boolean auto_pre_adventure()
 		use_skill($skill[Dismiss Pasta Thrall]);
 	}
 
+	//save some MP while buffing
+	item[int] beforeBuffs = auto_saveEquipped();
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
+
 	if(place == $location[The Smut Orc Logging Camp])
 	{
 		prepareForSmutOrcs();
@@ -461,6 +466,10 @@ boolean auto_pre_adventure()
 				adjustForSniffingIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
+			if (auto_havePeridot() && peridotManuallyDesiredMonsters() contains mon && !haveUsedPeridot(place))
+			{
+				zoneHasWantedMonsters = true;
+			}
 		}
 	}
 	if(considerCrystalBallBonus)
@@ -544,7 +553,7 @@ boolean auto_pre_adventure()
 	}
 	
 	item bat_wings = $item[bat wings];
-	boolean[location] swoop_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber,The Hidden Temple];
+	boolean[location] swoop_locs = auto_swoopLocations();
 	if ( (swoop_locs contains place || auto_allRifts() contains place) && auto_swoopsRemaining()>0)
 	{
 		autoEquip(bat_wings);
@@ -564,7 +573,7 @@ boolean auto_pre_adventure()
 		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 
 	}
 
-	if(!inperilLocations(place.id) && auto_havePeridot() && zoneHasWantedMonsters)
+	if(!haveUsedPeridot(place) && auto_havePeridot() && zoneHasWantedMonsters)
 	{
 		//add a large bonus to Peridot of Peril if the zone has wanted monsters and we haven't visited there yet
 		addBonusToMaximize($item[Peridot of Peril], 1000);
@@ -753,8 +762,9 @@ boolean auto_pre_adventure()
 
 
 	// Only cast Paul's pop song if we expect it to more than pay for its own casting.
-	//	Casting before ML variation ensures that this, the more important buff, is cast before ML.
-	if(auto_predictAccordionTurns() >= 8)
+	// Casting before ML variation ensures that this, the more important buff, is cast before ML.
+	// Also check we're not regenning loads of MP already
+	if(auto_predictAccordionTurns() >= 8 && numeric_modifier($modifier[MP Regen Min]) < 5)
 	{
 		buffMaintain($effect[Paul\'s Passionate Pop Song]);
 	}
@@ -911,15 +921,14 @@ boolean auto_pre_adventure()
 		januaryToteAcquire($item[Wad Of Used Tape]);
 	}
 
+	removeFromMaximize("-1000mana cost");
+
 	// EQUIP MAXIMIZED GEAR
 	auto_ghost_prep(place);
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	auto_handleParka(); //same as retrocape above
-	if(auto_handleCCSC() && !have_equipped($item[Candy Cane Sword Cane]))
-	{
-		autoForceEquip($item[Candy Cane Sword Cane]); // Force the candy cane sword cane if June cleaver has been buffed beyond the 1000 bonus boost
-	}
+
 	cli_execute("checkpoint clear");
 
 	//before guaranteed non combats that give stats, overrule maximized equipment to increase stat gains
@@ -937,6 +946,10 @@ boolean auto_pre_adventure()
 	{
 		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat or all stats
 		plumber_forceEquipTool();
+	}
+	if(auto_handleCCSC() && !have_equipped($item[Candy Cane Sword Cane]))
+	{
+		autoForceEquip($item[Candy Cane Sword Cane]); // Force the candy cane sword cane if June cleaver has been buffed beyond the 1000 bonus boost
 	}
 
 	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[The Hippy Camp]) {

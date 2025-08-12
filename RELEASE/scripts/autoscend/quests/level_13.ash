@@ -916,7 +916,7 @@ boolean L13_towerNSHedge()
 
 	maximize_hedge();
 	cli_execute("auto_pre_adv");
-	if(!acquireHP())
+	if(!acquireFullHP())
 	{
 		// couldn't heal so do slow route. May die to fast route
 		set_property("auto_hedge", "slow");
@@ -1287,7 +1287,7 @@ boolean L13_towerNSTowerSkin()
 	
 	// Should we be casting shell up here? I do not understand it. If we got this far we should win regardless.
 	
-	acquireHP();
+	acquireFullHP();
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 	if(internalQuestStatus("questL13Final") < 7)
 	{
@@ -1320,7 +1320,7 @@ boolean L13_towerNSTowerMeat()
 		acquireMP(30,0);
 	}
 
-	acquireHP();
+	acquireFullHP();
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);
 	return true;
 }
@@ -1502,7 +1502,7 @@ boolean L13_towerNSTowerBones()
 	}
 	
 	acquireMP(216, 0);
-	acquireHP();
+	acquireFullHP();
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
 	if(internalQuestStatus("questL13Final") < 9)
 	{
@@ -1599,7 +1599,7 @@ boolean L13_towerNSTowerShadow()
 		buffMaintain($effect[Spiky Hair]);
 	}
 	cli_execute("scripts/autoscend/auto_post_adv.ash");
-	if (!acquireHP())
+	if (!acquireFullHP())
 	{
 		abort("Failed to restore max hp for shadow");
 	}

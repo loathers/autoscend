@@ -523,7 +523,7 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			restored_amount += numeric_modifier("Bonus Resting MP");
 		}
 
-		if (metadata.name == "disco nap" && auto_haveAprilShowerShield() && get_property("_aprilShowerDiscoNap").to_int() < 5)
+		if (metadata.name == "disco nap" && auto_haveAprilShowerShield() && get_property("_aprilShowerDiscoNap").to_int() < 5 && my_mp() > mp_cost($skill[disco nap]))
 		{
 			restored_amount = 100 - 20 * get_property("_aprilShowerDiscoNap").to_int();
 		}
@@ -1959,11 +1959,21 @@ boolean acquireMP(float goalPercent, int meat_reserve, boolean useFreeRests)
 }
 
 /**
- * Try to acquire your max hp (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire the smaller of your max HP and 800 HP (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= my_maxhp() after attempting to restore.
  */
 boolean acquireHP()
+{
+	return acquireHP(min(my_maxhp(),800));
+}
+
+/**
+ * Try to acquire your max hp (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ *
+ * returns true if my_hp() >= my_maxhp() after attempting to restore.
+ */
+boolean acquireFullHP()
 {
 	return acquireHP(my_maxhp());
 }

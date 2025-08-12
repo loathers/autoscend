@@ -199,6 +199,11 @@ boolean auto_post_adventure()
 		return true;
 	}
 
+	//save some MP while buffing
+	item[int] beforeBuffs = auto_saveEquipped();
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
+
 	if(have_effect($effect[Cunctatitis]) > 0)
 	{
 		if((my_mp() >= 12) && auto_have_skill($skill[Disco Nap]))
@@ -547,6 +552,8 @@ boolean auto_post_adventure()
 		{
 			buffMaintain($effect[Disco Fever], 40, 1, 10);
 		}
+		item[int] preShield = auto_saveEquipped();
+		auto_equipAprilShieldBuff(); //get secondary buffs provided by shield when the trivial class skills are used
 		buffMaintain($effect[Saucemastery], 25, 1, 4);
 		buffMaintain($effect[Pasta Oneness], 25, 1, 4);
 
@@ -557,6 +564,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Mariachi Mood], 25, 1, 4);
 			buffMaintain($effect[Disco State of Mind], 25, 1, 4);
 		}
+		auto_loadEquipped(preShield);
 	}
 	else if(my_maxmp() < 80)
 	{
@@ -615,6 +623,8 @@ boolean auto_post_adventure()
 		{
 			buffMaintain($effect[Disco Fever], 60, 1, 10);
 		}
+		item[int] preShield = auto_saveEquipped();
+		auto_equipAprilShieldBuff(); //get secondary buffs provided by shield when the trivial class skills are used
 		buffMaintain($effect[Saucemastery], 50, 3, 4);
 		buffMaintain($effect[Pasta Oneness], 50, 3, 4);
 		if(regen > 8.2)
@@ -624,6 +634,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Mariachi Mood], 50, 3, 4);
 			buffMaintain($effect[Disco State of Mind], 50, 3, 4);
 		}
+		auto_loadEquipped(preShield);
 	}
 	else if(my_maxmp() < 170)
 	{
@@ -816,6 +827,8 @@ boolean auto_post_adventure()
 		{
 			buffMaintain($effect[Disco Fever], 120, 1, 10);
 		}
+		item[int] preShield = auto_saveEquipped();
+		auto_equipAprilShieldBuff(); //get secondary buffs provided by shield when the trivial class skills are used
 		if(my_primestat() == $stat[Muscle])
 		{
 			buffMaintain($effect[Seal Clubbing Frenzy], 200, 5, 4);
@@ -831,6 +844,7 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Saucemastery], 200, 5, 4);
 			buffMaintain($effect[Pasta Oneness], 200, 5, 4);
 		}
+		auto_loadEquipped(preShield);
 		if(familiar_weight(my_familiar()) < 20)
 		{
 			buffMaintain($effect[Curiosity of Br\'er Tarrypin], 50, 1, 2);
@@ -842,9 +856,12 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Jingle Jangle Jingle], 120, 1, 2);		//familiar acts more often
 		}
 		buffMaintain($effect[A Few Extra Pounds], 200, 1, 2);
-		buffMaintain($effect[Boon of the War Snapper], 200, 1, 5);
-		buffMaintain($effect[Boon of She-Who-Was], 200, 1, 5);
-		buffMaintain($effect[Boon of the Storm Tortoise], 200, 1, 5);
+		if(my_class() == $class[Turtle Tamer])
+		{
+			buffMaintain($effect[Boon of the War Snapper], 200, 1, 5);
+			buffMaintain($effect[Boon of She-Who-Was], 200, 1, 5);
+			buffMaintain($effect[Boon of the Storm Tortoise], 200, 1, 5);
+		}
 
 		buffMaintain($effect[Ruthlessly Efficient], 50, 1, 5);
 		buffMaintain($effect[Mathematically Precise], 150, 1, 5);
@@ -1096,7 +1113,9 @@ boolean auto_post_adventure()
 			abort("We have been disavowed...");
 		}
 	}
-
+	
+	//Remove the mana cost reduction from maximize statement
+	removeFromMaximize("-1000mana cost");
 	remove_property("auto_combatDirective");
 	remove_property("auto_digitizeDirective");
 	

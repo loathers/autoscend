@@ -1,4 +1,4 @@
-since r28573;	// prismatic beret soft cap
+since r28604;	// wildsun boon is once/day, allied radio accepts uppercase
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -50,6 +50,7 @@ import <autoscend/iotms/mr2022.ash>
 import <autoscend/iotms/mr2023.ash>
 import <autoscend/iotms/mr2024.ash>
 import <autoscend/iotms/mr2025.ash>
+import <autoscend/iotms/ttt.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
@@ -229,6 +230,7 @@ void initializeSettings() {
 	set_property("auto_leaflet_done", false);
 	set_property("auto_lucky", "");
 	set_property("auto_luckySource", "none");
+	set_property("auto_mapperidot", "");
 	set_property("auto_modernzmobiecount", "");
 	set_property("auto_powerfulglove", "");
 	set_property("auto_otherstuff", "");
@@ -983,6 +985,13 @@ void initializeDay(int day)
 				foreach fam in $familiars[ghost of crimbo carols, ghost of crimbo commerce, ghost of crimbo cheer]
 				{
 					if (have_familiar(fam) && !in_bhy())
+					{
+						use_familiar(fam);
+					}
+				}
+				foreach fam in $familiars[chest mimic, cooler yeti]
+				{
+					if (have_familiar(fam))
 					{
 						use_familiar(fam);
 					}

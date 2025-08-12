@@ -642,9 +642,12 @@ void auto_scepterSkills()
 	simMaximizeWith("-1000mana cost");
 
 	int manaCostMaximize = simValue("Mana Cost");
-	if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	if (!auto_turbo())
 	{
-		use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+		if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+		{
+			use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+		}
 	}
 }
 
@@ -1379,37 +1382,3 @@ int auto_remainingCandyCaneStabs()
 	return 11-get_property("_surprisinglySweetStabUsed").to_int();
 }
 
-void auto_useWardrobe()
-{
-	if(!auto_is_valid($item[wardrobe-o-matic]))
-	{
-		return;
-	}
-	if(item_amount($item[wardrobe-o-matic]) == 0)
-	{
-		return;
-	}
-	// check one of the 3 prefs which get set when wardrobe is used each day
-	if(get_property("_futuristicHatModifier") != "")
-	{
-		return;
-	}
-	// wait for level 5 to get an upgraded wardrobe
-	if(my_level() < 5)
-	{
-		return;
-	}
-	// Zooto will be at 10 in very few turns
-	if(my_level() < 10 && in_zootomist())
-	{
-		return;
-	}
-	// wait for level 15 if close and not at NS tower
-	if(my_level() == 14 && internalQuestStatus("questL13Final") < 0)
-	{
-		return;
-	}
-	// only need to use it so we get the hat, shirt, fam equip
-	// let maximizer handle if any of it is worth equipping
-	use($item[wardrobe-o-matic]);
-}

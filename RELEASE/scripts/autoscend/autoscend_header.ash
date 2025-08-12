@@ -85,7 +85,6 @@ boolean elementalPlanes_takeJob(element ele);
 boolean eudora_available();
 boolean[item] eudora_initializeSettings();
 item eudora_current();
-int[item] eudora_xiblaxian();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2007.ash
@@ -575,7 +574,6 @@ boolean auto_haveCCSC();
 boolean auto_handleCCSC();
 int auto_remainingCandyCaneSlashes();
 int auto_remainingCandyCaneStabs();
-void auto_useWardrobe();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2024.ash
@@ -636,6 +634,9 @@ boolean auto_getClanPhotoBoothEffect(effect ef);
 boolean auto_getClanPhotoBoothEffect(effect ef, int n_times);
 boolean auto_getClanPhotoBoothEffect(string ef);
 boolean auto_getClanPhotoBoothEffect(string ef, int n_times);
+boolean auto_haveChestMimic();
+boolean auto_haveMeggEgg(monster mon);
+boolean auto_meggFight(monster mon, boolean speculative);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2025.ash
@@ -659,8 +660,9 @@ boolean auto_equipAprilShieldBuff();
 boolean auto_unequipAprilShieldBuff();
 boolean auto_canNorthernExplosionFE();
 boolean auto_havePeridot();
+boolean[monster] peridotManuallyDesiredMonsters();
 void peridotChoiceHandler(int choice, string page);
-boolean inperilLocations(int loc);
+boolean haveUsedPeridot(int loc);
 boolean auto_havePrismaticBeret();
 boolean canBusk();
 int[string] beretPower(item[int] allHats, item[int] allShirts, item[int] allPants);
@@ -668,6 +670,15 @@ string bestBusk(int[string] powers, string effectMultiplier);
 boolean beretBusk(string effectMultiplier);
 boolean beretBusk();
 boolean auto_haveCoolerYeti();
+
+########################################################################################################
+//Defined in autoscend/iotms/ttt.ash
+int[item] eudora_xiblaxian();
+void auto_useWardrobe();
+boolean auto_haveARB();
+boolean auto_canARBSupplyDrop();
+int auto_ARBSupplyDropsLeft();
+boolean ARBSupplyDrop(string req);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -1828,6 +1839,7 @@ boolean acquireHP(int goal, int meat_reserve, boolean freeRest);
 boolean acquireHP(float goalPercent);
 boolean acquireHP(float goalPercent, int meat_reserve);
 boolean acquireHP(float goalPercent, int meat_reserve, boolean freeRest);
+boolean acquireFullHP();
 float mp_regen();
 float hp_regen();
 int doRest();
@@ -1895,6 +1907,7 @@ item[int] drops_available();
 item[int] hugpocket_available();
 boolean is_ghost_in_zone(location loc);
 boolean[location] monster_to_location(monster target);
+boolean[location] auto_swoopLocations();
 
 ########################################################################################################
 //Defined in autoscend/auto_util.ash

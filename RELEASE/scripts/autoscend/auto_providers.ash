@@ -886,31 +886,31 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 
 	if(doEquips)
 	{
-		// effects from items that we'd have to buy or have found
+		// effects from items that we'd have to buy or have found, organized by cost per res/all res as of 8/2/25
 		if(tryEffects($effects[
-			Red Door Syndrome,
-			Well-Oiled,
-			Oiled-Up,
-			Egged On,
-			Flame-Retardant Trousers,
-			Fireproof Lips,
-			Insulated Trousers,
-			Fever From the Flavor,
-			Smelly Pants,
-			Neutered Nostrils,
-			Can't Smell Nothin\',
-			Spookypants,
-			Balls of Ectoplasm,
-			Hyphemariffic,
-			Sleaze-Resistant Trousers,
-			Hyperoffended,
-			Covered in the Rainbow,
-			Temporarily Filtered,
-			Gritty,
-			Too Shamed,
-			Twangy,
-			minor invulnerability,
-			Incredibly Healthy
+			minor invulnerability, //+3 all res, 5 meat/adv, 33 meat/res, 6.7 meat/all res
+			Incredibly Healthy, //+3 all res, 78.6 meat/adv, 131 meat/res, 26.2 meat/all res
+			Oiled-Up, //+2 all res, 14.6 meat/adv, 196 meat/res, 29.2 meat/all res
+			Well-Oiled, //+1 all res, 78.6 meat/adv, 393 meat/res, 78.6 meat/all res
+			Red Door Syndrome, //+2 all res, 100 meat/adv, 500 meat/res, 100 meat/all res
+			Covered in the Rainbow, //+2 all res, 15 meat/adv, 600 meat/res, 120 meat/all res
+			Egged On, //+3 all res, 625 meat/adv, 2083 meat/res, 417 meat/all res
+			Flame-Retardant Trousers, //+1 hot res, 20 meat/adv, 100 meat/res
+			Fireproof Lips, //+9 hot res, 1100 meat/adv, 1222 meat/res
+			Insulated Trousers, //+1 cold res, 20 meat/adv, 100 meat/res
+			Fever From the Flavor, //+9 cold res, 1774 meat/adv, 1971 meat/res
+			Neutered Nostrils, //+2 stench res, 10 meat/adv, 50 meat/res
+			Smelly Pants, //+1 stench res, 20 meat/adv, 100 meat/res
+			Temporarily Filtered, //+5 stench res, 91.25 meat/adv, 365 meat/res
+			Twangy, //+4 stench/sleaze res, 70 meat/adv, 525 meat/res, 263 meat/both res
+			Can't Smell Nothin\', //+9 stench res, 1000 meat/adv, 1111 meat/res
+			Balls of Ectoplasm, //+1 spooky res, 10 meat/adv, 100 meat/res
+			Spookypants, //+1 spooky res, 20 meat/adv, 100 meat/res
+			Hyphemariffic, //+9 spooky res, 1717 meat/adv, 1907 meat/res
+			Gritty, //+3 spooky res, 490 meat/adv, 3266 meat/res
+			Sleaze-Resistant Trousers, //+1 sleaze res, 20 meat/adv, 100 meat/res
+			Hyperoffended, //+9 sleaze res, 1391 meat/adv, 1545 meat/res
+			Too Shamed, //+3 sleaze res, 425 meat/adv, 2833 meat/res
 		]))
 			return result();
 	}
@@ -924,6 +924,10 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			]))
 				return result();
 		}
+		if(tryEffects($effects[
+			Wildsun boon, //+3 all res, 100 advs, 1/day
+			]))
+				return result();
 	}
 
 	return result();
@@ -1954,6 +1958,12 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		if(canBusk())
 		{
 			beretBusk("item drop");
+		}
+		if(pass())
+			return result();
+		if(auto_canARBSupplyDrop())
+		{
+			ARBSupplyDrop("item drop");
 		}
 		if(pass())
 			return result();
