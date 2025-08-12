@@ -3363,6 +3363,10 @@ boolean auto_is_valid(item it)
 	{
 		return is_trendy(it);
 	}
+	if(is_boris() && (it.to_slot() == $slot[off-hand] || (it.to_slot() == $slot[weapon] && it != $item[Trusty])))
+	{
+		return false;
+	}
 	
 	return is_unrestricted(it);
 }
