@@ -93,6 +93,8 @@ drop	31	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
 drop	32	Mini Kiwi	item:mini kiwi<7
 # use a Peace turkey if all else fails
 drop	33	Peace Turkey
+# eh, may as well put some XP on the mimic if there's no other drop familiars
+drop	34	Chest Mimic
 
 # We want to delevel, but don't want to deal damage
 gremlins	0	Nosy Nose
@@ -169,26 +171,27 @@ item	35	Grey Goose
 item	36	Ghost of Crimbo Carols
 item	37	Red-Nosed Snapper
 item	38	Pair of Stomping Boots	!path:G-Lover
-item	39	Cooler Yeti
-item	40	Gelatinous Cubeling
-item	41	Steam-Powered Cheerleader
-item	42	Obtuse Angel
-item	43	Green Pixie
+# Fairy that gives extra equipment drops. Works as starfish if fed, but we don't feed it.
+item	39	Slimeling
+# More slightly special fairies
+item	40	Cooler Yeti
+item	41	Gelatinous Cubeling
+item	42	Steam-Powered Cheerleader
+item	43	Obtuse Angel
+item	44	Green Pixie
 # Elemental fairies
-item	44	Sleazy Gravy Fairy
-item	45	Stinky Gravy Fairy
-item	46	Flaming Gravy Fairy
-item	47	Frozen Gravy Fairy
-item	48	Spooky Gravy Fairy
+item	45	Sleazy Gravy Fairy
+item	46	Stinky Gravy Fairy
+item	47	Flaming Gravy Fairy
+item	48	Frozen Gravy Fairy
+item	49	Spooky Gravy Fairy
 # Physical damage fairy
-item	49	Bowlet
-item	50	Crimbo Elf
+item	50	Bowlet
+item	51	Crimbo Elf
 # Barely special fairies
-item	51	Mechanical Songbird
-item	52	Grouper Groupie
-item	53	Peppermint Rhino
-# Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
-item	54	Slimeling
+item	52	Mechanical Songbird
+item	53	Grouper Groupie
+item	54	Peppermint Rhino
 # Turtles are cute
 item	55	Syncopated Turtle
 # The original

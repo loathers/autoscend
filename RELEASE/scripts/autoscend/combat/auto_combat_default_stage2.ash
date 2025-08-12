@@ -75,6 +75,20 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 	
+	// Dupe Tomb Rat King drops with pro skateboard
+	if(enemy == $monster[Tomb Rat King] && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
+	{
+		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
+		return useSkill($skill[Do an epic McTwist!]);
+	}
+
+	// Dupe Mountain Man drops with pro skateboard on day 1, not in turbo
+	if(enemy == $monster[Mountain Man] && my_daycount()==1 && !auto_turbo() && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
+	{
+		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
+		return useSkill($skill[Do an epic McTwist!]);
+	}
+	
 	// yellowray instantly kills the enemy and makes them drop all items they can drop.
 	// don't yellow ray if we'll be dousing
 	skill douse = $skill[douse foe];
@@ -82,7 +96,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	boolean douseAvailable = canUse(douse, false) && auto_dousesRemaining()>0;
 	boolean willDouse = isDouseTarget && douseAvailable;
 	
-	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()) && !willDouse)
+	// And don't yellow ray if we'll be swooping
+	boolean swoopAvailable = canUse($skill[Swoop like a Bat], true) && get_property("_batWingsSwoopUsed").to_int() < 11;
+	boolean willSwoop = auto_swoopLocations() contains my_location() && swoopAvailable;
+	
+	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()) && !willDouse && !willSwoop)
 	{
 		string combatAction = yellowRayCombatString(enemy, true, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains enemy);
 		if(combatAction != "")
@@ -160,11 +178,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			combat_status_add("banisher");
 			if(index_of(banishAction, "skill") == 0)
 			{
-				handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
+				handleTracker(monster_phylum(enemy), my_location(), to_skill(substring(banishAction, 6)), "auto_banishes");
 			}
 			else if(index_of(banishAction, "item") == 0)
 			{
-				handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
+				handleTracker(monster_phylum(enemy), my_location(), to_item(substring(banishAction, 5)), "auto_banishes");
 			}
 			else
 			{
@@ -340,20 +358,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		{
 			return "item " + $item[drone self-destruct chip];
 		}
-	}
-
-	// Dupe Tomb Rat King drops with pro skateboard
-	if(enemy == $monster[Tomb Rat King] && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
-	{
-		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
-		return useSkill($skill[Do an epic McTwist!]);
-	}
-
-	// Dupe Mountain Man drops with pro skateboard on day 1, not in turbo
-	if(enemy == $monster[Mountain Man] && my_daycount()==1 && !auto_turbo() && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
-	{
-		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
-		return useSkill($skill[Do an epic McTwist!]);
 	}
 
 	// Instakill handler
