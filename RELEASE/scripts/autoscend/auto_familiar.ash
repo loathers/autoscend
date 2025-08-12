@@ -951,6 +951,10 @@ boolean auto_needsGoodFamiliarEquipment() {
 int auto_famWeight(familiar fam, boolean include_equip)
 {
 	int famEquipWeight = 0;
+	if(fam == $familiar[none])
+	{
+		return 0;
+	}
 	if(!include_equip)
 	{
 		famEquipWeight = numeric_modifier(familiar_equipped_equipment(fam), "Familiar Weight");
@@ -970,6 +974,10 @@ int auto_famWeight()
 
 float auto_famModifiers(familiar fam, string mod, item famEquip)
 {
+	if(fam == $familiar[none])
+	{
+		return 0.0;
+	}
 	return numeric_modifier(fam, mod, auto_famWeight(fam, false), famEquip);
 }
 
