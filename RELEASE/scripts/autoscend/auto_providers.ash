@@ -3,7 +3,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
 	//if the fam is important enough to add, it will be caught in preAdvUpdateFamiliar
-	if(numeric_modifier(my_familiar(), "Combat Rate", familiar_weight(my_familiar()) + weight_adjustment(), familiar_equipped_equipment(my_familiar())) < 0)
+	if(auto_famModifiers("Combat Rate") < 0)
 	{
 		use_familiar($familiar[none]);
 	}
@@ -76,7 +76,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		if (speculative) {
 			delta += numeric_modifier(eff, "Combat Rate");
 			if (eff == $effect[Musk of the Moose] && have_effect($effect[Smooth Movements]) > 0) {
-				delta += (-1.0 * numeric_modifier($effect[Smooth Movements], "Combat Rate")); // numeric_modifer doesn't take into account uneffecting the opposite skill so we have to add it manually.
+				delta += (-1.0 * numeric_modifier($effect[Smooth Movements], "Combat Rate")); // numeric_modifier doesn't take into account uneffecting the opposite skill so we have to add it manually.
 			}
 			if(eff == $effect[Carlweather\'s Cantata Of Confrontation] && have_effect($effect[The Sonata of Sneakiness]) > 0) {
 				delta += (-1.0 * numeric_modifier($effect[The Sonata of Sneakiness], "Combat Rate"));
@@ -206,7 +206,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " negative combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
 	//if the fam is important enough to add, it will be caught in preAdvUpdateFamiliar
-	if(numeric_modifier(my_familiar(), "Combat Rate", familiar_weight(my_familiar()) + weight_adjustment(), familiar_equipped_equipment(my_familiar())) > 0)
+	if(auto_famModifiers("Combat Rate") > 0)
 	{
 		use_familiar($familiar[none]);
 	}
@@ -300,7 +300,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		if (speculative) {
 			delta += (-1.0 * numeric_modifier(eff, "Combat Rate"));
 			if (eff == $effect[Smooth Movements] && have_effect($effect[Musk of the Moose]) > 0) {
-				delta += numeric_modifier($effect[Musk of the Moose], "Combat Rate"); // numeric_modifer doesn't take into account uneffecting the opposite skill so we have to add it manually.
+				delta += numeric_modifier($effect[Musk of the Moose], "Combat Rate"); // numeric_modifier doesn't take into account uneffecting the opposite skill so we have to add it manually.
 			}
 		}
 		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
@@ -876,7 +876,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			//Manual override for the resfam to be the Cooler Yeti when we ONLY want Cold Resistance and it is better than what we already chose from one of the multi-res fams
 			if(auto_haveCoolerYeti() && count(amt) == 1 && amt[$element[Cold]] > 0)
 			{
-				if(((resfam == $familiar[Mu] || resfam == $familiar[Exotic Parrot]) && floor((familiar_weight(resfam) + weight_adjustment() - 5) / 20 + 1) < floor((familiar_weight($familiar[cooler yeti]) + weight_adjustment())/11)) || (5 < floor((familiar_weight($familiar[cooler yeti]) + weight_adjustment())/11)))
+				if(((resfam == $familiar[Mu] || resfam == $familiar[Exotic Parrot]) && floor((auto_famWeight(resfam) - 5) / 20 + 1) < floor(auto_famWeight($familiar[Cooler Yeti])/11)) || (5 < floor(auto_famWeight($familiar[Cooler Yeti])/11)))
 				{
 					resfam = $familiar[Cooler Yeti];
 				}
@@ -1398,8 +1398,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		familiar target = lookupFamiliarDatafile("meat");
 		if(target != $familiar[none] && target != my_familiar())
 		{
-			int famWeight = familiar_weight(target) + weight_adjustment();
-			delta += numeric_modifier(target, "Meat Drop",famWeight,$item[none]);
+			delta += auto_famModifiers(target, "Meat Drop", $item[none]);
 			auto_log_debug("With using familiar: " + target + " we can get to " + result());
 		}
 		else
@@ -1766,8 +1765,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		familiar target = lookupFamiliarDatafile("item");
 		if(target != $familiar[none] && target != my_familiar())
 		{
-			int famWeight = familiar_weight(target) + weight_adjustment();
-			delta += numeric_modifier(target, "Item Drop",famWeight,$item[none]);
+			delta += auto_famModifiers(target, "Item Drop", $item[none]);
 			auto_log_debug("With using familiar: " + target + " we can get to " + result());
 		}
 		else

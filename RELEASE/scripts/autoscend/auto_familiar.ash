@@ -109,7 +109,7 @@ boolean auto_famKill(familiar fam, location place)
 	{
 		if(freq<=0) continue;
 		//Mafia doesn't output the expected damage of the familiar so going with the highest possible for most users (NPZR)
-		if(mon != $monster[none] && monster_hp(mon) < (floor(1.5 * (familiar_weight(fam) +weight_adjustment() + 3)) + passiveDamage))
+		if(mon != $monster[none] && monster_hp(mon) < (floor(1.5 * (auto_famWeight(fam) + 3)) + passiveDamage))
 		{
 			return true;
 		}
@@ -724,7 +724,7 @@ boolean autoChooseFamiliar(location place)
 	}
 
 	//If a fam was selected that is contrary to the Combat Rate we want, deselect it. Probably won't select it in stat or regen but user should get better free-ish fams if it does
-	float famComRate = numeric_modifier(famChoice, "Combat Rate", familiar_weight(famChoice) + weight_adjustment(), familiar_equipped_equipment(famChoice));
+	float famComRate = auto_famModifiers(famChoice, "Combat Rate");
 	if((contains_text(get_property("auto_maximize_current"), "-200Combat") && famComRate > 0))
 	{
 		famChoice = $familiar[none];
@@ -944,4 +944,40 @@ boolean auto_needsGoodFamiliarEquipment() {
 		return false;
 	}
 	return true;
+}
+
+int auto_famWeight(familiar fam, boolean include_equip)
+{
+	int famEquipWeight = 0;
+	if(!include_equip)
+	{
+		famEquipWeight = numeric_modifier(familiar_equipped_equipment(fam), "Familiar Weight");
+	}
+	return familiar_weight(fam) + weight_adjustment() - famEquipWeight;
+}
+
+int auto_famWeight(familiar fam)
+{
+	return auto_famWeight(fam, true);
+}
+
+int auto_famWeight()
+{
+	return auto_famWeight(my_familiar(), true);
+}
+
+float auto_famModifiers(familiar fam, string mod, item famEquip)
+{
+	return numeric_modifier(fam, mod, auto_famWeight(fam, false), famEquip);
+}
+
+float auto_famModifiers(familiar fam, string mod)
+{
+	return numeric_modifier(fam, mod, auto_famWeight(fam, false), familiar_equipped_equipment(fam));
+}
+
+float auto_famModifiers(string mod)
+{
+	familiar fam = my_familiar();
+	return numeric_modifier(fam, mod, auto_famWeight(fam, false), familiar_equipped_equipment(fam));
 }
