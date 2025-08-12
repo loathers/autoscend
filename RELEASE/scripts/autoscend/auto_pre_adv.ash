@@ -51,7 +51,7 @@ void print_footer()
 	next_line = "";
 	if(pathHasFamiliar())
 	{
-		next_line += "Familiar: " +my_familiar()+ " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs. ";
+		next_line += "Familiar: " +my_familiar()+ " @ " + auto_famWeight() + "lbs. ";
 	}
 	if(my_class() == $class[Pastamancer])
 	{
