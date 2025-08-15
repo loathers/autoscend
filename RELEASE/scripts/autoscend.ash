@@ -1244,6 +1244,7 @@ boolean dailyEvents()
 	auto_MayamClaimAll();
 	auto_buyFromSeptEmberStore();
 	auto_getGlobs();
+	auto_setLeprecondo();
 	
 	return true;
 }
@@ -1932,6 +1933,7 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	pokefam_getHats();
 	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
@@ -1967,7 +1969,6 @@ boolean doTasks()
 	beatenUpResolution();
 	lar_safeguard();
 	
-	auto_setLeprecondo();
 	auto_useLeprecondoDrops();
 
 	if (LX_zootoFight()) { return true; }

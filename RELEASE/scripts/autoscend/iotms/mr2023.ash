@@ -189,6 +189,27 @@ boolean auto_doPhoneQuest()
 	{
 		return false;
 	}
+	// in pokefam, we want at least 2 level 5s
+	if (in_pokefam()) {
+		// mafia can lose track of the team, so visit famteam so we're up to date
+		visit_url("famteam.php");
+		int pokelevel1 = my_poke_fam(0).poke_level;
+		int pokelevel2 = my_poke_fam(1).poke_level;
+		int pokelevel3 = my_poke_fam(2).poke_level;
+		int numFives = 0;
+		if (pokelevel1 == 5) {
+			numFives++;
+		}
+		if (pokelevel2 == 5) {
+			numFives++;
+		}
+		if (pokelevel3 == 5) {
+			numFives++;
+		}
+		if (numFives < 2) {
+			return false;
+		}
+	}
 	// don't start quest if fights will already be free... unless we already have shadow affinity
 	if(isFreeMonster($monster[shadow slab], auto_availableBrickRift()) && have_effect($effect[Shadow Affinity]) == 0)
 	{

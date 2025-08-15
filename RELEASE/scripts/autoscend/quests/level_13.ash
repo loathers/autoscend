@@ -333,19 +333,19 @@ boolean beehiveConsider(boolean at_tower) // returns true if we can kill without
 	int damage_sources = 1; // basic hit
 	
 	// Familiars
-	if (have_familiar($familiar[glover]) && auto_is_valid($familiar[glover]))
+	if (auto_have_familiar($familiar[glover]))
 	{
 		damage_sources += 11;
 	}
-	if (have_familiar($familiar[shorter-order cook]) && auto_is_valid($familiar[shorter-order cook]))
+	if (auto_have_familiar($familiar[shorter-order cook]))
 	{
 		damage_sources += 6;
 	}
-	else if (have_familiar($familiar[mu]) && auto_is_valid($familiar[mu]))
+	else if (auto_have_familiar($familiar[mu]))
 	{
 		damage_sources += 5;
 	}
-	else if (have_familiar($familiar[imitation crab]) && auto_is_valid($familiar[imitation crab]))
+	else if (auto_have_familiar($familiar[imitation crab]))
 	{
 		damage_sources += 4;
 	}
@@ -916,6 +916,7 @@ boolean L13_towerNSHedge()
 
 	maximize_hedge();
 	cli_execute("auto_pre_adv");
+	set_property("_auto_forcePokefamRestore", true);
 	if(!acquireFullHP())
 	{
 		// couldn't heal so do slow route. May die to fast route
@@ -1128,7 +1129,7 @@ boolean L13_towerNSTowerSkin()
 	{
 		abort("auto_towerBreak set to abort here.");
 	}
-	if (item_amount($item[Beehive]) > 0)
+	if (item_amount($item[Beehive]) > 0 || in_pokefam())
 	{
 		return autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 	}
@@ -1151,7 +1152,7 @@ boolean L13_towerNSTowerSkin()
 	
 	foreach fam in $familiars[glover, shorter-order cook, mu, imitation crab] // crab is evergreen, buy one
 	{
-		if (have_familiar(fam) && auto_is_valid(fam))
+		if (auto_have_familiar(fam))
 		{
 			handleFamiliar(fam);
 			use_familiar(fam);
@@ -1164,7 +1165,7 @@ boolean L13_towerNSTowerSkin()
 	{
 		foreach fam in $familiars[angry goat, MagiMechTech MicroMechaMech, star starfish, mosquito]
 		{
-			if (have_familiar(fam) && auto_is_valid(fam))
+			if (auto_have_familiar(fam))
 			{
 				handleFamiliar(fam);
 				use_familiar(fam);
@@ -1544,9 +1545,16 @@ boolean L13_towerNSTowerShadow()
 	{
 		abort("Robot shadow not currently automated. Pleasae kill your shadow manually then run me again");
 	}
+
 	if (get_property("auto_towerBreak").to_lower_case() == "shadow" || get_property("auto_towerBreak").to_lower_case() == "the shadow" || get_property("auto_towerBreak").to_lower_case() == "level 5")
 	{
 		abort("auto_towerBreak set to abort here.");
+	}
+
+	if (in_pokefam()) {
+		// challenge shadow to pokefam battle
+		autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
+		return true;
 	}
 
 	int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]) + item_amount($item[scented massage oil]);

@@ -633,7 +633,10 @@ boolean LX_getLadySpookyravensFinestGown() {
 	if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 		needSpectacles = false;
 	}
-	else if(needCamera && needSpectacles) {
+	if (in_pokefam()) {
+		needCamera = false;
+	}
+	if(needCamera && needSpectacles) {
 		// if in a path that needs both you want a two night stand with ornate, olfacting ornate nightstand is a problem
 		// for the script because it will work against the elegant nightstand and most olfaction skills aren't cancelled
 		// easily without changing locations, but Nosy Nose will be turned off once it's no longer the used familiar
@@ -1615,6 +1618,10 @@ boolean L11_hiddenTavernUnlock(boolean force)
 		if(!in_hardcore())
 		{
 			pullXWhenHaveY($item[Book of Matches], 1, 0);
+			if(item_amount($item[Book of Matches]) == 0)
+			{
+				auto_makeMonkeyPawWish($item[Book of Matches]);
+			}
 		}
 	}
 
@@ -1637,10 +1644,6 @@ void hiddenCityChoiceHandler(int choice)
 		if(have_effect($effect[Thrice-Cursed]) > 0)
 		{
 			run_choice(1); // fight the spirit
-		}
-		else if(in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions())
-		{
-			run_choice(3); // relocate lawyers to park
 		}
 		else if(available_choice_options() contains 4 && have_effect($effect[Thrice-Cursed]) == 0) // Use CCSC to get Cursed +1
 		{
@@ -3167,6 +3170,7 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				auto_log_info("Oh no, we died from reading a book. I'm going to take a nap.", "blue");
+				set_property("_auto_forcePokefamRestore", true);
 				acquireHP();
 				bat_reallyPickSkills(20);
 			}
@@ -3503,7 +3507,7 @@ boolean L11_unlockEd()
 		handleFamiliar($familiar[Grey Goose]);
 	}
 
-	if(auto_can_equip($item[pro skateboard]) && equipmentAmount($item[pro skateboard]) > 0 && item_amount($item[Tangle of rat tails]) >= 1 && !get_property("_epicMcTwistUsed").to_boolean())
+	if(auto_can_equip($item[pro skateboard]) && equipmentAmount($item[pro skateboard]) > 0 && item_amount($item[Tangle of rat tails]) >= 1 && !get_property("_epicMcTwistUsed").to_boolean() && !in_pokefam())
 	{
 		auto_log_info("Be like Tony Hawk on a Tomb Rat King!");
 		autoEquip($item[pro skateboard]);

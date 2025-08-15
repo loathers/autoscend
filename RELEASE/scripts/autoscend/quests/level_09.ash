@@ -672,7 +672,8 @@ boolean L9_aBooPeak()
 					set_property("auto_aboopending", 0);
 				}
 			}
-			acquireHP();
+			set_property("_auto_forcePokefamRestore", true);
+			acquireFullHP();
 			if ((my_hp() * 4) < my_maxhp() && item_amount($item[Scroll of Drastic Healing]) > 0 && (!isActuallyEd() || !in_darkGyffte()))
 			{
 				use(1, $item[Scroll of Drastic Healing]);
@@ -843,7 +844,7 @@ boolean L9_twinPeak()
 
 	auto_log_info("Twin Peak", "blue");
 
-	if(item_amount($item[Rusty Hedge Trimmers]) == 0 && $location[Twin Peak].turns_spent == 0)
+	if(item_amount($item[Rusty Hedge Trimmers]) == 0 && $location[Twin Peak].turns_spent == 0 && auto_hasAutumnaton())
 	{
 		// wish for trimmer so we can later send fallbot for the rest
 		auto_makeMonkeyPawWish($item[Rusty Hedge Trimmers]);

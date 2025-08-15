@@ -648,7 +648,7 @@ boolean auto_pre_adventure()
 	}
 
 	item dartHolster = $item[Everfull Dart Holster];
-	if (auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0 && !in_avantGuard())
+	if (auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0 && !in_avantGuard() && !in_pokefam())
 	{
 		auto_log_info("We don't have ELR so let's hit a bullseye");
 		autoEquip($slot[acc3], dartHolster);
