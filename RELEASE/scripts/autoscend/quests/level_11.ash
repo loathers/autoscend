@@ -3282,8 +3282,7 @@ boolean L11_palindome()
 			{
 				//may want to use an item familiar first for stunt nuts
 				//unfortunately the sniff condition system means if taking the nose later after using different sniffs on a dude it will only be able to whiff on the same dude
-				int famWeightWithoutEq = familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight");
-				int stuntNutDropModifierWithoutFamiliar = item_drop_modifier() + numeric_modifier("Food Drop") - numeric_modifier(my_familiar(), "Item Drop", famWeightWithoutEq, equipped_item($slot[familiar]));
+				int stuntNutDropModifierWithoutFamiliar = item_drop_modifier() + numeric_modifier("Food Drop") - auto_famModifiers("Item Drop");
 				if(stuntNutDropModifierWithoutFamiliar < 234)	//30% base drop chance
 				{
 					noseDudesOn = false;
