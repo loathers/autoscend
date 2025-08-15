@@ -1054,6 +1054,10 @@ float tcrs_expectedAdvPerFill(string quality);
 boolean tcrs_maximize_with_items(string maximizerString);
 
 ########################################################################################################
+//Defined in autoscend/paths/under_the_sea.ash
+boolean in_underTheSea();
+
+########################################################################################################
 //Defined in autoscend/paths/way_of_the_surprising_fist.ash
 boolean in_wotsf();
 
