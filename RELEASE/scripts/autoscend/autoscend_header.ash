@@ -1648,6 +1648,12 @@ boolean haveSpleenFamiliar();
 boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
 boolean auto_needsGoodFamiliarEquipment();
+int auto_famWeight(familiar fam, boolean include_equip);
+int auto_famWeight(familiar fam);
+int auto_famWeight();
+float auto_famModifiers(familiar fam, string mod, item famEquip);
+float auto_famModifiers(familiar fam, string mod);
+float auto_famModifiers(string mod);
 
 ########################################################################################################
 //Defined in autoscend/auto_list.ash

@@ -439,8 +439,8 @@ boolean LX_unlockHauntedLibrary()
 	{
 		// only force after we get the pool cue NC.
 		boolean NCForced = auto_forceNextNoncombat($location[The Haunted Billiards Room]);
-		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel())
+		// delay if we are out of NC forcers and haven't run out of things to do
+		if(!NCForced && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel())
 		{
 			resetMaximize();	//cancel equipping pool cue
 			return false;
@@ -717,8 +717,8 @@ boolean LX_getLadySpookyravensPowderPuff() {
 
 	if (!zone_delay($location[The Haunted Bathroom])._boolean) {
 		boolean NCForced = auto_forceNextNoncombat($location[The Haunted Bathroom]);
-		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+		// delay if we are out of NC forcers and haven't run out of things to do
+		if(!NCForced && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel()) return false;
 	}
 	if (autoAdv($location[The Haunted Bathroom])) {
 		return true;
@@ -910,8 +910,8 @@ boolean L11_getBeehive()
 	auto_log_info("Must find a beehive!", "blue");
 
 	boolean NCForced = auto_forceNextNoncombat($location[The Black Forest]);
-	// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-	if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+	// delay if we are out of NC forcers and haven't run out of things to do
+	if(!NCForced && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel()) return false;
 	boolean advSpent = autoAdv($location[The Black Forest]);
 	if(item_amount($item[beehive]) > 0)
 	{
@@ -1926,8 +1926,8 @@ boolean L11_hiddenCity()
 			if(shouldForceElevatorAction)
 			{
 				elevatorAction = auto_forceNextNoncombat($location[The Hidden Apartment Building]);
-				// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-				if(!elevatorAction && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+				// delay if we are out of NC forcers and haven't run out of things to do
+				if(!elevatorAction && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel()) return false;
 			}
 		}
 
@@ -2004,9 +2004,9 @@ boolean L11_hiddenCity()
 			{
 				workingHoliday = true;
 			}
-			else if(my_daycount() == 1 && !isAboutToPowerlevel())
+			else if(my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel())
 			{
-				// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+				// delay if we are out of NC forcers and haven't run out of things to do
 				return false;
 			}
 		}
@@ -3286,8 +3286,7 @@ boolean L11_palindome()
 			{
 				//may want to use an item familiar first for stunt nuts
 				//unfortunately the sniff condition system means if taking the nose later after using different sniffs on a dude it will only be able to whiff on the same dude
-				int famWeightWithoutEq = familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight");
-				int stuntNutDropModifierWithoutFamiliar = item_drop_modifier() + numeric_modifier("Food Drop") - numeric_modifier(my_familiar(), "Item Drop", famWeightWithoutEq, equipped_item($slot[familiar]));
+				int stuntNutDropModifierWithoutFamiliar = item_drop_modifier() + numeric_modifier("Food Drop") - auto_famModifiers("Item Drop");
 				if(stuntNutDropModifierWithoutFamiliar < 234)	//30% base drop chance
 				{
 					noseDudesOn = false;

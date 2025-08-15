@@ -1009,7 +1009,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	if(canChangeToFamiliar($familiar[Frumious Bandersnatch]))
 	{
 		// TODO add fam weight buffing
-		int banderRunsLeft = floor((familiar_weight($familiar[Frumious Bandersnatch]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		int banderRunsLeft = floor(auto_famWeight($familiar[Frumious Bandersnatch]) / 5) - get_property("_banderRunaways").to_int();
 		if(is_professor()) return "";
 		if(!inCombat)
 		{
@@ -1036,7 +1036,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		// TODO add fam weight buffing
 		// boots and bander share same counter
-		int banderRunsLeft = floor((familiar_weight($familiar[Pair of Stomping Boots]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		int banderRunsLeft = floor(auto_famWeight($familiar[Pair of Stomping Boots]) / 5) - get_property("_banderRunaways").to_int();
 		if(is_professor()) return "";
 		if(!inCombat)
 		{

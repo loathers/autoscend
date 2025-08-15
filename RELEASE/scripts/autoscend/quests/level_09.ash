@@ -748,7 +748,7 @@ boolean prepareForTwinPeak(boolean speculative)
 	if(needFood)
 	{
 		float food_drop = item_drop_modifier() + numeric_modifier("Food Drop");
-		food_drop -= numeric_modifier(my_familiar(), "Item Drop", familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight"), equipped_item($slot[familiar]));
+		food_drop -= auto_famModifiers("Item Drop");
 		
 		if(my_servant() == $servant[Cat])
 		{

@@ -16,6 +16,8 @@ void pokefam_initializeSettings()
 		set_property("auto_ignoreFlyer", true);
 		// No Naughty Sorceress so no need for a wand.
 		set_property("auto_wandOfNagamar", false);
+		// runs are probably going to take at least 3 days, maybe 4 in hardcore
+		set_property("auto_runDayCount", 3);
 	}
 }
 
