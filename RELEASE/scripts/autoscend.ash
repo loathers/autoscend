@@ -195,6 +195,7 @@ void initializeSettings() {
 	set_property("auto_disableAdventureHandling", false);
 	set_property("auto_doCombatCopy", "no");
 	set_property("auto_dontPhylumBanish", false);
+	set_property("auto_runDayCount", 2);
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
