@@ -13,7 +13,8 @@ void sea_store()
     int pennies = item_amount($item[sand penny]);
     if(pennies >= 100 && possessEquipment($item[undersea surveying goggles]))
     {
-        buy($coinmaster[Wet Crap For Sale], 1, $item[undersea surveying goggles]);
+        abort("Buy undersea surveying goggles from Wet Crap For Sale!");
+        //buy($coinmaster[Wet Crap For Sale], 1, $item[undersea surveying goggles]);
     }
 
     return;
@@ -21,12 +22,12 @@ void sea_store()
 
 void sea_pulls()
 {
-    in(!in_underTheSea())
+    if(!in_underTheSea())
     {
         return;
     }
 
-    for it in $items[Mer-kin knucklebone, Mer-kin scholar mask, Mer-kin scholar tailpiece,
+    foreach it in $items[Mer-kin knucklebone, Mer-kin scholar mask, Mer-kin scholar tailpiece,
     Mer-kin gladiator mask, Mer-kin gladiator tailpiece, Mer-kin Prayerbeads, sea lasso, sea cowbell,
     sea chaps, sea cowboy hat, shark jumper, scale-mail underwear, comb jelly]
     {
