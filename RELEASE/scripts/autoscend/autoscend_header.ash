@@ -1056,6 +1056,8 @@ boolean tcrs_maximize_with_items(string maximizerString);
 ########################################################################################################
 //Defined in autoscend/paths/under_the_sea.ash
 boolean in_underTheSea();
+void sea_store();
+void sea_pulls();
 
 ########################################################################################################
 //Defined in autoscend/paths/way_of_the_surprising_fist.ash

@@ -1,0 +1,11 @@
+LX_freeCombatsTask
+LX_unlockPirateRealm
+catBurglarHeist
+auto_breakfastCounterVisit
+chateauPainting
+LX_setWorkshed
+LX_galaktikSubQuest
+LX_burnDelay
+LX_summonMonster
+# path handling which should be in it's own task order but pre-dates task order functionality (tech debt FTW).
+LX_seaMonkees

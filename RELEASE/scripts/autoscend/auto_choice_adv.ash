@@ -751,7 +751,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1494: // Examine S.I.T. Course Certificate (S.I.T Course)
-			if(my_level() < 8)
+			if(my_level() < 8 || in_underTheSea())
 			{
 				run_choice(3); // Cryptobotanist (S.I.T. Course)
 			}

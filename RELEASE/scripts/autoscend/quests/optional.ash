@@ -1136,3 +1136,8 @@ void houseUpgrade()
 		use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
 	}
 }
+
+boolean LX_seaMonkees()
+{
+	return false;
+}
