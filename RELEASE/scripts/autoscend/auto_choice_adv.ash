@@ -784,6 +784,9 @@ boolean auto_run_choice(int choice, string page)
 		case 1557:  // Peering Through Your Peridot (Peridot of Peril zone monster selection choice)
 			peridotChoiceHandler(choice, page);
 			break;
+		case 1565:
+			run_choice(1);
+			break;
 		default:
 			break;
 	}

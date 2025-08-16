@@ -1461,6 +1461,16 @@ boolean tomb_already_found();
 boolean LX_acquireEpicWeapon();
 boolean LX_NemesisQuest();
 void houseUpgrade();
+boolean LX_sea_littleBrother();
+boolean LX_sea_bigBrother();
+boolean LX_sea_grandpa();
+boolean LX_sea_grandma();
+boolean LX_sea_mom();
+boolean LX_sea_gladiator();
+boolean LX_sea_scholar();
+boolean LX_sea_dad();
+boolean LX_sea_NS();
+boolean LX_seaMonkees();
 
 ########################################################################################################
 //Defined in autoscend/auto_acquire.ash

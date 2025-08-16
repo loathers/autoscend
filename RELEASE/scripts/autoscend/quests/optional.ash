@@ -1137,7 +1137,69 @@ void houseUpgrade()
 	}
 }
 
+boolean LX_sea_littleBrother()
+{
+	return false;
+}
+
+boolean LX_sea_bigBrother()
+{
+	return false;
+}
+
+boolean LX_sea_grandpa()
+{
+	return false;
+}
+
+boolean LX_sea_grandma()
+{
+	return false;
+}
+
+boolean LX_sea_mom()
+{
+	return false;
+}
+
+boolean LX_sea_gladiator()
+{
+	return false;
+}
+
+boolean LX_sea_scholar()
+{
+	return false;
+}
+
+boolean LX_sea_dad()
+{
+	if(in_underTheSea())
+	{
+		return false;
+	}
+
+	return false;
+}
+
+boolean LX_sea_NS()
+{
+	if(!in_underTheSea())
+	{
+		return false;
+	}
+	
+	return false;
+}
+
 boolean LX_seaMonkees()
 {
+	if(LX_sea_littleBrother()) return true;
+	if(LX_sea_bigBrother()) return true;
+	if(LX_sea_grandpa()) return true;
+	if(LX_sea_grandma()) return true;
+	if(LX_sea_mom()) return true;
+	if(LX_sea_gladiator() || LX_sea_scholar() || LX_sea_dad() || LX_sea_NS()) return true; //any of these could be the endpoint
+
 	return false;
 }

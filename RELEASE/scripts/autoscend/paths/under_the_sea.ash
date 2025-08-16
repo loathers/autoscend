@@ -36,3 +36,13 @@ void sea_pulls()
 
     return;
 }
+
+boolean LM_underTheSea()
+{
+    if(!in_underTheSea())
+    {
+        return false;
+    }
+
+    return false;
+}
