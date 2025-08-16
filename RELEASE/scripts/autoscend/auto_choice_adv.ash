@@ -751,7 +751,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1494: // Examine S.I.T. Course Certificate (S.I.T Course)
-			if(my_level() < 8)
+			if(my_level() < 8 || in_underTheSea())
 			{
 				run_choice(3); // Cryptobotanist (S.I.T. Course)
 			}
@@ -783,6 +783,9 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 1557:  // Peering Through Your Peridot (Peridot of Peril zone monster selection choice)
 			peridotChoiceHandler(choice, page);
+			break;
+		case 1565:
+			run_choice(1);
 			break;
 		default:
 			break;

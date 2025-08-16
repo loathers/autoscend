@@ -573,6 +573,10 @@ string defaultMaximizeStatement()
 	{
 		res += ",water,hot res";
 	}
+	if(in_underTheSea())
+	{
+		res += ",sea";
+	}
 	
 	stat primeStat = my_primestat();
 	if(in_plumber())
