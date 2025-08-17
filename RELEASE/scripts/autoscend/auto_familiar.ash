@@ -801,6 +801,11 @@ void preAdvUpdateFamiliar(location place)
 	{
 		return;		//will just error in those paths
 	}
+	if (in_bad_moon() && !have_familiar($familiar[Mosquito]))
+	{
+		// Since we start with no familiars, this can fail here too but succeed later.
+		return;
+	}
 	if(is100FamRun())
 	{
 		handleFamiliar(get_property("auto_100familiar").to_familiar());			//do not break 100 familiar runs
