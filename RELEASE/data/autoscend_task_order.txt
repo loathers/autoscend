@@ -12,7 +12,6 @@
 11,037 Leagues Under the Sea	5	LX_setWorkshed
 11,037 Leagues Under the Sea	6	LX_galaktikSubQuest
 11,037 Leagues Under the Sea	7	LX_burnDelay
-11,037 Leagues Under the Sea	8	LX_summonMonster
 # path handling which should be in it's own task order but pre-dates task order functionality (tech debt FTW).
 
 A Shrunken Adventurer am I	0	LX_freeCombatsTask

@@ -1139,11 +1139,24 @@ void houseUpgrade()
 
 boolean LX_sea_littleBrother()
 {
+	if(internalQuestStatus("questS02Monkees") >= 0)
+	{
+		return false;
+	}
+	if(item_amount($item[Wriggling flytrap pellet]) == 0)
+	{
+		autoAdv($location[An Octopus's Garden]);
+	}
+	else
+	{
+		use(1, $item[Wriggling flytrap pellet]);
+	}
 	return false;
 }
 
 boolean LX_sea_bigBrother()
 {
+	
 	return false;
 }
 
