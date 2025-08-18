@@ -482,7 +482,8 @@ string bestBusk(int[string] powers, string effectMultiplier)
 			{
 				foreach mod, multi in effMulti
 				{
-					score += numeric_modifier(eff, mod) * multi;
+					if(to_modifier(mod).type == "numeric") score += numeric_modifier(eff, mod) * multi;
+					if(to_modifier(mod).type == "boolean" && boolean_modifier(eff, mod)) score += multi;
 				}
 			}
 		}

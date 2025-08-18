@@ -1058,7 +1058,6 @@ boolean tcrs_maximize_with_items(string maximizerString);
 boolean in_underTheSea();
 void sea_store();
 void sea_pulls();
-void needTrunks();
 
 ########################################################################################################
 //Defined in autoscend/paths/way_of_the_surprising_fist.ash
@@ -2042,6 +2041,7 @@ boolean handleCopiedMonster(item itm, string option);
 int maxSealSummons();
 boolean acquireCombatMods(int amt);
 boolean acquireCombatMods(int amt, boolean doEquips);
+void needAir();
 boolean basicAdjustML();
 int highest_available_mcd();
 boolean auto_change_mcd(int mcd);

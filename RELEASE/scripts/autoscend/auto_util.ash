@@ -2351,6 +2351,41 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 	return true;
 }
 
+void needAir()
+{
+    foreach it in $items[really\, really nice swimming trunks, Mer-kin scholar mask, Mer-kin gladiator mask,
+    aerated diving helmet, crappy Mer-kin mask, old SCUBA tank, oxygenated eggnog helmet, Elf Guard SCUBA tank]
+    {
+        if(possessEquipment(it))
+        {
+            autoForceEquip(it);
+            break;
+        }
+    }
+    if(!(my_familiar().underwater))
+    {
+        foreach it in $items[das boot, little bitty bathysphere]
+        {
+            if(possessEquipment(it))
+            {
+                autoForceEquip(it);
+                break;
+            }
+        }
+        auto_wishForEffectIfNeeded($effect[Wet Willied]);
+    }
+    if(!(boolean_modifier("Adventure Underwater")))
+    {
+        beretBusk("Adventure Underwater");
+    }
+	if(!(boolean_modifier("Adventure Underwater")))
+    {
+        auto_wishForEffect($effect[Mer-kinny Flavor]);
+    }
+    
+    return;
+}
+
 boolean basicAdjustML()
 {
 	if(is_boris()) return borisAdjustML();

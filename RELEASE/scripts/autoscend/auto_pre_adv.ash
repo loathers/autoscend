@@ -1047,9 +1047,9 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
-	if(in_underTheSea() && !(boolean_modifier("Adventure Underwater")))
+	if(place.environment == "underwater" && !(boolean_modifier("Adventure Underwater")))
 	{
-		needTrunks();
+		needAir();
 	}
 
 	utilizeStillsuit();	
