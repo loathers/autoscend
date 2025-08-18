@@ -1058,6 +1058,7 @@ boolean tcrs_maximize_with_items(string maximizerString);
 boolean in_underTheSea();
 void sea_store();
 void sea_pulls();
+void needTrunks();
 
 ########################################################################################################
 //Defined in autoscend/paths/way_of_the_surprising_fist.ash

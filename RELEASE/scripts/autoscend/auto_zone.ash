@@ -1694,25 +1694,45 @@ boolean zone_available(location loc)
 	case $location[The Brinier Deepers]:
 	case $location[The Briniest Deepests]:
 	case $location[An Octopus\'s Garden]:
-	case $location[Anemone Mine]:
+		retval = (inAftercore() || in_underTheSea());
+		break;
 	case $location[The Wreck of the Edgar Fitzsimmons]:
+		retval = (internalQuestStatus("questS02Monkees") >= 1);
+		break;
+	case $location[Anemone Mine]:
+		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToAnemoneMinePurchased").to_boolean());
+		break;
 	case $location[The Dive Bar]:
+		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToTheDiveBarPurchased").to_boolean());
+		break;
 	case $location[The Marinara Trench]:
-	case $location[The Coral Corral]:
-	case $location[Madness Reef]:
+		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToTheMarinaraTrenchPurchased").to_boolean());
+		break;
 	case $location[The Mer-kin Outpost]:
-	case $location[The Caliginous Abyss]:
+		retval = (internalQuestStatus("questS02Monkees") >= 6);
+		break;
+	case $location[The Coral Corral]:
+		retval = (internalQuestStatus("questS02Monkees") >= 6);
+		break;
+	case $location[Madness Reef]:
+		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToMadnessReefPurchased").to_boolean());
+		break;
 	case $location[The Skate Park]:
+		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToTheSkateParkPurchased").to_boolean());
+		break;
+	case $location[The Caliginous Abyss]:
+		retval = (internalQuestStatus("questS02Monkees") >= 1);
+		break;
 	case $location[Mer-Kin Temple]:
 	case $location[Mer-kin Library]:
 	case $location[Mer-kin Elementary School]:
 	case $location[Mer-kin Colosseum]:
 	case $location[Mer-kin Gymnasium]:
+		retval = (inAftercore() || in_underTheSea());
+		break;
 	// case $location[Left Door]:
 	// case $location[Center Door]:
 	// case $location[Right Door]:
-		retval = (inAftercore() || in_underTheSea());
-		break;
 	}
 
 	// compare our result with Mafia's native function, log a warning if theres a difference. Ideally we can see if there are any differences between our code and Mafia's, and if not remove all of ours in favor of Mafia's

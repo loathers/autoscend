@@ -1145,19 +1145,28 @@ boolean LX_sea_littleBrother()
 	}
 	if(item_amount($item[Wriggling flytrap pellet]) == 0)
 	{
+		auto_log_info("Trying to get a Wriggling flytrap pellet to find Little Brother");
 		autoAdv($location[An Octopus's Garden]);
 	}
 	else
 	{
 		use(1, $item[Wriggling flytrap pellet]);
+		//Need to visit little brother twice
+		visit_url("monkeycastle.php?who=1");
+		visit_url("monkeycastle.php?who=1");
 	}
 	return false;
 }
 
 boolean LX_sea_bigBrother()
 {
-	
-	return false;
+	if(internalQuestStatus("questS02Monkees") >= 2 || internalQuestStatus("questS02Monkees") <= 0)
+	{
+		return false;
+	}
+	boolean NCForced = auto_forceNextNoncombat($location[The Wreck of the Edgar Fitzsimmons]);
+	auto_log_info("Trying to force NC at The Wreck of the Edgar Fitzsimmons: "+NCForced.to_string(), "blue");
+	return autoAdv($location[The Wreck of the Edgar Fitzsimmons]);
 }
 
 boolean LX_sea_grandpa()

@@ -48,3 +48,21 @@ boolean LM_underTheSea()
 
     return false;
 }
+
+void needTrunks()
+{
+    autoForceEquip($item[really, really nice swimming trunks]);
+    if(!(my_familiar().underwater))
+    {
+        foreach it in $items[das boot, little bitty bathysphere]
+        {
+            if(possessEquipment(it))
+            {
+                autoForceEquip(it);
+                return;
+            }
+        }
+    }
+    
+    return;
+}

@@ -1047,6 +1047,11 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
+	if(in_underTheSea() && !(boolean_modifier("Adventure Underwater")))
+	{
+		needTrunks();
+	}
+
 	utilizeStillsuit();	
 
 	set_property("auto_priorLocation", place);
