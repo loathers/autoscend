@@ -1,4 +1,4 @@
-since r28646;	// Fix some issues in my sea import
+since r28654;	// feat: track mom and lasso counts
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

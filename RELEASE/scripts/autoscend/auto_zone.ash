@@ -1691,8 +1691,8 @@ boolean zone_available(location loc)
 		retval = (auto_canFightPiranhaPlant() || auto_canTendMushroomGarden());
 		break;
 	case $location[The Briny Deeps]:
-	case $location[The Brinier Deeps]:
-	case $location[The Briniest Deeps]:
+	case $location[The Brinier Deepers]:
+	case $location[The Briniest Deepests]:
 	case $location[An Octopus\'s Garden]:
 	case $location[Anemone Mine]:
 	case $location[The Wreck of the Edgar Fitzsimmons]:
@@ -1702,17 +1702,15 @@ boolean zone_available(location loc)
 	case $location[Madness Reef]:
 	case $location[The Mer-kin Outpost]:
 	case $location[The Caliginous Abyss]:
-	case $location[A Rumble Near the Fountain]:
-	case $location[Roller Skate Territory]:
-	case $location[Ice Skate Territory]:
+	case $location[The Skate Park]:
 	case $location[Mer-Kin Temple]:
 	case $location[Mer-kin Library]:
 	case $location[Mer-kin Elementary School]:
 	case $location[Mer-kin Colosseum]:
 	case $location[Mer-kin Gymnasium]:
-	case $location[Left Door]:
-	case $location[Center Door]:
-	case $location[Right Door]:
+	// case $location[Left Door]:
+	// case $location[Center Door]:
+	// case $location[Right Door]:
 		retval = (inAftercore() || in_underTheSea());
 		break;
 	}
@@ -2003,8 +2001,8 @@ generic_t zone_difficulty(location loc)
 	case $location[A Maze of Sewer Tunnels]:
 		break;
 	case $location[The Briny Deeps]:
-	case $location[The Brinier Deeps]:
-	case $location[The Briniest Deeps]:
+	case $location[The Brinier Deepers]:
+	case $location[The Briniest Deepests]:
 	case $location[An Octopus\'s Garden]:
 	case $location[Anemone Mine]:
 	case $location[The Wreck of the Edgar Fitzsimmons]:
@@ -2014,17 +2012,15 @@ generic_t zone_difficulty(location loc)
 	case $location[Madness Reef]:
 	case $location[The Mer-kin Outpost]:
 	case $location[The Caliginous Abyss]:
-	case $location[A Rumble Near the Fountain]:
-	case $location[Roller Skate Territory]:
-	case $location[Ice Skate Territory]:
+	case $location[The Skate Park]:
 	case $location[Mer-Kin Temple]:
 	case $location[Mer-kin Library]:
 	case $location[Mer-kin Elementary School]:
 	case $location[Mer-kin Colosseum]:
 	case $location[Mer-kin Gymnasium]:
-	case $location[Left Door]:
-	case $location[Center Door]:
-	case $location[Right Door]:
+	// case $location[Left Door]:
+	// case $location[Center Door]:
+	// case $location[Right Door]:
 		break;
 
 #	This is just to do a mass test.

@@ -13,8 +13,8 @@ void sea_store()
     int pennies = item_amount($item[sand penny]);
     if(pennies >= 100 && possessEquipment($item[undersea surveying goggles]))
     {
-        abort("Buy undersea surveying goggles from Wet Crap For Sale!");
-        //buy($coinmaster[Wet Crap For Sale], 1, $item[undersea surveying goggles]);
+        //abort("Buy undersea surveying goggles from Wet Crap For Sale!");
+        buy($coinmaster[Wet Crap For Sale], 1, $item[undersea surveying goggles]);
     }
 
     return;
