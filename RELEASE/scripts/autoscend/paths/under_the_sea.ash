@@ -44,5 +44,7 @@ boolean LM_underTheSea()
         return false;
     }
 
+    visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman");
+
     return false;
 }

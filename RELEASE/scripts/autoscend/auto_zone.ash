@@ -930,6 +930,9 @@ generic_t zone_delay(location loc)
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
 		break;
+	case $location[The Mer-Kin Outpost]:
+		value = 25 - loc.turns_spent;
+		break;
 	default:
 		retval._error = true;
 		break;
@@ -1687,6 +1690,31 @@ boolean zone_available(location loc)
 	case $location[Your Mushroom Garden]:
 		retval = (auto_canFightPiranhaPlant() || auto_canTendMushroomGarden());
 		break;
+	case $location[The Briny Deeps]:
+	case $location[The Brinier Deeps]:
+	case $location[The Briniest Deeps]:
+	case $location[An Octopus\'s Garden]:
+	case $location[Anemone Mine]:
+	case $location[The Wreck of the Edgar Fitzsimmons]:
+	case $location[The Dive Bar]:
+	case $location[The Marinara Trench]:
+	case $location[The Coral Corral]:
+	case $location[Madness Reef]:
+	case $location[The Mer-kin Outpost]:
+	case $location[The Caliginous Abyss]:
+	case $location[A Rumble Near the Fountain]:
+	case $location[Roller Skate Territory]:
+	case $location[Ice Skate Territory]:
+	case $location[Mer-Kin Temple]:
+	case $location[Mer-kin Library]:
+	case $location[Mer-kin Elementary School]:
+	case $location[Mer-kin Colosseum]:
+	case $location[Mer-kin Gymnasium]:
+	case $location[Left Door]:
+	case $location[Center Door]:
+	case $location[Right Door]:
+		retval = (inAftercore() || in_underTheSea());
+		break;
 	}
 
 	// compare our result with Mafia's native function, log a warning if theres a difference. Ideally we can see if there are any differences between our code and Mafia's, and if not remove all of ours in favor of Mafia's
@@ -1974,6 +2002,30 @@ generic_t zone_difficulty(location loc)
 		break;
 	case $location[A Maze of Sewer Tunnels]:
 		break;
+	case $location[The Briny Deeps]:
+	case $location[The Brinier Deeps]:
+	case $location[The Briniest Deeps]:
+	case $location[An Octopus\'s Garden]:
+	case $location[Anemone Mine]:
+	case $location[The Wreck of the Edgar Fitzsimmons]:
+	case $location[The Dive Bar]:
+	case $location[The Marinara Trench]:
+	case $location[The Coral Corral]:
+	case $location[Madness Reef]:
+	case $location[The Mer-kin Outpost]:
+	case $location[The Caliginous Abyss]:
+	case $location[A Rumble Near the Fountain]:
+	case $location[Roller Skate Territory]:
+	case $location[Ice Skate Territory]:
+	case $location[Mer-Kin Temple]:
+	case $location[Mer-kin Library]:
+	case $location[Mer-kin Elementary School]:
+	case $location[Mer-kin Colosseum]:
+	case $location[Mer-kin Gymnasium]:
+	case $location[Left Door]:
+	case $location[Center Door]:
+	case $location[Right Door]:
+		break;
 
 #	This is just to do a mass test.
 #	default:
@@ -1992,7 +2044,7 @@ boolean zone_hasLuckyAdventure(location loc)
 	Elf Alley,Exposure Esplanade,The Orcish Frat House,The Orcish Frat House (In Disguise),Guano Junction,The Hippy Camp,The Hippy Camp (In Disguise),Itznotyerzitz Mine,
 	Lair of the Ninja Snowmen,Lemon Party,Madness Reef,Oil Peak,Outskirts of Camp Logging Camp,Pandamonium Slums,Shop Class,South of the Border,
 	The "Fun" House,The Ancient Hobo Burial Ground,The Batrat and Ratbat Burrow,The Black Forest,The Brinier Deepers,The Briny Deeps,The Bugbear Pen,
-	The Castle in the Clouds in the Sky (Basement),The Castle in the Clouds in the Sky (Ground Floor),The Castle in the Clouds in the Sky (Top Floor),
+	The Caliginous Abyss,The Castle in the Clouds in the Sky (Basement),The Castle in the Clouds in the Sky (Ground Floor),The Castle in the Clouds in the Sky (Top Floor),
 	The Copperhead Club,The Dark Elbow of the Woods,The Dark Heart of the Woods,The Dark Neck of the Woods,The Dive Bar,The Goatlet,The Hallowed Halls,
 	The Haunted Ballroom,The Haunted Billiards Room,The Haunted Boiler Room,The Haunted Conservatory,The Haunted Gallery,The Haunted Kitchen,
 	The Haunted Library,The Haunted Pantry,The Haunted Storage Room,The Heap,The Hidden Park,The Hidden Temple,The Icy Peak,The Knob Shaft,
