@@ -1001,6 +1001,8 @@ boolean auto_RWBBlastTarget(monster target)
 		case $monster[dirty old lihc]:
 			// only worth it if we need 9 or more evilness reduced.
 			return ((get_property("cyrptNicheEvilness").to_int() - (3 * (3 + cyrptEvilBonus()))) > 13);
+		case $monster[Neptune flytrap]:
+			return ((item_amount($item[Wriggling flytrap pellet]) == 0) && (internalQuestStatus("questS02Monkees") < 0));
 		default:
 			return (get_property("rwbMonster").to_monster() == target);
 	}

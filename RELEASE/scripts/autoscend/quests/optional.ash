@@ -1153,7 +1153,8 @@ boolean LX_sea_littleBrother()
 		use(1, $item[Wriggling flytrap pellet]);
 		//Need to visit little brother twice
 		visit_url("monkeycastle.php?who=1");
-		visit_url("monkeycastle.php?who=1");
+		visit_url("monkeycastle.php?who=1"); //Start Big Brother quest
+		return true;
 	}
 	return false;
 }
@@ -1166,11 +1167,41 @@ boolean LX_sea_bigBrother()
 	}
 	boolean NCForced = auto_forceNextNoncombat($location[The Wreck of the Edgar Fitzsimmons]);
 	auto_log_info("Trying to force NC at The Wreck of the Edgar Fitzsimmons: "+NCForced.to_string(), "blue");
-	return autoAdv($location[The Wreck of the Edgar Fitzsimmons]);
+	autoAdv($location[The Wreck of the Edgar Fitzsimmons]);
+
+	if(get_property("bigBrotherRescued").to_boolean())
+	{
+		visit_url("monkeycastle.php?who=2"); //Start Grandpa quest
+		visit_url("monkeycastle.php?who=1"); //Start Grandpa quest
+		return true;
+	}
+
+	return false;
 }
 
 boolean LX_sea_grandpa()
 {
+	if(internalQuestStatus("questS02Monkees") >= 5 || internalQuestStatus("questS02Monkees") <= 1)
+	{
+		return false;
+	}
+	location grandpaLoc;
+	switch(my_class())
+	{
+		case $class[Seal Clubber]:
+		case $class[Turtle Tamer]:
+			grandpaLoc = $location[Anemone Mine];
+			break;
+		case $class[Sauceror]:
+		case $class[Pastamancer]:
+			grandpaLoc = $location[The Marinara Trench];
+			break;
+		case $class[Disco Bandit]:
+		case $class[Accordion Thief]:
+			grandpaLoc = $location[The Dive Bar];
+			break;
+	}
+	autoAdv(grandpaLoc);
 	return false;
 }
 

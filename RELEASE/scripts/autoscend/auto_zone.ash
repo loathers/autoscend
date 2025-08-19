@@ -739,6 +739,13 @@ generic_t zone_combatMod(location loc)
 			value = -70;
 		}
 		break;
+	// The Sea
+	case $location[Anemone Mine]:
+	case $location[The Marinara Trench]:
+	case $location[The Dive Bar]:
+	case $location[The Mer-kin Outpost]:
+		value = -100;
+		break;
 	// End Bugbear Invasion Locations
 	default:
 		retval._error = true;

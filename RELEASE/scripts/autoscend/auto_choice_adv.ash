@@ -228,6 +228,21 @@ boolean auto_run_choice(int choice, string page)
 		case 191: // Chatterboxing (The F'c'le)
 			fcleChoiceHandler(choice);
 			break;
+		case 299: //Down at the Hatch
+			run_choice(1); //Open the bulkhead
+			break;
+		case 303: //You've Hit Bottom
+			run_choice(1);  //See what he has to show you
+			break;
+		case 306: // Not a Micro Fish
+			run_choice(1); //Watch in horror
+			break;
+		case 307: //Ode to the Sea
+			run_choice(1); //Let Grandpa Learn You Something
+			break;
+		case 308: //Boxing the Juke
+			run_choice(1): //Listen to the Music
+			break;
 		case 330: // A Shark's Chum (The Haunted Billiards Room, semi-rarely)
 			if(get_property("poolSharkCount").to_int() < 25)
 			{
