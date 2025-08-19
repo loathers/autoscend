@@ -2351,6 +2351,18 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 	return true;
 }
 
+boolean underwaterReady()
+{
+	boolean ready = false;
+	boolean advReady = false;
+	boolean famReady = false;
+
+	if(boolean_modifier("Adventure Underwater")) advReady = true;
+	if((my_familiar().underwater) || ($items[das boot, little bitty bathysphere] contains familiar_equipped_equipment(my_familiar()))) famReady = true;
+
+	return advReady && famReady;
+}
+
 void needAir()
 {
     foreach it in $items[really\, really nice swimming trunks, Mer-kin scholar mask, Mer-kin gladiator mask,

@@ -2043,6 +2043,7 @@ boolean handleCopiedMonster(item itm, string option);
 int maxSealSummons();
 boolean acquireCombatMods(int amt);
 boolean acquireCombatMods(int amt, boolean doEquips);
+boolean underwaterReady();
 void needAir();
 boolean basicAdjustML();
 int highest_available_mcd();

@@ -1047,7 +1047,7 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
-	if(place.environment == "underwater" && !(boolean_modifier("Adventure Underwater")))
+	if(place.environment == "underwater" && !underwaterReady())
 	{
 		needAir();
 	}
