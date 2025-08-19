@@ -1719,7 +1719,7 @@ boolean zone_available(location loc)
 		retval = (internalQuestStatus("questS02Monkees") >= 6);
 		break;
 	case $location[The Coral Corral]:
-		retval = (internalQuestStatus("questS02Monkees") >= 6);
+		retval = get_property("corralUnlocked").to_boolean();
 		break;
 	case $location[Madness Reef]:
 		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToMadnessReefPurchased").to_boolean());
@@ -1735,7 +1735,7 @@ boolean zone_available(location loc)
 	case $location[Mer-kin Elementary School]:
 	case $location[Mer-kin Colosseum]:
 	case $location[Mer-kin Gymnasium]:
-		retval = (inAftercore() || in_underTheSea());
+		retval = get_property("intenseCurrents").to_boolean();
 		break;
 	// case $location[Left Door]:
 	// case $location[Center Door]:
