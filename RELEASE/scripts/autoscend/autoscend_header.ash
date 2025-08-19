@@ -1468,6 +1468,7 @@ boolean LX_sea_bigBrother();
 boolean LX_sea_grandpa();
 boolean LX_sea_grandma();
 boolean LX_sea_mom();
+boolean LX_sea_currents();
 boolean LX_sea_gladiator();
 boolean LX_sea_scholar();
 boolean LX_sea_dad();

@@ -1168,7 +1168,7 @@ boolean LX_sea_littleBrother()
 
 boolean LX_sea_bigBrother()
 {
-	if(internalQuestStatus("questS02Monkees") >= 2 || internalQuestStatus("questS02Monkees") <= 0)
+	if(internalQuestStatus("questS02Monkees") >= 3 || internalQuestStatus("questS02Monkees") < 0)
 	{
 		return false;
 	}
@@ -1188,7 +1188,7 @@ boolean LX_sea_bigBrother()
 
 boolean LX_sea_grandpa()
 {
-	if(internalQuestStatus("questS02Monkees") >= 5 || internalQuestStatus("questS02Monkees") <= 1)
+	if(internalQuestStatus("questS02Monkees") > 5 || internalQuestStatus("questS02Monkees") < 3)
 	{
 		return false;
 	}
@@ -1209,34 +1209,102 @@ boolean LX_sea_grandpa()
 			break;
 	}
 	autoAdv(grandpaLoc);
-	//Need to add talking to grandpa about random stuff to unlock it, 
+	if(internalQuestStatus("questS02Monkees") == 5)
+	{
+		cli_execute(`grandpa grandma`);
+		return true;
+	}
 	return false;
 }
 
 boolean LX_sea_grandma()
 {
-
+	if(internalQuestStatus("questS02Monkees") > 9 || internalQuestStatus("questS02Monkees") <= 5)
+	{
+		return false;
+	}
+	if((item_amount($item[Grandma's Note]) + item_amount($item[Grandma's Fuchsia Yarn]) + item_amount($item[Grandma's Chartreuse Yarn])) < 3 && internalQuestStatus("questS02Monkees") <= 7)
+	{
+		//Get those from one time adventures so we can't get more than 1 of each
+		autoAdv($location[The Mer-kin Outpost]);
+	}
+	cli_execute(`grandpa note`);
+	if(item_amount($item[Grandma's Map]) > 0 && internalQuestStatus("questS02Monkees") <= 8)
+	{
+		autoAdv($location[The Mer-Kin Outpost]);
+	}
+	if(internalQuestStatus("questS02Monkees") == 9)
+	{
+		visit_url("monkeycastle.php?who=1");
+		visit_url("monkeycastle.php?who=2");
+		return buy($coinmaster[Big Brother], 1, $item[Black glass]);
+	}
 	return false;
 }
 
 boolean LX_sea_mom()
 {
+	//This quest needs LOTS OF WORK
+	if(internalQuestStatus("questS02Monkees") > 12 || internalQuestStatus("questS02Monkees") < 12)
+	{
+		return false;
+	}
+	autoForceEquip($item[Black glass]);
+	
+	return false;
+}
+
+boolean LX_sea_currents()
+{
+	//This quest needs LOTS OF WORK
+	if(internalQuestStatus("questS02Monkees") <= 5)
+	{
+		//can't access the outpost until then
+		return false;
+	}
+
+	if(!zone_available($location[The Coral Corral]))
+	{
+		autoAdv($location[The Mer-Kin Outpost]);
+		if(item_amount($item[mer-kin stashbox]) > 0)
+		{
+			use(1, $item[mer-kin stashbox]);
+			use(1, $item[mer-kin trailmap]);
+			cli_execute(`grandpa currents`);
+		}
+	}
+
+	autoAdv($location[The Coral Corral]);
+
 	return false;
 }
 
 boolean LX_sea_gladiator()
 {
+	if(!LX_sea_currents())
+	{
+		return false;
+	}
 	return false;
 }
 
 boolean LX_sea_scholar()
 {
+	if(!LX_sea_currents())
+	{
+		return false;
+	}
 	return false;
 }
 
 boolean LX_sea_dad()
 {
 	if(in_underTheSea())
+	{
+		return false;
+	}
+
+	if(!LX_sea_currents())
 	{
 		return false;
 	}
@@ -1251,6 +1319,11 @@ boolean LX_sea_NS()
 		return false;
 	}
 	
+	if(!LX_sea_currents())
+	{
+		return false;
+	}
+
 	return false;
 }
 

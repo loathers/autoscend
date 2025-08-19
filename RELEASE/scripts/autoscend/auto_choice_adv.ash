@@ -243,6 +243,31 @@ boolean auto_run_choice(int choice, string page)
 		case 308: //Boxing the Juke
 			run_choice(1); //Listen to the Music
 			break;
+		case 312: //Into the Outpost
+			if(get_property("merkinLockkeyMonster") == "mer-kin burglar")
+			{
+				run_choice(1); //Insinuate yourself into the camouflaged tent
+				break;
+			}
+			else if(get_property("merkinLockkeyMonster") == "mer-kin raider")
+			{
+				run_choice(2); //Insinuate yourself into the skull-bedecked tent
+				break;
+			}
+			else if(get_property("merkinLockkeyMonster") == "" || get_property("merkinLockkeyMonster") == "mer-kin healer")
+			{
+				run_choice(3); //Insinuate yourself into the glyphed tent
+				break;
+			}
+		case 313: //Sneaky Intent
+			run_choice(2); //Get mer-kin fastjuice or lockbox
+			break;
+		case 314: //Mysterious Intent
+			run_choice(3); //Get mer-kin hookspear or lockbox
+			break;
+		case 315: //Mysterious Intent
+			run_choice(3); //Get prayerbeads or lockbox
+			break;
 		case 330: // A Shark's Chum (The Haunted Billiards Room, semi-rarely)
 			if(get_property("poolSharkCount").to_int() < 25)
 			{
