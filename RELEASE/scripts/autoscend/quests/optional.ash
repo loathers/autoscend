@@ -1146,7 +1146,14 @@ boolean LX_sea_littleBrother()
 	if(item_amount($item[Wriggling flytrap pellet]) == 0)
 	{
 		auto_log_info("Trying to get a Wriggling flytrap pellet to find Little Brother");
-		autoAdv($location[An Octopus's Garden]);
+		if(auto_have_familiar($familiar[Patriotic Eagle]))
+		{
+			auto_getCitizenZone($location[An Octopus's Garden]);
+		}
+		else
+		{
+			autoAdv($location[An Octopus's Garden]);
+		}
 	}
 	else
 	{
@@ -1202,11 +1209,13 @@ boolean LX_sea_grandpa()
 			break;
 	}
 	autoAdv(grandpaLoc);
+	//Need to add talking to grandpa about random stuff to unlock it, 
 	return false;
 }
 
 boolean LX_sea_grandma()
 {
+
 	return false;
 }
 

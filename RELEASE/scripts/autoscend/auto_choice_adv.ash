@@ -241,7 +241,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); //Let Grandpa Learn You Something
 			break;
 		case 308: //Boxing the Juke
-			run_choice(1): //Listen to the Music
+			run_choice(1); //Listen to the Music
 			break;
 		case 330: // A Shark's Chum (The Haunted Billiards Room, semi-rarely)
 			if(get_property("poolSharkCount").to_int() < 25)
