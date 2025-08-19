@@ -1,4 +1,4 @@
-since r28654;	// feat: track mom and lasso counts
+since r28660;	// feat: liberateKing when freeing Ralph on sea path
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
