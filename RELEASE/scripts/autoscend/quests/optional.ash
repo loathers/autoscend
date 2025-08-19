@@ -1273,8 +1273,10 @@ boolean LX_sea_currents()
 			cli_execute(`grandpa currents`);
 		}
 	}
-
-	autoAdv($location[The Coral Corral]);
+	else
+	{
+		autoAdv($location[The Coral Corral]);
+	}
 
 	return false;
 }
