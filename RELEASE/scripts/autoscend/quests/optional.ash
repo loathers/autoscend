@@ -1273,12 +1273,12 @@ boolean LX_sea_currents()
 			cli_execute(`grandpa currents`);
 		}
 	}
-	else
+	if(get_property("seahorseName") == "")
 	{
 		autoAdv($location[The Coral Corral]);
 	}
 
-	return false;
+	return get_property("seahorseName") != "";
 }
 
 boolean LX_sea_gladiator()

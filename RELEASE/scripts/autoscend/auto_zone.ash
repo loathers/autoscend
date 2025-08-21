@@ -1730,16 +1730,32 @@ boolean zone_available(location loc)
 	case $location[The Caliginous Abyss]:
 		retval = (internalQuestStatus("questS02Monkees") >= 1);
 		break;
-	case $location[Mer-Kin Temple]:
-	case $location[Mer-kin Library]:
 	case $location[Mer-kin Elementary School]:
-	case $location[Mer-kin Colosseum]:
 	case $location[Mer-kin Gymnasium]:
-		retval = get_property("intenseCurrents").to_boolean();
+		retval = (get_property("seahorseName") != "") && (have_outfit("Crappy Mer-kin Disguise") || have_outfit("Mer-kin Gladiatorial Gear") || have_outfit("Mer-kin Scholar's Vestments"));
 		break;
-	// case $location[Left Door]:
-	// case $location[Center Door]:
-	// case $location[Right Door]:
+	case $location[Mer-kin Colosseum]:
+		retval = (get_property("seahorseName") != "") && have_outfit("Mer-kin Gladiatorial Gear");
+		break;
+	case $location[Mer-kin Library]:
+		retval = (get_property("seahorseName") != "") && have_outfit("Mer-kin Scholar's Vestments");
+		break;
+	case $location[Mer-Kin Temple]:
+		retval = (!in_underTheSea() && (get_property("seahorseName") != "") && //Doing the Sea quest not in 11,037 Leagues Under the Sea
+		((get_property("isMerkinGladiatorChampion").to_boolean() && have_outfit("Mer-kin Gladiatorial Gear")) || //Gladiator path
+		(get_property("isMerkinHighPriest").to_boolean() && have_outfit("Mer-kin Scholar's Vestments")) || //Scholar path
+		have_outfit("Clothing of Loathing"))); //Dad path
+		break;
+	//11,037 Leagues Under The Sea final bosses
+	case $location[Mer-kin Temple (Left Door)]:
+		retval = (in_underTheSea() && !(get_property("shubJigguwattDefeated").to_boolean()) && get_property("isMerkinGladiatorChampion").to_boolean() && have_outfit("Mer-kin Gladiatorial Gear"));
+		break;
+	case $location[Mer-kin Temple (Center Door)]:
+		retval = (in_underTheSea() && get_property("shubJigguwattDefeated").to_boolean() && get_property("yogUrtDefeated").to_boolean());
+		break;
+	case $location[Mer-kin Temple (Right Door)]:
+		retval = (in_underTheSea() && !(get_property("yogUrtDefeated").to_boolean()) && get_property("isMerkinHighPriest").to_boolean() && have_outfit("Mer-kin Scholar's Vestments"));
+		break;
 	}
 
 	// compare our result with Mafia's native function, log a warning if theres a difference. Ideally we can see if there are any differences between our code and Mafia's, and if not remove all of ours in favor of Mafia's
