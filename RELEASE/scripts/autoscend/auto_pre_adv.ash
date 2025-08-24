@@ -1047,6 +1047,11 @@ boolean auto_pre_adventure()
 		pokefam_makeTeam();
 	}
 
+	if(place.environment == "underwater")
+	{
+		sea_equipment();
+	}
+
 	utilizeStillsuit();	
 
 	set_property("auto_priorLocation", place);

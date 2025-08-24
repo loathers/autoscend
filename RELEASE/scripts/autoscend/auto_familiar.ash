@@ -784,6 +784,10 @@ boolean wantCubeling()
 	{
 		return false;	//cubeling already dropped tools in this ascension. It cannot drop more until you ascend again.
 	}
+	if(in_underTheSea())
+	{
+		return false;
+	}
 	
 	boolean need_lockpicks = item_amount($item[pick-o-matic lockpicks]) == 0 && item_amount($item[Platinum Yendorian Express Card]) == 0;
 	boolean need_ring = !possessEquipment($item[Ring of Detect Boring Doors]);	//do not try for a second one if you already have one

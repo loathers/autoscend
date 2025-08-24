@@ -271,6 +271,7 @@ boolean[monster] peridotManuallyDesiredMonsters()
 	desired_monsters[$monster[modern zmobie]] = true;
 	desired_monsters[$monster[dairy goat]] = true;
 	desired_monsters[$monster[writing desk]] = true;
+	desired_monsters[$monster[Neptune flytrap]] = true;
 	// Quest gremlins need IDs because there's multiple
 	desired_monsters[$monster[547]] = true; // erudite gremlin (tool) 
 	desired_monsters[$monster[549]] = true; // batwinged gremlin (tool)
@@ -482,7 +483,8 @@ string bestBusk(int[string] powers, string effectMultiplier)
 			{
 				foreach mod, multi in effMulti
 				{
-					score += numeric_modifier(eff, mod) * multi;
+					if(to_modifier(mod).type == "numeric") score += numeric_modifier(eff, mod) * multi;
+					if(to_modifier(mod).type == "boolean" && boolean_modifier(eff, mod)) score += multi;
 				}
 			}
 		}

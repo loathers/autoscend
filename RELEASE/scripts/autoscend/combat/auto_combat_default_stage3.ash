@@ -367,6 +367,11 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			}
 		}
 
+		if(my_location().environment == "underwater" && canUse($item[sea lasso]))
+		{
+			return useItem($item[sea lasso]);
+		}
+
 		if(my_location() == $location[The Smut Orc Logging Camp] && canSurvive(1.0) && get_property("chasmBridgeProgress").to_int() < bridgeGoal())
 		{
 			boolean coldMortarShell = canUse($skill[Stuffed Mortar Shell]) && have_effect($effect[Spirit of Peppermint]) != 0;
