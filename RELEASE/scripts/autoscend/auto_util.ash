@@ -2365,16 +2365,23 @@ boolean underwaterReady()
 
 void needAir()
 {
-    foreach it in $items[really\, really nice swimming trunks, Mer-kin scholar mask, Mer-kin gladiator mask,
-    aerated diving helmet, crappy Mer-kin mask, old SCUBA tank, oxygenated eggnog helmet, Elf Guard SCUBA tank]
-    {
-        if(possessEquipment(it))
-        {
-            autoForceEquip(it);
-            break;
-        }
-    }
-    if(!(my_familiar().underwater))
+	boolean advUnderwater = false;
+	boolean famUnderwater = false;
+	if(boolean_modifier("Adventure Underwater")) advUnderwater = true;
+	if((my_familiar().underwater) || ($items[das boot, little bitty bathysphere] contains familiar_equipped_equipment(my_familiar()))) famUnderwater = true;
+    if(!advUnderwater)
+	{
+		foreach it in $items[really\, really nice swimming trunks, Mer-kin scholar mask, Mer-kin gladiator mask,
+		aerated diving helmet, crappy Mer-kin mask, old SCUBA tank, oxygenated eggnog helmet, Elf Guard SCUBA tank]
+		{
+			if(possessEquipment(it))
+			{
+				autoForceEquip(it);
+				break;
+			}
+		}
+	}
+    if(!famUnderwater)
     {
         foreach it in $items[das boot, little bitty bathysphere]
         {

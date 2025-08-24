@@ -1,4 +1,4 @@
-since r28673;	// canAdventure support for Mer-Kin Deepcity - including in New Sea Path
+since r28677;	// Add combats for Mer-Kin Temple locations
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

@@ -1249,7 +1249,13 @@ boolean LX_sea_mom()
 	{
 		return false;
 	}
-	autoForceEquip($item[Black glass]);
+	foreach it in $items[black glass,scale-mail underwear,shark jumper]
+	{
+		autoForceEquip(it);
+	}
+	buffMaintain($effect[Jelly Combed]);
+
+	autoAdv($location[The Caliginous Abyss]);
 	
 	return false;
 }
