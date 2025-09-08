@@ -2372,7 +2372,7 @@ void needAir()
     if(!advUnderwater)
 	{
 		foreach it in $items[really\, really nice swimming trunks, Mer-kin scholar mask, Mer-kin gladiator mask,
-		aerated diving helmet, crappy Mer-kin mask, old SCUBA tank, oxygenated eggnog helmet, Elf Guard SCUBA tank]
+		aerated diving helmet, crappy Mer-kin mask, Elf Guard SCUBA tank, old SCUBA tank, oxygenated eggnog helmet]
 		{
 			if(possessEquipment(it))
 			{

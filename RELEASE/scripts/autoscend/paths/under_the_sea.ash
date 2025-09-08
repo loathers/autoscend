@@ -27,9 +27,8 @@ void sea_pulls()
         return;
     }
 
-    foreach it in $items[Mer-kin knucklebone, Mer-kin scholar mask, Mer-kin scholar tailpiece,
-    Mer-kin gladiator mask, Mer-kin gladiator tailpiece, Mer-kin Prayerbeads, sea lasso, sea cowbell,
-    sea chaps, sea cowboy hat, shark jumper, scale-mail underwear, comb jelly]
+    foreach it in $items[Mer-kin knucklebone, Mer-kin Prayerbeads, sea lasso, sea cowbell, Damp old wallet, 
+    shark jumper, scale-mail underwear, comb jelly, Mer-kin wordquiz, Mer-kin cheatsheet]
     {
         pullXWhenHaveY(it,1,0);
     }
