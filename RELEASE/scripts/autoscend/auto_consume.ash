@@ -693,10 +693,6 @@ boolean canDrink(item toDrink)
 
 boolean canEat(item toEat, boolean checkValidity)
 {
-	if (in_lta() && toEat == $item[magical sausage]) {
-		// Mafia says spies can't eat, but they can eat sausages
-		return true;
-	}
 	if(!can_eat())
 	{
 		return false;

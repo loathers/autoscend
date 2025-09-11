@@ -1,4 +1,4 @@
-since r28604;	// wildsun boon is once/day, allied radio accepts uppercase
+since r28701;	//  fix: spies can eat sausages
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
