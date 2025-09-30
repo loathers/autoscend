@@ -620,7 +620,7 @@ boolean L12_getOutfit()
 	{
 		autoOutfit("Filthy Hippy Disguise");
 		//this should go to [Wartime Frat House (Hippy Disguise)] (despite war not started)
-		return autoAdv($location[The Orcish Frat House]);
+		return autoAdv($location[Wartime Frat House (Hippy Disguise)]);
 	}
 	
 	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
@@ -628,7 +628,7 @@ boolean L12_getOutfit()
 	{
 		autoOutfit("Frat Boy Ensemble");
 		//this should go to [Wartime Hippy Camp (Frat Disguise)] (despite war not started)
-		return autoAdv($location[The Hippy Camp]);
+		return autoAdv($location[Wartime Hippy Camp (Frat Disguise)]);
 	}
 	
 	if(L12_preOutfit())
