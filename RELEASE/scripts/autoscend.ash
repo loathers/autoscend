@@ -1,4 +1,4 @@
-since r28677;	// Add combats for Mer-Kin Temple locations
+since r28720;	// monster data updates - boss census
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here

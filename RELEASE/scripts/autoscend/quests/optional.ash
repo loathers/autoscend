@@ -1209,6 +1209,17 @@ boolean LX_sea_grandpa()
 			break;
 	}
 	autoAdv(grandpaLoc);
+	boolean grandpaLocPearl = false;
+	if((grandpaLoc == $location[Anemone Mine] && get_property("_unblemishedPearlAnemoneMine").to_boolean()) ||
+	   (grandpaLoc == $location[The Marinara Trench] && get_property("_unblemishedPearlMarinaraTrench").to_boolean()) ||
+	   (grandpaLoc == $location[The Dive Bar] && get_property("_unblemishedPearlDiveBar").to_boolean()))
+	{
+		grandpaLocPearl = true;
+	}
+	if(!grandpaLocPearl)
+	{
+		LX_sea_pearls(grandpaLoc); //Since we already have adventures here, finish it off
+	}
 	if(internalQuestStatus("questS02Monkees") == 5)
 	{
 		cli_execute(`grandpa grandma`);
@@ -1257,6 +1268,52 @@ boolean LX_sea_mom()
 
 	autoAdv($location[The Caliginous Abyss]);
 	
+	return false;
+}
+
+boolean LX_sea_pearls(location loc)
+{
+	if(!($locations[Anemone Mine,The Dive Bar,Madness Reef,The Marinara Trench,The Briniest Deepests] contains loc))
+	{
+		return false;
+	}
+	element[location] pearl_element;
+	pearl_element[$location[Anemone Mine]] = $element[Spooky];
+	pearl_element[$location[The Dive Bar]] = $element[Sleaze];
+	pearl_element[$location[Madness Reef]] = $element[Stench];
+	pearl_element[$location[The Marinara Trench]] = $element[Hot];
+	pearl_element[$location[The Briniest Deepests]] = $element[Cold];
+
+	int[element] resGoal;
+	resGoal[pearl_element[loc]] = 18;
+	provideResistances(resGoal, loc, true);
+	autoAdv(loc);
+
+	return false;
+}
+
+boolean LX_sea_pearls()
+{
+	if(!in_underTheSea())
+	{
+		//don't need pearls unless in 11,037 Leagues Under the Sea
+		return false;
+	}
+	boolean[location] pearl_gotten;
+	pearl_gotten[$location[Anemone Mine]] = get_property("_unblemishedPearlAnemoneMine").to_boolean();
+	pearl_gotten[$location[The Dive Bar]] = get_property("_unblemishedPearlDiveBar").to_boolean();
+	pearl_gotten[$location[Madness Reef]] = get_property("_unblemishedPearlMadnessReef").to_boolean();
+	pearl_gotten[$location[The Marinara Trench]] = get_property("_unblemishedPearlMarinaraTrench").to_boolean();
+	pearl_gotten[$location[The Briniest Deepests]] = get_property("_unblemishedPearlTheBriniestDeepests").to_boolean();
+
+	foreach loc, bool in pearl_gotten
+	{
+		if(bool)
+		{
+			continue;
+		}
+		LX_sea_pearls(loc);		
+	}
 	return false;
 }
 
