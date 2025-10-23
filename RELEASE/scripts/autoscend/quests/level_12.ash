@@ -1294,13 +1294,6 @@ boolean L12_sonofaBeach()
 	{
 		return false;
 	}
-	if(!in_pokefam() && !get_property("auto_hippyInstead").to_boolean())
-	{
-		if(get_property("sidequestJunkyardCompleted") == "none")
-		{
-			return false;
-		}
-	}
 	if(auto_warEnemiesRemaining() == 0)
 	{
 		return false;
