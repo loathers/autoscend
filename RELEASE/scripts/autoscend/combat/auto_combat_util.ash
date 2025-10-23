@@ -596,7 +596,7 @@ string banisherCombatString(phylum enemyPhylum, location loc, boolean inCombat)
 	if(inCombat)
 		auto_log_info("Finding a phylum banisher to use on " + enemyPhylum + " at " + loc, "green");
 
-	if(inCombat ? (my_familiar() == $familiar[Patriotic Eagle] && get_property("screechCombats").to_int() == 0) : (!in_avantGuard() && pathAllowsChangingFamiliar() && !auto_famKill($familiar[Patriotic Eagle], loc) && auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0) && !in_glover()))
+	if(inCombat ? (my_familiar() == $familiar[Patriotic Eagle] && get_property("screechCombats").to_int() == 0 && !in_glover()) : (!in_avantGuard() && pathAllowsChangingFamiliar() && !auto_famKill($familiar[Patriotic Eagle], loc) && auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0) && !in_glover()))
 	{
 		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
 	}
@@ -791,7 +791,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	}
 
 	if(inCombat ? (auto_have_skill($skill[Punch Out Your Foe]) && auto_is_valid($skill[Punch Out Your Foe]) && (my_mp() >= mp_cost($skill[Punch Out Your Foe])) && (!(used contains "punch out your foe")) && useFree)
-	    : auto_is_valid($skill[Punch Out Your Foe]) && (auto_have_skill($skill[Punch Out Your Foe]) || (available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3) ))
+	    : auto_is_valid($skill[Punch Out Your Foe]) && (auto_have_skill($skill[Punch Out Your Foe]) || (available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3 && !isActuallyEd()) ))
 	{
 		return "skill " + $skill[Punch Out Your Foe];
 	}
