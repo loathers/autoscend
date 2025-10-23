@@ -619,7 +619,6 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "fratboy" && possessOutfit("Filthy Hippy Disguise"))
 	{
 		autoOutfit("Filthy Hippy Disguise");
-		//this should go to [Wartime Frat House (Hippy Disguise)] (despite war not started)
 		return autoAdv($location[Wartime Frat House (Hippy Disguise)]);
 	}
 	
@@ -627,7 +626,6 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "hippy" && possessOutfit("Frat Boy Ensemble"))
 	{
 		autoOutfit("Frat Boy Ensemble");
-		//this should go to [Wartime Hippy Camp (Frat Disguise)] (despite war not started)
 		return autoAdv($location[Wartime Hippy Camp (Frat Disguise)]);
 	}
 	
