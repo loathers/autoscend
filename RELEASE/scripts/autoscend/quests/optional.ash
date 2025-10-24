@@ -1344,6 +1344,28 @@ boolean LX_sea_currents()
 	return get_property("seahorseName") != "";
 }
 
+boolean LX_dolphinItem()
+{
+	boolean wantDolphin = false;
+	switch(get_property("dolphinItem"))
+	{
+		case "sea lasso":
+			if(get_property("lassoTraining") != "expert")
+			{
+				wantDolphin = true;
+			}
+			break;
+		default:
+			break;
+	}
+	if(wantDolphin)
+	{
+		buy($coinmaster[Big Brother], 1, $item[dolphin whistle]);
+		return autoAdvBypass("inv_use.php?pwd=&whichitem=" + to_int(it), $location[Noob Cave], option);
+	}
+	return false;
+}
+
 boolean LX_sea_gladiator()
 {
 	if(!LX_sea_currents())
