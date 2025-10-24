@@ -1360,7 +1360,14 @@ boolean LX_dolphinItem()
 	}
 	if(wantDolphin)
 	{
-		buy($coinmaster[Big Brother], 1, $item[dolphin whistle]);
+		if(item_amount($item[Dolphin whistle]) == 0)
+		{
+			if(item_amount($item[sand dollar]) == 0)
+			{
+				return false;
+			}
+			buy($coinmaster[Big Brother], 1, $item[dolphin whistle]);
+		}
 		return autoAdvBypass("inv_use.php?pwd=&whichitem=" + to_int(it), $location[Noob Cave], option);
 	}
 	return false;
