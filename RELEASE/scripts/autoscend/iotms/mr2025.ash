@@ -880,6 +880,8 @@ void mobiusChoiceHandler(int choice, string page)
 			if(paradoxes[choice, state] == paradox)
 			{
 				pick = choice;
+				auto_log_info("Choosing " + pick);
+				auto_log_info("Which translates to " + paradoxes[pick, paradoxState[pick]]);
 				break;
 			}
 		}
