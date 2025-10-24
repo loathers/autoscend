@@ -89,7 +89,11 @@ boolean canBurnDelay(location loc)
 	{
 		return true;
 	}
-	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera() || auto_haveCursedMagnifyingGlass()))
+	else if(auto_haveMobiusRing() && auto_timeCopFights() < 11)
+	{
+		return true;
+	}
+	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera() || auto_haveCursedMagnifyingGlass() || auto_haveMobiusRing()))
 	{
 		return true;
 	}
