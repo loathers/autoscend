@@ -246,19 +246,19 @@ boolean auto_run_choice(int choice, string page)
 		case 312: //Into the Outpost
 			if(get_property("merkinLockkeyMonster") == "mer-kin burglar")
 			{
-				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1)
+				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1);
 				run_choice(1); //Sneak into the camouflaged tent
 				break;
 			}
 			else if(get_property("merkinLockkeyMonster") == "mer-kin raider")
 			{
-				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1)
+				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1);
 				run_choice(2); //Infiltrate the skull-bedecked tent
 				break;
 			}
 			else if(get_property("merkinLockkeyMonster") == "" || get_property("merkinLockkeyMonster") == "mer-kin healer")
 			{
-				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1)
+				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1);
 				run_choice(3); //Insinuate yourself into the glyphed tent
 				break;
 			}
