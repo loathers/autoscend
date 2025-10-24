@@ -246,27 +246,30 @@ boolean auto_run_choice(int choice, string page)
 		case 312: //Into the Outpost
 			if(get_property("merkinLockkeyMonster") == "mer-kin burglar")
 			{
-				run_choice(1); //Insinuate yourself into the camouflaged tent
+				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1)
+				run_choice(1); //Sneak into the camouflaged tent
 				break;
 			}
 			else if(get_property("merkinLockkeyMonster") == "mer-kin raider")
 			{
-				run_choice(2); //Insinuate yourself into the skull-bedecked tent
+				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1)
+				run_choice(2); //Infiltrate the skull-bedecked tent
 				break;
 			}
 			else if(get_property("merkinLockkeyMonster") == "" || get_property("merkinLockkeyMonster") == "mer-kin healer")
 			{
+				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1)
 				run_choice(3); //Insinuate yourself into the glyphed tent
 				break;
 			}
 		case 313: //Sneaky Intent
-			run_choice(2); //Get mer-kin fastjuice or lockbox
+			run_choice(get_property("auto_outpostVisit").to_int()); //Get mer-kin fastjuice or lockbox
 			break;
-		case 314: //Mysterious Intent
-			run_choice(3); //Get mer-kin hookspear or lockbox
+		case 314: //Aggressive Intent
+			run_choice(get_property("auto_outpostVisit").to_int()); //Get mer-kin hookspear or lockbox
 			break;
 		case 315: //Mysterious Intent
-			run_choice(3); //Get prayerbeads or lockbox
+			run_choice(get_property("auto_outpostVisit").to_int()); //Get prayerbeads or lockbox
 			break;
 		case 330: // A Shark's Chum (The Haunted Billiards Room, semi-rarely)
 			if(get_property("poolSharkCount").to_int() < 25)

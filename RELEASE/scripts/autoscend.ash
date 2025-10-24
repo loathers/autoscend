@@ -271,6 +271,7 @@ void initializeSettings() {
 	set_property("auto_dontUseCookBookBat", false);
 	set_property("auto_dietpills", 0);
 	set_property("_auto_candyMapCompleted", false);
+	set_property("auto_outpostVisit", 0);
 	beehiveConsider(false);
 
 	eudora_initializeSettings();
