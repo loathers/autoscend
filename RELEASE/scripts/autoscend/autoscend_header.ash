@@ -1471,6 +1471,8 @@ boolean LX_sea_mom();
 boolean LX_sea_pearls(location loc);
 boolean LX_sea_pearls();
 boolean LX_sea_currents();
+boolean LX_dolphinItem();
+boolean LX_oldMan();
 boolean LX_sea_gladiator();
 boolean LX_sea_scholar();
 boolean LX_sea_dad();

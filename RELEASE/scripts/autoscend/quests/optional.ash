@@ -1373,6 +1373,42 @@ boolean LX_dolphinItem()
 	return false;
 }
 
+boolean LX_oldMan()
+{
+	if(!in_underTheSea())
+	{
+		//Don't really need it if not in 11,037 Leagues
+		return false;
+	}
+	if(item_amount($item[old SCUBA tank]) > 0 && item_amount($item[sand dollar]) >= 50)
+	{
+		//buy the boot after we have the SCUBA tank (will greatly increase speed of Coral Corral)
+		buy($coinmaster[Big Brother], 1, $item[damp old boot]);
+	}
+
+	if(item_amount($item[damp old boot]) > 0)
+	{
+		visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman");
+		if(item_amount($item[fishy pipe]) > 0)
+		{
+			visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman&preaction=pickreward&whichreward=6314");
+			return true;
+		}
+		else if(item_amount($item[das boot]) > 0)
+		{
+			visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman&preaction=pickreward&whichreward=3609");
+			return true;
+		}
+		else
+		{
+			visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman&preaction=pickreward&whichreward=6313");
+			return true;
+		}
+	}
+
+	return false;
+}
+
 boolean LX_sea_gladiator()
 {
 	if(!LX_sea_currents())
