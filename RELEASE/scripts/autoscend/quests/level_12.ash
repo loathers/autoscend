@@ -619,16 +619,14 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "fratboy" && possessOutfit("Filthy Hippy Disguise"))
 	{
 		autoOutfit("Filthy Hippy Disguise");
-		//this should go to [Wartime Frat House (Hippy Disguise)] (despite war not started)
-		return autoAdv($location[The Orcish Frat House]);
+		return autoAdv($location[Wartime Frat House (Hippy Disguise)]);
 	}
 	
 	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
 	if(auto_warSide() == "hippy" && possessOutfit("Frat Boy Ensemble"))
 	{
 		autoOutfit("Frat Boy Ensemble");
-		//this should go to [Wartime Hippy Camp (Frat Disguise)] (despite war not started)
-		return autoAdv($location[The Hippy Camp]);
+		return autoAdv($location[Wartime Hippy Camp (Frat Disguise)]);
 	}
 	
 	if(L12_preOutfit())
@@ -1295,13 +1293,6 @@ boolean L12_sonofaBeach()
 	if(in_koe())
 	{
 		return false;
-	}
-	if(!in_pokefam() && !get_property("auto_hippyInstead").to_boolean())
-	{
-		if(get_property("sidequestJunkyardCompleted") == "none")
-		{
-			return false;
-		}
 	}
 	if(auto_warEnemiesRemaining() == 0)
 	{
