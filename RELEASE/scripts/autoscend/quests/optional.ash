@@ -1368,7 +1368,7 @@ boolean LX_dolphinItem()
 			}
 			buy($coinmaster[Big Brother], 1, $item[dolphin whistle]);
 		}
-		return autoAdvBypass("inv_use.php?pwd=&whichitem=" + to_int(it), $location[Noob Cave], option);
+		return autoAdvBypass("inv_use.php?pwd=&whichitem=" + to_int($item[Dolphin whistle]), $location[Noob Cave]);
 	}
 	return false;
 }
