@@ -643,3 +643,284 @@ boolean auto_haveCoolerYeti()
 	}
 	return false;
 }
+
+boolean auto_haveMobiusRing()
+{
+	if(possessEquipment($item[M&ouml;bius ring]))
+	{
+		return true;
+	}
+	return false;
+}
+
+int auto_paradoxicity()
+{
+	return my_paradoxicity();
+}
+
+boolean auto_timeIsAStripPossible()
+{
+	if(!auto_haveMobiusRing())
+	{
+		return false;
+	}
+
+	int mobiusNCs = get_property("_mobiusStripEncounters").to_int();
+	int mobiusTurn = get_property("_lastMobiusStripTurn").to_int();
+	if((mobiusNCs < 1 && mobiusTurn <= 0) ||
+	(mobiusNCs < 2 && mobiusTurn - turns_played() >= 7) ||
+	(mobiusNCs < 3 && mobiusTurn - turns_played() >= 13) ||
+	(mobiusNCs < 4 && mobiusTurn - turns_played() >= 19) ||
+	(mobiusNCs < 5 && mobiusTurn - turns_played() >= 25) ||
+	(mobiusNCs < 6 && mobiusTurn - turns_played() >= 31) ||
+	(mobiusNCs < 11 && mobiusTurn - turns_played() >= 41) ||
+	(mobiusNCs < 16 && mobiusTurn - turns_played() >= 51) ||
+	(mobiusNCs >= 16 && mobiusTurn - turns_played() >= 76))
+	{
+		return autoEquip($item[M&ouml;bius ring]);
+	}
+
+	return false;
+}
+
+void mobiusChoiceHandler(int choice, string page)
+{
+	int c = 1;
+	if(!auto_haveMobiusRing())
+	{
+		run_choice(c); //should never get here but might as well mitigate
+	}
+
+	//What paradoxes are available
+	string[int, string] paradoxes = {
+		1: {
+			"a": "Draw a goatee on yourself",
+			"b": "Succumb to evil"
+		},
+		2: {
+			"a": "Stop your arch-nemesis as a baby",
+			"b": "Go back and mae the Naughty Sorceress naughty again"
+		},
+		3: {
+			"a": "Defend yourself",
+			"b": "Assassinate yourself"
+		},	
+		4: {
+			"a": "Take the long odds on the trifecta",
+			"b": "Fix the race and also fix the race"
+		},
+		5: {
+			"a": "Plant some seeds in the distant past",
+			"b": "Chop down some trees"
+		},
+		6: {
+			"a": "Give your past self investment tips",
+			"b": "Steal from your future self"
+		},
+		7: {
+			"a": "Steal a cupcake from young Susie",
+			"b": "Bake Susie a cupcake"
+		},
+		8: {
+			"a": "Borrow a cup of sugar from yourself",
+			"b": "Return the sugar you borrowed"
+		},
+		9: {
+			"a": "Play Schroedinger's Prank on yourself",
+			"b": "Check your pocket"
+		},
+		10: {
+			"a": "Shoot yourself in the foot",
+			"b": "Get shot in the foot"
+		},
+		11: {
+			"a": "Meet your parents when they were young",
+			"b": "Fix your parents' relationship"
+		},
+		12: {
+			"a": "Go back and take a 20-year-long nap",
+			"b": "Go back and set an alarm"
+		},
+		13: {
+			"a": "Lift yourself up by your bootstraps",
+			"b": "Let yourself get lifted up by your bootstraps"
+		},
+		14: {
+			"a": "Go back and write a best-seller.",
+			"b": "Replace your novel with AI drivel"
+		},
+		15: {
+			"a": "Peek in on your future",
+			"b": "Make yourself forget"
+		},
+		16: {
+			"a": "Steal a club from the past",
+			"b": "Prevent the deadly seal invasion"
+		},
+		17: {
+			"a": "Mind your own business",
+			"b": "Sit and write in your journal"
+		},
+		18: {
+			"a": "Plant some trees and harvest them in the future",
+			"b": "Teach hippies to make jams and jellies"
+		},
+		19: {
+			"a": "Go for a nature walk",
+			"b": "Go back in time and kill a butterfly"
+		},
+		20: {
+			"a": "Hey, free gun!",
+			"b": "Sell the gun"
+		},
+		21: {
+			"a": "Make friends with a famous poet",
+			"b": "Make enemies with a famous poet"
+		},
+		22: {
+			"a": "Cheeze it, it's the pigs!",
+			"b": "Aiding and abetterment"
+		},
+		23: {
+			"a": "Borrow meat from your future",
+			"b": "Repay yourself in the past"
+		}
+	};
+	string[int] paradoxState = {
+		1: "a",
+		2: "a",
+		3: "a",
+		4: "a",
+		5: "a",
+		6: "a",
+		7: "a",
+		8: "a",
+		9: "a",
+		10: "a",
+		11: "a",
+		12: "a",
+		13: "a",
+		14: "a",
+		15: "a",
+		16: "a",
+		17: "a",
+		18: "a",
+		19: "a",
+		20: "a",
+		21: "a",
+		22: "a",
+		23: "a"
+	};
+	//Ranking both + and -paradoxicity. This is strictly eye-balling each effect
+	string[int] paradoxRank = {
+	"Borrow meat from your future", //You gain 1,000 Meat.
+	"Fix your parents' relationship", //Moxie +20, +5 to Familiar Weight (50 turns)
+	"Draw a goatee on yourself", //+5 Stats Per Fight (30 turns)
+	"Stop your arch-nemesis as a baby", //-5% Combat Frequency potion (25 turns)
+	"Go back and take a 20-year-long nap", //Maximum MP +30, Mysticality +15 (30 turns)
+	"Lift yourself up by your bootstraps", //You gain X Muscleboundness.
+	"Go back and write a best-seller.", //+25 Moxie (30 turns)
+	"Defend yourself", //Maximum MP -10, +50% Combat Initiative (20 turns)
+	"Shoot yourself in the foot", //You gain X Smarm.
+	"Mind your own business", //You gain X Wizardliness.
+	"Let yourself get lifted up by your bootstraps", //+5 Familiar Experience Per Combat (100 turns)
+	"Repay yourself in the past", //Lose 10 meat, +30% Meat from Monsters (50 turns)
+	"Give your past self investment tips", //Item that appreciates in value, up to 5,000 meat in 500 turns
+	"Plant some seeds in the distant past", //Maximum HP +30, Muscle +15 (30 turns)
+	"Go back in time and kill a butterfly", //Regenerate 10-20 HP per Adventure (30 turns)
+	"Go for a nature walk", //Regenerate 6-12 MP per Adventure (30 turns)
+	"Steal a cupcake from young Susie", //Food Size 1: 5-7 adv
+	"Borrow a cup of sugar from yourself", //Food Size 1: 3 adv gives Sweet Talkin' and Sugar Rush
+	"Bake Susie a cupcake", //+10% to Stat Gains (50 turns)
+	"Aiding and abetterment", //+10% Combat Initiative (100 turns)
+	"Check your pocket", //Maximum HP & Muscle Increased (20 turns)
+	"Sit and write in your journal", //Maximum MP -10, +50% Combat Initiative (40 turns)
+	"Succumb to evil", //+30 to Monster Level (30 turns) 
+	"Go back and make the Naughty Sorceress naughty again", //+5% combat frequency melting item
+	"Peek in on your future", //+100% Weapon Drops from Monsters (20 turns)
+	"Steal a club from the past", //random club
+	"Hey, free gun!", //+1 The gun, a +50 Sleaze Damage ranged weapon
+	"Plant some trees and harvest them in the future", //random fruit x5
+	"Chop down some trees", //morningwood plank x3, cherry x1
+	"Steal from your future self", //random food x1, random booze x1
+	"Go back and set an alarm", //1 clock. Grants 3 adventures, then 2.
+	"Make enemies with a famous poet", //Size 3 Wine: ~14 adv, lose Anapests
+	"Sell the gun", //-1 The gun, +Meat
+	"Make yourself forget", // 3 charges of Try to Remember (a sniff) (no Mafia support for tracking it)
+	"Play Schroedinger's Prank on yourself", //Schroedinger's Anticipation (20 turns)
+	"Teach hippies to make jams and jellies", //2 1-spleen items that force drops of your next encounter
+	"Meet your parents when they were young", //Moxie -15, -50% Combat Initiative (200 turns)
+	"Assassinate yourself", //lose HP, gain enchantedness
+	"Cheeze it, it's the pigs!", //Muscle -30, Maximum HP -15 (100 turns)
+	"Fix the race and also fix the race", //Penguins give you meat after combat. (100 turns)
+	"Take the long odds on the trifecta", //5000 meat, -10% HP after combat (100 turns)
+	"Make friends with a famous poet", //Just the Best Anapests for 1000 turns
+	"Get shot in the foot", //Maximum HP -10, +5% Combat Frequency (30 turns)
+	"Replace your novel with AI drivel", //Provides 5 Free Rests while active. (100 turns)
+	"Prevent the deadly seal invasion", //You lose 50 hit points. You gain 500 Meat.*/
+	};
+
+	foreach i, p in paradoxState
+	{
+		if(!(contains_text(page, paradoxes[i, p])))
+		{
+			paradoxState[i] = "b";
+		}
+		else
+		{
+			paradoxState[i] ="a";
+		}
+	}
+	int pick = 1;
+	foreach paradox, rank in paradoxRank
+	{
+		foreach choice, state in paradoxState
+		{
+			//Compare the paradox to the current state of paradoxes
+			if(paradoxes[choice, state] == paradox)
+			{
+				pick = choice;
+				break;
+			}
+		}
+		if(pick != 1)
+		{
+			//That means we have found a paradox we want to choose
+			break;
+		}
+	}
+	handleTracker($item[M&ouml;bius ring], paradoxes[pick, paradoxState[pick]], "auto_otherstuff");
+	run_choice(pick);
+	return;
+}
+
+int auto_timeCopFights()
+{
+	return get_property("_timeCopsFoughtToday").to_int();
+}
+
+boolean auto_wantTimeCop()
+{
+	return auto_wantTimeCop($location[none]);
+}
+
+boolean auto_wantTimeCop(location loc)
+{
+	if(!auto_haveMobiusRing())
+	{
+		return false;
+	}
+
+	if (auto_timeCopFights() >= 11)
+	{
+		return false;
+	}
+
+	if(loc == $location[none])
+	{
+		return true;
+	}
+
+	autoEquip(wrap_item($item[M&ouml;bius ring]));
+	return false;
+}
