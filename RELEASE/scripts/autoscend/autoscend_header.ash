@@ -2135,6 +2135,7 @@ boolean auto_wantToFreeKillWithNoDrops(location loc, monster enemy);
 boolean auto_ignoreExperience();
 boolean auto_needAccordion();
 boolean auto_inRonin();
+void auto_inHardcore();
 modifier resistanceModifier (element el);
 modifier damageModifier     (element el);
 modifier spellDamageModifier(element el);
