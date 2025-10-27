@@ -108,7 +108,7 @@ boolean auto_tavern()
 	}
 
 	// Consider a pull
-	foreach it in $items[crepe paper parachute cape, 17-ball, rare oboe, recording of benetton's medley of diversity]
+	foreach it in $items[17-ball, rare oboe, recording of benetton's medley of diversity]
 	{
 		if (!all_passed())
 		{

@@ -2,6 +2,12 @@
 float providePlusCombat(int amt, location loc, boolean doEquips, boolean speculative) {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
+	//if the fam is important enough to add, it will be caught in preAdvUpdateFamiliar
+	if(auto_famModifiers("Combat Rate") < 0)
+	{
+		use_familiar($familiar[none]);
+	}
+
 	float alreadyHave = numeric_modifier("Combat Rate");
 	float need = amt - alreadyHave;
 
@@ -70,7 +76,10 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		if (speculative) {
 			delta += numeric_modifier(eff, "Combat Rate");
 			if (eff == $effect[Musk of the Moose] && have_effect($effect[Smooth Movements]) > 0) {
-				delta += (-1.0 * numeric_modifier($effect[Smooth Movements], "Combat Rate")); // numeric_modifer doesn't take into account uneffecting the opposite skill so we have to add it manually.
+				delta += (-1.0 * numeric_modifier($effect[Smooth Movements], "Combat Rate")); // numeric_modifier doesn't take into account uneffecting the opposite skill so we have to add it manually.
+			}
+			if(eff == $effect[Carlweather\'s Cantata Of Confrontation] && have_effect($effect[The Sonata of Sneakiness]) > 0) {
+				delta += (-1.0 * numeric_modifier($effect[The Sonata of Sneakiness], "Combat Rate"));
 			}
 		}
 		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
@@ -91,7 +100,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	// Now handle buffs that cost MP, items or other resources
 	
 	// Cheap effects
-	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
+	if(!speculative) shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
 	if (tryEffects($effects[
 		Musk of the Moose,
 		Carlweather's Cantata of Confrontation,
@@ -196,6 +205,12 @@ boolean providePlusCombat(int amt)
 float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean speculative) {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " negative combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
+	//if the fam is important enough to add, it will be caught in preAdvUpdateFamiliar
+	if(auto_famModifiers("Combat Rate") > 0)
+	{
+		use_familiar($familiar[none]);
+	}
+
 	// numeric_modifier will return -combat as a negative value and +combat as a positive value
 	// so we will need to invert the return values otherwise this will be wrong (since amt is supposed to be positive).
  	float alreadyHave = -1.0 * numeric_modifier("Combat Rate");
@@ -285,7 +300,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		if (speculative) {
 			delta += (-1.0 * numeric_modifier(eff, "Combat Rate"));
 			if (eff == $effect[Smooth Movements] && have_effect($effect[Musk of the Moose]) > 0) {
-				delta += numeric_modifier($effect[Musk of the Moose], "Combat Rate"); // numeric_modifer doesn't take into account uneffecting the opposite skill so we have to add it manually.
+				delta += numeric_modifier($effect[Musk of the Moose], "Combat Rate"); // numeric_modifier doesn't take into account uneffecting the opposite skill so we have to add it manually.
 			}
 		}
 		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
@@ -305,7 +320,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 
 	// Now handle buffs that cost MP, items or other resources
 
-	shrugAT($effect[The Sonata of Sneakiness]);
+	if(!speculative) shrugAT($effect[The Sonata of Sneakiness]);
 	if (tryEffects($effects[
 		Shelter Of Shed,
 		Brooding,
@@ -513,17 +528,18 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 	}
 
 	if(tryEffects($effects[
-		Cletus's Canticle of Celerity,
-		Springy Fusilli,
-		Soulerskates,
-		Walberg's Dim Bulb,
-		Song of Slowness,
-		Your Fifteen Minutes,
-		Suspicious Gaze,
-		Bone Springs,
-		Living Fast,
-		Nearly Silent Hunting,
-		Stretched,
+		//organized by %/mp and %. Skills
+		Living Fast, //100%, 5mp
+		Stretched, //75%, 10mp
+		Cletus's Canticle of Celerity, //20%, 4mp
+		Springy Fusilli, //40%, 10mp
+		Soulerskates, //30%, 25 soulsauce
+		Bone Springs, //20%, 10mp
+		Walberg's Dim Bulb, //10%, 5mp
+		Suspicious Gaze, //10%, 10mp
+		Song of Slowness, //50%, 100mp
+		Nearly Silent Hunting, //25%, 50mp
+		Your Fifteen Minutes, //15%, 50mp	
 	]))
 		return result();
 
@@ -572,19 +588,20 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 	}
 	
 	boolean[effect] ef_to_try = $effects[
-		Adorable Lookout,
-		Alacri Tea,
-		All Fired Up,
-		Clear Ears\, Can't Lose,
-		Fishy\, Oily,
-		The Glistening,
-		Human-Machine Hybrid,
-		Patent Alacrity,
-		Sepia Tan,
-		Sugar Rush,
-		Ticking Clock,
-		Well-Swabbed Ear,
-		Poppy Performance
+		//organized by %/turn and %. Items
+		Clear Ears\, Can't Lose, //100%, 80 turns
+		Poppy Performance, //100%, 30 turns
+		Patent Alacrity, //100%, 20 turns
+		Fishy\, Oily, //60%, 40 turns
+		Alacri Tea, //50%, 30 turns
+		Adorable Lookout, //30%, 10 turns
+		All Fired Up, //30%, 10 turns
+		Ticking Clock, //30%, 10 turns
+		Well-Swabbed Ear, //30%, 10 turns
+		Human-Insect Hybrid, //25%, 30 turns
+		Sepia Tan, //20%, 25 turns
+		The Glistening, //20%, 15 turns
+		Sugar Rush, //20%, 1-15 turns
 	]; // eff_to_try
 	if(tryEffects(ef_to_try))
 		return result();
@@ -751,7 +768,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			if(!pass(ele))
 				return false;
 		}
-		if (canChangeFamiliar() && $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot] contains my_familiar()) {
+		if (canChangeFamiliar() && $familiars[Trick-or-Treating Tot, Mu, Exotic Parrot, Cooler Yeti] contains my_familiar()) {
 			// if we pass while having a resist familiar equipped, make sure we keep it equipped
 			// otherwise we may end up flip-flopping from the resist familiar and something else
 			// which could cost us adventures if switching familiars affects our resistances enough
@@ -852,6 +869,18 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		}
 		if(resfam != $familiar[none])
 		{
+			//Buff fam weight early
+			buffMaintain($effect[Leash of Linguini]);
+			buffMaintain($effect[Empathy]);
+			buffMaintain($effect[Blood Bond]);
+			//Manual override for the resfam to be the Cooler Yeti when we ONLY want Cold Resistance and it is better than what we already chose from one of the multi-res fams
+			if(auto_haveCoolerYeti() && count(amt) == 1 && amt[$element[Cold]] > 0)
+			{
+				if(((resfam == $familiar[Mu] || resfam == $familiar[Exotic Parrot]) && floor((auto_famWeight(resfam) - 5) / 20 + 1) < floor(auto_famWeight($familiar[Cooler Yeti])/11)) || (5 < floor(auto_famWeight($familiar[Cooler Yeti])/11)))
+				{
+					resfam = $familiar[Cooler Yeti];
+				}
+			}
 			// need to use now so maximizer will see it
 			use_familiar(resfam);
 			if(resfam == $familiar[Trick-or-Treating Tot])
@@ -872,31 +901,31 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 
 	if(doEquips)
 	{
-		// effects from items that we'd have to buy or have found
+		// effects from items that we'd have to buy or have found, organized by cost per res/all res as of 8/2/25
 		if(tryEffects($effects[
-			Red Door Syndrome,
-			Well-Oiled,
-			Oiled-Up,
-			Egged On,
-			Flame-Retardant Trousers,
-			Fireproof Lips,
-			Insulated Trousers,
-			Fever From the Flavor,
-			Smelly Pants,
-			Neutered Nostrils,
-			Can't Smell Nothin\',
-			Spookypants,
-			Balls of Ectoplasm,
-			Hyphemariffic,
-			Sleaze-Resistant Trousers,
-			Hyperoffended,
-			Covered in the Rainbow,
-			Temporarily Filtered,
-			Gritty,
-			Too Shamed,
-			Twangy,
-			minor invulnerability,
-			Incredibly Healthy
+			minor invulnerability, //+3 all res, 5 meat/adv, 33 meat/res, 6.7 meat/all res
+			Incredibly Healthy, //+3 all res, 78.6 meat/adv, 131 meat/res, 26.2 meat/all res
+			Oiled-Up, //+2 all res, 14.6 meat/adv, 196 meat/res, 29.2 meat/all res
+			Well-Oiled, //+1 all res, 78.6 meat/adv, 393 meat/res, 78.6 meat/all res
+			Red Door Syndrome, //+2 all res, 100 meat/adv, 500 meat/res, 100 meat/all res
+			Covered in the Rainbow, //+2 all res, 15 meat/adv, 600 meat/res, 120 meat/all res
+			Egged On, //+3 all res, 625 meat/adv, 2083 meat/res, 417 meat/all res
+			Flame-Retardant Trousers, //+1 hot res, 20 meat/adv, 100 meat/res
+			Fireproof Lips, //+9 hot res, 1100 meat/adv, 1222 meat/res
+			Insulated Trousers, //+1 cold res, 20 meat/adv, 100 meat/res
+			Fever From the Flavor, //+9 cold res, 1774 meat/adv, 1971 meat/res
+			Neutered Nostrils, //+2 stench res, 10 meat/adv, 50 meat/res
+			Smelly Pants, //+1 stench res, 20 meat/adv, 100 meat/res
+			Temporarily Filtered, //+5 stench res, 91.25 meat/adv, 365 meat/res
+			Twangy, //+4 stench/sleaze res, 70 meat/adv, 525 meat/res, 263 meat/both res
+			Can't Smell Nothin\', //+9 stench res, 1000 meat/adv, 1111 meat/res
+			Balls of Ectoplasm, //+1 spooky res, 10 meat/adv, 100 meat/res
+			Spookypants, //+1 spooky res, 20 meat/adv, 100 meat/res
+			Hyphemariffic, //+9 spooky res, 1717 meat/adv, 1907 meat/res
+			Gritty, //+3 spooky res, 490 meat/adv, 3266 meat/res
+			Sleaze-Resistant Trousers, //+1 sleaze res, 20 meat/adv, 100 meat/res
+			Hyperoffended, //+9 sleaze res, 1391 meat/adv, 1545 meat/res
+			Too Shamed, //+3 sleaze res, 425 meat/adv, 2833 meat/res
 		]))
 			return result();
 	}
@@ -910,6 +939,10 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			]))
 				return result();
 		}
+		if(tryEffects($effects[
+			Wildsun boon, //+3 all res, 100 advs, 1/day
+			]))
+				return result();
 	}
 
 	return result();
@@ -1365,8 +1398,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		familiar target = lookupFamiliarDatafile("meat");
 		if(target != $familiar[none] && target != my_familiar())
 		{
-			int famWeight = familiar_weight(target) + weight_adjustment();
-			delta += numeric_modifier(target, "Meat Drop",famWeight,$item[none]);
+			delta += auto_famModifiers(target, "Meat Drop", $item[none]);
 			auto_log_debug("With using familiar: " + target + " we can get to " + result());
 		}
 		else
@@ -1408,6 +1440,12 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		if(!speculative)
 			asdonBuff($effect[Driving Observantly]);
 		handleEffect($effect[Driving Observantly]);
+	}
+	if(pass())
+		return result();
+	if(canBusk())
+	{
+		beretBusk("meat drop");
 	}
 	if(pass())
 		return result();
@@ -1461,6 +1499,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Bet Your Autumn Dollar, //50% meat
 		The Grass... \ Is Blue..., //40% meat, 20% item
 		Greedy Resolve, //30% meat
+		Tubes of Universal Meat, //30% meat
 		Worth Your Salt, //25% meat, max hp +25
 		Human-Fish Hybrid, //10 fam
 		Human-Humanoid Hybrid, //20% meat, 10% all stats
@@ -1726,8 +1765,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		familiar target = lookupFamiliarDatafile("item");
 		if(target != $familiar[none] && target != my_familiar())
 		{
-			int famWeight = familiar_weight(target) + weight_adjustment();
-			delta += numeric_modifier(target, "Item Drop",famWeight,$item[none]);
+			delta += auto_famModifiers(target, "Item Drop", $item[none]);
 			auto_log_debug("With using familiar: " + target + " we can get to " + result());
 		}
 		else
@@ -1816,6 +1854,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		Juiced and Jacked, //20% item
 		The Grass... \ Is Blue..., //40% meat, 20% item
 		Joyful Resolve, //15% item
+		Lubricating Sauce, //15% item
 		Fortunate Resolve, //10% item
 		Human-Human Hybrid, //10% item
 		Heart of Lavender, //10% item
@@ -1927,6 +1966,20 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		]))
 			if(pass())
 				return result();
+		
+		//beret busk if possible
+		if(canBusk())
+		{
+			beretBusk("item drop");
+		}
+		if(pass())
+			return result();
+		if(auto_canARBSupplyDrop())
+		{
+			ARBSupplyDrop("item drop");
+		}
+		if(pass())
+			return result();
 		if(zataraAvailable() && (0 == have_effect($effect[There\'s no N in Love])) & auto_is_valid($effect[There\'s no N in Love]))
 		{
 			if(!speculative)

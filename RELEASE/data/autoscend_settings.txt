@@ -68,6 +68,7 @@ post	4	auto_hippyInstead	boolean	Fight on the side of the hippies instead of the
 post	5	auto_ignoreFlyer	boolean	Do not do the flyer quest in this ascension? recommended to set true if fighting for the hippies.
 post	6	auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar in this ascension?
 post	7	auto_dontPhylumBanish	boolean	If false will banish enemy phyla. Banishing should save some turns, but can interfere with the routing, and may mess up later banishes / tracks.
+post	8	auto_runDayCount	integer	How many days do you think your run will take? Defaults to 2.
 
 pre	0	auto_getSteelOrgan_initialize	boolean	When we initialize an ascension this will be copied to auto_getSteelOrgan
 

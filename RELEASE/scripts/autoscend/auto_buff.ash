@@ -40,8 +40,8 @@ boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int 
 	}
 	//handling for buffs that must equip something first
 	boolean equip_changed = false;
+	item[int] equipped = auto_saveEquipped();
 	slot equip_slot = to_slot(mustEquip);
-	item equip_original = equipped_item(equip_slot);
 	if(mustEquip != $item[none])
 	{
 		if(!possessEquipment(mustEquip) ||	//we can not wear what we do not have. this checks both inventory and already worn
@@ -52,8 +52,8 @@ boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int 
 		}
 		if(!speculative)
 		{
-			//wear it now before using the buff. do not use the auto_ functions here because we only want to wear it long enough to cast the buff. not change what we wear to the next adventure
-			equip(equip_slot, mustEquip);
+			//wear it now before using the buff.
+			autoForceEquip(equip_slot, mustEquip, true);
 			if(equipped_amount(mustEquip) == 0)
 			{
 				auto_log_warning("buffMaintain failed to equip [" +mustEquip+ "] for some reason. which is necessary in order to apply [" +buff+ "] using the skill [" +source+ "].");
@@ -69,7 +69,7 @@ boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int 
 	
 	if(equip_changed)
 	{
-		equip(equip_slot, equip_original);		//return equipment to how it was originally
+		auto_loadEquipped(equipped);		//return equipment to how it was originally
 	}
 	return true;
 }
@@ -346,6 +346,12 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		break;
 	case $effect[Disco Fever]:					useSkill = $skill[Disco Fever];					break;
 	case $effect[Disco Leer]:					useSkill = $skill[Disco Leer];					break;
+	case $effect[Disco over Matter]:
+		if(auto_have_skill($skill[Disco Aerobics]))
+		{
+			mustEquip = $item[April Shower Thoughts Shield];
+			useSkill = $skill[Disco Aerobics];
+		}																						break;
 	case $effect[Disco Smirk]:					useSkill = $skill[Disco Smirk];					break;
 	case $effect[Disco State of Mind]:			useSkill = $skill[Disco Aerobics];				break;
 	case $effect[Disdain of She-Who-Was]:		useSkill = $skill[Blessing of She-Who-Was];		break;
@@ -364,8 +370,18 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[El Aroma de Salsa]:			useItem = $item[Salsa Caliente&trade; candle];	break;
 	case $effect[Eldritch Alignment]:			useItem = $item[Eldritch Alignment Spray];		break;
 	case $effect[Elemental Saucesphere]:		useSkill = $skill[Elemental Saucesphere];		break;
+	case $effect[Ellipsoidtined]:
+		if(auto_canARBSupplyDrop())
+		{
+			if(speculative)
+			{
+				return true;
+			}
+			ARBSupplyDrop("ellipsoidtine");
+			ret = true;
+		}																						break;
 	case $effect[Empathy]:
-		if(pathHasFamiliar() && auto_have_skill($skill[Empathy of the Newt]) && acquireTotem())
+		if(pathHasFamiliar() && auto_have_skill($skill[Empathy of the Newt]) && acquireTotem() && auto_unequipAprilShieldBuff())
 		{
 			useSkill = $skill[Empathy of the Newt];
 		}																						break;
@@ -506,6 +522,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Human-Fish Hybrid]:			useItem = $item[Gene Tonic: Fish];				break;
 	case $effect[Human-Human Hybrid]:			useItem = $item[Gene Tonic: Dude];				break;
 	case $effect[Human-Humanoid Hybrid]:		useItem = $item[Gene Tonic: Humanoid];			break;
+	case $effect[Human-Insect Hybrid]:			useItem = $item[Gene Tonic: Insect];			break;
 	case $effect[Human-Machine Hybrid]:			useItem = $item[Gene Tonic: Construct];			break;
 	case $effect[Human-Mer-kin Hybrid]:			useItem = $item[Gene Tonic: Mer-kin];			break;
 	case $effect[Human-Pirate Hybrid]:			useItem = $item[Gene Tonic: Pirate];			break;
@@ -544,6 +561,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Leash of Linguini]:
 		if(pathHasFamiliar())
 		{
+			auto_equipAprilShieldBuff(); //+5 turns when April Shower Thoughts Shield is equipped
 			useSkill = $skill[Leash of Linguini];
 		}																						break;
 	case $effect[Leisurely Amblin\']:			useSkill = $skill[Walk: Leisurely Amble];		break;
@@ -561,6 +579,12 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[Loyal as a Rock]:				useItem = $item[lump of loyal latite];			break;
 	case $effect[Loyal Tea]:					useItem = $item[cuppa Loyal Tea];				break;
+	case $effect[Lubricating Sauce]:
+		if(auto_have_skill($skill[Sauce Contemplation]))
+		{
+			mustEquip = $item[April Shower Thoughts Shield];
+			useSkill = $skill[Sauce Contemplation];
+		}																						break;
 	case $effect[Lucky Struck]:					useItem = $item[Lucky Strikes Holo-Record];		break;
 	case $effect[Lycanthropy\, Eh?]:			useItem = $item[Weremoose Spit];				break;
 	case $effect[Keep Free Hate In Your Heart]:	useItem = $item[Daily Affirmation: Keep Free Hate In Your Heart];	break;
@@ -573,8 +597,24 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Magnetized Ears]:				useSkill = $skill[Magnetic Ears];				break;
 	case $effect[Majorly Poisoned]:				useSkill = $skill[Disco Nap];					break;
 	case $effect[Manbait]:						useItem = $item[The Most Dangerous Bait];		break;
+	case $effect[Mariachi Moisture]:
+		if(auto_have_skill($skill[Moxie of the Mariachi]))
+		{
+			mustEquip = $item[April Shower Thoughts Shield];
+			useSkill = $skill[Moxie of the Mariachi];
+		}																						break;
 	case $effect[Mariachi Mood]:				useSkill = $skill[Moxie of the Mariachi];		break;
 	case $effect[Marinated]:					useItem = $item[Bowl of Marinade];				break;
+	case $effect[Materiel Intel]:
+		if(auto_canARBSupplyDrop())
+		{
+			if(speculative)
+			{
+				return true;
+			}
+			ARBSupplyDrop("materiel intel");
+			ret = true;
+		}																						break;
 	case $effect[Mathematically Precise]:
 		if(is_unrestricted($item[Crimbot ROM: Mathematical Precision]))
 		{
@@ -801,6 +841,12 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Sleazy Hands]:					useItem = $item[Lotion of Sleaziness];			break;
 	case $effect[Slightly Larger Than Usual]:	useItem = $item[Giant Giant Moth Dust];			break;
 	case $effect[Slinking Noodle Glob]:			useSkill = $skill[none];						break;
+	case $effect[Slippery as a Seal]:
+		if(auto_have_skill($skill[Seal Clubbing Frenzy]))
+		{
+			mustEquip = $item[April Shower Thoughts Shield];
+			useSkill = $skill[Seal Clubbing Frenzy];
+		}																						break;
 	case $effect[Slippery Oiliness]:			useItem = $item[oil of slipperiness];			break;
 	case $effect[Smelly Pants]:					useItem = $item[Stench Powder];					break;
 	case $effect[Smooth Movements]:				useSkill = $skill[Smooth Movement];				break;
@@ -878,6 +924,12 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Stinky Hands]:					useItem = $item[Lotion of Stench];				break;
 	case $effect[Stinky Weapon]:				useItem = $item[Stench Nuggets];				break;
 	case $effect[Stone-Faced]:					useItem = $item[Stone Wool];					break;
+	case $effect[Strength of the Tortoise]:
+		if(auto_have_skill($skill[Patience of the Tortoise]))
+		{
+			mustEquip = $item[April Shower Thoughts Shield];
+			useSkill = $skill[Patience of the Tortoise];
+		}																						break;
 	case $effect[Stretched]:					useSkill = $skill[Stretch];						break;
 	case $effect[Strong Grip]:					useItem = $item[Finger Exerciser];				break;
 	case $effect[Strong Resolve]:				useItem = $item[Resolution: Be Stronger];		break;
@@ -910,6 +962,12 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[There is a Spoon]:				useItem = $item[Dented Spoon];					break;
 	case $effect[They\'ve Got Fleas]:			useItem = $item[Out-of-work circus flea];		break;
 	case $effect[This is Where You\'re a Viking]:useItem = $item[VYKEA woadpaint];				break;
+	case $effect[Thoughtful Empathy]:
+		if(auto_have_skill($skill[Empathy of the Newt]))
+		{
+			mustEquip = $item[April Shower Thoughts Shield];
+			useSkill = $skill[Empathy of the Newt];
+		}																						break;
 	case $effect[Throwing Some Shade]:			useItem = $item[Shady Shades];					break;
 	case $effect[Ticking Clock]:				useItem = $item[Cheap wind-up Clock];			break;
 	case $effect[Tingling Insides]:				useItem = $item[electric mushroom];				break;
@@ -921,6 +979,12 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Tricky Timpani]:				useSkill = $skill[Tricky Timpani];				break;
 	case $effect[Triple-Sized]:					useSkill = $skill[none];						break;
 	case $effect[Truly Gritty]:					useItem = $item[True Grit];						break;
+	case $effect[Tubes of Universal Meat]:
+		if(auto_have_skill($skill[Manicotti Meditation]))
+		{
+			mustEquip = $item[April Shower Thoughts Shield];
+			useSkill = $skill[Manicotti Meditation];
+		}																						break;
 	case $effect[Twangy]:
 		if(auto_haveIdolMicrophone())
 		{
@@ -959,6 +1023,16 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Well-Swabbed Ear]:				useItem = $item[Swabbie&trade; Swab];			break;
 	case $effect[Wet and Greedy]:				useItem = $item[Goblin Water];					break;
 	case $effect[Whispering Strands]:			useSkill = $skill[none];						break;
+	case $effect[Wildsun Boon]:
+		if(auto_canARBSupplyDrop())
+		{
+			if(speculative)
+			{
+				return true;
+			}
+			ARBSupplyDrop("wsb");
+			ret = true;
+		}																						break;
 	case $effect[Wisdom of Others]:				useItem = $item[filled mosquito];				break;
 	case $effect[Wisdom of the Autumn Years]:	useItem = $item[Autumn years wisdom];			break;
 	case $effect[Wisdom of Thoth]:				useSkill = $skill[Wisdom of Thoth];				break;

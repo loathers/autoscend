@@ -392,7 +392,7 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		"heal": 5,
 		"sniff": 5
 	};
-	boolean[familiar] blacklistFams = $familiars[reassembled blackbird, reconstituted crow];
+	boolean[familiar] blacklistFams = $familiars[reassembled blackbird, reconstituted crow, homemade robot];
 	foreach fam in $familiars[]
 	{
 		//comment out below line and uncomment second below line to see all unrestricted fams
@@ -1075,12 +1075,16 @@ boolean LX_zootoFight()
 			return true;
 		}
 		
-		if(LX_unlockHauntedBilliardsRoom())
+		if(LX_unlockHauntedBilliardsRoom(false))
 		{
 			return true;
 		}
 
 		if(LX_unlockHiddenTemple())
+		{
+			return true;
+		}
+		if(LX_lastChance()) //Should be high enough level by this point to handle these zones
 		{
 			return true;
 		}

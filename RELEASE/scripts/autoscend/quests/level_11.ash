@@ -439,8 +439,8 @@ boolean LX_unlockHauntedLibrary()
 	{
 		// only force after we get the pool cue NC.
 		boolean NCForced = auto_forceNextNoncombat($location[The Haunted Billiards Room]);
-		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel())
+		// delay if we are out of NC forcers and haven't run out of things to do
+		if(!NCForced && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel())
 		{
 			resetMaximize();	//cancel equipping pool cue
 			return false;
@@ -633,7 +633,10 @@ boolean LX_getLadySpookyravensFinestGown() {
 	if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 		needSpectacles = false;
 	}
-	else if(needCamera && needSpectacles) {
+	if (in_pokefam()) {
+		needCamera = false;
+	}
+	if(needCamera && needSpectacles) {
 		// if in a path that needs both you want a two night stand with ornate, olfacting ornate nightstand is a problem
 		// for the script because it will work against the elegant nightstand and most olfaction skills aren't cancelled
 		// easily without changing locations, but Nosy Nose will be turned off once it's no longer the used familiar
@@ -714,8 +717,8 @@ boolean LX_getLadySpookyravensPowderPuff() {
 
 	if (!zone_delay($location[The Haunted Bathroom])._boolean) {
 		boolean NCForced = auto_forceNextNoncombat($location[The Haunted Bathroom]);
-		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+		// delay if we are out of NC forcers and haven't run out of things to do
+		if(!NCForced && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel()) return false;
 	}
 	if (autoAdv($location[The Haunted Bathroom])) {
 		return true;
@@ -907,8 +910,8 @@ boolean L11_getBeehive()
 	auto_log_info("Must find a beehive!", "blue");
 
 	boolean NCForced = auto_forceNextNoncombat($location[The Black Forest]);
-	// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-	if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+	// delay if we are out of NC forcers and haven't run out of things to do
+	if(!NCForced && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel()) return false;
 	boolean advSpent = autoAdv($location[The Black Forest]);
 	if(item_amount($item[beehive]) > 0)
 	{
@@ -1615,6 +1618,10 @@ boolean L11_hiddenTavernUnlock(boolean force)
 		if(!in_hardcore())
 		{
 			pullXWhenHaveY($item[Book of Matches], 1, 0);
+			if(item_amount($item[Book of Matches]) == 0)
+			{
+				auto_makeMonkeyPawWish($item[Book of Matches]);
+			}
 		}
 	}
 
@@ -1637,10 +1644,6 @@ void hiddenCityChoiceHandler(int choice)
 		if(have_effect($effect[Thrice-Cursed]) > 0)
 		{
 			run_choice(1); // fight the spirit
-		}
-		else if(in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions())
-		{
-			run_choice(3); // relocate lawyers to park
 		}
 		else if(available_choice_options() contains 4 && have_effect($effect[Thrice-Cursed]) == 0) // Use CCSC to get Cursed +1
 		{
@@ -1923,8 +1926,8 @@ boolean L11_hiddenCity()
 			if(shouldForceElevatorAction)
 			{
 				elevatorAction = auto_forceNextNoncombat($location[The Hidden Apartment Building]);
-				// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-				if(!elevatorAction && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+				// delay if we are out of NC forcers and haven't run out of things to do
+				if(!elevatorAction && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel()) return false;
 			}
 		}
 
@@ -2001,9 +2004,9 @@ boolean L11_hiddenCity()
 			{
 				workingHoliday = true;
 			}
-			else if(my_daycount() == 1 && !isAboutToPowerlevel())
+			else if(my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel())
 			{
-				// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+				// delay if we are out of NC forcers and haven't run out of things to do
 				return false;
 			}
 		}
@@ -3167,6 +3170,7 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				auto_log_info("Oh no, we died from reading a book. I'm going to take a nap.", "blue");
+				set_property("_auto_forcePokefamRestore", true);
 				acquireHP();
 				bat_reallyPickSkills(20);
 			}
@@ -3282,8 +3286,7 @@ boolean L11_palindome()
 			{
 				//may want to use an item familiar first for stunt nuts
 				//unfortunately the sniff condition system means if taking the nose later after using different sniffs on a dude it will only be able to whiff on the same dude
-				int famWeightWithoutEq = familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight");
-				int stuntNutDropModifierWithoutFamiliar = item_drop_modifier() + numeric_modifier("Food Drop") - numeric_modifier(my_familiar(), "Item Drop", famWeightWithoutEq, equipped_item($slot[familiar]));
+				int stuntNutDropModifierWithoutFamiliar = item_drop_modifier() + numeric_modifier("Food Drop") - auto_famModifiers("Item Drop");
 				if(stuntNutDropModifierWithoutFamiliar < 234)	//30% base drop chance
 				{
 					noseDudesOn = false;
@@ -3504,7 +3507,7 @@ boolean L11_unlockEd()
 		handleFamiliar($familiar[Grey Goose]);
 	}
 
-	if(auto_can_equip($item[pro skateboard]) && equipmentAmount($item[pro skateboard]) > 0 && item_amount($item[Tangle of rat tails]) >= 1 && !get_property("_epicMcTwistUsed").to_boolean())
+	if(auto_can_equip($item[pro skateboard]) && equipmentAmount($item[pro skateboard]) > 0 && item_amount($item[Tangle of rat tails]) >= 1 && !get_property("_epicMcTwistUsed").to_boolean() && !in_pokefam())
 	{
 		auto_log_info("Be like Tony Hawk on a Tomb Rat King!");
 		autoEquip($item[pro skateboard]);

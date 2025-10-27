@@ -51,7 +51,7 @@ void LX_handleIntroAdventures()
 			abort("You are stuck in an intro adventure which requires you to choose a path. I suggest you do so before trying to run autoscend and you may have better results.");
 		}
 
-		if ($ints[1046, 1405, 1416, 1419, 1446, 1450, 1464, 1480, 1503, 1507, 1519, 1531, 1552] contains choice)
+		if ($ints[1046, 1405, 1416, 1419, 1446, 1450, 1464, 1480, 1503, 1507, 1519, 1531, 1552, 1559] contains choice)
 		{
 			// 1046 is "Actually Ed the Undying", intro for Actually Ed the Undying (Spring 2015 challenge path).
 			// 1405 is "Let's, uh, go!", intro for Path of the Plumber (Spring 2020 challenge path).
@@ -65,7 +65,8 @@ void LX_handleIntroAdventures()
 			// 1507 is "Jumbled in the Bungle", intro for A Shrunken Adventurer am I (Fall 2023 challenge path).
 			// 1519 is "The coffee was *gasp* decaf!", intro for WereProfessor (Spring 2024 challenge path).
 			// 1531 is "A-1 Sound and the Sound's So Suardin'", intro for Avant Guard (Fall 2024 challenge path).
-			// 1552 is "Zoonopeia", intro for Z is for Zootomist (Spring 2024 challenge path).
+			// 1552 is "Zoonopeia", intro for Z is for Zootomist (Spring 2025 challenge path).
+			// 1559 is "Hat Trick!", intro for Hat Trick (Summer 2025 challenge path).
 			// yes they really phoned some of the titles of these in.
 			run_choice(1);
 		}
@@ -547,7 +548,7 @@ boolean LX_fatLootToken()
 		//wait until daily dungeon is done before considering doing fantasy realm
 		if(fantasyRealmToken()) return true;
 	}
-	if(internalQuestStatus("questL13Final") == 5 || auto_turbo())
+	if(towerKeyCount(false) < 3 && (internalQuestStatus("questL13Final") == 5 || auto_turbo()))
 	{
 		// at NS tower door and still need hero keys or going for turbo
 

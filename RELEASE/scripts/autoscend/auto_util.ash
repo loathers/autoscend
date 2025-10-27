@@ -609,8 +609,13 @@ boolean canYellowRay(monster target)
 
 	if(have_effect($effect[Everything Looks Yellow]) <= 0)
 	{
-		
-		// first, do any necessary prep to use a yellow ray
+		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
+		if(auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]) && hasTorso())
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
+		}
+
+		// Get a yellow rocket if we don't have a parka
 		if(item_amount($item[Clan VIP Lounge Key]) > 0 &&	// Need VIP access
 			get_property("_fireworksShop").to_boolean() &&	// in a clan that has the Underground Fireworks Shop
 			item_amount($item[yellow rocket]) == 0 &&		// Don't buy if we already have one
@@ -620,18 +625,30 @@ boolean canYellowRay(monster target)
 			cli_execute("acquire " + $item[yellow rocket]);
 		}
 
-		// parka has 100 turn cooldown, but is a free-kill and has 0 meat cost, so prioritised over yellow rocket
-		if(auto_hasParka() && auto_is_valid($skill[Spit jurassic acid]) && hasTorso())
-		{
-			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
-		}
-
 		// Yellow rocket has the lowest cooldown, and is unlimited, so prioritize over other sources
 		if (item_amount($item[yellow rocket]) > 0 &&
 			auto_is_valid($item[yellow rocket]) &&
 			yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "")
 		{
 			return true;
+		}
+
+		// acquire a spitball if we haven't gotten any of the above
+		if(auto_haveAprilShowerShield() &&			//need April Shower Thoughts Shield
+		item_amount($item[spitball]) == 0 &&		//don't buy if we already have one
+		auto_is_valid($item[spitball]) &&			//or if it's not valid
+		item_amount($item[glob of wet paper]) > 0)	//need at least 1 glob of wet paper to buy one
+		{
+			if(buy($coinmaster[Using your Shower Thoughts], 1, $item[spitball]))
+			{
+				handleTracker($item[April Shower Thoughts Shield],$item[spitball],"auto_iotm_claim");
+			}
+		}
+
+		// Spitball from April Shower Thoughts Shiled has a 100 turn cd, but is a free-kill but is not unlimited
+		if(auto_is_valid($item[spitball]) && item_amount($item[spitball]) > 0)
+		{
+			return yellowRayCombatString(target, false, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains target) != "";
 		}
 		
 		// roman candelabra, also a 75 turn cooldown
@@ -906,7 +923,10 @@ boolean auto_wantToFreeRun(monster enemy, location loc)
 
 boolean canFreeRun(monster enemy, location loc)
 {
-	// are there any restrictions on free running?
+	// pokefam cannot use skills or items
+	if (in_pokefam()) {
+		return false;
+	}
 	return true;
 }
 
@@ -989,7 +1009,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	if(canChangeToFamiliar($familiar[Frumious Bandersnatch]))
 	{
 		// TODO add fam weight buffing
-		int banderRunsLeft = floor((familiar_weight($familiar[Frumious Bandersnatch]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		int banderRunsLeft = floor(auto_famWeight($familiar[Frumious Bandersnatch]) / 5) - get_property("_banderRunaways").to_int();
 		if(is_professor()) return "";
 		if(!inCombat)
 		{
@@ -1016,7 +1036,7 @@ string freeRunCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		// TODO add fam weight buffing
 		// boots and bander share same counter
-		int banderRunsLeft = floor((familiar_weight($familiar[Pair of Stomping Boots]) + weight_adjustment()) / 5) - get_property("_banderRunaways").to_int();
+		int banderRunsLeft = floor(auto_famWeight($familiar[Pair of Stomping Boots]) / 5) - get_property("_banderRunaways").to_int();
 		if(is_professor()) return "";
 		if(!inCombat)
 		{
@@ -1145,6 +1165,10 @@ boolean adjustForYellowRay(string combat_string)
 		{
 			auto_log_error("Failed to prepare a yellow ray. yellowRayCombatString thinks we can craft a 9-volt battery but we actually could not");
 		}
+	}
+	if(combat_string == "skill " + $skill[Northern Explosion])
+	{
+		return autoEquip($item[April Shower Thoughts Shield]);
 	}
 	return true;
 }
@@ -2035,6 +2059,14 @@ boolean LX_summonMonster()
 		item_amount(oreGoal) < 2 && canYellowRay() && canSummonMonster($monster[mountain man]))
 	{
 		adjustForYellowRayIfPossible();
+		boolean need_dupe    = item_amount(oreGoal) < 1;
+		boolean can_mctwist  = auto_can_equip($item[pro skateboard]) && !get_property("_epicMcTwistUsed").to_boolean();
+		boolean will_mctwist = can_mctwist && need_dupe;
+		auto_log_info("Trying to summon a mountain man"+(will_mctwist?" which we will McTwist.":"."));
+		if (will_mctwist)
+		{
+			autoEquip($item[pro skateboard]);
+		}
 		if(summonMonster($monster[mountain man])) return true;
 	}
 
@@ -2173,6 +2205,12 @@ boolean summonMonster(monster mon, boolean speculative)
 		return true;
 	}
 	// methods which can only summon monsters should be attempted first
+	if(auto_meggFight(mon, speculative))
+	{
+		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via chest mimics", "blue");
+		return true;
+	}
+	
 	if(auto_fightLocketMonster(mon, speculative))
 	{
 		auto_log_debug((speculative ? "Can" : "Did") + " summon " + mon + " via combat lover's locket", "blue");
@@ -4495,7 +4533,7 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "Apriling tuba");
 		return true;
 	}
-	else if(auto_haveMcHugeLargeSkis() && get_property("_mcHugeLargeAvalancheUses") < 3 && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the spikes
+	else if(auto_haveMcHugeLargeSkis() && get_property("_mcHugeLargeAvalancheUses") < 3 && (!in_wereprof() || !is_professor())) // if we're a professor, we can't use the skis
 	{
 		if(speculative) return true;
 		// avalanche require a combat to active
@@ -4513,6 +4551,17 @@ boolean _auto_forceNextNoncombat(location loc, boolean speculative)
 		set_property("auto_forceNonCombatSource", "jurassic parka");
 		// track desired NC location so we know where to go when parka spikes are preped
 		set_property("auto_forceNonCombatLocation", loc);
+		return true;
+	}
+	else if(auto_canARBSupplyDrop())
+	{
+		if(speculative) return true;
+		ARBSupplyDrop("sniper support");
+		if(!auto_haveQueuedForcedNonCombat())
+		{
+			abort("Attempted to force a noncombat with [Allied Radio Backpack] but was unable to.");
+		}
+		set_property("auto_forceNonCombatSource", "Allied Radio Backpack");
 		return true;
 	}
 	else if(item_amount($item[stench jelly]) > 0 && auto_is_valid($item[stench jelly]) && !isActuallyEd()
@@ -4697,6 +4746,7 @@ void effectAblativeArmor(boolean passive_dmg_allowed)
 	buffMaintain($effect[Ghostly Shell]);						//6 MP
 	buffMaintain($effect[Tenacity of the Snapper]);			//8 MP
 	buffMaintain($effect[Empathy]);							//15 MP
+	buffMaintain($effect[Thoughtful Empathy]);				//15 MP
 	buffMaintain($effect[Reptilian Fortitude]);				//8 MP
 	buffMaintain($effect[Astral Shell]);						//10 MP
 	buffMaintain($effect[Jingle Jangle Jingle]);				//5 MP
@@ -4913,15 +4963,23 @@ boolean auto_burnMP(int mpToBurn)
 		set_property("lastChanceBurn","cast # " + defaultSkill);
 	}
 
+	item[int] equipped = auto_saveEquipped();
+
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
+	auto_equipAprilShieldBuff(); //useful additional buffs when equipped
+
 	// record starting MP
 	int startingMP = my_mp();
 	cli_execute("burn " + mpToBurn);
+	auto_loadEquipped(equipped);
+	removeFromMaximize("-1000mana cost");
 	return startingMP != my_mp();
 }
 
 boolean can_read_skillbook(item it) {
-	// can't read in Picky
-	if (in_picky()) {
+	// can't read in Picky, Pokefam, Class Act or Journeyman
+	if (in_picky() || in_pokefam() || my_path() == $path[Class Act] || my_path() == $path[Class Act II: A Class For Pigs] || my_path() == $path[Journeyman]) {
 		return false;
 	}
 	// all the normal classes and AoSOL classes are literate
@@ -4952,11 +5010,11 @@ int baseNCForcesToday()
 {
 	int forces = 0;
 	if (auto_havePillKeeper()) {forces = forces + 6;}
-	if (auto_haveAprilingBandHelmet() && available_amount($item[apriling band saxophone])>0) {forces = forces + 3;}
+	if (auto_haveAprilingBandHelmet() && available_amount($item[apriling band tuba])>0) {forces = forces + 3;}
 	if (auto_haveMcHugeLargeSkis()) {forces = forces + 3;}
 	if (auto_hasParka()) {forces = forces + 5;}
 	if (auto_haveCincho()) {forces = forces + 3;} // Not important to calculate this properly here.
-	
+	if (auto_haveARB()) {forces = forces + 3;}
 	return forces;
 }
 
@@ -4968,6 +5026,7 @@ int remainingNCForcesToday()
 	forces = forces + auto_McLargeHugeForcesLeft();
 	forces = forces + auto_ParkaSpikeForcesLeft();
 	forces = forces + auto_cinchForcesLeft();
+	forces = forces + auto_ARBSupplyDropsLeft();
 	
 	return forces;
 }
@@ -4980,6 +5039,7 @@ int turnsUsedByRemainingNCForcesToday()
 	forces = forces + 2 * auto_McLargeHugeForcesLeft();
 	forces = forces + 2 * auto_ParkaSpikeForcesLeft();
 	forces = forces + auto_cinchForcesLeft();
+	forces = forces + auto_ARBSupplyDropsLeft();
 	
 	return forces;
 }

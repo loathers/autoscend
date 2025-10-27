@@ -649,6 +649,15 @@ int handlePulls(int day)
 					}
 				}
 			}
+			
+			// get a wet stew
+			foreach it in $items[wet stew]
+			{
+				if (!pulledToday(it))
+				{
+					pullXWhenHaveY(it, 1, 0);
+				}
+			}
 		}
 
 		// pulls for small path
@@ -767,7 +776,10 @@ int handlePulls(int day)
 			}
 			if((item_amount($item[Fake Washboard]) == 0) && (closet_amount($item[Fake Washboard]) == 0))
 			{
-				pullXWhenHaveY($item[numberwang], 1, 0);
+				if (!auto_turbo())
+				{
+					pullXWhenHaveY($item[numberwang], 1, 0);
+				}
 			}
 			else
 			{

@@ -3,9 +3,9 @@
 Below are relevant locations for the war.
 war not started or finished with this side undefeated:
 [Frat House]
-[Frat House (Frat Disguise)]	//r26631 changed from [Frat House In Disguise]
+[The Orcish Frat House (In Disguise)]	//r26631 changed from [Frat House In Disguise]
 [Hippy Camp]
-[Hippy Camp (Hippy Disguise)]	//r26631 changed from [Hippy Camp In Disguise]
+[The Hippy Camp (In Disguise)]	//r26631 changed from [Hippy Camp In Disguise]
 
 War started:
 [Wartime Frat House]
@@ -100,30 +100,13 @@ int auto_warEnemiesRemaining()
 	// Returns the number of enemies left to defeat in the fratboy-hippy war.
 	
 	int enemiesRemaining = 1000;
-	if(in_pokefam())
+	if(auto_warSide() == "hippy")
 	{
-		//Pokefam only has 500 total to defeat with all 6 sidequests immediately accessible.
-		//TODO: find out if pokefam starts with 500 enemies defeated out of 1000 total. or 0 defeated out of 500 total
-		//current code assumes it starts with 0 defeated out of 500 total. this is a guess.
-		if(auto_warSide() == "hippy")
-		{
-			enemiesRemaining = 500 - get_property("fratboysDefeated").to_int();
-		}
-		else
-		{
-			enemiesRemaining = 500 - get_property("hippiesDefeated").to_int();
-		}
+		enemiesRemaining = 1000 - get_property("fratboysDefeated").to_int();
 	}
 	else
 	{
-		if(auto_warSide() == "hippy")
-		{
-			enemiesRemaining = 1000 - get_property("fratboysDefeated").to_int();
-		}
-		else
-		{
-			enemiesRemaining = 1000 - get_property("hippiesDefeated").to_int();
-		}
+		enemiesRemaining = 1000 - get_property("hippiesDefeated").to_int();
 	}
 	return enemiesRemaining;
 }
@@ -636,16 +619,14 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "fratboy" && possessOutfit("Filthy Hippy Disguise"))
 	{
 		autoOutfit("Filthy Hippy Disguise");
-		//this should go to [Wartime Frat House (Hippy Disguise)] (despite war not started)
-		return autoAdv($location[Frat House]);
+		return autoAdv($location[Wartime Frat House (Hippy Disguise)]);
 	}
 	
 	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
 	if(auto_warSide() == "hippy" && possessOutfit("Frat Boy Ensemble"))
 	{
 		autoOutfit("Frat Boy Ensemble");
-		//this should go to [Wartime Hippy Camp (Frat Disguise)] (despite war not started)
-		return autoAdv($location[Hippy Camp]);
+		return autoAdv($location[Wartime Hippy Camp (Frat Disguise)]);
 	}
 	
 	if(L12_preOutfit())
@@ -730,7 +711,7 @@ boolean L12_preOutfit()
 		auto_log_info("Trying to acquire a filthy hippy outfit", "blue");
 		if(internalQuestStatus("questL12War") == -1)
 		{
-			adventure_status = autoAdv(1, $location[Hippy Camp]);
+			adventure_status = autoAdv(1, $location[The Hippy Camp]);
 		}
 		else
 		{
@@ -743,7 +724,7 @@ boolean L12_preOutfit()
 		auto_log_info("Trying to acquire a frat boy ensemble", "blue");
 		if(internalQuestStatus("questL12War") == -1)
 		{
-			adventure_status = autoAdv(1, $location[Frat House]);
+			adventure_status = autoAdv(1, $location[The Orcish Frat House]);
 		}
 		else
 		{
@@ -1268,6 +1249,7 @@ boolean L12_gremlins()
 	auto_log_info("Doing them gremlins", "blue");
 	// ideally we want to survive a single attack
 	addToMaximize("20dr,1da 1000max,-ml,-1000avoid attack");
+	autoForceEquip($item[peridot of peril]);
 	acquireHP();
 	if(!bat_wantHowl($location[over where the old tires are]))
 	{
@@ -1311,13 +1293,6 @@ boolean L12_sonofaBeach()
 	if(in_koe())
 	{
 		return false;
-	}
-	if(!get_property("auto_hippyInstead").to_boolean())
-	{
-		if(get_property("sidequestJunkyardCompleted") == "none")
-		{
-			return false;
-		}
 	}
 	if(auto_warEnemiesRemaining() == 0)
 	{

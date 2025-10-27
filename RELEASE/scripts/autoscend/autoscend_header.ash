@@ -85,7 +85,6 @@ boolean elementalPlanes_takeJob(element ele);
 boolean eudora_available();
 boolean[item] eudora_initializeSettings();
 item eudora_current();
-int[item] eudora_xiblaxian();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2007.ash
@@ -575,7 +574,6 @@ boolean auto_haveCCSC();
 boolean auto_handleCCSC();
 int auto_remainingCandyCaneSlashes();
 int auto_remainingCandyCaneStabs();
-void auto_useWardrobe();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2024.ash
@@ -634,6 +632,9 @@ boolean auto_getClanPhotoBoothEffect(effect ef);
 boolean auto_getClanPhotoBoothEffect(effect ef, int n_times);
 boolean auto_getClanPhotoBoothEffect(string ef);
 boolean auto_getClanPhotoBoothEffect(string ef, int n_times);
+boolean auto_haveChestMimic();
+boolean auto_haveMeggEgg(monster mon);
+boolean auto_meggFight(monster mon, boolean speculative);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2025.ash
@@ -651,9 +652,31 @@ boolean auto_setLeprecondo();
 boolean auto_useLeprecondoDrops();
 int auto_punchOutsLeft();
 int auto_afterimagesLeft();
+boolean auto_haveAprilShowerShield();
+boolean auto_getGlobs();
+boolean auto_equipAprilShieldBuff();
+boolean auto_unequipAprilShieldBuff();
+boolean auto_canNorthernExplosionFE();
 boolean auto_havePeridot();
+boolean[monster] peridotManuallyDesiredMonsters();
 void peridotChoiceHandler(int choice, string page);
-boolean inperilLocations(int loc);
+boolean haveUsedPeridot(int loc);
+boolean auto_havePrismaticBeret();
+boolean canBusk();
+int[string] beretPower(item[int] allHats, item[int] allShirts, item[int] allPants);
+string bestBusk(int[string] powers, string effectMultiplier);
+boolean beretBusk(string effectMultiplier);
+boolean beretBusk();
+boolean auto_haveCoolerYeti();
+
+########################################################################################################
+//Defined in autoscend/iotms/ttt.ash
+int[item] eudora_xiblaxian();
+void auto_useWardrobe();
+boolean auto_haveARB();
+boolean auto_canARBSupplyDrop();
+int auto_ARBSupplyDropsLeft();
+boolean ARBSupplyDrop(string req);
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -849,6 +872,11 @@ boolean in_ggoo();
 boolean LA_grey_goo_tasks();
 
 ########################################################################################################
+//Defined in autoscend/paths/hattrick.ash
+boolean in_hattrick();
+boolean ht_equip_hats();
+
+########################################################################################################
 //Defined in autoscend/paths/heavy_rains.ash
 boolean in_heavyrains();
 void heavyrains_initializeSettings();
@@ -986,6 +1014,7 @@ void picky_startAscension();
 boolean in_pokefam();
 void pokefam_initializeSettings();
 string pokefam_defaultMaximizeStatement();
+void pokefam_getHats();
 boolean pokefam_makeTeam();
 boolean L12_pokefam_clearBattlefield();
 
@@ -1504,6 +1533,7 @@ boolean autoCleanse();
 boolean autoDrink(int howMany, item toDrink);
 boolean autoDrink(int howMany, item toDrink, boolean silent);
 boolean autoOverdrink(int howMany, item toOverdrink);
+float minAdvPerDrunk(item toDrink);
 string cafeFoodName(int id);
 string cafeDrinkName(int id);
 boolean autoDrinkCafe(int howmany, int id);
@@ -1556,7 +1586,9 @@ boolean auto_craftIfFree(item it);
 string getMaximizeSlotPref(slot s);
 boolean autoEquip(slot s, item it);
 boolean autoEquip(item it);
+boolean autoForceEquip(slot s, item it, boolean noMaximize);
 boolean autoForceEquip(slot s, item it);
+boolean autoForceEquip(item it, boolean noMaximize);
 boolean autoForceEquip(item it);
 boolean autoOutfit(string toWear);
 boolean autoStripOutfit(string toRemove);
@@ -1591,6 +1623,9 @@ boolean auto_forceEquipSword();
 boolean is_watch(item it);
 int[item] auto_getAllEquipabble();
 int[item] auto_getAllEquipabble(slot s);
+item[int] auto_saveEquipped();
+boolean auto_loadEquipped(item[int] loadEquip);
+int[slot] powerMultipliers();
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash
@@ -1613,6 +1648,12 @@ boolean haveSpleenFamiliar();
 boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
 boolean auto_needsGoodFamiliarEquipment();
+int auto_famWeight(familiar fam, boolean include_equip);
+int auto_famWeight(familiar fam);
+int auto_famWeight();
+float auto_famModifiers(familiar fam, string mod, item famEquip);
+float auto_famModifiers(familiar fam, string mod);
+float auto_famModifiers(string mod);
 
 ########################################################################################################
 //Defined in autoscend/auto_list.ash
@@ -1798,6 +1839,7 @@ boolean acquireHP(int goal, int meat_reserve, boolean freeRest);
 boolean acquireHP(float goalPercent);
 boolean acquireHP(float goalPercent, int meat_reserve);
 boolean acquireHP(float goalPercent, int meat_reserve, boolean freeRest);
+boolean acquireFullHP();
 float mp_regen();
 float hp_regen();
 int doRest();
@@ -1865,6 +1907,7 @@ item[int] drops_available();
 item[int] hugpocket_available();
 boolean is_ghost_in_zone(location loc);
 boolean[location] monster_to_location(monster target);
+boolean[location] auto_swoopLocations();
 
 ########################################################################################################
 //Defined in autoscend/auto_util.ash

@@ -189,6 +189,27 @@ boolean auto_doPhoneQuest()
 	{
 		return false;
 	}
+	// in pokefam, we want at least 2 level 5s
+	if (in_pokefam()) {
+		// mafia can lose track of the team, so visit famteam so we're up to date
+		visit_url("famteam.php");
+		int pokelevel1 = my_poke_fam(0).poke_level;
+		int pokelevel2 = my_poke_fam(1).poke_level;
+		int pokelevel3 = my_poke_fam(2).poke_level;
+		int numFives = 0;
+		if (pokelevel1 == 5) {
+			numFives++;
+		}
+		if (pokelevel2 == 5) {
+			numFives++;
+		}
+		if (pokelevel3 == 5) {
+			numFives++;
+		}
+		if (numFives < 2) {
+			return false;
+		}
+	}
 	// don't start quest if fights will already be free... unless we already have shadow affinity
 	if(isFreeMonster($monster[shadow slab], auto_availableBrickRift()) && have_effect($effect[Shadow Affinity]) == 0)
 	{
@@ -642,9 +663,12 @@ void auto_scepterSkills()
 	simMaximizeWith("-1000mana cost");
 
 	int manaCostMaximize = simValue("Mana Cost");
-	if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	if (!auto_turbo())
 	{
-		use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+		if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+		{
+			use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+		}
 	}
 }
 
@@ -1071,8 +1095,8 @@ boolean[location] citizenZones(string goal)
 	}
 	if(goal == "mp")
 	{
-		return $locations[The Upper Chamber, Inside the Palindome, A-boo Peak, Hippy Camp, Megalo-City, Shadow Rift, Vanya's Castle,
-		The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), Frat House, The Middle Chamber, The Black Forest,	The Haunted Ballroom,
+		return $locations[The Upper Chamber, Inside the Palindome, A-boo Peak, The Hippy Camp, Megalo-City, Shadow Rift, Vanya's Castle,
+		The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), The Orcish Frat House, The Middle Chamber, The Black Forest,	The Haunted Ballroom,
 		The Red Zeppelin, The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
 	}
 	if(goal == "spec")
@@ -1379,37 +1403,3 @@ int auto_remainingCandyCaneStabs()
 	return 11-get_property("_surprisinglySweetStabUsed").to_int();
 }
 
-void auto_useWardrobe()
-{
-	if(!auto_is_valid($item[wardrobe-o-matic]))
-	{
-		return;
-	}
-	if(item_amount($item[wardrobe-o-matic]) == 0)
-	{
-		return;
-	}
-	// check one of the 3 prefs which get set when wardrobe is used each day
-	if(get_property("_futuristicHatModifier") != "")
-	{
-		return;
-	}
-	// wait for level 5 to get an upgraded wardrobe
-	if(my_level() < 5)
-	{
-		return;
-	}
-	// Zooto will be at 10 in very few turns
-	if(my_level() < 10 && in_zootomist())
-	{
-		return;
-	}
-	// wait for level 15 if close and not at NS tower
-	if(my_level() == 14 && internalQuestStatus("questL13Final") < 0)
-	{
-		return;
-	}
-	// only need to use it so we get the hat, shirt, fam equip
-	// let maximizer handle if any of it is worth equipping
-	use($item[wardrobe-o-matic]);
-}

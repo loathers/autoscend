@@ -69,8 +69,8 @@ generic_t zone_needItem(location loc)
 			value = 30.0;
 		}
 		break;
-	case $location[Frat House]:
-	case $location[Hippy Camp]:
+	case $location[The Orcish Frat House]:
+	case $location[The Hippy Camp]:
 			value = 5.0;
 		break;
 	case $location[Wartime Frat House]:
@@ -512,8 +512,8 @@ generic_t zone_combatMod(location loc)
 	int value = 0;
 	switch(loc)
 	{
-	case $location[Frat House]:
-	case $location[Hippy Camp]:
+	case $location[The Orcish Frat House]:
+	case $location[The Hippy Camp]:
 		if (my_level() >= 9) {
 			value = -85;
 		}
@@ -1297,14 +1297,14 @@ boolean zone_available(location loc)
 			retval = true;
 		}
 		break;
-	case $location[Frat House]:
-	case $location[Hippy Camp]:
+	case $location[The Orcish Frat House]:
+	case $location[The Hippy Camp]:
 		if(get_property("lastIslandUnlock").to_int() == my_ascensions())
 		{
 			retval = true;
 		}
 		break;
-	case $location[Frat House (Frat Disguise)]:
+	case $location[The Orcish Frat House (In Disguise)]:
 		if(get_property("lastIslandUnlock").to_int() == my_ascensions() && 
 		have_outfit("Frat Boy Ensemble") &&
 		internalQuestStatus("questL12War") != 0 &&	//mafia always calls location Wartime with L12 quest
@@ -1313,7 +1313,7 @@ boolean zone_available(location loc)
 			retval = true;
 		}
 		break;
-	case $location[Hippy Camp (Hippy Disguise)]:
+	case $location[The Hippy Camp (In Disguise)]:
 		if(get_property("lastIslandUnlock").to_int() == my_ascensions() && 
 		have_outfit("Filthy Hippy Disguise") &&
 		internalQuestStatus("questL12War") != 0 &&	//mafia always calls location Wartime with L12 quest
@@ -1323,7 +1323,7 @@ boolean zone_available(location loc)
 		}
 		break;
 	case $location[Wartime Hippy Camp (Frat Disguise)]:
-		if((internalQuestStatus("questL12War") == 0) && have_outfit("frat warrior fatigues"))
+		if((internalQuestStatus("questL12War") == 0) && (have_outfit("frat warrior fatigues") || have_outfit("frat boy ensemble")))
 		{
 			retval = true;
 		}
@@ -1335,7 +1335,7 @@ boolean zone_available(location loc)
 		}
 		break;
 	case $location[Wartime Frat House (Hippy Disguise)]:
-		if((internalQuestStatus("questL12War") == 0) && have_outfit("war hippy fatigues"))
+		if((internalQuestStatus("questL12War") == 0) && (have_outfit("war hippy fatigues") || have_outfit("filthy hippy disguise")))
 		{
 			retval = true;
 		}
@@ -1987,9 +1987,9 @@ generic_t zone_difficulty(location loc)
 boolean zone_hasLuckyAdventure(location loc)
 {
 	if ($locations[Vanya's Castle, The Fungus Plains, Megalo-City, Hero's Field, A Maze of Sewer Tunnels,A Mob of Zeppelin Protesters,A-Boo Peak,An Octopus's Garden,Art Class,
-	Battlefield (Cloaca Uniform),Battlefield (Dyspepsi Uniform),Battlefield (No Uniform),Burnbarrel Blvd.,Camp Logging Camp,Chemistry Class,
+	Cola Wars Battlefield (Cloaca Uniform),Cola Wars Battlefield (Dyspepsi Uniform), The Cola Wars Battlefield, Burnbarrel Blvd.,Camp Logging Camp,Chemistry Class,
 	Cobb's Knob Barracks,Cobb's Knob Harem,Cobb's Knob Kitchens,Cobb's Knob Laboratory,Cobb's Knob Menagerie\, Level 2,Cobb's Knob Treasury,
-	Elf Alley,Exposure Esplanade,Frat House,Frat House (Frat Disguise),Guano Junction,Hippy Camp,Hippy Camp (Hippy Disguise),Itznotyerzitz Mine,
+	Elf Alley,Exposure Esplanade,The Orcish Frat House,The Orcish Frat House (In Disguise),Guano Junction,The Hippy Camp,The Hippy Camp (In Disguise),Itznotyerzitz Mine,
 	Lair of the Ninja Snowmen,Lemon Party,Madness Reef,Oil Peak,Outskirts of Camp Logging Camp,Pandamonium Slums,Shop Class,South of the Border,
 	The "Fun" House,The Ancient Hobo Burial Ground,The Batrat and Ratbat Burrow,The Black Forest,The Brinier Deepers,The Briny Deeps,The Bugbear Pen,
 	The Castle in the Clouds in the Sky (Basement),The Castle in the Clouds in the Sky (Ground Floor),The Castle in the Clouds in the Sky (Top Floor),
@@ -2156,8 +2156,10 @@ boolean is_ghost_in_zone(location loc)
 		
 	default:
 		//for all other zones
+		float [monster] apprates = auto_combat_appearance_rates(loc, true);
 		foreach idx, mob in get_monsters(loc)
 		{
+			if(apprates[mob] <= 0) continue; //won't show up because banished or req's not fulfilled
 			if (mob.physical_resistance >= 80)
 			{
 				return true;
@@ -2180,6 +2182,11 @@ boolean[location] monster_to_location(monster target)
 		}
 	}
 	return retval;
+}
+
+boolean[location] auto_swoopLocations()
+{
+	return $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber, The Hidden Temple, The Goatlet];
 }
 
 

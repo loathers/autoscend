@@ -685,6 +685,7 @@ boolean auto_autumnatonQuest()
 		if(auto_sendAutumnaton($location[Guano Junction])) return false;
 		if(auto_sendAutumnaton($location[The Batrat And Ratbat Burrow])) return false;
 		if(auto_sendAutumnaton($location[The Beanbat Chamber])) return false;
+		if(auto_sendAutumnaton($location[Cobb's Knob Harem])) return false;
 		if(auto_sendAutumnaton($location[Noob Cave])) return false;
 	}
 
@@ -935,7 +936,7 @@ void auto_checkTrainSet()
 		}
 	}
 	int eight = 13; //monster level
-	if((monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != "") || get_property("auto_MLSafetyLimit").to_int() == -1){
+	if((monster_level_adjustment() > get_property("auto_MLSafetyLimit").to_int() && get_property("auto_MLSafetyLimit") != "") || get_property("auto_MLSafetyLimit").to_int() == -1 || in_plumber()){
 		eight = 9; //cold res, stench dmg
 	}
 	int turnsSinceTSConfigured = min(trainsetPosition - lastTrainsetConfiguration, 40);

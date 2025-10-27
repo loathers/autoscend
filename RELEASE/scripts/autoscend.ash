@@ -1,4 +1,4 @@
-since r28514;	//  Fix peridot location choice parsing
+since r28604;	// wildsun boon is once/day, allied radio accepts uppercase
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -50,6 +50,7 @@ import <autoscend/iotms/mr2022.ash>
 import <autoscend/iotms/mr2023.ash>
 import <autoscend/iotms/mr2024.ash>
 import <autoscend/iotms/mr2025.ash>
+import <autoscend/iotms/ttt.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
 import <autoscend/paths/auto_path_util.ash>
@@ -69,6 +70,7 @@ import <autoscend/paths/fall_of_the_dinosaurs.ash>
 import <autoscend/paths/g_lover.ash>
 import <autoscend/paths/gelatinous_noob.ash>
 import <autoscend/paths/grey_goo.ash>
+import <autoscend/paths/hattrick.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/i_love_u_hate.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
@@ -193,6 +195,7 @@ void initializeSettings() {
 	set_property("auto_disableAdventureHandling", false);
 	set_property("auto_doCombatCopy", "no");
 	set_property("auto_dontPhylumBanish", false);
+	set_property("auto_runDayCount", 2);
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
@@ -227,6 +230,7 @@ void initializeSettings() {
 	set_property("auto_leaflet_done", false);
 	set_property("auto_lucky", "");
 	set_property("auto_luckySource", "none");
+	set_property("auto_mapperidot", "");
 	set_property("auto_modernzmobiecount", "");
 	set_property("auto_powerfulglove", "");
 	set_property("auto_otherstuff", "");
@@ -440,8 +444,9 @@ boolean LX_burnDelay()
 
 	if (backupTargetAvailable)
 	{
-		location backupZone = solveDelayZone(isFreeMonster(get_property("lastCopyableMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0);
-		if (backupZone == $location[none])
+		boolean skipOutdoorZones = isFreeMonster(get_property("lastCopyableMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0;
+		location backupZone = solveDelayZone(skipOutdoorZones);
+		if (backupZone == $location[none] && skipOutdoorZones && !in_koe())
 		{
 			// if the monster is inherently free and we have Breathitin charges, fight it in the Noob Cave since we can't avoid it
 			// and we likely want to fight it. Noob Cave is available from turn 0 & is not outdoors so Breathitin won't trigger.
@@ -812,7 +817,7 @@ void initializeDay(int day)
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174", true);
 		visit_url("inv_use.php?pwd=&which=3&whichitem=6174&confirm=Yep.", true);
 		set_property("auto_disableAdventureHandling", true);
-		autoAdv(1, $location[Video Game Level 1]);
+		autoAdv(1, $location[[DungeonFAQ - Level 1]]);
 		set_property("auto_disableAdventureHandling", false);
 		if(item_amount($item[Dungeoneering Kit]) > 0)
 		{
@@ -852,6 +857,7 @@ void initializeDay(int day)
 	glover_initializeDay(day);
 	bat_initializeDay(day);
 	jarlsberg_initializeDay(day);
+	ht_equip_hats(); //equip hats in Hat Trick
 
 	// Bulk cache mall prices
 	if(!in_hardcore() && get_property("auto_day_init").to_int() < day)
@@ -933,12 +939,11 @@ void initializeDay(int day)
 					{
 						auto_buyUpTo(1, $item[Toy Accordion]);
 					}
-					
-					if((in_koe()) && (item_amount($item[Antique Accordion]) == 0) && (koe_rmi_count() >= 10))
-					{
-						koe_acquire_rmi(10);
-						buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Antique Accordion]);
-					}
+				}
+				if((in_koe()) && (item_amount($item[Antique Accordion]) == 0) && (koe_rmi_count() >= 10))
+				{
+					koe_acquire_rmi(10);
+					buy($coinmaster[Cosmic Ray\'s Bazaar], 1, $item[Antique Accordion]);
 				}
 				acquireTotem();
 				if(!possessEquipment($item[Saucepan]))
@@ -980,6 +985,13 @@ void initializeDay(int day)
 				foreach fam in $familiars[ghost of crimbo carols, ghost of crimbo commerce, ghost of crimbo cheer]
 				{
 					if (have_familiar(fam) && !in_bhy())
+					{
+						use_familiar(fam);
+					}
+				}
+				foreach fam in $familiars[chest mimic, cooler yeti]
+				{
+					if (have_familiar(fam))
 					{
 						use_familiar(fam);
 					}
@@ -1231,6 +1243,8 @@ boolean dailyEvents()
 	auto_getAprilingBandItems();
 	auto_MayamClaimAll();
 	auto_buyFromSeptEmberStore();
+	auto_getGlobs();
+	auto_setLeprecondo();
 	
 	return true;
 }
@@ -1395,7 +1409,7 @@ boolean adventureFailureHandler()
 
 		if(tooManyAdventures && isActuallyEd())
 		{
-			if ($location[Hippy Camp] == place)
+			if ($location[The Hippy Camp] == place)
 			{
 				tooManyAdventures = false;
 			}
@@ -1919,9 +1933,11 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	pokefam_getHats();
 	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
+	ht_equip_hats(); //equip hats in Hat Trick
 
 	oldPeoplePlantStuff();
 	use_barrels();
@@ -1953,7 +1969,6 @@ boolean doTasks()
 	beatenUpResolution();
 	lar_safeguard();
 	
-	auto_setLeprecondo();
 	auto_useLeprecondoDrops();
 
 	if (LX_zootoFight()) { return true; }

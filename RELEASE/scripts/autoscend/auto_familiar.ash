@@ -105,10 +105,11 @@ boolean auto_famKill(familiar fam, location place)
 
 	int passiveDamage = numeric_modifier("Damage Aura") + numeric_modifier("Sporadic Damage Aura ") + numeric_modifier("Thorns") + numeric_modifier("Sporadic Thorns");
 	
-	foreach mon, freq in appearance_rates(place)
+	foreach mon, freq in auto_combat_appearance_rates(place)
 	{
+		if(freq<=0) continue;
 		//Mafia doesn't output the expected damage of the familiar so going with the highest possible for most users (NPZR)
-		if(mon != $monster[none] && monster_hp(mon) < (floor(1.5 * (familiar_weight(fam) +weight_adjustment() + 3)) + passiveDamage))
+		if(mon != $monster[none] && monster_hp(mon) < (floor(1.5 * (auto_famWeight(fam) + 3)) + passiveDamage))
 		{
 			return true;
 		}
@@ -515,7 +516,7 @@ boolean autoChooseFamiliar(location place)
 	if ($locations[Guano Junction, The Beanbat Chamber, Cobb's Knob Harem, The Goatlet, Itznotyerzitz Mine,
 	Twin Peak, The Penultimate Fantasy Airship, The Hidden Temple, The Hidden Bowling Alley, The Haunted Wine Cellar,
 	The Haunted Laundry Room, The Copperhead Club, A Mob of Zeppelin Protesters, Whitey's Grove, The Oasis, The Middle Chamber,
-	Frat House, Hippy Camp, The Hatching Chamber,
+	The Orcish Frat House, The Hippy Camp, The Hatching Chamber,
 	The Feeding Chamber, The Royal Guard Chamber, The Hole in the Sky, Hero's Field, The Degrassi Knoll Garage, The Old Landfill,
 	The Laugh Floor, Infernal Rackets Backstage] contains place) {
 		famChoice = lookupFamiliarDatafile("item");
@@ -721,6 +722,19 @@ boolean autoChooseFamiliar(location place)
 	{
 		famChoice = lookupFamiliarDatafile("drop");
 	}
+
+	//If a fam was selected that is contrary to the Combat Rate we want, deselect it. Probably won't select it in stat or regen but user should get better free-ish fams if it does
+	float famComRate = auto_famModifiers(famChoice, "Combat Rate");
+	boolean plusCombatInMaximize = create_matcher("(?<!-)200 ?combat", get_property("auto_maximize_current")).find();
+	boolean minusCombatInMaximize = create_matcher("-200 ?combat", get_property("auto_maximize_current")).find();
+	if(minusCombatInMaximize && famComRate > 0)
+	{
+		famChoice = $familiar[none];
+	}
+	else if(plusCombatInMaximize && famComRate < 0)
+	{
+		famChoice = $familiar[none];
+	}
 	
 	// Stats from combats makes runs go faster apparently.
 	if (famChoice == $familiar[none] && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
@@ -812,10 +826,12 @@ void preAdvUpdateFamiliar(location place)
 		
 		item[monster] heistDesires = catBurglarHeistDesires();
 		boolean wannaHeist = false;
+		float [monster] apprates = auto_combat_appearance_rates(place, true);
 		foreach mon, it in heistDesires
 		{
 			foreach i, mmon in get_monsters(place)
 			{
+				if(apprates[mon] <= 0) continue; //won't show up because banished or req's not fulfilled
 				if(mmon == mon)
 				{
 					auto_log_debug("Using cat burglar because we want to burgle a " + it + " from " + mon);
@@ -930,4 +946,48 @@ boolean auto_needsGoodFamiliarEquipment() {
 		return false;
 	}
 	return true;
+}
+
+int auto_famWeight(familiar fam, boolean include_equip)
+{
+	int famEquipWeight = 0;
+	if(fam == $familiar[none])
+	{
+		return 0;
+	}
+	if(!include_equip)
+	{
+		famEquipWeight = numeric_modifier(familiar_equipped_equipment(fam), "Familiar Weight");
+	}
+	return familiar_weight(fam) + weight_adjustment() - famEquipWeight;
+}
+
+int auto_famWeight(familiar fam)
+{
+	return auto_famWeight(fam, true);
+}
+
+int auto_famWeight()
+{
+	return auto_famWeight(my_familiar(), true);
+}
+
+float auto_famModifiers(familiar fam, string mod, item famEquip)
+{
+	if(fam == $familiar[none])
+	{
+		return 0.0;
+	}
+	return numeric_modifier(fam, mod, auto_famWeight(fam, false), famEquip);
+}
+
+float auto_famModifiers(familiar fam, string mod)
+{
+	return numeric_modifier(fam, mod, auto_famWeight(fam, false), familiar_equipped_equipment(fam));
+}
+
+float auto_famModifiers(string mod)
+{
+	familiar fam = my_familiar();
+	return numeric_modifier(fam, mod, auto_famWeight(fam, false), familiar_equipped_equipment(fam));
 }

@@ -596,7 +596,7 @@ string banisherCombatString(phylum enemyPhylum, location loc, boolean inCombat)
 	if(inCombat)
 		auto_log_info("Finding a phylum banisher to use on " + enemyPhylum + " at " + loc, "green");
 
-	if(inCombat ? (my_familiar() == $familiar[Patriotic Eagle] && get_property("screechCombats").to_int() == 0) : (!in_avantGuard() && pathAllowsChangingFamiliar() && !auto_famKill($familiar[Patriotic Eagle], loc) && auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0) && !in_glover()))
+	if(inCombat ? (my_familiar() == $familiar[Patriotic Eagle] && get_property("screechCombats").to_int() == 0 && !in_glover()) : (!in_avantGuard() && pathAllowsChangingFamiliar() && !auto_famKill($familiar[Patriotic Eagle], loc) && auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0) && !in_glover()))
 	{
 		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
 	}
@@ -791,7 +791,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	}
 
 	if(inCombat ? (auto_have_skill($skill[Punch Out Your Foe]) && auto_is_valid($skill[Punch Out Your Foe]) && (my_mp() >= mp_cost($skill[Punch Out Your Foe])) && (!(used contains "punch out your foe")) && useFree)
-	    : auto_is_valid($skill[Punch Out Your Foe]) && (auto_have_skill($skill[Punch Out Your Foe]) || (available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3) ))
+	    : auto_is_valid($skill[Punch Out Your Foe]) && (auto_have_skill($skill[Punch Out Your Foe]) || (available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3 && !isActuallyEd()) ))
 	{
 		return "skill " + $skill[Punch Out Your Foe];
 	}
@@ -952,6 +952,10 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "item " + $item[yellow rocket]; // 75 turns & 250 meat
 		}
+		if(item_amount($item[spitball]) > 0 && auto_is_valid($item[spitball]))
+		{
+			return "item " + $item[spitball]; //100 Turns and free kill
+		}
 		if(inCombat ? have_skill($skill[Blow the Yellow Candle\!]) : auto_haveRoman() && auto_can_equip($item[Roman Candelabra]) && auto_is_valid($skill[Blow the Yellow Candle\!]))
 		{
 			return "skill " + $skill[Blow the Yellow Candle\!]; //75 Turns
@@ -1002,6 +1006,12 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
 	}
 
+	if(auto_canNorthernExplosionFE())
+	{
+		//With April Shower Thoughts Shield
+		return "skill " + $skill[Northern Explosion];
+	}
+
 	if(auto_canFeelEnvy())
 	{
 		return "skill " + $skill[Feel Envy];
@@ -1043,6 +1053,10 @@ string yellowRayCombatString()
 
 string replaceMonsterCombatString(monster target, boolean inCombat)
 {
+	if(in_pokefam())
+	{
+		return "";
+	}
 	if(auto_macrometeoritesAvailable() > 0 && auto_is_valid($skill[Macrometeorite]))
 	{
 		return "skill " + $skill[Macrometeorite];

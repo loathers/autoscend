@@ -189,10 +189,95 @@ int auto_afterimagesLeft()
 	return to_int(get_property("phosphorTracesUses"));
 }
 
+boolean auto_haveAprilShowerShield()
+{
+	item shield = $item[April Shower Thoughts shield];
+	return (auto_is_valid(shield) && possessEquipment(shield));
+}
+
+boolean auto_getGlobs()
+{
+	if(!auto_haveAprilShowerShield())
+	{
+		return false;
+	}
+	//if breakfast hasn't run yet or they haven't been manually collected
+	if(!get_property("_aprilShowerGlobsCollected").to_boolean())
+	{
+		visit_url('inventory.php?action=shower');
+		return true;
+	}
+	return false;
+}
+
+boolean auto_equipAprilShieldBuff()
+{
+	if(!auto_haveAprilShowerShield())
+	{
+		return false;
+	}
+	//force equip the shield if this is called
+	if(weapon_hands(equipped_item($slot[weapon])) > 1)
+	{
+		//if a 2 handed weapon is equipped, unequip it
+		equip($item[none], $slot[weapon]);
+	}
+	return autoForceEquip($item[April Shower Thoughts Shield], true);
+}
+
+boolean auto_unequipAprilShieldBuff()
+{
+	//Because Empathy gets replaced by Thoughtful Empathy when cast with the Shield equipped,
+	//we need to make sure this is unequipped if we want to have both Empathy and Thoughtful Empathy
+	if(have_equipped($item[April Shower Thoughts Shield]))
+	{
+		return autoForceEquip($slot[off-hand], $item[none], true);
+	}
+	return true;
+}
+
+boolean auto_canNorthernExplosionFE()
+{
+	//Northern Explosion becomes Feel Envy-adjacent once per day
+	if(!auto_haveAprilShowerShield())
+	{
+		return false;
+	}
+	if(!auto_have_skill($skill[Northern Explosion]))
+	{
+		return false;
+	}
+	if(get_property("_aprilShowerNorthernExplosion").to_boolean())
+	{
+		return false;
+	}
+	return true;
+}
+
 boolean auto_havePeridot()
 {
 	item pop = $item[Peridot of Peril];
 	return (auto_is_valid(pop) && possessEquipment(pop));
+}
+
+boolean[monster] peridotManuallyDesiredMonsters()
+{
+	// manually specify some favoured monsters
+	boolean[monster] desired_monsters;
+	desired_monsters[$monster[lobsterfrogman]] = true;
+	desired_monsters[$monster[black panther]] = true;
+	desired_monsters[$monster[white lion]] = true;
+	desired_monsters[$monster[monstrous boiler]] = true;
+	desired_monsters[$monster[modern zmobie]] = true;
+	desired_monsters[$monster[dairy goat]] = true;
+	desired_monsters[$monster[writing desk]] = true;
+	// Quest gremlins need IDs because there's multiple
+	desired_monsters[$monster[547]] = true; // erudite gremlin (tool) 
+	desired_monsters[$monster[549]] = true; // batwinged gremlin (tool)
+	desired_monsters[$monster[551]] = true; // vegetable gremlin (tool)
+	desired_monsters[$monster[553]] = true; // spider gremlin (tool)
+
+	return desired_monsters;
 }
 
 void peridotChoiceHandler(int choice, string page)
@@ -201,6 +286,7 @@ void peridotChoiceHandler(int choice, string page)
 	{
 		run_choice(2); //should never get here but might as well mitigate
 	}
+	
 	monster popChoice;
 	location loc = my_location();
 	matcher mons = create_matcher("bandersnatch\" value=\"(\\d+)", page);
@@ -211,6 +297,12 @@ void peridotChoiceHandler(int choice, string page)
 	{
 		//record the possible monsters and identify the best one to target
 		monOpts[i] = mons.group(1).to_int().to_monster();
+		// Manual monster specifications
+		if (peridotManuallyDesiredMonsters() contains monOpts[i])
+		{
+			bestmon = i;
+			break; // if we've got a force desired monster, don't bother with the rankings any more
+		}
 		if(zoneRank(monOpts[i], loc) <= zoneRank(monOpts[bestmon], loc)) 
 		{
 			bestmon = i;
@@ -220,16 +312,16 @@ void peridotChoiceHandler(int choice, string page)
 	popChoice = monOpts[bestmon];
 	if(popChoice.to_int() == 0) //still nothing found so just peace out
 	{
-		handleTracker($item[Peridot of Peril], loc.to_string(), "Peace out", "auto_otherstuff");
+		handleTracker($item[Peridot of Peril], loc.to_string(), "Peace out", "auto_mapperidot");
 		run_choice(2); //if no match is found, hit the exit choice
 		return;
 	}
-	if(zoneRank(popChoice, loc) != 4) handleTracker($item[Peridot of Peril], loc.to_string(), popChoice.to_string(),"auto_otherstuff");
+	handleTracker($item[Peridot of Peril], loc.to_string(), popChoice.to_string(),"auto_mapperidot");
 	run_choice(1, "bandersnatch=" + popChoice.to_int());
 	return;
 }
 
-boolean inperilLocations(int loc)
+boolean haveUsedPeridot(int loc)
 {
 	string[int] perilLocs = split_string(get_property("_perilLocations"),",");
 	foreach i, str in perilLocs
@@ -238,6 +330,316 @@ boolean inperilLocations(int loc)
 		{
 			return true;
 		}
+	}
+	return false;
+}
+
+boolean haveUsedPeridot(location loc)
+{
+	return haveUsedPeridot(loc.to_int());
+}
+
+boolean auto_havePrismaticBeret()
+{
+	item pb = $item[Prismatic Beret];
+	return (auto_is_valid(pb) && possessEquipment(pb));
+}
+
+boolean canBusk()
+{
+	if(get_property("_beretBuskingUses").to_int() < 5)
+	{
+		return true;
+	}
+	return false;
+}
+
+int[string] beretPower(item[int] allHats, item[int] allShirts, item[int] allPants)
+{
+	int[slot] multipliers = powerMultipliers();
+	int[int] hatPowers;
+	hatPowers[0] = 0;
+	int[int] pantPowers;
+	pantPowers[0] = 0;
+	int[int] shirtPowers;
+	shirtPowers[0] = 0;
+	int[string] powers;
+	//possible power calculations
+	if(!in_hattrick())
+	{
+		if(auto_have_familiar($familiar[Mad Hatrack]))
+		{
+			//prismatic beret on the hatrack and another hat on you
+			foreach i, h in allHats
+			{
+				hatPowers[count(hatPowers)] = get_power(h) * multipliers[$slot[hat]];
+			}
+		}
+		else
+		{
+			hatPowers[0] = get_power($item[Prismatic Beret]) * multipliers[$slot[hat]];
+		}
+	}
+	else
+	{
+		foreach i, h in allHats
+		{
+			if(equipped_amount(h) >= 1)
+			{
+				hatPowers[0] += get_power(h) * multipliers[$slot[hat]];
+			}
+		}
+	}
+	foreach i, p in allPants
+	{
+		pantPowers[count(pantPowers)] = get_power(p) * multipliers[$slot[pants]];
+	}
+	foreach i, s in allShirts
+	{
+		shirtPowers[count(shirtPowers)] = get_power(s);
+	}
+	foreach i, hp in hatPowers
+	{
+		foreach i, pp in pantPowers
+		{
+			foreach i, sp in shirtPowers
+			{
+				string concat = (auto_have_familiar($familiar[Mad Hatrack]) ? (hp / multipliers[$slot[hat]]).to_string() + "," : "") + (pp / multipliers[$slot[pants]]).to_string() + "," + sp.to_string();
+				powers[concat] = hp + pp + sp;
+			}
+		}
+	}
+	return powers;
+}
+
+string bestBusk(int[string] powers, string effectMultiplier)
+{
+	//effectMultiplier string should be in format of "modifier1:float;modifier2:float;..." if multiple modifiers
+	//if single modifier, does not need a multiplier
+	//Do not use an ending ; for effectMultiplier
+	if(!auto_havePrismaticBeret())
+	{
+		return 0;
+	}
+	int busksUsed = get_property("_beretBuskingUses").to_int();
+	float score;
+	float highScore = 0.0;
+	string highScoreString;
+	float[string] effMulti;
+	string[int] numMod;
+	if(effectMultiplier=="")
+	{
+		//based on default maximizer string
+		effMulti = {
+			"item drop": 5,
+			"meat drop": 1,
+			"initiative": 0.5,
+			"damage absorption": 0.1,
+			"damage resistance": 1,
+			"Cold Resistance": 0.5,
+			"Hot Resistance": 0.5,
+			"Sleaze Resistance": 0.5,
+			"Stench Resistance": 0.5,
+			"Spooky Resistance": 0.5,
+			my_primestat().to_string(): 1.5,
+			"fumble": -1,
+			"hp": 0.4,
+			"mp": 0.2,
+			"mp regen": 3,
+			"familiar weight": 2,
+			"familiar experience": 5};
+	}
+	else
+	{
+		if(contains_text(effectMultiplier, ";"))
+		{
+			//split effectMultiplier into multiple effects if needed
+			foreach i, str in split_string(effectMultiplier,";")
+			{
+				numMod = split_string(str,":");
+				effMulti[numMod[1]] = numMod[0].to_float();
+			}
+		}
+		else if(contains_text(effectMultiplier, ":"))
+		{
+			numMod = split_string(effectMultiplier, ":");
+			effMulti[numMod[1]]  = numMod[0].to_float();
+		}
+		else
+		{
+			effMulti[effectMultiplier] = 5.0;
+		}
+	}
+	int[effect] buskingEffects;
+	foreach powerstring, power in powers
+	{
+		//Evaluate all power combinations calculated in beretPower to find the highest scoring one after multiplier is applied
+		score = 0.0;
+		buskingEffects = beret_busking_effects(power.to_int(), busksUsed);
+		foreach eff, i in buskingEffects
+		{
+			if(eff != $effect[none])
+			{
+				foreach mod, multi in effMulti
+				{
+					score += numeric_modifier(eff, mod) * multi;
+				}
+			}
+		}
+		if(score > highScore)
+		{
+			highScore = score;
+			highScoreString = powerstring;
+		}
+	}
+	if(highScore > 0)
+	{
+		return highScoreString;
+	}
+	return "";
+}
+
+boolean beretBusk(string effectMultiplier)
+{
+	if(!auto_havePrismaticBeret() || !canBusk())
+	{
+		return false;
+	}
+	int[slot] multipliers = powerMultipliers();
+	item[int] allHats;
+	item[int] allShirts;
+	item[int] allPants;
+	int bestBuskHROffset = (auto_have_familiar($familiar[Mad Hatrack]) ? 0 : 1);
+	int buskPower = 0;
+	foreach it in $items[]
+	{
+		//only record items we have
+		if(possessEquipment(it))
+		{
+			switch(to_slot(it))
+			{
+				case $slot[hat]:
+					allHats[count(allHats)] = it;
+					break;
+				case $slot[shirt]:
+					allShirts[count(allShirts)] = it;
+					break;
+				case $slot[pants]:
+					allPants[count(allPants)] = it;
+					break;
+				default:
+					continue;
+			}
+		}
+	}
+	int[string] powers = beretPower(allHats, allShirts, allPants);
+	string bestBuskPowers = bestBusk(powers, effectMultiplier);
+	if(bestBuskPowers == "")
+	{
+		return false;
+	}
+	string[int] bestBuskPowersSplit = split_string(bestBuskPowers, ",");
+	if(!in_hattrick())
+	{
+		if(auto_have_familiar($familiar[Mad Hatrack]))
+		{
+			foreach i, hat in allHats
+			{
+				if(get_power(hat) == bestBuskPowersSplit[0].to_int() && hat != $item[prismatic beret])
+				{
+					//equip the hat and put the beret on the Hatrack to be able to busk
+					autoForceEquip(hat, true);
+					buskPower += get_power(hat) * multipliers[$slot[hat]];
+					if(use_familiar($familiar[Mad Hatrack]))
+					{
+						//Force the beret to the Hatrack if we were able to use the Hatrack.
+						autoForceEquip($slot[familiar], $item[prismatic beret], true);
+					}
+					break;
+				}
+				else if(hat == $item[prismatic beret])
+				{
+					//don't equip the beret yet, in case there is another 10 power hat to wear
+					continue;
+				}
+			}
+		}
+		if(!have_equipped($item[prismatic beret]))
+		{
+			//equip the beret if it is not equipped anywhere else
+			autoForceEquip($slot[hat],$item[prismatic beret], true);
+			buskPower += get_power($item[prismatic beret]) * multipliers[$slot[hat]];
+		}
+	}
+	else
+	{
+		//get the power of all hats equipped in Hat Trick
+		foreach i, h in allHats
+		{
+			if(equipped_amount(h) > 0)
+			{
+				buskPower += get_power(h) * multipliers[$slot[hat]];
+			}
+		}
+	}
+	if(count(allPants) > 0) //only check if we have pants available
+	{
+		if(bestBuskPowersSplit[1 - bestBuskHROffset].to_int() == 0)
+		{
+			autoForceEquip($slot[pants], $item[none], true);
+		}
+		else
+		{
+			foreach i, pant in allPants
+			{
+				if(get_power(pant) == bestBuskPowersSplit[1 - bestBuskHROffset].to_int())
+				{
+					autoForceEquip(pant, true);
+					buskPower += get_power(pant) * multipliers[$slot[pants]];
+					break;
+				}
+			}
+		}
+	}
+	if(count(allShirts) > 0) //only check if we have shirts available
+	{
+		if(bestBuskPowersSplit[2 - bestBuskHROffset].to_int() == 0)
+		{
+			autoForceEquip($slot[shirt], $item[none], true);
+		}
+		else
+		{
+			foreach i, shirt in allShirts
+			{
+				if(get_power(shirt) == bestBuskPowersSplit[2 - bestBuskHROffset].to_int())
+				{
+					autoForceEquip(shirt, true);
+					buskPower += get_power(shirt);
+					break;
+				}
+			}
+		}
+	}
+
+	if(use_skill(1, $skill[beret busking]))
+	{
+		handleTracker($item[prismatic beret], my_location().to_string(), "Beret busk " + get_property("_beretBuskingUses") + " at " + buskPower + " power", "auto_otherstuff");
+		return true;
+	}
+
+	return false;
+}
+
+boolean beretBusk()
+{
+	return beretBusk("");
+}
+
+boolean auto_haveCoolerYeti()
+{
+	if(auto_have_familiar($familiar[Cooler Yeti]))
+	{
+		return true;
 	}
 	return false;
 }

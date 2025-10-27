@@ -523,6 +523,11 @@ __RestorationOptimization __calculate_objective_values(int hp_goal, int mp_goal,
 			restored_amount += numeric_modifier("Bonus Resting MP");
 		}
 
+		if (metadata.name == "disco nap" && auto_haveAprilShowerShield() && get_property("_aprilShowerDiscoNap").to_int() < 5 && my_mp() > mp_cost($skill[disco nap]))
+		{
+			restored_amount = 100 - 20 * get_property("_aprilShowerDiscoNap").to_int();
+		}
+
 		return restored_amount;
 	}
 
@@ -1833,10 +1838,15 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	//since we need to restore, lets reduce MP cost of future skills
 	buffMaintain($effect[The Odour of Magick]);
 	buffMaintain($effect[Using Protection]);
-	//also use items which give mp regen
+	//also use items/skills which give free mp regen
 	buffMaintain($effect[Tingly Tongue]);
 	buffMaintain($effect[Tingling Insides]);
 	buffMaintain($effect[Wisdom of the Autumn Years]);
+	if(auto_equipAprilShieldBuff() && !(get_property("_aprilShowerSimmer").to_boolean()))
+	{
+		//Free mp regen on the first cast of the day with the April Shower Thoughts Shield equipped
+		buffMaintain($effect[Simmering]);
+	}
 
 	// Sausages restore 999MP, this is a pretty arbitrary cutoff but it should reduce pain
 	// TODO: move this to general effectiveness method
@@ -1949,11 +1959,21 @@ boolean acquireMP(float goalPercent, int meat_reserve, boolean useFreeRests)
 }
 
 /**
- * Try to acquire your max hp (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ * Try to acquire the smaller of your max HP and 800 HP (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
  * returns true if my_hp() >= my_maxhp() after attempting to restore.
  */
 boolean acquireHP()
+{
+	return acquireHP(min(my_maxhp(),800));
+}
+
+/**
+ * Try to acquire your max hp (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
+ *
+ * returns true if my_hp() >= my_maxhp() after attempting to restore.
+ */
+boolean acquireFullHP()
 {
 	return acquireHP(my_maxhp());
 }
@@ -2002,10 +2022,12 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 	}
 	
 	// HP is irrelevant in Pocket Familiars, this removes the function to restore HP
-	if(in_pokefam())
+	// except in the case of A-Boo Peak, meeting Dr. Awkward, and the hedge maze
+	if(in_pokefam() && !get_property("_auto_forcePokefamRestore").to_boolean())
 	{
 		return false;
 	}
+	set_property("_auto_forcePokefamRestore", false);
 
 	//owning a hand in glove breaks maxHP tracking. need to check possession rather than equipped because unequipping it also breaks it. in fact it causes us to get stuck in an infinite loop of trying to restore hp when already at max HP.
 	//mafia devs think it is actually a kol bug so they won't fix it. https://kolmafia.us/showthread.php?25214
@@ -2068,6 +2090,11 @@ boolean acquireHP(int goal, int meat_reserve, boolean useFreeRests)
 		{
 			retrieve_item(1, $item[super deluxe mushroom]);
 			use(1, $item[super deluxe mushroom]);
+		}
+		if(my_hp() <= 10)
+		{
+			auto_log_info("Spending a turn to heal.");
+			visit_url("place.php?whichplace=mario&action=mush_saveblock");
 		}
 	}
 	else

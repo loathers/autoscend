@@ -499,7 +499,7 @@ boolean L8_trapperExtreme()
 		// plumber literally wont let you adventure if you have no way to fight in plumber.
 			if(in_plumber())
 			{
-				equip($slot[acc3], $item[work boots]);
+				autoforceEquip($slot[acc3], $item[work boots]);
 			}
 	}
 	// we should equip the extreme outfit if we have it
@@ -749,6 +749,14 @@ boolean L8_trapperGroar()
 			set_property("auto_nextEncounter","panicking Knott Yeti");
 		}
 		set_property("auto_nonAdvLoc", true);
+		
+		// Let's whack some free XP on our Chest Mimic (it's a chaun)
+		if (auto_haveChestMimic())
+		{
+			handleFamiliar($familiar[Chest Mimic]);
+			provideFamExp(50, $location[Mist-shrouded Peak], true, false);
+		}
+		
 		retval = autoAdv($location[Mist-shrouded Peak]);
 	}
 	if(retval && initial_adv == my_session_adv())
