@@ -726,6 +726,24 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("-equip " + wrap_item($item[Kramco Sausage-o-Matic&trade;]).to_string());
 		}
 	}
+	if (auto_haveMobiusRing())
+	{
+		if (auto_timeCopFights() >= 11)
+		{
+			if(get_property("mappingMonsters").to_boolean() || auto_backupTarget() || !in_hardcore())
+			{
+				// don't equip for non free fights in softcore? (pending allowed conditions like delay zone && none of the monsters in the zone is a sniff/YR target?)
+				// don't interfere with backups or Map the Monsters
+				addToMaximize("-equip " + $item[M&ouml;bius ring].to_string());
+			}
+		}
+		// Save the first 11 time cops for delay burning, if current location isn't itself a delay zone after SoftblockDelay released
+		else if (!nextMonsterIsFree && (auto_timeCopFights() < 11 && !zone_delay(my_location())._boolean && solveDelayZone() != $location[none]))
+		{
+			// add bonus to hopefully get the NC to increase paradoxicity to increase the frequency of time cops
+			addBonusToMaximize($item[M&ouml;bius ring], 200);
+		}
+	}
 	if (auto_haveCursedMagnifyingGlass())
 	{
 		if (get_property("cursedMagnifyingGlassCount").to_int() == 13)
