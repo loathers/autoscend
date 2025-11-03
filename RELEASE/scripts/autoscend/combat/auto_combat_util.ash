@@ -829,6 +829,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Monkey Slap];
 	}
+
+	if((inCombat ? auto_have_skill($skill[Sea *dent: Throw a Lightning Bolt]) : possessEquipment($item[Monodent of the Sea])) && auto_is_valid($skill[Sea *dent: Throw a Lightning Bolt]) && get_property("_seadentLightningUsed").to_int() < 11 && !(used contains "Sea *dent: Throw a Lightning Bolt"))
+	{
+		return "skill " + $skill[Sea *dent: Throw a Lightning Bolt];
+	}
 	
 	//[Nanorhino] familiar specific banish. fairly low priority as it consumes 40 to 50 adv worth of a decent buff.
 	if(canUse($skill[Unleash Nanites]) && have_effect($effect[Nanobrawny]) >= 40)
