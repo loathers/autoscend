@@ -873,7 +873,6 @@ void mobiusChoiceHandler(int choice, string page)
 			paradoxState[i] ="a";
 		}
 	}
-	set_property("auto_interrupt", true);
 	int pick = 1;
 	foreach rank, paradox in paradoxRank
 	{
