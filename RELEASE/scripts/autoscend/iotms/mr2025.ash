@@ -873,7 +873,6 @@ void mobiusChoiceHandler(int choice, string page)
 			paradoxState[i] ="a";
 		}
 	}
-	set_property("auto_interrupt", true);
 	int pick = 1;
 	foreach rank, paradox in paradoxRank
 	{
@@ -931,6 +930,25 @@ boolean auto_haveMonodent()
 	if(possessEquipment($item[Monodent of the Sea]))
 	{
 		return true;
+	}
+	return false;
+}
+
+boolean auto_wantToWaveTheZone(location loc)
+{
+	if(!auto_haveMonodent())
+	{
+		return false;
+	}
+	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary),
+	Cyberzone 1, Cyberzone 2, Cyberzone 3] contains loc && my_path() == $path[11,037 Leagues Under the Sea])
+	{
+		//Force the Monodent of the Sea when adventuring in a zone that we might want to Summon a Wave in
+		return autoForceEquip($item[Monodent of the Sea], true);
+	}
+	if(loc == $location[The Themthar Hills])
+	{
+		return autoForceEquip($item[Monodent of the Sea], true);
 	}
 	return false;
 }
