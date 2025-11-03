@@ -871,11 +871,14 @@ void mobiusChoiceHandler(int choice, string page)
 			paradoxState[i] ="a";
 		}
 	}
+	set_property("auto_interrupt", true);
 	int pick = 1;
-	foreach paradox, rank in paradoxRank
+	foreach rank, paradox in paradoxRank
 	{
 		foreach choice, state in paradoxState
 		{
+			auto_log_info("Looking at paradox " + choice + " which is " + paradoxes[choice, state]);
+			auto_log_info("Comparing to " + paradox);
 			//Compare the paradox to the current state of paradoxes
 			if(paradoxes[choice, state] == paradox)
 			{
@@ -923,6 +926,11 @@ boolean auto_wantTimeCop(location loc)
 		return true;
 	}
 
-	autoEquip(wrap_item($item[M&ouml;bius ring]));
+	if(autoEquip(wrap_item($item[M&ouml;bius ring])))
+	{
+		set_property("auto_nextEncounter","time cop");
+		return autoAdv(loc);
+	}
+	set_property("auto_nextEncounter","");
 	return false;
 }
