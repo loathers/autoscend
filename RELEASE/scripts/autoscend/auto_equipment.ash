@@ -936,6 +936,11 @@ void finalizeMaximize(boolean speculative)
 		}
 	}
 
+	if(my_location() == get_property("_seadentWaveZone").to_location())
+	{
+		addBonusToMaximize($item[Monodent of the Sea], 1000); //Don't want to spend an extra turn if we don't have to
+	}
+
 	if(!in_plumber() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
 	{
 		if (my_class() == $class[Seal Clubber] && in_glover())
