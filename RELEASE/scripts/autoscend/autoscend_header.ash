@@ -676,6 +676,7 @@ int auto_timeCopFights();
 boolean auto_wantTimeCop();
 boolean auto_wantTimeCop(location loc);
 boolean auto_haveMonodent();
+boolean auto_waveTheZone();
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
