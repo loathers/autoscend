@@ -699,7 +699,7 @@ void mobiusChoiceHandler(int choice, string page)
 		},
 		2: {
 			"a": "Stop your arch-nemesis as a baby",
-			"b": "Go back and mae the Naughty Sorceress naughty again"
+			"b": "Go back and make the Naughty Sorceress naughty again"
 		},
 		3: {
 			"a": "Defend yourself",
@@ -726,7 +726,7 @@ void mobiusChoiceHandler(int choice, string page)
 			"b": "Return the sugar you borrowed"
 		},
 		9: {
-			"a": "Play Schroedinger's Prank on yourself",
+			"a": "Play Schroedinger\'s Prank on yourself",
 			"b": "Check your pocket"
 		},
 		10: {
@@ -770,7 +770,7 @@ void mobiusChoiceHandler(int choice, string page)
 			"b": "Go back in time and kill a butterfly"
 		},
 		20: {
-			"a": "Hey, free gun!",
+			"a": "Hey\, free gun!",
 			"b": "Sell the gun"
 		},
 		21: {
@@ -778,7 +778,7 @@ void mobiusChoiceHandler(int choice, string page)
 			"b": "Make enemies with a famous poet"
 		},
 		22: {
-			"a": "Cheeze it, it's the pigs!",
+			"a": "Cheeze it\, it's the pigs!",
 			"b": "Aiding and abetterment"
 		},
 		23: {
@@ -839,7 +839,7 @@ void mobiusChoiceHandler(int choice, string page)
 	"Go back and make the Naughty Sorceress naughty again", //+5% combat frequency melting item
 	"Peek in on your future", //+100% Weapon Drops from Monsters (20 turns)
 	"Steal a club from the past", //random club
-	"Hey, free gun!", //+1 The gun, a +50 Sleaze Damage ranged weapon
+	"Hey\, free gun!", //+1 The gun, a +50 Sleaze Damage ranged weapon
 	"Plant some trees and harvest them in the future", //random fruit x5
 	"Chop down some trees", //morningwood plank x3, cherry x1
 	"Steal from your future self", //random food x1, random booze x1
@@ -847,11 +847,11 @@ void mobiusChoiceHandler(int choice, string page)
 	"Make enemies with a famous poet", //Size 3 Wine: ~14 adv, lose Anapests
 	"Sell the gun", //-1 The gun, +Meat
 	"Make yourself forget", // 3 charges of Try to Remember (a sniff) (no Mafia support for tracking it)
-	"Play Schroedinger's Prank on yourself", //Schroedinger's Anticipation (20 turns)
+	"Play Schroedinger\'s Prank on yourself", //Schroedinger's Anticipation (20 turns)
 	"Teach hippies to make jams and jellies", //2 1-spleen items that force drops of your next encounter
 	"Meet your parents when they were young", //Moxie -15, -50% Combat Initiative (200 turns)
 	"Assassinate yourself", //lose HP, gain enchantedness
-	"Cheeze it, it's the pigs!", //Muscle -30, Maximum HP -15 (100 turns)
+	"Cheeze it\, it's the pigs!", //Muscle -30, Maximum HP -15 (100 turns)
 	"Fix the race and also fix the race", //Penguins give you meat after combat. (100 turns)
 	"Take the long odds on the trifecta", //5000 meat, -10% HP after combat (100 turns)
 	"Make friends with a famous poet", //Just the Best Anapests for 1000 turns
@@ -862,7 +862,9 @@ void mobiusChoiceHandler(int choice, string page)
 
 	foreach i, p in paradoxState
 	{
-		if(!(contains_text(page, paradoxes[i, p])))
+		string paradox = paradoxes[i, p];
+		matcher m = create_matcher(`value=(\\d+)><input\\s+class=button\\s+type=submit\\s+value="{paradox}"`,page);
+		if(m.find())
 		{
 			paradoxState[i] = "b";
 		}
@@ -875,26 +877,15 @@ void mobiusChoiceHandler(int choice, string page)
 	int pick = 1;
 	foreach rank, paradox in paradoxRank
 	{
-		foreach choice, state in paradoxState
+		matcher m = create_matcher(`value=(\\d+)><input\\s+class=button\\s+type=submit\\s+value="{paradox}"`,page);
+		//Compare the paradox to the current state of paradoxes
+		if(m.find())
 		{
-			auto_log_info("Looking at paradox " + choice + " which is " + paradoxes[choice, state]);
-			auto_log_info("Comparing to " + paradox);
-			//Compare the paradox to the current state of paradoxes
-			if(paradoxes[choice, state] == paradox)
-			{
-				pick = choice;
-				auto_log_info("Choosing " + pick);
-				auto_log_info("Which translates to " + paradoxes[pick, paradoxState[pick]]);
-				break;
-			}
-		}
-		if(pick != 1)
-		{
-			//That means we have found a paradox we want to choose
+			pick =  m.group(1).to_int();
+			handleTracker($item[M&ouml;bius ring], paradox, "auto_otherstuff"); 
 			break;
 		}
 	}
-	handleTracker($item[M&ouml;bius ring], paradoxes[pick, paradoxState[pick]], "auto_otherstuff");
 	run_choice(pick);
 	return;
 }
