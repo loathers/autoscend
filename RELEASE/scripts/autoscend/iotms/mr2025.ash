@@ -876,7 +876,7 @@ boolean auto_waveTheZone()
 		autoForceEquip($item[Monodent of the Sea], true);
 	}
 	//Get 30% more meat drop. Only useful if weapon slot has < 30% meat drop
-	if(my_location() == $location[The Themthar Hills] && numeric_modifier(equipped_item($slot[weapon]), "Meat drop") < 30%)
+	if(my_location() == $location[The Themthar Hills] && numeric_modifier(equipped_item($slot[weapon]), "Meat drop") < 30.0)
 	{
 		autoForceEquip($item[Monodent of the Sea], true);
 	}
