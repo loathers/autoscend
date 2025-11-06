@@ -868,22 +868,29 @@ boolean auto_waveTheZone()
 		return false;
 	}
 
+	boolean waveTheZone = false;
+
 	//Force the Monodent of the Sea when adventuring in a zone that we might want to Summon a Wave in
 	//Get Fishy turns from free fights
 	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary),
 	Cyberzone 1, Cyberzone 2, Cyberzone 3] contains my_location() && my_path() == $path[11,037 Leagues Under the Sea])
 	{
 		autoForceEquip($item[Monodent of the Sea], true);
+		waveTheZone = true;
 	}
 	//Get 30% more meat drop. Only useful if weapon slot has < 30% meat drop
 	if(my_location() == $location[The Themthar Hills] && numeric_modifier(equipped_item($slot[weapon]), "Meat drop") < 30.0)
 	{
 		autoForceEquip($item[Monodent of the Sea], true);
+		waveTheZone = true;
 	}
-	if(use_skill(1, $skill[Sea *dent: Summon a Wave]))
+	if(waveTheZone)
 	{
-		handleTracker($item[Monodent of the Sea], my_location().to_string(), "Summon a Wave", "auto_otherstuff");
-		return true;
+		if(use_skill(1, $skill[Sea *dent: Summon a Wave]))
+		{
+			handleTracker($item[Monodent of the Sea], my_location().to_string(), "Summon a Wave", "auto_otherstuff");
+			return true;
+		}
 	}
 	return false;
 }
