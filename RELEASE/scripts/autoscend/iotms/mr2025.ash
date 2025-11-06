@@ -970,5 +970,9 @@ boolean auto_waveTheZone()
 
 boolean auto_haveBCZ()
 {
-	
+	if(possessEquipment($item[blood cubic zirconia]))
+	{
+		return true;
+	}
+	return false;
 }

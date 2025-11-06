@@ -677,6 +677,7 @@ boolean auto_wantTimeCop();
 boolean auto_wantTimeCop(location loc);
 boolean auto_haveMonodent();
 boolean auto_waveTheZone();
+boolean auto_haveBCZ();
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
