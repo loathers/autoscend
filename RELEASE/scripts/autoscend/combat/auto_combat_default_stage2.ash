@@ -446,6 +446,14 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[lightning strike]);
 		}
 
+		if(auto_wantToBCZ($skill[BCZ: Sweat Bullets]) && (wantFreeKillNowEspecially || !reserveFreekills))
+		{
+			handleTracker(enemy, $skill[BCZ: Sweat Bullets], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[BCZ: Sweat Bullets]);
+		}
+		
+
 		if(canUse($skill[Darts: Aim for the Bullseye]) && have_effect($effect[Everything Looks Red]) == 0 && dartELRcd() <= 40)
 		{
 			set_property("auto_instakillSource", "darts bullseye");

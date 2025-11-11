@@ -678,6 +678,8 @@ boolean auto_wantTimeCop(location loc);
 boolean auto_haveMonodent();
 boolean auto_waveTheZone();
 boolean auto_haveBCZ();
+boolean auto_wantToBCZ(string sk);
+boolean auto_bczRefractedGaze();
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash

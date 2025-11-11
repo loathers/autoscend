@@ -976,3 +976,98 @@ boolean auto_haveBCZ()
 	}
 	return false;
 }
+
+boolean auto_wantToBCZ(string sk)
+{
+	if(!auto_haveBCZ())
+	{
+		return false;
+	}
+	int bloodBathCasts = get_property("_bczBloodBathCasts").to_int();
+	int bloodGeyserCasts = get_property("_bczBloodGeyserCasts").to_int();
+	int bloodThinnerCasts = get_property("_bczBloodThinnerCasts").to_int();
+	int dialItUpCasts = get_property("_bczDialitupCasts").to_int();
+	int pheromoneCocktailCasts = get_property("_bczPheromoneCocktailCasts").to_int();
+	int refractedGazeCasts = get_property("_bczRefractedGazeCasts").to_int();
+	int spinalTapasCasts = get_property("_bczSpinalTapasCasts").to_int();
+	int sweatBulletsCasts = get_property("_bczSweatBulletsCasts").to_int();
+	int sweatEquityCasts = get_property("_bczSweatEquityCasts").to_int();
+	int musSubstats = my_basestat($stat[submuscle]);
+	int mysSubstats = my_basestat($stat[submysticality]);
+	int moxSubstats = my_basestat($stat[submoxie]);
+
+	int auto_bczCastMath(int cast)
+	{
+		if(cast == 12) return 420000;
+		int castMath = cast;
+		if(cast > 12) castMath -= 1;
+		int castMathFloor = floor(castMath/3);
+		if(cast > 12) castMathFloor += 1;
+		int castMathModulo = (castMath % 3);
+		int substatBase = 0;
+		
+		switch(castMathModulo)
+		{
+			case 0:
+				substatBase = 11;
+				break;
+			case 1:
+				substatBase = 23;
+				break;
+			case 2:
+				substatBase = 37;
+				break;
+		}
+		return substatBase * 10 ** castMathFloor;
+		//11, 23, 37, 110, 230, 370, etc. 13th cast follows a different pattern but we will never get there
+	}
+
+	if(!(canUse(sk.to_skill()))) return false;
+
+	switch(sk)
+	{
+		//Muscle Casts
+		case "BCZ: Blood Geyser": return auto_bczCastMath(bloodGeyserCasts) < musSubstats;
+		case "BCZ: Blood Bath": return auto_bczCastMath(bloodBathCasts) < musSubstats;
+		case "BCZ: Create Blood Thinner": return auto_bczCastMath(bloodThinnerCasts) < musSubstats;
+		//Mysticality Casts
+		case "BCZ: Dial it up to 11": return auto_bczCastMath(dialItUpCasts) < mysSubstats;
+		case "BCZ: Refracted Gaze": return auto_bczCastMath(refractedGazeCasts) < mysSubstats;
+		case "BCZ: Prepare Spinal Tapas": return auto_bczCastMath(spinalTapasCasts) < mysSubstats;
+		//Moxie Casts
+		case "BCZ: Sweat Bullets": return auto_bczCastMath(sweatBulletsCasts) < moxSubstats;
+		case "BCZ: Sweat Equity": return auto_bczCastMath(sweatEquityCasts) < moxSubstats;
+		case "BCZ: Craft a Pheromone Cocktail": return auto_bczCastMath(pheromoneCocktailCasts) < moxSubstats;
+		default:
+			return false;
+	}
+}
+
+boolean auto_bczRefractedGaze()
+{
+	if(!auto_haveBCZ())
+	{
+		return false;
+	}
+	if(auto_havePeridot() && !haveUsedPeridot(my_location()))
+	{
+		//Will undoubtedly want Peridot in these locations
+		//Other sources of issue (pocket wishes/mimic eggs) are fought in Noob Cave
+		//Don't have support for the Crepe Paper Parachute Cape but that also causes issues
+		return false;
+	}
+	if((my_location() == $location[Smut Orc Logging Camp] && lumberCount() < bridgeGoal() && fastenerCount() < bridgeGoal()) ||
+	(my_location() == $location[The Penultimate Fantasy Airship] && item_amount($item[Mohawk Wig]) < 1 && item_amount($item[Amulet of extreme plot significance]) < 1) ||
+	(my_location() == $location[The Battlefield (Frat Uniform)]) ||
+	(my_location() == $location[A-Boo Peak] && item_amount($item[A-Boo Clue]) * 30 < get_property("booPeakProgress").to_int()) ||
+	(my_location() == $location[Cobb\'s Knob Harem]) ||
+	(my_location() == $location[Twin Peak] && item_amount($item[Rusty Hedge Trimmers]) < 4) ||
+	(my_location() == $location[The Black Forest] && !(black_market_available()) && item_amount($item[Reassembled Blackbird]) == 0 && monster_phylum() != $phylum[Beast]) || 
+	(my_location() == $location[The Hidden Apartment Building] && last_monster() == $monster[pygmy shaman]) ||
+	(my_location() == $location[The Defiled Nook] && last_monster() == $monster[party skeleton])
+	)
+	{
+		return true;
+	}
+	return false;
+}
