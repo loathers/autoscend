@@ -1056,7 +1056,7 @@ boolean auto_bczRefractedGaze()
 		//Don't have support for the Crepe Paper Parachute Cape but that also causes issues
 		return false;
 	}
-	if((my_location() == $location[Smut Orc Logging Camp] && lumberCount() < bridgeGoal() && fastenerCount() < bridgeGoal()) ||
+	if((my_location() == $location[The Smut Orc Logging Camp] && lumberCount() < bridgeGoal() && fastenerCount() < bridgeGoal()) ||
 	(my_location() == $location[The Penultimate Fantasy Airship] && item_amount($item[Mohawk Wig]) < 1 && item_amount($item[Amulet of extreme plot significance]) < 1) ||
 	(my_location() == $location[The Battlefield (Frat Uniform)]) ||
 	(my_location() == $location[A-Boo Peak] && item_amount($item[A-Boo Clue]) * 30 < get_property("booPeakProgress").to_int()) ||
@@ -1064,7 +1064,7 @@ boolean auto_bczRefractedGaze()
 	(my_location() == $location[Twin Peak] && item_amount($item[Rusty Hedge Trimmers]) < 4) ||
 	(my_location() == $location[The Black Forest] && !(black_market_available()) && item_amount($item[Reassembled Blackbird]) == 0 && monster_phylum() != $phylum[Beast]) || 
 	(my_location() == $location[The Hidden Apartment Building] && last_monster() == $monster[pygmy shaman]) ||
-	(my_location() == $location[The Defiled Nook] && last_monster() == $monster[party skeleton])
+	(my_location() == $location[The Defiled Nook] && last_monster() == $monster[party skelteon])
 	)
 	{
 		return true;
