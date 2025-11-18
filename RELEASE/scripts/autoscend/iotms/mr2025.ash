@@ -895,6 +895,18 @@ boolean auto_waveTheZone()
 	return false;
 }
 
+boolean auto_talkToSomeFish(location loc, monster enemy)
+{
+	// returns true if we want to cast Talk to Some Fish. Not intended to exhaustivly list all valid targets
+	// also, this is not actually a free fight, but this is a safe listing of targets
+
+	if(!auto_haveMonodent()) return false;
+	if(!auto_is_valid($skill[Sea *dent: Talk to Some Fish])) return false;
+	if (isFreeMonster(enemy, loc)) { return false; } // don't use Talk to Some Fish against inherently free fights
+	
+	return auto_wantToFreeKillWithNoDrops(loc, enemy);
+}
+
 boolean auto_haveCrimboSkeleton()
 {
 	if(auto_have_familiar($familiar[Skeleton of Crimbo Past]))
