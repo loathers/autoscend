@@ -968,6 +968,17 @@ boolean auto_waveTheZone()
 	return false;
 }
 
+boolean auto_talkToSomeFish(location loc, monster enemy)
+{
+	// returns true if we want to cast Talk to Some Fish. Not intended to exhaustivly list all valid targets
+
+	if(!auto_haveMonodent()) return false;
+	if(!auto_is_valid($skill[Sea *dent: Talk to Some Fish])) return false;
+	if (isFreeMonster(enemy, loc)) { return false; } // don't use Talk to Some Fish against inherently free fights
+	
+	return auto_wantToFreeKillWithNoDrops(loc, enemy);
+}
+
 boolean auto_haveBCZ()
 {
 	if(possessEquipment($item[blood cubic zirconia]))
@@ -979,7 +990,7 @@ boolean auto_haveBCZ()
 
 boolean auto_wantToBCZ(string sk)
 {
-	if(!auto_haveBCZ())
+	if(!auto_haveBCZ() || !(canUse(sk.to_skill())))
 	{
 		return false;
 	}
@@ -992,9 +1003,6 @@ boolean auto_wantToBCZ(string sk)
 	int spinalTapasCasts = get_property("_bczSpinalTapasCasts").to_int();
 	int sweatBulletsCasts = get_property("_bczSweatBulletsCasts").to_int();
 	int sweatEquityCasts = get_property("_bczSweatEquityCasts").to_int();
-	int musSubstats = my_basestat($stat[submuscle]);
-	int mysSubstats = my_basestat($stat[submysticality]);
-	int moxSubstats = my_basestat($stat[submoxie]);
 
 	int auto_bczCastMath(int cast)
 	{
@@ -1019,25 +1027,51 @@ boolean auto_wantToBCZ(string sk)
 				break;
 		}
 		return substatBase * 10 ** castMathFloor;
-		//11, 23, 37, 110, 230, 370, etc. 13th cast follows a different pattern but we will never get there
+		//11, 23, 37, 110, 230, 370, etc. 13th cast follows a different pattern but we will never get there but better to be safe than sorry
 	}
 
-	if(!(canUse(sk.to_skill()))) return false;
+	boolean statChange(stat st, int casts)
+	{
+		int level = my_level();
+		if(my_level() >= 13)
+		{
+			level = 13;
+		}
+		int diff;
+		if(st == my_primestat())
+		{
+			//return an absurdly large number so it doesn't get considered in the big switch
+			return my_basestat(stat_to_substat(st)) - level_to_min_substat(level) > auto_bczCastMath(casts);
+		}
+		//don't go below 70 stat
+		return ((my_basestat(st) ** 2) - 70 ** 2) > auto_bczCastMath(casts);
+	}
 
+	//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
+	//Don't go beneath our current level or level 13 if we cast the skill
 	switch(sk)
 	{
 		//Muscle Casts
-		case "BCZ: Blood Geyser": return auto_bczCastMath(bloodGeyserCasts) < musSubstats;
-		case "BCZ: Blood Bath": return auto_bczCastMath(bloodBathCasts) < musSubstats;
-		case "BCZ: Create Blood Thinner": return auto_bczCastMath(bloodThinnerCasts) < musSubstats;
+		case "BCZ: Blood Geyser":
+			return (statChange($stat[muscle], bloodGeyserCasts) && (bloodGeyserCasts <= 6));
+		case "BCZ: Blood Bath":
+			return (statChange($stat[muscle], bloodBathCasts) && (bloodBathCasts <= 6));
+		case "BCZ: Create Blood Thinner": //should never be cast, but if we want to support in the future, we can
+			return (statChange($stat[muscle], bloodThinnerCasts) && (bloodThinnerCasts == 0));
 		//Mysticality Casts
-		case "BCZ: Dial it up to 11": return auto_bczCastMath(dialItUpCasts) < mysSubstats;
-		case "BCZ: Refracted Gaze": return auto_bczCastMath(refractedGazeCasts) < mysSubstats;
-		case "BCZ: Prepare Spinal Tapas": return auto_bczCastMath(spinalTapasCasts) < mysSubstats;
+		case "BCZ: Dial it up to 11":
+			return (statChange($stat[mysticality], dialItUpCasts) && (dialItUpCasts <= 3));
+		case "BCZ: Refracted Gaze":
+			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts <= 9));
+		case "BCZ: Prepare Spinal Tapas":
+			return (statChange($stat[mysticality], spinalTapasCasts) && (spinalTapasCasts <= 3));
 		//Moxie Casts
-		case "BCZ: Sweat Bullets": return auto_bczCastMath(sweatBulletsCasts) < moxSubstats;
-		case "BCZ: Sweat Equity": return auto_bczCastMath(sweatEquityCasts) < moxSubstats;
-		case "BCZ: Craft a Pheromone Cocktail": return auto_bczCastMath(pheromoneCocktailCasts) < moxSubstats;
+		case "BCZ: Sweat Bullets":
+			return (statChange($stat[moxie], sweatBulletsCasts) && (sweatBulletsCasts <= 9));
+		case "BCZ: Sweat Equity":
+			return (statChange($stat[moxie], sweatEquityCasts) && (sweatEquityCasts <= 2));
+		case "BCZ: Craft a Pheromone Cocktail":
+			return (statChange($stat[moxie], pheromoneCocktailCasts) && (pheromoneCocktailCasts <= 6));
 		default:
 			return false;
 	}

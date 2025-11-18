@@ -5062,6 +5062,16 @@ float substat_to_level(int n)
 	return square_root( square_root(n) - 4 ) + 1;
 }
 
+float level_to_min_substat(int n)
+{
+	return (((n-1) ** 2 + 4) ** 2);
+}
+
+float level_to_min_substat()
+{
+	return level_to_min_substat(my_level());
+}
+
 stat stat_to_substat(stat s)
 {
 	switch(s)
