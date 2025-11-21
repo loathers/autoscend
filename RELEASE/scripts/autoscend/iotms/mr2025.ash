@@ -941,6 +941,12 @@ boolean auto_waveTheZone()
 		return false;
 	}
 
+	//Already Summoned a Wave today
+	if(get_property("_seadentWaveZone") != "")
+	{
+		return false;
+	}
+
 	boolean waveTheZone = false;
 
 	//Force the Monodent of the Sea when adventuring in a zone that we might want to Summon a Wave in
@@ -975,7 +981,19 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 
 	if(!auto_haveMonodent()) return false;
 	if(!auto_is_valid($skill[Sea *dent: Talk to Some Fish])) return false;
-	if (isFreeMonster(enemy, loc)) { return false; } // don't use Talk to Some Fish against inherently free fights
+	// don't use Talk to Some Fish against inherently free fights
+	if (isFreeMonster(enemy, loc)) { return false; }
+	//don't Talk to Some Fish on The Battlefield
+	if(loc == $location[The Battlefield (Frat Uniform)] &&
+		(contains_text(enemy.to_string(), "War Hippy")) ||
+		$strings[Bailey's Beetle, Mobile Armored Sweat Lodge] contains enemy)
+	{
+		return false;
+	}
+	if(loc == $location[The Battlefield (Hippy Uniform)] && contains_text(enemy.to_string(), "War Frat"))
+	{
+		return false;
+	}
 	
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
@@ -1116,10 +1134,12 @@ void auto_getBCZItems()
 	
 	if(auto_wantToBCZ($skill[BCZ: Craft a Pheromone Cocktail]))
 	{
+		handleTracker($item[Blood Cubic Zirconia], $item[Pheromone Cocktail],"auto_iotm_claim");
 		use_skill(1, $skill[BCZ: Craft a Pheromone Cocktail]);
 	}
 	if(auto_wantToBCZ($skill[BCZ: Prepare Spinal Tapas]))
 	{
+		handleTracker($item[Blood Cubic Zirconia], $item[Spinal Tapas],"auto_iotm_claim");
 		use_skill(1, $skill[BCZ: Prepare Spinal Tapas]);
 	}
 

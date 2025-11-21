@@ -1182,6 +1182,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 			Woad Warrior,
 
 			// myst effects
+			Up to 11,
 			Baconstoned,
 			Erudite,
 			Far Out,

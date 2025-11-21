@@ -33,7 +33,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 
 	//Refracted Gaze sets drop table of monster to EVERYTHING else in zone so YRs are great
 	//Monsters might be banished/freeran from/replaced because they are now useful so need to handle that too
-	if(auto_bczRefractedGaze())
+	if(auto_bczRefractedGaze() && combat_status_check("droptablereplaced") && auto_have_skill($skill[BCZ: Refracted Gaze]))
 	{
 		handleTracker(enemy, $skill[BCZ: Refracted Gaze], "auto_otherstuff");
 		combat_status_add("droptablereplaced");
