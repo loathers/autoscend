@@ -971,6 +971,7 @@ boolean auto_waveTheZone()
 boolean auto_talkToSomeFish(location loc, monster enemy)
 {
 	// returns true if we want to cast Talk to Some Fish. Not intended to exhaustivly list all valid targets
+	// also, this is not actually a free fight, but this is a safe listing of targets
 
 	if(!auto_haveMonodent()) return false;
 	if(!auto_is_valid($skill[Sea *dent: Talk to Some Fish])) return false;
@@ -988,9 +989,9 @@ boolean auto_haveBCZ()
 	return false;
 }
 
-boolean auto_wantToBCZ(string sk)
+boolean auto_wantToBCZ(skill sk)
 {
-	if(!auto_haveBCZ() || !(canUse(sk.to_skill())))
+	if(!auto_haveBCZ() || !(canUse(sk)))
 	{
 		return false;
 	}
@@ -1040,37 +1041,36 @@ boolean auto_wantToBCZ(string sk)
 		int diff;
 		if(st == my_primestat())
 		{
-			//return an absurdly large number so it doesn't get considered in the big switch
+			//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
+			//Don't go beneath our current level or level 13 if we cast the skill
 			return my_basestat(stat_to_substat(st)) - level_to_min_substat(level) > auto_bczCastMath(casts);
 		}
-		//don't go below 70 stat
+		//don't go below 70 of the other stats
 		return ((my_basestat(st) ** 2) - 70 ** 2) > auto_bczCastMath(casts);
 	}
 
-	//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
-	//Don't go beneath our current level or level 13 if we cast the skill
 	switch(sk)
 	{
 		//Muscle Casts
-		case "BCZ: Blood Geyser":
+		case $skill[BCZ: Blood Geyser]:
 			return (statChange($stat[muscle], bloodGeyserCasts) && (bloodGeyserCasts <= 6));
-		case "BCZ: Blood Bath":
+		case $skill[BCZ: Blood Bath]:
 			return (statChange($stat[muscle], bloodBathCasts) && (bloodBathCasts <= 6));
-		case "BCZ: Create Blood Thinner": //should never be cast, but if we want to support in the future, we can
+		case $skill[BCZ: Create Blood Thinner]: //should never be cast, but if we want to support in the future, we can
 			return (statChange($stat[muscle], bloodThinnerCasts) && (bloodThinnerCasts == 0));
 		//Mysticality Casts
-		case "BCZ: Dial it up to 11":
+		case $skill[BCZ: Dial it up to 11]:
 			return (statChange($stat[mysticality], dialItUpCasts) && (dialItUpCasts <= 3));
-		case "BCZ: Refracted Gaze":
+		case $skill[BCZ: Refracted Gaze]:
 			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts <= 9));
-		case "BCZ: Prepare Spinal Tapas":
+		case $skill[BCZ: Prepare Spinal Tapas]:
 			return (statChange($stat[mysticality], spinalTapasCasts) && (spinalTapasCasts <= 3));
 		//Moxie Casts
-		case "BCZ: Sweat Bullets":
+		case $skill[BCZ: Sweat Bullets]:
 			return (statChange($stat[moxie], sweatBulletsCasts) && (sweatBulletsCasts <= 9));
-		case "BCZ: Sweat Equity":
+		case $skill[BCZ: Sweat Equity]:
 			return (statChange($stat[moxie], sweatEquityCasts) && (sweatEquityCasts <= 2));
-		case "BCZ: Craft a Pheromone Cocktail":
+		case $skill[BCZ: Craft a Pheromone Cocktail]:
 			return (statChange($stat[moxie], pheromoneCocktailCasts) && (pheromoneCocktailCasts <= 6));
 		default:
 			return false;
@@ -1097,6 +1097,7 @@ boolean auto_bczRefractedGaze()
 	(my_location() == $location[Cobb\'s Knob Harem]) ||
 	(my_location() == $location[Twin Peak] && item_amount($item[Rusty Hedge Trimmers]) < 4) ||
 	(my_location() == $location[The Black Forest] && !(black_market_available()) && item_amount($item[Reassembled Blackbird]) == 0 && monster_phylum() != $phylum[Beast]) || 
+	(my_location() == $location[Whitey's Grove] && (item_amount($item[Lion Oil]) == 0 && item_amount($item[Bird Rib]) == 0 && item_amount($item[Wet Stew]) == 0 && item_amount($item[wet stunt nut stew]) == 0) && monster_phylum() != $phylum[Beast]) ||
 	(my_location() == $location[The Hidden Apartment Building] && last_monster() == $monster[pygmy shaman]) ||
 	(my_location() == $location[The Defiled Nook] && last_monster() == $monster[party skelteon])
 	)
@@ -1104,4 +1105,23 @@ boolean auto_bczRefractedGaze()
 		return true;
 	}
 	return false;
+}
+
+void auto_getBCZItems()
+{
+	if(!auto_haveBCZ())
+	{
+		return;
+	}
+	
+	if(auto_wantToBCZ($skill[BCZ: Craft a Pheromone Cocktail]))
+	{
+		use_skill(1, $skill[BCZ: Craft a Pheromone Cocktail]);
+	}
+	if(auto_wantToBCZ($skill[BCZ: Prepare Spinal Tapas]))
+	{
+		use_skill(1, $skill[BCZ: Prepare Spinal Tapas]);
+	}
+
+	return;
 }

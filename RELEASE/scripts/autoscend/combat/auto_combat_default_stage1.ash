@@ -284,6 +284,13 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 			return useSkill($skill[Duplicate]);
 		}
 	}
+
+	//convert enemy into a scaling fish monster
+	if(auto_talkToSomeFish(my_location(), enemy))
+	{
+		handleTracker(enemy, $skill[Sea *dent: Talk to Some Fish], "auto_otherstuff");
+		return useSkill($skill[Sea *dent: Talk to Some Fish]);
+	}
 	
 	//these special conditions make it impossible to do anything but attack with weapon.
 	if(have_effect($effect[Temporary Amnesia]) > 0)

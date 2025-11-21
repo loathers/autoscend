@@ -31,6 +31,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	retval = auto_combatDarkGyffteStage2(round, enemy, text);
 	if(retval != "") return retval;
 
+	//Refracted Gaze sets drop table of monster to EVERYTHING else in zone so YRs are great
+	//Monsters might be banished/freeran from/replaced because they are now useful so need to handle that too
+	if(auto_bczRefractedGaze())
+	{
+		handleTracker(enemy, $skill[BCZ: Refracted Gaze], "auto_otherstuff");
+		combat_status_add("droptablereplaced");
+		return useSkill($skill[BCZ: Refracted Gaze]);
+	}
+
 	//use industrial fire extinguisher zone specific skills
 	string extinguisherSkill = auto_FireExtinguisherCombatString(my_location());
 	if(extinguisherSkill != "" && have_equipped(wrap_item($item[industrial fire extinguisher]))
@@ -100,7 +109,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	boolean swoopAvailable = canUse($skill[Swoop like a Bat], true) && get_property("_batWingsSwoopUsed").to_int() < 11;
 	boolean willSwoop = auto_swoopLocations() contains my_location() && swoopAvailable;
 	
-	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()) && !willDouse && !willSwoop)
+	if(((!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location())) || combat_status_check("droptablereplaced")) && !willDouse && !willSwoop)
 	{
 		string combatAction = yellowRayCombatString(enemy, true, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains enemy);
 		if(combatAction != "")
@@ -148,7 +157,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 	
 	// Free run before banishing for a few monsters
-	if(!combat_status_check("banishercheck") && auto_wantToBanish(enemy, my_location()))
+	if(!combat_status_check("banishercheck") && !combat_status_check("droptablereplaced") && auto_wantToBanish(enemy, my_location()))
 	{
 		string freeRunAction = freeRunCombatStringPreBanish(enemy, my_location(), true);
 		if(freeRunAction != "")
@@ -169,7 +178,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
-	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)
+	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && !combat_status_check("droptablereplaced") && auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)
 	{
 		string banishAction = banisherCombatString(monster_phylum(enemy), my_location(), true);
 		if(banishAction != "")
@@ -195,7 +204,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 
 	// Free run in Avant Guard from Bodyguard before banishing for a few monsters
-	if(!combat_status_check("banishercheck") && auto_wantToBanish(guardee, my_location()))
+	if(!combat_status_check("banishercheck") && !combat_status_check("droptablereplaced") && auto_wantToBanish(guardee, my_location()))
 	{
 		string freeRunAction = freeRunCombatStringPreBanish(enemy, my_location(), true);
 		if(freeRunAction != "")
@@ -216,7 +225,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
-	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && auto_wantToBanish(enemy, my_location()) && !ag_is_bodyguard())
+	if(!combat_status_check("banishercheck") && !combat_status_check("phylumbanishercheck") && !combat_status_check("droptablereplaced") && auto_wantToBanish(enemy, my_location()) && !ag_is_bodyguard())
 	{
 		string banishAction = banisherCombatString(enemy, my_location(), true);
 		if(banishAction != "")
@@ -251,7 +260,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 
 	// Free run from monsters we want to banish/phylumbanish but are unable to, or monsters on the free run list
-	if(!combat_status_check("freeruncheck") && ((auto_wantToFreeRun(enemy, my_location()) || auto_forceFreeRun(true) || auto_wantToBanish(enemy, my_location()) || (auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)) || (auto_wantToFreeRun(guardee, my_location()) || auto_wantToBanish(guardee, my_location()))))
+	if(!combat_status_check("freeruncheck") && !combat_status_check("droptablereplaced") && ((auto_wantToFreeRun(enemy, my_location()) || auto_forceFreeRun(true) || auto_wantToBanish(enemy, my_location()) || (auto_wantToBanish(monster_phylum(enemy), my_location()) && auto_habitatMonster() != enemy)) || (auto_wantToFreeRun(guardee, my_location()) || auto_wantToBanish(guardee, my_location()))))
 	{
 		string freeRunAction = freeRunCombatString(enemy, my_location(), true);
 		if(freeRunAction != "")
@@ -293,7 +302,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		combat_status_add("freeruncheck");
 	}
 
-	if (!combat_status_check("replacercheck") && auto_wantToReplace(enemy, my_location()))
+	if (!combat_status_check("replacercheck") && !combat_status_check("droptablereplaced") && auto_wantToReplace(enemy, my_location()))
 	{
 		string combatAction = replaceMonsterCombatString(enemy, true);
 		if(combatAction != "")

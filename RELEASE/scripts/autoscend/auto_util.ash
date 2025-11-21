@@ -800,6 +800,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return use_familiar($familiar[Patriotic Eagle]);
 	}
+	if(combat_string == "skill" + $skill[Mark Your Territory])
+	{
+		return autoDrink(1, $item[Pheromone Cocktail]);
+	}
 	if(combat_string == "skill " + $skill[Throw Latte on Opponent])
 	{
 		return autoEquip($item[latte lovers member\'s mug]);
@@ -4420,6 +4424,12 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 				buffMaintain(eff);
 			}
 		}
+	}
+
+// 5 * level ML up to + 75
+	if(auto_wantToBCZ($skill[BCZ: Blood Bath]))
+	{
+		tryEffects($effects[Bloodbathed]);
 	}
 
 // ToML >= U >= 30

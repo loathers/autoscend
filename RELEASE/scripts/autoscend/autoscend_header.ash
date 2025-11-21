@@ -681,6 +681,7 @@ boolean auto_talkToSomeFish(location loc, monster enemy);
 boolean auto_haveBCZ();
 boolean auto_wantToBCZ(string sk);
 boolean auto_bczRefractedGaze();
+void auto_getBCZItems();
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
