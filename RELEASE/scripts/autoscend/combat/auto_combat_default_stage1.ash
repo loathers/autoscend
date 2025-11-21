@@ -286,7 +286,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	}
 
 	//convert enemy into a scaling fish monster
-	if(auto_talkToSomeFish(my_location(), enemy))
+	if(auto_talkToSomeFish(my_location(), enemy) && auto_have_skill($skill[Sea *dent: Talk to Some Fish]))
 	{
 		handleTracker(enemy, $skill[Sea *dent: Talk to Some Fish], "auto_otherstuff");
 		return useSkill($skill[Sea *dent: Talk to Some Fish]);
