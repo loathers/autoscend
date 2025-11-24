@@ -1298,6 +1298,317 @@ boolean adjustForCopyIfPossible()
 	return adjustForCopyIfPossible($monster[none]);
 }
 
+int banishesAvailable()
+{
+	//This should only look at banishes we have programmed
+	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	int count = 0;
+	foreach sk in $skills[peel out, Howl of the Alpha, Baleful Howl, Thunder Clap, Curse Of Vacation, Breathe Out, Batter Up!, Mark Your Territory,
+	Banishing Shout, Walk Away From Explosion, Feel Hatred, [7510]Punt, Snokebomb, Punch Out Your Foe, [28021]Punt, Unleash Nanites, Beancannon]
+	{
+		if(auto_have_skill(sk))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//equipment
+	foreach eq in $items[spring shoes, latte lovers member\'s mug, stinky cheese eye, V for Vivala mask, Mafia middle finger ring, Pantsgiving,
+	Lil\' Doctor&trade; bag, familiar scrapbook, Fourth of May cosplay saber, Kremlin\'s Greatest Briefcase, cursed monkey\'s paw, Monodent of the Sea]
+	{
+		if(possessEquipment(eq))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//combat items/IOTMs/IOTM-Derived items that aren't equipment
+	foreach it in $items[stuffed yam stinkbomb, Handful of split pea soup, human musk, Louder Than Bomb, Tennis Ball, Deathchucks, divine champagne popper,
+	anchor bomb, pheromone cocktail, Cosmic Bowling Ball, scoop of pre-workout powder]
+	{
+		if(auto_is_valid(it) && item_amount(it) > 0)
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//campground equipment
+	foreach it in $items[Asdon Martin keyfob (on ring)]
+	{
+		if(auto_get_campground() contains it)
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//familiars
+	foreach fam in $familiars[nanorhino, patriotic eagle]
+	{
+		if(auto_have_familiar(fam))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	return count;
+}
+
+
+int freeRunsAvailable()
+{
+	//This should only look at free runs we have programmed, not specialized free runs like the short writ of habeas corpus
+	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	int count = 0;
+	foreach sk in $skills[peel out]
+	{
+		if(auto_have_skill(sk))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//equipment
+	foreach eq in $items[spring shoes, roman candelabra, Navel ring of navel gazing, replica Navel ring of navel gazing,
+	Cosmic Bowling Ball]
+	{
+		if(possessEquipment(eq))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//combat items/IOTMs/IOTM-Derived items that aren't equipment
+	foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO, handful of split pea soup, giant eraser]
+	{
+		if(auto_is_valid(it) && item_amount(it) > 0)
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//familiars
+	foreach fam in $familiars[frumious bandersnatch, pair of stomping boots]
+	{
+		if(auto_have_familiar(fam))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	return count;
+}
+
+int freeKillsAvailable()
+{
+	//This should only look at free kills we have programmed
+	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	int count = 0;
+	foreach sk in $skills[lightning strike, shattering punch, Gingerbread Mob Hit, Free-For-All]
+	{
+		if(auto_have_skill(sk))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//equipment
+	foreach eq in $items[blood cubic zirconia, Everfull Dart Holster, Lil\' Doctor&trade; bag, The Jokester's gun, unwrapped knock-off retro superhero cape]
+	{
+		if(possessEquipment(eq))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//campground equipment
+	foreach it in $items[cold medicine cabinet]
+	{
+		if(auto_get_campground() contains it)
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//combat items/IOTMs/IOTM-Derived items that aren't equipment
+	foreach it in $items[groveling gravel, Replica Bat-oomerang, shadow brick, Exploding Cigar]
+	{
+		if(auto_is_valid(it) && item_amount(it) > 0)
+		{
+			count +=1;
+			continue;
+		}
+	}
+	return count;
+}
+
+int instaKillsAvailable()
+{
+	//This should only look at instakills we have programmed
+	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	int count = 0;
+	foreach sk in $skills[slaughter]
+	{
+		if(auto_have_skill(sk))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//combat items/IOTMs/IOTM-Derived items that aren't equipment
+	foreach it in $items[Power Pill]
+	{
+		if(auto_is_valid(it) && item_amount(it) > 0)
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//familiars
+	foreach fam in $familiars[Pair of Stomping Boots]
+	{
+		if(auto_have_familiar(fam))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	return count;
+}
+
+int yellowRaysAvailable()
+{
+	//This should only look at YRs we have programmed
+	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	int count = 0;
+	foreach sk in $skills[Fondeluge, Disintegrate, Ball Lightning, Wrath of Ra, Flash Headlight, Unleash Cowrruption, Feel Envy,
+	Shocking Lick, ]
+	{
+		if(auto_have_skill(sk))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//equipment
+	foreach eq in $items[jurassic parka, roman candelabra, unwrapped knock-off retro superhero cape,
+	April Shower Thoughts Shield, Fourth of May cosplay saber]
+	{
+		if(possessEquipment(eq))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//combat items/IOTMs/IOTM-Derived items that aren't equipment
+	foreach it in $items[Yellowcake Bomb, Clan VIP Lounge Key, spitball, Golden Light, Pumpkin Bomb, Unbearable Light,
+	Viral Video, micronova]
+	{
+		if(auto_is_valid(it) && item_amount(it) > 0)
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//campground equipment
+	foreach it in $items[Portable Mayo Clinic, Asdon Martin keyfob (on ring)]
+	{
+		if(auto_get_campground() contains it)
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//familiars
+	foreach fam in $familiars[Crimbo Shrub]
+	{
+		if(auto_have_familiar(fam))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	return count;
+}
+
+int copiesAvailable()
+{
+	//This should only look at copiers/replacers/summons we have programmed
+	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	int count = 0;
+	foreach sk in $skills[Macrometeorite, Recall Facts: Monster Habitats, Digitize, Calculate the Universe, rain man]
+	{
+		if(auto_have_skill(sk))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//equipment
+	foreach eq in $items[roman candelabra, Powerful Glove, backup camera, cargo cultist shorts, combat lover\'s locket]
+	{
+		if(possessEquipment(eq))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//combat items/IOTMs/IOTM-Derived items that aren't equipment
+	foreach it in $items[waffle, Rain-Doh black box, Time-Spinner, Spooky Putty Sheet, 4-D Camera, Unfinished Ice Sculpture, Print Screen Button]
+	{
+		if(auto_is_valid(it) && item_amount(it) > 0)
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//familiars
+	foreach fam in $familiars[patriotic eagle, chest mimic]
+	{
+		if(auto_have_familiar(fam))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	count += auto_wishesAvailable();
+	return count;
+}
+
+int sniffsAvailable()
+{
+	//This should only look at copies we have programmed
+	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	int count = 0;
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Hunt, Long Con, Perceive Soul, Motif,
+	Gallapagosian Mating Call]
+	{
+		if(auto_have_skill(sk))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//equipment
+	foreach eq in $items[cursed monkey\'s paw, McHugeLarge left pole, latte lovers member's mug]
+	{
+		if(possessEquipment(eq))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//familiars
+	foreach fam in $familiars[Nosy Nose]
+	{
+		if(auto_have_familiar(fam))
+		{
+			count +=1;
+			continue;
+		}
+	}
+	return count;
+}
+
 boolean hasTorso()
 {
 	return have_skill($skill[Torso Awareness]) || have_skill($skill[Best Dressed]) || robot_cpu(9,false);
