@@ -676,6 +676,9 @@ int auto_timeCopFights();
 boolean auto_haveMonodent();
 boolean auto_waveTheZone();
 boolean auto_talkToSomeFish(location loc, monster enemy);
+boolean auto_haveShrunkenHead();
+boolean auto_wantToShrunkenHead(monster enemy, location place);
+boolean auto_wantToShrunkenHead(location place);
 boolean auto_haveCrimboSkeleton();
 void auto_wantSoCP();
 
