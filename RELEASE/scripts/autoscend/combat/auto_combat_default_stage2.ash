@@ -139,6 +139,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
+	if(auto_wantToShrunkenHead(enemy, my_location()))
+	{
+		handleTracker(enemy, $skill[Prepare to reanimate your Foe], "auto_otherstuff");
+		return useSkill($skill[Prepare to reanimate your Foe]);
+	}
+
 	//convert enemy into a helpless frog/newt/lizard
 	if(get_property("auto_useCleesh").to_boolean())
 	{

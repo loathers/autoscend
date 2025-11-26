@@ -1145,3 +1145,66 @@ void auto_getBCZItems()
 
 	return;
 }
+
+boolean auto_haveShrunkenHead()
+{
+	if(possessEquipment($item[Shrunken Head]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_wantToShrunkenHead(monster enemy, location place)
+{
+	if(!auto_haveShrunkenHead())
+	{
+		return false;
+	}
+
+	if(!(canUse($skill[Prepare to reanimate your Foe])))
+	{
+		return false;
+	}
+
+	if(auto_wantToYellowRay(enemy, place))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+boolean auto_wantToShrunkenHead(location place)
+{
+	if(!auto_haveShrunkenHead())
+	{
+		return false;
+	}
+
+	monster [int] possible_monsters;
+	if(get_property("auto_nextEncounter").to_monster() != $monster[none])
+	{
+		//next monster is forced by zone mechanics or some other mechanism
+		possible_monsters[count(possible_monsters)] = get_property("auto_nextEncounter").to_monster();
+	}
+	else
+	{
+		foreach i,mon in get_monsters(place)
+		{
+			if(appearance_rates(place)[mon] > 0)
+			{
+				possible_monsters[count(possible_monsters)] = mon;
+			}
+		}
+	}
+	foreach i, mon in possible_monsters
+	{
+		//It's not really a YR, but it provides a second shot at stuff so it might be useful
+		if(auto_wantToYellowRay(mon, place))
+		{
+			return true;
+		}
+	}
+	return false;
+}
