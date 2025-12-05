@@ -69,32 +69,33 @@ drop	18	Cookbookbat	item:St. Sneaky Pete's Whey<4;!prop_boolean:auto_dontUseCook
 #
 # density 1.875 size 4 spleen consumables. boolean autoChooseFamiliar(location place) will already grab the amount needed for spleen
 # Here they are only used to grab extras.
-drop	19	Grim Brother	prop:_grimFairyTaleDrops<5
-drop	20	Pair of Stomping Boots	!path:G-Lover;prop:_bootStomps<7
-drop	21	Baby Sandworm	prop:_aguaDrops<5
-drop	22	Bloovian Groose	prop:_grooseDrops<5
-drop	23	Golden Monkey	prop:_powderedGoldDrops<5
-drop	24	Unconscious Collective	prop:_dreamJarDrops<5
+drop	19	Skeleton of Crimbo Past	prop_boolean:auto_preferSoCP
+drop	20	Grim Brother	prop:_grimFairyTaleDrops<5
+drop	21	Pair of Stomping Boots	!path:G-Lover;prop:_bootStomps<7
+drop	22	Baby Sandworm	prop:_aguaDrops<5
+drop	23	Bloovian Groose	prop:_grooseDrops<5
+drop	24	Golden Monkey	prop:_powderedGoldDrops<5
+drop	25	Unconscious Collective	prop:_dreamJarDrops<5
 # psychoanalytic jar 1 per day.
-drop	25	Angry Jung Man	prop:_jungDrops<1
+drop	26	Angry Jung Man	prop:_jungDrops<1
 # grimstone mask 1 per day
-drop	26	Grimstone Golem	prop:_grimstoneMaskDrops<1
+drop	27	Grimstone Golem	prop:_grimstoneMaskDrops<1
 # tales of spelunking 1 per day
-drop	27	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
+drop	28	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # can drop 5 devilish folio a day
-drop	28	Blavious Kloop	prop:_kloopDrops<5
+drop	29	Blavious Kloop	prop:_kloopDrops<5
 # can drop 5 absinthe a day
-drop	29	Green Pixie	prop:_absintheDrops<5
+drop	30	Green Pixie	prop:_absintheDrops<5
 # Hot ashes can make a potion that gives +15 ML for 15 adv. drop limit 5/day
-drop	30	Galloping Grill	prop:_hotAshesDrops<5
+drop	31	Galloping Grill	prop:_hotAshesDrops<5
 # If all else fails, keep generating CBB ingredients
-drop	31	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
+drop	32	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
 # build up a few mini kiwis, enough for an aioli and a bikini
-drop	32	Mini Kiwi	item:mini kiwi<7
+drop	33	Mini Kiwi	item:mini kiwi<7
 # use a Peace turkey if all else fails
-drop	33	Peace Turkey
+drop	34	Peace Turkey
 # eh, may as well put some XP on the mimic if there's no other drop familiars
-drop	34	Chest Mimic
+drop	35	Chest Mimic
 
 # We want to delevel, but don't want to deal damage
 gremlins	0	Nosy Nose
@@ -133,72 +134,75 @@ item	5	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
 item	6	Grey Goose	prop_boolean:auto_prioritizeGoose
 # fairy that generates extra adventures
 item	7	Reagnimated Gnome	!path:Heavy Rains
+# Fairy with useful/valuable items that can be bought with its drops
+item	8	Skeleton of Crimbo Past	prop_boolean:auto_preferSoCP
 # Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
-item	8	XO Skeleton
+item	9	XO Skeleton
 # Fairy that drops bacon with no limit. 1 per combat
-item	9	Intergnat
+item	10	Intergnat
 # Fairyeverything
-item	10	Jill-of-All-Trades
+item	11	Jill-of-All-Trades
 # Fairyballs
-item	11	Elf Operative
-item	12	Optimistic Candle
-item	13	Rockin' Robin
-item	14	God Lobster	item:God Lobster's Crown>0
-item	15	Hobo in Sheep's Clothing
+item	12	Elf Operative
+item	13	Optimistic Candle
+item	14	Rockin' Robin
+item	15	God Lobster	item:God Lobster's Crown>0
+item	16	Hobo in Sheep's Clothing
 # Fairywhelps
-item	16	Pocket Professor
-item	17	Garbage Fire
-item	18	Dandy Lion
-item	19	Choctopus
+item	17	Pocket Professor
+item	18	Garbage Fire
+item	19	Dandy Lion
+item	20	Choctopus
 # Fairychauns
-item	20	Chest Mimic
-item	21	Fist Turkey
-item	22	Cat Burglar
-item	23	Angry Jung Man
-item	24	Grimstone Golem
-item	25	Adventurous Spelunker
-item	26	Blavious Kloop
-item	27	Hippo Ballerina
-item	28	Dancing Frog
-item	29	Coffee Pixie
-item	30	Attention-Deficit Demon
-item	31	Jitterbug
-item	32	Casagnova Gnome
-item	33	Psychedelic Bear
-item	34	Piano Cat
+item	21	Chest Mimic
+item	22	Fist Turkey
+item	23	Cat Burglar
+item	24	Angry Jung Man
+item	25	Grimstone Golem
+item	26	Adventurous Spelunker
+item	27	Blavious Kloop
+item	28	Hippo Ballerina
+item	29	Dancing Frog
+item	30	Coffee Pixie
+item	31	Attention-Deficit Demon
+item	32	Jitterbug
+item	33	Casagnova Gnome
+item	34	Psychedelic Bear
+item	35	Piano Cat
 # Slightly special fairies
-item	35	Grey Goose
-item	36	Ghost of Crimbo Carols
-item	37	Red-Nosed Snapper
-item	38	Pair of Stomping Boots	!path:G-Lover
+item	36	Grey Goose
+item	37	Ghost of Crimbo Carols
+item	38	Red-Nosed Snapper
+item	39	Pair of Stomping Boots	!path:G-Lover
 # Fairy that gives extra equipment drops. Works as starfish if fed, but we don't feed it.
-item	39	Slimeling
+item	40	Slimeling
 # More slightly special fairies
-item	40	Cooler Yeti
-item	41	Gelatinous Cubeling
-item	42	Steam-Powered Cheerleader
-item	43	Obtuse Angel
-item	44	Green Pixie
+item	41	Cooler Yeti
+item	42	Gelatinous Cubeling
+item	43	Steam-Powered Cheerleader
+item	44	Obtuse Angel
+item	45	Green Pixie
 # Elemental fairies
-item	45	Sleazy Gravy Fairy
-item	46	Stinky Gravy Fairy
-item	47	Flaming Gravy Fairy
-item	48	Frozen Gravy Fairy
-item	49	Spooky Gravy Fairy
+item	46	Sleazy Gravy Fairy
+item	47	Stinky Gravy Fairy
+item	48	Flaming Gravy Fairy
+item	49	Frozen Gravy Fairy
+item	50	Spooky Gravy Fairy
 # Physical damage fairy
-item	50	Bowlet
-item	51	Crimbo Elf
+item	51	Bowlet
+item	52	Crimbo Elf
 # Barely special fairies
-item	52	Mechanical Songbird
-item	53	Grouper Groupie
-item	54	Peppermint Rhino
+item	53	Mechanical Songbird
+item	54	Grouper Groupie
+item	55	Peppermint Rhino
+item	56	Skeleton of Crimbo Past
 # Turtles are cute
-item	55	Syncopated Turtle
+item	57	Syncopated Turtle
 # The original
-item	56	Baby Gravy Fairy
+item	58	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
-item	57	Mutant Fire Ant
+item	59	Mutant Fire Ant
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1

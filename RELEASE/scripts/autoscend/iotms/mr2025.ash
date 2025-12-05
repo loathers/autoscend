@@ -1148,7 +1148,7 @@ void auto_getBCZItems()
 
 boolean auto_haveShrunkenHead()
 {
-	if(possessEquipment($item[Shrunken Head]))
+	if(get_property("hasShrunkenHead").to_boolean()&& auto_is_valid($item[shrunken head]))
 	{
 		return true;
 	}
@@ -1207,4 +1207,89 @@ boolean auto_wantToShrunkenHead(location place)
 		}
 	}
 	return false;
+}
+
+boolean auto_haveCrimboSkeleton()
+{
+	if(auto_have_familiar($familiar[Skeleton of Crimbo Past]))
+	{
+		return true;
+	}
+	return false;
+}
+
+void auto_wantSoCP()
+{
+	if(!auto_haveCrimboSkeleton())
+	{
+		return;
+	}
+	set_property("auto_preferSoCP", true);
+	if(get_property("_knuckleboneDrops").to_int() == 100)
+	{
+		set_property("auto_preferSoCP", false);
+		return;
+	}
+	float amt = 0;
+	foreach phyl in $phylums[constellation, elemental, horror, mer-kin, plant, slime]
+	{
+		amt += auto_zonePhylumPercent(my_location(), phyl);
+	}
+	if(amt > 0.1)
+	{
+		//want 10% or fewer of the available mobs to be knucklebone eligible, otherwise why bother with this guy vs fairychauns/fairyballs/fairyeverythings?
+		set_property("auto_preferSoCP", false);
+		return;
+	}
+	
+	return;
+}
+
+void auto_getCrimboSkeleConsumables()
+{
+	if(!auto_haveCrimboSkeleton())
+	{
+		return;
+	}
+	boolean pope = get_property("_crimboPastSmokingPope").to_boolean();
+	boolean turkey = get_property("_crimboPastPrizeTurkey").to_boolean();
+	boolean gruel = get_property("_crimboPastMedicalGruel").to_boolean();
+	boolean knucklebones()
+	{
+		if(item_amount($item[knucklebone]) > 5)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	if((pope && turkey && gruel) || !knucklebones())
+	{
+		//can't buy anything with the SoCP right now
+		return;
+	}
+
+	use_familiar($familiar[Skeleton of Crimbo Past]);  //needs to be equipped to talk to it
+	visit_url("main.php?talktosocp=1&pwd", false);
+
+	//All of these should be worth it
+	if(!gruel && knucklebones())
+	{
+		visit_url("choice.php?pwd=&whichchoice=1567&option=3");
+		autoChew(1, $item[medical gruel]); //Consume immediately
+		return;
+	}
+	//Consume these eventually
+	if(!pope && knucklebones())
+	{
+		visit_url("choice.php?pwd=&whichchoice=1567&option=1");
+		return;
+	}
+	if(!turkey && knucklebones())
+	{
+		visit_url("choice.php?pwd=&whichchoice=1567&option=2");
+		return;
+	}
+
+	return;
 }

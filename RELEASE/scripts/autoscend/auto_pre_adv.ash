@@ -378,6 +378,9 @@ boolean auto_pre_adventure()
 	if (combatModifier._boolean && !auto_queueIgnore()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
+	
+	//evaluate a boolean prop for the familiar files
+	auto_wantSoCP();
 
 	// Update our familiar after combat modifiers (which can set the familiar), but before Crystal Ball (familiar equip)
 	preAdvUpdateFamiliar(place);

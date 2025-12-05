@@ -1,4 +1,4 @@
-since r28757;	// make BCZ summon skills single cast
+since r28781;	// Add api support to detect shrunken head ownership and add hasShrunkenHead property
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1966,6 +1966,7 @@ boolean doTasks()
 	auto_MayamClaimAll();
 	auto_defaultBurnLeaves();
 	auto_waveTheZone();
+	auto_getCrimboSkeleConsumables();
 	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
