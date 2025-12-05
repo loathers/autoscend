@@ -925,7 +925,7 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 
 boolean auto_haveShrunkenHead()
 {
-	if(possessEquipment($item[Shrunken Head]))
+	if(get_property("hasShrunkenHead").to_boolean()&& auto_is_valid($item[shrunken head]))
 	{
 		return true;
 	}
