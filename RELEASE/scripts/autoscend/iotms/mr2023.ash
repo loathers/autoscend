@@ -1314,6 +1314,10 @@ int auto_remainingBurningLeavesFights()
 
 boolean auto_fightFlamingLeaflet()
 {
+	if (!auto_haveBurningLeaves())
+	{
+		return false;
+	}
 	if (auto_remainingBurningLeavesFights() < 1)
 	{
 		return false;
