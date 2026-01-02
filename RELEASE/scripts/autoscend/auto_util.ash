@@ -3400,6 +3400,17 @@ boolean auto_is_valid(effect eff)
 	return glover_usable(eff.to_string());
 }
 
+boolean auto_is_valid(string str)
+{
+	// unknown entries, presumably Bookshelf skills
+	if(my_path() == $path[Trendy])
+	{
+		return is_trendy(str);
+	}
+	
+	return is_unrestricted(str);
+}
+
 void auto_log(string s, string color, int log_level)
 {
 	if(log_level > get_property("auto_log_level").to_int())
