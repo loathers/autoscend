@@ -793,7 +793,6 @@ boolean doBedtime()
 		}
 	}
 
-	# This does not check if we still want these buffs
 	if((my_hp() < (0.9 * my_maxhp())) && hotTubSoaksRemaining() > 0)
 	{
 		doHottub();
