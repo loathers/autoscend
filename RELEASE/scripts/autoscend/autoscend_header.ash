@@ -670,6 +670,14 @@ boolean beretBusk();
 boolean auto_haveCoolerYeti();
 
 ########################################################################################################
+//Defined in autoscend/iotms/mr2026.ash
+boolean auto_haveLegendarySealClubbingClub();
+int auto_clubEmBackInTimesRemaining();
+int auto_clubEmAcrossTheBattlefieldsRemaining();
+int auto_clubEmIntoNextWeeksRemaining();
+boolean wantToClubEmBackInTime(location loc, monster enemy);
+
+########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
 int[item] eudora_xiblaxian();
 void auto_useWardrobe();
