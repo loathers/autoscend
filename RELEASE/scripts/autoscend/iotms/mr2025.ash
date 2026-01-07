@@ -1276,7 +1276,7 @@ void auto_getCrimboSkeleConsumables()
 	if(!gruel && knucklebones())
 	{
 		visit_url("choice.php?pwd=&whichchoice=1567&option=3");
-		autoChew(1, $item[medical gruel]); //Consume immediately
+		autoChew(1, $item[medicinal gruel]); //Consume immediately
 		return;
 	}
 	//Consume these eventually
