@@ -5279,7 +5279,7 @@ boolean auto_wantToFreeKillWithNoDrops(location loc, monster enemy)
 	}
 
 	// look for specific monsters in zones where some monsters we do care about
-	static boolean[string] targets = $strings[
+	static boolean[monster] targets = $monsters[
 		// The Haunted Bathroom
 		claw-foot bathtub,
 		malevolent hair clog,
@@ -5288,7 +5288,7 @@ boolean auto_wantToFreeKillWithNoDrops(location loc, monster enemy)
 		// The Haunted Gallery
 		cubist bull,
 		empty suit of armor,
-		guy with a pitchfork, and his wife,
+		guy with a pitchfork\, and his wife,
 
 		// The Haunted Bedroom
 		animated mahogany nightstand,
