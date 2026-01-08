@@ -663,6 +663,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[OMG WTF]:						useItem = $item[Confiscated Cell Phone];		break;
 	case $effect[One Very Clear Eye]:			useItem = $item[Cyclops Eyedrops];				break;
+	case $effect[Only Dogs Love a Drunken Sailor]: useSkill = $skill[Only Dogs Love a Drunken Sailor]; break;
 	case $effect[Orange Crusher]:				useItem = $item[Pulled Orange Taffy];			break;
 	case $effect[Orange Tongue]:				useItem = $item[Orange Snowcone];				break;
 	case $effect[Paging Betty]:					useItem = $item[Bettie Page];					break;
@@ -1023,6 +1024,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Well-Swabbed Ear]:				useItem = $item[Swabbie&trade; Swab];			break;
 	case $effect[Wet and Greedy]:				useItem = $item[Goblin Water];					break;
 	case $effect[Whispering Strands]:			useSkill = $skill[none];						break;
+	case $effect[Who's Going to Pay This Drunken Sailor?]: useSkill = $skill[Who's Going to Pay This Drunken Sailor?]; break;
 	case $effect[Wildsun Boon]:
 		if(auto_canARBSupplyDrop())
 		{

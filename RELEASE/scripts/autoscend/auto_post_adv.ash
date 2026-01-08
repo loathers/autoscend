@@ -762,6 +762,10 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Empathy], 50, 1, 10);
 			buffMaintain($effect[Thoughtful Empathy], 50, 1, 10);
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+			// only do this one if we don't have another shanty up
+			if (auto_remainingShantyTurns() < 1) {
+				buffMaintain($effect[Only Dogs Love a Drunken Sailor], 50, 1, 1);
+			}
 		}
 
 		foreach sk in toCast
