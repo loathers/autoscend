@@ -1273,7 +1273,7 @@ void auto_getCrimboSkeleConsumables()
 	if(!gruel && knucklebones())
 	{
 		buy($coinmaster[Skeleton of Crimbo Past], 1, $item[medicinal gruel]);
-		autoChew(1, $item[medicinal gruel]); //Consume immediately
+		autoChew(1, $item[medicininal gruel]); //Consume immediately
 		return;
 	}
 	//Consume these eventually
