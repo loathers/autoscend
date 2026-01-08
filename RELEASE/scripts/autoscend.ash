@@ -1,4 +1,4 @@
-since r28781;	// Add api support to detect shrunken head ownership and add hasShrunkenHead property
+since r28859;	//  add a function for abilities a shrunken head zombie will gran
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
