@@ -666,7 +666,7 @@ void auto_wantSoCP()
 		return;
 	}
 	float amt = 0;
-	foreach phyl in $phylums[constellation, elemental, horror, mer-kin, plant, slime]
+	foreach phyl in $phylums[constellation, elemental, hippy, horror, mer-kin, plant, slime, bug]
 	{
 		amt += auto_zonePhylumPercent(my_location(), phyl);
 	}
@@ -704,25 +704,22 @@ void auto_getCrimboSkeleConsumables()
 		return;
 	}
 
-	use_familiar($familiar[Skeleton of Crimbo Past]);  //needs to be equipped to talk to it
-	visit_url("main.php?talktosocp=1&pwd", false);
-
 	//All of these should be worth it
 	if(!gruel && knucklebones())
 	{
-		visit_url("choice.php?pwd=&whichchoice=1567&option=3");
-		autoChew(1, $item[medical gruel]); //Consume immediately
+		buy($coinmaster[Skeleton of Crimbo Past], 1, $item[medicinal gruel]);
+		autoChew(1, $item[medicinal gruel]); //Consume immediately
 		return;
 	}
 	//Consume these eventually
 	if(!pope && knucklebones())
 	{
-		visit_url("choice.php?pwd=&whichchoice=1567&option=1");
+		buy($coinmaster[Skeleton of Crimbo Past], 1, $item[smoking pope]);
 		return;
 	}
 	if(!turkey && knucklebones())
 	{
-		visit_url("choice.php?pwd=&whichchoice=1567&option=2");
+		buy($coinmaster[Skeleton of Crimbo Past], 1, $item[prize turkey]);
 		return;
 	}
 
