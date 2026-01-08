@@ -793,21 +793,9 @@ boolean doBedtime()
 		}
 	}
 
-	# This does not check if we still want these buffs
 	if((my_hp() < (0.9 * my_maxhp())) && hotTubSoaksRemaining() > 0)
 	{
-		boolean doTub = true;
-		foreach eff in $effects[Once-Cursed, Thrice-Cursed, Twice-Cursed]
-		{
-			if(have_effect(eff) > 0)
-			{
-				doTub = false;
-			}
-		}
-		if(doTub)
-		{
-			doHottub();
-		}
+		doHottub();
 	}
 
 	if(!get_property("_mayoTankSoaked").to_boolean() && (auto_get_campground() contains $item[Portable Mayo Clinic]) && is_unrestricted($item[Portable Mayo Clinic]))
