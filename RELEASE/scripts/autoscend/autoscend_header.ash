@@ -2148,3 +2148,4 @@ modifier resistanceModifier (element el);
 modifier damageModifier     (element el);
 modifier spellDamageModifier(element el);
 float auto_getElementalDamageMultiplier(element source, element target);
+int auto_remainingShantyTurns();

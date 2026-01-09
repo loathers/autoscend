@@ -5397,3 +5397,15 @@ float auto_getElementalDamageMultiplier(element source, element target)
 	if (source == $element[stench] && $elements[hot   , spooky] contains target) { return 2.0; }
 	return 1.0;
 }
+
+
+int auto_remainingShantyTurns()
+{
+	int turns = 0;
+	foreach ef in $effects[Who's Going to Pay This Drunken Sailor?, Only Dogs Love a Drunken Sailor,
+	  I'm Smarter Than a Drunken Sailor, Look At That Drunken Sailor Dance, Let's Beat Up This Drunken Sailor]
+	{
+		turns = max(turns,have_effect(ef));
+	}
+	return turns;
+}
