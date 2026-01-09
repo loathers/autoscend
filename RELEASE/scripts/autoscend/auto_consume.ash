@@ -705,7 +705,7 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
 	}
-	if(in_nuclear() && (toEat.fullness != 1))
+	if(in_nuclear() && (toEat.fullness > 1))
 	{
 		return false;
 	}
