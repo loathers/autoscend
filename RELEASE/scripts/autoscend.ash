@@ -1,4 +1,4 @@
-since r28604;	// wildsun boon is once/day, allied radio accepts uppercase
+since r28720;	// monster data updates - boss census
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -88,6 +88,7 @@ import <autoscend/paths/quantum_terrarium.ash>
 import <autoscend/paths/small.ash>
 import <autoscend/paths/the_source.ash>
 import <autoscend/paths/two_crazy_random_summer.ash>
+import <autoscend/paths/under_the_sea.ash>
 import <autoscend/paths/way_of_the_surprising_fist.ash>
 import <autoscend/paths/wereprofessor.ash>
 import <autoscend/paths/wildfire.ash>
@@ -270,6 +271,7 @@ void initializeSettings() {
 	set_property("auto_dontUseCookBookBat", false);
 	set_property("auto_dietpills", 0);
 	set_property("_auto_candyMapCompleted", false);
+	set_property("auto_outpostVisit", 0);
 	beehiveConsider(false);
 
 	eudora_initializeSettings();

@@ -573,6 +573,10 @@ string defaultMaximizeStatement()
 	{
 		res += ",water,hot res";
 	}
+	if(in_underTheSea())
+	{
+		res += ",sea";
+	}
 	
 	stat primeStat = my_primestat();
 	if(in_plumber())
@@ -1448,4 +1452,19 @@ int[slot] powerMultipliers()
     }
 
 	return multiplier;
+}
+
+void sea_equipment()
+{
+	if(item_amount($item[sea lasso]) > 0 && get_property("lassoTraining") != "expertly")
+	{
+		autoForceEquip($item[sea cowboy hat]);
+		autoForceEquip($item[sea chaps]);
+		autoForceEquip($item[Old SCUBA tank]);
+	}
+
+	if(!underwaterReady())
+	{
+		needAir();
+	}
 }

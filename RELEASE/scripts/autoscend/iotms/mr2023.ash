@@ -1001,6 +1001,8 @@ boolean auto_RWBBlastTarget(monster target)
 		case $monster[dirty old lihc]:
 			// only worth it if we need 9 or more evilness reduced.
 			return ((get_property("cyrptNicheEvilness").to_int() - (3 * (3 + cyrptEvilBonus()))) > 13);
+		case $monster[Neptune flytrap]:
+			return ((item_amount($item[Wriggling flytrap pellet]) == 0) && (internalQuestStatus("questS02Monkees") < 0));
 		default:
 			return (get_property("rwbMonster").to_monster() == target);
 	}
@@ -1086,7 +1088,7 @@ boolean[location] citizenZones(string goal)
 	if(goal == "item")
 	{
 		return $locations[The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
-	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
+	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave, An Octopus's Garden];
 	}
 	if(goal == "init")
 	{
@@ -1106,9 +1108,9 @@ boolean[location] citizenZones(string goal)
 	}
 	return $locations[none];
 }
-boolean auto_getCitizenZone(location loc, boolean inCombat)
+
+string auto_goalFromCitizenZone(location loc)
 {
-	familiar eagle = $familiar[Patriotic Eagle];
 	//zones are approximately organized by autoscend level quest structure
 	boolean[location] meatZones = citizenZones("meat");
 	boolean[location] itemZones = citizenZones("item");
@@ -1118,44 +1120,45 @@ boolean auto_getCitizenZone(location loc, boolean inCombat)
 	boolean[location] specZones = citizenZones("spec");
 	string activeCitZoneMod = activeCitZoneMod();
 	string goal;
-	
-	if(!can_adventure(loc))
-	{
-		return false;
-	}
+
 	//set goal for tracking
 	if(specZones contains loc)
 	{
-		
 		//only want spec to get cold res for septEmberCenser usage and only if we don't get to L13. Don't want to do this outside of D1
 		//ideally also have spring away or some other free run
 		if((auto_goingToMouthwashLevel() && expected_level_after_mouthwash() < 13) && turns_played() == 0)
 		{
-			goal = "spec";
+			return "spec";
 		}
 	}
 	if(meatZones contains loc)
 	{
-		goal = "meat";
+		return "meat";
 	}
 	else if(itemZones contains loc)
 	{
-		goal = "item";
+		return "item";
 	}
 	else if(initZones contains loc)
 	{
-		goal = "init";
+		return "init";
 	}
 	else if(mpZones contains loc)
 	{
-		goal = "mp";
+		return "mp";
 	}
 	else
 	{
 		//if for some reason we make it into the location getCitizenZone and it's not in any of the defined zones, get the item buff
 		auto_log_debug("Somehow we got here and don't actually want to use the Eagle");
-		return false;
+		return "";
 	}
+}
+
+boolean auto_getCitizenZone(location loc, boolean inCombat)
+{
+	familiar eagle = $familiar[Patriotic Eagle];
+	string goal = auto_goalFromCitizenZone(loc);
 	if(!auto_citizenZonePrep(goal))
 	{
 		return false;
@@ -1187,6 +1190,17 @@ boolean auto_getCitizenZone(location loc, boolean inCombat)
 		return true;
 	}
 	return false;
+}
+
+boolean auto_getCitizenZone(location loc)
+{
+	string goal = auto_goalFromCitizenZone(loc);
+	if(!auto_citizenZonePrep(goal))
+	{
+		return false;
+	}
+	if(!can_adventure(loc)) return false;
+	return auto_getCitizenZone(loc, false);
 }
 
 boolean auto_getCitizenZone(string goal)

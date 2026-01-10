@@ -739,6 +739,13 @@ generic_t zone_combatMod(location loc)
 			value = -70;
 		}
 		break;
+	// The Sea
+	case $location[Anemone Mine]:
+	case $location[The Marinara Trench]:
+	case $location[The Dive Bar]:
+	case $location[The Mer-kin Outpost]:
+		value = -100;
+		break;
 	// End Bugbear Invasion Locations
 	default:
 		retval._error = true;
@@ -929,6 +936,9 @@ generic_t zone_delay(location loc)
 		{
 			value = 5 - get_property("8BitBonusTurns").to_int();
 		}
+		break;
+	case $location[The Mer-Kin Outpost]:
+		value = 25 - loc.turns_spent;
 		break;
 	default:
 		retval._error = true;
@@ -1687,6 +1697,65 @@ boolean zone_available(location loc)
 	case $location[Your Mushroom Garden]:
 		retval = (auto_canFightPiranhaPlant() || auto_canTendMushroomGarden());
 		break;
+	case $location[The Briny Deeps]:
+	case $location[The Brinier Deepers]:
+	case $location[The Briniest Deepests]:
+	case $location[An Octopus\'s Garden]:
+		retval = (inAftercore() || in_underTheSea());
+		break;
+	case $location[The Wreck of the Edgar Fitzsimmons]:
+		retval = (internalQuestStatus("questS02Monkees") >= 1);
+		break;
+	case $location[Anemone Mine]:
+		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToAnemoneMinePurchased").to_boolean());
+		break;
+	case $location[The Dive Bar]:
+		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToTheDiveBarPurchased").to_boolean());
+		break;
+	case $location[The Marinara Trench]:
+		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToTheMarinaraTrenchPurchased").to_boolean());
+		break;
+	case $location[The Mer-kin Outpost]:
+		retval = (internalQuestStatus("questS02Monkees") >= 6);
+		break;
+	case $location[The Coral Corral]:
+		retval = get_property("corralUnlocked").to_boolean();
+		break;
+	case $location[Madness Reef]:
+		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToMadnessReefPurchased").to_boolean());
+		break;
+	case $location[The Skate Park]:
+		retval = ((internalQuestStatus("questS02Monkees") >= 4) && get_property("mapToTheSkateParkPurchased").to_boolean());
+		break;
+	case $location[The Caliginous Abyss]:
+		retval = (internalQuestStatus("questS02Monkees") >= 1);
+		break;
+	case $location[Mer-kin Elementary School]:
+	case $location[Mer-kin Gymnasium]:
+		retval = (get_property("seahorseName") != "") && (have_outfit("Crappy Mer-kin Disguise") || have_outfit("Mer-kin Gladiatorial Gear") || have_outfit("Mer-kin Scholar's Vestments"));
+		break;
+	case $location[Mer-kin Colosseum]:
+		retval = (get_property("seahorseName") != "") && have_outfit("Mer-kin Gladiatorial Gear");
+		break;
+	case $location[Mer-kin Library]:
+		retval = (get_property("seahorseName") != "") && have_outfit("Mer-kin Scholar's Vestments");
+		break;
+	case $location[Mer-Kin Temple]:
+		retval = (!in_underTheSea() && (get_property("seahorseName") != "") && //Doing the Sea quest not in 11,037 Leagues Under the Sea
+		((get_property("isMerkinGladiatorChampion").to_boolean() && have_outfit("Mer-kin Gladiatorial Gear")) || //Gladiator path
+		(get_property("isMerkinHighPriest").to_boolean() && have_outfit("Mer-kin Scholar's Vestments")) || //Scholar path
+		have_outfit("Clothing of Loathing"))); //Dad path
+		break;
+	//11,037 Leagues Under The Sea final bosses
+	case $location[Mer-kin Temple (Left Door)]:
+		retval = (in_underTheSea() && !(get_property("shubJigguwattDefeated").to_boolean()) && get_property("isMerkinGladiatorChampion").to_boolean() && have_outfit("Mer-kin Gladiatorial Gear"));
+		break;
+	case $location[Mer-kin Temple (Center Door)]:
+		retval = (in_underTheSea() && get_property("shubJigguwattDefeated").to_boolean() && get_property("yogUrtDefeated").to_boolean());
+		break;
+	case $location[Mer-kin Temple (Right Door)]:
+		retval = (in_underTheSea() && !(get_property("yogUrtDefeated").to_boolean()) && get_property("isMerkinHighPriest").to_boolean() && have_outfit("Mer-kin Scholar's Vestments"));
+		break;
 	}
 
 	// compare our result with Mafia's native function, log a warning if theres a difference. Ideally we can see if there are any differences between our code and Mafia's, and if not remove all of ours in favor of Mafia's
@@ -1974,6 +2043,28 @@ generic_t zone_difficulty(location loc)
 		break;
 	case $location[A Maze of Sewer Tunnels]:
 		break;
+	case $location[The Briny Deeps]:
+	case $location[The Brinier Deepers]:
+	case $location[The Briniest Deepests]:
+	case $location[An Octopus\'s Garden]:
+	case $location[Anemone Mine]:
+	case $location[The Wreck of the Edgar Fitzsimmons]:
+	case $location[The Dive Bar]:
+	case $location[The Marinara Trench]:
+	case $location[The Coral Corral]:
+	case $location[Madness Reef]:
+	case $location[The Mer-kin Outpost]:
+	case $location[The Caliginous Abyss]:
+	case $location[The Skate Park]:
+	case $location[Mer-Kin Temple]:
+	case $location[Mer-kin Library]:
+	case $location[Mer-kin Elementary School]:
+	case $location[Mer-kin Colosseum]:
+	case $location[Mer-kin Gymnasium]:
+	// case $location[Left Door]:
+	// case $location[Center Door]:
+	// case $location[Right Door]:
+		break;
 
 #	This is just to do a mass test.
 #	default:
@@ -1992,7 +2083,7 @@ boolean zone_hasLuckyAdventure(location loc)
 	Elf Alley,Exposure Esplanade,The Orcish Frat House,The Orcish Frat House (In Disguise),Guano Junction,The Hippy Camp,The Hippy Camp (In Disguise),Itznotyerzitz Mine,
 	Lair of the Ninja Snowmen,Lemon Party,Madness Reef,Oil Peak,Outskirts of Camp Logging Camp,Pandamonium Slums,Shop Class,South of the Border,
 	The "Fun" House,The Ancient Hobo Burial Ground,The Batrat and Ratbat Burrow,The Black Forest,The Brinier Deepers,The Briny Deeps,The Bugbear Pen,
-	The Castle in the Clouds in the Sky (Basement),The Castle in the Clouds in the Sky (Ground Floor),The Castle in the Clouds in the Sky (Top Floor),
+	The Caliginous Abyss,The Castle in the Clouds in the Sky (Basement),The Castle in the Clouds in the Sky (Ground Floor),The Castle in the Clouds in the Sky (Top Floor),
 	The Copperhead Club,The Dark Elbow of the Woods,The Dark Heart of the Woods,The Dark Neck of the Woods,The Dive Bar,The Goatlet,The Hallowed Halls,
 	The Haunted Ballroom,The Haunted Billiards Room,The Haunted Boiler Room,The Haunted Conservatory,The Haunted Gallery,The Haunted Kitchen,
 	The Haunted Library,The Haunted Pantry,The Haunted Storage Room,The Heap,The Hidden Park,The Hidden Temple,The Icy Peak,The Knob Shaft,

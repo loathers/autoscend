@@ -2351,6 +2351,60 @@ boolean acquireCombatMods(int amt, boolean doEquips)
 	return true;
 }
 
+boolean underwaterReady()
+{
+	boolean ready = false;
+	boolean advReady = false;
+	boolean famReady = false;
+
+	if(boolean_modifier("Adventure Underwater")) advReady = true;
+	if((my_familiar().underwater) || ($items[das boot, little bitty bathysphere] contains familiar_equipped_equipment(my_familiar()))) famReady = true;
+
+	return advReady && famReady;
+}
+
+void needAir()
+{
+	boolean advUnderwater = false;
+	boolean famUnderwater = false;
+	if(boolean_modifier("Adventure Underwater")) advUnderwater = true;
+	if((my_familiar().underwater) || ($items[das boot, little bitty bathysphere] contains familiar_equipped_equipment(my_familiar()))) famUnderwater = true;
+    if(!advUnderwater)
+	{
+		foreach it in $items[really\, really nice swimming trunks, Mer-kin scholar mask, Mer-kin gladiator mask,
+		aerated diving helmet, crappy Mer-kin mask, Elf Guard SCUBA tank, old SCUBA tank, oxygenated eggnog helmet]
+		{
+			if(possessEquipment(it))
+			{
+				autoForceEquip(it);
+				break;
+			}
+		}
+	}
+    if(!famUnderwater)
+    {
+        foreach it in $items[das boot, little bitty bathysphere]
+        {
+            if(possessEquipment(it))
+            {
+                autoForceEquip(it);
+                break;
+            }
+        }
+        auto_wishForEffectIfNeeded($effect[Wet Willied]);
+    }
+    if(!(boolean_modifier("Adventure Underwater")))
+    {
+        beretBusk("Adventure Underwater");
+    }
+	if(!(boolean_modifier("Adventure Underwater")))
+    {
+        auto_wishForEffect($effect[Mer-kinny Flavor]);
+    }
+    
+    return;
+}
+
 boolean basicAdjustML()
 {
 	if(is_boris()) return borisAdjustML();

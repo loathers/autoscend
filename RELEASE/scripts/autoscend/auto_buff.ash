@@ -550,6 +550,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Irresistible Resolve]:			useItem = $item[Resolution: Be Sexier];			break;
 	case $effect[Jackasses\' Symphony of Destruction]:useSkill = $skill[Jackasses\' Symphony of Destruction];	break;
 	case $effect[Jalape&ntilde;o Saucesphere]:	useSkill = $skill[Jalape&ntilde;o Saucesphere];	break;
+	case $effect[Jelly Combed]:					useItem = $item[comb jelly];					break;
 	case $effect[Jingle Jangle Jingle]:
 		if(auto_have_skill($skill[Jingle Bells]) && acquireTotem())
 		{

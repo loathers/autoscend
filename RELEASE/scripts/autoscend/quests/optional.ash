@@ -1136,3 +1136,335 @@ void houseUpgrade()
 		use(1, $item[Frobozz Real-Estate Company Instant House (TM)]);
 	}
 }
+
+boolean LX_sea_littleBrother()
+{
+	if(internalQuestStatus("questS02Monkees") >= 0)
+	{
+		return false;
+	}
+	if(item_amount($item[Wriggling flytrap pellet]) == 0)
+	{
+		auto_log_info("Trying to get a Wriggling flytrap pellet to find Little Brother");
+		if(auto_have_familiar($familiar[Patriotic Eagle]))
+		{
+			auto_getCitizenZone($location[An Octopus's Garden]);
+		}
+		else
+		{
+			autoAdv($location[An Octopus's Garden]);
+		}
+	}
+	else
+	{
+		use(1, $item[Wriggling flytrap pellet]);
+		//Need to visit little brother twice
+		visit_url("monkeycastle.php?who=1");
+		visit_url("monkeycastle.php?who=1"); //Start Big Brother quest
+		return true;
+	}
+	return false;
+}
+
+boolean LX_sea_bigBrother()
+{
+	if(internalQuestStatus("questS02Monkees") >= 3 || internalQuestStatus("questS02Monkees") < 0)
+	{
+		return false;
+	}
+	boolean NCForced = auto_forceNextNoncombat($location[The Wreck of the Edgar Fitzsimmons]);
+	auto_log_info("Trying to force NC at The Wreck of the Edgar Fitzsimmons: "+NCForced.to_string(), "blue");
+	autoAdv($location[The Wreck of the Edgar Fitzsimmons]);
+
+	if(get_property("bigBrotherRescued").to_boolean())
+	{
+		visit_url("monkeycastle.php?who=2"); //Start Grandpa quest
+		visit_url("monkeycastle.php?who=1"); //Start Grandpa quest
+		return true;
+	}
+
+	return false;
+}
+
+boolean LX_sea_grandpa()
+{
+	if(internalQuestStatus("questS02Monkees") > 5 || internalQuestStatus("questS02Monkees") < 3)
+	{
+		return false;
+	}
+	location grandpaLoc;
+	switch(my_class())
+	{
+		case $class[Seal Clubber]:
+		case $class[Turtle Tamer]:
+			grandpaLoc = $location[Anemone Mine];
+			break;
+		case $class[Sauceror]:
+		case $class[Pastamancer]:
+			grandpaLoc = $location[The Marinara Trench];
+			break;
+		case $class[Disco Bandit]:
+		case $class[Accordion Thief]:
+			grandpaLoc = $location[The Dive Bar];
+			break;
+	}
+	autoAdv(grandpaLoc);
+	boolean grandpaLocPearl = false;
+	if((grandpaLoc == $location[Anemone Mine] && get_property("_unblemishedPearlAnemoneMine").to_boolean()) ||
+	   (grandpaLoc == $location[The Marinara Trench] && get_property("_unblemishedPearlMarinaraTrench").to_boolean()) ||
+	   (grandpaLoc == $location[The Dive Bar] && get_property("_unblemishedPearlDiveBar").to_boolean()))
+	{
+		grandpaLocPearl = true;
+	}
+	if(!grandpaLocPearl)
+	{
+		LX_sea_pearls(grandpaLoc); //Since we already have adventures here, finish it off
+	}
+	if(internalQuestStatus("questS02Monkees") == 5)
+	{
+		cli_execute(`grandpa grandma`);
+		return true;
+	}
+	return false;
+}
+
+boolean LX_sea_grandma()
+{
+	if(internalQuestStatus("questS02Monkees") > 9 || internalQuestStatus("questS02Monkees") <= 5)
+	{
+		return false;
+	}
+	if((item_amount($item[Grandma's Note]) + item_amount($item[Grandma's Fuchsia Yarn]) + item_amount($item[Grandma's Chartreuse Yarn])) < 3 && internalQuestStatus("questS02Monkees") <= 7)
+	{
+		//Get those from one time adventures so we can't get more than 1 of each
+		autoAdv($location[The Mer-kin Outpost]);
+	}
+	cli_execute(`grandpa note`);
+	if(item_amount($item[Grandma's Map]) > 0 && internalQuestStatus("questS02Monkees") <= 8)
+	{
+		autoAdv($location[The Mer-Kin Outpost]);
+	}
+	if(internalQuestStatus("questS02Monkees") == 9)
+	{
+		visit_url("monkeycastle.php?who=1");
+		visit_url("monkeycastle.php?who=2");
+		return buy($coinmaster[Big Brother], 1, $item[Black glass]);
+	}
+	return false;
+}
+
+boolean LX_sea_mom()
+{
+	//This quest needs LOTS OF WORK
+	if(internalQuestStatus("questS02Monkees") > 12 || internalQuestStatus("questS02Monkees") < 12)
+	{
+		return false;
+	}
+	foreach it in $items[black glass,scale-mail underwear,shark jumper]
+	{
+		autoForceEquip(it);
+	}
+	buffMaintain($effect[Jelly Combed]);
+
+	autoAdv($location[The Caliginous Abyss]);
+	
+	return false;
+}
+
+boolean LX_sea_pearls(location loc)
+{
+	if(!($locations[Anemone Mine,The Dive Bar,Madness Reef,The Marinara Trench,The Briniest Deepests] contains loc))
+	{
+		return false;
+	}
+	element[location] pearl_element;
+	pearl_element[$location[Anemone Mine]] = $element[Spooky];
+	pearl_element[$location[The Dive Bar]] = $element[Sleaze];
+	pearl_element[$location[Madness Reef]] = $element[Stench];
+	pearl_element[$location[The Marinara Trench]] = $element[Hot];
+	pearl_element[$location[The Briniest Deepests]] = $element[Cold];
+
+	int[element] resGoal;
+	resGoal[pearl_element[loc]] = 18;
+	provideResistances(resGoal, loc, true);
+	autoAdv(loc);
+
+	return false;
+}
+
+boolean LX_sea_pearls()
+{
+	if(!in_underTheSea())
+	{
+		//don't need pearls unless in 11,037 Leagues Under the Sea
+		return false;
+	}
+	boolean[location] pearl_gotten;
+	pearl_gotten[$location[Anemone Mine]] = get_property("_unblemishedPearlAnemoneMine").to_boolean();
+	pearl_gotten[$location[The Dive Bar]] = get_property("_unblemishedPearlDiveBar").to_boolean();
+	pearl_gotten[$location[Madness Reef]] = get_property("_unblemishedPearlMadnessReef").to_boolean();
+	pearl_gotten[$location[The Marinara Trench]] = get_property("_unblemishedPearlMarinaraTrench").to_boolean();
+	pearl_gotten[$location[The Briniest Deepests]] = get_property("_unblemishedPearlTheBriniestDeepests").to_boolean();
+
+	foreach loc, bool in pearl_gotten
+	{
+		if(bool)
+		{
+			continue;
+		}
+		LX_sea_pearls(loc);		
+	}
+	return false;
+}
+
+boolean LX_sea_currents()
+{
+	//This quest needs LOTS OF WORK
+	if(internalQuestStatus("questS02Monkees") <= 5)
+	{
+		//can't access the outpost until then
+		return false;
+	}
+
+	if(!zone_available($location[The Coral Corral]))
+	{
+		autoAdv($location[The Mer-Kin Outpost]);
+		if(item_amount($item[mer-kin stashbox]) > 0)
+		{
+			use(1, $item[mer-kin stashbox]);
+			use(1, $item[mer-kin trailmap]);
+			cli_execute(`grandpa currents`);
+		}
+	}
+	if(get_property("seahorseName") == "")
+	{
+		autoAdv($location[The Coral Corral]);
+	}
+
+	return get_property("seahorseName") != "";
+}
+
+boolean LX_dolphinItem()
+{
+	boolean wantDolphin = false;
+	switch(get_property("dolphinItem"))
+	{
+		case "sea lasso":
+			if(get_property("lassoTraining") != "expert")
+			{
+				wantDolphin = true;
+			}
+			break;
+		default:
+			break;
+	}
+	if(wantDolphin)
+	{
+		if(item_amount($item[Dolphin whistle]) == 0)
+		{
+			if(item_amount($item[sand dollar]) == 0)
+			{
+				return false;
+			}
+			buy($coinmaster[Big Brother], 1, $item[dolphin whistle]);
+		}
+		return autoAdvBypass("inv_use.php?pwd=&whichitem=" + to_int($item[Dolphin whistle]), $location[Noob Cave]);
+	}
+	return false;
+}
+
+boolean LX_oldMan()
+{
+	if(!in_underTheSea())
+	{
+		//Don't really need it if not in 11,037 Leagues
+		return false;
+	}
+	if(item_amount($item[old SCUBA tank]) > 0 && item_amount($item[sand dollar]) >= 50)
+	{
+		//buy the boot after we have the SCUBA tank (will greatly increase speed of Coral Corral)
+		buy($coinmaster[Big Brother], 1, $item[damp old boot]);
+	}
+
+	if(item_amount($item[damp old boot]) > 0)
+	{
+		visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman");
+		if(item_amount($item[fishy pipe]) > 0)
+		{
+			visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman&preaction=pickreward&whichreward=6314");
+			return true;
+		}
+		else if(item_amount($item[das boot]) > 0)
+		{
+			visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman&preaction=pickreward&whichreward=3609");
+			return true;
+		}
+		else
+		{
+			visit_url("place.php?whichplace=sea_oldman&action=oldman_oldman&preaction=pickreward&whichreward=6313");
+			return true;
+		}
+	}
+
+	return false;
+}
+
+boolean LX_sea_gladiator()
+{
+	if(!LX_sea_currents())
+	{
+		return false;
+	}
+	return false;
+}
+
+boolean LX_sea_scholar()
+{
+	if(!LX_sea_currents())
+	{
+		return false;
+	}
+	return false;
+}
+
+boolean LX_sea_dad()
+{
+	if(in_underTheSea())
+	{
+		return false;
+	}
+
+	if(!LX_sea_currents())
+	{
+		return false;
+	}
+
+	return false;
+}
+
+boolean LX_sea_NS()
+{
+	if(!in_underTheSea())
+	{
+		return false;
+	}
+	
+	if(!LX_sea_currents())
+	{
+		return false;
+	}
+
+	return false;
+}
+
+boolean LX_seaMonkees()
+{
+	if(LX_sea_littleBrother()) return true;
+	if(LX_sea_bigBrother()) return true;
+	if(LX_sea_grandpa()) return true;
+	if(LX_sea_grandma()) return true;
+	if(LX_sea_mom()) return true;
+	if(LX_sea_gladiator() || LX_sea_scholar() || LX_sea_dad() || LX_sea_NS()) return true; //any of these could be the endpoint
+
+	return false;
+}

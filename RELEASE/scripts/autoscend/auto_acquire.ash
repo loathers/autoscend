@@ -668,6 +668,8 @@ int handlePulls(int day)
 		ag_pulls();
 		// pulls for Z is for Zootomist path
 		zoo_startPulls();
+		// pulls for 11,037 Leagues Under the Sea path
+		sea_pulls();
 
 		// generic pulls for any path are below
 		if(auto_is_valid($item[etched hourglass]))

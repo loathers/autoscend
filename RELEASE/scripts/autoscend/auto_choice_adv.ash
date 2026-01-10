@@ -228,6 +228,49 @@ boolean auto_run_choice(int choice, string page)
 		case 191: // Chatterboxing (The F'c'le)
 			fcleChoiceHandler(choice);
 			break;
+		case 299: //Down at the Hatch
+			run_choice(1); //Open the bulkhead
+			break;
+		case 303: //You've Hit Bottom
+			run_choice(1);  //See what he has to show you
+			break;
+		case 306: // Not a Micro Fish
+			run_choice(1); //Watch in horror
+			break;
+		case 307: //Ode to the Sea
+			run_choice(1); //Let Grandpa Learn You Something
+			break;
+		case 308: //Boxing the Juke
+			run_choice(1); //Listen to the Music
+			break;
+		case 312: //Into the Outpost
+			if(get_property("merkinLockkeyMonster") == "mer-kin burglar")
+			{
+				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1);
+				run_choice(1); //Sneak into the camouflaged tent
+				break;
+			}
+			else if(get_property("merkinLockkeyMonster") == "mer-kin raider")
+			{
+				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1);
+				run_choice(2); //Infiltrate the skull-bedecked tent
+				break;
+			}
+			else if(get_property("merkinLockkeyMonster") == "" || get_property("merkinLockkeyMonster") == "mer-kin healer")
+			{
+				set_property("auto_outpostVisit",get_property("auto_outpostVisit").to_int() + 1);
+				run_choice(3); //Insinuate yourself into the glyphed tent
+				break;
+			}
+		case 313: //Sneaky Intent
+			run_choice(get_property("auto_outpostVisit").to_int()); //Get mer-kin fastjuice or lockbox
+			break;
+		case 314: //Aggressive Intent
+			run_choice(get_property("auto_outpostVisit").to_int()); //Get mer-kin hookspear or lockbox
+			break;
+		case 315: //Mysterious Intent
+			run_choice(get_property("auto_outpostVisit").to_int()); //Get prayerbeads or lockbox
+			break;
 		case 330: // A Shark's Chum (The Haunted Billiards Room, semi-rarely)
 			if(get_property("poolSharkCount").to_int() < 25)
 			{
@@ -751,7 +794,7 @@ boolean auto_run_choice(int choice, string page)
 			}
 			break;
 		case 1494: // Examine S.I.T. Course Certificate (S.I.T Course)
-			if(my_level() < 8)
+			if(my_level() < 8 || in_underTheSea())
 			{
 				run_choice(3); // Cryptobotanist (S.I.T. Course)
 			}
@@ -783,6 +826,9 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 1557:  // Peering Through Your Peridot (Peridot of Peril zone monster selection choice)
 			peridotChoiceHandler(choice, page);
+			break;
+		case 1565:
+			run_choice(1);
 			break;
 		default:
 			break;
