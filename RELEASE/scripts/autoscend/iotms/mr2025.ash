@@ -1080,12 +1080,12 @@ boolean auto_wantToBCZ(skill sk)
 		case $skill[BCZ: Dial it up to 11]:
 			return (statChange($stat[mysticality], dialItUpCasts) && (dialItUpCasts <= 3));
 		case $skill[BCZ: Refracted Gaze]:
-			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts <= 9));
+			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts <= 6));
 		case $skill[BCZ: Prepare Spinal Tapas]:
 			return (statChange($stat[mysticality], spinalTapasCasts) && (spinalTapasCasts <= 3));
 		//Moxie Casts
 		case $skill[BCZ: Sweat Bullets]:
-			return (statChange($stat[moxie], sweatBulletsCasts) && (sweatBulletsCasts <= 9));
+			return (statChange($stat[moxie], sweatBulletsCasts) && (sweatBulletsCasts <= 6));
 		case $skill[BCZ: Sweat Equity]:
 			return (statChange($stat[moxie], sweatEquityCasts) && (sweatEquityCasts <= 2));
 		case $skill[BCZ: Craft a Pheromone Cocktail]:
