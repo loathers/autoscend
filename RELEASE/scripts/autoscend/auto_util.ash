@@ -718,6 +718,27 @@ float [monster] auto_combat_appearance_rates(location place)
 {	return auto_combat_appearance_rates(place, false);
 }
 
+float auto_zonePhylumPercent(location loc, phylum phyl)
+{
+	//Looks at potential monsters in a zone and returns the % of them that match the phylum
+	int count = 0;
+	int total = 0;
+	foreach mon, freq in auto_combat_appearance_rates(loc)
+	{
+		if(freq<=0) continue;
+		if(mon.phylum == phyl)
+		{
+			count+=1;
+		}
+		total+=1;
+	}
+	if(total==0)
+	{
+		return 0;
+	}
+	return count/total;
+}
+
 boolean[string] auto_banishesUsedAt(location loc)
 {
 	boolean[string] auto_reallyBanishesUsedAt(location loc)
@@ -3398,6 +3419,17 @@ boolean auto_is_valid(skill sk)
 boolean auto_is_valid(effect eff)
 {
 	return glover_usable(eff.to_string());
+}
+
+boolean auto_is_valid(string str)
+{
+	// unknown entries, presumably Bookshelf skills
+	if(my_path() == $path[Trendy])
+	{
+		return is_trendy(str);
+	}
+	
+	return is_unrestricted(str);
 }
 
 void auto_log(string s, string color, int log_level)

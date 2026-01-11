@@ -20,6 +20,8 @@ Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
 Grey Goose	prop_boolean:auto_prioritizeGoose
 # fairy that generates extra adventures
 Reagnimated Gnome	!path:Heavy Rains
+# Fairy with useful/valuable items that can be bought with its drops
+Skeleton of Crimbo Past	prop_boolean:auto_preferSoCP
 # Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
 XO Skeleton
 # Fairy that drops bacon with no limit. 1 per combat
@@ -79,6 +81,7 @@ Crimbo Elf
 Mechanical Songbird
 Grouper Groupie
 Peppermint Rhino
+Skeleton of Crimbo Past
 # Turtles are cute
 Syncopated Turtle
 # The original
