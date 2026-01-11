@@ -501,7 +501,7 @@ boolean LX_unlockManorSecondFloor() {
 		}
 	}
 
-	auto_getCitizenZone($location[The Haunted Library]); //since want to adventure in the Haunted Library anyway
+	auto_getCitizenZone($location[The Haunted Library], false); //since want to adventure in the Haunted Library anyway
 	return autoAdv($location[The Haunted Library]);
 }
 
