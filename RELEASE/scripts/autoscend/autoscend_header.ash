@@ -675,6 +675,9 @@ void mobiusChoiceHandler(int choice, string page);
 int auto_timeCopFights();
 boolean auto_wantTimeCop();
 boolean auto_wantTimeCop(location loc);
+boolean auto_haveCrimboSkeleton();
+void auto_wantSoCP();
+void auto_getCrimboSkeleConsumables();
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
@@ -1955,6 +1958,7 @@ boolean canYellowRay(monster target);
 boolean canYellowRay();
 float[monster] auto_combat_appearance_rates(location place, boolean queue);
 float[monster] auto_combat_appearance_rates(location place);
+float auto_zonePhylumPercent(location loc, phylum phyl);
 boolean[string] auto_banishesUsedAt(location loc);
 boolean auto_wantToBanish(monster enemy, location loc);
 boolean auto_wantToBanish(phylum enemyphylum, location loc);

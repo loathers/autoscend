@@ -1,4 +1,4 @@
-since r28604;	// wildsun boon is once/day, allied radio accepts uppercase
+since r28873;	// fix: allow using 'buy' to buy from crimbo past skel
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -1964,6 +1964,7 @@ boolean doTasks()
 	auto_useWardrobe();
 	auto_MayamClaimAll();
 	auto_defaultBurnLeaves();
+	auto_getCrimboSkeleConsumables();
 	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
