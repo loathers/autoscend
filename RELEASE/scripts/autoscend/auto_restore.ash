@@ -2160,6 +2160,10 @@ boolean acquireHP(float goalPercent, int meat_reserve, boolean useFreeRests)
  */
 int doRest()
 {
+	if(auto_haveCrimboSkeleton() && get_property("_knuckleboneRests").to_int() < 5)
+	{
+		use_familiar($familiar[Skeleton of Crimbo Past]);
+	}
 	if(chateaumantegna_available())
 	{
 		cli_execute("outfit save Backup");
@@ -2212,7 +2216,7 @@ int doRest()
 
 		equipStatgainIncreasers(bonus, true);
 
-		visit_url("place.php?whichplace=chateau&action=chateau_restbox");
+		cli_execute("rest chateau");
 
 		if((replace != grab) && (replace != $item[none]))
 		{

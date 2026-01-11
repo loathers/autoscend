@@ -571,6 +571,7 @@ float minAdvPerFull(item toEat)
 		minAdv = substring(toEat.adventures, 0, index_of(toEat.adventures, "-")).to_int();
 	}
 	int size = toEat.fullness;
+	if(size == 0) return 0; //Fullness data isn't in Mafia yet for the item in question
 	return minAdv/size;
 }
 
