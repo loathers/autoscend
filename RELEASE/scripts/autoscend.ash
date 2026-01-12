@@ -696,6 +696,12 @@ void initializeDay(int day)
 
 	invalidateRestoreOptionCache();
 
+	if(get_property("auto_pvpEnable").to_boolean() && !hippy_stone_broken())
+	{
+		visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
+		visit_url("peevpee.php?place=fight");
+	}
+
 	if (get_property("auto_day_init").to_int() < day)
 	{
 		set_property("auto_powerLevelLastLevel", "0");
@@ -960,12 +966,6 @@ void initializeDay(int day)
 			handleBjornify($familiar[El Vibrato Megadrone]);
 
 			string temp = visit_url("guild.php?place=challenge");
-
-			if(get_property("auto_pvpEnable").to_boolean() && !hippy_stone_broken())
-			{
-				visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
-				visit_url("peevpee.php?place=fight");
-			}
 
 			auto_beachCombHead("exp");
 		}
