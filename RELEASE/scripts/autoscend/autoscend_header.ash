@@ -673,8 +673,6 @@ int auto_paradoxicity();
 boolean auto_timeIsAStripPossible();
 void mobiusChoiceHandler(int choice, string page);
 int auto_timeCopFights();
-boolean auto_wantTimeCop();
-boolean auto_wantTimeCop(location loc);
 boolean auto_haveCrimboSkeleton();
 void auto_wantSoCP();
 void auto_getCrimboSkeleConsumables();

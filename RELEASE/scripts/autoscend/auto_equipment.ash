@@ -737,11 +737,17 @@ void finalizeMaximize(boolean speculative)
 				addToMaximize("-equip " + $item[M&ouml;bius ring].to_string());
 			}
 		}
-		// Save the first 11 time cops for delay burning, if current location isn't itself a delay zone after SoftblockDelay released
-		else if (!nextMonsterIsFree && !zone_delay(my_location())._boolean && solveDelayZone() != $location[none])
-		{
-			// add bonus to hopefully get the NC to increase paradoxicity to increase the frequency of time cops
-			addBonusToMaximize($item[M&ouml;bius ring], 200);
+		else {
+			// If the current zone has any delay, equip the ring for a chance at a free time cop or +paradoxicity
+			// time cop chance is conjectured to be a flat (2+paradoxicity%) chance
+			if (!nextMonsterIsFree && zone_delay(my_location())._boolean)
+			{
+				addBonusToMaximize($item[M&ouml;bius ring], 200);
+			}
+			// otherwise, equip the ring if we can get the NC
+			else if (auto_timeIsAStripPossible()) {
+				addBonusToMaximize($item[M&ouml;bius ring], 200);
+			}
 		}
 	}
 	if (auto_haveCursedMagnifyingGlass())

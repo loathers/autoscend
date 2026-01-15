@@ -677,7 +677,7 @@ boolean auto_timeIsAStripPossible()
 	(mobiusNCs < 16 && mobiusTurn - turns_played() >= 51) ||
 	(mobiusNCs >= 16 && mobiusTurn - turns_played() >= 76))
 	{
-		return autoEquip($item[M&ouml;bius ring]);
+		return true;
 	}
 
 	return false;
@@ -892,37 +892,6 @@ void mobiusChoiceHandler(int choice, string page)
 int auto_timeCopFights()
 {
 	return get_property("_timeCopsFoughtToday").to_int();
-}
-
-boolean auto_wantTimeCop()
-{
-	return auto_wantTimeCop($location[none]);
-}
-
-boolean auto_wantTimeCop(location loc)
-{
-	if(!auto_haveMobiusRing())
-	{
-		return false;
-	}
-
-	if (auto_timeCopFights() >= 11)
-	{
-		return false;
-	}
-
-	if(loc == $location[none])
-	{
-		return true;
-	}
-
-	if(autoEquip(wrap_item($item[M&ouml;bius ring])))
-	{
-		set_property("auto_nextEncounter","time cop");
-		return autoAdv(loc);
-	}
-	set_property("auto_nextEncounter","");
-	return false;
 }
 
 boolean auto_haveCrimboSkeleton()

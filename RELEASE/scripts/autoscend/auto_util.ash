@@ -2001,7 +2001,7 @@ boolean isFreeMonster(monster mon, location loc)
 
 boolean auto_burningDelay()
 {
-	if((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster() || auto_wantTimeCop()) && my_location() == solveDelayZone())
+	if((auto_voteMonster(true) || isOverdueDigitize() || auto_sausageGoblin() || auto_backupTarget() || auto_voidMonster()) && my_location() == solveDelayZone())
 	{
 		return true;
 	}
