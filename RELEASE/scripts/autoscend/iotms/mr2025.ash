@@ -715,30 +715,35 @@ void mobiusChoiceHandler(int choice, string page)
 		// if we're going to powerlevel, we want the +stat%, +stat and direct stat options
 		pos = "Bake Susie a cupcake";
 		if (choiceMap contains pos) {
-			return mobiusChoice(pos);
+			mobiusChoice(pos);
+			return;
 		}
 		pos = "Draw a goatee on yourself";
 		if (choiceMap contains pos) {
-			return mobiusChoice(pos);
+			mobiusChoice(pos);
+			return;
 		}
 		switch (my_primestat())
 		{
 			case $stat[Muscle]:
 				pos = "Lift yourself up by your bootstraps";
 				if (choiceMap contains pos) {
-					return mobiusChoice(pos);
+					mobiusChoice(pos);
+					return;
 				}
 				break;
 			case $stat[Mysticality]:
 				pos = "Mind your own business";
 				if (choiceMap contains pos) {
-					return mobiusChoice(pos);
+					mobiusChoice(pos);
+					return;
 				}
 				break;
 			case $stat[Moxie]:
 				pos = "Shoot yourself in the foot";
 				if (choiceMap contains pos) {
-					return mobiusChoice(pos);
+					mobiusChoice(pos);
+					return;
 				}
 				break;
 		}
@@ -748,7 +753,8 @@ void mobiusChoiceHandler(int choice, string page)
 	if (canEat($item[Susie's cupcake])) {
 		pos = "Steal a cupcake from young Susie";
 		if (choiceMap contains pos) {
-			return mobiusChoice(pos);
+			mobiusChoice(pos);
+			return;
 		}
 	}
 
@@ -766,7 +772,8 @@ void mobiusChoiceHandler(int choice, string page)
 		// gives +15 myst, +30 MP: rarely useful but sets up the clock
 		pos = "Go back and take a 20-year-long nap";
 		if (choiceMap contains pos) {
-			return mobiusChoice(pos);
+			mobiusChoice(pos);
+			return;
 		}
 	}
 
@@ -774,7 +781,8 @@ void mobiusChoiceHandler(int choice, string page)
 	if (have_effect($effect[Lifted by your Bootstraps]) == 0) {
 		pos = "Let yourself get lifted up by your bootstraps";
 		if (choiceMap contains pos) {
-			return mobiusChoice(pos);
+			mobiusChoice(pos);
+			return;
 		}
 	}
 
@@ -803,7 +811,8 @@ void mobiusChoiceHandler(int choice, string page)
 			Give your past self investment tips,
 		] {
 			if (choiceMap contains str) {
-				return mobiusChoice(str);
+				mobiusChoice(str);
+				return;
 			}
 		}
 	}
@@ -812,22 +821,26 @@ void mobiusChoiceHandler(int choice, string page)
 	if (canEat($item[Susie's cupcake])) {
 		pos = "Steal a cupcake from young Susie";
 		if (choiceMap contains pos) {
-			return mobiusChoice(pos);
+			mobiusChoice(pos);
+			return;
 		}
 		pos = "Bake Susie a cupcake";
 		if (choiceMap contains pos) {
-			return mobiusChoice(pos);
+			mobiusChoice(pos);
+			return;
 		}
 	}
 
 	// meat is normally useful
 	pos = "Borrow meat from your future";
 	if (choiceMap contains pos) {
-		return mobiusChoice(pos);
+		mobiusChoice(pos);
+		return;
 	}
 	pos = "Repay yourself in the past";
 	if (choiceMap contains pos) {
-		return mobiusChoice(pos);
+		mobiusChoice(pos);
+		return;
 	}
 
 	run_choice(1);
