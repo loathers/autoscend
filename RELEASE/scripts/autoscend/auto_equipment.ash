@@ -739,7 +739,8 @@ void finalizeMaximize(boolean speculative)
 		}
 		else {
 			// If the current zone has any delay, equip the ring for a chance at a free time cop or +paradoxicity
-			// time cop chance is conjectured to be a flat (2+paradoxicity%) chance
+			// time cop chance is conjectured to be a flat chance, doubling every 5 paradoxicity, starting at 2%
+			// we probably want to target 15 for 16% chance
 			if (!nextMonsterIsFree && zone_delay(my_location())._boolean)
 			{
 				addBonusToMaximize($item[M&ouml;bius ring], 200);
