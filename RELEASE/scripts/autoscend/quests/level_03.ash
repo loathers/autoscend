@@ -108,7 +108,7 @@ boolean auto_tavern()
 	}
 
 	// Consider a pull
-	foreach it in $items[17-ball, rare oboe, recording of benetton's medley of diversity]
+	foreach it in $items[17-ball, rare oboe]
 	{
 		if (!all_passed())
 		{
@@ -116,15 +116,6 @@ boolean auto_tavern()
 			{
 				simMaximizeWith("80cold damage 20max,80hot damage 20max,80spooky damage 20max,80stench damage 20max,500ml " + auto_convertDesiredML(max_ml_target) + "max,-200combat 25max");
 			}
-		}
-	}
-
-	if (!all_passed())
-	{
-		item rec = $item[recording of Benetton's Medley of Diversity];
-		if (available_amount(rec) > 0)
-		{
-			use(1,rec);
 		}
 	}
 
