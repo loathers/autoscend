@@ -1964,7 +1964,6 @@ boolean doTasks()
 	auto_useWardrobe();
 	auto_MayamClaimAll();
 	auto_defaultBurnLeaves();
-	auto_getCrimboSkeleConsumables();
 	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
