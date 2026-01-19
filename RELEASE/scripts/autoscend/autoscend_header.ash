@@ -675,7 +675,6 @@ void mobiusChoiceHandler(int choice, string page);
 int auto_timeCopFights();
 boolean auto_haveCrimboSkeleton();
 void auto_wantSoCP();
-void auto_getCrimboSkeleConsumables();
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
