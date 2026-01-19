@@ -1628,6 +1628,26 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		}
 		if(pass())
 			return result();
+		if (!in_tcrs() && !in_small() && !get_property("auto_limitConsume").to_boolean() && have_effect($effect[Tryptofan]) == 0 && creatable_amount($item[prize turkey]) > 0 && canEat($item[prize turkey]) && stomach_left() > $item[prize turkey].fullness) {
+			if(!speculative)
+			{
+				buy($coinmaster[Skeleton of Crimbo Past], 1, $item[prize turkey]);
+				autoEat(1, $item[prize turkey]);
+			}
+			handleEffect($effect[Tryptofan]); //100% meat, 50 init
+			if(pass())
+				return result();
+		}
+		if (!in_tcrs() && have_effect($effect[Grueling Gravitas]) == 0 && creatable_amount($item[medicinal gruel]) > 0 && spleen_left() > $item[medicinal gruel].spleen) {
+			if(!speculative)
+			{
+				buy($coinmaster[Skeleton of Crimbo Past], 1, $item[medicinal gruel]);
+				autoChew(1, $item[medicinal gruel]);
+			}
+			handleEffect($effect[Grueling Gravitas]); //5 fam weight
+			if(pass())
+				return result();
+		}
 		if(auto_totalEffectWishesAvailable() > 0)
 		{
 			boolean success = true;
@@ -2013,6 +2033,26 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		}
 		if(pass())
 			return result();
+		if (!in_tcrs() && !in_small() && !get_property("auto_limitConsume").to_boolean() && have_effect($effect[Ordained]) == 0 && creatable_amount($item[Smoking Pope]) > 0 && canDrink($item[Smoking Pope]) && inebriety_left() > $item[Smoking Pope].inebriety) {
+			if(!speculative)
+			{
+				buy($coinmaster[Skeleton of Crimbo Past], 1, $item[Smoking Pope]);
+				autoDrink(1, $item[Smoking Pope]);
+			}
+			handleEffect($effect[Ordained]); //50% item, 50% skeleton damage
+			if(pass())
+				return result();
+		}
+		if (!in_tcrs() && have_effect($effect[Grueling Gravitas]) == 0 && creatable_amount($item[medicinal gruel]) > 0 && spleen_left() > $item[medicinal gruel].spleen) {
+			if(!speculative)
+			{
+				buy($coinmaster[Skeleton of Crimbo Past], 1, $item[medicinal gruel]);
+				autoChew(1, $item[medicinal gruel]);
+			}
+			handleEffect($effect[Grueling Gravitas]); //5 fam weight
+			if(pass())
+				return result();
+		}
 		if(auto_totalEffectWishesAvailable() > 0)
 		{
 			boolean success = true;

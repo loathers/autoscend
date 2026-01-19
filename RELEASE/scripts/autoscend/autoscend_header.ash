@@ -670,7 +670,6 @@ boolean beretBusk();
 boolean auto_haveCoolerYeti();
 boolean auto_haveCrimboSkeleton();
 void auto_wantSoCP();
-void auto_getCrimboSkeleConsumables();
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
