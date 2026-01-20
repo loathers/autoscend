@@ -1,4 +1,5 @@
 since r28873;	// fix: allow using 'buy' to buy from crimbo past skel
+
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -50,6 +51,7 @@ import <autoscend/iotms/mr2022.ash>
 import <autoscend/iotms/mr2023.ash>
 import <autoscend/iotms/mr2024.ash>
 import <autoscend/iotms/mr2025.ash>
+import <autoscend/iotms/mr2026.ash>
 import <autoscend/iotms/ttt.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>

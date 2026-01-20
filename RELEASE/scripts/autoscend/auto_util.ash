@@ -5300,7 +5300,7 @@ boolean auto_wantToFreeKillWithNoDrops(location loc, monster enemy)
 	}
 
 	// look for specific monsters in zones where some monsters we do care about
-	static boolean[string] targets = $strings[
+	static boolean[monster] targets = $monsters[
 		// The Haunted Bathroom
 		claw-foot bathtub,
 		malevolent hair clog,
@@ -5309,7 +5309,7 @@ boolean auto_wantToFreeKillWithNoDrops(location loc, monster enemy)
 		// The Haunted Gallery
 		cubist bull,
 		empty suit of armor,
-		guy with a pitchfork, and his wife,
+		guy with a pitchfork\, and his wife,
 
 		// The Haunted Bedroom
 		animated mahogany nightstand,
@@ -5417,4 +5417,16 @@ float auto_getElementalDamageMultiplier(element source, element target)
 	if (source == $element[spooky] && $elements[cold  , sleaze] contains target) { return 2.0; }
 	if (source == $element[stench] && $elements[hot   , spooky] contains target) { return 2.0; }
 	return 1.0;
+}
+
+
+int auto_remainingShantyTurns()
+{
+	int turns = 0;
+	foreach ef in $effects[Who's Going to Pay This Drunken Sailor?, Only Dogs Love a Drunken Sailor,
+	  I'm Smarter Than a Drunken Sailor, Look At That Drunken Sailor Dance, Let's Beat Up This Drunken Sailor]
+	{
+		turns = max(turns,have_effect(ef));
+	}
+	return turns;
 }
