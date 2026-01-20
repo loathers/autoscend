@@ -871,8 +871,10 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		{
 			//Buff fam weight early
 			buffMaintain($effect[Leash of Linguini]);
+			buffMaintain($effect[Thoughtful Empathy]);
 			buffMaintain($effect[Empathy]);
 			buffMaintain($effect[Blood Bond]);
+			buffMaintain($effect[Only Dogs Love a Drunken Sailor]);
 			//Manual override for the resfam to be the Cooler Yeti when we ONLY want Cold Resistance and it is better than what we already chose from one of the multi-res fams
 			if(auto_haveCoolerYeti() && count(amt) == 1 && amt[$element[Cold]] > 0)
 			{
@@ -1506,6 +1508,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Heart of Pink, //20% meat, +3 all stats
 		Kindly Resolve, //5 fam weight
 		Human-Machine Hybrid, //5 fam weight, DA +50, DR 5
+		Only Dogs Love a Drunken Sailor, //5 fam weight, rivalrous with item drop
 		Sweet Heart, // Muscle +X, +2X% meat
 		So You Can Work More... //10% meat
 	]; // ef_to_try
@@ -1826,7 +1829,8 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 	// unlimited skills
 	if(tryEffects($effects[
 		Fat Leon\'s Phat Loot Lyric, //20% item
-		Singer\'s Faithful Ocelot //10% item
+		Singer\'s Faithful Ocelot, //10% item
+		Who's Going to Pay This Drunken Sailor? //25% item, rivalrous with +5 lb fam weight
 	]))
 		return result();
 
