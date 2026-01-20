@@ -33,8 +33,8 @@ banish	27	Pygmy Janitor	tavern:true
 banish	28	Pygmy Orderlies
 banish	29	Pygmy Witch Lawyer
 banish	30	Pygmy Witch Nurse
-banish	31	Red Herring
-banish	32	Red Snapper
+banish	31	Red Herring	!prop:questL11Ron=step4
+banish	32	Red Snapper	!prop:questL11Ron=step4
 banish	33	Sabre-Toothed Goat
 banish	34	Senile Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 banish	35	Slick Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
@@ -217,7 +217,7 @@ sniff	24	Serialbus	item:bus pass<4
 sniff	25	CH Imp	item:imp air<4
 sniff	26	Camel's Toe	!sniffed:Skinflute
 sniff	27	Skinflute	!sniffed:Camel's Toe
-sniff	28	Red Butler	prop:_glarkCableUses<5;item:glark cable<5
+sniff	28	Red Butler	prop:_glarkCableUses<5;item:glark cable<5;!prop:questL11Ron=step4
 # Unlocking Knob Menagerie
 sniff	29	Knob Goblin Very Mad Scientist	loc:Cobb's Knob Laboratory;item:Cobb's Knob Menagerie key<1;turnsspent:Cobb's Knob Laboratory>7
 # Pirate quest F'c'le's last missing item

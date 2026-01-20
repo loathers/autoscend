@@ -643,3 +643,39 @@ boolean auto_haveCoolerYeti()
 	}
 	return false;
 }
+
+boolean auto_haveCrimboSkeleton()
+{
+	if(auto_have_familiar($familiar[Skeleton of Crimbo Past]))
+	{
+		return true;
+	}
+	return false;
+}
+
+void auto_wantSoCP()
+{
+	if(!auto_haveCrimboSkeleton())
+	{
+		return;
+	}
+	set_property("auto_preferSoCP", true);
+	if(get_property("_knuckleboneDrops").to_int() == 100)
+	{
+		set_property("auto_preferSoCP", false);
+		return;
+	}
+	float amt = 0;
+	foreach phyl in $phylums[constellation, elemental, hippy, horror, mer-kin, plant, slime, bug]
+	{
+		amt += auto_zonePhylumPercent(my_location(), phyl);
+	}
+	if(amt > 0.1)
+	{
+		//want 10% or fewer of the available mobs to be knucklebone eligible, otherwise why bother with this guy vs fairychauns/fairyballs/fairyeverythings?
+		set_property("auto_preferSoCP", false);
+		return;
+	}
+	
+	return;
+}

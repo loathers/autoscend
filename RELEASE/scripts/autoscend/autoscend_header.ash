@@ -668,6 +668,8 @@ string bestBusk(int[string] powers, string effectMultiplier);
 boolean beretBusk(string effectMultiplier);
 boolean beretBusk();
 boolean auto_haveCoolerYeti();
+boolean auto_haveCrimboSkeleton();
+void auto_wantSoCP();
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2026.ash
@@ -1956,6 +1958,7 @@ boolean canYellowRay(monster target);
 boolean canYellowRay();
 float[monster] auto_combat_appearance_rates(location place, boolean queue);
 float[monster] auto_combat_appearance_rates(location place);
+float auto_zonePhylumPercent(location loc, phylum phyl);
 boolean[string] auto_banishesUsedAt(location loc);
 boolean auto_wantToBanish(monster enemy, location loc);
 boolean auto_wantToBanish(phylum enemyphylum, location loc);
