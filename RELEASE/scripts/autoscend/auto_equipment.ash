@@ -726,6 +726,31 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("-equip " + wrap_item($item[Kramco Sausage-o-Matic&trade;]).to_string());
 		}
 	}
+	if (auto_haveMobiusRing())
+	{
+		if (auto_timeCopFights() >= 11)
+		{
+			if(get_property("mappingMonsters").to_boolean() || auto_backupTarget() || !in_hardcore())
+			{
+				// don't equip for non free fights in softcore? (pending allowed conditions like delay zone && none of the monsters in the zone is a sniff/YR target?)
+				// don't interfere with backups or Map the Monsters
+				addToMaximize("-equip " + $item[M&ouml;bius ring].to_string());
+			}
+		}
+		else {
+			// If the current zone has any delay, equip the ring for a chance at a free time cop or +paradoxicity
+			// time cop chance is conjectured to be a flat chance, doubling every 5 paradoxicity, starting at 2%
+			// we probably want to target 15 for 16% chance
+			if (!nextMonsterIsFree && zone_delay(my_location())._boolean)
+			{
+				addBonusToMaximize($item[M&ouml;bius ring], 200);
+			}
+			// otherwise, equip the ring if we can get the NC
+			else if (auto_timeIsAStripPossible()) {
+				addBonusToMaximize($item[M&ouml;bius ring], 200);
+			}
+		}
+	}
 	if (auto_haveCursedMagnifyingGlass())
 	{
 		if (get_property("cursedMagnifyingGlassCount").to_int() == 13)

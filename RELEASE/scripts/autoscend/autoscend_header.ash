@@ -668,6 +668,11 @@ string bestBusk(int[string] powers, string effectMultiplier);
 boolean beretBusk(string effectMultiplier);
 boolean beretBusk();
 boolean auto_haveCoolerYeti();
+boolean auto_haveMobiusRing();
+int auto_paradoxicity();
+boolean auto_timeIsAStripPossible();
+void mobiusChoiceHandler(int choice, string page);
+int auto_timeCopFights();
 boolean auto_haveCrimboSkeleton();
 void auto_wantSoCP();
 
