@@ -1968,7 +1968,6 @@ boolean doTasks()
 	auto_MayamClaimAll();
 	auto_defaultBurnLeaves();
 	auto_waveTheZone();
-	auto_getCrimboSkeleConsumables();
 	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
