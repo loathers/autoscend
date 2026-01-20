@@ -683,7 +683,7 @@ boolean L8_trapperNinjaLair()
 		adjustEdHat("myst");
 	}
 
-	auto_getCitizenZone($location[Lair of the Ninja Snowmen]); //since we want to adventure in the Lair anyway
+	auto_getCitizenZone($location[Lair of the Ninja Snowmen], false); //since we want to adventure in the Lair anyway
 	
 	if(autoAdv($location[Lair of the Ninja Snowmen]))
 	{

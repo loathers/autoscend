@@ -1,4 +1,5 @@
-since r28859;	//  add a function for abilities a shrunken head zombie will gran
+since r28873;	// fix: allow using 'buy' to buy from crimbo past skel
+
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -50,6 +51,7 @@ import <autoscend/iotms/mr2022.ash>
 import <autoscend/iotms/mr2023.ash>
 import <autoscend/iotms/mr2024.ash>
 import <autoscend/iotms/mr2025.ash>
+import <autoscend/iotms/mr2026.ash>
 import <autoscend/iotms/ttt.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
@@ -696,6 +698,12 @@ void initializeDay(int day)
 
 	invalidateRestoreOptionCache();
 
+	if(get_property("auto_pvpEnable").to_boolean() && !hippy_stone_broken())
+	{
+		visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
+		visit_url("peevpee.php?place=fight");
+	}
+
 	if (get_property("auto_day_init").to_int() < day)
 	{
 		set_property("auto_powerLevelLastLevel", "0");
@@ -960,12 +968,6 @@ void initializeDay(int day)
 			handleBjornify($familiar[El Vibrato Megadrone]);
 
 			string temp = visit_url("guild.php?place=challenge");
-
-			if(get_property("auto_pvpEnable").to_boolean() && !hippy_stone_broken())
-			{
-				visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
-				visit_url("peevpee.php?place=fight");
-			}
 
 			auto_beachCombHead("exp");
 		}

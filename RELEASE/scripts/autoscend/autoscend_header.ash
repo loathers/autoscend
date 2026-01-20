@@ -673,8 +673,6 @@ int auto_paradoxicity();
 boolean auto_timeIsAStripPossible();
 void mobiusChoiceHandler(int choice, string page);
 int auto_timeCopFights();
-boolean auto_wantTimeCop();
-boolean auto_wantTimeCop(location loc);
 boolean auto_haveMonodent();
 boolean auto_waveTheZone();
 boolean auto_talkToSomeFish(location loc, monster enemy);
@@ -687,7 +685,14 @@ boolean auto_wantToShrunkenHead(monster enemy, location place);
 boolean auto_wantToShrunkenHead(location place);
 boolean auto_haveCrimboSkeleton();
 void auto_wantSoCP();
-void auto_getCrimboSkeleConsumables();
+
+########################################################################################################
+//Defined in autoscend/iotms/mr2026.ash
+boolean auto_haveLegendarySealClubbingClub();
+int auto_clubEmBackInTimesRemaining();
+int auto_clubEmAcrossTheBattlefieldsRemaining();
+int auto_clubEmIntoNextWeeksRemaining();
+boolean wantToClubEmBackInTime(location loc, monster enemy);
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
@@ -2170,3 +2175,4 @@ modifier resistanceModifier (element el);
 modifier damageModifier     (element el);
 modifier spellDamageModifier(element el);
 float auto_getElementalDamageMultiplier(element source, element target);
+int auto_remainingShantyTurns();
