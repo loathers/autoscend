@@ -64,7 +64,7 @@ Pair of Stomping Boots	!path:G-Lover
 Slimeling
 # More slightly special fairies
 Cooler Yeti
-Gelatinous Cubeling
+Gelatinous Cubeling	prop:cubelingProgress<12
 Steam-Powered Cheerleader
 Obtuse Angel
 Green Pixie
@@ -79,9 +79,10 @@ Bowlet
 Crimbo Elf
 # Barely special fairies
 Mechanical Songbird
+Skeleton of Crimbo Past
+Gelatinous Cubeling
 Grouper Groupie
 Peppermint Rhino
-Skeleton of Crimbo Past
 # Turtles are cute
 Syncopated Turtle
 # The original
