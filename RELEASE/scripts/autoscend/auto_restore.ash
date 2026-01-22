@@ -1961,11 +1961,17 @@ boolean acquireMP(float goalPercent, int meat_reserve, boolean useFreeRests)
 /**
  * Try to acquire the smaller of your max HP and 800 HP (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
- * returns true if my_hp() >= my_maxhp() after attempting to restore.
+ * returns true if my_hp() >= min(my_maxhp(), 800) after attempting to restore.
  */
 boolean acquireHP()
 {
-	return acquireHP(min(my_maxhp(),800));
+	int goal = min(my_maxhp(), 800);
+	if(my_path() == $path[Disguises Delimit])
+	{
+		// hockey mask deals 75% hp damage at the start of combat so we need to maintain a high percentage of hp
+		goal = my_maxhp() * 0.80;
+	}
+	return acquireHP(goal);
 }
 
 /**
