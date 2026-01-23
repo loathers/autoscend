@@ -646,11 +646,8 @@ boolean auto_haveCoolerYeti()
 
 boolean auto_haveMobiusRing()
 {
-	if(possessEquipment($item[M&ouml;bius ring]))
-	{
-		return true;
-	}
-	return false;
+	item ring = $item[M&ouml;bius ring];
+	return (auto_is_valid(ring) && possessEquipment(ring));
 }
 
 int auto_paradoxicity()
@@ -854,11 +851,8 @@ int auto_timeCopFights()
 
 boolean auto_haveMonodent()
 {
-	if(possessEquipment($item[Monodent of the Sea]))
-	{
-		return true;
-	}
-	return false;
+	item dent = $item[Monodent of the Sea];
+	return (auto_is_valid(dent) && possessEquipment(dent));
 }
 
 boolean auto_waveTheZone()
