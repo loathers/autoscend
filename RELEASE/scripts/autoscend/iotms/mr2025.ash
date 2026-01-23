@@ -885,7 +885,7 @@ boolean auto_waveTheZone()
 		waveTheZone = true;
 	}
 	//Get 30% more meat drop. Only useful if weapon slot has < 30% meat drop
-	if(my_location() == $location[The Themthar Hills] && numeric_modifier(equipped_item($slot[weapon]), "Meat drop") < 30.0)
+	if(my_location() == $location[The Themthar Hills] && numeric_modifier(equipped_item($slot[weapon]), $modifier[Meat Drop]) < 30.0)
 	{
 		autoForceEquip($item[Monodent of the Sea], true);
 		waveTheZone = true;
@@ -910,14 +910,18 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 	if(!auto_is_valid($skill[Sea *dent: Talk to Some Fish])) return false;
 	// don't use Talk to Some Fish against inherently free fights
 	if (isFreeMonster(enemy, loc)) { return false; }
-	//don't Talk to Some Fish on The Battlefield
-	if(loc == $location[The Battlefield (Frat Uniform)] &&
-		(contains_text(enemy.to_string(), "War Hippy")) ||
-		$strings[Bailey's Beetle, Mobile Armored Sweat Lodge] contains enemy)
+	// need hippy / frat kills
+	if(loc == $location[The Battlefield (Frat Uniform)] || loc == $location[The Battlefield (Hippy Uniform)])
 	{
 		return false;
 	}
-	if(loc == $location[The Battlefield (Hippy Uniform)] && contains_text(enemy.to_string(), "War Frat"))
+	// need chained fights
+	if(loc == $location[The Haunted Bedroom])
+	{
+		return false;
+	}
+	// some fish has no meat drop, so this doesn't take familiar meat modifiers into account
+	if(loc == $location[The Fungus Plains])
 	{
 		return false;
 	}
