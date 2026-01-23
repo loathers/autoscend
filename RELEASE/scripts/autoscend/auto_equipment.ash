@@ -1248,7 +1248,7 @@ void ensureSealClubs()
 	{
 		if(possessEquipment(club))
 		{
-			autoForceEquip(club);
+			autoForceEquip($slot[weapon], club);
 			return;
 		}
 	}
