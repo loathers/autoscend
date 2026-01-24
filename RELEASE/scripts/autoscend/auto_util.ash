@@ -882,6 +882,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[cursed monkey\'s paw]);
 	}
+	if(combat_string == "skill " + $skill[Sea *dent: Throw a Lightning Bolt])
+	{
+		return autoEquip($item[Monodent of the Sea]);
+	}
 	if(combat_string == "item " + $item[Handful of split pea soup] && item_amount($item[Handful of split pea soup]) == 0)
 	{
 		return create(1, $item[Handful of split pea soup]);

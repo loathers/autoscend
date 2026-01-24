@@ -646,11 +646,8 @@ boolean auto_haveCoolerYeti()
 
 boolean auto_haveMobiusRing()
 {
-	if(possessEquipment($item[M&ouml;bius ring]))
-	{
-		return true;
-	}
-	return false;
+	item ring = $item[M&ouml;bius ring];
+	return (auto_is_valid(ring) && possessEquipment(ring));
 }
 
 int auto_paradoxicity()
@@ -850,6 +847,80 @@ void mobiusChoiceHandler(int choice, string page)
 int auto_timeCopFights()
 {
 	return get_property("_timeCopsFoughtToday").to_int();
+}
+
+boolean auto_haveMonodent()
+{
+	item dent = $item[Monodent of the Sea];
+	return (auto_is_valid(dent) && possessEquipment(dent));
+}
+
+boolean auto_waveTheZone()
+{
+	if(!auto_haveMonodent())
+	{
+		return false;
+	}
+
+	//Already Summoned a Wave today
+	if(get_property("_seadentWaveZone") != "")
+	{
+		return false;
+	}
+
+	boolean waveTheZone = false;
+
+	//Force the Monodent of the Sea when adventuring in a zone that we might want to Summon a Wave in
+	//Get Fishy turns from free fights
+	if($locations[Shadow Rift (The Ancient Buried Pyramid), Shadow Rift (The Hidden City), Shadow Rift (The Misspelled Cemetary),
+	Cyberzone 1, Cyberzone 2, Cyberzone 3] contains my_location() && my_path() == $path[11,037 Leagues Under the Sea])
+	{
+		autoForceEquip($item[Monodent of the Sea], true);
+		waveTheZone = true;
+	}
+	//Get 30% more meat drop. Only useful if weapon slot has < 30% meat drop
+	if(my_location() == $location[The Themthar Hills] && numeric_modifier(equipped_item($slot[weapon]), $modifier[Meat Drop]) < 30.0)
+	{
+		autoForceEquip($item[Monodent of the Sea], true);
+		waveTheZone = true;
+	}
+	if(waveTheZone)
+	{
+		if(use_skill(1, $skill[Sea *dent: Summon a Wave]))
+		{
+			handleTracker($item[Monodent of the Sea], my_location().to_string(), "Summon a Wave", "auto_otherstuff");
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean auto_talkToSomeFish(location loc, monster enemy)
+{
+	// returns true if we want to cast Talk to Some Fish. Not intended to exhaustivly list all valid targets
+	// also, this is not actually a free fight, but this is a safe listing of targets
+
+	if(!auto_haveMonodent()) return false;
+	if(!auto_is_valid($skill[Sea *dent: Talk to Some Fish])) return false;
+	// don't use Talk to Some Fish against inherently free fights
+	if (isFreeMonster(enemy, loc)) { return false; }
+	// need hippy / frat kills
+	if(loc == $location[The Battlefield (Frat Uniform)] || loc == $location[The Battlefield (Hippy Uniform)])
+	{
+		return false;
+	}
+	// need chained fights
+	if(loc == $location[The Haunted Bedroom])
+	{
+		return false;
+	}
+	// some fish has no meat drop, so this doesn't take familiar meat modifiers into account
+	if(loc == $location[The Fungus Plains])
+	{
+		return false;
+	}
+	
+	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
 boolean auto_haveCrimboSkeleton()

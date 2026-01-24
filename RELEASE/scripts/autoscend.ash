@@ -1966,6 +1966,7 @@ boolean doTasks()
 	auto_useWardrobe();
 	auto_MayamClaimAll();
 	auto_defaultBurnLeaves();
+	auto_waveTheZone();
 	
 	ocrs_postCombatResolve();
 	beatenUpResolution();

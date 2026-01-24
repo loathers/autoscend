@@ -673,6 +673,9 @@ int auto_paradoxicity();
 boolean auto_timeIsAStripPossible();
 void mobiusChoiceHandler(int choice, string page);
 int auto_timeCopFights();
+boolean auto_haveMonodent();
+boolean auto_waveTheZone();
+boolean auto_talkToSomeFish(location loc, monster enemy);
 boolean auto_haveCrimboSkeleton();
 void auto_wantSoCP();
 
