@@ -576,6 +576,11 @@ boolean auto_pre_adventure()
 		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 
 	}
 
+	if(auto_wantToShrunkenHead(place))
+	{
+		addBonusToMaximize($item[shrunken head], 300);
+	}
+
 	if(!haveUsedPeridot(place) && auto_havePeridot() && zoneHasWantedMonsters)
 	{
 		//add a large bonus to Peridot of Peril if the zone has wanted monsters and we haven't visited there yet
@@ -655,6 +660,13 @@ boolean auto_pre_adventure()
 	{
 		auto_log_info("We don't have ELR so let's hit a bullseye");
 		autoEquip($slot[acc3], dartHolster);
+	}
+
+	item bcz = $item[blood cubic zirconia];
+	if (auto_wantToBCZ($skill[BCZ: Sweat Bullets]) && !in_avantGuard() && !in_pokefam())
+	{
+		auto_log_info("Hello me, nice talking to myself. SWEATING BULLLEEETTTSS!!!!");
+		autoEquip($slot[acc3], bcz);
 	}
 
 
