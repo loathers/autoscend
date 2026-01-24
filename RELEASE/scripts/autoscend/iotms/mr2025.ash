@@ -863,7 +863,7 @@ boolean auto_waveTheZone()
 	}
 
 	//Already Summoned a Wave today
-	if(get_property("_seadentWaveZone") != "")
+	if(get_property("_seadentWaveUsed").to_boolean())
 	{
 		return false;
 	}
