@@ -88,6 +88,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
 		return useSkill($skill[Do an epic McTwist!]);
 	}
+
+	if(auto_wantToShrunkenHead(enemy))
+	{
+		handleTracker(enemy, $skill[Prepare to reanimate your Foe], "auto_otherstuff");
+		return useSkill($skill[Prepare to reanimate your Foe]);
+	}
 	
 	// yellowray instantly kills the enemy and makes them drop all items they can drop.
 	// don't yellow ray if we'll be dousing
@@ -128,12 +134,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		{
 			auto_log_warning("Wanted a yellow ray but we can not find one.", "red");
 		}
-	}
-
-	if(auto_wantToShrunkenHead(enemy, my_location()))
-	{
-		handleTracker(enemy, $skill[Prepare to reanimate your Foe], "auto_otherstuff");
-		return useSkill($skill[Prepare to reanimate your Foe]);
 	}
 
 	//convert enemy into a helpless frog/newt/lizard

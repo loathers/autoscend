@@ -925,16 +925,21 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 
 boolean auto_haveShrunkenHead()
 {
-	if(get_property("hasShrunkenHead").to_boolean()&& auto_is_valid($item[shrunken head]))
+	if(get_property("hasShrunkenHead").to_boolean() && auto_is_valid($item[shrunken head]))
 	{
 		return true;
 	}
 	return false;
 }
 
-boolean auto_wantToShrunkenHead(monster enemy, location place)
+boolean auto_wantToShrunkenHead(monster enemy)
 {
 	if(!auto_haveShrunkenHead())
+	{
+		return false;
+	}
+
+	if (!enemy.copyable)
 	{
 		return false;
 	}
@@ -944,7 +949,60 @@ boolean auto_wantToShrunkenHead(monster enemy, location place)
 		return false;
 	}
 
-	if(auto_wantToYellowRay(enemy, place))
+	// want to dupe monsters we want multiple copies of items from
+	// but only if they have a high enough drop chance
+
+	item check = $item[sonar-in-a-biscuit];
+	if(internalQuestStatus("questL04Bat") <= 1 && item_drops(enemy) contains check && effectiveDropChance(check, item_drops(enemy)[check]) >= 30.0)
+	{
+		return true;
+	}
+
+	check = $item[evil eye];
+	if(get_property("cyrptNookEvilness").to_int() > (14 + cyrptEvilBonus()) && item_drops(enemy) contains check && effectiveDropChance(check, item_drops(enemy)[check]) >= 30.0)
+	{
+		return true;
+	}
+
+	check = $item[goat cheese];
+	if(internalQuestStatus("questL08Trapper") <= 1 && item_drops(enemy) contains check && effectiveDropChance(check, item_drops(enemy)[check]) >= 30.0)
+	{
+		return true;
+	}
+
+	// mountain man drops ores at 40% and 10%, always worth doing
+	if(internalQuestStatus("questL08Trapper") <= 2 && enemy == $monster[mountain man])
+	{
+		return true;
+	}
+
+	// copy a smut orc for an extra plank or fastener
+	if(internalQuestStatus("questL09Topping") == 0 && get_property("chasmBridgeProgress").to_int() < bridgeGoal() && enemy.to_string().contains_text("smut orc"))
+	{
+		return true;
+	}
+
+	check = $item[rusty hedge trimmers];
+	if(hedgeTrimmersNeeded() > 0 && item_drops(enemy) contains check && effectiveDropChance(check, item_drops(enemy)[check]) >= 30.0)
+	{
+		return true;
+	}
+
+	check = $item[stone wool];
+	// from baa'baa'buran we're very likely to get the wools we need
+	if(!hidden_temple_unlocked() && enemy == $monster[baa-relief sheep])
+	{
+		return true;
+	}
+
+	// assume we'll get a bowling ball this combat, too
+	check = $item[bowling ball];
+	if (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball]) < 5 && enemy == $monster[pygmy bowler])
+	{
+		return true;
+	}
+
+	if (get_property("sidequestLighthouseCompleted") == "none" && enemy == $monster[lobsterfrogman])
 	{
 		return true;
 	}
@@ -959,11 +1017,11 @@ boolean auto_wantToShrunkenHead(location place)
 		return false;
 	}
 
-	monster [int] possible_monsters;
-	if(get_property("auto_nextEncounter").to_monster() != $monster[none])
+	monster next = get_property("auto_nextEncounter").to_monster();
+	if(next != $monster[none])
 	{
 		//next monster is forced by zone mechanics or some other mechanism
-		possible_monsters[count(possible_monsters)] = get_property("auto_nextEncounter").to_monster();
+		return auto_wantToShrunkenHead(next);
 	}
 	else
 	{
@@ -971,16 +1029,11 @@ boolean auto_wantToShrunkenHead(location place)
 		{
 			if(appearance_rates(place)[mon] > 0)
 			{
-				possible_monsters[count(possible_monsters)] = mon;
+				if (auto_wantToShrunkenHead(mon))
+				{
+					return true;
+				}
 			}
-		}
-	}
-	foreach i, mon in possible_monsters
-	{
-		//It's not really a YR, but it provides a second shot at stuff so it might be useful
-		if(auto_wantToYellowRay(mon, place))
-		{
-			return true;
 		}
 	}
 	return false;
