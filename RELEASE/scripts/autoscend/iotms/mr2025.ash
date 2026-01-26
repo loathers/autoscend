@@ -939,75 +939,31 @@ boolean auto_wantToShrunkenHead(monster enemy)
 		return false;
 	}
 
-	if (!enemy.copyable)
-	{
-		return false;
-	}
-
 	if(!(canUse($skill[Prepare to reanimate your Foe])))
 	{
 		return false;
 	}
 
-	// want to dupe monsters we want multiple copies of items from
-	// but only if they have a high enough drop chance
-
-	item check = $item[sonar-in-a-biscuit];
-	if(internalQuestStatus("questL04Bat") <= 1 && item_drops(enemy) contains check && effectiveDropChance(check, item_drops(enemy)[check]) >= 30.0)
+	if (!enemy.copyable)
 	{
-		return true;
+		return false;
 	}
 
-	check = $item[evil eye];
-	if(get_property("cyrptNookEvilness").to_int() > (14 + cyrptEvilBonus()) && item_drops(enemy) contains check && effectiveDropChance(check, item_drops(enemy)[check]) >= 30.0)
+	// as the created zombie doesn't die, get one that gives +item and no passive damage
+	boolean hasItem = false;
+	foreach i, bonus in shrunken_head_zombie(enemy)
 	{
-		return true;
+		if(bonus.contains_text("Attack"))
+		{
+			return false;
+		}
+		if(bonus.contains_text("Item Drop"))
+		{
+			hasItem = true;
+		}
 	}
 
-	check = $item[goat cheese];
-	if(internalQuestStatus("questL08Trapper") <= 1 && item_drops(enemy) contains check && effectiveDropChance(check, item_drops(enemy)[check]) >= 30.0)
-	{
-		return true;
-	}
-
-	// mountain man drops ores at 40% and 10%, always worth doing
-	if(internalQuestStatus("questL08Trapper") <= 2 && enemy == $monster[mountain man])
-	{
-		return true;
-	}
-
-	// copy a smut orc for an extra plank or fastener
-	if(internalQuestStatus("questL09Topping") == 0 && get_property("chasmBridgeProgress").to_int() < bridgeGoal() && enemy.to_string().contains_text("smut orc"))
-	{
-		return true;
-	}
-
-	check = $item[rusty hedge trimmers];
-	if(hedgeTrimmersNeeded() > 0 && item_drops(enemy) contains check && effectiveDropChance(check, item_drops(enemy)[check]) >= 30.0)
-	{
-		return true;
-	}
-
-	check = $item[stone wool];
-	// from baa'baa'buran we're very likely to get the wools we need
-	if(!hidden_temple_unlocked() && enemy == $monster[baa-relief sheep])
-	{
-		return true;
-	}
-
-	// assume we'll get a bowling ball this combat, too
-	check = $item[bowling ball];
-	if (get_property("hiddenBowlingAlleyProgress").to_int() + item_amount($item[Bowling Ball]) < 5 && enemy == $monster[pygmy bowler])
-	{
-		return true;
-	}
-
-	if (get_property("sidequestLighthouseCompleted") == "none" && enemy == $monster[lobsterfrogman])
-	{
-		return true;
-	}
-
-	return false;
+	return hasItem;
 }
 
 boolean auto_wantToShrunkenHead(location place)
