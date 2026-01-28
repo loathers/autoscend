@@ -863,7 +863,7 @@ boolean auto_waveTheZone()
 	}
 
 	//Already Summoned a Wave today
-	if(get_property("_seadentWaveZone") != "")
+	if(get_property("_seadentWaveUsed").to_boolean())
 	{
 		return false;
 	}
@@ -921,6 +921,78 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 	}
 	
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
+}
+
+boolean auto_haveShrunkenHead()
+{
+	if(get_property("hasShrunkenHead").to_boolean() && auto_is_valid($item[shrunken head]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_wantToShrunkenHead(monster enemy)
+{
+	if(!auto_haveShrunkenHead())
+	{
+		return false;
+	}
+
+	if(!(canUse($skill[Prepare to reanimate your Foe])))
+	{
+		return false;
+	}
+
+	if (!enemy.copyable)
+	{
+		return false;
+	}
+
+	// as the created zombie doesn't die, get one that gives +item and no passive damage
+	boolean hasItem = false;
+	foreach i, bonus in shrunken_head_zombie(enemy)
+	{
+		if(bonus.contains_text("Attack"))
+		{
+			return false;
+		}
+		if(bonus.contains_text("Item Drop"))
+		{
+			hasItem = true;
+		}
+	}
+
+	return hasItem;
+}
+
+boolean auto_wantToShrunkenHead(location place)
+{
+	if(!auto_haveShrunkenHead())
+	{
+		return false;
+	}
+
+	monster next = get_property("auto_nextEncounter").to_monster();
+	if(next != $monster[none])
+	{
+		//next monster is forced by zone mechanics or some other mechanism
+		return auto_wantToShrunkenHead(next);
+	}
+	else
+	{
+		foreach i,mon in get_monsters(place)
+		{
+			if(appearance_rates(place)[mon] > 0)
+			{
+				if (auto_wantToShrunkenHead(mon))
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 }
 
 boolean auto_haveCrimboSkeleton()

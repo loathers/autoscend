@@ -88,6 +88,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		handleTracker(enemy, $skill[Do an epic McTwist!], "auto_otherstuff");
 		return useSkill($skill[Do an epic McTwist!]);
 	}
+
+	if(auto_wantToShrunkenHead(enemy))
+	{
+		handleTracker(enemy, $skill[Prepare to reanimate your Foe], "auto_otherstuff");
+		return useSkill($skill[Prepare to reanimate your Foe]);
+	}
 	
 	// yellowray instantly kills the enemy and makes them drop all items they can drop.
 	// don't yellow ray if we'll be dousing

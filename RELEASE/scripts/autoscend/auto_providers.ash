@@ -531,6 +531,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		//organized by %/mp and %. Skills
 		Living Fast, //100%, 5mp
 		Stretched, //75%, 10mp
+		Slippery as a Seal, //+50%, 5mp
 		Cletus's Canticle of Celerity, //20%, 4mp
 		Springy Fusilli, //40%, 10mp
 		Soulerskates, //30%, 25 soulsauce
@@ -1117,6 +1118,8 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 		Juiced and Loose,					//+50% mus. nuclear autumn only. 3 MP/adv
 		Quiet Determination,				//+25% mus. facial expression. 1 MP/adv
 		Rage of the Reindeer,				//+10% mus. +10 weapon dmg. 1 MP/adv
+		Strength of the Tortoise,				//+10 mus. 0.2 MP/adv.
+		Disco over Matter,				//+10 mus. 0.2 MP/adv.
 		Power Ballad of the Arrowsmith,		//+10 mus. +20 maxHP. song. 5 MP (duration varies).
 		Seal Clubbing Frenzy,				//+2 mus. 0.2 MP/adv
 		Patience of the Tortoise,			//+1 mus. +3 maxHP. 0.2 MP/adv
@@ -1124,6 +1127,8 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 		// myst effects
 		Mind Vision,						//+50% mys. nuclear autumn only. 3 MP/adv
 		Quiet Judgement,					//+25% mys. facial expression. 1 MP/adv
+		Tubes of Universal Meat,				//+10 mys. 0.2 MP/adv.
+		Mariachi Moisture,				//+10 mus. 0.2 MP/adv.
 		The Magical Mojomuscular Melody,	//+10 mys. +20 maxMP. song. 3 MP (duration varies).
 		Pasta Oneness,						//+2 mys. 0.2 MP/adv
 		Saucemastery,						//+1 mys. +3 maxMP. 0.2 MP/adv
@@ -1131,6 +1136,8 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 		// moxie effects
 		Impeccable Coiffure,				//+50% mox. nuclear autumn only. 3 MP/adv
 		Song of Bravado,					//+15% all. NOT a song. 10 MP/adv
+		Slippery as a Seal,				//+10 mox. 0.2 MP/adv.
+		Lubricating Sauce,				//+10 mox. 0.2 MP/adv.
 		The Moxious Madrigal,				//+10 mox. song. 2 MP (duration varies).
 		Disco State of Mind,				//+2 mox. 0.2 MP/adv
 		Mariachi Mood,						//+1 mox. +3 maxHP. 0.2 MP/adv
