@@ -923,6 +923,7 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
+<<<<<<< HEAD
 boolean auto_haveBCZ()
 {
 	if(possessEquipment($item[blood cubic zirconia]))
@@ -1073,14 +1074,14 @@ void auto_getBCZItems()
 
 boolean auto_haveShrunkenHead()
 {
-	if(get_property("hasShrunkenHead").to_boolean()&& auto_is_valid($item[shrunken head]))
+	if(get_property("hasShrunkenHead").to_boolean() && auto_is_valid($item[shrunken head]))
 	{
 		return true;
 	}
 	return false;
 }
 
-boolean auto_wantToShrunkenHead(monster enemy, location place)
+boolean auto_wantToShrunkenHead(monster enemy)
 {
 	if(!auto_haveShrunkenHead())
 	{
@@ -1092,12 +1093,26 @@ boolean auto_wantToShrunkenHead(monster enemy, location place)
 		return false;
 	}
 
-	if(auto_wantToYellowRay(enemy, place))
+	if (!enemy.copyable)
 	{
-		return true;
+		return false;
 	}
 
-	return false;
+	// as the created zombie doesn't die, get one that gives +item and no passive damage
+	boolean hasItem = false;
+	foreach i, bonus in shrunken_head_zombie(enemy)
+	{
+		if(bonus.contains_text("Attack"))
+		{
+			return false;
+		}
+		if(bonus.contains_text("Item Drop"))
+		{
+			hasItem = true;
+		}
+	}
+
+	return hasItem;
 }
 
 boolean auto_wantToShrunkenHead(location place)
@@ -1107,11 +1122,11 @@ boolean auto_wantToShrunkenHead(location place)
 		return false;
 	}
 
-	monster [int] possible_monsters;
-	if(get_property("auto_nextEncounter").to_monster() != $monster[none])
+	monster next = get_property("auto_nextEncounter").to_monster();
+	if(next != $monster[none])
 	{
 		//next monster is forced by zone mechanics or some other mechanism
-		possible_monsters[count(possible_monsters)] = get_property("auto_nextEncounter").to_monster();
+		return auto_wantToShrunkenHead(next);
 	}
 	else
 	{
@@ -1119,16 +1134,11 @@ boolean auto_wantToShrunkenHead(location place)
 		{
 			if(appearance_rates(place)[mon] > 0)
 			{
-				possible_monsters[count(possible_monsters)] = mon;
+				if (auto_wantToShrunkenHead(mon))
+				{
+					return true;
+				}
 			}
-		}
-	}
-	foreach i, mon in possible_monsters
-	{
-		//It's not really a YR, but it provides a second shot at stuff so it might be useful
-		if(auto_wantToYellowRay(mon, place))
-		{
-			return true;
 		}
 	}
 	return false;

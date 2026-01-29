@@ -683,6 +683,9 @@ void auto_getBCZItems();
 boolean auto_haveShrunkenHead();
 boolean auto_wantToShrunkenHead(monster enemy, location place);
 boolean auto_wantToShrunkenHead(location place);
+boolean auto_haveShrunkenHead();
+boolean auto_wantToShrunkenHead(monster enemy);
+boolean auto_wantToShrunkenHead(location place);
 boolean auto_haveCrimboSkeleton();
 void auto_wantSoCP();
 
