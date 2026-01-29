@@ -923,7 +923,6 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
-<<<<<<< HEAD
 boolean auto_haveBCZ()
 {
 	if(possessEquipment($item[blood cubic zirconia]))
