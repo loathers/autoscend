@@ -12,7 +12,7 @@ boolean snojoFightAvailable()
 	{
 		return false;
 	}
-	if(in_koe())
+	if(in_koe() || in_bad_moon())
 	{
 		return false;
 	}
@@ -592,6 +592,10 @@ item auto_bestBadge()
 
 boolean auto_doPrecinct()
 {
+	if (in_bad_moon())
+	{
+		return false;
+	}
 	if(!is_unrestricted($item[Detective School Application]))
 	{
 		return false;

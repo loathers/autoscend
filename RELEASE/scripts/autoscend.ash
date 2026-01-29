@@ -1172,7 +1172,7 @@ boolean dailyEvents()
 		put_closet(1, $item[empty rain-doh can]);
 	}
 
-	if(item_amount($item[Clan VIP Lounge Key]) > 0)
+	if(item_amount($item[Clan VIP Lounge Key]) > 0 && !in_bad_moon())
 	{
 		int[item] furn = auto_get_clan_lounge();
 		if(furn contains $item[Olympic-sized Clan crate] && !get_property("_olympicSwimmingPoolItemFound").to_boolean() && is_unrestricted($item[Olympic-sized Clan Crate]))
@@ -2078,13 +2078,6 @@ void auto_begin()
 	if(in_community())
 	{
 		abort("Community Service is no longer supported.");
-	}
-
-	if (in_bad_moon())
-	{
-		boolean nope = user_confirm("Bad moon is not a thing we will ever support even if you can somehow meet the scripts minimum requirements. Do you understand?");
-		string failure = (nope ? "Just no." : "Even if you don't understand, it's still no.");
-		abort(failure);
 	}
 
 	LX_handleIntroAdventures(); // handle early non-combats in challenge paths.

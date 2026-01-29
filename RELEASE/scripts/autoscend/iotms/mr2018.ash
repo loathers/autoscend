@@ -256,6 +256,11 @@ boolean fantasyRealmToken()
 		return false;
 	}
 
+	if (in_bad_moon())
+	{
+		return false;
+	}
+
 	if((get_property("frAlways").to_boolean() || get_property("_frToday").to_boolean()) && !possessEquipment($item[FantasyRealm G. E. M.]))
 	{
 		int option = 1;
@@ -610,6 +615,10 @@ boolean catBurglarHeist()
 
 boolean cheeseWarMachine(int stats, int it, int eff, int potion)
 {
+	if(in_bad_moon())
+	{
+		return false;
+	}
 	if(!auto_is_valid($item[Bastille Battalion Control Rig]))
 	{
 		return false;
@@ -791,6 +800,10 @@ boolean neverendingPartyAvailable()
 	if (get_property("_questPartyFair") == "finished")
 	{
 		// Can't adventure if the quest is complete for the day.
+		return false;
+	}
+	if (in_bad_moon())
+	{
 		return false;
 	}
 	return true;
@@ -1284,7 +1297,7 @@ boolean auto_voteMonster(boolean freeMon, location loc)
 
 boolean fightClubNap()
 {
-	if(!is_unrestricted($item[Boxing Day care package]))
+	if(!is_unrestricted($item[Boxing Day care package]) || in_bad_moon())
 	{
 		return false;
 	}
@@ -1391,6 +1404,10 @@ boolean fightClubSpa(int option)
 
 boolean fightClubStats()
 {
+	if(in_bad_moon())
+	{
+		return false;
+	}
 	if(!is_unrestricted($item[Boxing Day care package]))
 	{
 		return false;

@@ -707,6 +707,10 @@ boolean auto_haveClanPhotoBoothHere()
 	{
 		return false;
 	}
+	if(in_bad_moon())
+	{
+		return false;
+	}
 	return auto_get_clan_lounge() contains $item[photo booth sized crate];
 }
 
@@ -717,6 +721,10 @@ boolean auto_haveClanPhotoBooth()
 		return false;
 	}
 	if(!auto_is_valid($item[photo booth sized crate]))
+	{
+		return false;
+	}
+	if(in_bad_moon())
 	{
 		return false;
 	}
