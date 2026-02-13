@@ -160,7 +160,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		return useSkill($skill[Surprisingly Sweet Stab]);
 	}
 
-	//Everfull Dart Holder
+	//Everfull Dart Holder- use darts if you have them, unless we are against the naughty sorceress (to avoid dart skill bug)
 	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0 && !($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains enemy))
 	{
 		return useSkill(dartSkill(), false);
