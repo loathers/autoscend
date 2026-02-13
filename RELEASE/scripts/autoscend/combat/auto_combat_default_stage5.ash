@@ -161,7 +161,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	}
 
 	//Everfull Dart Holder
-	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0)
+	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0 && !($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains enemy))
 	{
 		return useSkill(dartSkill(), false);
 	}
