@@ -346,16 +346,17 @@ default	56	L4_batCave
 default	57	L3_tavern
 # Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
 default	58	L2_mosquito
-# There's an extra task in KoE
+# Non-Standard Final Bosses
 default	59	LX_koeInvaderHandler
+default	60	LX_bugbearInvasionFinale
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
-default	60	L13_towerAscent
+default	61	L13_towerAscent
 # not powerlevelling but something that needs to be done if nothing else is available
-default	61	LX_lastChance
+default	62	LX_lastChance
 # release the hounds!
-default	62	auto_softBlockHandler
+default	63	auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.
-default	63	LX_attemptPowerLevel
+default	64	LX_attemptPowerLevel
 
 Legacy of Loathing	0	LX_freeCombatsTask
 Legacy of Loathing	1	woods_questStart

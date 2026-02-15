@@ -630,6 +630,24 @@ boolean auto_pre_adventure()
 				abort("I'm scared to adventure in a zone with ghosts without a fire flower. Please fight a bit and buy me a fire flower.");
 			}
 		}
+		else if($locations[Vanya's Castle, The Fungus Plains, Megalo-City, Hero's Field, Inside The Palindome] contains place)
+		{
+			//Don't want conflict with continuum transfunctioner or talisman o' namislat so equip the flower or hammer instead
+			if(plumber_haveFlower())
+			{
+				auto_log_info("Potential conflict with boots so doing fire flower");
+				plumber_equipTool($stat[mysticality], true);
+			}
+			else if(plumber_haveHammer())
+			{
+				auto_log_info("Doing hammer as a last resort");
+				plumber_equipTool($stat[muscle], true);
+			}
+			else
+			{
+				auto_log_info("Can't force equip any plumber combat equipment");
+			}
+		}
 		else
 		{
 			plumber_equipTool($stat[moxie]);

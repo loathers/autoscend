@@ -3965,6 +3965,12 @@ void auto_interruptCheck()
 	auto_interruptCheck(true);
 }
 
+void auto_interrupt()
+{
+	//for debugging purposes add a function to set auto_interrupt = true
+	set_property("auto_interrupt", true);
+}
+
 element currentFlavour()
 {
 	if(have_effect($effect[Spirit of Peppermint]) != 0)
