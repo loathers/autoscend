@@ -38,7 +38,7 @@ any	25	auto_equipment_override_weapon	string	A semicolon separated list of overr
 any	26	auto_equipment_override_off-hand	string	A semicolon separated list of overrides for the off-hand slot.
 any	27	auto_equipment_override_pants	string	A semicolon separated list of overrides for the pants slot.
 any	28	auto_equipment_override_acc	string	A semicolon separated list of overrides for the acc slots.
-any	29	auto_equipment_override_familiarequipment	string	A semicolon separated list of overrides for the familiar equipment slot.
+any	29	auto_equipment_override_familiar	string	A semicolon separated list of overrides for the familiar equipment slot.
 any	30	auto_hideAdultery	boolean	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
 any	31	auto_optimizeConsultsInRun	boolean	When true, optimize our consults in run to get Ascension relevant rewards.
 any	32	auto_consultClan	string	The clan name of the player you want to do Zatara consults with.
