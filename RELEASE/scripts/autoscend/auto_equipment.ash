@@ -1137,7 +1137,7 @@ void equipMaximizedGear()
 
 void equipOverrides()
 {
-	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc]
+	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc, familiar]
 	{
 		string overrides = get_property("auto_equipment_override_" + slot_str);
 		if(overrides == "")
