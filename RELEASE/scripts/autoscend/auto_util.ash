@@ -5373,6 +5373,12 @@ boolean auto_inRonin()
 	return !(can_interact() || in_hardcore());
 }
 
+void auto_inHardcore()
+{
+	set_property("auto_inHardcore", in_hardcore());
+	return;
+}
+
 modifier resistanceModifier(element el)
 {
 	switch(el)
