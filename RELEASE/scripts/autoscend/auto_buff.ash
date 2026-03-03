@@ -246,6 +246,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Benetton\'s Medley of Diversity]:	useSkill = $skill[Benetton\'s Medley of Diversity];		break;
 	case $effect[Berry Elemental]:				useItem = $item[Tapioc Berry];					break;
 	case $effect[Berry Statistical]:			useItem = $item[Snarf Berry];					break;
+	case $effect[Best Pals]:					useSkill = $skill[Heartstone: %pals];			break;
 	case $effect[Bet Your Autumn Dollar]:		useItem = $item[Autumn Dollar];					break;
 	case $effect[Big]:							useSkill = $skill[Get Big];						break;
 	case $effect[Big Meat Big Prizes]:			useItem = $item[Meat-Inflating Powder];			break;
@@ -999,6 +1000,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
 	case $effect[Ultra-Soft Steps]:				useItem = $item[ultra-soft ferns];				break;
+	case $effect[Ultraheart]:					useSkill = $skill[heartstone: %buff];			break;
 	case $effect[Unmuffled]:
 		if(get_property("peteMotorbikeMuffler") == "Extra-Loud Muffler")
 		{

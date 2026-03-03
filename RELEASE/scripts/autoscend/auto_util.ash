@@ -1486,6 +1486,8 @@ int cloversAvailable(boolean override)
 		}
 		//Get from April band
 		numClovers += auto_AprilSaxLuckyLeft();
+		//heartstone
+		numClovers += auto_heartstoneLuckRemaining();
 	}
 
 	//count Astral Energy Drinks which we have room to chew. Must specify ID since there are now 2 items with this name
@@ -1522,6 +1524,21 @@ boolean cloverUsageInit(boolean override)
 	}
 	
 	set_property("auto_luckySource","none");
+	
+	if (auto_heartstoneLuckRemaining() > 0)
+	{
+		use_skill($skill[Heartstone: %luck]);
+		if (have_effect($effect[Lucky!]) > 0)
+		{
+			auto_log_info("Clover usage initialized, using Heartstone LUCK.");
+			set_property("auto_luckySource",to_string($item[heartstone]));
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Did not acquire Lucky! after using heartstone LUCK.");
+		}
+	}
 	
 	if (auto_AprilSaxLuckyLeft() > 0)
 	{

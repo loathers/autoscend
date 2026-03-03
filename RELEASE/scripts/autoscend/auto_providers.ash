@@ -876,6 +876,7 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 			buffMaintain($effect[Empathy]);
 			buffMaintain($effect[Blood Bond]);
 			buffMaintain($effect[Only Dogs Love a Drunken Sailor]);
+			buffMaintain($effect[Best Pals]);
 			//Manual override for the resfam to be the Cooler Yeti when we ONLY want Cold Resistance and it is better than what we already chose from one of the multi-res fams
 			if(auto_haveCoolerYeti() && count(amt) == 1 && amt[$element[Cold]] > 0)
 			{
@@ -1147,6 +1148,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 		Big,								//+20% all. 1.5 MP/adv
 		Song of Bravado,					//+15% all. NOT a song. 10 MP/adv
 		Stevedave's Shanty of Superiority,	//+10% all. song. 30 MP (duration varies).
+		Ultraheart,                         //+50% all, heartstone, 5/day.
 
 		// varying effects
 		Blessing of the Bird,
@@ -2247,6 +2249,7 @@ float provideFamExp(int amt, location loc, boolean doEquips, boolean doEverythin
 		}
 		candyEggDeviler(); //try to get a deviled candy egg
 		if(tryEffects($effects[
+			Best Pals, //+1
 			Warm Shoulders, //+5
 			Shortly Hydrated, //+5
 			Candied Devil, //+5
