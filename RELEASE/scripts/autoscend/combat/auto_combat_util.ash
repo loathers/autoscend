@@ -731,6 +731,12 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Batter Up!];
 	}
 
+	if(inCombat ? (auto_have_skill($skill[Mark Your Territory]) && (!(used contains "Mark Your Territory")))
+	: auto_is_valid($skill[Mark Your Territory]) && (auto_have_skill($skill[Mark Your Territory]) || (available_amount($item[pheromone cocktail]) > 0 && inebriety_left() > 1 && !isActuallyEd()) ))
+	{
+		return "skill " + $skill[Mark Your Territory];
+	}
+
 	skill z_kick = getZooKickBanish();
 	if (auto_have_skill(z_kick) && (my_mp() > mp_cost(z_kick)))
 	{

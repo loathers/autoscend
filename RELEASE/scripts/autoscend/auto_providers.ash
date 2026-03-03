@@ -1193,6 +1193,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 			Woad Warrior,
 
 			// myst effects
+			Up to 11,
 			Baconstoned,
 			Erudite,
 			Far Out,
@@ -1509,6 +1510,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Earning Interest, //50% meat
 		Bet Your Autumn Dollar, //50% meat
 		The Grass... \ Is Blue..., //40% meat, 20% item
+		Sweat Equity, //40% meat
 		Greedy Resolve, //30% meat
 		Tubes of Universal Meat, //30% meat
 		Worth Your Salt, //25% meat, max hp +25

@@ -908,6 +908,154 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
+boolean auto_haveBCZ()
+{
+	if(possessEquipment($item[blood cubic zirconia]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_wantToBCZ(skill sk)
+{
+	if(!auto_haveBCZ() || !(canUse(sk)))
+	{
+		return false;
+	}
+	int bloodBathCasts = get_property("_bczBloodBathCasts").to_int();
+	int bloodGeyserCasts = get_property("_bczBloodGeyserCasts").to_int();
+	int bloodThinnerCasts = get_property("_bczBloodThinnerCasts").to_int();
+	int dialItUpCasts = get_property("_bczDialitupCasts").to_int();
+	int pheromoneCocktailCasts = get_property("_bczPheromoneCocktailCasts").to_int();
+	int refractedGazeCasts = get_property("_bczRefractedGazeCasts").to_int();
+	int spinalTapasCasts = get_property("_bczSpinalTapasCasts").to_int();
+	int sweatBulletsCasts = get_property("_bczSweatBulletsCasts").to_int();
+	int sweatEquityCasts = get_property("_bczSweatEquityCasts").to_int();
+
+	int auto_bczCastMath(int cast)
+	{
+		if(cast == 12) return 420000;
+		int castMath = cast;
+		if(cast > 12) castMath -= 1;
+		int castMathFloor = floor(castMath/3);
+		if(cast > 12) castMathFloor += 1;
+		int castMathModulo = (castMath % 3);
+		int substatBase = 0;
+		
+		switch(castMathModulo)
+		{
+			case 0:
+				substatBase = 11;
+				break;
+			case 1:
+				substatBase = 23;
+				break;
+			case 2:
+				substatBase = 37;
+				break;
+		}
+		return substatBase * 10 ** castMathFloor;
+		//11, 23, 37, 110, 230, 370, etc. 13th cast follows a different pattern but we will never get there but better to be safe than sorry
+	}
+
+	boolean statChange(stat st, int casts)
+	{
+		int level = my_level();
+		if(my_level() >= 13)
+		{
+			level = 13;
+		}
+		int diff;
+		if(st == my_primestat())
+		{
+			//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
+			//Don't go beneath our current level or level 13 if we cast the skill
+			return my_basestat(stat_to_substat(st)) - level_to_min_substat(level) > auto_bczCastMath(casts);
+		}
+		//don't go below 70 of the other stats
+		return ((my_basestat(st) ** 2) - 70 ** 2) > auto_bczCastMath(casts);
+	}
+
+	switch(sk)
+	{
+		//Muscle Casts
+		case $skill[BCZ: Blood Geyser]:
+			return (statChange($stat[muscle], bloodGeyserCasts) && (bloodGeyserCasts <= 6));
+		case $skill[BCZ: Blood Bath]:
+			return (statChange($stat[muscle], bloodBathCasts) && (bloodBathCasts <= 6));
+		case $skill[BCZ: Create Blood Thinner]: //should never be cast, but if we want to support in the future, we can
+			return (statChange($stat[muscle], bloodThinnerCasts) && (bloodThinnerCasts == 0));
+		//Mysticality Casts
+		case $skill[BCZ: Dial it up to 11]:
+			return (statChange($stat[mysticality], dialItUpCasts) && (dialItUpCasts <= 3));
+		case $skill[BCZ: Refracted Gaze]:
+			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts <= 6));
+		case $skill[BCZ: Prepare Spinal Tapas]:
+			return (statChange($stat[mysticality], spinalTapasCasts) && (spinalTapasCasts <= 3));
+		//Moxie Casts
+		case $skill[BCZ: Sweat Bullets]:
+			return (statChange($stat[moxie], sweatBulletsCasts) && (sweatBulletsCasts <= 6));
+		case $skill[BCZ: Sweat Equity]:
+			return (statChange($stat[moxie], sweatEquityCasts) && (sweatEquityCasts <= 2));
+		case $skill[BCZ: Craft a Pheromone Cocktail]:
+			return (statChange($stat[moxie], pheromoneCocktailCasts) && (pheromoneCocktailCasts <= 6));
+		default:
+			return false;
+	}
+}
+
+boolean auto_bczRefractedGaze()
+{
+	if(!auto_haveBCZ())
+	{
+		return false;
+	}
+	if(auto_havePeridot() && !haveUsedPeridot(my_location()))
+	{
+		//Will undoubtedly want Peridot in these locations
+		//Other sources of issue (pocket wishes/mimic eggs) are fought in Noob Cave
+		//Don't have support for the Crepe Paper Parachute Cape but that also causes issues
+		return false;
+	}
+	if((my_location() == $location[The Smut Orc Logging Camp] && lumberCount() < bridgeGoal() && fastenerCount() < bridgeGoal()) ||
+	(my_location() == $location[The Penultimate Fantasy Airship] && item_amount($item[Mohawk Wig]) < 1 && item_amount($item[Amulet of extreme plot significance]) < 1) ||
+	(my_location() == $location[The Battlefield (Frat Uniform)]) ||
+	(my_location() == $location[A-Boo Peak] && item_amount($item[A-Boo Clue]) * 30 < get_property("booPeakProgress").to_int()) ||
+	(my_location() == $location[Cobb\'s Knob Harem]) ||
+	(my_location() == $location[Twin Peak] && item_amount($item[Rusty Hedge Trimmers]) < 4) ||
+	(my_location() == $location[The Black Forest] && !(black_market_available()) && item_amount($item[Reassembled Blackbird]) == 0 && monster_phylum() != $phylum[Beast]) || 
+	(my_location() == $location[Whitey's Grove] && (item_amount($item[Lion Oil]) == 0 && item_amount($item[Bird Rib]) == 0 && item_amount($item[Wet Stew]) == 0 && item_amount($item[wet stunt nut stew]) == 0) && monster_phylum() != $phylum[Beast]) ||
+	(my_location() == $location[The Hidden Apartment Building] && last_monster() == $monster[pygmy shaman]) ||
+	(my_location() == $location[The Defiled Nook] && last_monster() == $monster[party skelteon])
+	)
+	{
+		return true;
+	}
+	return false;
+}
+
+void auto_getBCZItems()
+{
+	if(!auto_haveBCZ())
+	{
+		return;
+	}
+	
+	if(auto_wantToBCZ($skill[BCZ: Craft a Pheromone Cocktail]))
+	{
+		handleTracker($item[Blood Cubic Zirconia], $item[Pheromone Cocktail],"auto_iotm_claim");
+		use_skill(1, $skill[BCZ: Craft a Pheromone Cocktail]);
+	}
+	if(auto_wantToBCZ($skill[BCZ: Prepare Spinal Tapas]))
+	{
+		handleTracker($item[Blood Cubic Zirconia], $item[Spinal Tapas],"auto_iotm_claim");
+		use_skill(1, $skill[BCZ: Prepare Spinal Tapas]);
+	}
+
+	return;
+}
+
 boolean auto_haveShrunkenHead()
 {
 	if(get_property("hasShrunkenHead").to_boolean() && auto_is_valid($item[shrunken head]))
