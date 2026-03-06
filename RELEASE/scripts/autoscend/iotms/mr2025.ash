@@ -664,22 +664,7 @@ boolean auto_timeIsAStripPossible()
 		return false;
 	}
 
-	int mobiusNCs = get_property("_mobiusStripEncounters").to_int();
-	int mobiusTurn = get_property("_lastMobiusStripTurn").to_int();
-	if((mobiusNCs < 1 && mobiusTurn <= 0) ||
-	(mobiusNCs < 2 && mobiusTurn - turns_played() >= 7) ||
-	(mobiusNCs < 3 && mobiusTurn - turns_played() >= 13) ||
-	(mobiusNCs < 4 && mobiusTurn - turns_played() >= 19) ||
-	(mobiusNCs < 5 && mobiusTurn - turns_played() >= 25) ||
-	(mobiusNCs < 6 && mobiusTurn - turns_played() >= 31) ||
-	(mobiusNCs < 11 && mobiusTurn - turns_played() >= 41) ||
-	(mobiusNCs < 16 && mobiusTurn - turns_played() >= 51) ||
-	(mobiusNCs >= 16 && mobiusTurn - turns_played() >= 76))
-	{
-		return true;
-	}
-
-	return false;
+	return turns_until_mobius_noncombat_available() == 0;
 }
 
 void mobiusChoiceHandler(int choice, string page)
