@@ -1035,7 +1035,7 @@ boolean auto_bczRefractedGaze()
 	(my_location() == $location[The Black Forest] && !(black_market_available()) && item_amount($item[Reassembled Blackbird]) == 0 && monster_phylum() != $phylum[Beast]) || 
 	(my_location() == $location[Whitey's Grove] && (item_amount($item[Lion Oil]) == 0 && item_amount($item[Bird Rib]) == 0 && item_amount($item[Wet Stew]) == 0 && item_amount($item[wet stunt nut stew]) == 0) && monster_phylum() != $phylum[Beast]) ||
 	(my_location() == $location[The Hidden Apartment Building] && last_monster() == $monster[pygmy shaman]) ||
-	(my_location() == $location[The Defiled Nook] && last_monster() == $monster[party skelteon])
+	(my_location() == $location[The Defiled Nook] && last_monster() == $monster[party skelteon]) ||
 	(my_location() == $location[The Hole In the Sky] && needStarKey() && monster_phylum() != $phylum[Beast] && last_monster() != $monster[astronomer])
 	)
 	{
