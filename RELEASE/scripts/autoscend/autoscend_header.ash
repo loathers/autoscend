@@ -677,6 +677,7 @@ boolean auto_haveMonodent();
 boolean auto_waveTheZone();
 boolean auto_talkToSomeFish(location loc, monster enemy);
 boolean auto_haveBCZ();
+boolean auto_BCZEquipped()
 boolean auto_wantToBCZ(skill sk);
 boolean auto_bczRefractedGaze();
 void auto_getBCZItems();
