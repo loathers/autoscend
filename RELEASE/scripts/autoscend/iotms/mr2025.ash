@@ -907,7 +907,7 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 		return false;
 	}
 	//bcz has great synergy with talk to some fish to get all the drops in a zone
-	if(auto_haveBCZ() && auto_bczRefractedGaze()){
+	if(auto_BCZEquipped() && auto_bczRefractedGaze()){
 		return true;
 	}
 	
@@ -920,8 +920,20 @@ boolean auto_haveBCZ()
 	{
 		return true;
 	}
-	if (auto_isInEternityCodpiece($item[blood cubic zirconia]))
+	if (auto_haveEternityCodpiece() && auto_isInEternityCodpiece($item[blood cubic zirconia]))
 	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_BCZEquipped()
+{
+	if (auto_isInEternityCodpiece($item[blood cubic zirconia]) && have_equipped($item[the eternity codpiece]))
+	{
+		return true;
+	}
+	if (have_equipped($item[blood cubic zirconia])){
 		return true;
 	}
 	return false;
@@ -976,14 +988,25 @@ boolean auto_wantToBCZ(skill sk)
 		{
 			level = 13;
 		}
-		if(st == my_primestat())
-		{
-			//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
-			//Don't go beneath our current level or level 13 if we cast the skill
-			return my_basestat(stat_to_substat(st)) - level_to_min_substat(level) > auto_bczCastMath(casts);
+
+		// disallow casts until level is above a certain threshold
+		switch{
+			case level < 10 && casts >= 3:
+				return false;
+			case level < 11 && casts >= 5:
+				return false;
+			case st == my_primestat():
+				//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
+				//Don't go beneath our current level or level 13 if we cast the skill
+				return my_basestat(stat_to_substat(st)) - level_to_min_substat(level) > auto_bczCastMath(casts);
+			case ((my_basestat(st)) - 70) < 0:
+				//For an offstat that is not yet to 70, allow if the cost is less than 1 full stat in cost.
+				 return my_basestat(stat_to_substat(st)) - ((my_basestat(st)) ** 2) > auto_bczCastMath(casts);
+			default:
+				//don't go below 70 of the other stats
+				return ((my_basestat(st) ** 2) - 70 ** 2) > auto_bczCastMath(casts);
 		}
-		//don't go below 70 of the other stats
-		return ((my_basestat(st) ** 2) - 70 ** 2) > auto_bczCastMath(casts);
+
 	}
 
 	switch(sk)
