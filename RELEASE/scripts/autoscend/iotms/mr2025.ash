@@ -976,7 +976,6 @@ boolean auto_wantToBCZ(skill sk)
 		{
 			level = 13;
 		}
-		int diff;
 		if(st == my_primestat())
 		{
 			//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
@@ -991,25 +990,25 @@ boolean auto_wantToBCZ(skill sk)
 	{
 		//Muscle Casts
 		case $skill[BCZ: Blood Geyser]:
-			return (statChange($stat[muscle], bloodGeyserCasts) && (bloodGeyserCasts <= 6));
+			return (statChange($stat[muscle], bloodGeyserCasts) && (bloodGeyserCasts < 6));
 		case $skill[BCZ: Blood Bath]:
-			return (statChange($stat[muscle], bloodBathCasts) && (bloodBathCasts <= 6));
+			return (statChange($stat[muscle], bloodBathCasts) && (bloodBathCasts < 6));
 		case $skill[BCZ: Create Blood Thinner]: //should never be cast, but if we want to support in the future, we can
 			return (statChange($stat[muscle], bloodThinnerCasts) && (bloodThinnerCasts == 0));
 		//Mysticality Casts
 		case $skill[BCZ: Dial it up to 11]:
-			return (statChange($stat[mysticality], dialItUpCasts) && (dialItUpCasts <= 3));
+			return (statChange($stat[mysticality], dialItUpCasts) && (dialItUpCasts < 3));
 		case $skill[BCZ: Refracted Gaze]:
-			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts <= 6));
+			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts < 6));
 		case $skill[BCZ: Prepare Spinal Tapas]:
-			return (statChange($stat[mysticality], spinalTapasCasts) && (spinalTapasCasts <= 3));
+			return (statChange($stat[mysticality], spinalTapasCasts) && (spinalTapasCasts < 3));
 		//Moxie Casts
 		case $skill[BCZ: Sweat Bullets]:
-			return (statChange($stat[moxie], sweatBulletsCasts) && (sweatBulletsCasts <= 6));
+			return (statChange($stat[moxie], sweatBulletsCasts) && (sweatBulletsCasts < 6));
 		case $skill[BCZ: Sweat Equity]:
-			return (statChange($stat[moxie], sweatEquityCasts) && (sweatEquityCasts <= 2));
+			return (statChange($stat[moxie], sweatEquityCasts) && (sweatEquityCasts < 2));
 		case $skill[BCZ: Craft a Pheromone Cocktail]:
-			return (statChange($stat[moxie], pheromoneCocktailCasts) && (pheromoneCocktailCasts <= 6));
+			return (statChange($stat[moxie], pheromoneCocktailCasts) && (pheromoneCocktailCasts < 6));
 		default:
 			return false;
 	}
