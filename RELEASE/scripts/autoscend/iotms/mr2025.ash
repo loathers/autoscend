@@ -907,7 +907,7 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 		return false;
 	}
 	//bcz has great synergy with talk to some fish to get all the drops in a zone
-	if( auto_bczRefractedGaze() && auto_wantToBCZ($skill[BCZ: Refracted Gaze])){
+	if( auto_bczRefractedGaze() && auto_wantToBCZ($skill[BCZ: Refracted Gaze]) && auto_BCZEquipped()){
 		return true;
 	}
 	
