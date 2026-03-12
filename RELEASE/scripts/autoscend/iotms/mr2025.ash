@@ -999,7 +999,7 @@ boolean auto_wantToBCZ(skill sk)
 				//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
 				//Don't go beneath our current level or level 13 if we cast the skill
 				return my_basestat(stat_to_substat(st)) - level_to_min_substat(level) > auto_bczCastMath(casts);
-			case ((my_basestat(st)) - 70) < 0:
+			case my_basestat(st) < 70:
 				//For an offstat that is not yet to 70, allow if the cost is less than 1 full stat in cost.
 				 return my_basestat(stat_to_substat(st)) - ((my_basestat(st)) ** 2) > auto_bczCastMath(casts);
 			default:
