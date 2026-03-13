@@ -907,7 +907,7 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 		return false;
 	}
 	//bcz has great synergy with talk to some fish to get all the drops in a zone
-	if( auto_bczRefractedGaze() && auto_wantToBCZ($skill[BCZ: Refracted Gaze]) && auto_BCZEquipped()){
+	if( auto_bczRefractedGaze() && auto_BCZEquipped()){
 		return true;
 	}
 	
@@ -1039,8 +1039,8 @@ boolean auto_wantToBCZ(skill sk)
 
 boolean auto_bczRefractedGaze()
 {
-	if(!auto_haveBCZ())
-	{
+	if(!auto_wantToBCZ($skill[BCZ: Refracted Gaze])){
+		// we don't want to refreact if we don't have the stats.
 		return false;
 	}
 	if(auto_havePeridot() && !haveUsedPeridot(my_location()))
@@ -1054,7 +1054,7 @@ boolean auto_bczRefractedGaze()
 	(my_location() == $location[The Penultimate Fantasy Airship] && item_amount($item[Mohawk Wig]) < 1 && item_amount($item[Amulet of extreme plot significance]) < 1) ||
 	(my_location() == $location[The Battlefield (Frat Uniform)]) ||
 	(my_location() == $location[A-Boo Peak] && item_amount($item[A-Boo Clue]) * 30 < get_property("booPeakProgress").to_int()) ||
-	(my_location() == $location[Cobb\'s Knob Harem]) ||
+	(my_location() == $location[Cobb\'s Knob Harem] && (last_monster() == $monster[knob goblin harem guard] || last_monster()==  $monster[some fish])) ||
 	(my_location() == $location[Twin Peak] && item_amount($item[Rusty Hedge Trimmers]) < 4) ||
 	(my_location() == $location[The Black Forest] && !(black_market_available()) && item_amount($item[Reassembled Blackbird]) == 0 && monster_phylum() != $phylum[Beast]) || 
 	(my_location() == $location[Whitey's Grove] && (item_amount($item[Lion Oil]) == 0 && item_amount($item[Bird Rib]) == 0 && item_amount($item[Wet Stew]) == 0 && item_amount($item[wet stunt nut stew]) == 0) && monster_phylum() != $phylum[Beast]) ||
