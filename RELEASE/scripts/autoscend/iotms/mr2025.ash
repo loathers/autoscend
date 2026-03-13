@@ -664,22 +664,7 @@ boolean auto_timeIsAStripPossible()
 		return false;
 	}
 
-	int mobiusNCs = get_property("_mobiusStripEncounters").to_int();
-	int mobiusTurn = get_property("_lastMobiusStripTurn").to_int();
-	if((mobiusNCs < 1 && mobiusTurn <= 0) ||
-	(mobiusNCs < 2 && mobiusTurn - turns_played() >= 7) ||
-	(mobiusNCs < 3 && mobiusTurn - turns_played() >= 13) ||
-	(mobiusNCs < 4 && mobiusTurn - turns_played() >= 19) ||
-	(mobiusNCs < 5 && mobiusTurn - turns_played() >= 25) ||
-	(mobiusNCs < 6 && mobiusTurn - turns_played() >= 31) ||
-	(mobiusNCs < 11 && mobiusTurn - turns_played() >= 41) ||
-	(mobiusNCs < 16 && mobiusTurn - turns_played() >= 51) ||
-	(mobiusNCs >= 16 && mobiusTurn - turns_played() >= 76))
-	{
-		return true;
-	}
-
-	return false;
+	return turns_until_mobius_noncombat_available() == 0;
 }
 
 void mobiusChoiceHandler(int choice, string page)
@@ -904,6 +889,8 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 	if(!auto_is_valid($skill[Sea *dent: Talk to Some Fish])) return false;
 	// don't use Talk to Some Fish against inherently free fights
 	if (isFreeMonster(enemy, loc)) { return false; }
+	// don't try and use the skill if we have already turned them into some fish
+	if(enemy == $monster[some fish]) return false;
 	// need hippy / frat kills
 	if(loc == $location[The Battlefield (Frat Uniform)] || loc == $location[The Battlefield (Hippy Uniform)])
 	{
@@ -919,6 +906,10 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 	{
 		return false;
 	}
+	//bcz has great synergy with talk to some fish to get all the drops in a zone
+	if( auto_bczRefractedGaze() && auto_BCZEquipped()){
+		return true;
+	}
 	
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
@@ -927,6 +918,22 @@ boolean auto_haveBCZ()
 {
 	if(possessEquipment($item[blood cubic zirconia]))
 	{
+		return true;
+	}
+	if (auto_haveEternityCodpiece() && auto_isInEternityCodpiece($item[blood cubic zirconia]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_BCZEquipped()
+{
+	if (auto_isInEternityCodpiece($item[blood cubic zirconia]) && have_equipped($item[the eternity codpiece]))
+	{
+		return true;
+	}
+	if (have_equipped($item[blood cubic zirconia])){
 		return true;
 	}
 	return false;
@@ -981,40 +988,50 @@ boolean auto_wantToBCZ(skill sk)
 		{
 			level = 13;
 		}
-		int diff;
-		if(st == my_primestat())
-		{
-			//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
-			//Don't go beneath our current level or level 13 if we cast the skill
-			return my_basestat(stat_to_substat(st)) - level_to_min_substat(level) > auto_bczCastMath(casts);
+
+		// disallow casts until level is above a certain threshold
+		switch{
+			case level < 10 && casts >= 3:
+				return false;
+			case level < 11 && casts >= 5:
+				return false;
+			case st == my_primestat():
+				//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
+				//Don't go beneath our current level or level 13 if we cast the skill
+				return my_basestat(stat_to_substat(st)) - level_to_min_substat(level) > auto_bczCastMath(casts);
+			case my_basestat(st) < 70 && casts <3:
+				//For an offstat that is not yet to 70, allow if the cost is less than 1 full stat in cost. don't cast more than 3 times per day
+				 return my_basestat(stat_to_substat(st)) - ((my_basestat(st)) ** 2) > auto_bczCastMath(casts);
+			default:
+				//don't go below 70 of the other stats
+				return ((my_basestat(st) ** 2) - 70 ** 2) > auto_bczCastMath(casts);
 		}
-		//don't go below 70 of the other stats
-		return ((my_basestat(st) ** 2) - 70 ** 2) > auto_bczCastMath(casts);
+
 	}
 
 	switch(sk)
 	{
 		//Muscle Casts
 		case $skill[BCZ: Blood Geyser]:
-			return (statChange($stat[muscle], bloodGeyserCasts) && (bloodGeyserCasts <= 6));
+			return (statChange($stat[muscle], bloodGeyserCasts) && (bloodGeyserCasts < 6));
 		case $skill[BCZ: Blood Bath]:
-			return (statChange($stat[muscle], bloodBathCasts) && (bloodBathCasts <= 6));
+			return (statChange($stat[muscle], bloodBathCasts) && (bloodBathCasts < 6));
 		case $skill[BCZ: Create Blood Thinner]: //should never be cast, but if we want to support in the future, we can
 			return (statChange($stat[muscle], bloodThinnerCasts) && (bloodThinnerCasts == 0));
 		//Mysticality Casts
 		case $skill[BCZ: Dial it up to 11]:
-			return (statChange($stat[mysticality], dialItUpCasts) && (dialItUpCasts <= 3));
+			return (statChange($stat[mysticality], dialItUpCasts) && (dialItUpCasts < 3));
 		case $skill[BCZ: Refracted Gaze]:
-			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts <= 6));
+			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts < 6));
 		case $skill[BCZ: Prepare Spinal Tapas]:
-			return (statChange($stat[mysticality], spinalTapasCasts) && (spinalTapasCasts <= 3));
+			return (statChange($stat[mysticality], spinalTapasCasts) && (spinalTapasCasts < 3));
 		//Moxie Casts
 		case $skill[BCZ: Sweat Bullets]:
-			return (statChange($stat[moxie], sweatBulletsCasts) && (sweatBulletsCasts <= 6));
+			return (statChange($stat[moxie], sweatBulletsCasts) && (sweatBulletsCasts < 6));
 		case $skill[BCZ: Sweat Equity]:
-			return (statChange($stat[moxie], sweatEquityCasts) && (sweatEquityCasts <= 2));
+			return (statChange($stat[moxie], sweatEquityCasts) && (sweatEquityCasts < 2));
 		case $skill[BCZ: Craft a Pheromone Cocktail]:
-			return (statChange($stat[moxie], pheromoneCocktailCasts) && (pheromoneCocktailCasts <= 6));
+			return (statChange($stat[moxie], pheromoneCocktailCasts) && (pheromoneCocktailCasts < 6));
 		default:
 			return false;
 	}
@@ -1022,8 +1039,8 @@ boolean auto_wantToBCZ(skill sk)
 
 boolean auto_bczRefractedGaze()
 {
-	if(!auto_haveBCZ())
-	{
+	if(!auto_wantToBCZ($skill[BCZ: Refracted Gaze])){
+		// we don't want to refreact if we don't have the stats.
 		return false;
 	}
 	if(auto_havePeridot() && !haveUsedPeridot(my_location()))
@@ -1037,12 +1054,14 @@ boolean auto_bczRefractedGaze()
 	(my_location() == $location[The Penultimate Fantasy Airship] && item_amount($item[Mohawk Wig]) < 1 && item_amount($item[Amulet of extreme plot significance]) < 1) ||
 	(my_location() == $location[The Battlefield (Frat Uniform)]) ||
 	(my_location() == $location[A-Boo Peak] && item_amount($item[A-Boo Clue]) * 30 < get_property("booPeakProgress").to_int()) ||
-	(my_location() == $location[Cobb\'s Knob Harem]) ||
+	(my_location() == $location[Cobb\'s Knob Harem] && (last_monster() == $monster[knob goblin harem guard] || last_monster()==  $monster[some fish])) ||
 	(my_location() == $location[Twin Peak] && item_amount($item[Rusty Hedge Trimmers]) < 4) ||
 	(my_location() == $location[The Black Forest] && !(black_market_available()) && item_amount($item[Reassembled Blackbird]) == 0 && monster_phylum() != $phylum[Beast]) || 
 	(my_location() == $location[Whitey's Grove] && (item_amount($item[Lion Oil]) == 0 && item_amount($item[Bird Rib]) == 0 && item_amount($item[Wet Stew]) == 0 && item_amount($item[wet stunt nut stew]) == 0) && monster_phylum() != $phylum[Beast]) ||
-	(my_location() == $location[The Hidden Apartment Building] && last_monster() == $monster[pygmy shaman]) ||
-	(my_location() == $location[The Defiled Nook] && last_monster() == $monster[party skelteon])
+	(my_location() == $location[The Hidden Apartment Building] && (last_monster() == $monster[pygmy shaman] || last_monster()==  $monster[some fish])) ||
+	(my_location() == $location[The Defiled Nook] && (last_monster() == $monster[party skelteon] || last_monster()==  $monster[some fish])) ||
+	(my_location() == $location[The Hole In the Sky] && needStarKey() && (monster_phylum() == $phylum[Constellation] && last_monster() != $monster[astronomer]  || last_monster()==  $monster[some fish])) ||
+	(my_location() == $location[Guano Junction] && internalQuestStatus("questL04Bat") < 3 )
 	)
 	{
 		return true;

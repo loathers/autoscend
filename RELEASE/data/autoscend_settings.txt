@@ -38,27 +38,28 @@ any	25	auto_equipment_override_weapon	string	A semicolon separated list of overr
 any	26	auto_equipment_override_off-hand	string	A semicolon separated list of overrides for the off-hand slot.
 any	27	auto_equipment_override_pants	string	A semicolon separated list of overrides for the pants slot.
 any	28	auto_equipment_override_acc	string	A semicolon separated list of overrides for the acc slots.
-any	29	auto_hideAdultery	boolean	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
-any	30	auto_optimizeConsultsInRun	boolean	When true, optimize our consults in run to get Ascension relevant rewards.
-any	31	auto_consultClan	string	The clan name of the player you want to do Zatara consults with.
-any	32	auto_consultChoice	string	The name of the player you want to do Zatara consults with.
-any	33	auto_considerGalaktik	boolean	When true autoscend may automatically enable galaktik quest for this run if it decides it is needed.
-any	34	auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
-any	35	auto_skipUnlockGuild	boolean	When true, don't unlock the guild.
-any	36	auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
-any	37	auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after finishing any business in the current sign. If blank or invalid, we won't switch automatically. Can be set to any of the 9 main sign names, or knoll/canadia/gnomad to automatically select the appropriate sign within that zone based on your mainstat. Also some shorthands are allowed in case you forgot which moonsign is which, such as famweight/clover/food/booze. You will be prompted to confirm that you actually do want to change signs automatically once per ascension (although it will automatically assume that you do after 15 seconds of inactivity), so forgetting to change the value in advance should not be a concern.
-any	38	auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle. Setting to -1 will cause the lowest possible ML to be equipped, including going negative if possible - this can cause non-optimal gear to be equipped.
-any	39	auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)
-any	40	auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
-any	41	auto_log_level	int	valid choices: 0 = error. 1 = warning. 2 = info. 3 = debug. Sets the level of logging which autoscend will output to gCLI and session log. Defaults to 3 (debug).
-any	42	auto_log_level_restore	int	valid choices: 0 = no extra debugging. 1 = log the stages and their results 2 = log restorer data dump. Sets the level of extra debug logging which autoscend restore code will output to gCLI and session log. Defaults to 0. Note that this is just for extra debugging.
-any	43	auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.
-any	44	auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dungeon and fantasy realm every day even if you already have enough for this run. This is mainly for new accounts who want to get the cubeling and/or skillbooks.
-any	45	auto_pvpEnable	boolean	Break the hippy stone to unlock PvP? This may also let autoscend collect low-effort PVP items.
-any	46	auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns). Blank by default.
-any	47	auto_ignoreRestoreFailure	boolean	if true we will always ignore failure to restore MP or HP and just continue playing
-any	48	auto_workshed	string	What workshed item should we initialize with? If blank or invalid, we will change workshed based on priorities. There are some shorthands or you can use the full name of the workshed item. Some worksheds are not implemented so unless you are certain you want to deviate, use auto.
-any	49	auto_stopMinutesToRollover	int	How many minutes before rollover do we need to start getting ready for bed?
+any	29	auto_equipment_override_familiar	string	A semicolon separated list of overrides for the familiar equipment slot.
+any	30	auto_hideAdultery	boolean	When true, automatically deletes Zatara Consults from Kmails during end of day cleanup.
+any	31	auto_optimizeConsultsInRun	boolean	When true, optimize our consults in run to get Ascension relevant rewards.
+any	32	auto_consultClan	string	The clan name of the player you want to do Zatara consults with.
+any	33	auto_consultChoice	string	The name of the player you want to do Zatara consults with.
+any	34	auto_considerGalaktik	boolean	When true autoscend may automatically enable galaktik quest for this run if it decides it is needed.
+any	35	auto_slowSteelOrgan	boolean	When true, don't immediately go for the Steel Organ (assuming we want a steel organ).
+any	36	auto_skipUnlockGuild	boolean	When true, don't unlock the guild.
+any	37	auto_save_adv_override	integer	Set an override to amount of adv to save at end of day. Set to -1 to handle this automatically.
+any	38	auto_spoonsign	string	What sign to change to with the hewn moon-rune spoon after finishing any business in the current sign. If blank or invalid, we won't switch automatically. Can be set to any of the 9 main sign names, or knoll/canadia/gnomad to automatically select the appropriate sign within that zone based on your mainstat. Also some shorthands are allowed in case you forgot which moonsign is which, such as famweight/clover/food/booze. You will be prompted to confirm that you actually do want to change signs automatically once per ascension (although it will automatically assume that you do after 15 seconds of inactivity), so forgetting to change the value in advance should not be a concern.
+any	39	auto_MLSafetyLimit	integer	If set this will be the (approximate) cap for +ML. WARNING: Certain conditions may require the script to exceed this by a small margin. For best results set this 10 below the maximum ML you can handle. Setting to -1 will cause the lowest possible ML to be equipped, including going negative if possible - this can cause non-optimal gear to be equipped.
+any	40	auto_disregardInstantKarma	boolean	When true, the script will not scale back ML after reaching Level 13, if you also set auto_MLSafetyLimit to 999 the script will passively power level. WARNING: You are unlikely to get Instant Karma (This is useful if your run preceeds The Sea, The Basement, or Dungeons)
+any	41	auto_secondPlaceOrBust	boolean	When true, abort before each tower test if we can't get to second place.
+any	42	auto_log_level	int	valid choices: 0 = error. 1 = warning. 2 = info. 3 = debug. Sets the level of logging which autoscend will output to gCLI and session log. Defaults to 3 (debug).
+any	43	auto_log_level_restore	int	valid choices: 0 = no extra debugging. 1 = log the stages and their results 2 = log restorer data dump. Sets the level of extra debug logging which autoscend restore code will output to gCLI and session log. Defaults to 0. Note that this is just for extra debugging.
+any	44	auto_restoreUseBloodBond	boolean	Whether to use extra hp to cast blood bond. Blood bond has a recurring HP drain, set to false if you are worried about getting killed or wasting resources healing. Defaults to false.
+any	45	auto_forceFatLootToken	boolean	force grabbing the fat loot tokens from daily dungeon and fantasy realm every day even if you already have enough for this run. This is mainly for new accounts who want to get the cubeling and/or skillbooks.
+any	46	auto_pvpEnable	boolean	Break the hippy stone to unlock PvP? This may also let autoscend collect low-effort PVP items.
+any	47	auto_towerBreak	string	Where should we break in the tower? (e.g. wall of skin, wall of bones, shadow, ns). Blank by default.
+any	48	auto_ignoreRestoreFailure	boolean	if true we will always ignore failure to restore MP or HP and just continue playing
+any	49	auto_workshed	string	What workshed item should we initialize with? If blank or invalid, we will change workshed based on priorities. There are some shorthands or you can use the full name of the workshed item. Some worksheds are not implemented so unless you are certain you want to deviate, use auto.
+any	50	auto_stopMinutesToRollover	int	How many minutes before rollover do we need to start getting ready for bed?
 
 post	0	auto_getSteelOrgan	boolean	Get Steel Organ in this ascension?
 post	1	auto_getBeehive	boolean	Get Beehive in this ascension?
