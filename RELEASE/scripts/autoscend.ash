@@ -1,4 +1,4 @@
-since r28873;	// fix: allow using 'buy' to buy from crimbo past skel
+since r28925;	// feat: add function for computing next available mobius strip noncombat
 
 /***
 	autoscend_header.ash must be first import

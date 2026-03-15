@@ -677,6 +677,7 @@ boolean auto_haveMonodent();
 boolean auto_waveTheZone();
 boolean auto_talkToSomeFish(location loc, monster enemy);
 boolean auto_haveBCZ();
+boolean auto_BCZEquipped();
 boolean auto_wantToBCZ(skill sk);
 boolean auto_bczRefractedGaze();
 void auto_getBCZItems();
@@ -696,6 +697,16 @@ int auto_clubEmBackInTimesRemaining();
 int auto_clubEmAcrossTheBattlefieldsRemaining();
 int auto_clubEmIntoNextWeeksRemaining();
 boolean wantToClubEmBackInTime(location loc, monster enemy);
+boolean auto_haveEternityCodpiece();
+boolean auto_isInEternityCodpiece(item it);
+boolean auto_haveHeartstone();
+int auto_heartstoneBanishRemaining();
+int auto_heartstoneBuffsRemaining();
+int auto_heartstoneKillRemaining();
+int auto_heartstoneLuckRemaining();
+int auto_heartstonePalsRemaining();
+int auto_heartstoneStunRemaining();
+
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
