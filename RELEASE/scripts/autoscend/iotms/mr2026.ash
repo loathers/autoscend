@@ -132,3 +132,48 @@ int auto_heartstoneStunRemaining()
 	
 	return 5-to_int(get_property("_heartstoneStunUsed"));
 }
+
+boolean auto_haveArchaeologistSpade()
+{
+	if(auto_is_valid($item[Archaeologist's Spade]) && available_amount($item[Archaeologist's Spade]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
+
+int auto_spadeDigsRemaining()
+{
+	if (!auto_haveArchaeologistSpade()) { return 0;}
+	
+	return 11-to_int(get_property("_archSpadeDigs"));
+}
+
+boolean auto_spadeDigAncient()
+{
+	int choice_adv_num = 1596;
+	int choice_num = 2;
+	string choice_url = "choice.php?pwd&whichchoice=" + choice_adv_num + "&option=" + choice_num;
+	string use_url = "inv_use.php?pwd&which=3&whichitem="+$item[Archaeologist's Spade].id;
+	int n_digs = auto_spadeDigsRemaining();
+	if (n_digs > 0)
+	{
+		visit_url(use_url);
+		visit_url(choice_url);
+		if (n_digs > auto_spadeDigsRemaining()) // check we actually have fewer digs left now before returning
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean auto_burnRemainingSpadeDigs()
+{
+	int n_digs = auto_spadeDigsRemaining();
+	for (int ii = 0 ; ii < n_digs ; ii++)
+	{
+		auto_spadeDigAncient();
+	}
+	return auto_spadeDigsRemaining()==0;
+}

@@ -698,6 +698,10 @@ int auto_heartstoneKillRemaining();
 int auto_heartstoneLuckRemaining();
 int auto_heartstonePalsRemaining();
 int auto_heartstoneStunRemaining();
+boolean auto_haveArchaeologistSpade();
+int auto_spadeDigsRemaining();
+boolean auto_spadeDigAncient();
+boolean auto_burnRemainingSpadeDigs();
 
 
 ########################################################################################################
