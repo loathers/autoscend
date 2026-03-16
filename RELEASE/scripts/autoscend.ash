@@ -72,6 +72,7 @@ import <autoscend/paths/fall_of_the_dinosaurs.ash>
 import <autoscend/paths/g_lover.ash>
 import <autoscend/paths/gelatinous_noob.ash>
 import <autoscend/paths/grey_goo.ash>
+import <autoscend/paths/grey_you.ash>
 import <autoscend/paths/hattrick.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/i_love_u_hate.ash>
@@ -2075,9 +2076,9 @@ void auto_begin()
 		}
 	}
 
-	if(in_community())
+	if(in_community() || in_gyou())
 	{
-		abort("Community Service is no longer supported.");
+		abort(`{my_path().to_string()} is no longer supported.`);
 	}
 
 	if (in_bad_moon())

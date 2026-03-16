@@ -1239,6 +1239,10 @@ boolean L11_aridDesert()
 
 		if((item_amount($item[Worm-Riding Hooks]) > 0) && ((get_property("gnasirProgress").to_int() & 16) != 16))
 		{
+			if(auto_AprilSandwormsLeft() > 0)
+			{
+				return auto_playAprilTom(); // if we got the Apriling Band quad tom play them if we can
+			}
 			pullXWhenHaveY($item[Drum Machine], 1, 0);
 			if(item_amount($item[Drum Machine]) == 0)
 			{
