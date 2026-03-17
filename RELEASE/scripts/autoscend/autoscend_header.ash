@@ -706,7 +706,9 @@ int auto_heartstonePalsRemaining();
 int auto_heartstoneStunRemaining();
 boolean auto_haveArchaeologistSpade();
 int auto_spadeDigsRemaining();
+boolean auto_spadeDigItem();
 boolean auto_spadeDigAncient();
+boolean auto_spadeDigSkeleton();
 boolean auto_burnRemainingSpadeDigs();
 
 
