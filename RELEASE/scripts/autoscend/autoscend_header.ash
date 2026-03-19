@@ -742,6 +742,10 @@ boolean LM_edTheUndying();
 void edUnderworldChoiceHandler(int choice);
 
 ########################################################################################################
+//Defined in autoscend/paths/adventurer_meats_world.ash
+boolean is_meatGolem();
+
+########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
 boolean in_avantGuard();
 void ag_initializeSettings();

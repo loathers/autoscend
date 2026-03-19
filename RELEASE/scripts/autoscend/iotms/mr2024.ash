@@ -503,7 +503,7 @@ boolean auto_goingToMouthwashLevel()
 	{
 		return false;
 	}
-	if(in_glover() || in_bhy() || in_plumber())
+	if(in_glover() || in_bhy() || in_plumber() || is_meatGolem())
 	{
 		return false;
 	}
