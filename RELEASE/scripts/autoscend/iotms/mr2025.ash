@@ -159,7 +159,12 @@ boolean auto_setLeprecondo()
 				 7: 14, // whiskeybed
 				 8: 23, // classics library
 				 9: 11, // weight bench
-				10:  6  // crap
+				10:  6, // crap
+				11:  1, // crap
+				12:  2, // crap
+				13:  3, // crap
+				14:  4, // crap
+				15:  5  // crap
 		};
 		}
 
