@@ -55,6 +55,7 @@ import <autoscend/iotms/mr2026.ash>
 import <autoscend/iotms/ttt.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
+import <autoscend/paths/adventurer_meats_world.ash>
 import <autoscend/paths/auto_path_util.ash>
 import <autoscend/paths/avant_guard.ash>
 import <autoscend/paths/avatar_of_boris.ash>
