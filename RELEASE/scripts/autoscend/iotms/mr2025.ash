@@ -147,6 +147,22 @@ boolean auto_setLeprecondo()
 			17:  6  // crap
 		};
 
+		if (is_meatGolem())
+		{
+			int[int] priority = {
+				 1:  9, // cupcake treadmill
+				 2:  8, // karaoke machine
+				 3: 21, // programmable blender, prioritize meat over crafts?
+				 4: 27, // four-poster bed
+				 5: 12, // internet connected laptop
+				 6: 18, // couch and flatscreen
+				 7: 14, // whiskeybed
+				 8: 23, // classics library
+				 9: 11, // weight bench
+				10:  6  // crap
+		};
+		}
+
 		int[int] picks;
 		int n_picks = 0;
 		foreach i,f in priority
