@@ -709,6 +709,23 @@ void mobiusChoiceHandler(int choice, string page)
 	}
 
 	string pos;
+
+	// must... get... meat...
+	if (in_amw()):
+	{
+		pos = "Take the long odds on the trifecta"
+		if (choiceMap contains pos) {
+			mobiusChoice(pos);
+			return;
+		}
+		else
+		{
+			pos = "Fix the race and also fix the race"
+			mobiusChoice(pos);
+			return;
+		}
+	}
+
 	// we want to get +15 paradoxicity for more time cops and the 13-paradoxicity +item effect
 	// in a single day, we'll hit the NC maybe 9 times
 	// we can't guarantee we'll be able to use the effects, but the items are good
