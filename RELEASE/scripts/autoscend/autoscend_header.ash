@@ -323,6 +323,9 @@ boolean auto_haveKramcoSausageOMatic();
 boolean auto_sausageGoblin();
 boolean auto_sausageGoblin(location loc);
 boolean auto_sausageGoblin(location loc, string option);
+boolean auto_haveLilDoctorBag();
+int auto_chestXraysRemaining();
+int auto_reflexHammersRemaining();
 boolean pirateRealmAvailable();
 boolean LX_unlockPirateRealm();
 boolean auto_saberChoice(string choice);
@@ -676,6 +679,7 @@ int auto_timeCopFights();
 boolean auto_haveMonodent();
 boolean auto_waveTheZone();
 boolean auto_talkToSomeFish(location loc, monster enemy);
+int auto_throwLightningRemaining();
 boolean auto_haveShrunkenHead();
 boolean auto_wantToShrunkenHead(monster enemy);
 boolean auto_wantToShrunkenHead(location place);
@@ -1657,6 +1661,7 @@ int[item] auto_getAllEquipabble(slot s);
 item[int] auto_saveEquipped();
 boolean auto_loadEquipped(item[int] loadEquip);
 int[slot] powerMultipliers();
+void auto_equipFreekill();
 
 ########################################################################################################
 //Defined in autoscend/auto_familiar.ash

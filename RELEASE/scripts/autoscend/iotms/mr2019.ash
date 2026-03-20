@@ -321,6 +321,30 @@ boolean auto_sausageGoblin(location loc, string option)
 	return false;
 }
 
+//TODO(kalebb): add initial lil doctor methods
+boolean auto_haveLilDoctorBag()
+{
+	if(auto_is_valid($item[Lil\' Doctor&trade; Bag]) && available_amount($item[Lil\' Doctor&trade; Bag]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
+
+int auto_chestXraysRemaining()
+{
+	if(!auto_haveLilDoctorBag()) return 0;
+
+	return 3 - to_int(get_property("_chestXRayUsed"));
+}
+
+int auto_reflexHammersRemaining()
+{
+	if(!auto_haveLilDoctorBag()) return 0;
+
+	return 3 - to_int(get_property("_reflexHammerUsed"));
+}
+
 boolean pirateRealmAvailable()
 {
 	if(!is_unrestricted($item[PirateRealm membership packet]))

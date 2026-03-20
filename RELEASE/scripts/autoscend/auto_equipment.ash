@@ -1483,3 +1483,45 @@ int[slot] powerMultipliers()
 
 	return multiplier;
 }
+
+/**
+	Handles selecting and equiping an equipment that would allow a free kill skill to be cast, if able. 
+	Only selects one free kill at a time. 
+	Doesn't allow freekill equips in Advant guard or PocketFamiliars paths
+*/
+void auto_equipFreekill()
+{	
+	auto_log_info("Looking for an equipment with free kills available...")
+	item doctorBag = $item[Lil\' Doctor&trade; Bag];
+	item dartHolster = $item[Everfull Dart Holster];
+	item legendClub = $item[legendary seal-clubbing club];
+
+	boolean chestXrayAvailable = auto_chestXraysRemaining() > 0;
+	boolean redDartAvailable = auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0;
+	boolean clubBackAvailable = auto_clubEmBackInTimesRemaining() > 0;
+
+	//don't use freekills in advant guard or Pocket familiars, they are not worth it/ don't work
+	if(in_avantGuard() || in_pokefam())
+	{
+		chestXrayAvailable = false;
+		redDartAvailable = false;
+		clubBackAvailable = false;
+	} 
+
+	if(redDartAvailable)
+	{
+		auto_log_info("We don't have ELR so let's hit a bullseye. Equipping Everful Dart holster.");
+		autoEquip($slot[acc3], dartHolster);
+	} else if (chestXrayAvailable)
+	{
+		auto_log_info("We still have Chest X-Rays available. Equipping Lil' Doctor bag.");
+		autoEquip($slot[acc3], DOCTOR_BAG);
+	} else if (clubBackAvailable)
+	{
+		auto_log_info("They may not be seals, but we're gonna kill them last week. Equipping Legendary Seal Clubbing Club.");
+		autoEquip($slot[weapon], legendClub)
+	} else 
+	{
+		auto_log_info("No free kill sources found to equip, maybe you have some others, but we'll let combat figure that out.")
+	}
+}
