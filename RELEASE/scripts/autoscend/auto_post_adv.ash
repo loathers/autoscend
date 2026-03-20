@@ -346,6 +346,27 @@ boolean auto_post_adventure()
 			//buffMaintain($effect[Tricky Timpani], 30, 1, 10); //Only on boss fights
 		}
 	}
+	if (in_amw())
+	{
+		if amw_canAfford($skill[Self-Tenderize])
+		{
+			buffMaintain($effect[Tenderized], 0, 1, 100);
+		}
+		// Beef Goggles is in providers
+		if amw_canAfford($skill[Meat Puppet])
+		{
+			buffMaintain($effect[Meat Puppet], 0, 1, 30);
+		}
+		if amw_canAfford($skill[Steak Skirt])
+		{
+			buffMaintain($effect[Steak Skirt], 0, 1, 50);
+		}
+		// always on because +ML = +meat, plus currently acquired late
+		if amw_canAfford($skill[Ham It Up])
+		{
+			buffMaintain($effect[Hamming It Up], 0, 1, 10);
+		}
+	}
 
 	skill libram = preferredLibram();
 
