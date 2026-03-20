@@ -1401,7 +1401,7 @@ int banishSources()
 	//campground equipment
 	foreach it in $items[Asdon Martin keyfob (on ring)]
 	{
-		if(auto_get_campground() contains it)
+		if(have_workshed() && auto_get_campground() contains it)
 		{
 			count +=1;
 			continue;
@@ -1410,7 +1410,7 @@ int banishSources()
 	//familiars
 	foreach fam in $familiars[nanorhino, patriotic eagle]
 	{
-		if(auto_have_familiar(fam))
+		if(auto_have_familiar(fam) && canChangeToFamiliar(fam))
 		{
 			count +=1;
 			continue;
@@ -1423,6 +1423,21 @@ int freeRunSources()
 {
 	//This should only look at free runs we have programmed, not specialized free runs like the short writ of habeas corpus
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	//
+	// Look at auto_util.ash
+	// Spring Away: Equipment
+	// Blow the Green Candle!: Equipment
+	// green smoke bomb: Item
+	// tattered scrap of paper: Item
+	// GOTO: Item
+	// Bandersnatch: Familiar
+	// Boots: Familiar
+	// (replica) navel ring: Equipment
+	// Peel Out: Skill
+	// Bowl a Curveball: Item
+	// handful of split pea soup: Item
+	// giant eraser: Item
+
 	int count = 0;
 	foreach sk in $skills[peel out]
 	{
@@ -1433,8 +1448,7 @@ int freeRunSources()
 		}
 	}
 	//equipment
-	foreach eq in $items[spring shoes, roman candelabra, Navel ring of navel gazing, replica Navel ring of navel gazing,
-	Cosmic Bowling Ball]
+	foreach eq in $items[spring shoes, roman candelabra, Navel ring of navel gazing, replica Navel ring of navel gazing]
 	{
 		if(possessEquipment(eq) && auto_can_equip(eq))
 		{
@@ -1443,7 +1457,7 @@ int freeRunSources()
 		}
 	}
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
-	foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO, handful of split pea soup, giant eraser]
+	foreach it in $items[green smoke bomb, tattered scrap of paper, GOTO, cosmic bowling ball, handful of split pea soup, giant eraser]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
 		{
@@ -1454,7 +1468,7 @@ int freeRunSources()
 	//familiars
 	foreach fam in $familiars[frumious bandersnatch, pair of stomping boots]
 	{
-		if(auto_have_familiar(fam))
+		if(auto_have_familiar(fam) && canChangeToFamiliar(fam))
 		{
 			count +=1;
 			continue;
@@ -1488,7 +1502,7 @@ int freeKillSources()
 	//campground equipment
 	foreach it in $items[cold medicine cabinet]
 	{
-		if(auto_get_campground() contains it)
+		if(have_workshed() && auto_get_campground() contains it)
 		{
 			count +=1;
 			continue;
@@ -1531,7 +1545,7 @@ int instaKillSources()
 	//familiars
 	foreach fam in $familiars[Pair of Stomping Boots]
 	{
-		if(auto_have_familiar(fam))
+		if(auto_have_familiar(fam) && canChangeToFamiliar(fam))
 		{
 			count +=1;
 			continue;
@@ -1577,7 +1591,7 @@ int yellowRaySources()
 	//campground equipment
 	foreach it in $items[Portable Mayo Clinic, Asdon Martin keyfob (on ring)]
 	{
-		if(auto_get_campground() contains it)
+		if(have_workshed() && auto_get_campground() contains it)
 		{
 			count +=1;
 			continue;
@@ -1586,7 +1600,7 @@ int yellowRaySources()
 	//familiars
 	foreach fam in $familiars[Crimbo Shrub]
 	{
-		if(auto_have_familiar(fam))
+		if(auto_have_familiar(fam) && canChangeToFamiliar(fam))
 		{
 			count +=1;
 			continue;
@@ -1629,7 +1643,7 @@ int copySources()
 	//familiars
 	foreach fam in $familiars[patriotic eagle, chest mimic]
 	{
-		if(auto_have_familiar(fam))
+		if(auto_have_familiar(fam) && canChangeToFamiliar(fam))
 		{
 			count +=1;
 			continue;
@@ -1665,7 +1679,7 @@ int sniffSources()
 	//familiars
 	foreach fam in $familiars[Nosy Nose]
 	{
-		if(auto_have_familiar(fam))
+		if(auto_have_familiar(fam) && canChangeToFamiliar(fam))
 		{
 			count +=1;
 			continue;
