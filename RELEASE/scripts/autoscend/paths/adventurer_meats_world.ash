@@ -14,20 +14,20 @@ int amw_meatCost(skill sk) //as of now just combat
 {
 	switch(sk)
 	{
-		case $skill[[33023]Bacon Ray]:
+		case $skill[Bacon Ray]:
 			return 1;
-		case $skill[[33001]Beef Shank]:
-		case $skill[[33012]Spicy Meatball]:
+		case $skill[Beef Shank]:
+		case $skill[Spicy Meatball]:
 			return 2;
-		case $skill[[33002]Meat Cleaver]:
-		case $skill[[33014]Chew the Fat]:
+		case $skill[Meat Cleaver]:
+		case $skill[Chew the Fat]:
 			return 5;
-		case $skill[[33025]Wet Rub]:
-		case $skill[[33024]Meat Locker]:
+		case $skill[Wet Rub]:
+		case $skill[Meat Locker]:
 			return 8;
-		case $skill[[33003]Steak Through the Heart]:
+		case $skill[Steak Through the Heart]:
 			return 10;
-		case $skill[[33013]Meat Cute]:
+		case $skill[Meat Cute]:
 			return 20;
 		default:
 			return 0;
