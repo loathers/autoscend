@@ -9,7 +9,7 @@ boolean amw_wanttoPP(monster enemy)
 	}
 	// cannot autosell for meat so pickpocketing is less profitable
 	// maybe exempt certain monsters?
-	if(!canSurvive(8.0)
+	if(!canSurvive(8.0))
 	{
 		return false;
 	}
@@ -44,7 +44,7 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 
 	// make sure to heal if possible; consider restoring "!canSurvive(1.4) &&" if mafia's autoheal behavior is fixed
 	if(canUse($skill[Chew the Fat], false) && my_hp() < my_maxhp() * 0.95){
-		return(useSkill($skill[Chew the Fat], false))
+		return(useSkill($skill[Chew the Fat], false));
 	}
 
 	boolean enemy_physical_resistant = enemy.physical_resistance > 70;
