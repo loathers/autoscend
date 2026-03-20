@@ -124,7 +124,7 @@ boolean auto_setLeprecondo()
 	// Don't complain about optimality, only complain if it literally breaks.
 	// Low priority spleeners because we're not using them
 	string installed = get_property("leprecondoInstalled");
-	if (installed=="" || installed == "0,0,0,0")
+	if (true) // installed=="" || installed == "0,0,0,0"
 	{
 		auto_log_info("Setting Leprecondo","blue");
 		int[int] priority = {
@@ -149,7 +149,7 @@ boolean auto_setLeprecondo()
 
 		if (in_amw())
 		{
-			int[int] priority = {
+			priority = {
 				 1:  9, // cupcake treadmill
 				 2:  8, // karaoke machine
 				 3: 21, // programmable blender, prioritize meat over crafts?
