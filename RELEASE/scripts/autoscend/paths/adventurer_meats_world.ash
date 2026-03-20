@@ -71,3 +71,164 @@ boolean amw_buyAdv()
 	if (my_meat() < starting_meat){return true;}
 	return false;
 }
+
+// following code to decide which stats to buy modeled after Path of the Plumber
+record amw_statBuyable {
+	stat st;
+	int amount;
+}
+
+// returns a record of the (sub)stat and how much of that (sub)stat we want next
+// prioritizing getting all of the skills for now
+amw_statBuyable amw_nextStat()
+{
+	amw_statBuyable goal;
+	// getting elemental res for kitchen
+	if (my_basestat($stat[muscle]) < 10)
+	{
+		goal.st = $stat[submuscle];
+		goal.amount = 100;
+		return goal;
+	}
+	// survivability
+	else if (my_basestat($stat[moxie]) < 10)
+	{
+		goal.st = $stat[submoxie];
+		goal.amount = 100;
+		return goal;
+	}
+	// more elemental res/item drop/famwt/in-combat heal/elem dmg
+	else if (my_basestat($stat[mysticality]) < 50)
+	{
+		goal.st = $stat[submysticality];
+		goal.amount = 2500;
+		return goal;
+	}
+	// getting some HP
+	else if (my_basestat($stat[muscle]) < 30)
+	{
+		goal.st = $stat[submuscle];
+		goal.amount = 900;
+		return goal;
+	}
+	// survivability
+	else if (my_basestat($stat[moxie]) < 30)
+	{
+		goal.st = $stat[submoxie];
+		goal.amount = 900;
+		return goal;
+	}
+	// +1 adv per bundle
+	else if (my_basestat($stat[mysticality]) < 70)
+	{
+		goal.st = $stat[submysticality];
+		goal.amount = 4900;
+		return goal;
+	}
+	// +20 adv per day/survivability
+	else if (my_basestat($stat[moxie]) < 50)
+	{
+		goal.st = $stat[submoxie];
+		goal.amount = 2500;
+		return goal;
+	}
+	// item/meat cute and lvl 11
+	else if (my_basestat($stat[mysticality]) < 104)
+	{
+		goal.st = $stat[submysticality];
+		goal.amount = 10816;
+		return goal;
+	}
+	// -combat, elemental res
+	else if (my_basestat($stat[moxie]) < 90)
+	{
+		goal.st = $stat[submoxie];
+		goal.amount = 8100;
+		return goal;
+	}
+	// tad more hp. necessary??
+	else if (my_basestat($stat[muscle]) < 50)
+	{
+		goal.st = $stat[submuscle];
+		goal.amount = 2500;
+		return goal;
+	}
+	// +1 adv per bundle/lvl 12
+	else if (my_basestat($stat[moxie]) < 125)
+	{
+		goal.st = $stat[submoxie];
+		goal.amount = 15625;
+		return goal;
+	}
+	// +1 adv per bundle
+	else if (my_basestat($stat[muscle]) < 100)
+	{
+		goal.st = $stat[submuscle];
+		goal.amount = 10000;
+		return goal;
+	}
+	// initiative
+	else if (my_basestat($stat[mysticality]) < 110)
+	{
+		goal.st = $stat[submysticality];
+		goal.amount = 12100;
+		return goal;
+	}
+	// level 13 if not d1
+	else if (my_basestat($stat[moxie]) < 148)
+	{
+		goal.st = $stat[submoxie];
+		goal.amount = 21904;
+		return goal;
+	}
+
+	goal.int = 0; //represents no more stats wanted
+	return goal;
+}
+
+// reserves meat from being spent on stats
+// could be more sophisticated, but it will probably do for now
+int amw_calculateReserve()
+{
+	current_level = my_level();
+	if (current_level <= 4)
+	{
+		return 500;
+	}
+	else if (current_level <= 9)
+	{
+		return 1200;
+	}
+	else if (current_level <= 10)
+	{
+		return 3000;
+	}
+	else
+	{
+		return 5000;
+	}
+}
+
+int amw_substatsBuyable(amw_statBuyable goal)
+{
+	int meat_reserve = amw_calculateReserve();
+	if (meat_reserve >= my_meat()){return 0;} // no meat unreserved to spend on stats
+	int substats_to_goal = (goal.amount - my_basestat(goal.st));
+
+	// return either the meat within budget or the substats we need to reach the goal
+	return min(my_meat()-meat_reserve, substats_to_goal);
+}
+
+boolean amw_buyStats()
+{
+	amw_statBuyable next = amw_nextStat();
+	if (next.amount != 0)
+	{
+		int amountToBuy = amw_substatsBuyable(next);
+		if (amountToBuy > 0)
+		{
+			return amw_buySubstat(next.st, next.amount);
+		}
+		return false;
+	}
+}
