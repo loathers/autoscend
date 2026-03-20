@@ -685,7 +685,7 @@ boolean auto_BCZEquipped();
 boolean auto_wantToBCZ(skill sk);
 boolean auto_bczRefractedGaze();
 void auto_getBCZItems();
-item auto_getItemToEquipBCZ()
+item auto_getItemToEquipBCZ();
 boolean auto_haveShrunkenHead();
 boolean auto_wantToShrunkenHead(monster enemy, location place);
 boolean auto_wantToShrunkenHead(location place);

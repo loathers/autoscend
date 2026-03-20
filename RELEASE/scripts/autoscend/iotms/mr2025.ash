@@ -942,9 +942,9 @@ item auto_getItemToEquipBCZ()
 	}
 	if(auto_haveBCZ())
 	{
-		return $item[blood cubic zirconia]
+		return $item[blood cubic zirconia];
 	}
-	return $item[none]
+	return $item[none];
 }
 
 boolean auto_BCZEquipped()
