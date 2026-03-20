@@ -242,6 +242,11 @@ boolean LM_adventurerMeatsWorld()
 		return false;
 	}
 	if (amw_buyStats()){return true;} // want to run again to put meat towards the next goal if applicable
-	
+
+	// this probably isn't the "right" place to add adventures...?
+	if (my_adventures() <= 6)
+	{
+		amw_buyAdv()
+	}
 	return false;
 }
