@@ -455,7 +455,6 @@ skill getStunner(monster enemy)
 			return $skill[Drum Roll];
 		}
 		break;
-	}
 	case $class[Meat Golem]:
 		if(canUse($skill[Meat Locker], false))
 		{
