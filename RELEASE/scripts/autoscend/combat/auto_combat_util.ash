@@ -71,7 +71,8 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
 		my_soulsauce() < soulsauce_cost(sk) ||
-		my_pp() < plumber_ppCost(sk))
+		my_pp() < plumber_ppCost(sk) ||
+		my_meat() < amw_meatCost(sk))
 		{
 			return false;
 		}
