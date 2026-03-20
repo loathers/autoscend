@@ -914,6 +914,13 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
+int auto_throwLightningRemaining()
+{
+	if(!auto_haveMonodent()) return 0;
+
+	return 11 - to_int(get_property("_seadentLightningUsed"));
+}
+
 boolean auto_haveBCZ()
 {
 	if(possessEquipment($item[blood cubic zirconia]))
@@ -925,6 +932,19 @@ boolean auto_haveBCZ()
 		return true;
 	}
 	return false;
+}
+
+item auto_getItemToEquipBCZ()
+{
+	if (auto_haveEternityCodpiece() && auto_isInEternityCodpiece($item[blood cubic zirconia]))
+	{
+		return $item[the eternity codpiece];
+	}
+	if(auto_haveBCZ())
+	{
+		return $item[blood cubic zirconia]
+	}
+	return $item[none]
 }
 
 boolean auto_BCZEquipped()

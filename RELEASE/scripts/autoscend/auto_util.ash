@@ -1475,6 +1475,15 @@ int instaKillsAvailable()
 			continue;
 		}
 	}
+	//equipment
+	foreach eq in $items[Heartstone]
+	{
+		if(possessEquipment(eq))
+		{
+			count +=1;
+			continue;
+		}
+	}
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
 	foreach it in $items[Power Pill]
 	{

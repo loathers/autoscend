@@ -647,29 +647,7 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	// Use some instakills. Can't use Chest X-Ray in Pocket Familiars.
-	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
-	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && auto_is_valid($skill[Chest X-Ray]) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19 && !in_pokefam())
-	{
-		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
-		autoEquip($slot[acc3], DOCTOR_BAG);
-	}
-
-	item dartHolster = $item[Everfull Dart Holster];
-	if (auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0 && !in_avantGuard() && !in_pokefam())
-	{
-		auto_log_info("We don't have ELR so let's hit a bullseye");
-		autoEquip($slot[acc3], dartHolster);
-	}
-
-	item bcz = $item[blood cubic zirconia];
-	if (auto_wantToBCZ($skill[BCZ: Sweat Bullets]) && !in_avantGuard() && !in_pokefam())
-	{
-		auto_log_info("Hello me, nice talking to myself. SWEATING BULLLEEETTTSS!!!!");
-		autoEquip($slot[acc3], bcz);
-	}
-
-
+	auto_equipFreekill();
 	equipOverrides();
 	kolhs_preadv(place);
 	ag_bgChat();
