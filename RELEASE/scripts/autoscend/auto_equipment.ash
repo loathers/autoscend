@@ -1491,7 +1491,7 @@ int[slot] powerMultipliers()
 */
 void auto_equipFreekill()
 {	
-	auto_log_info("Looking for an equipment with free kills available...")
+	auto_log_info("Looking for an equipment with free kills available...");
 	item doctorBag = $item[Lil\' Doctor&trade; Bag];
 	item dartHolster = $item[Everfull Dart Holster];
 	item legendClub = $item[legendary seal-clubbing club];
@@ -1515,13 +1515,13 @@ void auto_equipFreekill()
 	} else if (chestXrayAvailable)
 	{
 		auto_log_info("We still have Chest X-Rays available. Equipping Lil' Doctor bag.");
-		autoEquip($slot[acc3], DOCTOR_BAG);
+		autoEquip($slot[acc3], doctorBag);
 	} else if (clubBackAvailable)
 	{
 		auto_log_info("They may not be seals, but we're gonna kill them last week. Equipping Legendary Seal Clubbing Club.");
-		autoEquip($slot[weapon], legendClub)
+		autoEquip($slot[weapon], legendClub);
 	} else 
 	{
-		auto_log_info("No free kill sources found to equip, maybe you have some others, but we'll let combat figure that out.")
+		auto_log_info("No free kill sources found to equip, maybe you have some others, but we'll let combat figure that out.");
 	}
 }
