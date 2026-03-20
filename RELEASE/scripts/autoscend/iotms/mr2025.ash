@@ -713,14 +713,14 @@ void mobiusChoiceHandler(int choice, string page)
 	// must... get... meat...
 	if (in_amw()):
 	{
-		pos = "Take the long odds on the trifecta"
+		pos = "Take the long odds on the trifecta";
 		if (choiceMap contains pos) {
 			mobiusChoice(pos);
 			return;
 		}
 		else
 		{
-			pos = "Fix the race and also fix the race"
+			pos = "Fix the race and also fix the race";
 			mobiusChoice(pos);
 			return;
 		}
