@@ -1315,7 +1315,7 @@ boolean adjustForCopyIfPossible()
 	return adjustForCopyIfPossible($monster[none]);
 }
 
-int banishesAvailable()
+int banishSources()
 {
 	//This should only look at banishes we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
@@ -1371,7 +1371,7 @@ int banishesAvailable()
 }
 
 
-int freeRunsAvailable()
+int freeRunSources()
 {
 	//This should only look at free runs we have programmed, not specialized free runs like the short writ of habeas corpus
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
@@ -1415,7 +1415,7 @@ int freeRunsAvailable()
 	return count;
 }
 
-int freeKillsAvailable()
+int freeKillSources()
 {
 	//This should only look at free kills we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
@@ -1458,7 +1458,7 @@ int freeKillsAvailable()
 	return count;
 }
 
-int instaKillsAvailable()
+int instaKillSources()
 {
 	//This should only look at instakills we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
@@ -1492,7 +1492,7 @@ int instaKillsAvailable()
 	return count;
 }
 
-int yellowRaysAvailable()
+int yellowRaySources()
 {
 	//This should only look at YRs we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
@@ -1547,7 +1547,7 @@ int yellowRaysAvailable()
 	return count;
 }
 
-int copiesAvailable()
+int copySources()
 {
 	//This should only look at copiers/replacers/summons we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
@@ -1591,7 +1591,7 @@ int copiesAvailable()
 	return count;
 }
 
-int sniffsAvailable()
+int sniffSources()
 {
 	//This should only look at copies we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
