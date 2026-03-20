@@ -147,7 +147,7 @@ boolean auto_setLeprecondo()
 			17:  6  // crap
 		};
 
-		if (is_meatGolem())
+		if (in_amw())
 		{
 			int[int] priority = {
 				 1:  9, // cupcake treadmill

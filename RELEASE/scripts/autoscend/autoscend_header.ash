@@ -743,7 +743,7 @@ void edUnderworldChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/paths/adventurer_meats_world.ash
-boolean is_meatGolem();
+boolean in_amw();
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
