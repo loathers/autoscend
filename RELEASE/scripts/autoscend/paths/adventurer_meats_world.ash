@@ -187,7 +187,7 @@ amw_statBuyable amw_nextStat()
 }
 
 // reserves meat from being spent on stats
-// could be more sophisticated, but it will probably do for now
+// TODO: take into account how much meat is needed for the next bundle of 10
 int amw_calculateReserve()
 {
 	current_level = my_level();
@@ -231,4 +231,17 @@ boolean amw_buyStats()
 		}
 		return false;
 	}
+}
+
+boolean LM_adventurerMeatsWorld()
+{
+	//this function is called early once every loop of doTasks() in autoscend.ash
+	//if something in this function returns true then it will restart the loop and get called again.
+	if(!in_amw())
+	{
+		return false;
+	}
+	if (amw_buyStats()){return true;} // want to run again to put meat towards the next goal if applicable
+	
+	return false;
 }

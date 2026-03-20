@@ -1994,6 +1994,7 @@ boolean doTasks()
 	if(LM_robot())						return true;
 	if(LM_plumber())					return true;
 	if(LM_zombieSlayer())				return true;
+	if(LM_adventurerMeatsWorld())		return true;
 
 	{
 		cheeseWarMachine(0, 0, 0, 0);
