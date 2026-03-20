@@ -746,6 +746,7 @@ void edUnderworldChoiceHandler(int choice);
 boolean in_amw();
 boolean amw_initializeSettings();
 int amw_meatCost(skill sk);
+boolean amw_buySubstat(stat st, int numberToBuy);
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash

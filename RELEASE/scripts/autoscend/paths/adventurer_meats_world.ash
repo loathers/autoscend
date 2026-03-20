@@ -33,3 +33,28 @@ int amw_meatCost(skill sk) //as of now just combat
 			return 0;
 	}
 }
+
+boolean amw_buySubstat(stat st, int numberToBuy)
+// buys substats, whether st is a stat or a substat
+{
+	if (numberToBuy > my_meat()){return false;}
+
+	// setting which substat to buy
+	int option = 0;
+	if (st == $stat[muscle] || st == $stat[submuscle]){
+		option = 1;
+	}
+	if (st == $stat[mysticality] || st == $stat[submysticality]){
+		option = 2;
+	}
+	if (st == $stat[moxie] || st == $stat[submuscle]){
+		option = 3;
+	}
+
+	if (option != 0){
+		url = `choice.php?whichchoice=1592&pwd&option={to_string(option)}&num={to_string(numberToBuy)}`;
+		visit_url(url, true);
+		return true;
+	}
+	return false;
+}
