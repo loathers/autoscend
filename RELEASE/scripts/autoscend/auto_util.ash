@@ -1319,15 +1319,64 @@ int banishSources()
 {
 	//This should only look at banishes we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	//
+	// Look at auto_combat_util.ash
+	// Monster Banishes
+	// Spring Kick: Equipment
+	// Peel Out: Skill
+	// Howl of the Alpha: Skill
+	// Throw Latte on Opponent: Equipment
+	// Give Your Opponent The Stinkeye: Equipment
+	// Creepy Grin: Equipment
+	// Baleful Howl: Skill
+	// Thunder Clap: Skill
+	// Asdon Martin: Campground
+	// Curse of Vacation: Skill
+	// Show Them Your Ring: Equipment
+	// Breathe Out: Skill, from hot jelly
+	// Batter Up!: Skill
+	// Zootomist Kick Banish: Skill
+	// Banishing Shout: Skill
+	// Walk Away From Explosion: Skill
+	// Talk About Politics: Equipment
+	// Reflex Hammer: Equipment
+	// Show Your Boring Familiar Pictures: Equipment
+	// Bowl a Curveball: Item
+	// Feel Hatred: Skill
+	// [7510]Punt: Skill
+	// Snokebomb: Skill
+	// stuffed yam stinkbomb: Item
+	// handful of split pea soup: Item
+	// Punch Out Your Foe: Skill, from pre-workout powder
+	// [28021]Punt: Skill
+	// Saber Force Banish: Equipment
+	// KGB Tranquilizer Dart: Equipment
+	// Monkey Slap: Equipment
+	// Sea *dent Lightning Bolt: Equipment
+	// Unleash Nanites: Familiar
+	// Beancannon: Skill
+	// human musk: Item
+	// Louder Than Bomb: Item
+	// tennis ball: Item
+	// deathchucks: Item
+	// divine champagne popper: Item
+	// anchor bomb: Item
+	//
+	// Phylum Banishes
+	// Patriotic Screech: Familiar
+
 	int count = 0;
-	foreach sk in $skills[peel out, Howl of the Alpha, Baleful Howl, Thunder Clap, Curse Of Vacation, Breathe Out, Batter Up!, Mark Your Territory,
-	Banishing Shout, Walk Away From Explosion, Feel Hatred, [7510]Punt, Snokebomb, Punch Out Your Foe, [28021]Punt, Unleash Nanites, Beancannon]
+	foreach sk in $skills[peel out, Howl of the Alpha, Baleful Howl, Thunder Clap, Curse Of Vacation, Breathe Out, Batter Up!,
+	Banishing Shout, Walk Away From Explosion, Feel Hatred, [7510]Punt, Snokebomb, Punch Out Your Foe, [28021]Punt, Beancannon]
 	{
 		if(auto_have_skill(sk))
 		{
 			count +=1;
 			continue;
 		}
+	}
+	if (getZooKickBanish() != $skill[none]) {
+		count += 1;
 	}
 	//equipment
 	foreach eq in $items[spring shoes, latte lovers member\'s mug, stinky cheese eye, V for Vivala mask, Mafia middle finger ring, Pantsgiving,
@@ -1340,8 +1389,8 @@ int banishSources()
 		}
 	}
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
-	foreach it in $items[stuffed yam stinkbomb, Handful of split pea soup, human musk, Louder Than Bomb, Tennis Ball, Deathchucks, divine champagne popper,
-	anchor bomb, pheromone cocktail, Cosmic Bowling Ball, scoop of pre-workout powder]
+	foreach it in $items[Cosmic Bowling Ball, stuffed yam stinkbomb, Handful of split pea soup, human musk,
+	Louder Than Bomb, Tennis Ball, Deathchucks, divine champagne popper, anchor bomb]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
 		{
@@ -1369,7 +1418,6 @@ int banishSources()
 	}
 	return count;
 }
-
 
 int freeRunSources()
 {
