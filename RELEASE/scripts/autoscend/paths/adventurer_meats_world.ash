@@ -52,9 +52,22 @@ boolean amw_buySubstat(stat st, int numberToBuy)
 	}
 
 	if (option != 0){
-		url = `choice.php?whichchoice=1592&pwd&option={to_string(option)}&num={to_string(numberToBuy)}`;
+		string url = `choice.php?whichchoice=1592&pwd&option={to_string(option)}&num={to_string(numberToBuy)}`;
 		visit_url(url, true);
 		return true;
 	}
+	return false;
+}
+
+// attempt to buy the cheapest bundle of advs
+boolean amw_buyAdv()
+{
+	// not sure how to tell if we can afford adventures yet, so attempting even if we can't afford
+	int starting_meat = my_meat();
+	string url = `choice.php?whichchoice=1593&pwd&option=1`;
+	visit_url(url, true);
+
+	// successful if meat was spent
+	if (my_meat() < starting_meat){return true;}
 	return false;
 }
