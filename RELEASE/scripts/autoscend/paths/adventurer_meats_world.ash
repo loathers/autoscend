@@ -5,7 +5,6 @@ boolean in_amw()
 
 boolean amw_initializeSettings()
 {
-	// placeholder in case this ends up useful
-	set_property("auto_skipUnlockGuild", true);
+	set_property("auto_wandOfNagamar", false);
 	return false;
 }
