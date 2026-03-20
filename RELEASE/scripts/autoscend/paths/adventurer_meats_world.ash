@@ -44,6 +44,11 @@ int amw_meatCost(skill sk)
 	}
 }
 
+boolean amw_canAfford(skill sk)
+{
+	return my_meat() >= (10 + amw_meatCost(sk));
+}
+
 boolean amw_buySubstat(stat st, int numberToBuy)
 // buys substats, whether st is a stat or a substat
 {
