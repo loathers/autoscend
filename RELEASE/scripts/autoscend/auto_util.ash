@@ -1587,6 +1587,7 @@ int yellowRaySources()
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
 	//
 	// Look at auto_combat_util.ash
+	// Zootomist Kick YR: Skill
 	// Fondeluge: Skill
 	// yellowcake bomb: Item
 	// yellow rocket: Item (we don't buy it if we have a parka, but having the key doesn't prove we can buy it)
@@ -1621,6 +1622,9 @@ int yellowRaySources()
 			count +=1;
 			continue;
 		}
+	}
+	if (canUse(getZooKickYR())) {
+		count += 1;
 	}
 	//equipment
 	foreach eq in $items[jurassic parka, roman candelabra, unwrapped knock-off retro superhero cape,
@@ -1746,6 +1750,20 @@ int sniffSources()
 {
 	//This should only look at sniffs we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	//
+	// Look at auto_combat_util.ash: getSniffer
+	// Transcendent Olfaction: Skill
+	// Make Friends: Skill
+	// Hunt: Skill
+	// Long Con: Skill
+	// Perceive Soul: Skill
+	// Motif: Skill
+	// Monkey Point: Equipment
+	// McHugeLarge Slash: Equipment
+	// Gallapagosian Mating Call: Skill
+	// Get a Good Whiff of This Guy: Familiar
+	// Offer Latte to Opponent: Equipment
+	// Zootomist Kick Sniff: Skill
 	int count = 0;
 	foreach sk in $skills[Transcendent Olfaction, Make Friends, Hunt, Long Con, Perceive Soul, Motif,
 	Gallapagosian Mating Call]
@@ -1755,6 +1773,9 @@ int sniffSources()
 			count +=1;
 			continue;
 		}
+	}
+	if (canUse(getZooKickSniff())) {
+		count += 1;
 	}
 	//equipment
 	foreach eq in $items[cursed monkey\'s paw, McHugeLarge left pole, latte lovers member's mug]
