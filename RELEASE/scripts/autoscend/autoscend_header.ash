@@ -744,6 +744,7 @@ void edUnderworldChoiceHandler(int choice);
 ########################################################################################################
 //Defined in autoscend/paths/adventurer_meats_world.ash
 boolean in_amw();
+boolean amw_initializeSettings();
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
