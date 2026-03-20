@@ -59,7 +59,7 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 		if ((my_buffedstat($stat[moxie]) > 1.8*my_buffedstat($stat[mysticality])) || (enemy.defense_element == $element[hot])){
 			return(useSkill($skill[Bacon Ray], false));
 		}
-		return(useSkill($skill[SpicyMeatball], true));
+		return(useSkill($skill[SpicyMeatball], false));
 	}
 	else if(enemy_physical_resistant){
 		if(canUse($skill[Bacon Ray], false)){
@@ -109,7 +109,7 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 			if ((my_buffedstat($stat[moxie]) > 1.8*my_buffedstat($stat[mysticality])) || (enemy.defense_element == $element[hot])){
 				return(useSkill($skill[Bacon Ray], false));
 			}
-			return(useSkill($skill[SpicyMeatball], true));
+			return(useSkill($skill[SpicyMeatball], false));
 		}
 
 		if(canUse($skill[Bacon Ray], false)){
