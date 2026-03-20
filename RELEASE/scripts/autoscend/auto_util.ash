@@ -1375,7 +1375,7 @@ int banishSources()
 			continue;
 		}
 	}
-	if (getZooKickBanish() != $skill[none]) {
+	if (canUse(getZooKickBanish())) {
 		count += 1;
 	}
 	//equipment
@@ -1481,6 +1481,24 @@ int freeKillSources()
 {
 	//This should only look at free kills we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	//
+	// Look at auto_combat_default_stage2.ash
+	// Kill without Items
+	// Club 'Em Back in Time: Equipment
+	// groveling gravel: Item
+	// Kill with Items
+	// power pill: Item
+	// Lightning Strike: Skill
+	// Dart Bullseye: Equipment
+	// Zootomist Kick Kill: Skill
+	// Chest X-Ray: Equipment
+	// Shattering Punch: Skill
+	// Gingerbread Mob Hit: Skill
+	// Free-For-All: Skill
+	// replica bat-oomerang: Item
+	// shadow brick: Item
+	// Fire the Jokester's Gun: Equipment
+	// Breathitin outdoor fights: Campground
 	int count = 0;
 	foreach sk in $skills[lightning strike, shattering punch, Gingerbread Mob Hit, Free-For-All]
 	{
@@ -1490,8 +1508,11 @@ int freeKillSources()
 			continue;
 		}
 	}
+	if (canUse(getZooKickInstaKill())) {
+		count += 1;
+	}
 	//equipment
-	foreach eq in $items[blood cubic zirconia, Everfull Dart Holster, Lil\' Doctor&trade; bag, The Jokester's gun, unwrapped knock-off retro superhero cape]
+	foreach eq in $items[legendary seal-clubbing club, Everfull Dart Holster, Lil\' Doctor&trade; bag, The Jokester's gun]
 	{
 		if(possessEquipment(eq) && auto_can_equip(eq))
 		{
@@ -1509,7 +1530,7 @@ int freeKillSources()
 		}
 	}
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
-	foreach it in $items[groveling gravel, Replica Bat-oomerang, shadow brick, Exploding Cigar]
+	foreach it in $items[groveling gravel, Replica Bat-oomerang, shadow brick]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
 		{
@@ -1524,6 +1545,11 @@ int instaKillSources()
 {
 	//This should only look at instakills we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	//
+	// Look at auto_combat_default_stage2.ash
+	// Slaughter: Skill
+	// exploding cigar: Item
+	// Release the Boots: Familiar
 	int count = 0;
 	foreach sk in $skills[slaughter]
 	{
@@ -1534,7 +1560,7 @@ int instaKillSources()
 		}
 	}
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
-	foreach it in $items[Power Pill]
+	foreach it in $items[exploding cigar]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
 		{
