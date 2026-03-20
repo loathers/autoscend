@@ -53,13 +53,13 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 	{
 		// if we have no other choice or the monster is sleazy, we want hot for sure
 		if(!canUse($skill[Bacon Ray], false) || (enemy.defense_element == $element[sleaze])){
-			return(useSkill($skill[SpicyMeatball], false));
+			return(useSkill($skill[Spicy Meatball], false));
 		}
 		// multiplied myst to penalize bacon ray taking 2x long (at half cost)
 		if ((my_buffedstat($stat[moxie]) > 1.8*my_buffedstat($stat[mysticality])) || (enemy.defense_element == $element[hot])){
 			return(useSkill($skill[Bacon Ray], false));
 		}
-		return(useSkill($skill[SpicyMeatball], false));
+		return(useSkill($skill[Spicy Meatball], false));
 	}
 	else if(enemy_physical_resistant){
 		if(canUse($skill[Bacon Ray], false)){
@@ -104,12 +104,12 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 		{
 			// if we have no other choice or the monster is sleazy, we want hot for sure
 			if(!canUse($skill[Bacon Ray], false) || (enemy.defense_element == $element[sleaze])){
-				return(useSkill($skill[SpicyMeatball], false));
+				return(useSkill($skill[Spicy Meatball], false));
 			}
 			if ((my_buffedstat($stat[moxie]) > 1.8*my_buffedstat($stat[mysticality])) || (enemy.defense_element == $element[hot])){
 				return(useSkill($skill[Bacon Ray], false));
 			}
-			return(useSkill($skill[SpicyMeatball], false));
+			return(useSkill($skill[Spicy Meatball], false));
 		}
 
 		if(canUse($skill[Bacon Ray], false)){
