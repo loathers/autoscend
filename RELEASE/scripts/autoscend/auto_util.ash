@@ -1333,7 +1333,7 @@ int banishSources()
 	foreach eq in $items[spring shoes, latte lovers member\'s mug, stinky cheese eye, V for Vivala mask, Mafia middle finger ring, Pantsgiving,
 	Lil\' Doctor&trade; bag, familiar scrapbook, Fourth of May cosplay saber, Kremlin\'s Greatest Briefcase, cursed monkey\'s paw, Monodent of the Sea]
 	{
-		if(possessEquipment(eq))
+		if(possessEquipment(eq) && auto_can_equip(eq))
 		{
 			count +=1;
 			continue;
@@ -1388,7 +1388,7 @@ int freeRunSources()
 	foreach eq in $items[spring shoes, roman candelabra, Navel ring of navel gazing, replica Navel ring of navel gazing,
 	Cosmic Bowling Ball]
 	{
-		if(possessEquipment(eq))
+		if(possessEquipment(eq) && auto_can_equip(eq))
 		{
 			count +=1;
 			continue;
@@ -1431,7 +1431,7 @@ int freeKillSources()
 	//equipment
 	foreach eq in $items[blood cubic zirconia, Everfull Dart Holster, Lil\' Doctor&trade; bag, The Jokester's gun, unwrapped knock-off retro superhero cape]
 	{
-		if(possessEquipment(eq))
+		if(possessEquipment(eq) && auto_can_equip(eq))
 		{
 			count +=1;
 			continue;
@@ -1510,7 +1510,7 @@ int yellowRaySources()
 	foreach eq in $items[jurassic parka, roman candelabra, unwrapped knock-off retro superhero cape,
 	April Shower Thoughts Shield, Fourth of May cosplay saber]
 	{
-		if(possessEquipment(eq))
+		if(possessEquipment(eq) && auto_can_equip(eq))
 		{
 			count +=1;
 			continue;
@@ -1563,7 +1563,7 @@ int copySources()
 	//equipment
 	foreach eq in $items[roman candelabra, Powerful Glove, backup camera, cargo cultist shorts, combat lover\'s locket]
 	{
-		if(possessEquipment(eq))
+		if(possessEquipment(eq) && auto_can_equip(eq))
 		{
 			count +=1;
 			continue;
@@ -1608,7 +1608,7 @@ int sniffSources()
 	//equipment
 	foreach eq in $items[cursed monkey\'s paw, McHugeLarge left pole, latte lovers member's mug]
 	{
-		if(possessEquipment(eq))
+		if(possessEquipment(eq) && auto_can_equip(eq))
 		{
 			count +=1;
 			continue;
