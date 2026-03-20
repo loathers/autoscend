@@ -1665,10 +1665,36 @@ int yellowRaySources()
 
 int copySources()
 {
-	//This should only look at copiers/replacers/summons we have programmed
+	//This should only look at copiers/replacers/summons we have programmed, and not specialised summons like Calculate the Universe
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	//
+	// Look at auto_combat_util.ash: replaceMonsterCombatString
+	// Replaces
+	// Macrometeorite: Skill
+	// Replace Enemy: Equipment
+	// waffle: Item
+	// Look at auto_combat_default_stage1.ash
+	// and auto_combat_default_stage4.ash
+	// and then at auto_util: handleCopiedMonster for the items
+	// EXCEPT actually only the rain-doh black box is implemented
+	// Copies
+	// Recall Facts Monster Habitats: Skill
+	// Fire a Red, White and Blue Blast: Familiar
+	// Back-Up to your Last Enemy: Equipment
+	// Rain-Doh black box: Item
+	// Digitize: Skill
+	// Blow the Purple Candle!: Equipment
+	// Look at auto_util.ash: summonMonster
+	// Summons (Calculate the Universe, Cargo Shorts and Burly Bodyguard in AG are all overly specialised)
+	// Rain Man: Skill
+	// Time-Spinner: Item
+	// Chest Mimic: Familiar
+	// combat lover's locket: Item (does not need to be equipped to reminisce)
+	// deluxe fax machine: Clan
+	// Wishing: Item
+
 	int count = 0;
-	foreach sk in $skills[Macrometeorite, Recall Facts: Monster Habitats, Digitize, Calculate the Universe, rain man]
+	foreach sk in $skills[Macrometeorite, Recall Facts: Monster Habitats, Digitize, rain man]
 	{
 		if(auto_have_skill(sk))
 		{
@@ -1677,7 +1703,7 @@ int copySources()
 		}
 	}
 	//equipment
-	foreach eq in $items[roman candelabra, Powerful Glove, backup camera, cargo cultist shorts, combat lover\'s locket]
+	foreach eq in $items[Powerful Glove, backup camera, roman candelabra]
 	{
 		if(possessEquipment(eq) && auto_can_equip(eq))
 		{
@@ -1686,9 +1712,18 @@ int copySources()
 		}
 	}
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
-	foreach it in $items[waffle, Rain-Doh black box, Time-Spinner, Spooky Putty Sheet, 4-D Camera, Unfinished Ice Sculpture, Print Screen Button]
+	foreach it in $items[waffle, Rain-Doh black box, Time-Spinner, combat lover\'s locket]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
+		{
+			count +=1;
+			continue;
+		}
+	}
+	//clan equipment
+	foreach it in $items[deluxe fax machine]
+	{
+		if(auto_get_clan_lounge() contains it)
 		{
 			count +=1;
 			continue;
@@ -1709,7 +1744,7 @@ int copySources()
 
 int sniffSources()
 {
-	//This should only look at copies we have programmed
+	//This should only look at sniffs we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
 	int count = 0;
 	foreach sk in $skills[Transcendent Olfaction, Make Friends, Hunt, Long Con, Perceive Soul, Motif,
