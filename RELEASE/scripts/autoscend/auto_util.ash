@@ -1347,7 +1347,7 @@ int banishSources()
 	// Snokebomb: Skill
 	// stuffed yam stinkbomb: Item
 	// handful of split pea soup: Item
-	// Punch Out Your Foe: Skill, from pre-workout powder
+	// Punch Out Your Foe: Skill, from pre-workout powder, which is automatically consumed if necessary
 	// [28021]Punt: Skill
 	// Saber Force Banish: Equipment
 	// KGB Tranquilizer Dart: Equipment
@@ -1390,7 +1390,8 @@ int banishSources()
 	}
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
 	foreach it in $items[Cosmic Bowling Ball, stuffed yam stinkbomb, Handful of split pea soup, human musk,
-	Louder Than Bomb, Tennis Ball, Deathchucks, divine champagne popper, anchor bomb]
+	Louder Than Bomb, Tennis Ball, Deathchucks, divine champagne popper, anchor bomb,
+	scoop of pre-workout powder]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
 		{
@@ -1584,6 +1585,33 @@ int yellowRaySources()
 {
 	//This should only look at YRs we have programmed
 	//IOTM-derived skills should be checked against the IOTM, not the skill/item if the skill/IOTM is not tradeable 
+	//
+	// Look at auto_combat_util.ash
+	// Fondeluge: Skill
+	// yellowcake bomb: Item
+	// yellow rocket: Item (we don't buy it if we have a parka, but having the key doesn't prove we can buy it)
+	// Spit Jurassic Acid: Equipment
+	// spitball: Item
+	// Blow the Yellow Candle!: Equipment
+	// Unleash the Devil's Kiss: Equipment
+	// Disintegrate: Skill
+	// Ball Lightning: Skill
+	// Wrath of Ra: Skill
+	// mayo lance: Campground
+	// Flash Headlight: Skill (only if Ultrabright, but overcounting is ok)
+	// Golden Light: Item
+	// pumpkin bomb: Item
+	// Unbearable Light: Item
+	// viral video: Item
+	// micronova: Item
+	// Unleash Cowrruption: Skill, from effect from corrupted marrow
+	// Open a Big Yellow Present: Familiar
+	// Asdon Martin: Campground
+	// Northern Explosion w/ April Shower Thoughts Shield: Equipment
+	// Feel Envy: Skill
+	// Saber Force: Equipment
+	// Shocking Lick: Skill, from 9-Volt battery
+
 	int count = 0;
 	foreach sk in $skills[Fondeluge, Disintegrate, Ball Lightning, Wrath of Ra, Flash Headlight, Unleash Cowrruption, Feel Envy,
 	Shocking Lick, ]
@@ -1605,7 +1633,7 @@ int yellowRaySources()
 		}
 	}
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
-	foreach it in $items[Yellowcake Bomb, Clan VIP Lounge Key, spitball, Golden Light, Pumpkin Bomb, Unbearable Light,
+	foreach it in $items[Yellowcake Bomb, yellow rocket, spitball, Golden Light, Pumpkin Bomb, Unbearable Light,
 	Viral Video, micronova]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
