@@ -116,4 +116,5 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 			return(useSkill($skill[Bacon Ray], false));
 		}
 	}
+	return "";
 }
