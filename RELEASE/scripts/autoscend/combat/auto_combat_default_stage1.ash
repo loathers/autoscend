@@ -184,6 +184,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	
 	//pickpocket. do this after puzzle bosses but before escapes/instakills
 	boolean ableToPickpocket = ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class() || have_effect($effect[Riboflavin\']) > 0);
+	boolean ableToPickpocket = ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class() || have_effect($effect[Riboflavin\']) > 0 || amw_wanttoPP(enemy));
 	if(!combat_status_check("pickpocket") && ableToPickpocket && contains_text(text, "value=\"Pick") && canSurvive(4.0))
 	{
 		boolean tryIt = false;
