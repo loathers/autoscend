@@ -242,6 +242,7 @@ boolean amw_buyStats()
 		int amountToBuy = amw_substatsBuyable(next);
 		if (amountToBuy > 0)
 		{
+			auto_log_debug("Buying substats");
 			return amw_buySubstat(next.st, next.amount);
 		}
 	}
