@@ -4,8 +4,8 @@ boolean amw_wanttoPP(monster enemy)
 	{
 		return false;
 	}
-	// cannot autosell for meat so pickpocketing is less profitable
-	// maybe exempt certain monsters?
+	// cannot autosell for meat so pickpocketing is less profitable,
+	// so higher survive requirement than default. maybe exempt certain monsters from higher req?
 	if(!canSurvive(8.0))
 	{
 		return false;
@@ -23,7 +23,7 @@ string auto_combatMeatGolemStage3(int round, monster enemy, string text)
 	// Skip if monster would die quickly, before stage 4 might finish
 	if((monster_hp() - my_buffedstat($stat[muscle]))/monster_hp()<0.55){return "";}
 	// since meat = adv, don't want to delevel if not necessary
-	// also skipping if we might die after delevel
+	// also skipping if we might die after delevel, because we may be able to stun instead
 	if(!canSurvive(8.0) && canSurvive(0.7) && canUse($skill[Meat Cleaver], true, true))
 	{
 		return useSkill($skill[Meat Cleaver]);
