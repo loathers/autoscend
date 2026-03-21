@@ -52,6 +52,7 @@ boolean amw_canAfford(skill sk)
 boolean amw_buySubstat(stat st, int numberToBuy)
 // buys substats, whether st is a stat or a substat
 {
+	auto_log_debug(to_string(numberToBuy) + " substats precisely")
 	if (numberToBuy > my_meat()){return false;}
 
 	// setting which substat to buy
@@ -65,11 +66,11 @@ boolean amw_buySubstat(stat st, int numberToBuy)
 	if (st == $stat[moxie] || st == $stat[submuscle]){
 		option = 3;
 	}
-	auto_log_debug(`Option {to_string(option)} identified: {to_string(st)}`);
+	auto_log_debug("Option" + to_string(option) "identified: "+to_string(st));
 
 	if (option != 0){
 		string url = `choice.php?whichchoice=1592&pwd&option={to_string(option)}&num={to_string(numberToBuy)}`;
-		auto_log_debug(`Visiting url {url}`);
+		auto_log_debug("Visiting url: " + url);
 		visit_url(url, true);
 		return true;
 	}
