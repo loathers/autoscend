@@ -68,6 +68,7 @@ boolean amw_buySubstat(stat st, int numberToBuy)
 
 	if (option != 0){
 		string url = `choice.php?whichchoice=1592&pwd&option={to_string(option)}&num={to_string(numberToBuy)}`;
+		auto_log_debug(`Visiting url {url}`)
 		visit_url(url, true);
 		return true;
 	}
