@@ -63,7 +63,7 @@ boolean amw_buySubstat(stat st, int numberToBuy)
 	if (st == $stat[mysticality] || st == $stat[submysticality]){
 		option = 2;
 	}
-	if (st == $stat[moxie] || st == $stat[submuscle]){
+	if (st == $stat[moxie] || st == $stat[submoxie]){
 		option = 3;
 	}
 	auto_log_debug("Option" + to_string(option) +"identified: "+to_string(st));
