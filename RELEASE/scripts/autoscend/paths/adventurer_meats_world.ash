@@ -91,7 +91,7 @@ boolean amw_buyAdv()
 record amw_statBuyable {
 	stat st;
 	int amount;
-}
+};
 
 // returns a record of the (sub)stat and how much of that (sub)stat we want next
 // prioritizing getting all of the skills for now

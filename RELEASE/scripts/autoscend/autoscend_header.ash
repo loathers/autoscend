@@ -749,9 +749,9 @@ int amw_meatCost(skill sk);
 boolean amw_canAfford(skill sk);
 boolean amw_buySubstat(stat st, int numberToBuy);
 boolean amw_buyAdv();
-int amw_calculateReserve()
-boolean amw_buyStats()
-boolean LM_adventurerMeatsWorld()
+int amw_calculateReserve();
+boolean amw_buyStats();
+boolean LM_adventurerMeatsWorld();
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
