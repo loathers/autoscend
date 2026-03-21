@@ -1,9 +1,6 @@
 boolean amw_wanttoPP(monster enemy)
 {
-	if(!in_amw()){
-		return false;
-	}
-	if(!auto_have_skill($skill[Chicken Fingers]))
+	if(!in_amw() || !auto_have_skill($skill[Chicken Fingers]))
 	{
 		return false;
 	}
