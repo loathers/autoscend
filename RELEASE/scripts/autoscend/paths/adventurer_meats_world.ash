@@ -65,6 +65,7 @@ boolean amw_buySubstat(stat st, int numberToBuy)
 	if (st == $stat[moxie] || st == $stat[submuscle]){
 		option = 3;
 	}
+	auto_log_debug(`Option {to_string(option)} identified: {to_string(st)}`);
 
 	if (option != 0){
 		string url = `choice.php?whichchoice=1592&pwd&option={to_string(option)}&num={to_string(numberToBuy)}`;
