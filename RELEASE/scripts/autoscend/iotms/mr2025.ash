@@ -716,7 +716,7 @@ void mobiusChoiceHandler(int choice, string page)
 		pos = "Give your past self investment tips";
 		if (choiceMap contains pos) {
 			mobiusChoice(pos);
-			use(1, $item[Stock Certificate]) // assumes user had one in queue
+			use(1, $item[Stock Certificate]); // assumes user had one in queue
 			// TODO IF IMPLEMENTED: add documentation to path support
 			return;
 		}

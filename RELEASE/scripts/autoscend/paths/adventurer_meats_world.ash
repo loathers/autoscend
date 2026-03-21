@@ -197,7 +197,7 @@ amw_statBuyable amw_nextStat()
 		return goal;
 	}
 
-	goal.int = 0; //represents no more stats wanted
+	goal.amount = 0; //represents no more stats wanted
 	return goal;
 }
 
@@ -205,7 +205,7 @@ amw_statBuyable amw_nextStat()
 // TODO: take into account how much meat is needed for the next bundle of 10
 int amw_calculateReserve()
 {
-	current_level = my_level();
+	int current_level = my_level();
 	if (current_level <= 4)
 	{
 		return 500;
@@ -244,8 +244,8 @@ boolean amw_buyStats()
 		{
 			return amw_buySubstat(next.st, next.amount);
 		}
-		return false;
 	}
+	return false;
 }
 
 boolean LM_adventurerMeatsWorld()
@@ -261,7 +261,7 @@ boolean LM_adventurerMeatsWorld()
 	// this probably isn't the "right" place to add adventures...?
 	if (my_adventures() <= 6)
 	{
-		amw_buyAdv()
+		amw_buyAdv();
 	}
 	return false;
 }
