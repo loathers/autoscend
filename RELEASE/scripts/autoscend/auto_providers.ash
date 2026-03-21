@@ -1847,7 +1847,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 
 	if(in_amw() && amw_canAfford($skill[Beef Goggles]))
 	{
-		if(tryEffects($effects[Beef Goggles])){return result()} // meatpath only
+		if(tryEffects($effects[Beef Goggles])){return result();} // meatpath only
 	}
 
 	// unlimited skills
