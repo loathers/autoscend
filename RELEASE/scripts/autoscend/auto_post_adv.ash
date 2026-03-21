@@ -352,21 +352,21 @@ boolean auto_post_adventure()
 		{
 			use(1, $item[Loose Meats]);// no need to run more than once because 1/combat
 		}
-		if amw_canAfford($skill[Self-Tenderize]) // not necessary, but cheap
+		if (amw_canAfford($skill[Self-Tenderize])) // not necessary, but cheap
 		{
 			buffMaintain($effect[Tenderized], 0, 1, 5);
 		}
 		// Beef Goggles is in providers
-		if amw_canAfford($skill[Meat Puppet]) // +famwt for our chaun
+		if (amw_canAfford($skill[Meat Puppet])) // +famwt for our chaun
 		{
 			buffMaintain($effect[Meat Puppet], 0, 1, 5);
 		}
-		if amw_canAfford($skill[Steak Skirt]) // not necessary, but cheap
+		if (amw_canAfford($skill[Steak Skirt])) // not necessary, but cheap
 		{
 			buffMaintain($effect[Steak Skirt], 0, 1, 5);
 		}
 		// always on because +ML = +meat, plus currently acquired late
-		if amw_canAfford($skill[Ham It Up])
+		if (amw_canAfford($skill[Ham It Up]))
 		{
 			buffMaintain($effect[Hamming It Up], 0, 1, 5);
 		}
