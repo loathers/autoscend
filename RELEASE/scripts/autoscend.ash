@@ -2102,6 +2102,9 @@ void auto_begin()
 	auto_log_info("This is day " + my_daycount() + ".");
 	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
 	auto_log_info("Current Ascension: " + my_path().name);
+	auto_log_info("You have: " + banishSources() + " banish sources, " + freeRunSources() + " free-run sources, " +
+	freeKillSources() + " free kill sources, " + instaKillSources() + " insta-kill sources, " + yellowRaySources() +
+	" yellow ray sources, " + copySources() + " copy sources, and " + sniffSources() + " sniff sources.");
 
 	auto_settings();
 
