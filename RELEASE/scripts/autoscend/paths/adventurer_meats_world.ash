@@ -232,6 +232,7 @@ int amw_substatsBuyable(amw_statBuyable goal)
 	int meat_reserve = amw_calculateReserve();
 	if (meat_reserve >= my_meat()){return 0;} // no meat unreserved to spend on stats
 	int substats_to_goal = (goal.amount - my_basestat(goal.st));
+	auto_log_debug("Substats to next goal: " + to_string(substats_to_goal));
 
 	// return either the meat within budget or the substats we need to reach the goal
 	return min(my_meat()-meat_reserve, substats_to_goal);
