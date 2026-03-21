@@ -321,7 +321,6 @@ boolean auto_sausageGoblin(location loc, string option)
 	return false;
 }
 
-//TODO(kalebb): add initial lil doctor methods
 boolean auto_haveLilDoctorBag()
 {
 	if(auto_is_valid($item[Lil\' Doctor&trade; Bag]) && available_amount($item[Lil\' Doctor&trade; Bag]) > 0 )
