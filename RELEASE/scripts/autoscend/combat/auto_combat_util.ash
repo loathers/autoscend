@@ -756,7 +756,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Talk About Politics];
 	}
-	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil\' Doctor&trade; bag])) && auto_is_valid($skill[Reflex Hammer]) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer") && useFree)
+	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : auto_is_valid($skill[Reflex Hammer]) && auto_reflexHammersRemaining() > 0 && !(used contains "Reflex Hammer") && useFree))
 	{
 		return "skill " + $skill[Reflex Hammer];
 	}

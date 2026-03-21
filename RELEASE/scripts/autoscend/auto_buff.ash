@@ -273,7 +273,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Bloodbathed]:
 		if(auto_haveBCZ())
 		{
-			mustEquip = $item[Blood Cubic Zirconia];
+			mustEquip = auto_getItemToEquipBCZ();
 			useSkill = $skill[BCZ: Blood Bath];
 		}																						break;
 	case $effect[Bloody Potato Bits]:			useSkill = $skill[none];						break;
@@ -956,7 +956,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Sweat Equity]:
 	if(auto_haveBCZ())
 		{
-			mustEquip = $item[Blood Cubic Zirconia];
+			mustEquip = auto_getItemToEquipBCZ();
 			useSkill = $skill[BCZ: Sweat Equity];
 		}																						break;
 	case $effect[Sweet Heart]:					useItem = $item[love song of sugary cuteness];			break;
@@ -1024,7 +1024,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Up to 11]:
 		if(auto_haveBCZ())
 		{
-			mustEquip = $item[Blood Cubic Zirconia];
+			mustEquip = auto_getItemToEquipBCZ();
 			useSkill = $skill[BCZ: Dial it up to 11];
 		}																						break;
 	case $effect[Ur-Kel\'s Aria of Annoyance]:	useSkill = $skill[Ur-Kel\'s Aria of Annoyance];	break;
