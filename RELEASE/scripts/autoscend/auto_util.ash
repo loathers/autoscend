@@ -1742,7 +1742,9 @@ int copySources()
 			continue;
 		}
 	}
-	count += auto_wishesAvailable();
+	if (auto_wishesAvailable() > 0) {
+		count +=1;
+	}
 	return count;
 }
 
