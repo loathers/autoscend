@@ -247,7 +247,7 @@ boolean amw_buyStats()
 		if (amountToBuy > 0)
 		{
 			auto_log_debug("Buying substats");
-			return amw_buySubstat(next.st, next.amount);
+			return amw_buySubstat(next.st, amountToBuy);
 		}
 	}
 	return false;
