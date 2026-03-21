@@ -662,6 +662,13 @@ boolean auto_pre_adventure()
 		autoEquip($slot[acc3], dartHolster);
 	}
 
+	item bcz = $item[blood cubic zirconia];
+	if (auto_wantToBCZ($skill[BCZ: Sweat Bullets]) && !in_avantGuard() && !in_pokefam())
+	{
+		auto_log_info("Hello me, nice talking to myself. SWEATING BULLLEEETTTSS!!!!");
+		autoEquip($slot[acc3], bcz);
+	}
+
 
 	equipOverrides();
 	kolhs_preadv(place);
