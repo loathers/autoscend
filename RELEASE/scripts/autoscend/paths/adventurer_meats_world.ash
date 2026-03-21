@@ -90,7 +90,7 @@ boolean amw_buyAdv()
 	// successful if meat was spent
 	if (my_meat() < starting_meat){return true;}
 	// need to exit choice if unsuccessful
-	string url = `choice.php?whichchoice=1593&pwd&option=6`;
+	url = `choice.php?whichchoice=1593&pwd&option=6`;
 	visit_url(url, true);
 	return false;
 }
