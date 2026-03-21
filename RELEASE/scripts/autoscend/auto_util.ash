@@ -890,6 +890,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return create(1, $item[Handful of split pea soup]);
 	}
+	if(combat_string == "skill "+$skill[Breathe Out] && auto_breatheOutsLeft() == 0 && available_amount($item[hot jelly]) > 0 && spleen_left() > 1)
+	{
+		return autoChew(1, $item[hot jelly]);
+	}
 	if(combat_string == "skill "+$skill[Punch Out Your Foe] && auto_punchOutsLeft() == 0 && available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3)
 	{
 		return autoChew(1, $item[scoop of pre-workout powder]);
@@ -1391,7 +1395,7 @@ int banishSources()
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
 	foreach it in $items[Cosmic Bowling Ball, stuffed yam stinkbomb, Handful of split pea soup, human musk,
 	Louder Than Bomb, Tennis Ball, Deathchucks, divine champagne popper, anchor bomb,
-	scoop of pre-workout powder]
+	hot jelly, scoop of pre-workout powder]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
 		{

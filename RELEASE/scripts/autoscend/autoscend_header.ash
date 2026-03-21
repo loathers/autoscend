@@ -211,6 +211,7 @@ boolean kgb_getMartini(string page, boolean dontCare);
 boolean kgbDial(int dial, int curVal, int target);
 boolean solveKGBMastermind();
 boolean getSpaceJelly();
+int auto_breatheOutsLeft();
 boolean haveAsdonBuff();
 boolean asdonBuff(string goal);
 boolean canAsdonBuff(effect goal);
