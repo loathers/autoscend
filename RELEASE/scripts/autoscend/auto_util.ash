@@ -2725,7 +2725,7 @@ boolean auto_autosell(int quantity, item toSell)
 		return false;
 	}
 
-	if(!in_wotsf())
+	if(!in_wotsf() && !in_amw())
 	{
 		return autosell(quantity, toSell);
 	}
