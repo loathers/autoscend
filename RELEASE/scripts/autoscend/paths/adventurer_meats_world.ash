@@ -287,7 +287,7 @@ boolean amw_wantMeat()
 {
 	if (!in_amw() || amw_calculateReserve() + 100 < my_meat())
 	{
-		return true;
+		return false;
 	}
-	return false;
+	return true;
 }
