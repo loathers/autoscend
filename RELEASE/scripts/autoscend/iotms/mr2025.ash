@@ -720,6 +720,13 @@ void mobiusChoiceHandler(int choice, string page)
 			// TODO IF IMPLEMENTED: add documentation to path support
 			return;
 		}
+		if (my_daycount() > 1) {
+			pos = "Hey, free gun!";
+			if (choiceMap contains pos) {
+				mobiusChoice(pos);
+				return;
+			}
+		}
 		pos = "Take the long odds on the trifecta";
 		if (choiceMap contains pos) {
 			mobiusChoice(pos);
