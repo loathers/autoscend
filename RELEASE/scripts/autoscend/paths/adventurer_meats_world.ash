@@ -198,7 +198,7 @@ amw_statBuyable amw_nextStat()
 		return goal;
 	}
 	// level 13 if not d1
-	else if (daycount() > 1 && my_basestat($stat[moxie]) < 148)
+	else if (my_daycount() > 1 && my_basestat($stat[moxie]) < 148)
 	{
 		goal.st = $stat[submoxie];
 		goal.amount = 21904;
