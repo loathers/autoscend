@@ -48,6 +48,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 
 	if(enemy == $monster[Your Shadow])
 	{
+		if(in_amw() && canUse($skill[Chew the Fat]) && amw_canAfford($skill[Chew the Fat]))
+		{
+			return useSkill($skill[Chew the Fat]);
+		}
 		if(in_plumber())
 		{
 			if(item_amount($item[super deluxe mushroom]) > 0)
