@@ -724,7 +724,6 @@ boolean auto_buyFireworksHat()
 	}
 
 	// noncombat is most valuable hat but has no effect in LAR and can't be removed in Hat Trick
-	
 	if(auto_can_equip($item[porkpie-mounted popper]) && !(in_lar() || in_hattrick()))
 	{
 		float simNonCombat = providePlusNonCombat(auto_combatModCap(), $location[noob cave], true, true);
