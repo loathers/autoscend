@@ -1041,7 +1041,7 @@ void auto_wantSoCP()
 		return;
 	}
 	set_property("auto_preferSoCP", true);
-	if(get_property("_knuckleboneDrops").to_int() == 100)
+	if(get_property("_knuckleboneDrops").to_int() == 100 || !amw_socpOK())
 	{
 		set_property("auto_preferSoCP", false);
 		return;

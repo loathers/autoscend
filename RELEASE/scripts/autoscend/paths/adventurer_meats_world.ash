@@ -280,3 +280,13 @@ boolean LM_adventurerMeatsWorld()
 	}
 	return false;
 }
+
+// if false, socp will not be preferred (e.g. won't be more preferred than a fairychaun when item is wanted)
+boolean amw_socpOK()
+{
+	if (!in_amw() || amw_calculateReserve() + 100 < my_meat())
+	{
+		return true;
+	}
+	return false
+}
