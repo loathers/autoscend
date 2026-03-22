@@ -82,7 +82,7 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 	}
 	if(!enemy_physical_resistant && enemy.defense_element == $element[hot])
 	{
-		if((my_buffedstat($stat[muscle]) > 1.8*my_buffedstat($stat[moxie]) || !canUse($skill[Bacon Ray])) && canUse($skill[Beef Shank], false)){
+		if((1.8*my_buffedstat($stat[muscle]) > my_buffedstat($stat[moxie]) || !canUse($skill[Bacon Ray])) && canUse($skill[Beef Shank], false)){
 			return useSkill($skill[Beef Shank], false);
 		}
 		else if(canUse($skill[Spicy Meatball])){
@@ -93,7 +93,7 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 	{
 		// beef shank available
 		if(canUse($skill[Beef Shank]) && (my_buffedstat($stat[muscle]) > my_buffedstat($stat[mysticality]) || !canUse($skill[Spicy Meatball]))){
-			if((my_buffedstat($stat[muscle]) > 1.8*my_buffedstat($stat[moxie]) || !canUse($skill[Bacon Ray]))){
+			if((1.8*my_buffedstat($stat[muscle]) > my_buffedstat($stat[moxie]) || !canUse($skill[Bacon Ray]))){
 				return useSkill($skill[Beef Shank], false);
 			}
 		}
