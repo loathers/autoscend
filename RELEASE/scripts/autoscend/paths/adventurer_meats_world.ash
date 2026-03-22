@@ -211,6 +211,7 @@ amw_statBuyable amw_nextStat()
 
 // reserves meat from being spent on stats
 // TODO: take into account how much meat is needed for the next bundle of 10
+// TODO: take into account quests state (can reserve less if expensive things won't be bought soon)
 int amw_calculateReserve()
 {
 	int current_level = my_level();
@@ -218,17 +219,21 @@ int amw_calculateReserve()
 	{
 		return 500;
 	}
-	else if (current_level <= 9)
+	else if (current_level <= 8)
 	{
 		return 1200;
 	}
+	else if (current_level <= 9)
+	{
+		return 2100;
+	}
 	else if (current_level <= 10)
 	{
-		return 3000;
+		return 4500;
 	}
 	else
 	{
-		return 5000;
+		return 6500; // enough to ensure that travel documents + shore won't bankrupt us
 	}
 }
 
