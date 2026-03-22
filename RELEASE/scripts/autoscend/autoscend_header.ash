@@ -752,7 +752,7 @@ boolean amw_buyAdv();
 int amw_calculateReserve();
 boolean amw_buyStats();
 boolean LM_adventurerMeatsWorld();
-boolean amw_socpOK();
+boolean amw_wantMeat();
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash

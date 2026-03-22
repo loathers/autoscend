@@ -282,7 +282,8 @@ boolean LM_adventurerMeatsWorld()
 }
 
 // if false, socp will not be preferred (e.g. won't be more preferred than a fairychaun when item is wanted)
-boolean amw_socpOK()
+// additionally, a meat familiar will be selected if not necessary for anything else
+boolean amw_wantMeat()
 {
 	if (!in_amw() || amw_calculateReserve() + 100 < my_meat())
 	{
