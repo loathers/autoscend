@@ -4494,6 +4494,10 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 	{
 		tryEffects($effects[Litterbug, Sweetbreads Flamb&eacute;]);
 	}
+	if (in_amw())
+	{
+		tryEffects($effects[Hamming It Up]);
+	}
 
 
 // 24 >= U >= 10
@@ -4511,6 +4515,11 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 	if(doAltML)
 	{
 		tryEffects($effects[Tortious]);
+	}
+
+	if (in_amw())
+	{
+		tryEffects($effects[Acting Jerky]);
 	}
 
 // <10

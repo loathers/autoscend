@@ -365,11 +365,6 @@ boolean auto_post_adventure()
 		{
 			buffMaintain($effect[Steak Skirt], 0, 1, 5);
 		}
-		// always on because +ML = +meat, plus currently acquired late
-		if (amw_canAfford($skill[Ham It Up]))
-		{
-			buffMaintain($effect[Hamming It Up], 0, 1, 5);
-		}
 	}
 
 	skill libram = preferredLibram();
