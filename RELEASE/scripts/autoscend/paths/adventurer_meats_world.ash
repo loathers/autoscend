@@ -289,5 +289,5 @@ boolean amw_wantMeat()
 	{
 		return true;
 	}
-	return false
+	return false;
 }
