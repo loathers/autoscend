@@ -10,43 +10,9 @@ boolean amw_initializeSettings()
 	return false;
 }
 
-int amw_meatCost(skill sk)
-{
-	switch(sk)
-	{
-		case $skill[Bacon Ray]:
-			return 1;
-		case $skill[Beef Shank]:
-		case $skill[Spicy Meatball]:
-			return 2;
-		//case $skill[Meat Cute]: skill unused right now
-			//return 3;
-		case $skill[Meat Cleaver]:
-		case $skill[Chew the Fat]:
-		case $skill[Act Jerky]:
-			return 5;
-		case $skill[Wet Rub]:
-		case $skill[Meat Locker]:
-			return 8;
-		case $skill[Steak Through the Heart]:
-		case $skill[Self-Tenderize]:
-		case $skill[Beef Goggles]:
-		case $skill[Meat Puppet]:
-		case $skill[Ham It Up]:
-		case $skill[Steak Skirt]:
-			return 10;
-		case $skill[Meat Cute]:
-		case $skill[Meat Loaf]:
-		case $skill[Dark Meat]:
-			return 20;
-		default:
-			return 0;
-	}
-}
-
 boolean amw_canAfford(skill sk)
 {
-	return my_meat() >= (10 + amw_meatCost(sk));
+	return my_meat() >= (10 + meat_cost(sk));
 }
 
 boolean amw_buySubstat(stat st, int numberToBuy)
