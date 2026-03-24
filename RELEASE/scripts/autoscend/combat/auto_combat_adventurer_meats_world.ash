@@ -24,7 +24,7 @@ string auto_combatMeatGolemStage3(int round, monster enemy, string text)
 	if((monster_hp() - my_buffedstat($stat[muscle]))/monster_hp()<0.55){return "";}
 	// since meat = adv, don't want to delevel if not necessary
 	// also skipping if we might die after delevel, because we may be able to stun instead
-	if((!canSurvive(8.0) || monster_hp >= 500) && canSurvive(0.7) && canUse($skill[Meat Cleaver], true, true))
+	if((!canSurvive(8.0) || monster_hp() >= 500) && canSurvive(0.7) && canUse($skill[Meat Cleaver], true, true))
 	{
 		return useSkill($skill[Meat Cleaver]);
 	}
