@@ -39,9 +39,9 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 		return "";
 	}
 
-	// make sure to heal if possible; consider restoring "!canSurvive(1.4) &&" if mafia's autoheal behavior is fixed
-	if(!canSurvive(1.4) && canUse($skill[Chew the Fat], false) && my_hp() < my_maxhp() * 0.95){
-		return(useSkill($skill[Chew the Fat], false));
+	// make sure to heal if possible and necessary
+	if((!canSurvive(1.4) || my_hp() < 0.5*my_maxhp()) && canUse($skill[Chew the Fat], false) && my_hp() < my_maxhp() * 0.95){
+		return useSkill($skill[Chew the Fat], false);
 	}
 
 	// Darts always welcome
