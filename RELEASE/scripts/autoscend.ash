@@ -1247,6 +1247,7 @@ boolean dailyEvents()
 	auto_buyFromSeptEmberStore();
 	auto_getGlobs();
 	auto_setLeprecondo();
+	auto_getBCZItems();
 	
 	return true;
 }
@@ -2102,6 +2103,9 @@ void auto_begin()
 	auto_log_info("This is day " + my_daycount() + ".");
 	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
 	auto_log_info("Current Ascension: " + my_path().name);
+	auto_log_info("You have: " + banishesAvailable() + " banish sources, " + freeRunsAvailable() + " free-run sources, " +
+	freeKillsAvailable() + " free kill sources, " + instaKillsAvailable() + " insta-kill sources, " + yellowRaysAvailable() +
+	" yellow ray sources, " + copiesAvailable() + " copy sources, and " + sniffsAvailable() + " sniff sources.");
 
 	auto_settings();
 
