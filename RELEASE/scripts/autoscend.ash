@@ -1598,6 +1598,15 @@ boolean autosellCrap()
 	if (!get_property("_governmentPerDiemUsed").to_boolean() && item_amount($item[government per-diem]) > 0) {
 		use(1, $item[government per-diem]);
 	}
+	if (item_amount($item[stock certificate]) > 0) {
+	string turns = get_property("stockCertificateTurns");
+	if (turns != "") {
+		int earliestTurns = split_string(turns, ",")[0];
+		if (total_turns_played() - earliestTurns >= 500) {
+			use(1, $item[Stock Certificate]);
+		}
+	}
+}
 
 	if(in_amw())
 	{
