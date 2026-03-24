@@ -44,74 +44,54 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 		return(useSkill($skill[Chew the Fat], false));
 	}
 
-	boolean enemy_physical_resistant = enemy.physical_resistance > 70;
-
-	if(enemy_physical_resistant && canUse($skill[Spicy Meatball], False)) // one elemental attack confirmed
-	{
-		// if we have no other choice or the monster is sleazy, we want hot for sure
-		if(!canUse($skill[Bacon Ray], false) || (enemy.defense_element == $element[sleaze])){
-			return(useSkill($skill[Spicy Meatball], false));
-		}
-		// multiplied myst to penalize bacon ray taking 2x long (at half cost)
-		if ((my_buffedstat($stat[moxie]) > 1.8*my_buffedstat($stat[mysticality])) || (enemy.defense_element == $element[hot])){
-			return(useSkill($skill[Bacon Ray], false));
-		}
-		return(useSkill($skill[Spicy Meatball], false));
-	}
-	else if(enemy_physical_resistant){
-		if(canUse($skill[Bacon Ray], false)){
-			return(useSkill($skill[Bacon Ray], false));
-		}
-		else {return "";} // nothing we can do from a class perspective now
-	}
-
+	// Darts always welcome
 	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0)
 	{
 		return useSkill(dartSkill());
 	}
 
-	// non elemental damage, case 1 sleaze, case 2 hot, case 3 neither
-	if(!enemy_physical_resistant && enemy.defense_element == $element[sleaze])
-	{
-		if((my_buffedstat($stat[muscle]) > my_buffedstat($stat[mysticality]) || !canUse($skill[Spicy Meatball])) && canUse($skill[Beef Shank], false)){
-			return useSkill($skill[Beef Shank], false);
-		}
-		else if(canUse($skill[Spicy Meatball])){
-			return useSkill($skill[Spicy Meatball], false);
-		}
-	}
-	if(!enemy_physical_resistant && enemy.defense_element == $element[hot])
-	{
-		if((1.8*my_buffedstat($stat[muscle]) > my_buffedstat($stat[moxie]) || !canUse($skill[Bacon Ray])) && canUse($skill[Beef Shank], false)){
-			return useSkill($skill[Beef Shank], false);
-		}
-		else if(canUse($skill[Spicy Meatball])){
-			return useSkill($skill[Bacon Ray], false);
-		}
-	}
-	if(!enemy_physical_resistant)
-	{
-		// beef shank available
-		if(canUse($skill[Beef Shank]) && (my_buffedstat($stat[muscle]) > my_buffedstat($stat[mysticality]) || !canUse($skill[Spicy Meatball]))){
-			if((1.8*my_buffedstat($stat[muscle]) > my_buffedstat($stat[moxie]) || !canUse($skill[Bacon Ray]))){
-				return useSkill($skill[Beef Shank], false);
-			}
-		}
-		if(canUse($skill[Spicy Meatball], False))
-		{
-			// if we have no other choice or the monster is sleazy, we want hot for sure
-			if(!canUse($skill[Bacon Ray], false) || (enemy.defense_element == $element[sleaze])){
-				return(useSkill($skill[Spicy Meatball], false));
-			}
-			if ((my_buffedstat($stat[moxie]) > 1.8*my_buffedstat($stat[mysticality])) || (enemy.defense_element == $element[hot])){
-				return(useSkill($skill[Bacon Ray], false));
-			}
-			return(useSkill($skill[Spicy Meatball], false));
-		}
+	// Step 1: get base values for each spell
+	int beef_shank_value = my_buffedstat($stat[muscle]);
+	int spicy_meatball_value = my_buffedstat($stat[mysticality]);
+	int bacon_ray_value = 0.55*my_buffedstat($stat[moxie]); // deals base dmg equal to half moxie, but it's a little cheaper
 
-		if(canUse($skill[Bacon Ray], false)){
-			return(useSkill($skill[Bacon Ray], false));
-		}
+	// Step 2: apply disqualifications
+	// the physical resistance bit is entirely arbitrary, maybe should be tweaked
+	if (!canUse($skill[Beef Shank], false) || enemy.physical_resistance > 70)
+	{
+		beef_shank_value = 0;
+	}
+	if (!canUse($skill[Spicy Meatball], false) || enemy.defense_element == $element[hot])
+	{
+		spicy_meatball_value = 0;
+	}
+	if (!canUse($skill[Bacon Ray], false) || enemy.defense_element == $element[sleaze])
+	{
+		bacon_ray_value = 0;
+	}
+	
+	// Step 3: apply vulnerability multipliers
+	if (enemy.defense_element == $element[cold] || enemy.defense_element == $element[spooky])
+	{
+		spicy_meatball_value = 2*spicy_meatball_value;
+	}
+	else if (enemy.defense_element == $element[stench] || enemy.defense_element == $element[hot])
+	{
+		bacon_ray_value = 2*bacon_ray_value;
+	}
+
+	// Step 4: return the spell with the highest value, or none if none qualified
+	if (spicy_meatball_value > bacon_ray_value && spicy_meatball_value > beef_shank_value)
+	{
+		return(useSkill($skill[Spicy Meatball], false));
+	}
+	else if (bacon_ray_value > beef_shank_value)
+	{
+		return(useSkill($skill[Bacon Ray], false));
+	}
+	else if (beef_shank_value != 0)
+	{
+		return useSkill($skill[Beef Shank], false);
 	}
 	return "";
 }
