@@ -1601,7 +1601,7 @@ boolean autosellCrap()
 	if (item_amount($item[stock certificate]) > 0) {
 	string turns = get_property("stockCertificateTurns");
 	if (turns != "") {
-		int earliestTurns = split_string(turns, ",")[0];
+		int earliestTurns = split_string(turns, ",")[0].to_int();
 		if (total_turns_played() - earliestTurns >= 500) {
 			use(1, $item[Stock Certificate]);
 		}
