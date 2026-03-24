@@ -1,4 +1,3 @@
-//TODO: double check pickpocketing works
 boolean in_amw()
 {
 	return my_path() == $path[Adventurer Meats World];
