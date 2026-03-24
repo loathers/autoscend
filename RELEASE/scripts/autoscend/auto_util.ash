@@ -5055,14 +5055,14 @@ boolean can_read_skillbook(item it) {
 }
 
 boolean have_campground() {
-	if (isActuallyEd() || in_robot() || in_nuclear() || in_small() || in_wereprof()) {
+	if (isActuallyEd() || in_robot() || in_nuclear() || in_small() || in_wereprof() || in_amw()) {
 		return false;
 	}
 	return true;
 }
 
 boolean have_workshed() {
-	if (isActuallyEd() || in_robot() || in_nuclear() || in_wereprof()) {
+	if (isActuallyEd() || in_robot() || in_nuclear() || in_wereprof() || in_amw()) {
 		return false;
 	}
 	return true;
