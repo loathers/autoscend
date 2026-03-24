@@ -86,8 +86,9 @@ L4_batCave
 L3_tavern
 # Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
 L2_mosquito
-# There's an extra task in KoE
+# Non-Standard Final Bosses
 LX_koeInvaderHandler
+LX_bugbearInvasionFinale
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
 L13_towerAscent
 # not powerlevelling but something that needs to be done if nothing else is available
