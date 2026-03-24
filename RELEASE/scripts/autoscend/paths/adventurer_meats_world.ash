@@ -16,9 +16,9 @@ boolean amw_canAfford(skill sk)
 }
 
 boolean amw_buySubstat(stat st, int numberToBuy)
-// buys substats, whether st is a stat or a substat
+// buys in terms of substats, whether st is a stat or a substat
 {
-	auto_log_debug(to_string(numberToBuy) + " substats precisely");
+	auto_log_debug("Buying " + to_string(numberToBuy) + " substats.");
 	if (numberToBuy > my_meat()){return false;}
 
 	// setting which substat to buy
@@ -32,12 +32,10 @@ boolean amw_buySubstat(stat st, int numberToBuy)
 	if (st == $stat[moxie] || st == $stat[submoxie]){
 		option = 3;
 	}
-	auto_log_debug("Option" + to_string(option) +"identified: "+to_string(st));
 
 	if (option != 0){
 		visit_url("place.php?whichplace=meatground&action=meatground_stats");
 		string url = `choice.php?whichchoice=1592&pwd&option={to_string(option)}&num={to_string(numberToBuy)}`;
-		auto_log_debug("Visiting url: " + url);
 		visit_url(url, true);
 		return true;
 	}
@@ -222,7 +220,6 @@ boolean amw_buyStats()
 		int amountToBuy = amw_substatsBuyable(next);
 		if (amountToBuy > 0)
 		{
-			auto_log_debug("Buying substats");
 			return amw_buySubstat(next.st, amountToBuy);
 		}
 	}
