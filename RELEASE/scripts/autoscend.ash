@@ -1,4 +1,4 @@
-since r28966;    // feat: add meat cost for meat skills
+since r28969; // add council text for Adventurer Meats World
 
 /***
 	autoscend_header.ash must be first import
