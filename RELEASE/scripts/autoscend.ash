@@ -1,4 +1,4 @@
-since r28925;	// feat: add function for computing next available mobius strip noncombat
+since r28966;    // feat: add meat cost for meat skills
 
 /***
 	autoscend_header.ash must be first import
