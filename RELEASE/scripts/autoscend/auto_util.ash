@@ -5055,10 +5055,10 @@ boolean can_read_skillbook(item it) {
 }
 
 boolean have_workshed() {
-	if (isActuallyEd() || in_robot() || in_nuclear() || in_wereprof() || in_amw()) {
-		return false;
+	if (in_small()) {
+		return true;
 	}
-	return true;
+	return have_campground();
 }
 
 int baseNCForcesToday()
