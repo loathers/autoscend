@@ -43,6 +43,17 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 	if((!canSurvive(1.4) || my_hp() < 0.5*my_maxhp()) && canUse($skill[Chew the Fat], false) && my_hp() < my_maxhp() * 0.95){
 		return useSkill($skill[Chew the Fat], false);
 	}
+	
+	// make sure high HP combats conclude in a timely fashion
+	// only if needed; these skills cost 4-10x more than a regular combat skill
+	if (canUse($skill[Steak Through the Heart], true) && round > 12)
+	{
+		return useSkill($skill[Steak Through the Heart], true);
+	}
+	if (canUse($skill[Wet Rub], true) && monster_hp() >= 400)
+	{
+		return useSkill($skill[Wet Rub], true);
+	}
 
 	// Darts always welcome
 	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0)
@@ -83,11 +94,11 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 	// Step 4: return the spell with the highest value, or none if none qualified
 	if (spicy_meatball_value > bacon_ray_value && spicy_meatball_value > beef_shank_value)
 	{
-		return(useSkill($skill[Spicy Meatball], false));
+		return useSkill($skill[Spicy Meatball], false);
 	}
 	else if (bacon_ray_value > beef_shank_value)
 	{
-		return(useSkill($skill[Bacon Ray], false));
+		return useSkill($skill[Bacon Ray], false);
 	}
 	else if (beef_shank_value != 0)
 	{
