@@ -455,13 +455,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		
 		boolean reserveFreekills = (my_adventures() >= 9) && !wantFreeKillNowEspecially && (waitForDesert || waitForCyrpt);
 
-		if(canUse($skill[lightning strike]) && (wantFreeKillNowEspecially || !reserveFreekills || my_lightning() >= 60))
-		{
-			handleTracker(enemy, $skill[lightning strike], "auto_instakill");
-			loopHandlerDelayAll();
-			return useSkill($skill[lightning strike]);
-		}
-
 		if(canUse($skill[Darts: Aim for the Bullseye]) && have_effect($effect[Everything Looks Red]) == 0 && dartELRcd() <= 40)
 		{
 			set_property("auto_instakillSource", "darts bullseye");
@@ -470,6 +463,22 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[Darts: Aim for the Bullseye]);
 		}
 
+		if(canUse($skill[Free-For-All]) && have_effect($effect[Everything Looks Red]) == 0 && (wantFreeKillNowEspecially || !reserveFreekills) && my_mp() > 80) //Only want to cast this when you have mp to spare because it is 50mp
+		{
+			handleTracker(enemy, $skill[Free-For-All], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[Free-For-All]);
+		}
+
+		if(canUse($skill[lightning strike]) && (wantFreeKillNowEspecially || !reserveFreekills || my_lightning() >= 60))
+		{
+			handleTracker(enemy, $skill[lightning strike], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[lightning strike]);
+		}
+
+
+		//Depending on the fam used for instakill, it could be a turn free YR, or it could be turn taking and not a YR, but still give ELY.
 		skill z_kick = getZooKickInstaKill();
 		if (canUse(z_kick))
 		{
@@ -477,14 +486,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			set_property("auto_instakillSuccess", true);
 			loopHandlerDelayAll();
 			return useSkill(z_kick);
-		}
-
-		if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0)
-		{
-			set_property("auto_instakillSource", "slaughter");
-			set_property("auto_instakillSuccess", true);
-			loopHandlerDelayAll();
-			return useSkill($skill[Slaughter]);
 		}
 
 		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
@@ -496,9 +497,17 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 				return useSkill($skill[Chest X-Ray]);
 			}
 		}
+
+		if(canUse($skill[Fire the Jokester\'s Gun]) && auto_jokesterGunFreeKillAvailable())
+		{
+			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[Fire the Jokester\'s Gun]);
+		}
+
 		if(canUse($skill[shattering punch]) && (get_property("_shatteringPunchUsed").to_int() < 3) && !reserveFreekills)
 		{
-			if(!wantFreeKillNowEspecially && my_daycount() == 1 && my_turncount() < 100 && my_adventures() >= 9 && my_mp() < 80)
+			if(!wantFreeKillNowEspecially && my_daycount() == 1 && my_turncount() < 100 && my_mp() < 80)
 			{
 				//avoid sudden drain of 3x30 MP just 20 turns after the run starts, there is no mp regen or sauceror mp when using this
 			}
@@ -518,17 +527,18 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 				return useSkill($skill[Gingerbread Mob Hit]);
 			}
 		}
-		if(canUse($skill[Free-For-All]) && have_effect($effect[Everything Looks Red]) == 0 && (wantFreeKillNowEspecially || !reserveFreekills) && my_mp() > 80) //Only want to cast this when you have mp to spare because it is 50mp
+		// Slaughter is an instakill, but not free; only use if you have no other options and never when we want free kill
+		if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0 && !wantFreeKillNowEspecially)
 		{
-			handleTracker(enemy, $skill[Free-For-All], "auto_instakill");
+			set_property("auto_instakillSource", "slaughter");
+			set_property("auto_instakillSuccess", true);
 			loopHandlerDelayAll();
-			return useSkill($skill[Free-For-All]);
+			return useSkill($skill[Slaughter]);
 		}
-
-	//		Can not use _usedReplicaBatoomerang if we have more than 1 because of the double item use issue...
-	//		Sure, we can try to use a second item (if we have it or are forced to buy it... ugh).
-	//		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0) && (get_property("_usedReplicaBatoomerang").to_int() < 3))
-	//		THIS IS COPIED TO THE ED SECTION, IF IT IS FIXED, FIX IT THERE TOO!
+		//		Can not use _usedReplicaBatoomerang if we have more than 1 because of the double item use issue...
+		//		Sure, we can try to use a second item (if we have it or are forced to buy it... ugh).
+		//		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0) && (get_property("_usedReplicaBatoomerang").to_int() < 3))
+		//		THIS IS COPIED TO THE ED SECTION, IF IT IS FIXED, FIX IT THERE TOO!
 		if(canUse($item[Replica Bat-oomerang]) && !reserveFreekills)
 		{
 			if(get_property("auto_batoomerangDay").to_int() != my_daycount())
@@ -552,12 +562,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useItems($item[shadow brick], $item[none]);
 		}
 
-		if(canUse($skill[Fire the Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean())
-		{
-			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "auto_instakill");
-			loopHandlerDelayAll();
-			return useSkill($skill[Fire the Jokester\'s Gun]);
-		}
 	} // instakills
 
 	//wearing [retro superhero cape] iotm set to vampire slicer mode instakills Undead and reduces evilness in Cyrpt zones.

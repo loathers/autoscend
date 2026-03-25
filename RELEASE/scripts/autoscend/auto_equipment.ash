@@ -1491,22 +1491,22 @@ int[slot] powerMultipliers()
 */
 void auto_equipFreekill()
 {	
-	auto_log_info("Looking for an equipment with free kills available...");
-	item doctorBag = $item[Lil\' Doctor&trade; Bag];
-	item dartHolster = $item[Everfull Dart Holster];
-	item legendClub = $item[legendary seal-clubbing club];
-
-	boolean chestXrayAvailable = auto_chestXraysRemaining() > 0;
-	boolean redDartAvailable = auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0;
-	boolean clubBackAvailable = auto_clubEmBackInTimesRemaining() > 0;
-
-	//don't use freekills in advant guard or Pocket familiars, they are not worth it/ don't work
+	// Pocket familiars combat doesn't permit skills, and bodyguards in Advant Guard make freekills un-free, so we're not doing that.
 	if(in_avantGuard() || in_pokefam())
 	{
-		chestXrayAvailable = false;
-		redDartAvailable = false;
-		clubBackAvailable = false;
+		return;
 	} 
+
+	auto_log_info("Looking for an equipment with free kills available...");
+	item dartHolster = $item[Everfull Dart Holster];
+	item doctorBag = $item[Lil\' Doctor&trade; Bag];
+	item legendClub = $item[legendary seal-clubbing club];
+	item joksterGun = $item[The Jokester\'s Gun];
+
+	boolean redDartAvailable = auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0;
+	boolean chestXrayAvailable = auto_chestXraysRemaining() > 0;
+	boolean clubBackAvailable = auto_clubEmBackInTimesRemaining() > 0;
+	boolean fireGunAvailable = auto_jokesterGunFreeKillAvailable();
 
 	if(redDartAvailable)
 	{
@@ -1520,6 +1520,10 @@ void auto_equipFreekill()
 	{
 		auto_log_info("They may not be seals, but we're gonna kill them last week. Equipping Legendary Seal Clubbing Club.");
 		autoEquip($slot[weapon], legendClub);
+	} else if (fireGunAvailable)
+	{
+		auto_log_info("Let's be a jokester. Equipping The Jokester's gun.");
+		autoEquip($slot[weapon], joksterGun);
 	} else 
 	{
 		auto_log_info("No free kill sources found to equip, maybe you have some others, but we'll let combat figure that out.");

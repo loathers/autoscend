@@ -151,6 +151,8 @@ void doghouseChoiceHandler(int choice);
 
 ########################################################################################################
 //Defined in autoscend/iotms/mr2016.ash
+boolean auto_haveJokestersGun();
+boolean auto_jokesterGunFreeKillAvailable();
 boolean snojoFightAvailable();
 boolean auto_haveSourceTerminal();
 boolean isOverdueDigitize();
