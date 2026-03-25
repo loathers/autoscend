@@ -57,6 +57,10 @@ boolean LX_attemptPowerLevel()
 	{
 		return LX_robot_powerlevel();		//leveling works very differently in You, Robot path
 	}
+	if (in_amw())
+	{
+		abort("You need more meat to get the next level. This isn't implemented, so you're going to have to do it manually.");
+	}
 	if (my_level() > 12)
 	{
 		return false;
