@@ -257,4 +257,5 @@ boolean amw_wantMeat()
 boolean LX_attemptPowerLevelMeat()
 {
 	abort("You need more meat to get the next level. This isn't implemented, so you're going to have to do it manually.");
+	return false;
 }
