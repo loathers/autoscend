@@ -13,7 +13,7 @@ boolean auto_haveJokestersGun()
 
 boolean auto_jokesterGunFreeKillAvailable()
 {
-	if(!auto_haveJokestersGun()) return false;
+	if(!auto_haveJokestersGun() || !auto_is_valid($skill[Fire the Jokester\'s Gun])) return false;
 	
 	 return !get_property("_firedJokestersGun").to_boolean();
 }

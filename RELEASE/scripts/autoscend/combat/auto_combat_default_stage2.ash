@@ -488,9 +488,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill(z_kick);
 		}
 
-		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
+		if(canUse($skill[Chest X-Ray]) && auto_chestXraysRemaining() > 0)
 		{
-			if((wantFreeKillNowEspecially || my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			if(wantFreeKillNowEspecially || !reserveFreekills || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Chest X-Ray], "auto_instakill");
 				loopHandlerDelayAll();
@@ -498,7 +498,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			}
 		}
 
-		if(canUse($skill[Fire the Jokester\'s Gun]) && auto_jokesterGunFreeKillAvailable())
+		if(canUse($skill[Fire the Jokester\'s Gun]) && auto_jokesterGunFreeKillAvailable() && (wantFreeKillNowEspecially || !reserveFreekills))
 		{
 			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "auto_instakill");
 			loopHandlerDelayAll();
@@ -511,7 +511,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			{
 				//avoid sudden drain of 3x30 MP just 20 turns after the run starts, there is no mp regen or sauceror mp when using this
 			}
-			else if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			else if(wantFreeKillNowEspecially || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[shattering punch], "auto_instakill");
 				loopHandlerDelayAll();
@@ -520,7 +520,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean() && !reserveFreekills)
 		{
-			if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			if(wantFreeKillNowEspecially || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
 				loopHandlerDelayAll();
