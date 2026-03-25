@@ -752,6 +752,7 @@ int amw_calculateReserve();
 boolean amw_buyStats();
 boolean LM_adventurerMeatsWorld();
 boolean amw_wantMeat();
+boolean LX_attemptPowerLevelMeat();
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
