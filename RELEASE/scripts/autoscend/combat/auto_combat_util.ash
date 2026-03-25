@@ -248,7 +248,7 @@ skill getSniffer(monster enemy, boolean inCombat)
 	{
 		return $skill[Hunt];				//WereProfessor Werewolf specific skill
 	}
-	if(canUse($skill[Meat Cute], true , inCombat) && !isSniffed(enemy, $skill[Meat Cute]))
+	if(canUse($skill[Meat Cute], true , inCombat) && get_property("_meatCuteUsed").to_int() < 5 && !isSniffed(enemy, $skill[Meat Cute]))
 	{
 		return $skill[Meat Cute];		//Meat Golem specific skill
 	}
