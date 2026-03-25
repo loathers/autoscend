@@ -511,16 +511,16 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			{
 				//avoid sudden drain of 3x30 MP just 20 turns after the run starts, there is no mp regen or sauceror mp when using this
 			}
-			else if(wantFreeKillNowEspecially || inAftercore() || (my_daycount() >= 3))
+			else
 			{
 				handleTracker(enemy, $skill[shattering punch], "auto_instakill");
 				loopHandlerDelayAll();
 				return useSkill($skill[shattering punch]);
 			}
 		}
-		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean() && !reserveFreekills)
+		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean() && !reserveFreekills && my_mp() > 50)
 		{
-			if(wantFreeKillNowEspecially || inAftercore() || (my_daycount() >= 3))
+			if(wantFreeKillNowEspecially|| !reserveFreekills || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
 				loopHandlerDelayAll();
