@@ -332,7 +332,7 @@ boolean auto_haveLilDoctorBag()
 
 int auto_chestXraysRemaining()
 {
-	if(!auto_haveLilDoctorBag() || auto_is_valid($skill[Chest X-Ray])) return 0;
+	if(!auto_haveLilDoctorBag() || !auto_is_valid($skill[Chest X-Ray])) return 0;
 
 	return 3 - to_int(get_property("_chestXRayUsed"));
 }
