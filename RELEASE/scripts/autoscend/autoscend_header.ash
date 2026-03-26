@@ -742,6 +742,22 @@ boolean LM_edTheUndying();
 void edUnderworldChoiceHandler(int choice);
 
 ########################################################################################################
+//Defined in autoscend/paths/adventurer_meats_world.ash
+boolean in_amw();
+boolean amw_initializeSettings();
+boolean amw_canAfford(skill sk);
+boolean amw_buySubstat(stat st, int numberToBuy);
+int amw_advPerTrade();
+int amw_advBundleCost(int adv_bundles, boolean cumulative);
+int amw_advBundleCost(int adv_bundles);
+boolean amw_buyAdv();
+int amw_calculateReserve();
+boolean amw_buyStats();
+boolean LM_adventurerMeatsWorld();
+boolean amw_wantMeat();
+boolean LX_attemptPowerLevelMeat();
+
+########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
 boolean in_avantGuard();
 void ag_initializeSettings();
@@ -2149,7 +2165,6 @@ int auto_totalEffectWishesAvailable();
 item wrap_item(item it);
 boolean auto_burnMP(int mpToBurn);
 boolean can_read_skillbook(item it);
-boolean have_campground();
 boolean have_workshed();
 int baseNCForcesToday();
 int remainingNCForcesToday();

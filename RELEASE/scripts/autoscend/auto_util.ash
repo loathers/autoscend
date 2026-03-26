@@ -2725,7 +2725,7 @@ boolean auto_autosell(int quantity, item toSell)
 		return false;
 	}
 
-	if(!in_wotsf())
+	if(!in_wotsf() && !in_amw())
 	{
 		return autosell(quantity, toSell);
 	}
@@ -4494,6 +4494,10 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 	{
 		tryEffects($effects[Litterbug, Sweetbreads Flamb&eacute;]);
 	}
+	if (in_amw())
+	{
+		tryEffects($effects[Hamming It Up]);
+	}
 
 
 // 24 >= U >= 10
@@ -4511,6 +4515,11 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 	if(doAltML)
 	{
 		tryEffects($effects[Tortious]);
+	}
+
+	if (in_amw())
+	{
+		tryEffects($effects[Acting Jerky]);
 	}
 
 // <10
@@ -5045,18 +5054,11 @@ boolean can_read_skillbook(item it) {
 	return false;
 }
 
-boolean have_campground() {
-	if (isActuallyEd() || in_robot() || in_nuclear() || in_small() || in_wereprof()) {
-		return false;
-	}
-	return true;
-}
-
 boolean have_workshed() {
-	if (isActuallyEd() || in_robot() || in_nuclear() || in_wereprof()) {
-		return false;
+	if (in_small()) {
+		return true;
 	}
-	return true;
+	return have_campground();
 }
 
 int baseNCForcesToday()
