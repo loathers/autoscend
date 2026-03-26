@@ -564,9 +564,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	{
 		return useItem($item[Exploding Cigar]);
 	}
-	
+
 	// Slaughter is an instakill, but not free; only use if you have no other options and never when we want free kill
-	if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0 && !wantFreeKillNowEspecially)
+	if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0)
 	{
 		set_property("auto_instakillSource", "slaughter");
 		set_property("auto_instakillSuccess", true);
