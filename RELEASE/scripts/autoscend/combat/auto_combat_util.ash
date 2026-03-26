@@ -762,7 +762,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Talk About Politics];
 	}
-	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil\' Doctor&trade; bag])) && auto_is_valid($skill[Reflex Hammer]) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer") && useFree)
+	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : auto_reflexHammersRemaining() > 0 && !(used contains "Reflex Hammer") && useFree))
 	{
 		return "skill " + $skill[Reflex Hammer];
 	}
@@ -842,7 +842,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Monkey Slap];
 	}
 
-	if((inCombat ? auto_have_skill($skill[Sea *dent: Throw a Lightning Bolt]) : possessEquipment($item[Monodent of the Sea])) && auto_is_valid($skill[Sea *dent: Throw a Lightning Bolt]) && get_property("_seadentLightningUsed").to_int() < 11 && !(used contains "Sea *dent: Throw a Lightning Bolt"))
+	if((inCombat ? auto_have_skill($skill[Sea *dent: Throw a Lightning Bolt]) : possessEquipment($item[Monodent of the Sea])) && auto_throwLightningRemaining() > 0 && !(used contains "Sea *dent: Throw a Lightning Bolt"))
 	{
 		return "skill " + $skill[Sea *dent: Throw a Lightning Bolt];
 	}

@@ -958,6 +958,14 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
+int auto_throwLightningRemaining()
+{
+	if(!auto_haveMonodent() || !auto_is_valid($skill[Sea *dent: Throw a Lightning Bolt])) return 0;
+
+	return 11 - to_int(get_property("_seadentLightningUsed"));
+}
+
+
 boolean auto_haveShrunkenHead()
 {
 	if(get_property("hasShrunkenHead").to_boolean() && auto_is_valid($item[shrunken head]))
