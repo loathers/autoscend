@@ -62,6 +62,12 @@ boolean canSurviveShootGhost(monster enemy, int shots);
 int auto_remainingMildEvilUses();
 
 #####################################################
+//defined in /autoscend/combat/auto_combat_adventurer_meats_world.ash
+boolean amw_wanttoPP(monster enemy);
+string auto_combatMeatGolemStage3(int round, monster enemy, string text);
+string auto_combatMeatGolemStage5(int round, monster enemy, string text);
+
+#####################################################
 //defined in /autoscend/combat/auto_combat_awol.ash
 void awol_combat_helper(string page);		
 

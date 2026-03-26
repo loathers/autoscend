@@ -142,67 +142,69 @@ item	9	XO Skeleton
 item	10	Intergnat
 # Fairyeverything
 item	11	Jill-of-All-Trades
+# Fairychauns > fairyballs/whelps in meatpath
+item	12	Chest Mimic	path:Adventurer Meats World
 # Fairyballs
-item	12	Elf Operative
-item	13	Optimistic Candle
-item	14	Rockin' Robin
-item	15	God Lobster	item:God Lobster's Crown>0
-item	16	Hobo in Sheep's Clothing
+item	13	Elf Operative
+item	14	Optimistic Candle
+item	15	Rockin' Robin
+item	16	God Lobster	item:God Lobster's Crown>0
+item	17	Hobo in Sheep's Clothing
 # Fairywhelps
-item	17	Pocket Professor
-item	18	Garbage Fire
-item	19	Dandy Lion
-item	20	Choctopus
+item	18	Pocket Professor
+item	19	Garbage Fire
+item	20	Dandy Lion
+item	21	Choctopus
 # Fairychauns
-item	21	Chest Mimic
-item	22	Fist Turkey
-item	23	Cat Burglar
-item	24	Angry Jung Man
-item	25	Grimstone Golem
-item	26	Adventurous Spelunker
-item	27	Blavious Kloop
-item	28	Hippo Ballerina
-item	29	Dancing Frog
-item	30	Coffee Pixie
-item	31	Attention-Deficit Demon
-item	32	Jitterbug
-item	33	Casagnova Gnome
-item	34	Psychedelic Bear
-item	35	Piano Cat
+item	22	Chest Mimic
+item	23	Fist Turkey
+item	24	Cat Burglar
+item	25	Angry Jung Man
+item	26	Grimstone Golem
+item	27	Adventurous Spelunker
+item	28	Blavious Kloop
+item	29	Hippo Ballerina
+item	30	Dancing Frog
+item	31	Coffee Pixie
+item	32	Attention-Deficit Demon
+item	33	Jitterbug
+item	34	Casagnova Gnome
+item	35	Psychedelic Bear
+item	36	Piano Cat
 # Slightly special fairies
-item	36	Grey Goose
-item	37	Ghost of Crimbo Carols
-item	38	Red-Nosed Snapper
-item	39	Pair of Stomping Boots	!path:G-Lover
+item	37	Grey Goose
+item	38	Ghost of Crimbo Carols
+item	39	Red-Nosed Snapper
+item	40	Pair of Stomping Boots	!path:G-Lover
 # Fairy that gives extra equipment drops. Works as starfish if fed, but we don't feed it.
-item	40	Slimeling
+item	41	Slimeling
 # More slightly special fairies
-item	41	Cooler Yeti
-item	42	Gelatinous Cubeling
-item	43	Steam-Powered Cheerleader
-item	44	Obtuse Angel
-item	45	Green Pixie
+item	42	Cooler Yeti
+item	43	Gelatinous Cubeling
+item	44	Steam-Powered Cheerleader
+item	45	Obtuse Angel
+item	46	Green Pixie
 # Elemental fairies
-item	46	Sleazy Gravy Fairy
-item	47	Stinky Gravy Fairy
-item	48	Flaming Gravy Fairy
-item	49	Frozen Gravy Fairy
-item	50	Spooky Gravy Fairy
+item	47	Sleazy Gravy Fairy
+item	48	Stinky Gravy Fairy
+item	49	Flaming Gravy Fairy
+item	50	Frozen Gravy Fairy
+item	51	Spooky Gravy Fairy
 # Physical damage fairy
-item	51	Bowlet
-item	52	Crimbo Elf
+item	52	Bowlet
+item	53	Crimbo Elf
 # Barely special fairies
-item	53	Mechanical Songbird
-item	54	Grouper Groupie
-item	55	Peppermint Rhino
-item	56	Skeleton of Crimbo Past
+item	54	Mechanical Songbird
+item	55	Grouper Groupie
+item	56	Peppermint Rhino
+item	57	Skeleton of Crimbo Past
 # Turtles are cute
-item	57	Syncopated Turtle
+item	58	Syncopated Turtle
 # The original
-item	58	Baby Gravy Fairy
+item	59	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
-item	59	Mutant Fire Ant
+item	60	Mutant Fire Ant
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
@@ -231,48 +233,50 @@ meat	12	Hobo Monkey
 #Mutant Cactus Bud	grimdark:1
 # Does everything
 meat	13	Jill-of-All-Trades
+# Better than a volleychaun in meatpath
+meat	14	Chest Mimic	path:Adventurer Meats World
 # Volleychauns
-meat	14	Golden Monkey
-meat	15	Bloovian Groose
-meat	16	Unconscious Collective
-meat	17	Grim Brother
-meat	18	Mini Kiwi
-meat	19	Dramatic Hedgehog
-meat	20	Chauvinist Pig
-meat	21	Uniclops
-meat	22	Hunchbacked Minion
-meat	23	Nervous Tick
-meat	24	Cymbal-Playing Monkey
-meat	25	Cheshire Bat
+meat	15	Golden Monkey
+meat	16	Bloovian Groose
+meat	17	Unconscious Collective
+meat	18	Grim Brother
+meat	19	Mini Kiwi
+meat	20	Dramatic Hedgehog
+meat	21	Chauvinist Pig
+meat	22	Uniclops
+meat	23	Hunchbacked Minion
+meat	24	Nervous Tick
+meat	25	Cymbal-Playing Monkey
+meat	26	Cheshire Bat
 # Fairychauns
-meat	26	Chest Mimic
-meat	27	Fist Turkey
-meat	28	Cat Burglar
-meat	29	Angry Jung Man
-meat	30	Grimstone Golem
-meat	31	Adventurous Spelunker
-meat	32	Blavious Kloop
-meat	33	Hippo Ballerina
-meat	34	Dancing Frog
-meat	35	Coffee Pixie
-meat	36	Attention-Deficit Demon
-meat	37	Jitterbug
-meat	38	Casagnova Gnome
-meat	39	Psychedelic Bear
-meat	40	Piano Cat
+meat	27	Chest Mimic
+meat	28	Fist Turkey
+meat	29	Cat Burglar
+meat	30	Angry Jung Man
+meat	31	Grimstone Golem
+meat	32	Adventurous Spelunker
+meat	33	Blavious Kloop
+meat	34	Hippo Ballerina
+meat	35	Dancing Frog
+meat	36	Coffee Pixie
+meat	37	Attention-Deficit Demon
+meat	38	Jitterbug
+meat	39	Casagnova Gnome
+meat	40	Psychedelic Bear
+meat	41	Piano Cat
 # Wowee
-meat	41	Hand Turkey
+meat	42	Hand Turkey
 # Sorry, we don't use him for yellow rays but we can at least use him for meat I guess
-meat	42	He-Boulder
+meat	43	He-Boulder
 # Marginally special leprechauns
-meat	43	Ghost of Crimbo Commerce
-meat	44	Knob Goblin Organ Grinder
+meat	44	Ghost of Crimbo Commerce
+meat	45	Knob Goblin Organ Grinder
 #Mutant Cactus Bud	grimdark:2
-meat	45	Urchin Urchin
+meat	46	Urchin Urchin
 # Memes, doesn't actually give substats apparently
-meat	46	Cornbeefadon
+meat	47	Cornbeefadon
 # The original
-meat	47	Leprechaun
+meat	48	Leprechaun
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)
