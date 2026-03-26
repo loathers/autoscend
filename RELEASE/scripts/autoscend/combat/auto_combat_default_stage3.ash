@@ -20,6 +20,10 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	retval = auto_combatZombieSlayerStage3(round, enemy, text);
 	if(retval != "") return retval;
 
+	// Path = Adventurer Meats World
+	retval = auto_combatMeatGolemStage3(round, enemy, text);
+	if(retval != "") return retval;
+
 	//delevel (10 + medicine_level)% in avatar of west of loathing path
 	if(canUse($skill[Bad Medicine]) && (my_mp() >= (3 * mp_cost($skill[Bad Medicine]))))
 	{

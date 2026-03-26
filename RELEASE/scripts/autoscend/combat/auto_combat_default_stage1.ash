@@ -48,6 +48,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 
 	if(enemy == $monster[Your Shadow])
 	{
+		if(in_amw() && canUse($skill[Chew the Fat], false))
+		{
+			return useSkill($skill[Chew the Fat], false);
+		}
 		if(in_plumber())
 		{
 			if(item_amount($item[super deluxe mushroom]) > 0)
@@ -183,7 +187,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	if(retval != "") return retval;
 	
 	//pickpocket. do this after puzzle bosses but before escapes/instakills
-	boolean ableToPickpocket = ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class() || have_effect($effect[Riboflavin\']) > 0);
+	boolean ableToPickpocket = ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class() || have_effect($effect[Riboflavin\']) > 0 || amw_wanttoPP(enemy));
 	if(!combat_status_check("pickpocket") && ableToPickpocket && contains_text(text, "value=\"Pick") && canSurvive(4.0))
 	{
 		boolean tryIt = false;
