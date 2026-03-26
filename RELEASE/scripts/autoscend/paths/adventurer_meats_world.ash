@@ -76,7 +76,7 @@ int amw_advBundleCost(int adv_bundles, boolean cumulative)
 	}
 	if (adv_bundles != 1 && !cumulative)
 	{
-		meat_cost = meat_cost - amw_advCost(adv_bundles-1, true);
+		meat_cost = meat_cost - amw_advBundleCost(adv_bundles-1, true);
 	}
 	return meat_cost;
 }
