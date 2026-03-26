@@ -40,11 +40,57 @@ boolean amw_buySubstat(stat st, int numberToBuy)
 	}
 	return false;
 }
+// Calculates how many adventures we get in the smallest bundle/package/whatever
+int amw_advPerTrade()
+{
+	int advs_per_trade = 10;
+	if (auto_have_skill($skill[Pork Belly]))
+	{
+		advs_per_trade += 1;
+	}
+	if (auto_have_skill($skill[Umami]))
+	{
+		advs_per_trade += 1;
+	}
+	if (auto_have_skill($skill[Grass-Fed]))
+	{
+		advs_per_trade += 1;
+	}
+	return advs_per_trade;
+}
+
+// Parses the cost of the (adv_bundles)-th bundle
+// if non-cumulative, subtracts the cost of the previous bundles to calculate the cost of the "last" trade of 10-13 advs in the bundle
+int amw_advBundleCost(int adv_bundles, boolean cumulative)
+{
+	if (adv_bundles > 5 || adv_bundles < 1)
+	{
+		abort("I can't calculate the cost of the "+to_string(adv_bundles)+"-th bundle!");
+	}
+	int adventure_count = adv_bundles * amw_advPerTrade();
+	string amino_sac = visit_url("place.php?whichplace=meatground&action=meatground_turns");
+   	matcher adv_meat_matcher = create_matcher('"Get '+to_string(adventure_count)+' Adventures">[^>]*>[^>]*>\s*([0-9]+) meat', amino_sac);
+	int meat_cost;
+	if ( adv_meat_matcher.find() ) {
+		meat_cost = to_int(group(adv_meat_matcher,1));
+	}
+	if (adv_bundles != 1 && !cumulative)
+	{
+		meat_cost = meat_cost - amw_advCost(adv_bundles-1, true);
+	}
+	return meat_cost;
+}
+// By default, assume the adv cost is supposed to be cumulative (because costs are displayed cumulatively)
+int amw_advBundleCost(int adv_bundles)
+{
+	return amw_advBundleCost(adv_bundles, true);
+}
 
 // attempt to buy the cheapest bundle of advs
 boolean amw_buyAdv()
 {
 	// not sure how to tell if we can afford adventures yet, so attempting even if we can't afford
+	// UPDATE: can tell if we can afford now, just not implemented yet
 	int starting_meat = my_meat();
 	visit_url("place.php?whichplace=meatground&action=meatground_turns");
 	string url = `choice.php?whichchoice=1593&pwd&option=1`;
