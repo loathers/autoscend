@@ -5,6 +5,7 @@ import <autoscend/combat/auto_combat_default_stage2.ash>			//default stage 2 = e
 import <autoscend/combat/auto_combat_default_stage3.ash>			//default stage 3 = debuff
 import <autoscend/combat/auto_combat_default_stage4.ash>			//default stage 4 = prekill actions
 import <autoscend/combat/auto_combat_default_stage5.ash>			//default stage 5 = kill
+import <autoscend/combat/auto_combat_adventurer_meats_world.ash>	//path = adventurer_meats_world
 import <autoscend/combat/auto_combat_awol.ash>						//path = avatar of west of loathing
 import <autoscend/combat/auto_combat_bees_hate_you.ash>				//path = bees hate you
 import <autoscend/combat/auto_combat_fall_of_the_dinosaurs.ash>		//path = fall of the dinosaurs

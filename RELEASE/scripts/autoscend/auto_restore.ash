@@ -1971,6 +1971,10 @@ boolean acquireHP()
 		// hockey mask deals 75% hp damage at the start of combat so we need to maintain a high percentage of hp
 		goal = my_maxhp() * 0.80;
 	}
+	if(in_amw()) // limited restores & meat is important, needs lower default
+	{
+		goal = my_maxhp() * 0.6;
+	}
 	return acquireHP(goal);
 }
 

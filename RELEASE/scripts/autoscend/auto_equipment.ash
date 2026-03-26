@@ -1491,25 +1491,24 @@ int[slot] powerMultipliers()
 */
 void auto_equipFreekill()
 {	
+	// Pocket familiars combat doesn't permit skills, and bodyguards in Advant Guard make freekills un-free, so we're not doing that.
+	if(in_avantGuard() || in_pokefam())
+	{
+		return;
+	} 
+
 	auto_log_info("Looking for an equipment with free kills available...");
-	item doctorBag = $item[Lil\' Doctor&trade; Bag];
 	item dartHolster = $item[Everfull Dart Holster];
+	item doctorBag = $item[Lil\' Doctor&trade; Bag];
+	item joksterGun = $item[The Jokester\'s Gun];
 	item bcz = auto_getItemToEquipBCZ();
 	item legendClub = $item[legendary seal-clubbing club];
 
-	boolean chestXrayAvailable = auto_chestXraysRemaining() > 0;
 	boolean redDartAvailable = auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0;
+	boolean chestXrayAvailable = auto_chestXraysRemaining() > 0;
+	boolean fireGunAvailable = auto_jokesterGunFreeKillAvailable();
 	boolean sweatBulletsAvailable = auto_wantToBCZ($skill[BCZ: Sweat Bullets]);
 	boolean clubBackAvailable = auto_clubEmBackInTimesRemaining() > 0;
-
-	//don't use freekills in advant guard or Pocket familiars, they are not worth it/ don't work
-	if(in_avantGuard() || in_pokefam())
-	{
-		chestXrayAvailable = false;
-		redDartAvailable = false;
-		sweatBulletsAvailable = false;
-		clubBackAvailable = false;
-	} 
 
 	if(redDartAvailable)
 	{
@@ -1519,14 +1518,18 @@ void auto_equipFreekill()
 	{
 		auto_log_info("We still have Chest X-Rays available. Equipping Lil' Doctor bag.");
 		autoEquip($slot[acc3], doctorBag);
-	} else if (clubBackAvailable)
+	} else if (fireGunAvailable)
 	{
-		auto_log_info("They may not be seals, but we're gonna kill them last week. Equipping Legendary Seal Clubbing Club.");
-		autoEquip($slot[weapon], legendClub);
+		auto_log_info("Let's be a jokester. Equipping The Jokester's gun.");
+		autoEquip($slot[weapon], joksterGun);
 	} else if (sweatBulletsAvailable) 
 	{
 		auto_log_info("Man, we about to sweat bullets up in here. Equipping BCZ.");
 		autoEquip($slot[acc3], bcz);
+	} else if (clubBackAvailable)
+	{
+		auto_log_info("They may not be seals, but we're gonna kill them last week. Equipping Legendary Seal Clubbing Club.");
+		autoEquip($slot[weapon], legendClub);
 	} else 
 	{
 		auto_log_info("No free kill sources found to equip, maybe you have some others, but we'll let combat figure that out.");

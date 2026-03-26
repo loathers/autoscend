@@ -114,7 +114,8 @@ void auto_ghost_prep(location place)
 		Fireball Toss,				//path of the plumber
 		Chill of the Tomb,			//dark gyffte
 		Lavafava, Pungent Mung, Beanstorm,			  //avatar of west of loathing
-		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
+		Hot Foot, Emmental Elemental, Sax of Violence,//avatar of shadow over loathing
+		Bacon Ray, Spicy Meatball	//adventurer meats world
 		]
 	{
 		if(auto_have_skill(sk))
