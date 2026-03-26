@@ -520,20 +520,9 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean() && !reserveFreekills && my_mp() > 50)
 		{
-			if(wantFreeKillNowEspecially|| !reserveFreekills || inAftercore() || (my_daycount() >= 3))
-			{
-				handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
-				loopHandlerDelayAll();
-				return useSkill($skill[Gingerbread Mob Hit]);
-			}
-		}
-		// Slaughter is an instakill, but not free; only use if you have no other options and never when we want free kill
-		if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0 && !wantFreeKillNowEspecially)
-		{
-			set_property("auto_instakillSource", "slaughter");
-			set_property("auto_instakillSuccess", true);
+			handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
 			loopHandlerDelayAll();
-			return useSkill($skill[Slaughter]);
+			return useSkill($skill[Gingerbread Mob Hit]);
 		}
 		//		Can not use _usedReplicaBatoomerang if we have more than 1 because of the double item use issue...
 		//		Sure, we can try to use a second item (if we have it or are forced to buy it... ugh).
@@ -574,6 +563,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	if(canUse($item[Exploding Cigar]) && haveUsed($skill[Duplicate]))
 	{
 		return useItem($item[Exploding Cigar]);
+	}
+	
+	// Slaughter is an instakill, but not free; only use if you have no other options and never when we want free kill
+	if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0 && !wantFreeKillNowEspecially)
+	{
+		set_property("auto_instakillSource", "slaughter");
+		set_property("auto_instakillSuccess", true);
+		loopHandlerDelayAll();
+		return useSkill($skill[Slaughter]);
 	}
 	
 	return "";

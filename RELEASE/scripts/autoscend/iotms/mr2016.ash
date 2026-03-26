@@ -4,7 +4,7 @@
 
 boolean auto_haveJokestersGun()
 {
-	if(auto_is_valid($item[The Jokester\'s Gun]) && available_amount($item[The Jokester\'s Gun]) > 0 )
+	if(possessEquipment($item[The Jokester\'s Gun]) && auto_can_equip($item[The Jokester\'s Gun]))
 	{
 		return true;
 	}
