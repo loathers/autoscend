@@ -734,10 +734,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Them Your Ring];
 	}
-	if(auto_have_skill($skill[Breathe Out]) && auto_is_valid($skill[Breathe Out]) && (!(used contains "breathe out")) && useFree)
-	{
-		return "skill " + $skill[Breathe Out];
-	}
 	if(auto_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (inCombat ? hasClubEquipped() : true) && auto_is_valid($skill[Batter Up!]) && (!(used contains "batter up!")))
 	{
 		return "skill " + $skill[Batter Up!];
@@ -800,12 +796,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if(inCombat ? item_amount($item[Handful of split pea soup]) > 0 && (!(used contains "Handful of split pea soup")) && auto_is_valid($item[Handful of split pea soup]) && useFree : (item_amount($item[Handful of split pea soup]) > 0 || item_amount($item[Whirled peas]) >= 2))
 	{
 		return "item " + $item[Handful of split pea soup];
-	}
-
-	if(inCombat ? (auto_have_skill($skill[Punch Out Your Foe]) && auto_is_valid($skill[Punch Out Your Foe]) && (my_mp() >= mp_cost($skill[Punch Out Your Foe])) && (!(used contains "punch out your foe")) && useFree)
-	    : auto_is_valid($skill[Punch Out Your Foe]) && (auto_have_skill($skill[Punch Out Your Foe]) || (available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3 && !isActuallyEd()) ))
-	{
-		return "skill " + $skill[Punch Out Your Foe];
 	}
 
 	if(auto_have_skill($skill[[28021]Punt]) && (my_mp() > mp_cost($skill[[28021]Punt])) && !(used contains "Punt"))
@@ -873,6 +863,19 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if(item_amount($item[human musk]) > 0 && (!(used contains "human musk")) && auto_is_valid($item[human musk]) && (get_property("_humanMuskUses").to_int() < 3 && useFree)) //first 3 are free
 	{
 		return "item " + $item[human musk];
+	}
+
+	// items for which we consume spleen for uses
+	if(inCombat ? (auto_have_skill($skill[Breathe Out]) && auto_is_valid($skill[Breathe Out]) && (my_mp() >= mp_cost($skill[Breathe Out])) && (!(used contains "breathe out")) && useFree)
+	    : auto_is_valid($skill[Breathe Out]) && (auto_have_skill($skill[Breathe Out]) || (available_amount($item[hot jelly]) > 0 && spleen_left() > 1 && !isActuallyEd()) ))
+	{
+		return "skill " + $skill[Breathe Out];
+	}
+
+	if(inCombat ? (auto_have_skill($skill[Punch Out Your Foe]) && auto_is_valid($skill[Punch Out Your Foe]) && (my_mp() >= mp_cost($skill[Punch Out Your Foe])) && (!(used contains "punch out your foe")) && useFree)
+	    : auto_is_valid($skill[Punch Out Your Foe]) && (auto_have_skill($skill[Punch Out Your Foe]) || (available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3 && !isActuallyEd()) ))
+	{
+		return "skill " + $skill[Punch Out Your Foe];
 	}
 
 	//We want to limit usage of these much more than the others.
