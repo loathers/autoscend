@@ -90,7 +90,11 @@ int amw_advBundleCost(int adv_bundles)
 boolean amw_buyAdv()
 {
 	int starting_meat = my_meat();
-	if (starting_meat + 50 < amw_advBundleCost(1)) // if true, can't afford adventures
+	if (
+		starting_meat + 50 < amw_advBundleCost(1) || // if true, can't afford adventures
+		(isAboutToPowerlevel() && amw_advBundleCost(1) > 2000) // don't want to be spending more on adventures
+		// if it's greater than our mpa and we are powerleveling. note the big jump between the 11th and 12th trade; ~1200 --> ~7000
+		) 
 	{
 		return false;
 	}
