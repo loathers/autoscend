@@ -89,18 +89,17 @@ int amw_advBundleCost(int adv_bundles)
 // attempt to buy the cheapest bundle of advs
 boolean amw_buyAdv()
 {
-	// not sure how to tell if we can afford adventures yet, so attempting even if we can't afford
-	// UPDATE: can tell if we can afford now, just not implemented yet
 	int starting_meat = my_meat();
+	if (starting_meat + 50 < amw_advBundleCost(1)) // if true, can't afford adventures
+	{
+		return false;
+	}
 	visit_url("place.php?whichplace=meatground&action=meatground_turns");
 	string url = `choice.php?whichchoice=1593&pwd&option=1`;
 	visit_url(url, true);
 
 	// successful if meat was spent
 	if (my_meat() < starting_meat){return true;}
-	// need to exit choice if unsuccessful
-	url = `choice.php?whichchoice=1593&pwd&option=6`;
-	visit_url(url, true);
 	return false;
 }
 
