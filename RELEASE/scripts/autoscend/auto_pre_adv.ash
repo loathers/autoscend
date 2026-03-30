@@ -371,6 +371,12 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	// need more meat than usual for skills + level in meatpath
+	// as of 2026-03-30 this values meat drop double item drop in the default maximizer statement
+	if (in_amw() && my_level()<13) {
+		addToMaximize("10meat");
+	}
+
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
 	boolean burningDelay = auto_burningDelay();
 	boolean gettingLucky = auto_gettingLucky();
