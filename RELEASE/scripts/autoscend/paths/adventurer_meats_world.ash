@@ -358,11 +358,15 @@ boolean LX_attemptPowerLevelMeat()
 	abort("You need more meat to get the next level. This isn't implemented, so you're going to have to do it manually.");
 	return false;
 	addToMaximize("200meat");
+	autoMaximize("meat drop");
+	handleFamiliar(lookupFamiliarDatafile("meat"));
+	int meatDrop = simValue("Meat Drop");
 	// "best" meatleveling zone at top
 	// maybe add clovering if this is too slow
-	if (zone_isAvailable($location[The Hidden Hospital], true))
+	if (meatDrop >= 300 && zone_isAvailable($location[The Hidden Hospital], true))
 	{
-		// possibly a good target with high enough bonus meat
+		// could lower meatDrop a bit when janitor is banished
+		autoAdv($location[The Hidden Hospital]);
 	}
 	else if (zone_isAvailable($location[Haunted Bedroom], true))
 	{
