@@ -379,6 +379,8 @@ boolean LX_attemptPowerLevelMeat()
 	//}
 	else 
 	{
-		// 100 MPA, odd jobs board :p
+		visit_url("place.php?whichplace=town&action=town_oddjobs");
+		run_choice(4);
+		// 93? MPA, odd jobs board :p
 	}
 }
