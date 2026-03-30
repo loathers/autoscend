@@ -262,15 +262,33 @@ int amw_calculateReserve()
 	}
 }
 
-int amw_substatsBuyable(amw_statBuyable goal)
+int amw_substatsBuyable(amw_statBuyable goal, boolean meatleveling)
 {
-	int meat_reserve = amw_calculateReserve();
+	int meat_reserve;
+	if (!meatleveling) {meat_reserve = amw_calculateReserve();} // don't use all our meat if we don't have to
+	else if (my_level() == 10) {meat_reserve = 5000;}
+	else {meat_reserve = 50;} // possibly ok to spend down if we can level up and are meatleveling. except lvl 11 bc we need to shore anyway.
+
 	if (meat_reserve >= my_meat()){return 0;} // no meat unreserved to spend on stats
 	int substats_to_goal = (goal.amount - my_basestat(goal.st));
 	auto_log_debug("Substats to next goal: " + to_string(substats_to_goal));
 
-	// return either the meat within budget or the substats we need to reach the goal
-	return min(my_meat()-meat_reserve, substats_to_goal);
+	if (!meatleveling)
+	{
+		// return either the meat within budget or the substats we need to reach the goal
+		return min(my_meat()-meat_reserve, substats_to_goal);
+	}
+	// only dip into our reserves to meatlevel if we can reach the next level
+	else if (my_meat()-meat_reserve >= substats_to_goal)
+	{
+		return substats_to_goal;
+	}
+	else {return 0;}
+}
+// by default we aren't meatleveling
+int amw_substatsBuyable(amw_statBuyable goal)
+{
+	return amw_substatsBuyable(goal, false);
 }
 
 boolean amw_buyStats(boolean meatleveling)
@@ -286,7 +304,7 @@ boolean amw_buyStats(boolean meatleveling)
 
 	if (next.amount != 0)
 	{
-		int amountToBuy = amw_substatsBuyable(next);
+		int amountToBuy = amw_substatsBuyable(next, meatleveling);
 		if (amountToBuy > 0)
 		{
 			return amw_buySubstat(next.st, amountToBuy);
@@ -330,6 +348,8 @@ boolean amw_wantMeat()
 
 boolean LX_attemptPowerLevelMeat()
 {
+	// setting the parameter of buyStats to true drastically lowers meat reserve requirements
+	if (amw_buyStats(true)){return true;}
 	abort("You need more meat to get the next level. This isn't implemented, so you're going to have to do it manually.");
 	return false;
 }
