@@ -362,16 +362,7 @@ boolean LX_attemptPowerLevelMeat()
 	}
 	else if (zone_isAvailable($location[Haunted Bedroom], true))
 	{
-		// ornate: 500 meat
-		// mahogany: 500 meat
-		// wardrob: 500 meat
-		// other two don't drop meat
-		// so 300-500 mpa! depending on meat
-	}
-	else if (zone_isAvailable($location[The Icy Peak], true))
-	{
-		// good with sniffs or 2 banishes
-		// can be 200 mpa
+		autoAdv($location[The Haunted Bedroom]);
 	}
 	// only worth it with banishes
 	//else if (zone_isAvailable($location[The Icy Peak], true))
@@ -380,8 +371,7 @@ boolean LX_attemptPowerLevelMeat()
 	//}
 	else if (zone_isAvailable($location[Cobb's Knob Treasury], true))
 	{
-		// adventure in harem disg. or kgegu for meat.
-		// ~128 MPA?
+		autoAdv($location[Cobb's Knob Treasury]);
 	}
 	//else if ( level 3 quest started?)
 	//{
