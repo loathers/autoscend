@@ -373,6 +373,11 @@ boolean LX_attemptPowerLevelMeat()
 		// good with sniffs or 2 banishes
 		// can be 200 mpa
 	}
+	// only worth it with banishes
+	//else if (zone_isAvailable($location[The Icy Peak], true))
+	//{
+		//autoAdv($location[The Haunted Bedroom]);
+	//}
 	else if (zone_isAvailable($location[Cobb's Knob Treasury], true))
 	{
 		// adventure in harem disg. or kgegu for meat.
