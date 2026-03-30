@@ -353,4 +353,37 @@ boolean LX_attemptPowerLevelMeat()
 	if (amw_buyStats(true)){return true;}
 	abort("You need more meat to get the next level. This isn't implemented, so you're going to have to do it manually.");
 	return false;
+
+	// "best" meatleveling zone at top
+	// maybe add clovering if this is too slow
+	if (zone_isAvailable($location[The Hidden Hospital]))
+	{
+		// possibly a good target with high enough bonus meat
+	}
+	else if (zone_isAvailable($location[Haunted Bedroom]))
+	{
+		// ornate: 500 meat
+		// mahogany: 500 meat
+		// wardrob: 500 meat
+		// other two don't drop meat
+		// so 300-500 mpa! depending on meat
+	}
+	else if (zone_isAvailable($location[The Icy Peak]))
+	{
+		// good with sniffs or 2 banishes
+		// can be 200 mpa
+	}
+	else if (zone_isAvailable($location[Cobb's Knob Treasury]))
+	{
+		// adventure in harem disg. or kgegu for meat.
+		// ~128 MPA?
+	}
+	//else if ( level 3 quest started?)
+	//{
+		// pretentious artist rat whiskers
+	//}
+	else 
+	{
+		// 100 MPA, odd jobs board :p
+	}
 }
