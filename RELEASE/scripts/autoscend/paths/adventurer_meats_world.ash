@@ -110,9 +110,9 @@ record amw_statBuyable {
 	int amount;
 };
 
-// returns a record of the (sub)stat and how much of that (sub)stat we want next
-// prioritizing getting all of the skills for now
-amw_statBuyable amw_nextStat()
+// returns a record of the substat and how much of that substat we want for our next skill(s)
+// prioritizing getting all of the skills currently
+amw_statBuyable amw_nextSkillSubstats()
 {
 	amw_statBuyable goal;
 	// getting elemental res for kitchen
@@ -218,6 +218,22 @@ amw_statBuyable amw_nextStat()
 	return goal;
 }
 
+// returns substats needed to get to next level
+amw_statBuyable amw_nextLevelSubstats()
+{
+	next_level = my_level() + 1;
+	stat mainstat = $stat[submysticality];
+	// which stat is our mainstat should be mostly consistent with the priority of amw_nextSkillSubstats()
+	// the difference between that function and this one is that this focuses on leveling priority if we have to meatlevel,
+	// while the other one focuses on acquiring skills
+	if (next_level == 12 || next_level == 13){
+		mainstat = $stat[submoxie];
+	}
+	goal.st = mainstat;
+	goal.amount = ((next_level-1)**2 + 4)**2;
+	return goal;
+}
+
 // reserves meat from being spent on stats
 // TODO: take into account how much meat is needed for the next bundle of 10
 // TODO: take into account quests state (can reserve less if expensive things won't be bought soon)
@@ -257,9 +273,17 @@ int amw_substatsBuyable(amw_statBuyable goal)
 	return min(my_meat()-meat_reserve, substats_to_goal);
 }
 
-boolean amw_buyStats()
+boolean amw_buyStats(boolean meatleveling)
 {
-	amw_statBuyable next = amw_nextStat();
+	amw_statBuyable next
+	if (meatleveling)
+	{
+		// fetch substats to get to next level
+		next = amw_nextLevelSubstats();
+	}
+	// fetch substats to get to next desired skill
+	else {next = amw_nextSkillSubstats();}
+
 	if (next.amount != 0)
 	{
 		int amountToBuy = amw_substatsBuyable(next);
@@ -269,6 +293,10 @@ boolean amw_buyStats()
 		}
 	}
 	return false;
+}
+boolean amw_buyStats()
+{
+	return amw_buyStats(false);// do not meatlevel by default
 }
 
 boolean LM_adventurerMeatsWorld()
