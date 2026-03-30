@@ -356,11 +356,11 @@ boolean LX_attemptPowerLevelMeat()
 
 	// "best" meatleveling zone at top
 	// maybe add clovering if this is too slow
-	if (zone_isAvailable($location[The Hidden Hospital]))
+	if (zone_isAvailable($location[The Hidden Hospital], true))
 	{
 		// possibly a good target with high enough bonus meat
 	}
-	else if (zone_isAvailable($location[Haunted Bedroom]))
+	else if (zone_isAvailable($location[Haunted Bedroom], true))
 	{
 		// ornate: 500 meat
 		// mahogany: 500 meat
@@ -368,12 +368,12 @@ boolean LX_attemptPowerLevelMeat()
 		// other two don't drop meat
 		// so 300-500 mpa! depending on meat
 	}
-	else if (zone_isAvailable($location[The Icy Peak]))
+	else if (zone_isAvailable($location[The Icy Peak], true))
 	{
 		// good with sniffs or 2 banishes
 		// can be 200 mpa
 	}
-	else if (zone_isAvailable($location[Cobb's Knob Treasury]))
+	else if (zone_isAvailable($location[Cobb's Knob Treasury], true))
 	{
 		// adventure in harem disg. or kgegu for meat.
 		// ~128 MPA?
