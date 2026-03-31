@@ -387,10 +387,11 @@ boolean LX_attemptPowerLevelMeat()
 	//{
 		// pretentious artist rat whiskers
 	//}
-	else if (my_adventures > 10)
+	else if (my_adventures() > 10)
 	{
 		visit_url("place.php?whichplace=town&action=town_oddjobs");
-		return run_choice(4);
+		run_choice(4);
+		return true;
 		// 93? MPA, odd jobs board :p
 	}
 	return false;
