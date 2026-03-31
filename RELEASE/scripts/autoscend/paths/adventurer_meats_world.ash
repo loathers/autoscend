@@ -92,7 +92,7 @@ boolean amw_buyAdv()
 	int starting_meat = my_meat();
 	if (
 		starting_meat + 50 < amw_advBundleCost(1) || // if true, can't afford adventures
-		(isAboutToPowerlevel() && amw_advBundleCost(1) > 2000 && my_level < 13) // don't want to be spending more on adventures
+		(isAboutToPowerlevel() && amw_advBundleCost(1) > 2000 && my_level() < 13) // don't want to be spending more on adventures
 		// if it's greater than our mpa and we are powerleveling. note the big jump between the 11th and 12th trade; ~1200 --> ~7000
 		) 
 	{
@@ -224,6 +224,8 @@ amw_statBuyable amw_nextSkillSubstats()
 // returns substats needed to get to next level
 amw_statBuyable amw_nextLevelSubstats()
 {
+	int next_level;
+	amw_statBuyable goal;
 	next_level = my_level() + 1;
 	stat mainstat = $stat[submysticality];
 	// which stat is our mainstat should be mostly consistent with the priority of amw_nextSkillSubstats()
@@ -298,7 +300,7 @@ int amw_substatsBuyable(amw_statBuyable goal)
 
 boolean amw_buyStats(boolean meatleveling)
 {
-	amw_statBuyable next
+	amw_statBuyable next;
 	if (meatleveling)
 	{
 		// fetch substats to get to next level
@@ -355,10 +357,10 @@ boolean LX_attemptPowerLevelMeat()
 {
 	// setting the parameter of buyStats to true drastically lowers meat reserve requirements
 	if (amw_buyStats(true)){return true;}
-	abort("You need more meat to get the next level. This isn't implemented, so you're going to have to do it manually.");
-	return false;
+	//abort("You need more meat to get the next level. This isn't implemented, so you're going to have to do it manually.");
+	//return false;
 	addToMaximize("200meat");
-	autoMaximize("meat drop");
+	autoMaximize("meat drop", false);
 	handleFamiliar(lookupFamiliarDatafile("meat"));
 	int meatDrop = simValue("Meat Drop");
 	// "best" meatleveling zone at top
@@ -368,7 +370,7 @@ boolean LX_attemptPowerLevelMeat()
 		// could lower meatDrop a bit when janitor is banished
 		autoAdv($location[The Hidden Hospital]);
 	}
-	else if (zone_isAvailable($location[Haunted Bedroom], true))
+	else if (zone_isAvailable($location[The Haunted Bedroom], true))
 	{
 		autoAdv($location[The Haunted Bedroom]);
 	}
