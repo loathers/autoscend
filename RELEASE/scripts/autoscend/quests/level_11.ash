@@ -3124,7 +3124,7 @@ boolean L11_palindome()
 			equipBaseline();
 			if((item_amount($item[Bird Rib]) == 0) || (item_amount($item[Lion Oil]) == 0))
 			{
-				doWhiteys();
+				return doWhiteys();
 			}
 			else if(item_amount($item[Stunt Nuts]) == 0)
 			{
