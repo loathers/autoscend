@@ -3130,7 +3130,7 @@ boolean L11_palindome()
 			{
 				auto_log_info("We got no nuts!! :O", "Blue");
 				autoEquip($slot[acc3], $item[Talisman o\' Namsilat]);
-				autoAdv(1, $location[Inside the Palindome]);
+				return autoAdv(1, $location[Inside the Palindome]);
 			}
 			else
 			{
