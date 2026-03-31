@@ -368,29 +368,30 @@ boolean LX_attemptPowerLevelMeat()
 	if (meatDrop >= 300 && zone_isAvailable($location[The Hidden Hospital], true))
 	{
 		// could lower meatDrop a bit when janitor is banished
-		autoAdv($location[The Hidden Hospital]);
+		return autoAdv($location[The Hidden Hospital]);
 	}
 	else if (zone_isAvailable($location[The Haunted Bedroom], true))
 	{
-		autoAdv($location[The Haunted Bedroom]);
+		return autoAdv($location[The Haunted Bedroom]);
 	}
 	// only worth it with banishes
 	//else if (zone_isAvailable($location[The Icy Peak], true))
 	//{
-		//autoAdv($location[The Haunted Bedroom]);
+		//return autoAdv($location[The Haunted Bedroom]);
 	//}
 	else if (zone_isAvailable($location[Cobb's Knob Treasury], true))
 	{
-		autoAdv($location[Cobb's Knob Treasury]);
+		return autoAdv($location[Cobb's Knob Treasury]);
 	}
 	//else if ( level 3 quest started?)
 	//{
 		// pretentious artist rat whiskers
 	//}
-	else 
+	else if (my_adventures > 10)
 	{
 		visit_url("place.php?whichplace=town&action=town_oddjobs");
-		run_choice(4);
+		return run_choice(4);
 		// 93? MPA, odd jobs board :p
 	}
+	return false;
 }
