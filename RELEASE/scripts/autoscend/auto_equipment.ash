@@ -1527,6 +1527,7 @@ void auto_equipFreekill()
 		auto_log_info("Man, we about to sweat bullets up in here. Equipping BCZ.");
 		autoEquip($slot[acc3], bcz);
 	} else if (clubBackAvailable)
+	// club back is last because it destroys drops, so we may choose to not use it
 	{
 		auto_log_info("They may not be seals, but we're gonna kill them last week. Equipping Legendary Seal Clubbing Club.");
 		autoEquip($slot[weapon], legendClub);
