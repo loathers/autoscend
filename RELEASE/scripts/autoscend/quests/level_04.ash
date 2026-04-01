@@ -149,7 +149,8 @@ boolean L4_batCave()
 			return true;
 		}
 		// prioritize getting replica Mr. A in LoL
-		if(shenShouldDelayZone($location[The Batrat and Ratbat Burrow]) && !in_lol())
+		// prioritize boss meat in amw
+		if(shenShouldDelayZone($location[The Batrat and Ratbat Burrow]) && !in_lol() && !in_amw())
 		{
 			auto_log_debug("Delaying Batrat Burrow in case of Shen.");
 			return false;
