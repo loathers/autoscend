@@ -701,6 +701,12 @@ boolean auto_buyFireworksHat()
 		return false;
 	}
 
+	//the damage from all three hats one-shots the professor after a round of combat
+	if(in_wereprof())
+	{
+		return false;
+	}
+
 	if(!have_fireworks_shop())
 	{
 		return false;
@@ -728,8 +734,8 @@ boolean auto_buyFireworksHat()
 		}
 	}
 
-	// +combat hat is second most useful but has no effect in LAR and kills the professor and can't be removed in Hat Trick
-	if(auto_can_equip($item[sombrero-mounted sparkler]) && !(in_lar() || in_wereprof() || in_hattrick()))
+	// +combat hat is second most useful but has no effect in LAR and can't be removed in Hat Trick
+	if(auto_can_equip($item[sombrero-mounted sparkler]) && !(in_lar() || in_hattrick()))
 	{
 		float simCombat = providePlusCombat(auto_combatModCap(), $location[noob cave], true, true);
 		if(simCombat < auto_combatModCap())

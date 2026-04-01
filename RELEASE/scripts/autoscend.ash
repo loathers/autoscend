@@ -1,4 +1,4 @@
-since r28925;	// feat: add function for computing next available mobius strip noncombat
+since r28969; // add council text for Adventurer Meats World
 
 /***
 	autoscend_header.ash must be first import
@@ -55,6 +55,7 @@ import <autoscend/iotms/mr2026.ash>
 import <autoscend/iotms/ttt.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
+import <autoscend/paths/adventurer_meats_world.ash>
 import <autoscend/paths/auto_path_util.ash>
 import <autoscend/paths/avant_guard.ash>
 import <autoscend/paths/avatar_of_boris.ash>
@@ -304,6 +305,7 @@ void initializeSettings() {
 	small_initializeSettings();
 	wereprof_initializeSettings();
 	ag_initializeSettings();
+	amw_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -1575,7 +1577,7 @@ boolean autosellCrap()
 	{
 		return false;		//do not autosell stuff in casual or postronin unless you are very poor
 	}
-	if(in_wotsf()) 
+	if(in_wotsf())
 	{
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
@@ -1593,6 +1595,23 @@ boolean autosellCrap()
 		{
 			use(min(10,item_amount(it)-1), it);
 		}
+	}
+	if (!get_property("_governmentPerDiemUsed").to_boolean() && item_amount($item[government per-diem]) > 0) {
+		use(1, $item[government per-diem]);
+	}
+	if (item_amount($item[stock certificate]) > 0) {
+	string turns = get_property("stockCertificateTurns");
+	if (turns != "") {
+		int earliestTurns = split_string(turns, ",")[0].to_int();
+		if (total_turns_played() - earliestTurns >= 500) {
+			use(1, $item[Stock Certificate]);
+		}
+	}
+}
+
+	if(in_amw())
+	{
+		return false; // don't bother trying to autosell in Adventurer Meats World
 	}
 	
 	// Function to sell all of our items, optionally keeping some.
@@ -1993,6 +2012,7 @@ boolean doTasks()
 	if(LM_robot())						return true;
 	if(LM_plumber())					return true;
 	if(LM_zombieSlayer())				return true;
+	if(LM_adventurerMeatsWorld())		return true;
 
 	{
 		cheeseWarMachine(0, 0, 0, 0);

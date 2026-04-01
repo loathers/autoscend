@@ -71,7 +71,8 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
 		my_soulsauce() < soulsauce_cost(sk) ||
-		my_pp() < plumber_ppCost(sk))
+		my_pp() < plumber_ppCost(sk) ||
+		my_meat() < meat_cost(sk))
 		{
 			return false;
 		}
@@ -84,7 +85,8 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 		my_lightning() < lightning_cost(sk) ||
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
-		my_soulsauce() < soulsauce_cost(sk))
+		my_soulsauce() < soulsauce_cost(sk) ||
+		my_meat() < meat_cost(sk))
 		{
 			return false;
 		}
@@ -222,7 +224,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash, Left %n Kick, Right %n Kick]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash, Left %n Kick, Right %n Kick, Meat Cute]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -245,6 +247,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
 	{
 		return $skill[Hunt];				//WereProfessor Werewolf specific skill
+	}
+	if(canUse($skill[Meat Cute], true , inCombat) && get_property("_meatCuteUsed").to_int() < 5 && !isSniffed(enemy, $skill[Meat Cute]))
+	{
+		return $skill[Meat Cute];		//Meat Golem specific skill
 	}
 	if(canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5 && !isSniffed(enemy, $skill[Long Con]))
 	{
@@ -448,6 +454,12 @@ skill getStunner(monster enemy)
 		if(canUse($skill[Drum Roll], true))
 		{
 			return $skill[Drum Roll];
+		}
+		break;
+	case $class[Meat Golem]:
+		if(canUse($skill[Meat Locker], true))
+		{
+			return $skill[Meat Locker];
 		}
 		break;
 	}
@@ -756,7 +768,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Talk About Politics];
 	}
-	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil\' Doctor&trade; bag])) && auto_is_valid($skill[Reflex Hammer]) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer") && useFree)
+	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : auto_reflexHammersRemaining() > 0 && !(used contains "Reflex Hammer") && useFree))
 	{
 		return "skill " + $skill[Reflex Hammer];
 	}
@@ -836,7 +848,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "skill " + $skill[Monkey Slap];
 	}
 
-	if((inCombat ? auto_have_skill($skill[Sea *dent: Throw a Lightning Bolt]) : possessEquipment($item[Monodent of the Sea])) && auto_is_valid($skill[Sea *dent: Throw a Lightning Bolt]) && get_property("_seadentLightningUsed").to_int() < 11 && !(used contains "Sea *dent: Throw a Lightning Bolt"))
+	if((inCombat ? auto_have_skill($skill[Sea *dent: Throw a Lightning Bolt]) : possessEquipment($item[Monodent of the Sea])) && auto_throwLightningRemaining() > 0 && !(used contains "Sea *dent: Throw a Lightning Bolt"))
 	{
 		return "skill " + $skill[Sea *dent: Throw a Lightning Bolt];
 	}

@@ -716,6 +716,12 @@ boolean autoChooseFamiliar(location place)
 	{
 		famChoice = lookupFamiliarDatafile("regen");
 	}
+
+	//in meatpath, prioritize meat if meat is a constraint
+	if (in_amw() && famChoice == $familiar[none] && amw_wantMeat()) 
+	{
+		famChoice = lookupFamiliarDatafile("meat");
+	}
 	
 	//select the best familiar that drops items directly. Will prioritize useful items and awesome+ food and drink and then other drops.
 	if(famChoice == $familiar[none])
@@ -736,8 +742,8 @@ boolean autoChooseFamiliar(location place)
 		famChoice = $familiar[none];
 	}
 	
-	// Stats from combats makes runs go faster apparently.
-	if (famChoice == $familiar[none] && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
+	// Stats from combats makes runs go faster apparently, except in meatpath
+	if (famChoice == $familiar[none] && !in_amw() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
 		famChoice = lookupFamiliarDatafile("stat");
 	}
 	

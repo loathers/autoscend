@@ -346,6 +346,26 @@ boolean auto_post_adventure()
 			//buffMaintain($effect[Tricky Timpani], 30, 1, 10); //Only on boss fights
 		}
 	}
+	if (in_amw()) // adventurer meats world
+	{
+		if(item_amount($item[Loose Meats]) > 0)
+		{
+			use(1, $item[Loose Meats]);// no need to run more than once because 1/combat
+		}
+		if (amw_canAfford($skill[Self-Tenderize])) // not necessary, but cheap
+		{
+			buffMaintain($effect[Tenderized], 0, 1, 5);
+		}
+		// Beef Goggles is in providers
+		if (amw_canAfford($skill[Meat Puppet])) // +famwt for our chaun
+		{
+			buffMaintain($effect[Meat Puppet], 0, 1, 5);
+		}
+		if (amw_canAfford($skill[Steak Skirt])) // not necessary, but cheap
+		{
+			buffMaintain($effect[Steak Skirt], 0, 1, 5);
+		}
+	}
 
 	skill libram = preferredLibram();
 

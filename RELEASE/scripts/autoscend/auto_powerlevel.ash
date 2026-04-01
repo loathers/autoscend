@@ -57,6 +57,10 @@ boolean LX_attemptPowerLevel()
 	{
 		return LX_robot_powerlevel();		//leveling works very differently in You, Robot path
 	}
+	if (in_amw())
+	{
+		return LX_attemptPowerLevelMeat();
+	}
 	if (my_level() > 12)
 	{
 		return false;
