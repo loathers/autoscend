@@ -244,7 +244,7 @@ int amw_calculateReserve()
 {
 	int current_level = my_level();
 	int reserve;
-	if (current_level <= 4)
+	if (current_level <= 6)
 	{
 		reserve = 500;
 	}
