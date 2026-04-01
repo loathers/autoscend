@@ -917,7 +917,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && auto_is_valid($item[Detuned Radio]) && (!in_amw || my_level >= 7))
+	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && auto_is_valid($item[Detuned Radio]) && (!in_amw() || my_level >= 7))
 	{
 		auto_buyUpTo(1, $item[Detuned Radio]);
 		auto_setMCDToCap();
