@@ -762,6 +762,7 @@ boolean amw_buyStats(boolean meatleveling);
 boolean amw_buyStats();
 boolean LM_adventurerMeatsWorld();
 boolean amw_wantMeat();
+boolean LX_attemptPowerLevelMeat(boolean skills);
 boolean LX_attemptPowerLevelMeat();
 
 ########################################################################################################

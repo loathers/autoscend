@@ -346,7 +346,7 @@ boolean LM_adventurerMeatsWorld()
 	if (turns_played() > 8 && my_basestat($stat[mysticality]) < 30)
 	{
 		auto_log_info("Low meat after 8 turns, going to meatfarm");
-		return LX_attemptPowerLevelMeat();
+		return LX_attemptPowerLevelMeat(true);
 	}
 	return false;
 }
@@ -362,10 +362,12 @@ boolean amw_wantMeat()
 	return true;
 }
 
-boolean LX_attemptPowerLevelMeat()
+// will go to next skill goal if skills = true
+// will go to next level goal if skills = false
+boolean LX_attemptPowerLevelMeat(boolean skills)
 {
 	// setting the parameter of buyStats to true drastically lowers meat reserve requirements
-	if (amw_buyStats(true)){return true;}
+	if (amw_buyStats(!skills)){return true;}
 	//abort("You need more meat to get the next level. This isn't implemented, so you're going to have to do it manually.");
 	//return false;
 	addToMaximize("200meat");
@@ -406,4 +408,8 @@ boolean LX_attemptPowerLevelMeat()
 		// 93? MPA, odd jobs board :p
 	}
 	return false;
+}
+// as it's in the function name, assume we're meat*leveling* not meat*skilling* by default
+boolean LX_attemptPowerLevelMeat(){
+	return LX_attemptPowerLevelMeat(false);
 }
