@@ -139,18 +139,18 @@ amw_statBuyable amw_nextSkillSubstats()
 		goal.amount = 900;
 		return goal;
 	}
-	// more elemental res/item drop/famwt/in-combat heal/elem dmg
-	else if (my_basestat($stat[mysticality]) < 50)
-	{
-		goal.st = $stat[submysticality];
-		goal.amount = 2500;
-		return goal;
-	}
 	// survivability
 	else if (my_basestat($stat[moxie]) < 30)
 	{
 		goal.st = $stat[submoxie];
 		goal.amount = 900;
+		return goal;
+	}
+	// more elemental res/item drop/famwt/in-combat heal/elem dmg
+	else if (my_basestat($stat[mysticality]) < 50)
+	{
+		goal.st = $stat[submysticality];
+		goal.amount = 2500;
 		return goal;
 	}
 	// +1 adv per bundle
