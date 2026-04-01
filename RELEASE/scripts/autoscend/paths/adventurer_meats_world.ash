@@ -132,18 +132,18 @@ amw_statBuyable amw_nextSkillSubstats()
 		goal.amount = 100;
 		return goal;
 	}
-	// more elemental res/item drop/famwt/in-combat heal/elem dmg
-	else if (my_basestat($stat[mysticality]) < 50)
-	{
-		goal.st = $stat[submysticality];
-		goal.amount = 2500;
-		return goal;
-	}
 	// getting some HP
 	else if (my_basestat($stat[muscle]) < 30)
 	{
 		goal.st = $stat[submuscle];
 		goal.amount = 900;
+		return goal;
+	}
+	// more elemental res/item drop/famwt/in-combat heal/elem dmg
+	else if (my_basestat($stat[mysticality]) < 50)
+	{
+		goal.st = $stat[submysticality];
+		goal.amount = 2500;
 		return goal;
 	}
 	// survivability
