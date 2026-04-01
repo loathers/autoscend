@@ -399,7 +399,7 @@ boolean LX_attemptPowerLevelMeat()
 	else if (my_adventures() > 3)
 	{
 		int choice = 1;
-		if (my_adventures > 10){choice = 4;}
+		if (my_adventures() > 10){choice = 4;}
 		visit_url("place.php?whichplace=town&action=town_oddjobs");
 		run_choice(choice);
 		return true;
