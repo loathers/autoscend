@@ -366,6 +366,13 @@ boolean amw_wantMeat()
 // will go to next level goal if skills = false
 boolean LX_attemptPowerLevelMeat(boolean skills)
 {
+	if (!isAboutToPowerlevel())		//determined that the softblock on quests waiting for optimal conditions is still on
+	{
+		auto_log_warning("Hmmm, we need to stop being so feisty about quests...", "red");
+		set_property("auto_powerLevelLastLevel", my_level());		//release softblock until you level up
+		set_property("auto_powerLevelAdvCount", 0);
+		return true;		//restart the main loop to give those quests a chance to run now that the softblock is released.
+	}
 	// setting the parameter of buyStats to true drastically lowers meat reserve requirements
 	if (amw_buyStats(!skills)){return true;}
 	//abort("You need more meat to get the next level. This isn't implemented, so you're going to have to do it manually.");
