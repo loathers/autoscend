@@ -74,14 +74,9 @@ boolean L5_haremOutfit()
 	}
 
 	// want to fight goblin king quickly in legacy of loathing to get another replica mr a
+	// want to fight quickly in amw for meat
 	// check for LoL path so we actually prep for yellow raying
-	if(!adjustForYellowRayIfPossible($monster[Knob Goblin Harem Girl]) && !in_lol())
-	{
-		if(!isAboutToPowerlevel())
-		{
-			return false;
-		}
-	}
+	if(!adjustForYellowRayIfPossible($monster[Knob Goblin Harem Girl]) && !in_lol() && !in_amw())
 
 	if(in_heavyrains())
 	{
