@@ -352,6 +352,10 @@ boolean auto_post_adventure()
 		{
 			use(1, $item[Loose Meats]);// no need to run more than once because 1/combat
 		}
+		if(item_amount($item[handful of tips]) > 0)
+		{
+			use(1, $item[handful of tips]);
+		}
 		if (amw_canAfford($skill[Self-Tenderize])) // not necessary, but cheap
 		{
 			buffMaintain($effect[Tenderized], 0, 1, 5);
