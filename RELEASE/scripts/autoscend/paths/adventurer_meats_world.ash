@@ -377,7 +377,7 @@ boolean LX_attemptPowerLevelMeat(boolean skills)
 		return true;		//restart the main loop to give those quests a chance to run now that the softblock is released.
 	}
 	// tells other parts of the script to get more meat in the future (mostly quest ordering)
-	if(!get_property("auto_hasMeatLeveled")){set_property("auto_hasMeatLeveled", true);}
+	if(!to_boolean(get_property("auto_hasMeatLeveled"))){set_property("auto_hasMeatLeveled", true);}
 
 	// setting the parameter of buyStats to true drastically lowers meat reserve requirements
 	if (amw_buyStats(!skills)){return true;}
@@ -432,7 +432,7 @@ boolean LX_attemptPowerLevelMeat(){
 // amw_wantMeat contains a check for meatpath already
 boolean LX_needMeatSkills() {
 	if (!amw_wantMeat() || my_level() >= 12){return false;}
-	if (get_property("auto_hasPowerMeatLeveled")){return true;}
+	if (to_boolean(get_property("auto_hasPowerMeatLeveled"))){return true;}
 	return false;
 
 }
