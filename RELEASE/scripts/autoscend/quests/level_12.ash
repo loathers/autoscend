@@ -1190,6 +1190,7 @@ boolean L12_gremlins()
 			}
 		}
 	}
+	abort('Gremlins are buggy right now :( [not autoscend\'s fault]. Gremlins are randomized and we cannot trust Yossarian. You can either do "set sidequestJunkyardCompleted=fratboy" and take twice as long in the war or do Gremlins manually.');
 
 	if(0 < have_effect($effect[Curse of the Black Pearl Onion]))
 	{
