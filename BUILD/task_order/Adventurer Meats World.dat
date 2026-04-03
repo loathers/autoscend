@@ -42,11 +42,11 @@ L11_blackMarket
 L11_forgedDocuments
 L11_mcmuffinDiary
 L11_getBeehive
-# make sure we get early boss meat
-#Finish off the Goblin King.
-L5_slayTheGoblinKing
-# Show the Boss bat who's boss.
-L4_batCave
+# make sure we get early boss meat if we've meatleveled (likely a low-meat run, need extra generation early for quick skills)
+L4_batCave  LX_needMeatSkills
+L5_slayTheGoblinKing    LX_needMeatSkills
+L7_crypt    LX_needMeatSkills
+# L8_trapperQuest LX_needMeatSkills comment out until we check for nc skill (bad idea for low non-combat%)
 # open the hidden city up (delay zones)
 L2_mosquito
 LX_unlockHiddenTemple
@@ -79,6 +79,10 @@ L11_aridDesert
 L11_unlockPyramid
 L11_unlockEd
 L11_defeatEd
+#	Finish off the Goblin King.
+L5_slayTheGoblinKing
+# Show the Boss bat who's boss.
+L4_batCave
 # Fix that dripping tap.
 L3_tavern
 # Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?

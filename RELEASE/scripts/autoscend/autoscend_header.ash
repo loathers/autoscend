@@ -764,6 +764,7 @@ boolean LM_adventurerMeatsWorld();
 boolean amw_wantMeat();
 boolean LX_attemptPowerLevelMeat(boolean skills);
 boolean LX_attemptPowerLevelMeat();
+boolean LX_needMeatSkills();
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash

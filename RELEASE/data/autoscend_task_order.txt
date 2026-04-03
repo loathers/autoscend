@@ -139,55 +139,59 @@ Adventurer Meats World	27	L11_blackMarket
 Adventurer Meats World	28	L11_forgedDocuments
 Adventurer Meats World	29	L11_mcmuffinDiary
 Adventurer Meats World	30	L11_getBeehive
-# make sure we get early boss meat
-#Finish off the Goblin King.
-Adventurer Meats World	31	L5_slayTheGoblinKing
-# Show the Boss bat who's boss.
-Adventurer Meats World	32	L4_batCave
+# make sure we get early boss meat if we've meatleveled (likely a low-meat run, need extra generation early for quick skills)
+Adventurer Meats World	31	L4_batCave  LX_needMeatSkills
+Adventurer Meats World	32	L5_slayTheGoblinKing    LX_needMeatSkills
+Adventurer Meats World	33	L7_crypt    LX_needMeatSkills
+# L8_trapperQuest LX_needMeatSkills comment out until we check for nc skill (bad idea for low non-combat%)
 # open the hidden city up (delay zones)
-Adventurer Meats World	33	L2_mosquito
-Adventurer Meats World	34	LX_unlockHiddenTemple
-Adventurer Meats World	35	L6_dakotaFanning
-Adventurer Meats World	36	L11_unlockHiddenCity
+Adventurer Meats World	34	L2_mosquito
+Adventurer Meats World	35	LX_unlockHiddenTemple
+Adventurer Meats World	36	L6_dakotaFanning
+Adventurer Meats World	37	L11_unlockHiddenCity
 # Murder pygmies for the ancient amulet.
-Adventurer Meats World	37	L11_hiddenCityZones
-Adventurer Meats World	38	L11_hiddenCity
+Adventurer Meats World	38	L11_hiddenCityZones
+Adventurer Meats World	39	L11_hiddenCity
 # Dance with lady spookyraven so we can go murder her undead husband and take the Eye of Ed
-Adventurer Meats World	39	LX_spookyravenManorSecondFloor
-Adventurer Meats World	40	L11_mauriceSpookyraven
+Adventurer Meats World	40	LX_spookyravenManorSecondFloor
+Adventurer Meats World	41	L11_mauriceSpookyraven
 # Lay the smack down on those Jerk Copperhead twins
-Adventurer Meats World	41	L11_talismanOfNam
+Adventurer Meats World	42	L11_talismanOfNam
 # Open up the top of the beanstalk.
-Adventurer Meats World	42	L10_plantThatBean
+Adventurer Meats World	43	L10_plantThatBean
 # Clean up the plains
-Adventurer Meats World	43	L10_rainOnThePlains
+Adventurer Meats World	44	L10_rainOnThePlains
 # Get Black Angus his pizza
-Adventurer Meats World	44	L9_chasmBuild
-Adventurer Meats World	45	L9_highLandlord
+Adventurer Meats World	45	L9_chasmBuild
+Adventurer Meats World	46	L9_highLandlord
 #  Kill Groar because *we* are the monsters.
-Adventurer Meats World	46	L8_trapperQuest
+Adventurer Meats World	47	L8_trapperQuest
 # Kill the undead? Is this an oxymoron?
-Adventurer Meats World	47	L7_crypt
+Adventurer Meats World	48	L7_crypt
 # Cleanse the taint.
-Adventurer Meats World	48	L6_friarsGetParts
+Adventurer Meats World	49	L6_friarsGetParts
 # Finish the other Macguffin zones so we can beat Ed to death repeatedly and waste all his Ka coins.
-Adventurer Meats World	49	L11_palindome
-Adventurer Meats World	50	L11_aridDesert
-Adventurer Meats World	51	L11_unlockPyramid
-Adventurer Meats World	52	L11_unlockEd
-Adventurer Meats World	53	L11_defeatEd
+Adventurer Meats World	50	L11_palindome
+Adventurer Meats World	51	L11_aridDesert
+Adventurer Meats World	52	L11_unlockPyramid
+Adventurer Meats World	53	L11_unlockEd
+Adventurer Meats World	54	L11_defeatEd
+#	Finish off the Goblin King.
+Adventurer Meats World	55	L5_slayTheGoblinKing
+# Show the Boss bat who's boss.
+Adventurer Meats World	56	L4_batCave
 # Fix that dripping tap.
-Adventurer Meats World	54	L3_tavern
+Adventurer Meats World	57	L3_tavern
 # Basic fetch quest is the first thing the council demand of you. Is this 2002 or what?
-Adventurer Meats World	55	L2_mosquito
+Adventurer Meats World	58	L2_mosquito
 # "win" the contests, navigate the maze, unlock the door, climb the tower, commit sorceresscide.
-Adventurer Meats World	56	L13_towerAscent
+Adventurer Meats World	59	L13_towerAscent
 # not powerlevelling but something that needs to be done if nothing else is available
-Adventurer Meats World	57	LX_lastChance
+Adventurer Meats World	60	LX_lastChance
 # release the hounds!
-Adventurer Meats World	58	auto_softBlockHandler
+Adventurer Meats World	61	auto_softBlockHandler
 # if all else fails, powerlevel like there's no tomorrow.
-Adventurer Meats World	59	LX_attemptPowerLevelMeat
+Adventurer Meats World	62	LX_attemptPowerLevelMeat
 
 Avant Guard	0	LX_freeCombatsTask
 Avant Guard	1	woods_questStart

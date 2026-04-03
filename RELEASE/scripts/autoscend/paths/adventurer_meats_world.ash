@@ -6,6 +6,7 @@ boolean in_amw()
 boolean amw_initializeSettings()
 {
 	set_property("auto_wandOfNagamar", false);
+	set_property("auto_hasPowerMeatLeveled", false);
 	return false;
 }
 
@@ -375,6 +376,9 @@ boolean LX_attemptPowerLevelMeat(boolean skills)
 		set_property("auto_powerLevelAdvCount", 0);
 		return true;		//restart the main loop to give those quests a chance to run now that the softblock is released.
 	}
+	// tells other parts of the script to get more meat in the future (mostly quest ordering)
+	if(!get_property("auto_hasMeatLeveled")){set_property("auto_hasMeatLeveled", true);}
+
 	// setting the parameter of buyStats to true drastically lowers meat reserve requirements
 	if (amw_buyStats(!skills)){return true;}
 	//abort("You need more meat to get the next level. This isn't implemented, so you're going to have to do it manually.");
@@ -421,4 +425,14 @@ boolean LX_attemptPowerLevelMeat(boolean skills)
 // as it's in the function name, assume we're meat*leveling* not meat*skilling* by default
 boolean LX_attemptPowerLevelMeat(){
 	return LX_attemptPowerLevelMeat(false);
+}
+
+// stricter than amw_wantMeat() because this changes the quest order
+// weird logic order because the property is only created if we're in meatpath (i.e. would/might error if check for property first outside meatpath)
+// amw_wantMeat contains a check for meatpath already
+boolean LX_needMeatSkills() {
+	if (!amw_wantMeat() || my_level() >= 12){return false;}
+	if (get_property("auto_hasPowerMeatLeveled")){return true;}
+	return false;
+
 }
