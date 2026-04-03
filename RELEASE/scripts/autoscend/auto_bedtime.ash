@@ -624,6 +624,11 @@ boolean doBedtime()
 			auto_log_warning("Still sober! Stopping bedtime.", "red");
 			return false;
 		}
+		if(in_amw() && amw_buyAdv())
+		{
+			auto_log_warning("Still grinding meat into adventures! Stopping bedtime.", "red");
+			return false;
+		}
 		int spleenlimit = spleen_limit();
 		if(!canChangeFamiliar())
 		{
