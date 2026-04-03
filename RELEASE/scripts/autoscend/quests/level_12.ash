@@ -1139,9 +1139,6 @@ void gremlinsFamiliar()
 
 boolean L12_gremlins()
 {
-	abort('Gremlins are buggy right now :( [not autoscend\'s fault]. 
-	Gremlins are randomized and we cannot trust Yossarian. You can either do 
-	"set sidequestJunkyardCompleted=fratboy" and take twice as long in the war or do Gremlins manually.')
 	if(internalQuestStatus("questL12War") != 1 || get_property("sidequestJunkyardCompleted") != "none")
 	{
 		return false;
@@ -1169,6 +1166,9 @@ boolean L12_gremlins()
 			return false;
 		}
 	}
+	abort('Gremlins are buggy right now :( [not autoscend\'s fault]. 
+	Gremlins are randomized and we cannot trust Yossarian. You can either do 
+	"set sidequestJunkyardCompleted=fratboy" and take twice as long in the war or do Gremlins manually.');
 	else if(in_glover())
 	{
 		int need = 30 - item_amount($item[Doc Galaktik\'s Pungent Unguent]);
