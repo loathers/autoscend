@@ -140,10 +140,10 @@ Adventurer Meats World	28	L11_forgedDocuments
 Adventurer Meats World	29	L11_mcmuffinDiary
 Adventurer Meats World	30	L11_getBeehive
 # make sure we get early boss meat if we've meatleveled (likely a low-meat run, need extra generation early for quick skills)
-Adventurer Meats World	31	L4_batCave  LX_needMeatSkills
-Adventurer Meats World	32	L5_slayTheGoblinKing    LX_needMeatSkills
-Adventurer Meats World	33	L7_crypt    LX_needMeatSkills
-# L8_trapperQuest LX_needMeatSkills comment out until we check for nc skill (bad idea for low non-combat%)
+Adventurer Meats World	31	L4_batCave	LX_needMeatSkills
+Adventurer Meats World	32	L5_slayTheGoblinKing	LX_needMeatSkills
+Adventurer Meats World	33	L7_crypt	LX_needMeatSkills
+# L8_trapperQuest	LX_needMeatSkills comment out until we check for nc skill (bad idea for low non-combat%)
 # open the hidden city up (delay zones)
 Adventurer Meats World	34	L2_mosquito
 Adventurer Meats World	35	LX_unlockHiddenTemple

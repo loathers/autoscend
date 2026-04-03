@@ -43,10 +43,10 @@ L11_forgedDocuments
 L11_mcmuffinDiary
 L11_getBeehive
 # make sure we get early boss meat if we've meatleveled (likely a low-meat run, need extra generation early for quick skills)
-L4_batCave  LX_needMeatSkills
-L5_slayTheGoblinKing    LX_needMeatSkills
-L7_crypt    LX_needMeatSkills
-# L8_trapperQuest LX_needMeatSkills comment out until we check for nc skill (bad idea for low non-combat%)
+L4_batCave	LX_needMeatSkills
+L5_slayTheGoblinKing	LX_needMeatSkills
+L7_crypt	LX_needMeatSkills
+# L8_trapperQuest	LX_needMeatSkills comment out until we check for nc skill (bad idea for low non-combat%)
 # open the hidden city up (delay zones)
 L2_mosquito
 LX_unlockHiddenTemple
