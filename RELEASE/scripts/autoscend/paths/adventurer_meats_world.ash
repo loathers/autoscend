@@ -6,7 +6,7 @@ boolean in_amw()
 boolean amw_initializeSettings()
 {
 	set_property("auto_wandOfNagamar", false);
-	set_property("auto_hasPowerMeatLeveled", false);
+	set_property("auto_hasMeatLeveled", false);
 	return false;
 }
 
