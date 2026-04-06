@@ -126,21 +126,22 @@ Adventurer Meats World	20	LX_lockPicking
 Adventurer Meats World	21	LX_fatLootToken
 #	Get the Steel Organ if the user wants it (needs L6 quest complete)
 Adventurer Meats World	22	LX_steelOrgan
+# need meat for first set of adventures
+Adventurer Meats World	23	L4_batCave	LX_needMeatSkills
 # open up delay zones.
-Adventurer Meats World	23	LX_spookyravenManorFirstFloor
+Adventurer Meats World	24	LX_spookyravenManorFirstFloor
 # open up zones where we want to force non-combats.
 # Open up underground zones so they are available for Breathitin.
-Adventurer Meats World	24	L5_getEncryptionKey
-Adventurer Meats World	25	L5_findKnob
+Adventurer Meats World	25	L5_getEncryptionKey
+Adventurer Meats World	26	L5_findKnob
 #	Do the War early. Access to the Orchard is useful for booze/potions and maybe we can make use of the green smoke bombs?
-Adventurer Meats World	26	L12_islandWar
+Adventurer Meats World	27	L12_islandWar
 # Start the macguffin quest
-Adventurer Meats World	27	L11_blackMarket
-Adventurer Meats World	28	L11_forgedDocuments
-Adventurer Meats World	29	L11_mcmuffinDiary
-Adventurer Meats World	30	L11_getBeehive
+Adventurer Meats World	28	L11_blackMarket
+Adventurer Meats World	29	L11_forgedDocuments
+Adventurer Meats World	30	L11_mcmuffinDiary
+Adventurer Meats World	31	L11_getBeehive
 # make sure we get early boss meat if we've meatleveled (likely a low-meat run, need extra generation early for quick skills)
-Adventurer Meats World	31	L4_batCave	LX_needMeatSkills
 Adventurer Meats World	32	L5_slayTheGoblinKing	LX_needMeatSkills
 Adventurer Meats World	33	L7_crypt	LX_needMeatSkills
 # L8_trapperQuest	LX_needMeatSkills comment out until we check for nc skill (bad idea for low non-combat%)
