@@ -112,16 +112,16 @@ boolean amw_buyAdv()
 }
 
 // following code to decide which stats to buy modeled after Path of the Plumber
-record amw_statBuyable {
+record amw_statAmount {
 	stat st;
 	int amount;
 };
 
 // returns a record of the substat and how much of that substat we want for our next skill(s)
 // prioritizing getting all of the skills currently
-amw_statBuyable amw_nextSkillSubstats()
+amw_statAmount amw_nextSkillSubstats()
 {
-	amw_statBuyable goal;
+	amw_statAmount goal;
 	// getting elemental res for kitchen
 	if (my_basestat($stat[muscle]) < 10)
 	{
@@ -226,10 +226,10 @@ amw_statBuyable amw_nextSkillSubstats()
 }
 
 // returns substats needed to get to next level
-amw_statBuyable amw_nextLevelSubstats()
+amw_statAmount amw_nextLevelSubstats()
 {
 	int next_level;
-	amw_statBuyable goal;
+	amw_statAmount goal;
 	next_level = my_level() + 1;
 	stat mainstat = $stat[submysticality];
 	// which stat is our mainstat should be mostly consistent with the priority of amw_nextSkillSubstats()
@@ -279,7 +279,7 @@ int amw_calculateReserve()
 	else {return reserve;}
 }
 
-int amw_substatsBuyable(amw_statBuyable goal, boolean meatleveling)
+int amw_substatsBuyable(amw_statAmount goal, boolean meatleveling)
 {
 	int meat_reserve;
 	if (!meatleveling) {meat_reserve = amw_calculateReserve();} // don't use all our meat if we don't have to
@@ -303,14 +303,14 @@ int amw_substatsBuyable(amw_statBuyable goal, boolean meatleveling)
 	else {return 0;}
 }
 // by default we aren't meatleveling
-int amw_substatsBuyable(amw_statBuyable goal)
+int amw_substatsBuyable(amw_statAmount goal)
 {
 	return amw_substatsBuyable(goal, false);
 }
 
 boolean amw_buyStats(boolean meatleveling)
 {
-	amw_statBuyable next;
+	amw_statAmount next;
 	if (meatleveling)
 	{
 		// fetch substats to get to next level
