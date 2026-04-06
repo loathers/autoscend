@@ -127,7 +127,7 @@ amw_statBuyable amw_nextSkillSubstats()
 		return goal;
 	}
 	// survivability
-	else if (my_basestat($stat[moxie]) < 10)
+	else if (my_basestat($stat[moxie]) < 17)
 	{
 		goal.st = $stat[submoxie];
 		goal.amount = 100;
