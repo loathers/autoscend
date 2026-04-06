@@ -558,8 +558,8 @@ boolean pull_meat(int target)
 		return false;	//can not pull meat & autoselling items just donates them
 	}
 	
-	//pull and autosell items
-	while(my_meat() < target && pulls_remaining() > 0)
+	//pull and autosell items, except in adventurer meats world
+	while(my_meat() < target && pulls_remaining() > 0 && !in_amw())
 	{
 		boolean fail = true;		//if true an item was not pulled and sold this loop
 		foreach it in $items[1\,970 carat gold]
