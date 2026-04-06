@@ -371,6 +371,11 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	if(place == $location[Cobb's Knob Treasury])
+	{
+		provideMeat(1800, $location[Cobb's Knob Treasury], true);
+		addToMaximize("200meat drop");
+	}
 	// need more meat than usual for skills + level in meatpath
 	// as of 2026-03-30 this values meat drop double item drop in the default maximizer statement
 	if (in_amw() && my_level()<13) {

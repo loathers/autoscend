@@ -339,6 +339,11 @@ boolean LM_adventurerMeatsWorld()
 	{
 		return false;
 	}
+	if(to_boolean(get_property(auto_hasMeatLeveled)) && cloversAvailable() > 1 && my_buffedstat($stat[moxie]) > 25 && my_level < 12)
+	{
+		return autoLuckyAdv($location[Cobb's Knob Treasury]);
+	}
+
 	if (amw_buyStats()){return true;} // want to run again to put meat towards the next goal if applicable
 
 	// this probably isn't the "right" place to add adventures...?
@@ -380,7 +385,7 @@ boolean LX_attemptPowerLevelMeat(boolean skills)
 		set_property("auto_powerLevelAdvCount", 0);
 		return true;		//restart the main loop to give those quests a chance to run now that the softblock is released.
 	}
-	// tells other parts of the script to get more meat in the future (mostly quest ordering)
+	// tells other parts of the script to get more meat in the future (mostly quest ordering, but also clovering for KGE)
 	if(!to_boolean(get_property("auto_hasMeatLeveled"))){set_property("auto_hasMeatLeveled", "true");}
 
 	// setting the parameter of buyStats to true drastically lowers meat reserve requirements
@@ -392,7 +397,6 @@ boolean LX_attemptPowerLevelMeat(boolean skills)
 	handleFamiliar(lookupFamiliarDatafile("meat"));
 	int meatDrop = simValue("Meat Drop");
 	// "best" meatleveling zone at top
-	// maybe add clovering if this is too slow
 	if (meatDrop >= 300 && zone_isAvailable($location[The Hidden Hospital], true))
 	{
 		// could lower meatDrop a bit when janitor is banished
