@@ -1207,7 +1207,7 @@ boolean doBedtime()
 
 	auto_beachUseFreeCombs();
 	auto_drinkNightcap();
-	while (my_adventures <= 125){if (amw_buyAdv()){break;}}
+	while (in_amw() && my_adventures() <= 125){if (amw_buyAdv()){break;}}
 	equipRollover(false);
 	
 	// Use up any cursed monkey paw wishes on Frosty (+100% item, +100% meat, +25 ML)
