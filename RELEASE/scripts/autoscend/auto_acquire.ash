@@ -620,7 +620,7 @@ int handlePulls(int day)
 			auto_log_info("I assume you've handled your pulls yourself... who knows.");
 			return 0;
 		}
-		if(auto_turbo())
+		if(auto_turbo() && !in_amw())
 		{
 			//Pull expensive organ cleansers first if you are running turbo and you own them
 			foreach it in $items[Spice Melange, Ultra Mega Sour Ball, Alien plant pod, Alien animal milk]
