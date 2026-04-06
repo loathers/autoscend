@@ -184,7 +184,7 @@ amw_statAmount amw_nextSkillSubstats() {
 	else if (my_basestat($stat[moxie]) < 17)
 	{
 		goal.st = $stat[submoxie];
-		goal.amount = 100;
+		goal.amount = 289;
 		return goal;
 	}
 	// getting some HP
