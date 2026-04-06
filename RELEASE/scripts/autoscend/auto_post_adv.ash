@@ -356,6 +356,10 @@ boolean auto_post_adventure()
 		{
 			use(1, $item[handful of tips]);
 		}
+		if(item_amount($item[briefcase]) > 0)
+		{
+			use(1, $item[briefcase]);
+		}
 		if (amw_canAfford($skill[Self-Tenderize])) // not necessary, but cheap
 		{
 			buffMaintain($effect[Tenderized], 0, 1, 5);
