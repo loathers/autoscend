@@ -49,3 +49,7 @@ anesthesiologist bugbear	path:Bugbear Invasion
 bugbear mortician	path:Bugbear Invasion
 N-space Virtual Assistant	path:Bugbear Invasion
 angry cavebugbear	path:Bugbear Invasion
+# Two High Meat monsters in meatpath and if we might be meatleveling
+Knott Yeti	path:Adventurer Meats World;prop:auto_hasMeatLeveled=true
+# oh noes, we might spend extra turns here getting meat before the elegant nightstand when we might actually want it! the horror!
+Animated ornate Nightstand	path:Adventurer Meats World;prop:auto_hasMeatLeveled=true
