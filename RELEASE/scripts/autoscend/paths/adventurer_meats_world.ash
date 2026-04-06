@@ -164,7 +164,6 @@ int amw_calculateReserve() {
 	// save for two adventure trades for now, if that is greater
 	if (current_level > 9 || current_level < 7){reserve = max(reserve, amw_advBundleCost(2, false));}
 	// attempting to make sure we are able to pick up the +20 adv skill (scheduled at lvl 9)
-	auto_log_debug("Reserving " + to_string(reserve) + " meat from skills.");
 	return reserve;
 }
 
