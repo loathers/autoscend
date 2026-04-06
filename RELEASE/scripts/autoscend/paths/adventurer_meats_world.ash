@@ -388,7 +388,7 @@ boolean LX_attemptPowerLevelMeat(boolean skills)
 		set_property("auto_powerLevelAdvCount", 0);
 		return true;		//restart the main loop to give those quests a chance to run now that the softblock is released.
 	}
-	// tells other parts of the script to get more meat in the future (mostly quest ordering, but also clovering for KGE)
+	// tells other parts of the script to get more meat in the future (quest ordering, clovering for KGE, pulling meat)
 	if(!to_boolean(get_property("auto_hasMeatLeveled"))){set_property("auto_hasMeatLeveled", "true");}
 
 	// setting the parameter of buyStats to true drastically lowers meat reserve requirements
