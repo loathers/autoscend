@@ -432,12 +432,6 @@ boolean LM_adventurerMeatsWorld() {
 
 	if (amw_buyStats()){return true;} // want to run again to put meat towards the next goal if applicable
 
-	// add adventures if getting low?
-	if (my_adventures() <= 6)
-	{
-		amw_buyAdv();
-	}
-
 	// if user hasn't gotten meat to get skills/stats after turn 8 we want to make sure we get some 
 	// to avoid beaten up and to progress properly. we unlock in-combat heal at mys = 30.
 	// mobius ring and/or pulling meat avoid this
