@@ -2224,7 +2224,6 @@ void consumeStuff()
 		return;
 	}
 
-	boolean want_to_consume = (my_adventures() < max(10,1+auto_advToReserve()) && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover());
 	if (bat_consumption())
 	{
 		return;
@@ -2241,11 +2240,6 @@ void consumeStuff()
 	if(in_robot())
 	{
 		robot_get_adv();
-		return;
-	}
-	if(in_amw() && want_to_consume)
-	{
-		amw_buyAdv();
 		return;
 	}
 
@@ -2281,7 +2275,7 @@ void consumeStuff()
 	}
 
 	// If adventures at our reserve amount, or it's almost Rollover, we need to consume
-	if (want_to_consume)
+	if ((my_adventures() < max(10,1+auto_advToReserve()) && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover()))
 	{
 		// always unequip stooper as only useful for roll over
 		if (my_familiar() == $familiar[Stooper] && to_familiar(get_property("auto_100familiar")) != $familiar[Stooper] 
