@@ -750,7 +750,7 @@ void edUnderworldChoiceHandler(int choice);
 ########################################################################################################
 //Defined in autoscend/paths/adventurer_meats_world.ash
 boolean in_amw();
-boolean amw_initializeSettings();
+void amw_initializeSettings();
 boolean amw_canAfford(skill sk);
 boolean amw_buySubstat(stat st, int numberToBuy);
 int amw_advPerTrade();

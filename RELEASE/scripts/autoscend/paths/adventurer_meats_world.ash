@@ -3,11 +3,14 @@ boolean in_amw()
 	return my_path() == $path[Adventurer Meats World];
 }
 
-boolean amw_initializeSettings()
+void amw_initializeSettings()
 {
+	if(!in_amw())
+	{
+		return;
+	}
 	set_property("auto_wandOfNagamar", false);
 	set_property("auto_hasMeatLeveled", false);
-	return false;
 }
 
 boolean amw_canAfford(skill sk)
