@@ -118,6 +118,8 @@ dsimich (IGN: erct657 (#584803))
 
 HippoKingKoL (IGN: HippoKing (#1716533))
 
+Danre98 (IGN: Danre98 (#3521789))
+
 ## Special Thanks
 
 This script would obviously not be possible without the work of Cheesecookie and soolar.
