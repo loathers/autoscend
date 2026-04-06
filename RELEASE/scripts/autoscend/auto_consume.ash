@@ -2224,7 +2224,8 @@ void consumeStuff()
 		return;
 	}
 
-	boolean want_to_consume = (my_adventures() < max(10,1+auto_advToReserve()) && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover());
+	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
+	boolean want_to_consume = (my_adventures() < max(10,1+) && !edSpleenCheck) || (almostRollover() && needToConsumeForEmergencyRollover());
 	if (bat_consumption())
 	{
 		return;
@@ -2254,8 +2255,6 @@ void consumeStuff()
 	{
 		return;
 	}
-
-	boolean edSpleenCheck = (isActuallyEd() && my_level() < 11 && spleen_left() > 0); // Ed should fill spleen first
 	
 	if (my_adventures() < max(10,1+auto_advToReserve()) && fullness_left() > 0 && is_boris())
 	{
