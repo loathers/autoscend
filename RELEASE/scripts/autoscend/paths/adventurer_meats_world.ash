@@ -402,11 +402,10 @@ boolean LX_attemptPowerLevelMeat(boolean skills)
 	{
 		return autoAdv($location[The Haunted Bedroom]);
 	}
-	// only worth it with banishes and/or meat drop
-	//else if (zone_isAvailable($location[The Icy Peak], false))
-	//{
-		//return autoAdv($location[The Icy Peak]);
-	//}
+	else if (zone_isAvailable($location[The Icy Peak], false))
+	{
+		return autoAdv($location[The Icy Peak]);
+	}
 	else if (zone_isAvailable($location[Cobb's Knob Treasury], true))
 	{
 		return autoAdv($location[Cobb's Knob Treasury]);
