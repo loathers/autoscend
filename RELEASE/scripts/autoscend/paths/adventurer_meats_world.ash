@@ -339,7 +339,7 @@ boolean LM_adventurerMeatsWorld()
 	{
 		return false;
 	}
-	if(to_boolean(get_property(auto_hasMeatLeveled)) && cloversAvailable() > 1 && my_buffedstat($stat[moxie]) > 25 && my_level < 12)
+	if(to_boolean(get_property(auto_hasMeatLeveled)) && cloversAvailable() > 1 && my_buffedstat($stat[moxie]) > 25 && my_level() < 12)
 	{
 		return autoLuckyAdv($location[Cobb's Knob Treasury]);
 	}
