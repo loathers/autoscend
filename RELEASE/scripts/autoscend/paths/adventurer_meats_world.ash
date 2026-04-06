@@ -154,14 +154,18 @@ int amw_calculateReserve() {
 		reserve = 6500; // enough to ensure that travel documents + shore won't bankrupt us
 	}
 
-	// meatReserve is more conservative (counts all quests) than this function.
+	// meatReserve is more conservative (counts all quests) than this function at a high level.
 	// If it's higher, we're done with quest obligations and can save less
-	reserve = min(reserve, meatReserve()); 
+	if (my_level() > 10)
+	{
+		reserve = min(reserve, meatReserve());
+	} 
 
 	// save for two adventure trades for now, if that is greater
-	if (current_level > 9 || current_level < 7){return max(reserve, amw_advBundleCost(2, false));}
+	if (current_level > 9 || current_level < 7){reserve = max(reserve, amw_advBundleCost(2, false));}
 	// attempting to make sure we are able to pick up the +20 adv skill (scheduled at lvl 9)
-	else {return reserve;}
+	auto_log_debug("Reserving " + to_string(reserve) + " meat from skills.")
+	return reserve;
 }
 
 record amw_statAmount {
