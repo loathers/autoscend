@@ -161,7 +161,7 @@ int amw_calculateReserve() {
 		reserve = min(reserve, meatReserve());
 	} 
 
-	int adv_reserve_amt = amw_advBundleCost(2, false)
+	int adv_reserve_amt = amw_advBundleCost(2, false);
 	// save for two adventure trades for now, if that is greater. But only if we probably don't need meat for skills, or if cost is cheaper than than MPA.
 	if (!LX_needMeatSkills() || adv_reserve_amt < 2000){reserve = max(reserve, adv_reserve_amt);}
 	return reserve;
