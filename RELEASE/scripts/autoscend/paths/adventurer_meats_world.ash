@@ -161,9 +161,9 @@ int amw_calculateReserve() {
 		reserve = min(reserve, meatReserve());
 	} 
 
-	// save for two adventure trades for now, if that is greater
-	if (current_level > 9 || current_level < 7){reserve = max(reserve, amw_advBundleCost(2, false));}
-	// attempting to make sure we are able to pick up the +20 adv skill (scheduled at lvl 9)
+	int adv_reserve_amt = amw_advBundleCost(2, false)
+	// save for two adventure trades for now, if that is greater. But only if we probably don't need meat for skills, or if cost is cheaper than than MPA.
+	if (!LX_needMeatSkills() || adv_reserve_amt < 2000){reserve = max(reserve, adv_reserve_amt);}
 	return reserve;
 }
 
