@@ -1535,7 +1535,7 @@ int freeKillSources()
 		}
 	}
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
-	foreach it in $items[groveling gravel, Replica Bat-oomerang, shadow brick]
+	foreach it in $items[power pill, groveling gravel, Replica Bat-oomerang, shadow brick]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
 		{

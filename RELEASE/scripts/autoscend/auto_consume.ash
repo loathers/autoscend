@@ -626,7 +626,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	}
 	if(is_jarlsberg() && toDrink != $item[Steel Margarita])
 	{
-		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen");
+		return count(sell_cost($coinmaster[Jarlsberg's Cosmic Kitchen], toDrink)) > 0;
 	}
 	if(in_nuclear() && (toDrink.inebriety != 1))
 	{
@@ -704,7 +704,7 @@ boolean canEat(item toEat, boolean checkValidity)
 	}
 	if(is_jarlsberg())
 	{
-		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
+		return count(sell_cost($coinmaster[Jarlsberg's Cosmic Kitchen], toEat)) > 0;
 	}
 	if(in_nuclear() && (toEat.fullness != 1))
 	{
