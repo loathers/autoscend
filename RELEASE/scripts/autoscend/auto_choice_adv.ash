@@ -324,7 +324,7 @@ boolean auto_run_choice(int choice, string page)
 			run_choice(1); // always advance to next option via choice 1
 			break;
 		case 606: // Lost in the Great Overlook Lodge
-			if(in_bhy() || in_glover() && item_amount($item[Jar Of Oil]) == 0)
+			if(in_bhy() || in_glover() && options contains 3 && item_amount($item[Jar Of Oil]) == 0)
 			{
 				// we can't make an oil jar to solve the quest, just adventure until the hotel is burned down
 				run_choice(6); // and flee the music NC
@@ -723,7 +723,7 @@ boolean auto_run_choice(int choice, string page)
 		case 1434: // Sneaky, Sneaky (Orcish Frat House (Verge of War)) (Cartography)
 		case 1435: // Leading Yourself Right to Them (Map the Monsters)
 		case 1436: // Billiards Room Options (Cartography)
-			cartographyChoiceHandler(choice);
+			cartographyChoiceHandler(choice, page);
 			break;
 		case 1467: // Poetic Justice (Cleaver)
 		case 1468: // Aunts not Ants (Cleaver)
@@ -780,6 +780,15 @@ boolean auto_run_choice(int choice, string page)
 			break;
 		case 1525:
 			dartChoiceHandler(choice, options);
+			break;
+		case 1557:  // Peering Through Your Peridot (Peridot of Peril zone monster selection choice)
+			peridotChoiceHandler(choice, page);
+			break;
+		case 1562: //Time is a Möbius Strip
+			mobiusChoiceHandler(choice, page);
+			break;
+		case 1566: //Summon a wave
+			run_choice(1);
 			break;
 		default:
 			break;

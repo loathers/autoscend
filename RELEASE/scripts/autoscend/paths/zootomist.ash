@@ -62,7 +62,7 @@ void zoo_d2Pulls()
 	
 	// Pull enough ML for oil peak, we need a provider function here.
 	int ml_target = 100.0;
-	maximize("monster level",true);
+	simMaximizeWith("monster level");
 	int curr_ml = numeric_modifier($modifier[monster level]);
 	
 	// Function to try pulling an ML item, if it improves our ML by at least 10 over best alternative.
@@ -392,7 +392,7 @@ familiar zoo_getBestFam(int bodyPart, boolean verbose)
 		"heal": 5,
 		"sniff": 5
 	};
-	boolean[familiar] blacklistFams = $familiars[reassembled blackbird, reconstituted crow];
+	boolean[familiar] blacklistFams = $familiars[reassembled blackbird, reconstituted crow, homemade robot];
 	foreach fam in $familiars[]
 	{
 		//comment out below line and uncomment second below line to see all unrestricted fams
@@ -749,7 +749,7 @@ boolean zoo_boostWeight(familiar f, int target_weight)
 	
 	boolean mayamavailable = auto_haveMayamCalendar() && !(auto_MayamIsUsed("fur")) && !(auto_MayamAllUsed());
 	
-	maximize("familiar experience", false);
+	provideFamExp(min(25,experience_needed),$location[The Outskirts of Cobb\'s Knob], true, true, false);
 	float fight = numeric_modifier("familiar experience") + 1;
 	auto_log_info(f + " needs " + experience_needed + " experience");
 	auto_log_info("To level up your familiar, you should:");
@@ -1075,12 +1075,16 @@ boolean LX_zootoFight()
 			return true;
 		}
 		
-		if(LX_unlockHauntedBilliardsRoom())
+		if(LX_unlockHauntedBilliardsRoom(false))
 		{
 			return true;
 		}
 
 		if(LX_unlockHiddenTemple())
+		{
+			return true;
+		}
+		if(LX_lastChance()) //Should be high enough level by this point to handle these zones
 		{
 			return true;
 		}
@@ -1090,19 +1094,11 @@ boolean LX_zootoFight()
 	// Set our familiar
 	handleFamiliar(zoo_getNextFam());
 	
-	// Make sure have our mega familiar exp boosting wishes up
-	// Blue swayed boost depends on turns left so keep it above 31 (casts twice immediately to max out boost)
-	while(auto_monkeyPawWishesLeft() > 0 && have_effect($effect[Blue Swayed]) < 31)
-	{
-		auto_makeMonkeyPawWish($effect[Blue Swayed]);
-	}
-	if(auto_monkeyPawWishesLeft() > 0 && have_effect($effect[Warm Shoulders]) <= 0)
-	{
-		auto_makeMonkeyPawWish($effect[Warm Shoulders]);
-	}
-	
+	int target_weight = zoo_nextGraftWeight();
+	int expToLevel = target_weight*target_weight - my_familiar().experience;
+
 	// We want lots of XP
-	addToMaximize("+1000 familiar exp");
+	provideFamExp(min(25,expToLevel), true, true);
 	
 	if(my_level() >= 9)
 	{	// If we have Mayam, let's get that stone wool and unlock our Mayam.

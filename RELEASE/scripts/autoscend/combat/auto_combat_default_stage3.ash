@@ -20,6 +20,10 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	retval = auto_combatZombieSlayerStage3(round, enemy, text);
 	if(retval != "") return retval;
 
+	// Path = Adventurer Meats World
+	retval = auto_combatMeatGolemStage3(round, enemy, text);
+	if(retval != "") return retval;
+
 	//delevel (10 + medicine_level)% in avatar of west of loathing path
 	if(canUse($skill[Bad Medicine]) && (my_mp() >= (3 * mp_cost($skill[Bad Medicine]))))
 	{
@@ -399,7 +403,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			{
 				coldSkillToUse = $skill[Cannelloni Cannon];
 			}
-			else if(canUse($skill[Northern Explosion], false))
+			else if(canUse($skill[Northern Explosion], false) && !auto_canNorthernExplosionFE())
 			{
 				coldSkillToUse = $skill[Northern Explosion];
 			}
@@ -595,7 +599,7 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 		}
 
 		//If you have tearaway pants equipped, use its skill
-		if(canUse($skill[Tear Away your Pants!]) && (get_property("auto_forceNonCombatSource") == "" || monster_phylum() == $phylum[plant]))
+		if(canUse($skill[Tear Away your Pants!]) && ((get_property("auto_forceNonCombatSource") == "" && !(auto_wantToSniff(enemy, my_location()) && getSniffer(enemy) != $skill[none])) || monster_phylum() == $phylum[plant]))
 		{
 			return useSkill($skill[Tear Away your Pants!]);
 		}

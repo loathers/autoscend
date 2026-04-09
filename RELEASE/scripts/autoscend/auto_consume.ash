@@ -178,6 +178,17 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		use(1, $item[hard rock]);
 	}
 
+	if(canOde(toDrink) && minAdvPerDrunk(toDrink) >= 5.0 && $familiar[cooler yeti].experience >= 400 && (((auto_haveSeptEmberCenser() && my_level() >= 15) || $familiar[cooler yeti].experience > 800) || (!auto_haveSeptEmberCenser())))
+	{
+		//only want to yeti chat if the booze is also Ode-able and we don't need to level via sept-ember censer or using it won't affect our fam weight
+		use_familiar($familiar[cooler yeti]);
+		if(contains_text(visit_url("main.php?talktoyeti=1"),"choiceform2"))
+		{
+			handleTracker($familiar[Cooler Yeti].to_string(), "Double adv of " + toDrink.to_string(), "auto_otherstuff");
+			visit_url("choice.php?pwd=&whichchoice=1560&option=2");
+		}
+	}
+
 	int expectedInebriety = toDrink.inebriety * howMany;
 
 	if(canOde(toDrink) && possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
@@ -246,6 +257,21 @@ boolean autoOverdrink(int howMany, item toOverdrink)
 		return false;
 	}
 	return overdrink(howMany, toOverdrink);
+}
+
+float minAdvPerDrunk(item toDrink)
+{
+	int minAdv;
+	if(index_of(toDrink.adventures, "-") < 0)
+	{
+		minAdv = toDrink.adventures.to_int();
+	}
+	else
+	{
+		minAdv = substring(toDrink.adventures, 0, index_of(toDrink.adventures, "-")).to_int();
+	}
+	int size = toDrink.inebriety;
+	return minAdv/size;
 }
 
 string cafeFoodName(int id)
@@ -533,13 +559,8 @@ boolean consumeMilkOfMagnesiumIfUnused()
 	return use(1, $item[Milk of Magnesium]);
 }
 
-boolean wantDietPill(item toEat)
+float minAdvPerFull(item toEat)
 {
-	item pill = $item[Dieting Pill];
-	if(!auto_is_valid(pill) || !auto_is_valid(toEat))
-	{
-		return false;
-	}
 	int minAdv;
 	if(index_of(toEat.adventures, "-") < 0)
 	{
@@ -550,11 +571,35 @@ boolean wantDietPill(item toEat)
 		minAdv = substring(toEat.adventures, 0, index_of(toEat.adventures, "-")).to_int();
 	}
 	int size = toEat.fullness;
+	if(size == 0) return 0; //Fullness data isn't in Mafia yet for the item in question
+	return minAdv/size;
+}
+
+float minAdvPerFullForDietPill()
+{
+	if(is_jarlsberg())
+	{
+		return minAdvPerFull($item[Ultimate Breakfast Sandwich]) - 0.01;
+	}
+	if(in_zombieSlayer())
+	{
+		return minAdvPerFull($item[boss brain]) - 0.01;
+	}
+	return 8.5;
+}
+
+boolean wantDietPill(item toEat)
+{
+	item pill = $item[Dieting Pill];
+	if(!auto_is_valid(pill) || !auto_is_valid(toEat))
+	{
+		return false;
+	}
 	//Use a dieting pill on only high adv/full foods
-	if(minAdv/size > 8.5)
+	if(minAdvPerFull(toEat) > minAdvPerFullForDietPill())
 	{
 		//Only want a dieting pill if we can use it successfully
-		if(fullness_left() > 2 * size && spleen_left() >= 3)
+		if(fullness_left() >= 2 * toEat.fullness && spleen_left() >= 3)
 		{
 			pullXWhenHaveY(pill, 1, 0);
 			if(item_amount(pill) > 0)

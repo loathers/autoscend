@@ -69,30 +69,33 @@ drop	18	Cookbookbat	item:St. Sneaky Pete's Whey<4;!prop_boolean:auto_dontUseCook
 #
 # density 1.875 size 4 spleen consumables. boolean autoChooseFamiliar(location place) will already grab the amount needed for spleen
 # Here they are only used to grab extras.
-drop	19	Grim Brother	prop:_grimFairyTaleDrops<5
-drop	20	Pair of Stomping Boots	!path:G-Lover;prop:_bootStomps<7
-drop	21	Baby Sandworm	prop:_aguaDrops<5
-drop	22	Bloovian Groose	prop:_grooseDrops<5
-drop	23	Golden Monkey	prop:_powderedGoldDrops<5
-drop	24	Unconscious Collective	prop:_dreamJarDrops<5
+drop	19	Skeleton of Crimbo Past	prop_boolean:auto_preferSoCP
+drop	20	Grim Brother	prop:_grimFairyTaleDrops<5
+drop	21	Pair of Stomping Boots	!path:G-Lover;prop:_bootStomps<7
+drop	22	Baby Sandworm	prop:_aguaDrops<5
+drop	23	Bloovian Groose	prop:_grooseDrops<5
+drop	24	Golden Monkey	prop:_powderedGoldDrops<5
+drop	25	Unconscious Collective	prop:_dreamJarDrops<5
 # psychoanalytic jar 1 per day.
-drop	25	Angry Jung Man	prop:_jungDrops<1
+drop	26	Angry Jung Man	prop:_jungDrops<1
 # grimstone mask 1 per day
-drop	26	Grimstone Golem	prop:_grimstoneMaskDrops<1
+drop	27	Grimstone Golem	prop:_grimstoneMaskDrops<1
 # tales of spelunking 1 per day
-drop	27	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
+drop	28	Adventurous Spelunker	prop:_spelunkingTalesDrops<1
 # can drop 5 devilish folio a day
-drop	28	Blavious Kloop	prop:_kloopDrops<5
+drop	29	Blavious Kloop	prop:_kloopDrops<5
 # can drop 5 absinthe a day
-drop	29	Green Pixie	prop:_absintheDrops<5
+drop	30	Green Pixie	prop:_absintheDrops<5
 # Hot ashes can make a potion that gives +15 ML for 15 adv. drop limit 5/day
-drop	30	Galloping Grill	prop:_hotAshesDrops<5
+drop	31	Galloping Grill	prop:_hotAshesDrops<5
 # If all else fails, keep generating CBB ingredients
-drop	31	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
+drop	32	Cookbookbat	!prop_boolean:auto_dontUseCookBookBat
 # build up a few mini kiwis, enough for an aioli and a bikini
-drop	32	Mini Kiwi	item:mini kiwi<7
+drop	33	Mini Kiwi	item:mini kiwi<7
 # use a Peace turkey if all else fails
-drop	33	Peace Turkey
+drop	34	Peace Turkey
+# eh, may as well put some XP on the mimic if there's no other drop familiars
+drop	35	Chest Mimic
 
 # We want to delevel, but don't want to deal damage
 gremlins	0	Nosy Nose
@@ -131,69 +134,77 @@ item	5	Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
 item	6	Grey Goose	prop_boolean:auto_prioritizeGoose
 # fairy that generates extra adventures
 item	7	Reagnimated Gnome	!path:Heavy Rains
+# Fairy with useful/valuable items that can be bought with its drops
+item	8	Skeleton of Crimbo Past	prop_boolean:auto_preferSoCP
 # Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
-item	8	XO Skeleton
+item	9	XO Skeleton
 # Fairy that drops bacon with no limit. 1 per combat
-item	9	Intergnat
+item	10	Intergnat
 # Fairyeverything
-item	10	Jill-of-All-Trades
+item	11	Jill-of-All-Trades
+# Fairychauns > fairyballs/whelps in meatpath
+item	12	Chest Mimic	path:Adventurer Meats World
 # Fairyballs
-item	11	Elf Operative
-item	12	Optimistic Candle
-item	13	Rockin' Robin
-item	14	God Lobster	item:God Lobster's Crown>0
-item	15	Hobo in Sheep's Clothing
+item	13	Elf Operative
+item	14	Optimistic Candle
+item	15	Rockin' Robin
+item	16	God Lobster	item:God Lobster's Crown>0
+item	17	Hobo in Sheep's Clothing
 # Fairywhelps
-item	16	Pocket Professor
-item	17	Garbage Fire
-item	18	Dandy Lion
-item	19	Choctopus
+item	18	Pocket Professor
+item	19	Garbage Fire
+item	20	Dandy Lion
+item	21	Choctopus
 # Fairychauns
-item	20	Fist Turkey
-item	21	Cat Burglar
-item	22	Angry Jung Man
-item	23	Grimstone Golem
-item	24	Adventurous Spelunker
-item	25	Blavious Kloop
-item	26	Hippo Ballerina
-item	27	Dancing Frog
-item	28	Coffee Pixie
-item	29	Attention-Deficit Demon
-item	30	Jitterbug
-item	31	Casagnova Gnome
-item	32	Psychedelic Bear
-item	33	Piano Cat
+item	22	Chest Mimic
+item	23	Fist Turkey
+item	24	Cat Burglar
+item	25	Angry Jung Man
+item	26	Grimstone Golem
+item	27	Adventurous Spelunker
+item	28	Blavious Kloop
+item	29	Hippo Ballerina
+item	30	Dancing Frog
+item	31	Coffee Pixie
+item	32	Attention-Deficit Demon
+item	33	Jitterbug
+item	34	Casagnova Gnome
+item	35	Psychedelic Bear
+item	36	Piano Cat
 # Slightly special fairies
-item	34	Grey Goose
-item	35	Ghost of Crimbo Carols
-item	36	Red-Nosed Snapper
-item	37	Pair of Stomping Boots	!path:G-Lover
-item	38	Gelatinous Cubeling
-item	39	Steam-Powered Cheerleader
-item	40	Obtuse Angel
-item	41	Green Pixie
+item	37	Grey Goose
+item	38	Ghost of Crimbo Carols
+item	39	Red-Nosed Snapper
+item	40	Pair of Stomping Boots	!path:G-Lover
+# Fairy that gives extra equipment drops. Works as starfish if fed, but we don't feed it.
+item	41	Slimeling
+# More slightly special fairies
+item	42	Cooler Yeti
+item	43	Gelatinous Cubeling
+item	44	Steam-Powered Cheerleader
+item	45	Obtuse Angel
+item	46	Green Pixie
 # Elemental fairies
-item	42	Sleazy Gravy Fairy
-item	43	Stinky Gravy Fairy
-item	44	Flaming Gravy Fairy
-item	45	Frozen Gravy Fairy
-item	46	Spooky Gravy Fairy
+item	47	Sleazy Gravy Fairy
+item	48	Stinky Gravy Fairy
+item	49	Flaming Gravy Fairy
+item	50	Frozen Gravy Fairy
+item	51	Spooky Gravy Fairy
 # Physical damage fairy
-item	47	Bowlet
-item	48	Crimbo Elf
+item	52	Bowlet
+item	53	Crimbo Elf
 # Barely special fairies
-item	49	Mechanical Songbird
-item	50	Grouper Groupie
-item	51	Peppermint Rhino
-# Fairy that if fed equipment will regen MP and give extra drops. Since we do not make use of this functionality it is just a fairy.
-item	52	Slimeling
+item	54	Mechanical Songbird
+item	55	Grouper Groupie
+item	56	Peppermint Rhino
+item	57	Skeleton of Crimbo Past
 # Turtles are cute
-item	53	Syncopated Turtle
+item	58	Syncopated Turtle
 # The original
-item	54	Baby Gravy Fairy
+item	59	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
-item	55	Mutant Fire Ant
+item	60	Mutant Fire Ant
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
@@ -222,45 +233,50 @@ meat	12	Hobo Monkey
 #Mutant Cactus Bud	grimdark:1
 # Does everything
 meat	13	Jill-of-All-Trades
+# Better than a volleychaun in meatpath
+meat	14	Chest Mimic	path:Adventurer Meats World
 # Volleychauns
-meat	14	Golden Monkey
-meat	15	Bloovian Groose
-meat	16	Unconscious Collective
-meat	17	Grim Brother
-meat	18	Mini Kiwi
-meat	19	Dramatic Hedgehog
-meat	20	Chauvinist Pig
-meat	21	Uniclops
-meat	22	Hunchbacked Minion
-meat	23	Nervous Tick
-meat	24	Cymbal-Playing Monkey
-meat	25	Cheshire Bat
+meat	15	Golden Monkey
+meat	16	Bloovian Groose
+meat	17	Unconscious Collective
+meat	18	Grim Brother
+meat	19	Mini Kiwi
+meat	20	Dramatic Hedgehog
+meat	21	Chauvinist Pig
+meat	22	Uniclops
+meat	23	Hunchbacked Minion
+meat	24	Nervous Tick
+meat	25	Cymbal-Playing Monkey
+meat	26	Cheshire Bat
 # Fairychauns
-meat	26	Cat Burglar
-meat	27	Blavious Kloop
-meat	28	Adventurous Spelunker
-meat	29	Hippo Ballerina
-meat	30	Dancing Frog
-meat	31	Cheshire Bat
-meat	32	Piano Cat
-meat	33	Psychedelic Bear
-meat	34	Casagnova Gnome
-meat	35	Jitterbug
-meat	36	Attention-Deficit Demon
-meat	37	Coffee Pixie
+meat	27	Chest Mimic
+meat	28	Fist Turkey
+meat	29	Cat Burglar
+meat	30	Angry Jung Man
+meat	31	Grimstone Golem
+meat	32	Adventurous Spelunker
+meat	33	Blavious Kloop
+meat	34	Hippo Ballerina
+meat	35	Dancing Frog
+meat	36	Coffee Pixie
+meat	37	Attention-Deficit Demon
+meat	38	Jitterbug
+meat	39	Casagnova Gnome
+meat	40	Psychedelic Bear
+meat	41	Piano Cat
 # Wowee
-meat	38	Hand Turkey
+meat	42	Hand Turkey
 # Sorry, we don't use him for yellow rays but we can at least use him for meat I guess
-meat	39	He-Boulder
+meat	43	He-Boulder
 # Marginally special leprechauns
-meat	40	Ghost of Crimbo Commerce
-meat	41	Knob Goblin Organ Grinder
+meat	44	Ghost of Crimbo Commerce
+meat	45	Knob Goblin Organ Grinder
 #Mutant Cactus Bud	grimdark:2
-meat	42	Urchin Urchin
+meat	46	Urchin Urchin
 # Memes, doesn't actually give substats apparently
-meat	43	Cornbeefadon
+meat	47	Cornbeefadon
 # The original
-meat	44	Leprechaun
+meat	48	Leprechaun
 
 # Typical starfish are better than whelps
 # Whelps on average restore .375*(weight+5)

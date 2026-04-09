@@ -48,6 +48,10 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 
 	if(enemy == $monster[Your Shadow])
 	{
+		if(in_amw() && canUse($skill[Chew the Fat], false))
+		{
+			return useSkill($skill[Chew the Fat], false);
+		}
 		if(in_plumber())
 		{
 			if(item_amount($item[super deluxe mushroom]) > 0)
@@ -183,7 +187,7 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 	if(retval != "") return retval;
 	
 	//pickpocket. do this after puzzle bosses but before escapes/instakills
-	boolean ableToPickpocket = ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class() || have_effect($effect[Riboflavin\']) > 0);
+	boolean ableToPickpocket = ($classes[Accordion Thief, Avatar of Sneaky Pete, Disco Bandit, Gelatinous Noob] contains my_class() || have_effect($effect[Riboflavin\']) > 0 || amw_wanttoPP(enemy));
 	if(!combat_status_check("pickpocket") && ableToPickpocket && contains_text(text, "value=\"Pick") && canSurvive(4.0))
 	{
 		boolean tryIt = false;
@@ -233,6 +237,12 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		return useSkill($skill[Recall Facts: Monster Habitats]);
 	}
 
+	if(auto_canRWBBlast() && auto_RWBBlastTarget(enemy) && canUse($skill[%fn\, fire a Red\, White and Blue Blast]))
+	{
+		handleTracker($skill[%fn\, fire a Red\, White and Blue Blast], enemy, "auto_copies");
+		return useSkill($skill[%fn\, fire a Red\, White and Blue Blast]);
+	}
+
 	monster backedUpMonster = get_property("lastCopyableMonster").to_monster();
 	// reserve last 2 advs for end of day free fights
 	boolean reserveAdvsForFreeFights = my_adventures() < 3 && !isFreeMonster(backedUpMonster);
@@ -262,7 +272,14 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		handleTracker($skill[%fn\, spit on them!], enemy, "auto_otherstuff");
 		return useSkill($skill[%fn\, spit on them!], true);
 	}
-	
+
+	//[Patriotic Eagle] familiar skill that gives a useful buff
+	if (canUse($skill[%fn\, let\'s pledge allegiance to a Zone]))
+	{
+		auto_getCitizenZone(my_location(), true);
+		return useSkill($skill[%fn\, let\'s pledge allegiance to a Zone], true);
+	}
+		
 	//duplicate turns the enemy from a single enemy into a mob containing 2 copies of this enemy. Doubling their stats and doubling their drops
 	if(canUse($skill[Duplicate]) && (get_property("_sourceTerminalDuplicateUses").to_int() == 0) && !inAftercore() && !in_nuclear())
 	{
@@ -270,6 +287,13 @@ string auto_combatDefaultStage1(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Duplicate]);
 		}
+	}
+
+	//convert enemy into a scaling fish monster
+	if(auto_talkToSomeFish(my_location(), enemy) && auto_have_skill($skill[Sea *dent: Talk to Some Fish]))
+	{
+		handleTracker(enemy, $skill[Sea *dent: Talk to Some Fish], "auto_otherstuff");
+		return useSkill($skill[Sea *dent: Talk to Some Fish]);
 	}
 	
 	//these special conditions make it impossible to do anything but attack with weapon.

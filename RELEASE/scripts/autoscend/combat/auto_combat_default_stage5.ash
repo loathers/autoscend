@@ -38,6 +38,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combatWereProfessorStage5(round, enemy, text);
 	if(retval != "") return retval;
 
+	// Path = adventurer meats world
+	retval = auto_combatMeatGolemStage5(round, enemy, text);
+	if(retval != "") return retval;
+
 	//with loofah, you can stagger and deal cold or hot damage
 	if(canUse($skill[loofah stew]) && monster_element(enemy) != $element[cold])
 	{
@@ -160,8 +164,8 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		return useSkill($skill[Surprisingly Sweet Stab]);
 	}
 
-	//Everfull Dart Holder
-	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0)
+	//Everfull Dart Holder- use darts if you have them, unless we are against the naughty sorceress (to avoid dart skill bug)
+	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0 && !($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains enemy))
 	{
 		return useSkill(dartSkill(), false);
 	}
@@ -206,7 +210,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			foreach sk in $skills[Saucestorm, Saucegeyser, Northern Explosion]
 			{
-				if(canUse(sk, false))
+				if(canUse(sk, false) || (sk == $skill[Northern Explosion] && !auto_canNorthernExplosionFE()))
 				{
 					attackMinor = useSkill(sk, false);
 					attackMajor = useSkill(sk, false);
@@ -856,7 +860,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 				return useSkill($skill[Spirit Snap]);
 			}
 		}
-		if(canUse($skill[Northern Explosion]) && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]) && (hasClubEquipped() || (buffed_hit_stat() - 20) > monster_defense()))
+		if(canUse($skill[Northern Explosion]) && !auto_canNorthernExplosionFE() && (my_class() == $class[Seal Clubber]) && (monster_element(enemy) != $element[cold]) && (hasClubEquipped() || (buffed_hit_stat() - 20) > monster_defense()))
 		{
 			return useSkill($skill[Northern Explosion]);
 		}

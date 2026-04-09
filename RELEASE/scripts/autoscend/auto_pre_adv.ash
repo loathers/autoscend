@@ -51,7 +51,7 @@ void print_footer()
 	next_line = "";
 	if(pathHasFamiliar())
 	{
-		next_line += "Familiar: " +my_familiar()+ " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs. ";
+		next_line += "Familiar: " +my_familiar()+ " @ " + auto_famWeight() + "lbs. ";
 	}
 	if(my_class() == $class[Pastamancer])
 	{
@@ -114,7 +114,8 @@ void auto_ghost_prep(location place)
 		Fireball Toss,				//path of the plumber
 		Chill of the Tomb,			//dark gyffte
 		Lavafava, Pungent Mung, Beanstorm,			  //avatar of west of loathing
-		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
+		Hot Foot, Emmental Elemental, Sax of Violence,//avatar of shadow over loathing
+		Bacon Ray, Spicy Meatball	//adventurer meats world
 		]
 	{
 		if(auto_have_skill(sk))
@@ -136,8 +137,10 @@ void auto_ghost_prep(location place)
 	int m_spooky = 1;
 	int m_sleaze = 1;
 	int m_stench = 1;
+	float [monster] apprates = auto_combat_appearance_rates(place, true);
 	foreach idx, mob in get_monsters(place)
 	{
+		if(apprates[mob] <= 0) continue; //won't show up because banished or req's not fulfilled
 		if(mob.physical_resistance >= 80)
 		{
 			switch(monster_element(mob))
@@ -247,6 +250,11 @@ boolean auto_pre_adventure()
 		// vampieroghi can dispell the shaman curse, preventing us from making quest progress
 		use_skill($skill[Dismiss Pasta Thrall]);
 	}
+
+	//save some MP while buffing
+	item[int] beforeBuffs = auto_saveEquipped();
+	addToMaximize("-1000mana cost, -tie");
+	equipMaximizedGear();
 
 	if(place == $location[The Smut Orc Logging Camp])
 	{
@@ -371,6 +379,9 @@ boolean auto_pre_adventure()
 	if (combatModifier._boolean && !auto_queueIgnore()) {
 		acquireCombatMods(combatModifier._int, true);
 	}
+	
+	//evaluate a boolean prop for the familiar files
+	auto_wantSoCP();
 
 	// Update our familiar after combat modifiers (which can set the familiar), but before Crystal Ball (familiar equip)
 	preAdvUpdateFamiliar(place);
@@ -459,6 +470,10 @@ boolean auto_pre_adventure()
 				adjustForSniffingIfPossible(mon);
 				zoneHasWantedMonsters = true;
 			}
+			if (auto_havePeridot() && peridotManuallyDesiredMonsters() contains mon && !haveUsedPeridot(place))
+			{
+				zoneHasWantedMonsters = true;
+			}
 		}
 	}
 	if(considerCrystalBallBonus)
@@ -542,7 +557,7 @@ boolean auto_pre_adventure()
 	}
 	
 	item bat_wings = $item[bat wings];
-	boolean[location] swoop_locs = $locations[The Hatching Chamber, The Feeding Chamber, The Royal Guard Chamber,The Hidden Temple];
+	boolean[location] swoop_locs = auto_swoopLocations();
 	if ( (swoop_locs contains place || auto_allRifts() contains place) && auto_swoopsRemaining()>0)
 	{
 		autoEquip(bat_wings);
@@ -560,6 +575,17 @@ boolean auto_pre_adventure()
 	else if(in_wildfire() && auto_haveFireExtinguisher() && place.fire_level > 3)
 	{
 		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 
+	}
+
+	if(auto_wantToShrunkenHead(place))
+	{
+		addBonusToMaximize($item[shrunken head], 300);
+	}
+
+	if(!haveUsedPeridot(place) && auto_havePeridot() && zoneHasWantedMonsters)
+	{
+		//add a large bonus to Peridot of Peril if the zone has wanted monsters and we haven't visited there yet
+		addBonusToMaximize($item[Peridot of Peril], 1000);
 	}
 
 	if(place == $location[The Penultimate Fantasy Airship] && auto_haveBatWings())
@@ -622,22 +648,7 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	// Use some instakills. Can't use Chest X-Ray in Pocket Familiars.
-	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
-	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && auto_is_valid($skill[Chest X-Ray]) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19 && !in_pokefam())
-	{
-		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
-		autoEquip($slot[acc3], DOCTOR_BAG);
-	}
-
-	item dartHolster = $item[Everfull Dart Holster];
-	if (auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0 && !in_avantGuard())
-	{
-		auto_log_info("We don't have ELR so let's hit a bullseye");
-		autoEquip($slot[acc3], dartHolster);
-	}
-
-
+	auto_equipFreekill();
 	equipOverrides();
 	kolhs_preadv(place);
 	ag_bgChat();
@@ -727,8 +738,9 @@ boolean auto_pre_adventure()
 
 
 	// Only cast Paul's pop song if we expect it to more than pay for its own casting.
-	//	Casting before ML variation ensures that this, the more important buff, is cast before ML.
-	if(auto_predictAccordionTurns() >= 8)
+	// Casting before ML variation ensures that this, the more important buff, is cast before ML.
+	// Also check we're not regenning loads of MP already
+	if(auto_predictAccordionTurns() >= 8 && numeric_modifier($modifier[MP Regen Min]) < 5)
 	{
 		buffMaintain($effect[Paul\'s Passionate Pop Song]);
 	}
@@ -806,7 +818,7 @@ boolean auto_pre_adventure()
 	}
 
 	// Path Specific Conditions
-	if(is_professor())  //WereProfessor professor doesn't like ML
+	if(is_professor() || in_plumber())  //Path of the Plumber doesn't need ML and WereProfessor professor doesn't like ML
 	{
 		doML = false;
 		removeML = true;
@@ -885,15 +897,14 @@ boolean auto_pre_adventure()
 		januaryToteAcquire($item[Wad Of Used Tape]);
 	}
 
+	removeFromMaximize("-1000mana cost");
+
 	// EQUIP MAXIMIZED GEAR
 	auto_ghost_prep(place);
 	equipMaximizedGear();
 	auto_handleRetrocape(); // has to be done after equipMaximizedGear otherwise the maximizer reconfigures it
 	auto_handleParka(); //same as retrocape above
-	if(auto_handleCCSC() && !have_equipped($item[Candy Cane Sword Cane]))
-	{
-		autoForceEquip($item[Candy Cane Sword Cane]); // Force the candy cane sword cane if June cleaver has been buffed beyond the 1000 bonus boost
-	}
+
 	cli_execute("checkpoint clear");
 
 	//before guaranteed non combats that give stats, overrule maximized equipment to increase stat gains
@@ -912,8 +923,12 @@ boolean auto_pre_adventure()
 		equipStatgainIncreasers(my_primestat(),true);	//The Shore, Inc. Travel Agency choice 793 is configured to pick main stat or all stats
 		plumber_forceEquipTool();
 	}
+	if(auto_handleCCSC() && !have_equipped($item[Candy Cane Sword Cane]))
+	{
+		autoForceEquip($item[Candy Cane Sword Cane]); // Force the candy cane sword cane if June cleaver has been buffed beyond the 1000 bonus boost
+	}
 
-	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[Hippy Camp]) {
+	if (isActuallyEd() && is_wearing_outfit("Filthy Hippy Disguise") && place == $location[The Hippy Camp]) {
 		equip($slot[Pants], $item[None]);
 		put_closet(item_amount($item[Filthy Corduroys]), $item[Filthy Corduroys]);
 		if (is_wearing_outfit("Filthy Hippy Disguise")) {
@@ -1052,7 +1067,7 @@ void main()
 	try
 	{
 		ret = auto_pre_adventure();
-		if (pathHasFamiliar() && my_familiar()==$familiar[none]) {
+		if (pathHasFamiliar() && canChangeFamiliar() && my_familiar()==$familiar[none] && !isFantasyRealm(my_location())) {
 			abort("Trying to adventure with no familiar.");
 		}
 	}

@@ -963,7 +963,7 @@ void ed_handleAdventureServant(location loc)
 	}
 
 	// Initial Ka farming to get Spleen & Legs upgrades.
-	if ($locations[Hippy Camp, The Neverending Party, The Secret Government Laboratory, The SMOOCH Army HQ, VYKEA] contains loc && my_daycount() == 1)
+	if ($locations[The Hippy Camp, The Neverending Party, The Secret Government Laboratory, The SMOOCH Army HQ, VYKEA] contains loc && my_daycount() == 1)
 	{
 		myServant = $servant[Priest];
 	}
@@ -1177,7 +1177,7 @@ boolean L1_ed_islandFallback()
 	if (have_skill($skill[Upgraded Legs]) || item_amount($item[Ka coin]) >= 10)
 	{
 		auto_change_mcd(11);
-		boolean retVal = autoAdv($location[Hippy Camp]);
+		boolean retVal = autoAdv($location[The Hippy Camp]);
 		if (item_amount($item[Filthy Corduroys]) > 0)
 		{
 			if (closet_amount($item[Filthy Corduroys]) > 0)

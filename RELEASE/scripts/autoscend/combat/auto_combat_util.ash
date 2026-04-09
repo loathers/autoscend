@@ -71,7 +71,8 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
 		my_soulsauce() < soulsauce_cost(sk) ||
-		my_pp() < plumber_ppCost(sk))
+		my_pp() < plumber_ppCost(sk) ||
+		my_meat() < meat_cost(sk))
 		{
 			return false;
 		}
@@ -84,7 +85,8 @@ boolean canUse(skill sk, boolean onlyOnce, boolean inCombat)
 		my_lightning() < lightning_cost(sk) ||
 		my_thunder() < thunder_cost(sk) ||
 		my_rain() < rain_cost(sk) ||
-		my_soulsauce() < soulsauce_cost(sk))
+		my_soulsauce() < soulsauce_cost(sk) ||
+		my_meat() < meat_cost(sk))
 		{
 			return false;
 		}
@@ -222,7 +224,7 @@ boolean isSniffed(monster enemy, skill sk)
 boolean isSniffed(monster enemy)
 {
 	//checks if the monster enemy is currently sniffed using any of the sniff skills
-	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash, Left %n Kick, Right %n Kick]
+	foreach sk in $skills[Transcendent Olfaction, Make Friends, Long Con, Perceive Soul, Gallapagosian Mating Call, Monkey Point, Offer Latte to Opponent, Motif, Hunt, McHugeLarge Slash, Left %n Kick, Right %n Kick, Meat Cute]
 	{
 		if(isSniffed(enemy, sk)) return true;
 	}
@@ -245,6 +247,10 @@ skill getSniffer(monster enemy, boolean inCombat)
 	if(canUse($skill[Hunt], true, inCombat) && have_effect($effect[Everything Looks Red]) == 0 && !isSniffed(enemy, $skill[Hunt]))
 	{
 		return $skill[Hunt];				//WereProfessor Werewolf specific skill
+	}
+	if(canUse($skill[Meat Cute], true , inCombat) && get_property("_meatCuteUsed").to_int() < 5 && !isSniffed(enemy, $skill[Meat Cute]))
+	{
+		return $skill[Meat Cute];		//Meat Golem specific skill
 	}
 	if(canUse($skill[Long Con], true , inCombat) && get_property("_longConUsed").to_int() < 5 && !isSniffed(enemy, $skill[Long Con]))
 	{
@@ -317,6 +323,8 @@ boolean isCopied(monster enemy, skill sk)
 		case $skill[Blow the Purple Candle\!]:
 			retval = contains_text(get_property("auto_purple_candled"), enemy);
 			break;
+		case $skill[%fn\, fire a Red\, White and Blue Blast]:
+			retval = auto_RWBMonster() == enemy;
 		default:
 			abort("isCopied was asked to check an unidentified skill: " +sk);
 	}
@@ -326,7 +334,7 @@ boolean isCopied(monster enemy, skill sk)
 boolean isCopied(monster enemy)
 {
 	//checks if the monster enemy is currently copied using any of the copy skills
-	foreach sk in $skills[Blow the Purple Candle\!]
+	foreach sk in $skills[Blow the Purple Candle\!, %fn\, fire a Red\, White and Blue Blast]
 	{
 		if(isCopied(enemy, sk)) return true;
 	}
@@ -338,6 +346,10 @@ skill getCopier(monster enemy, boolean inCombat)
 	if((auto_haveRoman() && have_effect($effect[Everything Looks Purple]) == 0) || (have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0))
 	{
 		return $skill[Blow the Purple Candle\!];
+	}
+	if(auto_haveEagle() && canUse($skill[%fn\, fire a Red\, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
+	{
+		return $skill[%fn\, fire a Red\, White and Blue Blast];
 	}
 	return $skill[none];
 }
@@ -442,6 +454,12 @@ skill getStunner(monster enemy)
 		if(canUse($skill[Drum Roll], true))
 		{
 			return $skill[Drum Roll];
+		}
+		break;
+	case $class[Meat Golem]:
+		if(canUse($skill[Meat Locker], true))
+		{
+			return $skill[Meat Locker];
 		}
 		break;
 	}
@@ -590,7 +608,7 @@ string banisherCombatString(phylum enemyPhylum, location loc, boolean inCombat)
 	if(inCombat)
 		auto_log_info("Finding a phylum banisher to use on " + enemyPhylum + " at " + loc, "green");
 
-	if(inCombat ? (my_familiar() == $familiar[Patriotic Eagle] && get_property("screechCombats").to_int() == 0) : (!in_avantGuard() && pathAllowsChangingFamiliar() && !auto_famKill($familiar[Patriotic Eagle], loc) && auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0) && !in_glover()))
+	if(inCombat ? (my_familiar() == $familiar[Patriotic Eagle] && get_property("screechCombats").to_int() == 0 && !in_glover()) : (!in_avantGuard() && pathAllowsChangingFamiliar() && !auto_famKill($familiar[Patriotic Eagle], loc) && auto_have_familiar($familiar[Patriotic Eagle]) && (get_property("screechCombats").to_int() == 0) && !in_glover()))
 	{
 		return "skill" + $skill[%fn\, Release the Patriotic Screech!];
 	}
@@ -716,10 +734,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Show Them Your Ring];
 	}
-	if(auto_have_skill($skill[Breathe Out]) && auto_is_valid($skill[Breathe Out]) && (!(used contains "breathe out")) && useFree)
-	{
-		return "skill " + $skill[Breathe Out];
-	}
 	if(auto_have_skill($skill[Batter Up!]) && (my_fury() >= 5) && (inCombat ? hasClubEquipped() : true) && auto_is_valid($skill[Batter Up!]) && (!(used contains "batter up!")))
 	{
 		return "skill " + $skill[Batter Up!];
@@ -744,7 +758,7 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Talk About Politics];
 	}
-	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : possessEquipment($item[Lil\' Doctor&trade; bag])) && auto_is_valid($skill[Reflex Hammer]) && get_property("_reflexHammerUsed").to_int() < 3 && !(used contains "Reflex Hammer") && useFree)
+	if((inCombat ? auto_have_skill($skill[Reflex Hammer]) : auto_reflexHammersRemaining() > 0 && !(used contains "Reflex Hammer") && useFree))
 	{
 		return "skill " + $skill[Reflex Hammer];
 	}
@@ -784,12 +798,6 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 		return "item " + $item[Handful of split pea soup];
 	}
 
-	if(inCombat ? (auto_have_skill($skill[Punch Out Your Foe]) && auto_is_valid($skill[Punch Out Your Foe]) && (my_mp() >= mp_cost($skill[Punch Out Your Foe])) && (!(used contains "punch out your foe")) && useFree)
-	    : auto_is_valid($skill[Punch Out Your Foe]) && (auto_have_skill($skill[Punch Out Your Foe]) || (available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3) ))
-	{
-		return "skill " + $skill[Punch Out Your Foe];
-	}
-
 	if(auto_have_skill($skill[[28021]Punt]) && (my_mp() > mp_cost($skill[[28021]Punt])) && !(used contains "Punt"))
 	{
 		return "skill " + $skill[[28021]Punt];
@@ -823,6 +831,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Monkey Slap];
 	}
+
+	if((inCombat ? auto_have_skill($skill[Sea *dent: Throw a Lightning Bolt]) : possessEquipment($item[Monodent of the Sea])) && auto_throwLightningRemaining() > 0 && !(used contains "Sea *dent: Throw a Lightning Bolt"))
+	{
+		return "skill " + $skill[Sea *dent: Throw a Lightning Bolt];
+	}
 	
 	//[Nanorhino] familiar specific banish. fairly low priority as it consumes 40 to 50 adv worth of a decent buff.
 	if(canUse($skill[Unleash Nanites]) && have_effect($effect[Nanobrawny]) >= 40)
@@ -850,6 +863,19 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	if(item_amount($item[human musk]) > 0 && (!(used contains "human musk")) && auto_is_valid($item[human musk]) && (get_property("_humanMuskUses").to_int() < 3 && useFree)) //first 3 are free
 	{
 		return "item " + $item[human musk];
+	}
+
+	// items for which we consume spleen for uses
+	if(inCombat ? (auto_have_skill($skill[Breathe Out]) && auto_is_valid($skill[Breathe Out]) && (my_mp() >= mp_cost($skill[Breathe Out])) && (!(used contains "breathe out")) && useFree)
+	    : auto_is_valid($skill[Breathe Out]) && (auto_have_skill($skill[Breathe Out]) || (available_amount($item[hot jelly]) > 0 && spleen_left() > 1 && !isActuallyEd()) ))
+	{
+		return "skill " + $skill[Breathe Out];
+	}
+
+	if(inCombat ? (auto_have_skill($skill[Punch Out Your Foe]) && auto_is_valid($skill[Punch Out Your Foe]) && (my_mp() >= mp_cost($skill[Punch Out Your Foe])) && (!(used contains "punch out your foe")) && useFree)
+	    : auto_is_valid($skill[Punch Out Your Foe]) && (auto_have_skill($skill[Punch Out Your Foe]) || (available_amount($item[scoop of pre-workout powder]) > 0 && spleen_left() > 3 && !isActuallyEd()) ))
+	{
+		return "skill " + $skill[Punch Out Your Foe];
 	}
 
 	//We want to limit usage of these much more than the others.
@@ -946,6 +972,10 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		{
 			return "item " + $item[yellow rocket]; // 75 turns & 250 meat
 		}
+		if(item_amount($item[spitball]) > 0 && auto_is_valid($item[spitball]))
+		{
+			return "item " + $item[spitball]; //100 Turns and free kill
+		}
 		if(inCombat ? have_skill($skill[Blow the Yellow Candle\!]) : auto_haveRoman() && auto_can_equip($item[Roman Candelabra]) && auto_is_valid($skill[Blow the Yellow Candle\!]))
 		{
 			return "skill " + $skill[Blow the Yellow Candle\!]; //75 Turns
@@ -996,6 +1026,12 @@ string yellowRayCombatString(monster target, boolean inCombat, boolean noForceDr
 		return "skill " + $skill[Asdon Martin: Missile Launcher];
 	}
 
+	if(auto_canNorthernExplosionFE())
+	{
+		//With April Shower Thoughts Shield
+		return "skill " + $skill[Northern Explosion];
+	}
+
 	if(auto_canFeelEnvy())
 	{
 		return "skill " + $skill[Feel Envy];
@@ -1037,6 +1073,10 @@ string yellowRayCombatString()
 
 string replaceMonsterCombatString(monster target, boolean inCombat)
 {
+	if(in_pokefam())
+	{
+		return "";
+	}
 	if(auto_macrometeoritesAvailable() > 0 && auto_is_valid($skill[Macrometeorite]))
 	{
 		return "skill " + $skill[Macrometeorite];

@@ -71,8 +71,8 @@ void bedtime_still()
 
 boolean bedtime_spleen()
 {
-	boolean[item] to_try = $items[Breathitin&trade;, Extrovermectin&trade;,
-	  scoop of pre-workout powder, phosphor traces, Homebodyl&trade;, energized spores];
+	boolean[item] to_try = $items[Breathitin&trade;, Extrovermectin&trade;, hot jelly,
+	  scoop of pre-workout powder, Homebodyl&trade;, phosphor traces, energized spores];
 
 	boolean done = false;
 	while (spleen_left() > 0 && !done)
@@ -793,21 +793,9 @@ boolean doBedtime()
 		}
 	}
 
-	# This does not check if we still want these buffs
 	if((my_hp() < (0.9 * my_maxhp())) && hotTubSoaksRemaining() > 0)
 	{
-		boolean doTub = true;
-		foreach eff in $effects[Once-Cursed, Thrice-Cursed, Twice-Cursed]
-		{
-			if(have_effect(eff) > 0)
-			{
-				doTub = false;
-			}
-		}
-		if(doTub)
-		{
-			doHottub();
-		}
+		doHottub();
 	}
 
 	if(!get_property("_mayoTankSoaked").to_boolean() && (auto_get_campground() contains $item[Portable Mayo Clinic]) && is_unrestricted($item[Portable Mayo Clinic]))
@@ -1355,6 +1343,8 @@ boolean doBedtime()
 		}
 
 		bedtime_spleen();
+		// spleen use may have equipped +stat gain items
+		equipRollover(true);
 
 		bedtime_pulls();
 		pullsNeeded("evaluate");

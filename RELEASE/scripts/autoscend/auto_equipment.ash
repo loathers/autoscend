@@ -58,8 +58,12 @@ boolean autoEquip(item it)
 // specifically intended for forcing something in to a specific slot,
 // instead of just forcing it to be equipped in general
 // mostly for the Antique Machete and unstable fulminate
-boolean autoForceEquip(slot s, item it)
+boolean autoForceEquip(slot s, item it, boolean noMaximize)
 {
+	if(it == $item[none])
+	{
+		return equip(s, it);
+	}
 	if(!possessEquipment(it) || !auto_can_equip(it))
 	{
 		return false;
@@ -68,20 +72,42 @@ boolean autoForceEquip(slot s, item it)
 	{
 		if (weapon_hands(equipped_item($slot[weapon])) > 1)
 		{
-			removeFromMaximize("+equip " + equipped_item($slot[weapon]));
+			if(!noMaximize) removeFromMaximize("+equip " + equipped_item($slot[weapon]));
 			equip($slot[weapon], $item[none]);
 		}
-		removeFromMaximize("-equip " + it);
-		addToMaximize("-off-hand, 1hand");
+		if(!noMaximize)
+		{
+			removeFromMaximize("-equip " + it);
+			addToMaximize("-off-hand, 1hand");
+		}
 		return equip($slot[off-hand], it);
 	}
 	if(equip(s, it))
 	{
-		removeFromMaximize("-equip " + it);
-		addToMaximize("-" + s);
+		if(!noMaximize)
+		{
+			removeFromMaximize("-equip " + it);
+			addToMaximize("-" + s);
+		}
 		return true;
 	}
 	return false;
+}
+
+boolean autoForceEquip(slot s, item it)
+{
+	return autoForceEquip(s, it, false);
+}
+
+boolean autoForceEquip(item it, boolean noMaximize)
+{
+	// Maximizer will put its preferred accessories in order acc1,acc2,acc3
+	// So for accessories, use acc3 for a force as that will get the best remaining maximizer score.
+	if (it.to_slot()==$slot[acc1])
+	{
+		return autoForceEquip($slot[acc3], it, noMaximize);
+	}
+	return autoForceEquip(it.to_slot(), it, noMaximize);
 }
 
 boolean autoForceEquip(item it)
@@ -92,7 +118,7 @@ boolean autoForceEquip(item it)
 	{
 		return autoForceEquip($slot[acc3], it);
 	}
-	return autoForceEquip(it.to_slot(), it);
+	return autoForceEquip(it, false);
 }
 
 boolean autoOutfit(string toWear)
@@ -509,6 +535,10 @@ string defaultMaximizeStatement()
 		res += ",0.4hp,0.2mp 1000max";
 		res += isActuallyEd() ? ",6mp regen" : ",3mp regen";
 	}
+	if(in_bhy())
+	{
+		res += ", 1 beeosity";
+	}
 
 	//weapon handling
 	if(is_boris())
@@ -696,6 +726,35 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("-equip " + wrap_item($item[Kramco Sausage-o-Matic&trade;]).to_string());
 		}
 	}
+	if (auto_haveMobiusRing())
+	{
+		if (auto_timeCopFights() >= 11)
+		{
+			if(get_property("mappingMonsters").to_boolean() || auto_backupTarget() || !in_hardcore())
+			{
+				// don't equip for non free fights in softcore? (pending allowed conditions like delay zone && none of the monsters in the zone is a sniff/YR target?)
+				// don't interfere with backups or Map the Monsters
+				addToMaximize("-equip " + $item[M&ouml;bius ring].to_string());
+			}
+		}
+		else {
+			// if the ring hasn't been primed today, we want to prime it to kick the whole thing off
+			if (!get_property("_mobiusRingPrimed").to_boolean()) {
+				addBonusToMaximize($item[M&ouml;bius ring], 200);
+			}
+			// If the current zone has any delay, equip the ring for a chance at a free time cop or +paradoxicity
+			// time cop chance is conjectured to be a flat chance, doubling every 5 paradoxicity, starting at 2%
+			// we probably want to target 15 for 16% chance
+			else if (!nextMonsterIsFree && zone_delay(my_location())._boolean)
+			{
+				addBonusToMaximize($item[M&ouml;bius ring], 200);
+			}
+			// otherwise, equip the ring if we can get the NC
+			else if (auto_timeIsAStripPossible()) {
+				addBonusToMaximize($item[M&ouml;bius ring], 200);
+			}
+		}
+	}
 	if (auto_haveCursedMagnifyingGlass())
 	{
 		if (get_property("cursedMagnifyingGlassCount").to_int() == 13)
@@ -761,7 +820,7 @@ void finalizeMaximize(boolean speculative)
 		}
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
 		//as we go through the hidden hospital we equip surgeon gear on the pants slot, so we can end up dying if we cast advanced research
-		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
+		if(($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Orcish Frat House, The Hippy Camp, The Orcish Frat House (In Disguise), The Hippy Camp (In Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
 		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room, The Hidden Hospital] contains my_location())) nooculus = true;
 		if(!nooculus)
@@ -780,7 +839,7 @@ void finalizeMaximize(boolean speculative)
 	if(is_professor() && (possessEquipment($item[high-tension exoskeleton]) || possessEquipment($item[ultra-high-tension exoskeleton]) || possessEquipment($item[irresponsible-tension exoskeleton]))) //Want that damage avoidance
 	{
 		//exclude certain locations as professor that require specific outfits (the War, the Goblin King)
-		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), Frat House, Hippy Camp, Frat House (Frat Disguise), Hippy Camp (Hippy Disguise), Next to that barrel with something burning in it,
+		if(!($locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Orcish Frat House, The Hippy Camp, The Orcish Frat House (In Disguise), The Hippy Camp (In Disguise), Next to that barrel with something burning in it,
 		Out by that rusted-out car, over where the old tires are, near an abandoned refrigerator, Sonofa Beach, The Themthar Hills, McMillicancuddy's Barn, McMillicancuddy's Pond, McMillicancuddy's Back 40,
 		McMillicancuddy's Other Back 40, Cobb\'s Knob Barracks, Cobb\'s Knob Harem, Throne Room] contains my_location()))
 		{
@@ -879,6 +938,11 @@ void finalizeMaximize(boolean speculative)
 		if (getSweat() < 90) {
 			addBonusToMaximize($item[designer sweatpants], 200);
 		}
+	}
+
+	if(my_location() == get_property("_seadentWaveZone").to_location())
+	{
+		addToMaximize("+equip " + $item[Monodent of the Sea]); //Don't want to spend an extra turn if we don't have to
 	}
 
 	if(!in_plumber() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
@@ -1073,7 +1137,7 @@ void equipMaximizedGear()
 
 void equipOverrides()
 {
-	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc]
+	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc, familiar]
 	{
 		string overrides = get_property("auto_equipment_override_" + slot_str);
 		if(overrides == "")
@@ -1184,11 +1248,11 @@ void equipBaseline()
 void ensureSealClubs()
 {
 	cli_execute("acquire 1 seal-clubbing club");
-	foreach club in $items[Meat Tenderizer Is Murder, Lead Pipe, Porcelain Police Baton, Stainless STeel Shillelagh, Frozen Seal Spine, Ghast Iron Cleaver, Oversized Pipe, Curmudgel, Elegant Nightstick, Maxwell's Silver Hammer, Red-Hot Poker, Giant Foam Finger, Hilarious Comedy Prop, Infernal Toilet Brush, Mannequin Leg, Gnawed-Up Dog Bone, Severed Flipper, Spiked Femur, Corrupt Club of Corrupt Corruption, Kneecapping Stick, Orcish frat-paddle, Flaming Crutch, Corrupt Club of Corruption, Skeleton Bone, Remaindered Axe, Club of Corruption, Gnollish Flyswatter, Seal-Clubbing Club]
+	foreach club in $items[legendary seal-clubbing club, Meat Tenderizer Is Murder, Lead Pipe, Porcelain Police Baton, Stainless STeel Shillelagh, Frozen Seal Spine, Ghast Iron Cleaver, Oversized Pipe, Curmudgel, Elegant Nightstick, Maxwell's Silver Hammer, Red-Hot Poker, Giant Foam Finger, Hilarious Comedy Prop, Infernal Toilet Brush, Mannequin Leg, Gnawed-Up Dog Bone, Severed Flipper, Spiked Femur, Corrupt Club of Corrupt Corruption, Kneecapping Stick, Orcish frat-paddle, Flaming Crutch, Corrupt Club of Corruption, Skeleton Bone, Remaindered Axe, Club of Corruption, Gnollish Flyswatter, Seal-Clubbing Club]
 	{
 		if(possessEquipment(club))
 		{
-			autoForceEquip(club);
+			autoForceEquip($slot[weapon], club);
 			return;
 		}
 	}
@@ -1344,4 +1408,124 @@ int[item] auto_getAllEquipabble(slot s)
 		valid_and_equippable[it]++;
 	}
 	return valid_and_equippable;
+}
+
+item[int] auto_saveEquipped()
+{
+	boolean[slot] my_slots;
+	if(in_hattrick())
+	{
+		my_slots = $slots[off-hand, weapon, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	else
+	{
+		 my_slots = $slots[hat, off-hand, weapon, back, shirt, pants, acc1, acc2, acc3, familiar];
+	}
+	int i = 0;
+	item[int] equipped;
+	foreach sl in my_slots
+	{
+		equipped[count(equipped)] = equipped_item(sl);
+	}
+	return equipped;
+}
+
+boolean auto_loadEquipped(item[int] loadEquip)
+{
+	int loadAccCount = 0;
+	int accCount = 0;
+	foreach i, it in loadEquip
+	{
+		if(it.to_slot() == $slot[acc1]) loadAccCount += 1;
+	}
+	foreach i, it in loadEquip
+	{
+		//remove off-hand if we need to equip a 2 handed weapon from our saved load out
+		if (it == $item[none]) continue;
+		if(loadAccCount > 0 && it.to_slot() == $slot[acc1] && (it != equipped_item($slot[acc1]) || it != equipped_item($slot[acc2]) || it != equipped_item($slot[acc3])))
+		{
+			accCount += 1;
+			switch(accCount)
+			{				
+				case 1:
+					autoForceEquip($slot[acc1], it, true);
+					break;
+				case 2:
+					autoForceEquip($slot[acc2], it, true);
+					break;
+				default:
+					autoForceEquip($slot[acc3], it, true);
+					break;
+			}
+		}
+		else
+		{
+			autoForceEquip(it, true);
+		}
+	}
+	return true;
+}
+
+int[slot] powerMultipliers()
+{
+	int[slot] multiplier;
+	multiplier[$slot[hat]] = 1;
+    multiplier[$slot[pants]] = 1;
+    if(have_skill($skill[Tao of the Terrapin]))
+    {
+        multiplier[$slot[hat]] += 1;
+        multiplier[$slot[pants]] += 1;
+    }
+    if(have_effect($effect[Hammertime]) > 0)
+    {
+        multiplier[$slot[pants]] += 3;
+    }
+
+	return multiplier;
+}
+
+/**
+	Handles selecting and equiping an equipment that would allow a free kill skill to be cast, if able. 
+	Only selects one free kill at a time. 
+	Doesn't allow freekill equips in Advant guard or PocketFamiliars paths
+*/
+void auto_equipFreekill()
+{	
+	// Pocket familiars combat doesn't permit skills, and bodyguards in Advant Guard make freekills un-free, so we're not doing that.
+	if(in_avantGuard() || in_pokefam())
+	{
+		return;
+	} 
+
+	auto_log_info("Looking for an equipment with free kills available...");
+	item dartHolster = $item[Everfull Dart Holster];
+	item doctorBag = $item[Lil\' Doctor&trade; Bag];
+	item joksterGun = $item[The Jokester\'s Gun];
+	item legendClub = $item[legendary seal-clubbing club];
+
+	boolean redDartAvailable = auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0;
+	boolean chestXrayAvailable = auto_chestXraysRemaining() > 0;
+	boolean fireGunAvailable = auto_jokesterGunFreeKillAvailable();
+	boolean clubBackAvailable = auto_clubEmBackInTimesRemaining() > 0;
+
+	if(redDartAvailable)
+	{
+		auto_log_info("We don't have ELR so let's hit a bullseye. Equipping Everful Dart holster.");
+		autoEquip($slot[acc3], dartHolster);
+	} else if (chestXrayAvailable)
+	{
+		auto_log_info("We still have Chest X-Rays available. Equipping Lil' Doctor bag.");
+		autoEquip($slot[acc3], doctorBag);
+	} else if (fireGunAvailable)
+	{
+		auto_log_info("Let's be a jokester. Equipping The Jokester's gun.");
+		autoEquip($slot[weapon], joksterGun);
+	} else if (clubBackAvailable)
+	{
+		auto_log_info("They may not be seals, but we're gonna kill them last week. Equipping Legendary Seal Clubbing Club.");
+		autoEquip($slot[weapon], legendClub);
+	} else 
+	{
+		auto_log_info("No free kill sources found to equip, maybe you have some others, but we'll let combat figure that out.");
+	}
 }

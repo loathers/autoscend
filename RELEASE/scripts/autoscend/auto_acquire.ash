@@ -627,22 +627,35 @@ int handlePulls(int day)
 			{
 				if(storage_amount(it) > 0 && auto_is_valid(it) && !pulledToday(it))
 				{
-					user_confirm("Pulling a " + it + ". If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false);
+					if(user_confirm("Pulling a " + it + ". If you are ok with this, you have 15 seconds to hit 'Yes'", 15000, false))
 					{
 						pullXWhenHaveY(it, 1, 0);
 					}
 				}
 			}
-			pullXWhenHaveY($item[Dieting Pill], 1, 0);
 			//Make sure we have the legendary pizzas if we want to/can consume them so we take full advantage of the dieting pills
 			if(!get_property("auto_dontConsumeLegendPizzas").to_boolean())
 			{
 				foreach it in $items[Pizza of Legend, Calzone of Legend, Deep Dish of Legend]
 				{
-					if(auto_is_valid(it) && !pulledToday(it))
+					if(canEat(it) && !pulledToday(it))
 					{
 						pullXWhenHaveY(it, 1, 0);
 					}
+					// Pull at least one early dieting pill if we've acquired a legendary pizza
+					if (item_amount(it) > 0 && !pulledToday($item[Dieting Pill]))
+					{
+						pullXWhenHaveY($item[Dieting Pill], 1, 0);
+					}
+				}
+			}
+			
+			// get a wet stew
+			foreach it in $items[wet stew]
+			{
+				if (!pulledToday(it))
+				{
+					pullXWhenHaveY(it, 1, 0);
 				}
 			}
 		}
@@ -763,7 +776,10 @@ int handlePulls(int day)
 			}
 			if((item_amount($item[Fake Washboard]) == 0) && (closet_amount($item[Fake Washboard]) == 0))
 			{
-				pullXWhenHaveY($item[numberwang], 1, 0);
+				if (!auto_turbo())
+				{
+					pullXWhenHaveY($item[numberwang], 1, 0);
+				}
 			}
 			else
 			{

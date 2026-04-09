@@ -39,7 +39,7 @@ boolean wildfire_warboss_check()
 {
 	//Prepare to fight [The Big Ignatowicz] or [The Man on Fire] in wildfire path. Also check if we are ready for the fight.
 	//Return true if we are not ready and should delay this fight
-	//[Hippy Camp] and [Frat House] cannot reduced fire level from 5. Take 20-25% maxHP hot passive dmg per round. always lose initiative
+	//[The Hippy Camp] and [The Orcish Frat House] cannot reduced fire level from 5. Take 20-25% maxHP hot passive dmg per round. always lose initiative
 	if(!in_wildfire())
 	{
 		return false;	//since we are not in wildfire, we are considered "ready" so we do not block the quest in other paths
@@ -436,7 +436,7 @@ boolean LX_wildfire_water()
 		if(LX_wildfire_hose($location[The Hidden Temple])) return true;
 	}
 	
-	if(!inKnollSign())		//knoll sign does not need to farm components for bitchin meatcar
+	if(!isDesertAvailable() && !inKnollSign()) //knoll sign does not need to farm components for bitchin meatcar
 	{
 		if(LX_wildfire_hose($location[The Degrassi Knoll Garage])) return true;
 	}

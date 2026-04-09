@@ -189,6 +189,27 @@ boolean auto_doPhoneQuest()
 	{
 		return false;
 	}
+	// in pokefam, we want at least 2 level 5s
+	if (in_pokefam()) {
+		// mafia can lose track of the team, so visit famteam so we're up to date
+		visit_url("famteam.php");
+		int pokelevel1 = my_poke_fam(0).poke_level;
+		int pokelevel2 = my_poke_fam(1).poke_level;
+		int pokelevel3 = my_poke_fam(2).poke_level;
+		int numFives = 0;
+		if (pokelevel1 == 5) {
+			numFives++;
+		}
+		if (pokelevel2 == 5) {
+			numFives++;
+		}
+		if (pokelevel3 == 5) {
+			numFives++;
+		}
+		if (numFives < 2) {
+			return false;
+		}
+	}
 	// don't start quest if fights will already be free... unless we already have shadow affinity
 	if(isFreeMonster($monster[shadow slab], auto_availableBrickRift()) && have_effect($effect[Shadow Affinity]) == 0)
 	{
@@ -639,11 +660,15 @@ void auto_scepterSkills()
 		}
 	}
 	//see how much mana cost reduction we can get (up to 3mp)
-	maximize("-mana cost", true);
-	int manaCostMaximize = numeric_modifier("Generated:_spec", "Mana Cost");
-	if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+	simMaximizeWith("-1000mana cost");
+
+	int manaCostMaximize = simValue("Mana Cost");
+	if (!auto_turbo())
 	{
-		use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+		if(manaCostMaximize < 3 && canUse($skill[Aug. 30th: Beach Day!]) && !get_property("_aug30Cast").to_boolean() && get_property("_augSkillsCast").to_int()< 5)
+		{
+			use_skill($skill[Aug. 30th: Beach Day!]); //For -MP (and Rollover Adventures)
+		}
 	}
 }
 
@@ -921,7 +946,7 @@ void auto_handleJillOfAllTrades()
 
 boolean auto_haveEagle()
 {
-	if(auto_have_familiar($familiar[Patriotic Eagle]))
+	if(canChangeToFamiliar($familiar[Patriotic Eagle]))
 	{
 		return true;
 	}
@@ -939,9 +964,254 @@ familiar auto_forceEagle(familiar famChoice)
 	return famChoice;
 }
 
+boolean auto_canRWBBlast()
+{
+	if(!auto_haveEagle())
+	{
+		return false;
+	}
+	if(!(auto_is_valid($skill[%fn\, fire a Red\, White and Blue Blast])))
+	{
+		return false;
+	}
+	if(have_effect($effect[Everything Looks Red, White and Blue]) > 0)
+	{
+		//Already have ELRWB
+		return false;
+	}
+	if(auto_habitatMonster() != $monster[none])
+	{
+		//don't want to RWB Blast a Habitated monster
+		return false;
+	}
+	return true;
+}
+
+boolean auto_RWBBlastTarget(monster target)
+{
+	if(!auto_canRWBBlast())
+	{
+		return false;
+	}
+	switch(target)
+	{
+		case $monster[modern zmobie]:
+			// only worth it if we need 15 or more evilness reduced
+			return ((get_property("cyrptAlcoveEvilness").to_int() - (3 * (5 + cyrptEvilBonus()))) > 13);
+		case $monster[dirty old lihc]:
+			// only worth it if we need 9 or more evilness reduced.
+			return ((get_property("cyrptNicheEvilness").to_int() - (3 * (3 + cyrptEvilBonus()))) > 13);
+		default:
+			return (get_property("rwbMonster").to_monster() == target);
+	}
+	return false;
+}
+
+int auto_rwbFightsLeft()
+{
+	if(auto_RWBMonster() != $monster[none])
+	{
+		return (3 - get_property("rwbMonsterCount").to_int());
+	}
+	return 0;
+}
+
+monster auto_RWBMonster()
+{
+	if(get_property("rwbMonsterCount").to_int() < 3)
+	{
+		return get_property("rwbMonster").to_monster();
+	}
+	return $monster[none];
+}
+
+string activeCitZoneMod() // get the active Citizen of a Zone mods, if any
+{
+	if(!auto_haveEagle() || have_effect($effect[Citizen of a Zone]) == 0)
+	{
+		return "";
+	}
+	visit_url("desc_effect.php?whicheffect=9391a5f7577e30ac3af6309804da6944"); // visit url to refresh Mafia's _citizenZoneMods preference
+	string activeCitZoneMod = get_property("_citizenZoneMods").to_lower_case();
+	return activeCitZoneMod;
+}
+
+boolean auto_citZoneModIsGoal(string goal)
+{
+	string activeCitZoneMod = activeCitZoneMod();
+
+	if(contains_text(activeCitZoneMod, goal) || (goal == "spec" && contains_text(activeCitZoneMod, "cold resistance")))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_citizenZonePrep(string goal)
+{
+	string activeCitZoneMod = activeCitZoneMod();
+	if(my_meat() < meatReserve() && goal != "mp")
+	{
+		return false; //don't attempt to change if we don't have a lot of meat and we are going for something other than mp
+	}
+	if(have_effect($effect[Citizen of a Zone]) > 0 && contains_text(activeCitZoneMod, goal))
+	{
+		auto_log_info("No need to remove Citizen of a Zone");
+		return false;
+	}
+	if(have_effect($effect[Citizen of a Zone]) > 0 && !contains_text(activeCitZoneMod, goal) && item_amount($item[Soft Green Echo Eyedrop Antidote]) == 0)
+	{
+		auto_log_info("Can't remove Citizen of a Zone");
+		return false;
+	}
+	if(!(auto_citZoneModIsGoal(goal)) && item_amount($item[Soft Green Echo Eyedrop Antidote]) > 0) //try to remove Citizen of a Zone
+	{
+		uneffect($effect[Citizen of a Zone]);
+		if(have_effect($effect[Citizen of a Zone]) > 0)
+		{
+			auto_log_debug("Tried to remove Citizen of a Zone but couldn't");
+			return false;
+		}
+	}
+	return true;
+}
+
+boolean[location] citizenZones(string goal)
+{
+	if(goal == "meat")
+	{
+		return $locations[The Battlefield (Frat Uniform), The Battlefield (Hippy Uniform), The Hidden Hospital, The Haunted Bathroom, The Castle in the Clouds in the Sky (Basement),
+	Lair of the Ninja Snowmen, The Defiled Cranny, The Laugh Floor, The Batrat and Ratbat Burrow, The Sleazy Back Alley];
+	}
+	if(goal == "item")
+	{
+		return $locations[The Haunted Laundry Room, Whitey's Grove, The Icy Peak, Itznotyerzitz Mine,
+	The Dark Heart of the Woods, The Hidden Temple, The Haunted Library, The Bat Hole Entrance, Noob Cave];
+	}
+	if(goal == "init")
+	{
+		return $locations[The Feeding Chamber, An Unusually Quiet Barroom Brawl, Oil Peak, Cobb's Knob Kitchens,
+		The VERY Unquiet Garves, The Haunted Kitchen];
+	}
+	if(goal == "mp")
+	{
+		return $locations[The Upper Chamber, Inside the Palindome, A-boo Peak, The Hippy Camp, Megalo-City, Shadow Rift, Vanya's Castle,
+		The Hatching Chamber, Wartime Hippy Camp (Frat Disguise), The Orcish Frat House, The Middle Chamber, The Black Forest,	The Haunted Ballroom,
+		The Red Zeppelin, The Hidden Park, Twin Peak, The Smut Orc Logging Camp, The Daily Dungeon, The Spooky Forest];
+	}
+	if(goal == "spec")
+	{
+		//prismatic resistance
+		return $locations[The Outskirts of Cobb\'s Knob];
+	}
+	return $locations[none];
+}
+boolean auto_getCitizenZone(location loc, boolean inCombat)
+{
+	familiar eagle = $familiar[Patriotic Eagle];
+	//zones are approximately organized by autoscend level quest structure
+	boolean[location] meatZones = citizenZones("meat");
+	boolean[location] itemZones = citizenZones("item");
+	boolean[location] initZones = citizenZones("init");
+	//mp zones are organized by 20-30 mp regen then 10-15 mp regen and then approximately autoscend level quest structure
+	boolean[location] mpZones = citizenZones("mp");
+	boolean[location] specZones = citizenZones("spec");
+	string activeCitZoneMod = activeCitZoneMod();
+	string goal;
+	
+	if(!can_adventure(loc))
+	{
+		return false;
+	}
+	//set goal for tracking
+	if(specZones contains loc)
+	{
+		
+		//only want spec to get cold res for septEmberCenser usage and only if we don't get to L13. Don't want to do this outside of D1
+		//ideally also have spring away or some other free run
+		if((auto_goingToMouthwashLevel() && expected_level_after_mouthwash() < 13) && turns_played() == 0)
+		{
+			goal = "spec";
+		}
+	}
+	if(meatZones contains loc)
+	{
+		goal = "meat";
+	}
+	else if(itemZones contains loc)
+	{
+		goal = "item";
+	}
+	else if(initZones contains loc)
+	{
+		goal = "init";
+	}
+	else if(mpZones contains loc)
+	{
+		goal = "mp";
+	}
+	else
+	{
+		//if for some reason we make it into the location getCitizenZone and it's not in any of the defined zones, get the item buff
+		auto_log_debug("Somehow we got here and don't actually want to use the Eagle");
+		return false;
+	}
+	if(!auto_citizenZonePrep(goal))
+	{
+		return false;
+	}
+
+	boolean wantToFreeRun()
+	{
+		if(loc == solveDelayZone())
+		{
+			return true;
+		}
+		return false;
+	}
+	if(!inCombat)
+	{
+		if(use_familiar(eagle))
+		{
+			if(wantToFreeRun())	set_property("auto_forceFreeRun", true);
+			if(!autoAdv(loc))
+			{
+				auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");
+				return false;
+			}
+		}
+	}
+	else
+	{
+		handleTracker("Citizen of a Zone", my_location().to_string(), goal, "auto_otherstuff");
+		return true;
+	}
+	return false;
+}
+
+boolean auto_getCitizenZone(string goal)
+{
+	boolean[location] zones = citizenZones(goal);
+
+	if(!auto_citizenZonePrep(goal))
+	{
+		return false;
+	}
+
+	foreach loc in zones
+	{
+		if(!can_adventure(loc))
+		{
+			continue;
+		}
+		return auto_getCitizenZone(loc, false);
+	}
+	return false;
+}
+
 boolean auto_haveBurningLeaves()
 {
-	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];
+	return auto_is_valid("Burning Leaves") && get_campground() contains $item[A Guide to Burning Leaves];
 }
 
 boolean auto_initBurningLeaves()
@@ -1058,8 +1328,10 @@ boolean auto_fightFlamingLeaflet()
 		addBonusToMaximize($item[tearaway pants], 500); // plants give turns when you tearaway
 	}
 
-	visit_url("campground.php?preaction=leaves");
-	return autoAdvBypass("choice.php?pwd&whichchoice=1510&option=1&leaves=11",$location[Noob Cave]);
+	string[int] pages;
+	pages[0] = "campground.php?preaction=leaves";
+	pages[1] = "choice.php?pwd&whichchoice=1510&option=1&leaves=11";
+	return autoAdvBypass(0, pages, $location[Noob Cave], "");
 }
 
 boolean auto_haveCCSC()
@@ -1131,37 +1403,3 @@ int auto_remainingCandyCaneStabs()
 	return 11-get_property("_surprisinglySweetStabUsed").to_int();
 }
 
-void auto_useWardrobe()
-{
-	if(!auto_is_valid($item[wardrobe-o-matic]))
-	{
-		return;
-	}
-	if(item_amount($item[wardrobe-o-matic]) == 0)
-	{
-		return;
-	}
-	// check one of the 3 prefs which get set when wardrobe is used each day
-	if(get_property("_futuristicHatModifier") != "")
-	{
-		return;
-	}
-	// wait for level 5 to get an upgraded wardrobe
-	if(my_level() < 5)
-	{
-		return;
-	}
-	// Zooto will be at 10 in very few turns
-	if(my_level() < 10 && in_zootomist())
-	{
-		return;
-	}
-	// wait for level 15 if close and not at NS tower
-	if(my_level() == 14 && internalQuestStatus("questL13Final") < 0)
-	{
-		return;
-	}
-	// only need to use it so we get the hat, shirt, fam equip
-	// let maximizer handle if any of it is worth equipping
-	use($item[wardrobe-o-matic]);
-}

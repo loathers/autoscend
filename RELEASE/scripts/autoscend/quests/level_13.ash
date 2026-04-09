@@ -133,6 +133,9 @@ boolean EightBitRealmHandler()
 		case "red":
 			// limited buff that is helpful for 3 of 4 8-bit zones
 			buffMaintain($effect[shadow waters]);
+			if(meat_drop_modifier() < 395){
+				auto_getCitizenZone("meat");
+			}
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
@@ -330,19 +333,19 @@ boolean beehiveConsider(boolean at_tower) // returns true if we can kill without
 	int damage_sources = 1; // basic hit
 	
 	// Familiars
-	if (have_familiar($familiar[glover]) && auto_is_valid($familiar[glover]))
+	if (auto_have_familiar($familiar[glover]))
 	{
 		damage_sources += 11;
 	}
-	if (have_familiar($familiar[shorter-order cook]) && auto_is_valid($familiar[shorter-order cook]))
+	if (auto_have_familiar($familiar[shorter-order cook]))
 	{
 		damage_sources += 6;
 	}
-	else if (have_familiar($familiar[mu]) && auto_is_valid($familiar[mu]))
+	else if (auto_have_familiar($familiar[mu]))
 	{
 		damage_sources += 5;
 	}
-	else if (have_familiar($familiar[imitation crab]) && auto_is_valid($familiar[imitation crab]))
+	else if (auto_have_familiar($familiar[imitation crab]))
 	{
 		damage_sources += 4;
 	}
@@ -656,6 +659,8 @@ boolean L13_towerNSContests()
 				autoMaximize(challenge + " dmg, " + challenge + " spell dmg -equip snow suit", 1500, 0, false);
 			}
 
+			beretBusk("5.0:Spell Damage;5.0:" + challenge + " Damage;5.0:" + challenge + " Spell Damage");
+
 			if(crowd3Insufficient()) buffMaintain($effect[All Glory To the Toad]);
 			if(crowd3Insufficient()) buffMaintain($effect[Bendin\' Hell], 120, 1, 1);
 			switch(challenge)
@@ -747,6 +752,8 @@ boolean L13_towerNSContests()
 					break;
 				}
 			}
+			//Busk one final time to try to be sufficient
+			if(crowd3Insufficient()) beretBusk("5.0:Spell Damage;5.0:" + challenge + " Damage;5.0:" + challenge + " Spell Damage");
 
 			if(crowd3Insufficient())
 			{
@@ -909,7 +916,8 @@ boolean L13_towerNSHedge()
 
 	maximize_hedge();
 	cli_execute("auto_pre_adv");
-	if(!acquireHP())
+	set_property("_auto_forcePokefamRestore", true);
+	if(!acquireFullHP())
 	{
 		// couldn't heal so do slow route. May die to fast route
 		set_property("auto_hedge", "slow");
@@ -1121,7 +1129,7 @@ boolean L13_towerNSTowerSkin()
 	{
 		abort("auto_towerBreak set to abort here.");
 	}
-	if (item_amount($item[Beehive]) > 0)
+	if (item_amount($item[Beehive]) > 0 || in_pokefam())
 	{
 		return autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 	}
@@ -1144,7 +1152,7 @@ boolean L13_towerNSTowerSkin()
 	
 	foreach fam in $familiars[glover, shorter-order cook, mu, imitation crab] // crab is evergreen, buy one
 	{
-		if (have_familiar(fam) && auto_is_valid(fam))
+		if (auto_have_familiar(fam))
 		{
 			handleFamiliar(fam);
 			use_familiar(fam);
@@ -1157,7 +1165,7 @@ boolean L13_towerNSTowerSkin()
 	{
 		foreach fam in $familiars[angry goat, MagiMechTech MicroMechaMech, star starfish, mosquito]
 		{
-			if (have_familiar(fam) && auto_is_valid(fam))
+			if (auto_have_familiar(fam))
 			{
 				handleFamiliar(fam);
 				use_familiar(fam);
@@ -1280,7 +1288,7 @@ boolean L13_towerNSTowerSkin()
 	
 	// Should we be casting shell up here? I do not understand it. If we got this far we should win regardless.
 	
-	acquireHP();
+	acquireFullHP();
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_05_monster1", $location[Tower Level 1]);
 	if(internalQuestStatus("questL13Final") < 7)
 	{
@@ -1303,13 +1311,17 @@ boolean L13_towerNSTowerMeat()
 	equipBaseline();
 	shrugAT($effect[Polka of Plenty]);
 	provideMeat(526, true, false);
+	if(meat_drop_modifier() < 475)
+	{
+		auto_getCitizenZone("meat");
+	}
 
 	if(in_zombieSlayer())
 	{
 		acquireMP(30,0);
 	}
 
-	acquireHP();
+	acquireFullHP();
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_06_monster2", $location[Noob Cave]);
 	return true;
 }
@@ -1491,7 +1503,7 @@ boolean L13_towerNSTowerBones()
 	}
 	
 	acquireMP(216, 0);
-	acquireHP();
+	acquireFullHP();
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_07_monster3", $location[Noob Cave]);
 	if(internalQuestStatus("questL13Final") < 9)
 	{
@@ -1533,20 +1545,17 @@ boolean L13_towerNSTowerShadow()
 	{
 		abort("Robot shadow not currently automated. Pleasae kill your shadow manually then run me again");
 	}
+
 	if (get_property("auto_towerBreak").to_lower_case() == "shadow" || get_property("auto_towerBreak").to_lower_case() == "the shadow" || get_property("auto_towerBreak").to_lower_case() == "level 5")
 	{
 		abort("auto_towerBreak set to abort here.");
 	}
-	if(my_maxhp() < 800)
-	{
-		buffMaintain($effect[Industrial Strength Starch]);
-		buffMaintain($effect[Truly Gritty]);
-		buffMaintain($effect[Superheroic]);
-		buffMaintain($effect[Strong Grip]);
-		buffMaintain($effect[Spiky Hair]);
+
+	if (in_pokefam()) {
+		// challenge shadow to pokefam battle
+		autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
+		return true;
 	}
-	cli_execute("scripts/autoscend/auto_post_adv.ash");
-	acquireHP();
 
 	int n_healing_items = item_amount($item[gauze garter]) + item_amount($item[filthy poultice]) + item_amount($item[red pixel potion]) + item_amount($item[scented massage oil]);
 	if(in_plumber())
@@ -1585,9 +1594,24 @@ boolean L13_towerNSTowerShadow()
 				}
 				abort("I tried to create [red pixel potions] for the shadow and mysteriously failed");
 			}
-			return autoAdv($location[8-bit Realm]);
+			return autoAdv($location[The Fungus Plains]);
 		}
 	}
+
+	if(my_maxhp() < 800)
+	{
+		buffMaintain($effect[Industrial Strength Starch]);
+		buffMaintain($effect[Truly Gritty]);
+		buffMaintain($effect[Superheroic]);
+		buffMaintain($effect[Strong Grip]);
+		buffMaintain($effect[Spiky Hair]);
+	}
+	cli_execute("scripts/autoscend/auto_post_adv.ash");
+	if (!acquireFullHP())
+	{
+		abort("Failed to restore max hp for shadow");
+	}
+
 	autoAdvBypass("place.php?whichplace=nstower&action=ns_09_monster5", $location[Noob Cave]);
 	return true;
 }

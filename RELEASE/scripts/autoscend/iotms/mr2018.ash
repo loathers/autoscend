@@ -302,6 +302,21 @@ boolean fantasyRealmToken()
 	return autoAdv(1, $location[The Bandit Crossroads]);
 }
 
+boolean[location] allFantasyRealmLocations()
+{
+	return $locations[The Bandit Crossroads, The Cursed Village, The Evil Cathedral, The Archwizard's Tower,
+	  The Cursed Village Thieves' Guild, The Towering Mountains, The Foreboding Cave, The Lair of the Phoenix,
+	  The Old Rubee Mine, The Ogre Chieftain's Keep, The Master Thief's Chalet, The Mystic Wood, The Faerie Cyrkle,
+	  The Spider Queen's Lair, The Druidic Campsite, The Ley Nexus, The Putrid Swamp, Near the Witch's House,
+	  The Troll Fortress, The Dragon's Moor, The Sprawling Cemetery, The Labyrinthine Crypt, The Barrow Mounds,
+	  The Ghoul King's Catacomb, Duke Vampire's Chateau];
+}
+
+boolean isFantasyRealm(location loc)
+{
+	return allFantasyRealmLocations() contains loc;
+}
+
 boolean songboomSetting(string goal)
 {
 	int option = 6;
@@ -933,7 +948,7 @@ string auto_latteDropName(location l)
 		case $location[The Sleazy Back Alley]: return "cloves";
 		case $location[The Haunted Boiler Room]: return "coal";
 		case $location[The Icy Peak]: return "cocoa";
-		case $location[Battlefield (No Uniform)]: return "diet";
+		case $location[The Cola Wars Battlefield]: return "diet";
 		case $location[Itznotyerzitz Mine]: return "dwarf";
 		case $location[The Feeding Chamber]: return "filth";
 		case $location[The Road to the White Citadel]: return "flour";

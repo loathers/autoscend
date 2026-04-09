@@ -46,6 +46,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	{
 		if($monsters[Man With The Red Buttons, Red Butler, Red Fox, Red Skeleton] contains enemy)
 		{
+			handleTracker(enemy, $item[glark cable], "auto_instakill");
 			return useItem($item[Glark Cable]);
 		}
 	}
@@ -53,6 +54,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	//instakill enemies in [A Mob Of Zeppelin Protesters]
 	if(canUse($item[Cigarette Lighter]) && (my_location() == $location[A Mob Of Zeppelin Protesters]) && (get_property("questL11Ron") == "step1"))
 	{
+		handleTracker(enemy, $item[cigarette lighter], "auto_instakill");
 		return useItems($item[Cigarette Lighter], $item[none]);
 	}
 	
@@ -61,6 +63,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	{
 		if(item_amount($item[Power Pill]) > 0)
 		{
+			handleTracker(enemy, $item[power pill], "auto_instakill");
 			return "item " + $item[Power Pill];
 		}
 	}
@@ -74,7 +77,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[Release the boots]);
 		}
 	}
-
+	
 	// Dupe Tomb Rat King drops with pro skateboard
 	if(enemy == $monster[Tomb Rat King] && ((item_amount($item[Crumbling Wooden Wheel]) + item_amount($item[Tomb Ratchet])) < 10) && canUse($skill[Do an epic McTwist!]) && !get_property("_epicMcTwistUsed").to_boolean())
 	{
@@ -89,6 +92,12 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		return useSkill($skill[Do an epic McTwist!]);
 	}
 
+	if(auto_wantToShrunkenHead(enemy))
+	{
+		handleTracker(enemy, $skill[Prepare to reanimate your Foe], "auto_otherstuff");
+		return useSkill($skill[Prepare to reanimate your Foe]);
+	}
+	
 	// yellowray instantly kills the enemy and makes them drop all items they can drop.
 	// don't yellow ray if we'll be dousing
 	skill douse = $skill[douse foe];
@@ -96,7 +105,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	boolean douseAvailable = canUse(douse, false) && auto_dousesRemaining()>0;
 	boolean willDouse = isDouseTarget && douseAvailable;
 	
-	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()) && !willDouse)
+	// And don't yellow ray if we'll be swooping
+	boolean swoopAvailable = canUse($skill[Swoop like a Bat], true) && get_property("_batWingsSwoopUsed").to_int() < 11;
+	boolean willSwoop = auto_swoopLocations() contains my_location() && swoopAvailable;
+	
+	if(!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location()) && !willDouse && !willSwoop)
 	{
 		string combatAction = yellowRayCombatString(enemy, true, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains enemy);
 		if(combatAction != "")
@@ -136,6 +149,16 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 
+	//club em back in time to free kill the enemy but don't get any items
+	if(wantToClubEmBackInTime(my_location(), enemy))
+	{
+		if(canUse($skill[Club 'Em Back in Time]))
+		{
+			handleTracker(enemy, $skill[Club 'Em Back in Time], "auto_instakill");
+			return useSkill($skill[Club 'Em Back in Time]);
+		}
+	}
+	
 	//throw gravel to free kill the enemy but don't get any items
 	if(wantToThrowGravel(my_location(), enemy))
 	{
@@ -174,11 +197,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			combat_status_add("banisher");
 			if(index_of(banishAction, "skill") == 0)
 			{
-				handleTracker(monster_phylum(enemy), to_skill(substring(banishAction, 6)), "auto_banishes");
+				handleTracker(monster_phylum(enemy), my_location(), to_skill(substring(banishAction, 6)), "auto_banishes");
 			}
 			else if(index_of(banishAction, "item") == 0)
 			{
-				handleTracker(monster_phylum(enemy), to_item(substring(banishAction, 5)), "auto_banishes");
+				handleTracker(monster_phylum(enemy), my_location(), to_item(substring(banishAction, 5)), "auto_banishes");
 			}
 			else
 			{
@@ -435,13 +458,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		
 		boolean reserveFreekills = (my_adventures() >= 9) && !wantFreeKillNowEspecially && (waitForDesert || waitForCyrpt);
 
-		if(canUse($skill[lightning strike]) && (wantFreeKillNowEspecially || !reserveFreekills || my_lightning() >= 60))
-		{
-			handleTracker(enemy, $skill[lightning strike], "auto_instakill");
-			loopHandlerDelayAll();
-			return useSkill($skill[lightning strike]);
-		}
-
 		if(canUse($skill[Darts: Aim for the Bullseye]) && have_effect($effect[Everything Looks Red]) == 0 && dartELRcd() <= 40)
 		{
 			set_property("auto_instakillSource", "darts bullseye");
@@ -450,6 +466,22 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[Darts: Aim for the Bullseye]);
 		}
 
+		if(canUse($skill[Free-For-All]) && have_effect($effect[Everything Looks Red]) == 0 && (wantFreeKillNowEspecially || !reserveFreekills) && my_mp() > 80) //Only want to cast this when you have mp to spare because it is 50mp
+		{
+			handleTracker(enemy, $skill[Free-For-All], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[Free-For-All]);
+		}
+
+		if(canUse($skill[lightning strike]) && (wantFreeKillNowEspecially || !reserveFreekills || my_lightning() >= 60))
+		{
+			handleTracker(enemy, $skill[lightning strike], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[lightning strike]);
+		}
+
+
+		//Depending on the fam used for instakill, it could be a turn free YR, or it could be turn taking and not a YR, but still give ELY.
 		skill z_kick = getZooKickInstaKill();
 		if (canUse(z_kick))
 		{
@@ -459,56 +491,46 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill(z_kick);
 		}
 
-		if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0)
+		if(canUse($skill[Chest X-Ray]) && auto_chestXraysRemaining() > 0)
 		{
-			set_property("auto_instakillSource", "slaughter");
-			set_property("auto_instakillSuccess", true);
-			loopHandlerDelayAll();
-			return useSkill($skill[Slaughter]);
-		}
-
-		if(canUse($skill[Chest X-Ray]) && equipped_amount($item[Lil\' Doctor&trade; bag]) > 0 && (get_property("_chestXRayUsed").to_int() < 3))
-		{
-			if((wantFreeKillNowEspecially || my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			if(wantFreeKillNowEspecially || !reserveFreekills || inAftercore() || (my_daycount() >= 3))
 			{
 				handleTracker(enemy, $skill[Chest X-Ray], "auto_instakill");
 				loopHandlerDelayAll();
 				return useSkill($skill[Chest X-Ray]);
 			}
 		}
+
+		if(canUse($skill[Fire the Jokester\'s Gun]) && auto_jokesterGunFreeKillAvailable() && (wantFreeKillNowEspecially || !reserveFreekills))
+		{
+			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "auto_instakill");
+			loopHandlerDelayAll();
+			return useSkill($skill[Fire the Jokester\'s Gun]);
+		}
+
 		if(canUse($skill[shattering punch]) && (get_property("_shatteringPunchUsed").to_int() < 3) && !reserveFreekills)
 		{
-			if(!wantFreeKillNowEspecially && my_daycount() == 1 && my_turncount() < 100 && my_adventures() >= 9 && my_mp() < 80)
+			if(!wantFreeKillNowEspecially && my_daycount() == 1 && my_turncount() < 100 && my_mp() < 80)
 			{
 				//avoid sudden drain of 3x30 MP just 20 turns after the run starts, there is no mp regen or sauceror mp when using this
 			}
-			else if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
+			else
 			{
 				handleTracker(enemy, $skill[shattering punch], "auto_instakill");
 				loopHandlerDelayAll();
 				return useSkill($skill[shattering punch]);
 			}
 		}
-		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean() && !reserveFreekills)
+		if(canUse($skill[Gingerbread Mob Hit]) && !get_property("_gingerbreadMobHitUsed").to_boolean() && !reserveFreekills && my_mp() > 50)
 		{
-			if(wantFreeKillNowEspecially || (my_adventures() < 20) || inAftercore() || (my_daycount() >= 3))
-			{
-				handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
-				loopHandlerDelayAll();
-				return useSkill($skill[Gingerbread Mob Hit]);
-			}
-		}
-		if(canUse($skill[Free-For-All]) && have_effect($effect[Everything Looks Red]) == 0 && (wantFreeKillNowEspecially || !reserveFreekills) && my_mp() > 80) //Only want to cast this when you have mp to spare because it is 50mp
-		{
-			handleTracker(enemy, $skill[Free-For-All], "auto_instakill");
+			handleTracker(enemy, $skill[Gingerbread Mob Hit], "auto_instakill");
 			loopHandlerDelayAll();
-			return useSkill($skill[Free-For-All]);
+			return useSkill($skill[Gingerbread Mob Hit]);
 		}
-
-	//		Can not use _usedReplicaBatoomerang if we have more than 1 because of the double item use issue...
-	//		Sure, we can try to use a second item (if we have it or are forced to buy it... ugh).
-	//		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0) && (get_property("_usedReplicaBatoomerang").to_int() < 3))
-	//		THIS IS COPIED TO THE ED SECTION, IF IT IS FIXED, FIX IT THERE TOO!
+		//		Can not use _usedReplicaBatoomerang if we have more than 1 because of the double item use issue...
+		//		Sure, we can try to use a second item (if we have it or are forced to buy it... ugh).
+		//		if(!combat_status_check("batoomerang") && (item_amount($item[Replica Bat-oomerang]) > 0) && (get_property("_usedReplicaBatoomerang").to_int() < 3))
+		//		THIS IS COPIED TO THE ED SECTION, IF IT IS FIXED, FIX IT THERE TOO!
 		if(canUse($item[Replica Bat-oomerang]) && !reserveFreekills)
 		{
 			if(get_property("auto_batoomerangDay").to_int() != my_daycount())
@@ -532,12 +554,6 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useItems($item[shadow brick], $item[none]);
 		}
 
-		if(canUse($skill[Fire the Jokester\'s Gun]) && !get_property("_firedJokestersGun").to_boolean())
-		{
-			handleTracker(enemy, $skill[Fire the Jokester\'s Gun], "auto_instakill");
-			loopHandlerDelayAll();
-			return useSkill($skill[Fire the Jokester\'s Gun]);
-		}
 	} // instakills
 
 	//wearing [retro superhero cape] iotm set to vampire slicer mode instakills Undead and reduces evilness in Cyrpt zones.
@@ -550,6 +566,15 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	if(canUse($item[Exploding Cigar]) && haveUsed($skill[Duplicate]))
 	{
 		return useItem($item[Exploding Cigar]);
+	}
+
+	// Slaughter is an instakill, but not free; only use if you have no other options and never when we want free kill
+	if(canUse($skill[Slaughter]) && have_effect($effect[Everything Looks Red]) == 0)
+	{
+		set_property("auto_instakillSource", "slaughter");
+		set_property("auto_instakillSuccess", true);
+		loopHandlerDelayAll();
+		return useSkill($skill[Slaughter]);
 	}
 	
 	return "";

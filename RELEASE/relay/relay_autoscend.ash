@@ -263,7 +263,7 @@ void main()
 		writeln("Settings have not been initialized for current ascension. Do not change Post type settings<br>");
 	}
 	
-	writeln("<br><a href=\"autoscend_settings_extra.php\">For extra settings click here</a><br><br>");
+	writeln("<br><a href=\"autoscend_settings_extra.ash\">For extra settings click here</a><br><br>");
 
 	//generate settings table
 	file_to_map("autoscend_settings.txt", s);
@@ -416,6 +416,12 @@ void main()
 	{
 		writeln("<h2>IOTM Item/Effects Claimed.</h2>");
 		generateTrackingData("auto_iotm_claim");
+	}
+	
+	if(get_property("auto_mapperidot") != "")
+	{
+		writeln("<h2>Map the Monsters/Peridot of Peril</h2>");
+		generateTrackingData("auto_mapperidot");
 	}
 	
 	writeln("<h2>Other Stuff</h2>");

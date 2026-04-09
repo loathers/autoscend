@@ -26,7 +26,7 @@ Serialbus	item:bus pass<4
 CH Imp	item:imp air<4
 Camel's Toe	!sniffed:Skinflute
 Skinflute	!sniffed:Camel's Toe
-Red Butler	prop:_glarkCableUses<5;item:glark cable<5
+Red Butler	prop:_glarkCableUses<5;item:glark cable<5;!prop:questL11Ron=step4
 # Unlocking Knob Menagerie
 Knob Goblin Very Mad Scientist	loc:Cobb's Knob Laboratory;item:Cobb's Knob Menagerie key<1;turnsspent:Cobb's Knob Laboratory>7
 # Pirate quest F'c'le's last missing item
