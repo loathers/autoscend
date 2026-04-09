@@ -1770,9 +1770,10 @@ int sniffSources()
 	// Get a Good Whiff of This Guy: Familiar
 	// Offer Latte to Opponent: Equipment
 	// Zootomist Kick Sniff: Skill
+	// Meat Cute: Skill
 	int count = 0;
 	foreach sk in $skills[Transcendent Olfaction, Make Friends, Hunt, Long Con, Perceive Soul, Motif,
-	Gallapagosian Mating Call]
+	Gallapagosian Mating Call, Meat Cute]
 	{
 		if(auto_have_skill(sk))
 		{
