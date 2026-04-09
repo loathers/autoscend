@@ -1139,7 +1139,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
 			}
-			if(it == $item[pheromone cocktail] && item_amount(it) > 0 && banishesAvailable() - item_amount(it) < 3)
+			if(it == $item[pheromone cocktail] && item_amount(it) > 0 && banishSources() - item_amount(it) < 3)
 			{
 				potentialTurnGain[it] = 2;
 			}
