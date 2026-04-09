@@ -55,6 +55,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	{
 		if($monsters[Man With The Red Buttons, Red Butler, Red Fox, Red Skeleton] contains enemy)
 		{
+			handleTracker(enemy, $item[glark cable], "auto_instakill");
 			return useItem($item[Glark Cable]);
 		}
 	}
@@ -62,6 +63,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	//instakill enemies in [A Mob Of Zeppelin Protesters]
 	if(canUse($item[Cigarette Lighter]) && (my_location() == $location[A Mob Of Zeppelin Protesters]) && (get_property("questL11Ron") == "step1"))
 	{
+		handleTracker(enemy, $item[cigarette lighter], "auto_instakill");
 		return useItems($item[Cigarette Lighter], $item[none]);
 	}
 	
@@ -70,6 +72,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	{
 		if(item_amount($item[Power Pill]) > 0)
 		{
+			handleTracker(enemy, $item[power pill], "auto_instakill");
 			return "item " + $item[Power Pill];
 		}
 	}

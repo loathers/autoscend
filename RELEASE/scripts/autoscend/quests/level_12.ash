@@ -1190,7 +1190,7 @@ boolean L12_gremlins()
 			}
 		}
 	}
-
+	
 	if(0 < have_effect($effect[Curse of the Black Pearl Onion]))
 	{
 		uneffect($effect[Curse of the Black Pearl Onion]);
