@@ -147,6 +147,27 @@ boolean auto_setLeprecondo()
 			17:  6  // crap
 		};
 
+		if (in_amw())
+		{
+			priority = {
+				 1:  9, // cupcake treadmill
+				 2:  8, // karaoke machine
+				 3: 14, // programmable blender, prioritize meat over crafts?
+				 4: 27, // four-poster bed
+				 5: 12, // internet connected laptop
+				 6: 18, // couch and flatscreen
+				 7: 21, // whiskeybed
+				 8: 23, // classics library
+				 9: 11, // weight bench
+				10:  6, // crap
+				11:  1, // crap
+				12:  2, // crap
+				13:  3, // crap
+				14:  4, // crap
+				15:  5  // crap
+		};
+		}
+
 		int[int] picks;
 		int n_picks = 0;
 		foreach i,f in priority
@@ -688,6 +709,35 @@ void mobiusChoiceHandler(int choice, string page)
 	}
 
 	string pos;
+
+	// must... get... meat... (probably temporary)
+	if (in_amw())
+	{
+		pos = "Give your past self investment tips";
+		if (choiceMap contains pos) {
+			mobiusChoice(pos);
+			return;
+		}
+		if (my_daycount() > 1) {
+			pos = "Hey, free gun!";
+			if (choiceMap contains pos) {
+				mobiusChoice(pos);
+				return;
+			}
+		}
+		pos = "Take the long odds on the trifecta";
+		if (choiceMap contains pos) {
+			mobiusChoice(pos);
+			return;
+		}
+		else
+		{
+			pos = "Fix the race and also fix the race";
+			mobiusChoice(pos);
+			return;
+		}
+	}
+
 	// we want to get +15 paradoxicity for more time cops and the 13-paradoxicity +item effect
 	// in a single day, we'll hit the NC maybe 9 times
 	// we can't guarantee we'll be able to use the effects, but the items are good
@@ -908,6 +958,14 @@ boolean auto_talkToSomeFish(location loc, monster enemy)
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
+int auto_throwLightningRemaining()
+{
+	if(!auto_haveMonodent() || !auto_is_valid($skill[Sea *dent: Throw a Lightning Bolt])) return 0;
+
+	return 11 - to_int(get_property("_seadentLightningUsed"));
+}
+
+
 boolean auto_haveShrunkenHead()
 {
 	if(get_property("hasShrunkenHead").to_boolean() && auto_is_valid($item[shrunken head]))
@@ -996,7 +1054,8 @@ void auto_wantSoCP()
 		return;
 	}
 	set_property("auto_preferSoCP", true);
-	if(get_property("_knuckleboneDrops").to_int() == 100)
+	// if amw_wantMeat is true, in meatpath we will (probably) select meat-dropping familiars instead of SoCP
+	if(get_property("_knuckleboneDrops").to_int() == 100 || amw_wantMeat())
 	{
 		set_property("auto_preferSoCP", false);
 		return;

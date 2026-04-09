@@ -1483,3 +1483,49 @@ int[slot] powerMultipliers()
 
 	return multiplier;
 }
+
+/**
+	Handles selecting and equiping an equipment that would allow a free kill skill to be cast, if able. 
+	Only selects one free kill at a time. 
+	Doesn't allow freekill equips in Advant guard or PocketFamiliars paths
+*/
+void auto_equipFreekill()
+{	
+	// Pocket familiars combat doesn't permit skills, and bodyguards in Advant Guard make freekills un-free, so we're not doing that.
+	if(in_avantGuard() || in_pokefam())
+	{
+		return;
+	} 
+
+	auto_log_info("Looking for an equipment with free kills available...");
+	item dartHolster = $item[Everfull Dart Holster];
+	item doctorBag = $item[Lil\' Doctor&trade; Bag];
+	item joksterGun = $item[The Jokester\'s Gun];
+	item legendClub = $item[legendary seal-clubbing club];
+
+	boolean redDartAvailable = auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0;
+	boolean chestXrayAvailable = auto_chestXraysRemaining() > 0;
+	boolean fireGunAvailable = auto_jokesterGunFreeKillAvailable();
+	boolean clubBackAvailable = auto_clubEmBackInTimesRemaining() > 0;
+
+	if(redDartAvailable)
+	{
+		auto_log_info("We don't have ELR so let's hit a bullseye. Equipping Everful Dart holster.");
+		autoEquip($slot[acc3], dartHolster);
+	} else if (chestXrayAvailable)
+	{
+		auto_log_info("We still have Chest X-Rays available. Equipping Lil' Doctor bag.");
+		autoEquip($slot[acc3], doctorBag);
+	} else if (fireGunAvailable)
+	{
+		auto_log_info("Let's be a jokester. Equipping The Jokester's gun.");
+		autoEquip($slot[weapon], joksterGun);
+	} else if (clubBackAvailable)
+	{
+		auto_log_info("They may not be seals, but we're gonna kill them last week. Equipping Legendary Seal Clubbing Club.");
+		autoEquip($slot[weapon], legendClub);
+	} else 
+	{
+		auto_log_info("No free kill sources found to equip, maybe you have some others, but we'll let combat figure that out.");
+	}
+}

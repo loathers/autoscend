@@ -118,6 +118,11 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		return result();
 	}
 
+	if (in_amw() && amw_canAfford($skill[Act Jerky])) // meatpath only
+	{
+		if (tryEffects($effects[Acting Jerky])){return result();}
+	}
+
 	// Do the April band
 	if(auto_haveAprilingBandHelmet())
 	{
@@ -319,6 +324,11 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 	}
 
 	// Now handle buffs that cost MP, items or other resources
+
+	if (in_amw() && amw_canAfford($skill[Dark Meat]))
+	{
+		if (tryEffects($effects[Darkened Meat])){return result();}
+	}
 
 	if(!speculative) shrugAT($effect[The Sonata of Sneakiness]);
 	if (tryEffects($effects[
@@ -1833,6 +1843,11 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 	if(in_heavyrains())
 	{
 		buffMaintain($effect[Fishy Whiskers]); // HR only
+	}
+
+	if(in_amw() && amw_canAfford($skill[Beef Goggles]))
+	{
+		if(tryEffects($effects[Beef Goggles])){return result();} // meatpath only
 	}
 
 	// unlimited skills
