@@ -61,6 +61,13 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 	{
 		return useSkill($skill[Wet Rub], true);
 	}
+	if (canUse($skill[Meat Cleaver], true, true) && (monster_hp() >= 400 ||
+		enemy == $monster[The Manwich] ||
+		enemy == $monster[The Big Mac Wisniewski] ||
+		enemy == $monster[Naughty Sorceress, all sausage]))
+	{
+		return useSkill($skill[Meat Cleaver], true);
+	}
 
 	// Darts always welcome
 	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0)
