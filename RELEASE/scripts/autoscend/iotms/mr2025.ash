@@ -1087,6 +1087,9 @@ boolean auto_wantToBCZ(skill sk)
 		case $skill[BCZ: Blood Bath]:
 			return (statChange($stat[muscle], bloodBathCasts) && (bloodBathCasts < 6));
 		case $skill[BCZ: Create Blood Thinner]: //should never be cast, but if we want to support in the future, we can
+			if (!canChew($item[blood thinner])) {
+				return false;
+			}
 			return (statChange($stat[muscle], bloodThinnerCasts) && (bloodThinnerCasts == 0));
 		//Mysticality Casts
 		case $skill[BCZ: Dial it up to 11]:
@@ -1094,6 +1097,9 @@ boolean auto_wantToBCZ(skill sk)
 		case $skill[BCZ: Refracted Gaze]:
 			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts < 6));
 		case $skill[BCZ: Prepare Spinal Tapas]:
+			if (!canEat($item[spinal tapas])) {
+				return false;
+			}
 			return (statChange($stat[mysticality], spinalTapasCasts) && (spinalTapasCasts < 3));
 		//Moxie Casts
 		case $skill[BCZ: Sweat Bullets]:
@@ -1101,6 +1107,9 @@ boolean auto_wantToBCZ(skill sk)
 		case $skill[BCZ: Sweat Equity]:
 			return (statChange($stat[moxie], sweatEquityCasts) && (sweatEquityCasts < 2));
 		case $skill[BCZ: Craft a Pheromone Cocktail]:
+			if (!canDrink($item[pheromone cocktail])) {
+				return false;
+			}
 			return (statChange($stat[moxie], pheromoneCocktailCasts) && (pheromoneCocktailCasts < 6));
 		default:
 			return false;
