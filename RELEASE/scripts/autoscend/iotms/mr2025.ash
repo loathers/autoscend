@@ -973,7 +973,7 @@ int auto_throwLightningRemaining()
 
 boolean auto_haveBCZ()
 {
-	if(possessEquipment($item[blood cubic zirconia]))
+	if(auto_is_valid($item[blood cubic zirconia]) && possessEquipment($item[blood cubic zirconia]))
 	{
 		return true;
 	}
