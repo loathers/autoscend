@@ -24,7 +24,7 @@ string auto_combatMeatGolemStage3(int round, monster enemy, string text)
 	if((monster_hp() - my_buffedstat($stat[muscle]))/monster_hp()<0.55){return "";}
 	// since meat = adv, don't want to delevel if not necessary
 	// also skipping if we might die after delevel, because we may be able to stun instead
-	if (canUse($skill[Meat Cleaver], true, true) && ((!canSurvive(8.0) || monster_hp() >= 500) && canSurvive(0.7) ||
+	if (canUse($skill[Meat Cleaver], true, true) && (((!canSurvive(8.0) || monster_hp() >= 500) && canSurvive(0.7)) ||
 		enemy == $monster[The Manwich] || // hardcoded bosses to trigger
 		enemy == $monster[The Big Mac Wisniewski] ||
 		enemy == $monster[Naughty Sorceress, all sausage]
@@ -50,7 +50,7 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 	
 	// make sure high HP combats conclude in a timely fashion
 	// only if needed; these skills cost 4-10x more than a regular combat skill
-	if (canUse($skill[Steak Through the Heart], true) && round > 12)
+	if (combat_skill_available($skill[Steak Through the Heart], true) && round > 12)
 	{
 		return useSkill($skill[Steak Through the Heart], true);
 	}
