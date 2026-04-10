@@ -15,7 +15,6 @@ void amw_initializeSettings()
 
 // Functions used in bits outside the amw universe
 
-// Used in the 
 boolean amw_canAfford(skill sk)
 {
 	return my_meat() >= (10 + meat_cost(sk));
