@@ -89,6 +89,8 @@ boolean amw_buyAdv()
 	{
 		return false;
 	}
+
+	auto_log_debug("Buying " + to_string(amw_advPerTrade()) + " adventures")
 	visit_url("place.php?whichplace=meatground&action=meatground_turns");
 	string url = `choice.php?whichchoice=1593&pwd&option=1`;
 	visit_url(url, true);
@@ -104,7 +106,7 @@ boolean amw_buyAdv()
 boolean amw_buySubstat(stat st, int numberToBuy)
 // buys in terms of substats, whether st is a stat or a substat
 {
-	auto_log_debug("Buying " + to_string(numberToBuy) + " substats.");
+	auto_log_info("Buying " + to_string(numberToBuy) + " " + to_string(st) + " substats.");
 	if (numberToBuy > my_meat()){return false;}
 
 	// setting which substat to buy
@@ -439,7 +441,7 @@ boolean LM_adventurerMeatsWorld() {
 	// mobius ring and/or pulling meat avoid this
 	if (turns_played() > 8 && my_basestat($stat[mysticality]) < 30)
 	{
-		auto_log_info("Low meat after 8 turns, going to meatfarm");
+		auto_log_info("Low skills after 8 turns, going to meatfarm");
 		return LX_attemptPowerLevelMeat(true);
 	}
 	return false;
