@@ -155,7 +155,7 @@ int amw_calculateReserve() {
 	}
 
 	// meatReserve is more conservative (counts all quests) than this function at a high level.
-	// If it's higher, we're done with quest obligations and can save less
+	// If it's lower than our reserve, we're done with quest obligations and can save less
 	if (my_level() > 10)
 	{
 		reserve = min(reserve, meatReserve());
