@@ -2356,7 +2356,7 @@ boolean L12_finalizeWar()
 	// AMW buff
 	if(in_amw())
 	{
-		use_skill($skill[Stew]);
+		buffMaintain($effect[Stewing], 0, 1, 10);
 	}
 	acquireHP();
 	auto_log_info("Let's fight the boss!", "blue");
