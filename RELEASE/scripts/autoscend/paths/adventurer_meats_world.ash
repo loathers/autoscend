@@ -436,6 +436,7 @@ boolean LM_adventurerMeatsWorld() {
 	}
 	if(to_boolean(get_property("auto_hasMeatLeveled")) && cloversAvailable() > 1 && my_buffedstat($stat[moxie]) > 25 && my_level() < 12 && zone_isAvailable($location[Cobb's Knob Treasury], true))
 	{
+		if (amw_buyStats()){return true;} // before we lucky adventure, we want to make sure we wouldn't buy our way to lvl 12
 		return autoLuckyAdv($location[Cobb's Knob Treasury]);
 	}
 
