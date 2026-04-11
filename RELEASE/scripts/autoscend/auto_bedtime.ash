@@ -1293,6 +1293,8 @@ boolean doBedtime()
 		boolean chronolith_done = my_robot_energy() < robot_chronolith_cost() || robot_chronolith_cost() > 47;
 		done = chronolith_done && !auto_unreservedAdvRemaining();
 	}
+	// Meat Golems do not consume food or booze, adventure top-ups should be handled by the looped call to amw_buyAdv ~100 lines above.
+	if(in_amw()){done = true;}
 	if(!done)
 	{
 		auto_log_info("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");
