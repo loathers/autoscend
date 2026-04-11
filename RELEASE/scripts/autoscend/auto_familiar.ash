@@ -699,7 +699,7 @@ boolean autoChooseFamiliar(location place)
 	}
 	
 	// places where meat drop is desirable due to high meat drop monsters.
-	if ($locations[The Boss Bat's Lair, The Icy Peak, The Filthworm Queen's Chamber] contains place) {
+	if ($locations[The Boss Bat's Lair, The Icy Peak, The Filthworm Queen's Chamber, Cobb's Knob Treasury] contains place) {
 		famChoice = lookupFamiliarDatafile("meat");
 	}
 	if (place == $location[Mist-Shrouded Peak] && place.turns_spent < 3) {

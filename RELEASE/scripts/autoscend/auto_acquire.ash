@@ -558,8 +558,8 @@ boolean pull_meat(int target)
 		return false;	//can not pull meat & autoselling items just donates them
 	}
 	
-	//pull and autosell items
-	while(my_meat() < target && pulls_remaining() > 0)
+	//pull and autosell items, except in adventurer meats world
+	while(my_meat() < target && pulls_remaining() > 0 && !in_amw())
 	{
 		boolean fail = true;		//if true an item was not pulled and sold this loop
 		foreach it in $items[1\,970 carat gold]
@@ -620,7 +620,7 @@ int handlePulls(int day)
 			auto_log_info("I assume you've handled your pulls yourself... who knows.");
 			return 0;
 		}
-		if(auto_turbo())
+		if(auto_turbo() && !in_amw())
 		{
 			//Pull expensive organ cleansers first if you are running turbo and you own them
 			foreach it in $items[Spice Melange, Ultra Mega Sour Ball, Alien plant pod, Alien animal milk]
@@ -917,7 +917,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && auto_is_valid($item[Detuned Radio]))
+	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && auto_is_valid($item[Detuned Radio]) && (!in_amw() || my_level() >= 7))
 	{
 		auto_buyUpTo(1, $item[Detuned Radio]);
 		auto_setMCDToCap();

@@ -1581,7 +1581,7 @@ boolean autosellCrap()
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
 
-	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
+	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, briefcase, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, handful of tips, Loose Meats, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
 	{
 		if(item_amount(it) > 0 && auto_is_valid(it))
 		{
