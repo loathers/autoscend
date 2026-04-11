@@ -71,8 +71,8 @@ void bedtime_still()
 
 boolean bedtime_spleen()
 {
-	boolean[item] to_try = $items[Breathitin&trade;, Extrovermectin&trade;,
-	  scoop of pre-workout powder, phosphor traces, Homebodyl&trade;, energized spores];
+	boolean[item] to_try = $items[Breathitin&trade;, Extrovermectin&trade;, hot jelly,
+	  scoop of pre-workout powder, Homebodyl&trade;, phosphor traces, energized spores];
 
 	boolean done = false;
 	while (spleen_left() > 0 && !done)
