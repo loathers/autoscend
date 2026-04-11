@@ -427,7 +427,7 @@ boolean LM_adventurerMeatsWorld() {
 
 	// if we've meatleveled before, we might want to clover for meat or pull it if available
 	if(to_boolean(get_property("auto_hasMeatLeveled")) && my_level() < 12 && pulls_remaining() > 5){
-		while (pulls_remaining() > 5){pull_meat(1000);}
+		while (pulls_remaining() > 5){pull_meat(my_meat()+1000);}
 	}
 	if(to_boolean(get_property("auto_hasMeatLeveled")) && cloversAvailable() > 1 && my_buffedstat($stat[moxie]) > 25 && my_level() < 12)
 	{
