@@ -5367,7 +5367,7 @@ boolean hasUsefulShirt()
 int meatReserve()
 {
 	//the amount of meat we want to reserve for quest usage when performing a restore
-	//note that Adventurer Meats World has its own less-conservative reserve for buying skills, but uses this function if it is smaller
+	//note that Adventurer Meats World has its own reserve for buying skills, but uses this function if it is smaller at Lvl 11+
 	int reserve_extra = 0;		//extra reserved for various reasons
 	if(in_kolhs())
 	{
