@@ -106,7 +106,7 @@ boolean amw_buyAdv()
 boolean amw_buySubstat(stat st, int numberToBuy)
 // buys in terms of substats, whether st is a stat or a substat
 {
-	auto_log_info("Buying " + to_string(numberToBuy) + " " + to_string(st) + " substats.");
+	auto_log_info("Buying " + to_string(numberToBuy) + " " + to_string(st));
 	if (numberToBuy > my_meat()){return false;}
 
 	// setting which substat to buy
