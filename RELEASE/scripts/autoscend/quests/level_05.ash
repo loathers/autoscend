@@ -77,6 +77,12 @@ boolean L5_haremOutfit()
 	// want to fight quickly in amw for meat
 	// check for LoL path so we actually prep for yellow raying
 	if(!adjustForYellowRayIfPossible($monster[Knob Goblin Harem Girl]) && !in_lol() && !in_amw())
+	{
+		if(!isAboutToPowerlevel())
+		{
+			return false;
+		}
+	}
 
 	if(in_heavyrains())
 	{
