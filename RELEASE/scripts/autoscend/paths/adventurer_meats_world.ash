@@ -90,7 +90,7 @@ boolean amw_buyAdv()
 		return false;
 	}
 
-	auto_log_debug("Buying " + to_string(amw_advPerTrade()) + " adventures")
+	auto_log_debug("Buying " + to_string(amw_advPerTrade()) + " adventures");
 	visit_url("place.php?whichplace=meatground&action=meatground_turns");
 	string url = `choice.php?whichchoice=1593&pwd&option=1`;
 	visit_url(url, true);
