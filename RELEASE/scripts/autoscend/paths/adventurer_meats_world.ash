@@ -55,6 +55,7 @@ int amw_advPerTrade()
 
 // Parses the cost of the (adv_bundles)-th bundle
 // if non-cumulative, subtracts the cost of the previous bundles to calculate the cost of the "last" trade of 10-13 advs in the bundle
+// function is currently unused (calculateReserve is sometimes called from pre_adventure and visiting url can cause issues with that)
 int amw_advBundleCost(int adv_bundles, boolean cumulative) {
 	if (adv_bundles > 5 || adv_bundles < 1)
 	{
@@ -140,7 +141,7 @@ int amw_calculateReserve() {
 	}
 	else if (current_level <= 8)
 	{
-		reserve = 1200;
+		reserve = 1250;
 	}
 	else if (current_level <= 9)
 	{
@@ -160,11 +161,10 @@ int amw_calculateReserve() {
 	if (my_level() > 10)
 	{
 		reserve = min(reserve, meatReserve());
+		// but in no cases reserve less than 1500 meat at levels >10
+		// (for a high chance of the 11th trade at 1210. the cost of the 12th trade is 7200)
+		reserve = max(reserve, 1500);
 	} 
-
-	int adv_reserve_amt = amw_advBundleCost(2, false);
-	// save for two adventure trades for now, if that is greater. But only if we probably don't need meat for skills, or if cost is cheaper than than MPA.
-	if (!LX_needMeatSkills() || adv_reserve_amt < 2000){reserve = max(reserve, adv_reserve_amt);}
 	return reserve;
 }
 
