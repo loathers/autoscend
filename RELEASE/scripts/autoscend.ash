@@ -1596,7 +1596,8 @@ boolean autosellCrap()
 		}
 	}
 	foreach it in $items[briefcase]		//keeping 2 briefcase in stock for the Infiltrationist choice 2
-		if(item_amount(it) > 2 && is_unrestricted(it))		//for these items we want to keep 2 in stock. use the rest
+	{
+		if(item_amount(it) > 2 && auto_is_valid(it))		//for these items we want to keep 2 in stock. use the rest
 		{
 			use(min(10,item_amount(it)-1), it);
 		}
