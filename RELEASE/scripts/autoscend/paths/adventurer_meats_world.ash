@@ -10,7 +10,7 @@ void amw_initializeSettings()
 		return;
 	}
 	set_property("auto_wandOfNagamar", false);
-	set_property("auto_hasMeatLeveled", false);
+	set_property("auto_shouldMeatLevel", false);
 }
 
 // Functions used in bits outside the amw universe
@@ -365,7 +365,7 @@ boolean LX_attemptPowerLevelMeat(boolean skills) {
 		return true;		//restart the main loop to give those quests a chance to run now that the softblock is released.
 	}
 	// tells other parts of the script to get more meat in the future (quest ordering, clovering for KGE, pulling meat)
-	if(!to_boolean(get_property("auto_hasMeatLeveled"))){set_property("auto_hasMeatLeveled", "true");}
+	if(!to_boolean(get_property("auto_shouldMeatLevel"))){set_property("auto_shouldMeatLevel", "true");}
 
 	// setting the parameter of buyStats to true drastically lowers meat reserve requirements. If it returns true, we were able to reach the next level
 	if (amw_buyStats(!skills)){return true;}
@@ -410,7 +410,7 @@ boolean LX_attemptPowerLevelMeat(){
 
 // stricter than amw_wantMeat() because this changes the quest order. If true, levels 4, 5, 7 quests may be done early.
 boolean LX_needMeatSkills() {
-	if (to_boolean(get_property("auto_hasMeatLeveled")) && my_level() < 12){return true;}
+	if (to_boolean(get_property("auto_shouldMeatLevel")) && my_level() < 12){return true;}
 	return false;
 
 }
@@ -426,7 +426,7 @@ boolean LM_adventurerMeatsWorld() {
 	}
 
 	// if we've meatleveled before, we might want to clover for meat or pull it if available
-	if(to_boolean(get_property("auto_hasMeatLeveled")) && my_level() < 12 && pulls_remaining() > 5){
+	if(to_boolean(get_property("auto_shouldMeatLevel")) && my_level() < 12 && pulls_remaining() > 5){
 		int inf_loop_cap = 0;//prevents infinite loop if there's a problem with pull_meat (i.e. user does not have enough meat in Hangks)
 		while (pulls_remaining() > 5 && inf_loop_cap < 16)
 		{
@@ -434,7 +434,7 @@ boolean LM_adventurerMeatsWorld() {
 			inf_loop_cap = inf_loop_cap + 1;
 		}
 	}
-	if(to_boolean(get_property("auto_hasMeatLeveled")) && cloversAvailable() > 1 && my_buffedstat($stat[moxie]) > 25 && my_level() < 12 && zone_isAvailable($location[Cobb's Knob Treasury], true))
+	if(to_boolean(get_property("auto_shouldMeatLevel")) && cloversAvailable() > 1 && my_buffedstat($stat[moxie]) > 25 && my_level() < 12 && zone_isAvailable($location[Cobb's Knob Treasury], true))
 	{
 		if (amw_buyStats()){return true;} // before we lucky adventure, we want to make sure we wouldn't buy our way to lvl 12
 		return autoLuckyAdv($location[Cobb's Knob Treasury]);
