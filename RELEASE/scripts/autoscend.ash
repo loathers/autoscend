@@ -1,4 +1,4 @@
-since r28969; // add council text for Adventurer Meats World
+since r28979; //  track meat from handsful of tips
 
 /***
 	autoscend_header.ash must be first import
