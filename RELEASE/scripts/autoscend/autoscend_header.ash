@@ -759,10 +759,13 @@ int amw_advBundleCost(int adv_bundles, boolean cumulative);
 int amw_advBundleCost(int adv_bundles);
 boolean amw_buyAdv();
 int amw_calculateReserve();
+boolean amw_buyStats(boolean meatleveling);
 boolean amw_buyStats();
 boolean LM_adventurerMeatsWorld();
 boolean amw_wantMeat();
+boolean LX_attemptPowerLevelMeat(boolean skills);
 boolean LX_attemptPowerLevelMeat();
+boolean LX_needMeatSkills();
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
