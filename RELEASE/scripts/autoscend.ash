@@ -1588,16 +1588,11 @@ boolean autosellCrap()
 			use(min(10,item_amount(it)), it);
 		}
 	}
-	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
+	//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
+	//keeping 1 briefcase in stock for the Infiltrationist choice 2
+	foreach it in $items[Bag Of Park Garbage, briefcase]
 	{
 		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. use the rest
-		{
-			use(min(10,item_amount(it)-1), it);
-		}
-	}
-	foreach it in $items[briefcase]		//keeping 2 briefcase in stock for the Infiltrationist choice 2
-	{
-		if(item_amount(it) > 2 && auto_is_valid(it))		//for these items we want to keep 2 in stock. use the rest
 		{
 			use(min(10,item_amount(it)-1), it);
 		}
