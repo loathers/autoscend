@@ -241,9 +241,9 @@ sniff	44	bugbear mortician	path:Bugbear Invasion
 sniff	45	N-space Virtual Assistant	path:Bugbear Invasion
 sniff	46	angry cavebugbear	path:Bugbear Invasion
 # Two High Meat monsters in meatpath and if we might be meatleveling
-sniff	47	Knott Yeti	path:Adventurer Meats World;prop:auto_hasMeatLeveled=true
+sniff	47	Knott Yeti	path:Adventurer Meats World;prop:auto_shouldMeatLevel=true
 # oh noes, we might spend extra turns here getting meat before the elegant nightstand when we might actually want it! the horror!
-sniff	48	Animated ornate Nightstand	path:Adventurer Meats World;prop:auto_hasMeatLeveled=true
+sniff	48	Animated ornate Nightstand	path:Adventurer Meats World;prop:auto_shouldMeatLevel=true
 
 # Gotta get that wig
 yellowray	0	Burly Sidekick	item:Mohawk Wig<1;!skill:Comprehensive Cartography;!itemdropcapped:10=Mohawk wig
