@@ -902,6 +902,10 @@ boolean L12_filthworms()
 	{
 		auto_log_info("We're going to yellow ray the stench glands.");
 	}
+	else if(auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() >= 3) 
+	{
+		auto_log_info("Will dig up stench glands with Archaeologist's Spade if we don't get it in combat");
+	}
 	else if(item_drop_modifier() < 900.0)	//could not guarentee stealing. check if it should be delayed otherwise buff item drops instead
 	{
 		if(have_effect($effect[Everything Looks Yellow]) > 0 && have_effect($effect[Everything Looks Yellow]) <= 100)
