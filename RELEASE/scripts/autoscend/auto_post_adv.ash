@@ -146,16 +146,29 @@ boolean auto_post_adventure()
 	}
 
 	//assuming we're on the orchard sidequest if we're adventuring there
-	if(auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() > 0) {
+	if(auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() > 0) 
+	{
 		//the scent glands are the only droppable items in their respective areas, so it's guaranteed from spade
-		if(my_location() == $location[The Hatching Chamber] && item_amount($item[Filthworm Hatchling Scent Gland]) == 0) {
+		if(my_location() == $location[The Hatching Chamber] && item_amount($item[Filthworm Hatchling Scent Gland]) == 0) 
+		{
 			auto_spadeDigItem();
 		}
-		else if(my_location() == $location[The Feeding Chamber] && item_amount($item[Filthworm Drone Scent Gland]) == 0) {
+		else if(my_location() == $location[The Feeding Chamber] && item_amount($item[Filthworm Drone Scent Gland]) == 0)
+		{
 			auto_spadeDigItem();
 		}
-		else if(my_location() == $location[The Guard's Chamber] && item_amount($item[Filthworm Royal Guard Scent Gland]) == 0) {
+		else if(my_location() == $location[The Guards' Chamber] && item_amount($item[Filthworm Royal Guard Scent Gland]) == 0)
+		{
 			auto_spadeDigItem();
+		}
+		else if(my_location() == $location[Sonofa Beach] && item_amount($item[barrel of gunpowder]) < 5) 
+		{
+			//dig until we should have 5 barrels or we're out of digs
+			int barrelCount = item_amount($item[barrel of gunpowder]);
+			int digsRemaining = auto_spadeDigsRemaining();
+			for x from (barrelCount + 1) to min(5, digsRemaining) by 1 {
+				auto_spadeDigItem();
+			}
 		}
 	}
 
