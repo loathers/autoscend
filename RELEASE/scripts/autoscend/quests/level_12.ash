@@ -879,9 +879,6 @@ boolean L12_filthworms()
 //		//Needs to be implemented in auto_combat.ash too before uncommenting this block
 //		auto_log_info("Zombie Master will steal stench glands using [Smash & Graaagh]");
 //	}
-	else if(auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() >= 3) {
-		auto_log_info("Will dig up stench glands with Archaeologist's Spade");
-	}
 	else if(get_property("_xoHugsUsed").to_int() < 10 && canChangeToFamiliar($familiar[XO Skeleton]))
 	{
 		auto_log_info("Will steal stench glands using [XO Skeleton]");
@@ -904,6 +901,10 @@ boolean L12_filthworms()
 	else if(canYellowRay($monster[filthworm drone]))
 	{
 		auto_log_info("We're going to yellow ray the stench glands.");
+	}
+	else if(auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() >= 3) 
+	{
+		auto_log_info("Will dig up stench glands with Archaeologist's Spade");
 	}
 	else if(item_drop_modifier() < 900.0)	//could not guarentee stealing. check if it should be delayed otherwise buff item drops instead
 	{
