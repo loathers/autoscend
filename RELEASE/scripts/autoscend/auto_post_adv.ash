@@ -157,7 +157,7 @@ boolean auto_post_adventure()
 		{
 			auto_spadeDigItem();
 		}
-		else if(my_location() == $location[The Guards' Chamber] && item_amount($item[Filthworm Royal Guard Scent Gland]) == 0)
+		else if(my_location() == $location[The Royal Guard Chamber] && item_amount($item[Filthworm Royal Guard Scent Gland]) == 0)
 		{
 			auto_spadeDigItem();
 		}
