@@ -904,7 +904,7 @@ boolean L12_filthworms()
 	}
 	else if(auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() >= 3) 
 	{
-		auto_log_info("Will dig up stench glands with Archaeologist's Spade");
+		auto_log_info("Will dig up stench glands with Archaeologist's Spade if we don't get it in combat");
 	}
 	else if(item_drop_modifier() < 900.0)	//could not guarentee stealing. check if it should be delayed otherwise buff item drops instead
 	{
