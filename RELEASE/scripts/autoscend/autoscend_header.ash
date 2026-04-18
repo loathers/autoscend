@@ -2149,6 +2149,7 @@ int zoneRank(monster mon);
 int total_items(boolean [item] items);
 boolean auto_badassBelt();
 void meatReserveMessage();
+boolean auto_interruptZoneCheck();
 void auto_interruptCheck(boolean debug);
 void auto_interruptCheck();
 element currentFlavour();

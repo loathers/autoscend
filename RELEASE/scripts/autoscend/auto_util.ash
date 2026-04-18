@@ -4450,6 +4450,26 @@ void meatReserveMessage()
 	return;
 }
 
+boolean auto_interruptZoneCheck()
+{
+	string currentZone = my_location().to_string();
+	string interruptZones = get_property("auto_interruptZones");
+	buffer interruptedZones = get_property("auto_interruptedZones");
+	if (interruptZones == "" || interruptedZones.contains_text(currentZone)) {
+		return false;
+	}
+
+	foreach i, zone in interruptZones.split_string(";") {
+		if (zone.to_location() == my_location()) {
+			interruptedZones.append(currentZone + ";");
+			set_property("auto_interruptedZones", interruptedZones);
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void auto_interruptCheck(boolean debug)
 {
 	if(get_property("auto_interrupt").to_boolean())
@@ -4458,6 +4478,9 @@ void auto_interruptCheck(boolean debug)
 		restoreAllSettings();
 		meatReserveMessage();
 		abort("auto_interrupt detected and aborting, auto_interrupt disabled.");
+	}
+	else if (auto_interruptZoneCheck()) {
+		abort("auto_interruptZones detected, aborting at " + my_location().to_string());
 	}
 	else if (get_property("auto_debugging").to_boolean() && debug)
 	{
