@@ -1,4 +1,4 @@
-since r28969; // add council text for Adventurer Meats World
+since r28969;	// feat: archaeologist's spade
 
 /***
 	autoscend_header.ash must be first import
