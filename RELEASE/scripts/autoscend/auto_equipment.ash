@@ -740,7 +740,7 @@ void finalizeMaximize(boolean speculative)
 		else {
 			// we want to make sure we equip mobius ring in meatpath when it's important,
 			// so we increse the bonus we give to the ring in meatpath for the priming and the NC
-			int mobius_bonus = 200
+			int mobius_bonus = 200;
 			if (in_amw()){
 				mobius_bonus = 1000;
 			}
