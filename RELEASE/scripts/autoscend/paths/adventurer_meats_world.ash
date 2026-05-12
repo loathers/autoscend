@@ -445,7 +445,7 @@ boolean LM_adventurerMeatsWorld() {
 	// if user hasn't gotten meat to get skills/stats after turn 8 we want to make sure we get some 
 	// to avoid beaten up and to progress properly. we unlock in-combat heal at mys = 30.
 	// mobius ring and/or pulling meat avoid this
-	if (turns_played() > 8 && my_basestat($stat[mysticality]) < 30)
+	if (turns_played() > 8 && my_basestat($stat[mysticality]) < 30 && !auto_haveMobiusRing())
 	{
 		auto_log_info("Low skills after 8 turns, going to meatfarm");
 		return LX_attemptPowerLevelMeat(true);
