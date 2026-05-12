@@ -738,9 +738,17 @@ void finalizeMaximize(boolean speculative)
 			}
 		}
 		else {
+			// we want to make sure we equip mobius ring in meatpath when it's important,
+			// so we increse the bonus we give to the ring in meatpath for the priming and the NC
+			if (in_amw()){
+				int mobius_bonus = 1000;
+			}
+			else {
+				int mobius_bonus = 200;
+			}
 			// if the ring hasn't been primed today, we want to prime it to kick the whole thing off
 			if (!get_property("_mobiusRingPrimed").to_boolean()) {
-				addBonusToMaximize($item[M&ouml;bius ring], 200);
+				addBonusToMaximize($item[M&ouml;bius ring], mobius_bonus);
 			}
 			// If the current zone has any delay, equip the ring for a chance at a free time cop or +paradoxicity
 			// time cop chance is conjectured to be a flat chance, doubling every 5 paradoxicity, starting at 2%
@@ -751,7 +759,7 @@ void finalizeMaximize(boolean speculative)
 			}
 			// otherwise, equip the ring if we can get the NC
 			else if (auto_timeIsAStripPossible()) {
-				addBonusToMaximize($item[M&ouml;bius ring], 200);
+				addBonusToMaximize($item[M&ouml;bius ring], mobius_bonus);
 			}
 		}
 	}
