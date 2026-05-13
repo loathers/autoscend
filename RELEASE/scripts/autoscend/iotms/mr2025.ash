@@ -1065,6 +1065,8 @@ boolean auto_wantToBCZ(skill sk)
 				return false;
 			case level < 11 && casts >= 5:
 				return false;
+			case in_amw() && casts >= 5:
+				return false;
 			case st == my_primestat():
 				//Don't want to use so many substats we go down too many levels or we have cast more than we really need to/should
 				//Don't go beneath our current level or level 13 if we cast the skill
