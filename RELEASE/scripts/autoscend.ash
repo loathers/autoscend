@@ -1,4 +1,4 @@
-since r28969; // add council text for Adventurer Meats World
+since r28979; //  track meat from handsful of tips
 
 /***
 	autoscend_header.ash must be first import
@@ -1581,16 +1581,18 @@ boolean autosellCrap()
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
 
-	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
+	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Loose Meats, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
 	{
 		if(item_amount(it) > 0 && auto_is_valid(it))
 		{
 			use(min(10,item_amount(it)), it);
 		}
 	}
-	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
+	//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
+	//keeping 1 briefcase in stock for the Infiltrationist choice 2
+	foreach it in $items[Bag Of Park Garbage, briefcase]
 	{
-		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. use the rest
+		if(item_amount(it) > 1 && auto_is_valid(it))		//for these items we want to keep 1 in stock. use the rest
 		{
 			use(min(10,item_amount(it)-1), it);
 		}
@@ -1598,15 +1600,18 @@ boolean autosellCrap()
 	if (!get_property("_governmentPerDiemUsed").to_boolean() && item_amount($item[government per-diem]) > 0) {
 		use(1, $item[government per-diem]);
 	}
+	if (get_property("handfulOfTipsMeat").to_int() < 9600 && item_amount($item[handful of tips]) > 0) {
+		use(1, $item[handful of tips]);
+	}
 	if (item_amount($item[stock certificate]) > 0) {
-	string turns = get_property("stockCertificateTurns");
-	if (turns != "") {
-		int earliestTurns = split_string(turns, ",")[0].to_int();
-		if (total_turns_played() - earliestTurns >= 500) {
-			use(1, $item[Stock Certificate]);
+		string turns = get_property("stockCertificateTurns");
+		if (turns != "") {
+			int earliestTurns = split_string(turns, ",")[0].to_int();
+			if (total_turns_played() - earliestTurns >= 500) {
+				use(1, $item[Stock Certificate]);
+			}
 		}
 	}
-}
 
 	if(in_amw())
 	{
