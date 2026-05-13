@@ -718,11 +718,6 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 	}
 
 	// Multi-round stuns
-	if(auto_wantToBCZ($skill[BCZ: Blood Geyser]) && canUse($skill[BCZ: Blood Geyser]) && enemy_la <= 150 && !canSurvive(5.0))
-	{
-		combat_status_add("stunned");
-		return useSkill($skill[BCZ: Blood Geyser]);
-	}
 	if(canUse($skill[Thunderstrike]) && enemy_la <= 150 && !canSurvive(5.0))
 	{
 		combat_status_add("stunned");
@@ -737,6 +732,11 @@ string auto_combatDefaultStage3(int round, monster enemy, string text)
 			combat_status_add("stunned");
 			return useSkill(stunner);
 		}
+	}
+	if(auto_wantToBCZ($skill[BCZ: Blood Geyser]) && canUse($skill[BCZ: Blood Geyser]) && enemy_la <= 150 && !canSurvive(5.0))
+	{
+		combat_status_add("stunned");
+		return useSkill($skill[BCZ: Blood Geyser]);
 	}
 	
 	return "";
