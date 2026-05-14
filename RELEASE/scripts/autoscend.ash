@@ -229,6 +229,7 @@ void initializeSettings() {
 	set_property("auto_instakill", "");
 	set_property("auto_instakillSource", "");
 	set_property("auto_instakillSuccess", false);
+	set_property("auto_interruptedZones", "");
 	set_property("auto_iotm_claim", "");
 	set_property("auto_leaflet_done", false);
 	set_property("auto_lucky", "");
