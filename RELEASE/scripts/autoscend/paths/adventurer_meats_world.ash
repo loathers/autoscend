@@ -437,6 +437,11 @@ boolean LM_adventurerMeatsWorld() {
 	if(to_boolean(get_property("auto_shouldMeatLevel")) && cloversAvailable() > 1 && my_buffedstat($stat[moxie]) > 25 && my_level() < 12 && zone_isAvailable($location[Cobb's Knob Treasury], true))
 	{
 		if (amw_buyStats()){return true;} // before we lucky adventure, we want to make sure we wouldn't buy our way to lvl 12
+		// we also need to make sure we have the key, might need to burn an adventure to catch the superlikely
+		// otherwise autoscend gets confused and aborts when it enounters the superlikely for the key instead of the lucky! nc
+		if (item_amount($item[Cobb's Knob lab key]) > 0){
+			return autoAdv($location[Cobb's Knob Treasury]);
+		}
 		return autoLuckyAdv($location[Cobb's Knob Treasury]);
 	}
 
