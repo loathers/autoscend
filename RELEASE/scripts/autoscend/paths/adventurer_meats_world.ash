@@ -174,7 +174,9 @@ record amw_statAmount {
 };
 
 // returns a record of the substat and how much of that substat we want for our next skill(s)
-// prioritizing getting all of the skills currently
+// prioritizing getting most of the skills currently. Maintains 50mus/70mys/Lvl13mox after reaching 100/110/lvl13.
+// also, some thresholds are skill-based to allow for deleveling (esp. BCZ)
+// (i.e. we don't need 110 mys anymore after we get the skill, so ok to not re-level)
 amw_statAmount amw_nextSkillSubstats() {
 	amw_statAmount goal;
 	// getting elemental res for kitchen
@@ -226,8 +228,9 @@ amw_statAmount amw_nextSkillSubstats() {
 		goal.amount = 2500;
 		return goal;
 	}
-	// item/meat cute and lvl 11
-	else if (my_basestat($stat[mysticality]) < 104)
+	// item/meat cute and lvl 11. lvl 11 not necessary if moxie is already our "mainstat"
+	else if ((my_basestat($stat[mysticality]) < 104 && my_basestat($stat[moxie]) < 104)
+	|| !auto_have_skill($skill[Meat Cute]))
 	{
 		goal.st = $stat[submysticality];
 		goal.amount = 10816;
@@ -255,14 +258,14 @@ amw_statAmount amw_nextSkillSubstats() {
 		return goal;
 	}
 	// +1 adv per bundle
-	else if (my_basestat($stat[muscle]) < 100)
+	else if (!auto_have_skill($skill[Pork Belly]))
 	{
 		goal.st = $stat[submuscle];
 		goal.amount = 10000;
 		return goal;
 	}
 	// initiative
-	else if (my_basestat($stat[mysticality]) < 110)
+	else if (!auto_have_skill($skill[Tender Loins]))
 	{
 		goal.st = $stat[submysticality];
 		goal.amount = 12100;
