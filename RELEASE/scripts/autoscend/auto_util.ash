@@ -821,6 +821,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return use_familiar($familiar[Patriotic Eagle]);
 	}
+	if(combat_string == "skill" + $skill[Mark Your Territory])
+	{
+		return autoDrink(1, $item[Pheromone Cocktail]);
+	}
 	if(combat_string == "skill " + $skill[Throw Latte on Opponent])
 	{
 		return autoEquip($item[latte lovers member\'s mug]);
@@ -1365,13 +1369,14 @@ int banishSources()
 	// deathchucks: Item
 	// divine champagne popper: Item
 	// anchor bomb: Item
+	// Mark Your Territory: Skill, from pheromone cocktail
 	//
 	// Phylum Banishes
 	// Patriotic Screech: Familiar
 
 	int count = 0;
 	foreach sk in $skills[peel out, Howl of the Alpha, Baleful Howl, Thunder Clap, Curse Of Vacation, Breathe Out, Batter Up!,
-	Banishing Shout, Walk Away From Explosion, Feel Hatred, [7510]Punt, Snokebomb, Punch Out Your Foe, [28021]Punt, Beancannon]
+	Banishing Shout, Walk Away From Explosion, Feel Hatred, [7510]Punt, Snokebomb, Punch Out Your Foe, [28021]Punt, Beancannon, Mark Your Territory]
 	{
 		if(auto_have_skill(sk))
 		{
@@ -1395,7 +1400,7 @@ int banishSources()
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
 	foreach it in $items[Cosmic Bowling Ball, stuffed yam stinkbomb, Handful of split pea soup, human musk,
 	Louder Than Bomb, Tennis Ball, Deathchucks, divine champagne popper, anchor bomb,
-	hot jelly, scoop of pre-workout powder]
+	hot jelly, scoop of pre-workout powder, pheromone cocktail]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
 		{
@@ -1504,6 +1509,7 @@ int freeKillSources()
 	// shadow brick: Item
 	// Fire the Jokester's Gun: Equipment
 	// Breathitin outdoor fights: Campground
+	// Sweat Bullets: Equipment
 	int count = 0;
 	foreach sk in $skills[lightning strike, shattering punch, Gingerbread Mob Hit, Free-For-All]
 	{
@@ -1517,7 +1523,7 @@ int freeKillSources()
 		count += 1;
 	}
 	//equipment
-	foreach eq in $items[legendary seal-clubbing club, Everfull Dart Holster, Lil\' Doctor&trade; bag, The Jokester's gun]
+	foreach eq in $items[blood cubic zirconia, legendary seal-clubbing club, Everfull Dart Holster, Lil\' Doctor&trade; bag, The Jokester's gun]
 	{
 		if(possessEquipment(eq) && auto_can_equip(eq))
 		{
@@ -1535,7 +1541,7 @@ int freeKillSources()
 		}
 	}
 	//combat items/IOTMs/IOTM-Derived items that aren't equipment
-	foreach it in $items[groveling gravel, Replica Bat-oomerang, shadow brick]
+	foreach it in $items[power pill, groveling gravel, Replica Bat-oomerang, shadow brick]
 	{
 		if(auto_is_valid(it) && item_amount(it) > 0)
 		{
@@ -4961,6 +4967,12 @@ boolean auto_MaxMLToCap(int ToML, boolean doAltML)
 		}
 	}
 
+// 5 * level ML up to + 75
+	if(auto_wantToBCZ($skill[BCZ: Blood Bath]))
+	{
+		tryEffects($effects[Bloodbathed]);
+	}
+
 // ToML >= U >= 30
 	UrKelCheck(ToML, auto_convertDesiredML(ToML), 30);
 	angryAgateCheck(ToML, auto_convertDesiredML(ToML), 30);
@@ -5602,6 +5614,16 @@ float substat_to_level(int n)
 		return 1; // All substats less than 16 are level 1, before the formula takes effect
 	}
 	return square_root( square_root(n) - 4 ) + 1;
+}
+
+float level_to_min_substat(int n)
+{
+	return (((n-1) ** 2 + 4) ** 2);
+}
+
+float level_to_min_substat()
+{
+	return level_to_min_substat(my_level());
 }
 
 stat stat_to_substat(stat s)

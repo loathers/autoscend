@@ -1249,6 +1249,7 @@ boolean dailyEvents()
 	auto_buyFromSeptEmberStore();
 	auto_getGlobs();
 	auto_setLeprecondo();
+	auto_getBCZItems();
 	
 	return true;
 }

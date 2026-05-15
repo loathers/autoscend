@@ -1507,11 +1507,13 @@ void auto_equipFreekill()
 	item dartHolster = $item[Everfull Dart Holster];
 	item doctorBag = $item[Lil\' Doctor&trade; Bag];
 	item joksterGun = $item[The Jokester\'s Gun];
+	item bcz = auto_getItemToEquipBCZ();
 	item legendClub = $item[legendary seal-clubbing club];
 
 	boolean redDartAvailable = auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0;
 	boolean chestXrayAvailable = auto_chestXraysRemaining() > 0;
 	boolean fireGunAvailable = auto_jokesterGunFreeKillAvailable();
+	boolean sweatBulletsAvailable = auto_wantToBCZ($skill[BCZ: Sweat Bullets]);
 	boolean clubBackAvailable = auto_clubEmBackInTimesRemaining() > 0;
 
 	if(redDartAvailable)
@@ -1526,7 +1528,12 @@ void auto_equipFreekill()
 	{
 		auto_log_info("Let's be a jokester. Equipping The Jokester's gun.");
 		autoEquip($slot[weapon], joksterGun);
+	} else if (sweatBulletsAvailable) 
+	{
+		auto_log_info("Man, we about to sweat bullets up in here. Equipping BCZ.");
+		autoEquip($slot[acc3], bcz);
 	} else if (clubBackAvailable)
+	// club back is last because it destroys drops, so we may choose to not use it
 	{
 		auto_log_info("They may not be seals, but we're gonna kill them last week. Equipping Legendary Seal Clubbing Club.");
 		autoEquip($slot[weapon], legendClub);

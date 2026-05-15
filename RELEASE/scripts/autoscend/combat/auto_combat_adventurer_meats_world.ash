@@ -50,7 +50,7 @@ string auto_combatMeatGolemStage5(int round, monster enemy, string text)
 	
 	// make sure high HP combats conclude in a timely fashion
 	// only if needed; these skills cost 4-10x more than a regular combat skill
-	if (combat_skill_available($skill[Steak Through the Heart]) && round > 12)
+	if (canUse($skill[Steak Through the Heart], true) && combat_skill_available($skill[Steak Through the Heart]) && round > 12)
 	{
 		return useSkill($skill[Steak Through the Heart], true);
 	}

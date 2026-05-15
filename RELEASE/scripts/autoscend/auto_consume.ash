@@ -626,7 +626,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	}
 	if(is_jarlsberg() && toDrink != $item[Steel Margarita])
 	{
-		return contains_text(craft_type(toDrink), "Jarlsberg's Kitchen");
+		return count(sell_cost($coinmaster[Jarlsberg's Cosmic Kitchen], toDrink)) > 0;
 	}
 	if(in_nuclear() && (toDrink.inebriety != 1))
 	{
@@ -704,7 +704,7 @@ boolean canEat(item toEat, boolean checkValidity)
 	}
 	if(is_jarlsberg())
 	{
-		return contains_text(craft_type(toEat), "Jarlsberg's Kitchen");
+		return count(sell_cost($coinmaster[Jarlsberg's Cosmic Kitchen], toEat)) > 0;
 	}
 	if(in_nuclear() && (toEat.fullness != 1))
 	{
@@ -1090,6 +1090,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	}
  
 	add_mutex_craftables($items[perfect cosmopolitan, perfect old-fashioned, perfect mimosa, perfect dark and stormy, perfect paloma, perfect negroni]);
+	
+	int[item] potentialTurnGain; // for anything the charges up a banish, YR, sniff, etc.
 
 	foreach it in $items[]
 	{
@@ -1136,6 +1138,10 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			if (!(craftable_blacklist contains it) && creatable_amount(it) > 0)
 			{
 				craftables[it] = min(howmany, max(0, creatable_amount(it) - auto_reserveCraftAmount(it)));
+			}
+			if(it == $item[pheromone cocktail] && item_amount(it) > 0 && banishSources() - item_amount(it) < 3)
+			{
+				potentialTurnGain[it] = 2;
 			}
 			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
 			if (!isSpeakeasyDrink(it) && canPull(it))
@@ -1364,6 +1370,11 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				{
 					auto_log_info("If we ate a " + it + " we could skip getting a fat loot token...");
 					actions[n].desirability += keyLimePieDesirabilityBonus;
+				}
+				if ( (i == 0) &&
+				(it == $item[pheromone cocktail]) && potentialTurnGain[it] > 0)
+				{
+					actions[n].desirability += potentialTurnGain[it];
 				}
 			}
 			actions[n].howToGet = obtain_mode;
