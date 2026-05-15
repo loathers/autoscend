@@ -38,6 +38,10 @@ boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int 
 	{
 		return false;
 	}
+	if(my_meat() < (casts * meat_cost(source)))
+	{
+		return false;
+	}
 	//handling for buffs that must equip something first
 	boolean equip_changed = false;
 	item[int] equipped = auto_saveEquipped();
@@ -933,6 +937,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Steak Skirt]:					useSkill = $skill[Steak Skirt];					break;
 	case $effect[Steely-Eyed Squint]:			useSkill = $skill[Steely-Eyed Squint];			break;
 	case $effect[Steroid Boost]:				useItem = $item[Knob Goblin Steroids];			break;
+	case $effect[Stewing]:						useSkill = $skill[Stew];						break;
 	case $effect[Stevedave\'s Shanty of Superiority]:useSkill = $skill[Stevedave\'s Shanty of Superiority];			break;
 	case $effect[Stickler for Promptness]:		useItem = $item[Potion of Punctual Companionship];	break;
 	case $effect[Stinky Hands]:					useItem = $item[Lotion of Stench];				break;

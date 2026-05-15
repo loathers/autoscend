@@ -624,6 +624,11 @@ boolean doBedtime()
 			auto_log_warning("Still sober! Stopping bedtime.", "red");
 			return false;
 		}
+		if(in_amw() && amw_buyAdv())
+		{
+			auto_log_warning("Still grinding meat into adventures! Stopping bedtime.", "red");
+			return false;
+		}
 		int spleenlimit = spleen_limit();
 		if(!canChangeFamiliar())
 		{
@@ -1202,6 +1207,7 @@ boolean doBedtime()
 
 	auto_beachUseFreeCombs();
 	auto_drinkNightcap();
+	while (in_amw() && my_adventures() <= 125){if (!amw_buyAdv()){break;}}
 	equipRollover(false);
 	
 	// Use up any cursed monkey paw wishes on Frosty (+100% item, +100% meat, +25 ML)
@@ -1287,6 +1293,8 @@ boolean doBedtime()
 		boolean chronolith_done = my_robot_energy() < robot_chronolith_cost() || robot_chronolith_cost() > 47;
 		done = chronolith_done && !auto_unreservedAdvRemaining();
 	}
+	// Meat Golems do not consume food or booze, adventure top-ups should be handled by the looped call to amw_buyAdv ~100 lines above.
+	if(in_amw()){done = true;}
 	if(!done)
 	{
 		auto_log_info("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");

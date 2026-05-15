@@ -2353,6 +2353,11 @@ boolean L12_finalizeWar()
 		buffMaintain($effect[Queso Fustulento], 10, 1, 10);
 		buffMaintain($effect[Tricky Timpani], 30, 1, 10);
 	}
+	// AMW buff
+	if(in_amw())
+	{
+		buffMaintain($effect[Stewing], 0, 1, 10);
+	}
 	acquireHP();
 	auto_log_info("Let's fight the boss!", "blue");
 
