@@ -51,6 +51,8 @@ void handleSetting(string type, int x)
 	}
 
 	setting set = s[type][x];
+	string encodedValue = entity_encode(get_property(set.name));
+
 	switch(set.type)
 	{
 	case "boolean":
@@ -64,10 +66,12 @@ void handleSetting(string type, int x)
 		writeln("</td><td>"+set.description+"</td></tr>");
 		break;
 	default:
-		writeln("<tr bgcolor="+color+"><td align=center>"+set.name+"</td><td><input type='text' name='"+set.name+"' value='"+get_property(set.name)+"' /></td><td>"+set.description+"</td></tr>");
+		write("<tr bgcolor="+color+"><td align=center>"+set.name+"</td>");
+		write("<td><input type='text' name='"+set.name+"' value=\""+encodedValue+"\" /></td>");
+		writeln("<td>"+set.description+"</td></tr>");
 		break;
 	}
-	writeln("<input type='hidden' name='"+set.name+"_oldvalue' value='"+get_property(set.name)+"' />");
+	writeln("<input type='hidden' name='"+set.name+"_oldvalue' value=\""+encodedValue+"\" />");
 }
 
 void generateTrackingData(string tracked, string print_between, boolean stacked)
