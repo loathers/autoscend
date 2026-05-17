@@ -3124,13 +3124,13 @@ boolean L11_palindome()
 			equipBaseline();
 			if((item_amount($item[Bird Rib]) == 0) || (item_amount($item[Lion Oil]) == 0))
 			{
-				doWhiteys();
+				return doWhiteys();
 			}
 			else if(item_amount($item[Stunt Nuts]) == 0)
 			{
 				auto_log_info("We got no nuts!! :O", "Blue");
 				autoEquip($slot[acc3], $item[Talisman o\' Namsilat]);
-				autoAdv(1, $location[Inside the Palindome]);
+				return autoAdv(1, $location[Inside the Palindome]);
 			}
 			else
 			{

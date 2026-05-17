@@ -674,7 +674,9 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[etched hourglass], 1, 0);
 		}
-		if(auto_is_valid($item[Infinite BACON Machine]))
+		
+		// generic pull for any path, but unusable in KoE
+		if(!in_koe() && auto_is_valid($item[Infinite BACON Machine]))
 		{
 			pullXWhenHaveY($item[Infinite BACON Machine], 1, 0);
 		}
