@@ -2253,6 +2253,14 @@ void consumeStuff()
 		robot_get_adv();
 		return;
 	}
+	if (in_amw())
+	{
+		if((almostRollover() && needToConsumeForEmergencyRollover())|| (my_adventures() < max(10,1+auto_advToReserve())))
+		{
+			amw_buyAdv();
+		}
+		return;
+	}
 
 	// fills up spleen for Ed.
 	if (ed_eatStuff())

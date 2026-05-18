@@ -558,8 +558,8 @@ boolean pull_meat(int target)
 		return false;	//can not pull meat & autoselling items just donates them
 	}
 	
-	//pull and autosell items
-	while(my_meat() < target && pulls_remaining() > 0)
+	//pull and autosell items, except in adventurer meats world
+	while(my_meat() < target && pulls_remaining() > 0 && !in_amw())
 	{
 		boolean fail = true;		//if true an item was not pulled and sold this loop
 		foreach it in $items[1\,970 carat gold]
@@ -919,7 +919,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && auto_is_valid($item[Detuned Radio]))
+	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && auto_is_valid($item[Detuned Radio]) && (!in_amw() || my_level() >= 7))
 	{
 		auto_buyUpTo(1, $item[Detuned Radio]);
 		auto_setMCDToCap();
