@@ -360,7 +360,7 @@ void peridotChoiceHandler(int choice, string page)
 		i += 1;
 	}
 	popChoice = monOpts[bestmon];
-	if(popChoice.to_int() == 0 || peridotSetZone(loc)) //still nothing found so just peace out. Or we want to set the zone without using an adventure.
+	if(popChoice.to_int() == 0 || auto_peridotSetZone(loc)) //still nothing found so just peace out. Or we want to set the zone without using an adventure.
 	{
 		handleTracker($item[Peridot of Peril], loc.to_string(), "Peace out", "auto_mapperidot");
 		run_choice(2); //if no match is found, hit the exit choice
