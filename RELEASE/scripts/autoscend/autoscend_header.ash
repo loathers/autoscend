@@ -665,6 +665,7 @@ boolean auto_unequipAprilShieldBuff();
 boolean auto_canNorthernExplosionFE();
 boolean auto_havePeridot();
 boolean[monster] peridotManuallyDesiredMonsters();
+boolean auto_peridotSetZone(location loc);
 void peridotChoiceHandler(int choice, string page);
 boolean haveUsedPeridot(int loc);
 boolean auto_havePrismaticBeret();

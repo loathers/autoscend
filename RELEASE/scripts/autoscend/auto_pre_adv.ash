@@ -593,9 +593,9 @@ boolean auto_pre_adventure()
 		addBonusToMaximize($item[shrunken head], 300);
 	}
 
-	if(!haveUsedPeridot(place) && auto_havePeridot() && zoneHasWantedMonsters)
+	if(!haveUsedPeridot(place) && auto_havePeridot() && (zoneHasWantedMonsters || auto_peridotSetZone(place)))
 	{
-		//add a large bonus to Peridot of Peril if the zone has wanted monsters and we haven't visited there yet
+		//add a large bonus to Peridot of Peril if the zone has wanted monsters (or we want to set the zone without using an adventure) and we haven't visited there yet
 		addBonusToMaximize($item[Peridot of Peril], 1000);
 	}
 
