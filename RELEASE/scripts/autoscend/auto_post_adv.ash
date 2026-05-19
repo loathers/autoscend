@@ -348,9 +348,9 @@ boolean auto_post_adventure()
 	}
 	if (in_amw()) // adventurer meats world
 	{
-		if(item_amount($item[Loose Meats]) > 0)
+		if(item_amount($item[briefcase]) > 0)
 		{
-			use(1, $item[Loose Meats]);// no need to run more than once because 1/combat
+			use(1, $item[briefcase]);// no need to run more than once because 1/combat
 		}
 		if (amw_canAfford($skill[Self-Tenderize])) // not necessary, but cheap
 		{

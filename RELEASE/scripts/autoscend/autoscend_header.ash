@@ -683,6 +683,12 @@ boolean auto_haveMonodent();
 boolean auto_waveTheZone();
 boolean auto_talkToSomeFish(location loc, monster enemy);
 int auto_throwLightningRemaining();
+boolean auto_haveBCZ();
+boolean auto_BCZEquipped();
+boolean auto_wantToBCZ(skill sk);
+boolean auto_bczRefractedGaze();
+void auto_getBCZItems();
+item auto_getItemToEquipBCZ();
 boolean auto_haveShrunkenHead();
 boolean auto_wantToShrunkenHead(monster enemy);
 boolean auto_wantToShrunkenHead(location place);
@@ -759,10 +765,13 @@ int amw_advBundleCost(int adv_bundles, boolean cumulative);
 int amw_advBundleCost(int adv_bundles);
 boolean amw_buyAdv();
 int amw_calculateReserve();
+boolean amw_buyStats(boolean meatleveling);
 boolean amw_buyStats();
 boolean LM_adventurerMeatsWorld();
 boolean amw_wantMeat();
+boolean LX_attemptPowerLevelMeat(boolean skills);
 boolean LX_attemptPowerLevelMeat();
+boolean LX_needMeatSkills();
 
 ########################################################################################################
 //Defined in autoscend/paths/avant_guard.ash
@@ -2187,6 +2196,8 @@ int remainingNCForcesToday();
 int turnsUsedByRemainingNCForcesToday();
 float substat_to_level();
 float substat_to_level(int n);
+float level_to_min_substat(int n);
+float level_to_min_substat();
 stat stat_to_substat(stat s);
 float stat_exp_percent(stat s);
 boolean auto_equalizeStats();

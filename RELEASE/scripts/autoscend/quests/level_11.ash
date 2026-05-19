@@ -540,7 +540,7 @@ void hauntedBedroomChoiceHandler(int choice, string[int] options)
 {
 	if(choice == 876) // One Simple Nightstand (The Haunted Bedroom)
 	{
-		if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && !in_wotsf())
+		if((my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && !in_wotsf()) || in_amw())
 		{
 			run_choice(1); // get old leather wallet worth ~500 meat
 		}
@@ -572,7 +572,7 @@ void hauntedBedroomChoiceHandler(int choice, string[int] options)
 		{
 			run_choice(4); // get disposable instant camera
 		}
-		else if(my_primestat() != $stat[mysticality] || my_meat() < 1000 + meatReserve())
+		else if(my_primestat() != $stat[mysticality] || my_meat() < 1000 + meatReserve() || in_amw())
 		{
 			run_choice(1); // get ~500 meat
 		}

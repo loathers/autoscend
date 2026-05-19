@@ -673,11 +673,6 @@ boolean auto_getBattery(item target)
 
 boolean have_fireworks_shop()
 {
-	if(in_koe())
-	{
-		// can't access fireworks shop in kindom of exploathing
-		return false;
-	}
 	if(is_werewolf())
 	{
 		return false; //can't access fireworks shop as a werewolf
