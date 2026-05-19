@@ -1,3 +1,4 @@
 auto_disableAdventureHandling	boolean	When true this prevents preadventure and postadventure scripts from running. resets every loop.
 auto_disableFamiliarChanging	boolean	When true this prevents familiar changes. resets every loop.
 auto_combatDirective	string	An action to execute at the start of next combat. resets every loop.
+auto_interruptZones	string	Semicolon-separated list of zones to abort in before starting the first adventure.
