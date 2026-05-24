@@ -218,7 +218,13 @@ boolean auto_spadeDigSkeleton()
 	int n_digs = auto_spadeDigsRemaining();
 	if (n_digs > 0)
 	{
-		
+		string[int] pages;
+		pages[0] = use_url;
+		pages[1] = choice_url;
+		if (autoAdvBypass(0, pages, $location[Noob Cave], "")){
+			handleTracker(SPADE, "Dig up a skeleton", "auto_otherstuff");
+			return true;
+		}
 	}
 	return false;
 }
