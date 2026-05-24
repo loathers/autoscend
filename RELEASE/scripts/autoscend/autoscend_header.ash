@@ -717,6 +717,8 @@ int auto_spadeDigsRemaining();
 boolean auto_spadeDigItem();
 boolean auto_spadeDigAncient();
 boolean auto_spadeDigSkeleton();
+boolean auto_wantToSpadeDigSkeleton(location loc);
+boolean[location] spadeDelayZones();
 boolean auto_burnRemainingSpadeDigs();
 
 

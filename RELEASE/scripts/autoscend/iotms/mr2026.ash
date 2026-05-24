@@ -223,6 +223,26 @@ boolean auto_spadeDigSkeleton()
 	return false;
 }
 
+boolean auto_wantToSpadeDigSkeleton(location loc) {
+	// haunted kitchen is the only zone that calls auto_spadeDigSkeleton() and does not call this function
+	// (because it's the only non-delay zone currently supported)
+	boolean valid_loc = spadeDelayZones() contains loc;
+	boolean have_digs = auto_spadeDigsRemaining() > 0;
+	boolean delay_left = zone_delay(loc)._boolean;
+	boolean zone_set = get_property("lastAdventure").to_location() == loc;
+	if (valid_loc && have_digs && delay_left && zone_set) {
+		return true;
+	}
+}
+
+boolean[location] spadeDelayZones()
+{
+	boolean[location] desired_zones;
+	desired_zones[$location[The Unquiet Garves]] = true;
+	desired_zones[$location[The Haunted Ballroom]] = true;
+	return desired_zones;
+}
+
 boolean auto_burnRemainingSpadeDigs()
 {
 	int n_digs = auto_spadeDigsRemaining();
