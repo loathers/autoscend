@@ -326,6 +326,10 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 		resGoal[$element[stench]] = 9;
 		int [element] resPossible = provideResistances(resGoal, $location[The Haunted Kitchen], true, true, false);
 		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + resPossible[$element[hot]] + "/" + resPossible[$element[stench]] + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
+		
+		if (auto_spadeDigsRemaining() > 0 && get_property("lastAdventure") == "The Haunted Kitchen"){
+			return auto_spadeDigSkeleton();
+		}
 		if (autoAdv($location[The Haunted Kitchen])) {
 			return true;
 		}
@@ -2323,7 +2327,9 @@ boolean L11_mauriceSpookyraven()
 			// We'll All Be Flat choice adventure has a delay of 5 adventures.
 			return false;
 		}
-
+		if(auto_wantToSpadeDigSkeleton($location[The Haunted Ballroom])) {
+			return auto_spadeDigSkeleton()
+		}
 		return autoAdv($location[The Haunted Ballroom]);
 	}
 	if(item_amount($item[recipe: mortar-dissolving solution]) == 0)
@@ -2947,7 +2953,9 @@ boolean L11_shenCopperhead()
 			{
 				return true;
 			}
-
+			else if (auto_wantToSpadeDigSkeleton(goal)) {
+				return auto_spadeDigSkeleton();
+			}
 			if (canBurnDelay(goal))
 			{
 				// Snakes have variable delay of 3-5 adventures but we can burn at least 3 of that.
