@@ -306,14 +306,12 @@ boolean auto_peridotSetZone(location loc) {
 	// and peridotChoiceHandler exits the choice (overrides desired monsters)
 	
 	// check that setting zone without using an adventure might be useful
-	// TODO: Replace with auto_spadeDigsRemaining()
-	if (!(auto_is_valid($item[Archaeologist's Spade]) && available_amount($item[Archaeologist's Spade]) > 0  && (11-to_int(get_property("_archSpadeDigs"))) > 0)){
+	if (!(auto_spadeDigsRemaining() > 0)){
 		return false;
 	}
 
 	// we don't have enough digs to make it through the beach, so we don't merely want to set the zone
-	// TODO: Replace with auto_spadeDigsRemaining()
-	if (loc == $location[Sonofa Beach] && (11-to_int(get_property("_archSpadeDigs"))) < 5){
+	if (loc == $location[Sonofa Beach] && (auto_spadeDigsRemaining() < 5)){
 		return false;
 	}
 
