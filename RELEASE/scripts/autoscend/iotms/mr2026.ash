@@ -239,10 +239,10 @@ boolean auto_wantToSpadeDigSkeleton(location loc) {
 	if (valid_loc && have_digs && delay_left && zone_set) {
 		return true;
 	}
+	return false;
 }
 
-boolean[location] spadeDelayZones()
-{
+boolean[location] spadeDelayZones() {
 	boolean[location] desired_zones;
 	desired_zones[$location[The Unquiet Garves]] = true;
 	desired_zones[$location[The Haunted Ballroom]] = true;
