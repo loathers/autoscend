@@ -2328,7 +2328,7 @@ boolean L11_mauriceSpookyraven()
 			return false;
 		}
 		if(auto_wantToSpadeDigSkeleton($location[The Haunted Ballroom])) {
-			return auto_spadeDigSkeleton()
+			return auto_spadeDigSkeleton();
 		}
 		return autoAdv($location[The Haunted Ballroom]);
 	}
