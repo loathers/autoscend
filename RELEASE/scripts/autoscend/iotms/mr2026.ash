@@ -132,3 +132,103 @@ int auto_heartstoneStunRemaining()
 	
 	return 5-to_int(get_property("_heartstoneStunUsed"));
 }
+
+boolean auto_haveArchaeologistSpade()
+{
+	if(auto_is_valid($item[Archaeologist's Spade]) && available_amount($item[Archaeologist's Spade]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
+
+int auto_spadeDigsRemaining()
+{
+	if (!auto_haveArchaeologistSpade()) { return 0;}
+	
+	return 11-to_int(get_property("_archSpadeDigs"));
+}
+
+boolean auto_spadeDigItem()
+{
+	item SPADE = $item[Archaeologist's Spade];
+	int choice_adv_num = 1596;
+	int choice_num = 1;
+	string choice_url = "choice.php?pwd&whichchoice=" + choice_adv_num + "&option=" + choice_num;
+	string use_url = "inv_use.php?pwd&which=3&whichitem="+SPADE.id;
+	
+	int n_digs = auto_spadeDigsRemaining();
+	if (n_digs > 0)
+	{
+		visit_url(use_url);
+		buffer result = visit_url(choice_url);
+		int[item] drops = extract_items(result);
+		item my_drop = $item[none];
+		int total_items_dropped = 0;
+		foreach it,n in drops
+		{
+			my_drop = it;
+			total_items_dropped += n;
+		}
+		if (total_items_dropped!=1)
+		{
+			auto_log_error("Seem to have got "+total_items_dropped+" from spade dig nearby, expecting 1.");
+			handleTracker(SPADE, my_location(), "Dig up something nearby reported "+total_items_dropped+" drops", "auto_otherstuff");
+			return total_items_dropped != 0;
+		}
+		if (n_digs > auto_spadeDigsRemaining()) // check we actually have fewer digs left now before returning
+		{
+			handleTracker(SPADE, "Dig up something nearby - "+my_location(), my_drop, "auto_otherstuff");
+			return true;
+		}
+		handleTracker(SPADE, "FAILED: Dig up something nearby", "auto_otherstuff");
+	}
+	return false;
+}
+
+boolean auto_spadeDigAncient()
+{
+	item SPADE = $item[Archaeologist's Spade];
+	int choice_adv_num = 1596;
+	int choice_num = 2;
+	string choice_url = "choice.php?pwd&whichchoice=" + choice_adv_num + "&option=" + choice_num;
+	string use_url = "inv_use.php?pwd&which=3&whichitem="+SPADE.id;
+	int n_digs = auto_spadeDigsRemaining();
+	if (n_digs > 0)
+	{
+		visit_url(use_url);
+		visit_url(choice_url);
+		if (n_digs > auto_spadeDigsRemaining()) // check we actually have fewer digs left now before returning
+		{
+			handleTracker(SPADE, "Dig up something ancient", "auto_otherstuff");
+			return true;
+		}
+	}
+	return false;
+}
+
+boolean auto_spadeDigSkeleton()
+{
+	item SPADE = $item[Archaeologist's Spade];
+	int choice_adv_num = 1596;
+	int choice_num = 3;
+	string choice_url = "choice.php?pwd&whichchoice=" + choice_adv_num + "&option=" + choice_num;
+	string use_url = "inv_use.php?pwd&which=3&whichitem="+SPADE.id;
+	
+	int n_digs = auto_spadeDigsRemaining();
+	if (n_digs > 0)
+	{
+		
+	}
+	return false;
+}
+
+boolean auto_burnRemainingSpadeDigs()
+{
+	int n_digs = auto_spadeDigsRemaining();
+	for (int ii = 0 ; ii < n_digs ; ii++)
+	{
+		auto_spadeDigAncient();
+	}
+	return auto_spadeDigsRemaining()==0;
+}
