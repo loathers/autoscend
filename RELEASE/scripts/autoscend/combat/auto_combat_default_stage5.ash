@@ -210,7 +210,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			foreach sk in $skills[Saucestorm, Saucegeyser, Northern Explosion]
 			{
-				if(canUse(sk, false) || (sk == $skill[Northern Explosion] && !auto_canNorthernExplosionFE()))
+				if(canUse(sk, false) && (sk == $skill[Northern Explosion] && !auto_canNorthernExplosionFE()))
 				{
 					attackMinor = useSkill(sk, false);
 					attackMajor = useSkill(sk, false);
