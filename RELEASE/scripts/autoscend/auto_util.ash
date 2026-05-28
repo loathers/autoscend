@@ -5989,3 +5989,11 @@ int auto_remainingShantyTurns()
 	}
 	return turns;
 }
+
+boolean[location] rat_locations(){
+	boolean[location] rats;
+	rats[$location[The Batrat and Ratbat Burrow]] = true;
+	rats[$location[The Typical Tavern Cellar]] = true;
+	rats[$location[The Middle Chamber]] = true;
+	return rats;
+}
