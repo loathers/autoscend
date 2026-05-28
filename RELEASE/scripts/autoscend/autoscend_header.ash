@@ -711,6 +711,7 @@ int auto_heartstoneKillRemaining();
 int auto_heartstoneLuckRemaining();
 int auto_heartstonePalsRemaining();
 int auto_heartstoneStunRemaining();
+boolean auto_havePastaWand();
 
 
 ########################################################################################################

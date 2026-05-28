@@ -184,3 +184,12 @@ int auto_heartstoneStunRemaining()
 
 // legendary noods: use combat forcer for NSAs
 // stretch: update pasta thralling
+
+boolean auto_havePastaWand()
+{
+	if(auto_is_valid($item[legendary pasta wand]) && available_amount($item[legendary pasta wand]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
