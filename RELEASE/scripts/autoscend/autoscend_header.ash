@@ -2217,3 +2217,4 @@ modifier spellDamageModifier(element el);
 float auto_getElementalDamageMultiplier(element source, element target);
 int auto_remainingShantyTurns();
 boolean[location] rat_locations();
+boolean pm_updateThrall(location place, boolean going_to_eat);

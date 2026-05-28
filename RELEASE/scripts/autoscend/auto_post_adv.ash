@@ -981,50 +981,6 @@ boolean auto_post_adventure()
 		
 	}
 
-
-
-	if(my_class() == $class[Pastamancer])
-	{
-		thrall cur = my_thrall();
-		thrall consider = $thrall[none];
-
-/*							Cost		L1				L5				L10
-		Vampieroghi			12			1-2 (Dmg, Heal)	Dispel Neg		+60 Max HP
-		Vermincelli			30			2 MP Regen		Dmg, Poison		+30 Max MP
-		Angel Hair Wisp		60			5% init			Block Crits		Block
-(Undead)Elbow Maraconi		100			Equalize Mus	+2 Weapon Dmg	+10% crit
-		Penne Dreadful		150			Equalize Mox	Jump Delevel	DR + 10
-		Spaghetti Elemental	150			+Stats Ceil(/3)	Block First Att	+5 spell dmg
-		Lasagmbie			200			20+2 Meat		Spooky Dmg		+10 spooky spell dmg
-		Spice Ghost			250			10+1 Item		Spices			Stun Increase
-*/
-
-		if((my_mp() >= (1.2 * mp_cost($skill[Bind Vermincelli]))) && (cur == $thrall[none]) && auto_have_skill($skill[Bind Vermincelli]))
-		{
-			consider = $thrall[Vermincelli];
-		}
-		if((my_mp() >= (1.2 * mp_cost($skill[Bind Spice Ghost]))) && auto_have_skill($skill[Bind Spice Ghost]) && (my_daycount() > 1) && (numeric_modifier("MP Regen Min").to_int() > 9))
-		{
-			consider = $thrall[Spice Ghost];
-		}
-
-		if((consider != cur) && (consider != $thrall[none]))
-		{
-			skill toEquip = to_skill("Bind " + consider);
-			if(toEquip != $skill[none])
-			{
-				if(my_mp() >= mp_cost(toEquip))
-				{
-					use_skill(1, toEquip);
-				}
-			}
-			else
-			{
-				auto_log_warning("Thrall handler error. Could not generate appropriate skill.", "red");
-			}
-		}
-	}
-
 	if(!inAftercore())
 	{
 		if((my_daycount() == 1) && (my_bjorned_familiar() != $familiar[grim brother]) && (get_property("_grimFairyTaleDropsCrown").to_int() == 0) && (have_familiar($familiar[grim brother])) && (equipped_item($slot[back]) == $item[Buddy Bjorn]) && (my_familiar() != $familiar[Grim Brother]))
