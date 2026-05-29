@@ -6024,23 +6024,30 @@ boolean pm_updateThrall(location place, boolean going_to_eat){
 	boolean baseline_ver = (my_mp() >= (1.2 * mp_cost($skill[Bind Vermincelli]))) && auto_have_skill($skill[Bind Vermincelli]);
 	int ver_level = to_thrall("ver").level;
 	boolean base_spice = (my_mp() >= (1.2 * mp_cost($skill[Bind Spice Ghost]))) && auto_have_skill($skill[Bind Spice Ghost]) && (my_daycount() > 1) && (numeric_modifier("MP Regen Min").to_int() > 9)
-	if(baseline_ver && cur == $thrall[none])
-	{
-		consider = $thrall[Vermincelli];
+	if (going_to_eat) {
+		// if we are consuming food and our spice thrall is lvl 11 (with pasta wand or spice whorl), +2 advs 1/day
+		if(base_spice && to_thrall("spice").level > 10 && get_property("unknown-spice-ghost-pref").to_boolean())
+		{
+			consider = $thrall[Spice Ghost];
+		}
 	}
-	if(base_spice)
-	{
-		consider = $thrall[Spice Ghost];
-	}
-	if (baseline_ver && ver_level > 10 && rat_locations() contains place)
-	{
-		consider = $thrall[Vermincelli];
-	}
-	else if (baseline_ver && ver_level < 11 && auto_havePastaWand()) {
-		consider = $thrall[Vermincelli];
-	}
-	if (to_thrall("spice").level > 10 && going_to_eat && base_spice) {
-		consider = $thrall[Spice Ghost];
+	else {
+		if(baseline_ver && cur == $thrall[none])
+		{
+			consider = $thrall[Vermincelli];
+		}
+		if(base_spice)
+		{
+			consider = $thrall[Spice Ghost];
+		}
+		if (baseline_ver && ver_level > 10 && rat_locations() contains place)
+		{
+			consider = $thrall[Vermincelli];
+		}
+		else if (baseline_ver && ver_level < 11 && auto_havePastaWand()) 
+		{
+			consider = $thrall[Vermincelli];
+		}
 	}
 
 	if((consider != cur) && (consider != $thrall[none]))
