@@ -2322,13 +2322,13 @@ boolean L11_mauriceSpookyraven()
 			return false;
 		}
 
+		if(auto_wantToSpadeDigSkeleton($location[The Haunted Ballroom])) {
+			return auto_spadeDigSkeleton();
+		}
 		if (canBurnDelay($location[The Haunted Ballroom]))
 		{
 			// We'll All Be Flat choice adventure has a delay of 5 adventures.
 			return false;
-		}
-		if(auto_wantToSpadeDigSkeleton($location[The Haunted Ballroom])) {
-			return auto_spadeDigSkeleton();
 		}
 		return autoAdv($location[The Haunted Ballroom]);
 	}
