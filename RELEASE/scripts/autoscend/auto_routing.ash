@@ -91,10 +91,10 @@ boolean canBurnDelay(location loc)
 	}
 	// the archaeologist's spade doesn't cleanly burn delay (because users without the peridot etc. might need to use an adv) and is loc-specific
 	// so we only report true if it's day 1 and we're out of digs, telling autoscend to do the zone tomorrow when we have digs.
-	else if (auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() == 0 && my_daycount() < 2 && spadeDelayZones() contains loc) {
+	else if (auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() == 0 && my_daycount() < get_property("auto_runDayCount").to_int() && spadeDelayZones() contains loc) {
 		return true;
 	}
-	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera() || auto_haveCursedMagnifyingGlass()))
+	else if (my_daycount() < get_property("auto_runDayCount").to_int() && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera() || auto_haveCursedMagnifyingGlass()))
 	{
 		return true;
 	}
