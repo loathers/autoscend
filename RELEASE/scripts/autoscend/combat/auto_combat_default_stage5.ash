@@ -208,9 +208,9 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 
 		if(enemy.physical_resistance > 80)
 		{
-			foreach sk in $skills[Saucestorm, Saucegeyser, Northern Explosion]
+			foreach sk in $skills[Saucestorm, Saucegeyser]
 			{
-				if(canUse(sk, false) || (sk == $skill[Northern Explosion] && !auto_canNorthernExplosionFE()))
+				if(canUse(sk, false))
 				{
 					attackMinor = useSkill(sk, false);
 					attackMajor = useSkill(sk, false);
@@ -218,6 +218,13 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 					costMajor = mp_cost(sk);
 					break;
 				}
+			}
+			if(canUse($skill[Northern Explosion], false) && !auto_canNorthernExplosionFE())
+			{
+				attackMinor = useSkill($skill[Northern Explosion], false);
+				attackMajor = useSkill($skill[Northern Explosion], false);
+				costMinor = mp_cost($skill[Northern Explosion]);
+				costMajor = mp_cost($skill[Northern Explosion]);
 			}
 		}
 		break;
