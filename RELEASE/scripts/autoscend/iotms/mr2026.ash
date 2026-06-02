@@ -221,8 +221,9 @@ boolean auto_spadeDigSkeleton()
 		string[int] pages;
 		pages[0] = use_url;
 		pages[1] = choice_url;
+		location loc = my_location();
 		if (autoAdvBypass(0, pages, $location[Noob Cave], "")){
-			handleTracker(SPADE, "Dig up a skeleton - " + my_location(), "auto_otherstuff");
+			handleTracker(SPADE, "Dig up a skeleton - "+loc, "auto_otherstuff");
 			return true;
 		}
 		handleTracker(SPADE, "FAILED: Dig up a skeleton", "auto_otherstuff");
