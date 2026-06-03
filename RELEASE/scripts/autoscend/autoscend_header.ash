@@ -665,6 +665,7 @@ boolean auto_unequipAprilShieldBuff();
 boolean auto_canNorthernExplosionFE();
 boolean auto_havePeridot();
 boolean[monster] peridotManuallyDesiredMonsters();
+boolean auto_peridotSetZone(location loc);
 void peridotChoiceHandler(int choice, string page);
 boolean haveUsedPeridot(int loc);
 boolean auto_havePrismaticBeret();
@@ -711,6 +712,14 @@ int auto_heartstoneKillRemaining();
 int auto_heartstoneLuckRemaining();
 int auto_heartstonePalsRemaining();
 int auto_heartstoneStunRemaining();
+boolean auto_haveArchaeologistSpade();
+int auto_spadeDigsRemaining();
+boolean auto_spadeDigItem();
+boolean auto_spadeDigAncient();
+boolean auto_spadeDigSkeleton();
+boolean auto_wantToSpadeDigSkeleton(location loc);
+boolean[location] spadeDelayZones();
+boolean auto_burnRemainingSpadeDigs();
 
 
 ########################################################################################################
