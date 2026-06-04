@@ -5216,6 +5216,60 @@ boolean auto_haveQueuedForcedNonCombat()
 	return get_property("noncombatForcerActive").to_boolean();
 }
 
+// now time for combat forcing!
+boolean _auto_forceNextCombat(location loc, boolean speculative)
+{
+	// return true if already have a forcer acitve
+	if(auto_haveQueuedForcedCombat())
+	{
+		return true;
+	}
+
+	if(auto_legendaryNoodlesAvailable())
+	{
+		if(speculative) return true;
+		auto_consumeLegendaryNoodles("combat")
+		if(!auto_haveQueuedForcedCombat())
+		{
+			abort("Attempted to force a combat with legendary pasta noodles but was unable to.");
+		}
+		set_property("auto_forceCombatSource", "legendary noodle dish");
+		return true;
+	}
+	return false;
+}
+
+boolean auto_canForceNextCombat()
+{
+	return _auto_forceNextCombat($location[none], true);
+}
+
+boolean _auto_forceNextCombat(location loc)
+{
+	return _auto_forceNextCombat(loc, false);
+}
+
+boolean auto_forceNextCombat(location loc)
+{
+	if(auto_haveQueuedForcedCombat())
+	{
+		auto_log_warning("Trying to force a combat adventure, but I think we've already forced one...", "red");
+		return true;
+	}
+	if (_auto_forceNextCombat(loc))
+	{	
+		string forceCMethod = get_property("auto_forceCombatSource");
+		auto_log_info("Next combat adventure has been forced with " + forceCMethod, "blue");
+		return true;
+	}
+	return false;
+}
+
+boolean auto_haveQueuedForcedCombat()
+{
+	return get_property("combatForcerActive").to_boolean();
+}
+
 // Function to Predict how many turns we will get from an AT buff
 int auto_predictAccordionTurns()
 {
