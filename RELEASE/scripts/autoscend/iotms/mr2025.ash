@@ -301,6 +301,33 @@ boolean[monster] peridotManuallyDesiredMonsters()
 	return desired_monsters;
 }
 
+boolean auto_peridotSetZone(location loc) {
+	// if true, auto_pre_adv may add a large bonus to maximizer for peridot 
+	// and peridotChoiceHandler exits the choice (overrides desired monsters)
+	
+	// check that setting zone without using an adventure might be useful
+	if (!(auto_spadeDigsRemaining() > 0)){
+		return false;
+	}
+
+	// we don't have enough digs to make it through the beach, so we don't merely want to set the zone
+	if (loc == $location[Sonofa Beach] && (auto_spadeDigsRemaining() < 5)){
+		return false;
+	}
+
+	boolean[location] desired_locations;
+	desired_locations[$location[Sonofa Beach]] = true;
+	desired_locations[$location[The Hatching Chamber]] = true;
+	desired_locations[$location[The Feeding Chamber]] = true;
+	desired_locations[$location[The Royal Guard Chamber]] = true;
+	desired_locations[$location[The Haunted Kitchen]] = true;
+	desired_locations[$location[The Unquiet Garves]] = true;
+	desired_locations[$location[The Haunted Ballroom]] = true;
+
+	if (desired_locations contains loc) {return true;}
+	return false;
+}
+
 void peridotChoiceHandler(int choice, string page)
 {
 	if(!auto_havePeridot())
@@ -331,7 +358,7 @@ void peridotChoiceHandler(int choice, string page)
 		i += 1;
 	}
 	popChoice = monOpts[bestmon];
-	if(popChoice.to_int() == 0) //still nothing found so just peace out
+	if(popChoice.to_int() == 0 || auto_peridotSetZone(loc)) //still nothing found so just peace out. Or we want to set the zone without using an adventure.
 	{
 		handleTracker($item[Peridot of Peril], loc.to_string(), "Peace out", "auto_mapperidot");
 		run_choice(2); //if no match is found, hit the exit choice
@@ -1011,7 +1038,8 @@ boolean auto_BCZEquipped()
 
 boolean auto_wantToBCZ(skill sk)
 {
-	if(!auto_haveBCZ() || !(canUse(sk)))
+	// zootomist doesn't have substats
+	if(!auto_haveBCZ() || !(canUse(sk)) || in_zootomist())
 	{
 		return false;
 	}
