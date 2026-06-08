@@ -928,6 +928,10 @@ boolean L8_trapperSlope()
 	{
 		return false; // delay for You, Robot path
 	}
+	// We want to go ninja lair if we can force the NSAs
+	if(auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
+		if(L8_trapperNinjaLair()) return true;
+	}
 	// Checks for McHugeLarge skis
 	if (L8_forceExtremeInstead())
 	{
