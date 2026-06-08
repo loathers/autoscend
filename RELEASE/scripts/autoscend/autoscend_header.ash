@@ -2190,6 +2190,8 @@ boolean auto_haveQueuedForcedNonCombat();
 boolean auto_canForceNextCombat();
 boolean auto_forceNextCombat();
 boolean auto_haveQueuedForcedCombat();
+int auto_numQueuedForcedCombat();
+boolean auto_haveCombatForceSource();
 int auto_predictAccordionTurns();
 boolean hasTTBlessing();
 void effectAblativeArmor(boolean passive_dmg_allowed);
