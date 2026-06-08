@@ -1092,7 +1092,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
  
 	add_mutex_craftables($items[perfect cosmopolitan, perfect old-fashioned, perfect mimosa, perfect dark and stormy, perfect paloma, perfect negroni]);
 	
-	int[item] potentialTurnGain; // for anything the charges up a banish, YR, sniff, etc.
+	float[item] potentialTurnGain; // for anything the charges up a banish, YR, sniff, etc.
 
 	foreach it in $items[]
 	{
@@ -1142,7 +1142,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 			if(it == $item[pheromone cocktail] && item_amount(it) > 0 && banishSources() - item_amount(it) < 3)
 			{
-				potentialTurnGain[it] = 2;
+				potentialTurnGain[it] = 2.0;
 			}
 			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
 			if (!isSpeakeasyDrink(it) && canPull(it))
