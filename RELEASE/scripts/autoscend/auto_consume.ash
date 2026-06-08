@@ -2331,6 +2331,7 @@ boolean shouldUseSpleenForLowPriority()
 	int spleen_likely_to_use = 0;
 	spleen_likely_to_use += 2 * auto_CMCconsultsLeft();
 	spleen_likely_to_use += $item[dieting pill].spleen * available_amount($item[dieting pill]);
+	if (auto_havePastaWand() && !get_property("_legendaryNoodlesSpleen").to_boolean() && fullness_left() > 0) { spleen_likely_to_use += 1; }
 	
 	return spleen_left() > spleen_likely_to_use;
 }
