@@ -384,7 +384,7 @@ boolean auto_pre_adventure()
 	boolean gettingLucky = auto_gettingLucky();
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !auto_queueIgnore()) {
+	if (combatModifier._boolean && !auto_queueIgnore() && !auto_haveQueuedForcedCombat()) {//forced nc is included in queue ignore
 		acquireCombatMods(combatModifier._int, true);
 	}
 	
