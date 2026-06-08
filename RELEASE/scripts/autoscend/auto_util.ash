@@ -5267,7 +5267,16 @@ boolean auto_forceNextCombat(location loc)
 
 boolean auto_haveQueuedForcedCombat()
 {
-	return get_property("combatForcerActive").to_boolean();
+	return auto_numQueuedForcedCombat() > 0;
+}
+
+int auto_numQueuedForcedCombat()
+{
+	return get_property("legendaryNoodlesAmygdala").to_int();
+}
+
+boolean auto_haveCombatForceSource() {
+	return auto_havePastaWand() && can_eat() && !get_property("auto_limitConsume").to_boolean();
 }
 
 // Function to Predict how many turns we will get from an AT buff
