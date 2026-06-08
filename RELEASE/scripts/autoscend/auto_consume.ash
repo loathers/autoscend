@@ -1144,6 +1144,16 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				potentialTurnGain[it] = 2.0;
 			}
+			else if (preparedLegendaryNoodleDishes() contains it && item_amount(it) > 0) {
+				// we have the option, after eating the dish, to consume spleen instead 1/day.
+				// which is quite good for minimizing daycount. We want that if it's available.
+				if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0) {
+					potentialTurnGain[it] = 20.0;// not actually 20, but we almost certainly want to consume it
+				} 
+				else if (auto_wantFamXP()){
+					potentialTurnGain[it] = 0.75; // arbitrary, but probably good enough
+				}
+			}
 			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
 			if (!isSpeakeasyDrink(it) && canPull(it))
 			{
@@ -1373,7 +1383,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 					actions[n].desirability += keyLimePieDesirabilityBonus;
 				}
 				if ( (i == 0) &&
-				(it == $item[pheromone cocktail]) && potentialTurnGain[it] > 0)
+				(it == $item[pheromone cocktail] || preparedLegendaryNoodleDishes() contains it) && potentialTurnGain[it] > 0)
 				{
 					actions[n].desirability += potentialTurnGain[it];
 				}
