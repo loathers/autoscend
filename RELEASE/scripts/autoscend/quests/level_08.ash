@@ -691,7 +691,7 @@ boolean L8_trapperNinjaLair()
 	}
 
 	// can we provide enough combat bonus to encounter snowman assassins?
-	if(providePlusCombat(auto_combatModCap(), $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
+	if(!auto_forceNextCombat($location[Lair of the Ninja Snowmen]) && providePlusCombat(auto_combatModCap(), $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
 	{
 		if(isAboutToPowerlevel())
 		{
