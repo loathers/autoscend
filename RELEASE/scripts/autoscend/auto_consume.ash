@@ -1037,6 +1037,19 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			craftable_blacklist[$item[devil hair pasta]] = true;
 		}
 	}
+	if(internalQuestStatus("questL08Trapper") < 3 && auto_havePastaWand()) { 
+		// consider blacklisting legendary noodles so we have some available for combat forcing if we still need to climb slope and have the wand
+		if (numPreparedLegendaryNoodleDishes() < 2) {
+			foreach dish in preparedLegendaryNoodleDishes() {
+				blacklist[$item[dish]] = true;
+			}
+		}
+		else if (numPreparedLegendaryNoodleDishes() < 0 && min(numBaseLegendaryNoodleDishes(), item_amount($item[legendary_noodles)])) < 2) {
+			foreach dish in baseLegendaryNoodleDishes() {
+				blacklist[$item[dish]] = true;
+			}
+		}
+	}
 
 	if(my_class() != $class[Cow Puncher]) 
 	{
