@@ -932,6 +932,9 @@ boolean L8_trapperSlope()
 	if(auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
 		if(L8_trapperNinjaLair()) return true;
 	}
+	if (auto_haveCombatForceSource() && !isAboutToPowerlevel() && !get_property("auto_L8_extremeInstead").to_boolean()) {
+		return false; // we want to wait until we can force combats
+	}
 	// Checks for McHugeLarge skis
 	if (L8_forceExtremeInstead())
 	{
