@@ -1721,6 +1721,8 @@ boolean pathAllowsChangingFamiliar();
 boolean auto_have_familiar(familiar fam);
 boolean canChangeFamiliar();
 boolean canChangeToFamiliar(familiar target);
+boolean auto_wantFamXP();
+void switchToFamXP();
 familiar findNonRockFamiliarInTerrarium();
 familiar findRockFamiliarInTerrarium();
 familiar lookupFamiliarDatafile(string type);
