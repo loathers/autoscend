@@ -320,3 +320,124 @@ boolean auto_havePastaWand()
 	}
 	return false;
 }
+
+boolean[item] preparedLegendaryNoodleDishes() {
+	boolean[item] dishes;
+	dishes[$item[Tubetto Gelatto]] = true;
+	dishes[$item[Formica e Pepe]] = true;
+	dishes[$item[Gnocci Domani]] = true;
+	dishes[$item[Linguini Ubriacapa]] = true;
+	dishes[$item[Pasta Grimavera]] = true;
+	dishes[$item[Orzo di Riso]] = true;
+	dishes[$item[Arrattabbattabiata]] = true;
+	dishes[$item[Pesto alla Marziano]] = true;
+	dishes[$item[Frutti di Scatoletta]] = true;
+	return dishes;
+}
+
+int numPreparedLegendaryNoodleDishes() {
+	int num = 0;
+	foreach dish in preparedLegendaryNoodleDishes(){
+		num += item_amount(dish);
+	}
+	return num;
+}
+
+// pick a legendary noodle to consume (or to check that we have one avail. to consume)
+item auto_findPreparedLegendaryNoods() {
+	foreach it in preparedLegendaryNoodleDishes() {
+		if (item_amount(it) > 0) {return it; }
+	}
+	return $item[none];
+}
+
+// also maps to prepared noodle dishes
+item[item] baseLegendaryNoodleDishes() {
+	item[item] dishes;
+	dishes[$item[tomb aspic]] = $item[Tubetto Gelatto];
+	dishes[$item[hot honey ant]] = $item[Formica e Pepe];
+	dishes[$item[later tots]] = $item[Gnocci Domani];
+	dishes[$item[sauced mutton]] = $item[Linguini Ubriacapa];
+	dishes[$item[haunted crudit&eacute;s]] = $item[Pasta Grimavera];
+	dishes[$item[spicy onigiri]] = $item[Orzo di Riso];
+	dishes[$item[ratbatatouille]] = $item[Arrattabbattabiata];
+	dishes[$item[alien salad]] = $item[Pesto alla Marziano];
+	dishes[$item[can of tuna]] = $item[Frutti di Scatoletta];
+	return dishes;
+}
+
+int numBaseLegendaryNoodleDishes() {
+	int num = 0;
+	foreach dish in preparedBaseNoodleDishes(){
+		num += item_amount(dish);
+	}
+	return num;
+}
+
+// pick a base noodle to consume, to be crafted into legendary (or to check that we have one avail. to consume)
+// returns the legendary dish the noods are crafted into
+item auto_findBaseLegendaryNoods() {
+	if (item_amount($item[legendary noodles]) < 1) {
+		return $item[none];
+	}
+	foreach it in baseLegendaryNoodleDishes() {
+		if (item_amount(it) > 0) {return baseLegendaryNoodleDishes()[it]; }
+	}
+	return $item[none];
+}
+
+boolean auto_legendaryNoodlesAvailable() {
+	if (stomach_left() < 1 || get_property("auto_limitConsume").to_boolean()) {return false;}
+	if(auto_findPreparedLegendaryNoods() != $item[none]){ return true;}
+	if(auto_findBaseLegendaryNoods() != $item[none]){ return true;}
+	return false;
+}
+
+
+// if opt is provided, we assume that the circumstances are already "optimal"-ish for consumption
+// but if it's omitted, we want to make sure that the famxp is going on a useful familiar
+boolean auto_consumeLegendaryNoodles(string opt) {
+	if (opt == "turnbloat" && get_property("_legendaryNoodlesSpleen").to_boolean()) {
+		auto_log_warning("Autoscend is trying to incorrectly use Legendary Noodles spleen. Defaulting to Fam XP for now.");
+		auto_consumeLegendaryNoodles();
+	}
+	int option;
+	switch (opt) {
+		case "combat": option = 2; break;
+		case "fam xp": option = 4; break;
+		case "double effect": option = 5; break;
+		case "turnbloat": option = 1; break;// use a spleen instead of a fullness when consuming the noods
+		default: abort(opt + " is an unsupported Legendary Noodles option")
+	}
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
+	// values taken from auto_consume.ash
+	int AUTO_ORGAN_STOMACH = 1;
+	int AUTO_OBTAIN_NULL  = 100;
+	int AUTO_OBTAIN_CRAFT = 101;
+
+	item prospective_dish = auto_findPreparedLegendaryNoods();
+	if (prospective_dish != $item[none]) {
+		ConsumeAction action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_NULL);
+	}
+	else {
+		item prospective_dish = auto_findBaseLegendaryNoods();
+		if (prospective_dish != $item[none]) {
+			ConsumeAction action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_CRAFT);
+		}
+		else { return false;}
+	}
+	
+	if (auto_autoConsumeOne(action)) {
+		run_choice(option);
+		return true;
+	}
+	return false;
+}
+
+boolean auto_consumeLegendaryNoodles() {
+	return auto_consumeLegendaryNoodles("fam xp");// probably a safe default
+}
