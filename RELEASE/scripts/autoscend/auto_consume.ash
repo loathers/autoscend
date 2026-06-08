@@ -857,6 +857,7 @@ string to_debug_string(ConsumeAction action)
 	return ret;
 }
 
+// note that the ConsumeAction record is defined in autoscend_record.ash
 ConsumeAction MakeConsumeAction(item it)
 {
 	int organ = it.inebriety > 0 ? AUTO_ORGAN_LIVER : AUTO_ORGAN_STOMACH;
@@ -941,6 +942,7 @@ boolean autoConsume(ConsumeAction action)
 
 boolean loadConsumables(string _type, ConsumeAction[int] actions)
 {
+	// Step 0: Definitions
 	// Just in case!
 	if(in_darkGyffte())
 	{
@@ -997,6 +999,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean[item] blacklist;
 	boolean[item] craftable_blacklist;
 
+	// Step 1: Blacklist items we don't want to consume
 	foreach it in $items[Cursed Punch, Unidentified Drink, bag of QWOP, FantasyRealm turkey leg, FantasyRealm mead, waffle]
 	{
 		blacklist[it] = true;
@@ -1105,6 +1108,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
  
 	add_mutex_craftables($items[perfect cosmopolitan, perfect old-fashioned, perfect mimosa, perfect dark and stormy, perfect paloma, perfect negroni]);
 	
+	// Step 2: move items to categorized source maps, and add turnsave
+
 	float[item] potentialTurnGain; // for anything the charges up a banish, YR, sniff, etc.
 
 	foreach it in $items[]
@@ -1182,6 +1187,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 		}
 	}
+
+	// Step 3: Handle Key Lime Pie Desireability (turnsave)
 
 	float keyLimePieDesirabilityBonus;
 	string keyLimePieDesirabilityBonusType;
@@ -1330,6 +1337,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		}
 	}
 
+	// Step 4: Add the items to actions[n], incorporating incentives and penalties
+
 	void add(item it, int obtain_mode, int howmany)
 	{
 		for (int i = 0; i < howmany; i++)
@@ -1426,6 +1435,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		add(it, AUTO_OBTAIN_CRAFT, howmany);
 	}
 
+	// Step 5: Special adds
 	// Add still suit if we are looking to drink
 	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit() && !in_kolhs() && !in_small())
 	{
@@ -1444,7 +1454,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		actions[count(actions)] = new ConsumeAction(apronKit, 0, size, adv, adv, AUTO_ORGAN_STOMACH, obtainMethod);
 	}
 
-	// Now, to load cafe consumables. This has some TCRS-specific code.
+	// Step 6: Now, to load cafe consumables. This has some TCRS-specific code.
 
 	if(type == AUTO_ORGAN_LIVER && !gnomads_available()) return false;
 	if(type == AUTO_ORGAN_STOMACH && !canadia_available()) return false;
