@@ -426,6 +426,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	acquireMilkOfMagnesiumIfUnused(true);
 	consumeMilkOfMagnesiumIfUnused();
 	wantDietPill(toEat);
+	if(my_class() == $class[Pastamancer]){ pm_updateThrall($location[Noob Cave], true); } // might switch to spice ghost for advs
 
 	if(possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
