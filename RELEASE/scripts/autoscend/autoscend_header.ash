@@ -721,6 +721,15 @@ boolean auto_wantToSpadeDigSkeleton(location loc);
 boolean[location] spadeDelayZones();
 boolean auto_burnRemainingSpadeDigs();
 boolean auto_havePastaWand();
+boolean[item] preparedLegendaryNoodleDishes();
+int numPreparedLegendaryNoodleDishes();
+item auto_findPreparedLegendaryNoods();
+item[item] baseLegendaryNoodleDishes();
+int numBaseLegendaryNoodleDishes();
+item auto_findBaseLegendaryNoods();
+boolean auto_legendaryNoodlesAvailable();
+boolean auto_consumeLegendaryNoodles(string opt);
+boolean auto_consumeLegendaryNoodles();
 
 
 ########################################################################################################
