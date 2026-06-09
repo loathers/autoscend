@@ -198,17 +198,19 @@ boolean LM_bond()
 	return false;
 }
 
+item[int] bondDrinksCached;
 item[int] bondDrinks()
 {
-	item[int] retval = itemList();
-
-	foreach it in $items[]
+	if (count(bondDrinksCached) == 0)
 	{
-		if((it.smallimage == "martini.gif") && is_unrestricted(it))
+		bondDrinksCached = itemList();
+		foreach it in $items[]
 		{
-			retval = retval.ListInsert(it);
+			if(it.inebriety > 0 && it.smallimage == "martini.gif" && is_unrestricted(it))
+			{
+				bondDrinksCached = bondDrinksCached.ListInsert(it);
+			}
 		}
 	}
-	return retval;
-
+	return bondDrinksCached;
 }
