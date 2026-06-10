@@ -2117,7 +2117,7 @@ void auto_begin()
 	if (!auto_meetsMinimumRequirements())
 	{
 		auto_log_warning("Minimum skill requirements to run autoscend are not met.", "red");
-		if(get_property("_im_cool_with_dying_a_lot").to_int() != -1)
+		if(get_property("_im_cool_with_dying_a_lot").to_int() == -1)
 		{
 			auto_log_warning("Don't come crying to us when you get beat up.", "red");
 		}
