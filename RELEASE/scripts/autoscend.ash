@@ -2114,6 +2114,21 @@ void auto_begin()
 		abort(failure);
 	}
 
+	if (!auto_meetsMinimumRequirements())
+	{
+		auto_log_warning("Minimum skill requirements to run autoscend are not met.", "red");
+		if(get_property("_im_cool_with_dying_a_lot").to_int() != -1)
+		{
+			auto_log_warning("Don't come crying to us when you get beat up.", "red");
+		}
+		else
+		{
+			auto_log_warning("Aborting to avoid dying a lot and making very little progress. To override:", "red");
+			auto_log_warning("set _im_cool_with_dying_a_lot = -1", "red");
+			abort();
+		}
+	}
+
 	LX_handleIntroAdventures(); // handle early non-combats in challenge paths.
 	cli_execute("refresh all");
 

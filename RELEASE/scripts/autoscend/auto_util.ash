@@ -5989,3 +5989,11 @@ int auto_remainingShantyTurns()
 	}
 	return turns;
 }
+
+boolean auto_meetsMinimumRequirements()
+{
+	if (my_class().id > 6) {
+		return true
+	}
+	return (have_skill($skill[Saucestorm]) && have_skill($skill[Cannelloni Cocoon]))
+}
