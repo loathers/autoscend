@@ -6004,10 +6004,10 @@ boolean auto_meetsMinimumRequirements()
 		return true;
 	}
 
-	// If we're in Nuclear Autumn, You, Robot, Journeyman, or 
+	// If we're in Nuclear Autumn, You, Robot, Journeyman, Pokefam, or 
 	// either of the Class Acts, we can't meet these requirements by default.
 	// So we're not going to block for this reason. We may well yet block for other reasons.
-	if (in_nuclear() || in_robot() || in_journeyman() || in_class_act() || in_class_act_two())
+	if (in_nuclear() || in_robot() || in_journeyman() || in_pokefam() || in_class_act() || in_class_act_two())
 	{
 		return true;
 	}
