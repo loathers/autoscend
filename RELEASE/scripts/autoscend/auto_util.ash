@@ -6004,11 +6004,10 @@ boolean auto_meetsMinimumRequirements()
 		return true;
 	}
 
-	// If we're in Nuclear Autumn (28), You, Robot (41), Journeyman (45), or 
-	// either of the Class Acts (11, 16), we can't meet these requirements by default.
+	// If we're in Nuclear Autumn, You, Robot, Journeyman, or 
+	// either of the Class Acts, we can't meet these requirements by default.
 	// So we're not going to block for this reason. We may well yet block for other reasons.
-	int path_id = my_path().id;
-	if (path_id == 11 || path_id == 16 || path_id == 28 || path_id == 41 || path_id == 45)
+	if (in_nuclear() || in_robot() || in_journeyman() || in_class_act() || in_class_act_two())
 	{
 		return true;
 	}

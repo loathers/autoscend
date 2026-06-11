@@ -66,6 +66,8 @@ import <autoscend/paths/avatar_of_west_of_loathing.ash>
 import <autoscend/paths/bees_hate_you.ash>
 import <autoscend/paths/bugbear_invasion.ash>
 import <autoscend/paths/casual.ash>
+import <autoscend/paths/class_act.ash>
+import <autoscend/paths/class_act_two.ash>
 import <autoscend/paths/community_service.ash>
 import <autoscend/paths/dark_gyffte.ash>
 import <autoscend/paths/disguises_delimit.ash>
@@ -76,6 +78,7 @@ import <autoscend/paths/grey_goo.ash>
 import <autoscend/paths/hattrick.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/i_love_u_hate.ash>
+import <autoscend/paths/journeyman.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
 import <autoscend/paths/legacy_of_loathing.ash>

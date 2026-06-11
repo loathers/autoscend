@@ -866,6 +866,14 @@ boolean L8_slopeCasual();
 boolean LM_canInteract();
 
 ########################################################################################################
+//Defined in autoscend/paths/class_act.ash
+boolean in_class_act();
+
+########################################################################################################
+//Defined in autoscend/paths/class_act_two.ash
+boolean in_class_act_two();
+
+########################################################################################################
 //Defined in autoscend/paths/community_service.ash
 boolean in_community();
 
@@ -965,6 +973,10 @@ boolean iluh_foodConsumable(string str);
 boolean iluh_famAllowed(string fam);
 void iluh_buyEquiq();
 void iluh_pulls();
+
+########################################################################################################
+//Defined in autoscend/paths/journeyman.ash
+boolean in_journeyman();
 
 ########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash
