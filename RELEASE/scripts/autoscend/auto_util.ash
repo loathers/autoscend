@@ -5993,7 +5993,14 @@ int auto_remainingShantyTurns()
 boolean auto_meetsMinimumRequirements()
 {
 	// If we're not a base class, we don't need perms
-	if (my_class().id > 6) {
+	if (my_class().id > 6)
+	{
+		return true;
+	}
+
+	// If we're in bad moon we have other checks for that
+	if (in_bad_moon()) 
+	{
 		return true;
 	}
 
