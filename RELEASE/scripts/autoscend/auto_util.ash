@@ -5992,8 +5992,20 @@ int auto_remainingShantyTurns()
 
 boolean auto_meetsMinimumRequirements()
 {
+	// If we're not a base class, we don't need perms
 	if (my_class().id > 6) {
 		return true;
 	}
+
+	// If we're in Nuclear Autumn (28), You, Robot (41), Journeyman (45), or 
+	// either of the Class Acts (11, 16), we can't meet these requirements by default.
+	// So we're not going to block for this reason. We may well yet block for other reasons.
+	int path_id = my_path().id;
+	if (path_id == 11 || path_id == 16 || path_id == 28 || path_id == 41 || path_id == 45)
+	{
+		return true;
+	}
+
+	// Otherwise, we just need Saucestorm and Cocoon.
 	return (have_skill($skill[Saucestorm]) && have_skill($skill[Cannelloni Cocoon]));
 }
