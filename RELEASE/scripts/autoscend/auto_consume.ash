@@ -710,7 +710,7 @@ boolean canEat(item toEat, boolean checkValidity)
 	{
 		return count(sell_cost($coinmaster[Jarlsberg's Cosmic Kitchen], toEat)) > 0;
 	}
-	if(in_nuclear() && (toEat.fullness != 1))
+	if(in_nuclear() && (toEat.fullness > 1))
 	{
 		return false;
 	}

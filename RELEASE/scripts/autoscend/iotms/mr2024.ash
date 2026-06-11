@@ -384,7 +384,8 @@ boolean auto_MayamClaimWhatever()
 	else { failure = true; }
 	
 	boolean going_to_use_mouthwash = my_level()<13 && remainingEmbers() >= 2;
-	if (going_to_use_mouthwash && !auto_MayamIsUsed("wall")) { ring3 = "wall"; }
+	// in LTA one more yam martini is more valuable than +2 res for levelling
+	if (going_to_use_mouthwash && !in_lta() && !auto_MayamIsUsed("wall")) { ring3 = "wall"; }
 	else if (!auto_MayamIsUsed("yam3"))   { ring3 = "yam"; }
 	else if (!auto_MayamIsUsed("cheese")) { ring3 = "cheese"; }
 	else if (!auto_MayamIsUsed("wall"))   { ring3 = "wall"; }
