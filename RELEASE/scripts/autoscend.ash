@@ -1,4 +1,4 @@
-since r28979; //  track meat from handsful of tips
+since r29041; //  track level 11 pasta thrall abilities 
 
 /***
 	autoscend_header.ash must be first import

@@ -691,7 +691,7 @@ boolean L8_trapperNinjaLair()
 	}
 
 	// can we provide enough combat bonus to encounter snowman assassins?
-	if(providePlusCombat(auto_combatModCap(), $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
+	if(!auto_forceNextCombat($location[Lair of the Ninja Snowmen]) && providePlusCombat(auto_combatModCap(), $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
 	{
 		if(isAboutToPowerlevel())
 		{
@@ -829,6 +829,14 @@ boolean L8_trapperGroar()
 	return retval;
 }
 
+int ninjaItemsRemaining() {
+	int items_remaining = 3;
+	if(item_amount($item[Ninja Carabiner]) > 0) {items_remaining -= 1;}
+	if(item_amount($item[Ninja Crampons]) > 0) {items_remaining -= 1;}
+	if(item_amount($item[Ninja Rope]) > 0) {items_remaining -= 1;}
+	return items_remaining;
+}
+
 boolean L8_trapperPeak()
 {
 	// unlock the peak in the trapper quest
@@ -838,7 +846,7 @@ boolean L8_trapperPeak()
 	}
 	
 	// unlock peak using ninja climbing gear
-	if(item_amount($item[Ninja Rope]) > 0 && item_amount($item[Ninja Carabiner]) > 0 && item_amount($item[Ninja Crampons]) > 0)
+	if(ninjaItemsRemaining() < 1)
 	{
 		int [element] resGoal;
 		resGoal[$element[cold]] = 5;
@@ -919,6 +927,13 @@ boolean L8_trapperSlope()
 	if(robot_delay("outfit"))
 	{
 		return false; // delay for You, Robot path
+	}
+	// We want to go ninja lair if we can force the NSAs
+	if(auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
+		if(L8_trapperNinjaLair()) return true;
+	}
+	if (auto_haveCombatForceSource() && !isAboutToPowerlevel() && !get_property("auto_L8_extremeInstead").to_boolean()) {
+		return false; // we want to wait until we can force combats
 	}
 	// Checks for McHugeLarge skis
 	if (L8_forceExtremeInstead())

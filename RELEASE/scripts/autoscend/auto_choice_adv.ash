@@ -790,6 +790,10 @@ boolean auto_run_choice(int choice, string page)
 		case 1566: //Summon a wave
 			run_choice(1);
 			break;
+		case 1599: // Legendary Digestion: by default use spleen, else take famxp
+			if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0){ run_choice(1); }
+			else { run_choice(4); }
+			break;
 		default:
 			break;
 	}

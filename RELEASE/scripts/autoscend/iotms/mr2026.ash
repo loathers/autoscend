@@ -21,6 +21,44 @@ boolean auto_isInEternityCodpiece(item it)
 	return false;
 }
 
+// function to equip items in codpiece
+// default behavior: keep heartstone in slot 1, rotate in other iotms to other mapped slots as necessary
+// start of run: unequip steely marble if included
+// prep function that puts all iotms in codpiece in correct location
+// should save a pre-autoscend state and a "default" codpiece state
+
+boolean auto_equipIOTMEternityCodpiece(item it) {
+	switch case $item...
+	equip($slot[CODPIECEX], $item[y])
+	default auto_log_warning(unsupported codpiece gem)
+}
+
+boolean auto_equipEternityCodpiece(item it, int cod_slot) {
+	switch case $item...
+	equip($slot[CODPIECEX], $item[y])
+	default auto_log_warning(unsupported slot given)
+}
+
+// start of day
+boolean backupCodpieceConfig() {
+
+}
+
+// bedtime
+void restoreBackupCodpieceConfig() {
+
+}
+
+// call beginning of day
+boolean auto_makeCodpieceDefault() {
+
+}
+
+// call in post adv
+void auto_restoreDefaultCodpiece() {
+	// loop thru list of saved gems and either equip or leave alone
+}
+
 boolean auto_haveLegendarySealClubbingClub()
 {
 	if(auto_is_valid($item[legendary seal-clubbing club]) && available_amount($item[legendary seal-clubbing club]) > 0 )
@@ -63,6 +101,11 @@ boolean wantToClubEmBackInTime(location loc, monster enemy)
 	
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
+
+// club next: use on hippies/war (simple to implement)???? note enamorang never imp.
+// skip maybe? possibly too hard to do.
+// club across: figure out if there is an existing proxy for "want items"
+
 
 boolean auto_haveHeartstone()
 {
@@ -132,6 +175,15 @@ int auto_heartstoneStunRemaining()
 	
 	return 5-to_int(get_property("_heartstoneStunUsed"));
 }
+
+// diamond:
+// function to equip to prime (get to 8 monsters)
+// implement monodent delayburn
+// list of monsters and conditions OK to use the thing
+// also implement YRing -- prob as last resort
+
+// legendary noods: use combat forcer for NSAs
+// stretch: update pasta thralling
 
 boolean auto_haveArchaeologistSpade()
 {
@@ -259,4 +311,133 @@ boolean auto_burnRemainingSpadeDigs()
 		auto_spadeDigAncient();
 	}
 	return auto_spadeDigsRemaining()==0;
+}
+
+boolean auto_havePastaWand()
+{
+	if(auto_is_valid($item[legendary pasta wand]) && available_amount($item[legendary pasta wand]) > 0 ) {
+		return true;
+	}
+	return false;
+}
+
+boolean[item] preparedLegendaryNoodleDishes() {
+	boolean[item] dishes;
+	dishes[$item[Tubetto Gelatto]] = true;
+	dishes[$item[Formica e Pepe]] = true;
+	dishes[$item[Gnocci Domani]] = true;
+	dishes[$item[Linguini Ubriacapa]] = true;
+	dishes[$item[Pasta Grimavera]] = true;
+	dishes[$item[Orzo di Riso]] = true;
+	dishes[$item[Arrattabbattabiata]] = true;
+	dishes[$item[Pesto alla Marziano]] = true;
+	dishes[$item[Frutti di Scatoletta]] = true;
+	return dishes;
+}
+
+int numPreparedLegendaryNoodleDishes() {
+	int num = 0;
+	foreach dish in preparedLegendaryNoodleDishes(){
+		num += item_amount(dish);
+	}
+	return num;
+}
+
+// pick a legendary noodle to consume (or to check that we have one avail. to consume)
+item auto_findPreparedLegendaryNoods() {
+	foreach it in preparedLegendaryNoodleDishes() {
+		if (item_amount(it) > 0) {return it; }
+	}
+	return $item[none];
+}
+
+// also maps to prepared noodle dishes
+item[item] baseLegendaryNoodleDishes() {
+	item[item] dishes;
+	dishes[$item[tomb aspic]] = $item[Tubetto Gelatto];
+	dishes[$item[hot honey ant]] = $item[Formica e Pepe];
+	dishes[$item[later tots]] = $item[Gnocci Domani];
+	dishes[$item[sauced mutton]] = $item[Linguini Ubriacapa];
+	dishes[$item[haunted crudit&eacute;s]] = $item[Pasta Grimavera];
+	dishes[$item[spicy onigiri]] = $item[Orzo di Riso];
+	dishes[$item[ratbatatouille]] = $item[Arrattabbattabiata];
+	dishes[$item[alien salad]] = $item[Pesto alla Marziano];
+	dishes[$item[can of tuna]] = $item[Frutti di Scatoletta];
+	return dishes;
+}
+
+int numBaseLegendaryNoodleDishes() {
+	int num = 0;
+	foreach dish in preparedBaseNoodleDishes(){
+		num += item_amount(dish);
+	}
+	return num;
+}
+
+// pick a base noodle to consume, to be crafted into legendary (or to check that we have one avail. to consume)
+// returns the legendary dish the noods are crafted into
+item auto_findBaseLegendaryNoods() {
+	if (item_amount($item[legendary noodles]) < 1) {
+		return $item[none];
+	}
+	foreach it in baseLegendaryNoodleDishes() {
+		if (item_amount(it) > 0) {return baseLegendaryNoodleDishes()[it]; }
+	}
+	return $item[none];
+}
+
+boolean auto_legendaryNoodlesAvailable() {
+	if (stomach_left() < 1 || get_property("auto_limitConsume").to_boolean()) {return false;}
+	if(auto_findPreparedLegendaryNoods() != $item[none]){ return true;}
+	if(auto_findBaseLegendaryNoods() != $item[none]){ return true;}
+	return false;
+}
+
+
+// if opt is provided, we assume that the circumstances are already "optimal"-ish for consumption
+// but if it's omitted, we want to make sure that the famxp is going on a useful familiar
+boolean auto_consumeLegendaryNoodles(string opt) {
+	if (opt == "turnbloat" && get_property("_legendaryNoodlesSpleen").to_boolean()) {
+		auto_log_warning("Autoscend is trying to incorrectly use Legendary Noodles spleen. Defaulting to Fam XP for now.");
+		auto_consumeLegendaryNoodles();
+	}
+	int option;
+	switch (opt) {
+		case "combat": option = 2; break;
+		case "fam xp": option = 4; break;
+		case "double effect": option = 5; break;
+		case "turnbloat": option = 1; break;// use a spleen instead of a fullness when consuming the noods
+		default: abort(opt + " is an unsupported Legendary Noodles option")
+	}
+	if (get_property("auto_limitConsume").to_boolean())
+	{
+		return false;
+	}
+
+	// values taken from auto_consume.ash
+	int AUTO_ORGAN_STOMACH = 1;
+	int AUTO_OBTAIN_NULL  = 100;
+	int AUTO_OBTAIN_CRAFT = 101;
+
+	item prospective_dish = auto_findPreparedLegendaryNoods();
+	if (prospective_dish != $item[none]) {
+		ConsumeAction action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_NULL);
+	}
+	else {
+		item prospective_dish = auto_findBaseLegendaryNoods();
+		if (prospective_dish != $item[none]) {
+			ConsumeAction action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_CRAFT);
+		}
+		else { return false;}
+	}
+	
+	if (auto_autoConsumeOne(action)) {
+		run_choice(option);
+		return true;
+	}
+	return false;
+}
+
+boolean auto_consumeLegendaryNoodles() {
+	return auto_consumeLegendaryNoodles("fam xp");// probably a safe default
 }
