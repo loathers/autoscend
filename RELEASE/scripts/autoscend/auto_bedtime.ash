@@ -71,8 +71,8 @@ void bedtime_still()
 
 boolean bedtime_spleen()
 {
-	boolean[item] to_try = $items[Breathitin&trade;, Extrovermectin&trade;,
-	  scoop of pre-workout powder, phosphor traces, Homebodyl&trade;, energized spores];
+	boolean[item] to_try = $items[Breathitin&trade;, Extrovermectin&trade;, hot jelly,
+	  scoop of pre-workout powder, Homebodyl&trade;, phosphor traces, energized spores];
 
 	boolean done = false;
 	while (spleen_left() > 0 && !done)
@@ -624,6 +624,11 @@ boolean doBedtime()
 			auto_log_warning("Still sober! Stopping bedtime.", "red");
 			return false;
 		}
+		if(in_amw() && amw_buyAdv())
+		{
+			auto_log_warning("Still grinding meat into adventures! Stopping bedtime.", "red");
+			return false;
+		}
 		int spleenlimit = spleen_limit();
 		if(!canChangeFamiliar())
 		{
@@ -750,6 +755,8 @@ boolean doBedtime()
 	//We are committing to end of day now...
 	getSpaceJelly();
 	while(acquireHermitItem($item[11-leaf Clover]));
+	
+	auto_burnRemainingSpadeDigs(); // use archaeologist spade
 
 	januaryToteAcquire($item[Makeshift Garbage Shirt]);		//doubles stat gains in the LOV tunnel. also keep leftover charges for tomorrow.
 	loveTunnelAcquire(true, $stat[none], true, 3, true, 1);
@@ -793,21 +800,9 @@ boolean doBedtime()
 		}
 	}
 
-	# This does not check if we still want these buffs
 	if((my_hp() < (0.9 * my_maxhp())) && hotTubSoaksRemaining() > 0)
 	{
-		boolean doTub = true;
-		foreach eff in $effects[Once-Cursed, Thrice-Cursed, Twice-Cursed]
-		{
-			if(have_effect(eff) > 0)
-			{
-				doTub = false;
-			}
-		}
-		if(doTub)
-		{
-			doHottub();
-		}
+		doHottub();
 	}
 
 	if(!get_property("_mayoTankSoaked").to_boolean() && (auto_get_campground() contains $item[Portable Mayo Clinic]) && is_unrestricted($item[Portable Mayo Clinic]))
@@ -1214,6 +1209,7 @@ boolean doBedtime()
 
 	auto_beachUseFreeCombs();
 	auto_drinkNightcap();
+	while (in_amw() && my_adventures() <= 125){if (!amw_buyAdv()){break;}}
 	equipRollover(false);
 	
 	// Use up any cursed monkey paw wishes on Frosty (+100% item, +100% meat, +25 ML)
@@ -1299,6 +1295,8 @@ boolean doBedtime()
 		boolean chronolith_done = my_robot_energy() < robot_chronolith_cost() || robot_chronolith_cost() > 47;
 		done = chronolith_done && !auto_unreservedAdvRemaining();
 	}
+	// Meat Golems do not consume food or booze, adventure top-ups should be handled by the looped call to amw_buyAdv ~100 lines above.
+	if(in_amw()){done = true;}
 	if(!done)
 	{
 		auto_log_info("Goodnight done, please make sure to handle your overdrinking, then you can run me again.", "blue");

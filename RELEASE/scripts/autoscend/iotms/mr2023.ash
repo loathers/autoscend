@@ -1211,7 +1211,7 @@ boolean auto_getCitizenZone(string goal)
 
 boolean auto_haveBurningLeaves()
 {
-	return auto_is_valid($item[A Guide to Burning Leaves]) && get_campground() contains $item[A Guide to Burning Leaves];
+	return auto_is_valid("Burning Leaves") && get_campground() contains $item[A Guide to Burning Leaves];
 }
 
 boolean auto_initBurningLeaves()

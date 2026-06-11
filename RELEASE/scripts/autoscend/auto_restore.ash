@@ -1961,11 +1961,21 @@ boolean acquireMP(float goalPercent, int meat_reserve, boolean useFreeRests)
 /**
  * Try to acquire the smaller of your max HP and 800 HP (useFreeRests: true). Will also cure poisoned and beaten up before restoring any hp.
  *
- * returns true if my_hp() >= my_maxhp() after attempting to restore.
+ * returns true if my_hp() >= min(my_maxhp(), 800) after attempting to restore.
  */
 boolean acquireHP()
 {
-	return acquireHP(min(my_maxhp(),800));
+	int goal = min(my_maxhp(), 800);
+	if(my_path() == $path[Disguises Delimit])
+	{
+		// hockey mask deals 75% hp damage at the start of combat so we need to maintain a high percentage of hp
+		goal = my_maxhp() * 0.80;
+	}
+	if(in_amw()) // limited restores & meat is important, needs lower default
+	{
+		goal = my_maxhp() * 0.6;
+	}
+	return acquireHP(goal);
 }
 
 /**
@@ -2160,6 +2170,10 @@ boolean acquireHP(float goalPercent, int meat_reserve, boolean useFreeRests)
  */
 int doRest()
 {
+	if(auto_haveCrimboSkeleton() && get_property("_knuckleboneRests").to_int() < 5)
+	{
+		use_familiar($familiar[Skeleton of Crimbo Past]);
+	}
 	if(chateaumantegna_available())
 	{
 		cli_execute("outfit save Backup");
@@ -2212,7 +2226,7 @@ int doRest()
 
 		equipStatgainIncreasers(bonus, true);
 
-		visit_url("place.php?whichplace=chateau&action=chateau_restbox");
+		cli_execute("rest chateau");
 
 		if((replace != grab) && (replace != $item[none]))
 		{

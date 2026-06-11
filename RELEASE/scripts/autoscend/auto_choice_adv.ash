@@ -784,6 +784,12 @@ boolean auto_run_choice(int choice, string page)
 		case 1557:  // Peering Through Your Peridot (Peridot of Peril zone monster selection choice)
 			peridotChoiceHandler(choice, page);
 			break;
+		case 1562: //Time is a Möbius Strip
+			mobiusChoiceHandler(choice, page);
+			break;
+		case 1566: //Summon a wave
+			run_choice(1);
+			break;
 		default:
 			break;
 	}

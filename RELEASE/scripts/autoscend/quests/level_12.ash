@@ -902,6 +902,10 @@ boolean L12_filthworms()
 	{
 		auto_log_info("We're going to yellow ray the stench glands.");
 	}
+	else if(auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() >= 3) 
+	{
+		auto_log_info("Will dig up stench glands with Archaeologist's Spade if we don't get it in combat");
+	}
 	else if(item_drop_modifier() < 900.0)	//could not guarentee stealing. check if it should be delayed otherwise buff item drops instead
 	{
 		if(have_effect($effect[Everything Looks Yellow]) > 0 && have_effect($effect[Everything Looks Yellow]) <= 100)
@@ -1190,7 +1194,7 @@ boolean L12_gremlins()
 			}
 		}
 	}
-
+	
 	if(0 < have_effect($effect[Curse of the Black Pearl Onion]))
 	{
 		uneffect($effect[Curse of the Black Pearl Onion]);
@@ -2352,6 +2356,11 @@ boolean L12_finalizeWar()
 	{
 		buffMaintain($effect[Queso Fustulento], 10, 1, 10);
 		buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+	}
+	// AMW buff
+	if(in_amw())
+	{
+		buffMaintain($effect[Stewing], 0, 1, 10);
 	}
 	acquireHP();
 	auto_log_info("Let's fight the boss!", "blue");

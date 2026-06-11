@@ -207,22 +207,19 @@ boolean LM_bond()
 	return false;
 }
 
-item[int] cachedDrinks;
-
+item[int] bondDrinksCached;
 item[int] bondDrinks()
 {
-	if (count(cachedDrinks) > 0) {
-		return cachedDrinks;
-	}
-	item[int] retval = itemList();
-
-	foreach it in $items[]
+	if (count(bondDrinksCached) == 0)
 	{
-		if((it.smallimage == "martini.gif") && is_unrestricted(it))
+		bondDrinksCached = itemList();
+		foreach it in $items[]
 		{
-			retval = retval.ListInsert(it);
+			if(it.inebriety > 0 && it.smallimage == "martini.gif" && is_unrestricted(it))
+			{
+				bondDrinksCached = bondDrinksCached.ListInsert(it);
+			}
 		}
 	}
-	cachedDrinks = retval;
-	return retval;
+	return bondDrinksCached;
 }

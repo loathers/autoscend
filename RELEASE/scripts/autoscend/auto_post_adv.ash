@@ -145,6 +145,33 @@ boolean auto_post_adventure()
 		}
 	}
 
+	//assuming we're on the orchard sidequest if we're adventuring there
+	if(auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() > 0) 
+	{
+		//the scent glands are the only droppable items in their respective areas, so it's guaranteed from spade
+		if(my_location() == $location[The Hatching Chamber] && item_amount($item[Filthworm Hatchling Scent Gland]) == 0) 
+		{
+			auto_spadeDigItem();
+		}
+		else if(my_location() == $location[The Feeding Chamber] && item_amount($item[Filthworm Drone Scent Gland]) == 0)
+		{
+			auto_spadeDigItem();
+		}
+		else if(my_location() == $location[The Royal Guard Chamber] && item_amount($item[Filthworm Royal Guard Scent Gland]) == 0)
+		{
+			auto_spadeDigItem();
+		}
+		else if(my_location() == $location[Sonofa Beach] && item_amount($item[barrel of gunpowder]) < 5) 
+		{
+			//dig until we should have 5 barrels or we're out of digs
+			int barrelCount = item_amount($item[barrel of gunpowder]);
+			int digsRemaining = auto_spadeDigsRemaining();
+			for x from (barrelCount + 1) to min(5, digsRemaining) by 1 {
+				auto_spadeDigItem();
+			}
+		}
+	}
+
 	if (my_location() == $location[The Old Landfill] && item_amount($item[funky junk key]) > 0) {
 		// got a key drop, reset the tracking property.
 		set_property("auto_junkspritesencountered", 0);
@@ -344,6 +371,26 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Reliable Backup], 10, 1, 10);
 			buffMaintain($effect[Soothing Flute], 15, 1, 10);
 			//buffMaintain($effect[Tricky Timpani], 30, 1, 10); //Only on boss fights
+		}
+	}
+	if (in_amw()) // adventurer meats world
+	{
+		if(item_amount($item[briefcase]) > 0)
+		{
+			use(1, $item[briefcase]);// no need to run more than once because 1/combat
+		}
+		if (amw_canAfford($skill[Self-Tenderize])) // not necessary, but cheap
+		{
+			buffMaintain($effect[Tenderized], 0, 1, 5);
+		}
+		// Beef Goggles is in providers
+		if (amw_canAfford($skill[Meat Puppet])) // +famwt for our chaun
+		{
+			buffMaintain($effect[Meat Puppet], 0, 1, 5);
+		}
+		if (amw_canAfford($skill[Steak Skirt])) // not necessary, but cheap
+		{
+			buffMaintain($effect[Steak Skirt], 0, 1, 5);
 		}
 	}
 
@@ -762,6 +809,10 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Empathy], 50, 1, 10);
 			buffMaintain($effect[Thoughtful Empathy], 50, 1, 10);
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+			// only do this one if we don't have another shanty up
+			if (auto_remainingShantyTurns() < 1) {
+				buffMaintain($effect[Only Dogs Love a Drunken Sailor], 50, 1, 1);
+			}
 		}
 
 		foreach sk in toCast

@@ -38,6 +38,10 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 	retval = auto_combatWereProfessorStage5(round, enemy, text);
 	if(retval != "") return retval;
 
+	// Path = adventurer meats world
+	retval = auto_combatMeatGolemStage5(round, enemy, text);
+	if(retval != "") return retval;
+
 	//with loofah, you can stagger and deal cold or hot damage
 	if(canUse($skill[loofah stew]) && monster_element(enemy) != $element[cold])
 	{
@@ -160,8 +164,8 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		return useSkill($skill[Surprisingly Sweet Stab]);
 	}
 
-	//Everfull Dart Holder
-	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0)
+	//Everfull Dart Holder- use darts if you have them, unless we are against the naughty sorceress (to avoid dart skill bug)
+	if(have_equipped($item[Everfull Dart Holster]) && get_property("_dartsLeft").to_int() > 0 && !($monsters[Naughty Sorceress, Naughty Sorceress (2)] contains enemy))
 	{
 		return useSkill(dartSkill(), false);
 	}
@@ -204,9 +208,9 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 
 		if(enemy.physical_resistance > 80)
 		{
-			foreach sk in $skills[Saucestorm, Saucegeyser, Northern Explosion]
+			foreach sk in $skills[Saucestorm, Saucegeyser]
 			{
-				if(canUse(sk, false) || (sk == $skill[Northern Explosion] && !auto_canNorthernExplosionFE()))
+				if(canUse(sk, false))
 				{
 					attackMinor = useSkill(sk, false);
 					attackMajor = useSkill(sk, false);
@@ -214,6 +218,13 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 					costMajor = mp_cost(sk);
 					break;
 				}
+			}
+			if(canUse($skill[Northern Explosion], false) && !auto_canNorthernExplosionFE())
+			{
+				attackMinor = useSkill($skill[Northern Explosion], false);
+				attackMajor = useSkill($skill[Northern Explosion], false);
+				costMinor = mp_cost($skill[Northern Explosion]);
+				costMajor = mp_cost($skill[Northern Explosion]);
 			}
 		}
 		break;

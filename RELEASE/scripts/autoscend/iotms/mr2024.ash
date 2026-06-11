@@ -504,7 +504,7 @@ boolean auto_goingToMouthwashLevel()
 	{
 		return false;
 	}
-	if(in_glover() || in_bhy() || in_plumber())
+	if(in_glover() || in_bhy() || in_plumber() || in_amw())
 	{
 		return false;
 	}

@@ -29,8 +29,8 @@ Pygmy Janitor	tavern:true
 Pygmy Orderlies
 Pygmy Witch Lawyer
 Pygmy Witch Nurse
-Red Herring
-Red Snapper
+Red Herring	!prop:questL11Ron=step4
+Red Snapper	!prop:questL11Ron=step4
 Sabre-Toothed Goat
 Senile Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14
 Slick Lihc	loc:The Defiled Niche;prop:cyrptNicheEvilness>14

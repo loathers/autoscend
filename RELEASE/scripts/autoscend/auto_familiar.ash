@@ -699,7 +699,7 @@ boolean autoChooseFamiliar(location place)
 	}
 	
 	// places where meat drop is desirable due to high meat drop monsters.
-	if ($locations[The Boss Bat's Lair, The Icy Peak, The Filthworm Queen's Chamber] contains place) {
+	if ($locations[The Boss Bat's Lair, The Icy Peak, The Filthworm Queen's Chamber, Cobb's Knob Treasury] contains place) {
 		famChoice = lookupFamiliarDatafile("meat");
 	}
 	if (place == $location[Mist-Shrouded Peak] && place.turns_spent < 3) {
@@ -715,6 +715,12 @@ boolean autoChooseFamiliar(location place)
 	if(famChoice == $familiar[none] && 	my_maxmp() > 50 && 	my_mp()*5 < my_maxmp() && poor)
 	{
 		famChoice = lookupFamiliarDatafile("regen");
+	}
+
+	//in meatpath, prioritize meat if meat is a constraint
+	if (in_amw() && famChoice == $familiar[none] && amw_wantMeat()) 
+	{
+		famChoice = lookupFamiliarDatafile("meat");
 	}
 	
 	//select the best familiar that drops items directly. Will prioritize useful items and awesome+ food and drink and then other drops.
@@ -736,8 +742,8 @@ boolean autoChooseFamiliar(location place)
 		famChoice = $familiar[none];
 	}
 	
-	// Stats from combats makes runs go faster apparently.
-	if (famChoice == $familiar[none] && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
+	// Stats from combats makes runs go faster apparently, except in meatpath
+	if (famChoice == $familiar[none] && !in_amw() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
 		famChoice = lookupFamiliarDatafile("stat");
 	}
 	
