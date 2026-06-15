@@ -1,4 +1,4 @@
-since r28979; //  track meat from handsful of tips
+since r29012; // non-thrifty familiars are unusable in thrifty
 
 /***
 	autoscend_header.ash must be first import
