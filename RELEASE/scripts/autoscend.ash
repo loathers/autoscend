@@ -1,4 +1,4 @@
-since r28979; //  track meat from handsful of tips
+since r29012; // non-thrifty familiars are unusable in thrifty
 
 /***
 	autoscend_header.ash must be first import
@@ -66,6 +66,8 @@ import <autoscend/paths/avatar_of_west_of_loathing.ash>
 import <autoscend/paths/bees_hate_you.ash>
 import <autoscend/paths/bugbear_invasion.ash>
 import <autoscend/paths/casual.ash>
+import <autoscend/paths/class_act.ash>
+import <autoscend/paths/class_act_two.ash>
 import <autoscend/paths/community_service.ash>
 import <autoscend/paths/dark_gyffte.ash>
 import <autoscend/paths/disguises_delimit.ash>
@@ -76,6 +78,7 @@ import <autoscend/paths/grey_goo.ash>
 import <autoscend/paths/hattrick.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/i_love_u_hate.ash>
+import <autoscend/paths/journeyman.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
 import <autoscend/paths/legacy_of_loathing.ash>
@@ -2112,6 +2115,21 @@ void auto_begin()
 		boolean nope = user_confirm("Bad moon is not a thing we will ever support even if you can somehow meet the scripts minimum requirements. Do you understand?");
 		string failure = (nope ? "Just no." : "Even if you don't understand, it's still no.");
 		abort(failure);
+	}
+
+	if (!auto_meetsMinimumRequirements())
+	{
+		auto_log_warning("Minimum skill requirements to run autoscend are not met.", "red");
+		if(get_property("_auto_im_cool_with_dying_a_lot").to_int() == -1)
+		{
+			auto_log_warning("Don't come crying to us when you get beat up.", "red");
+		}
+		else
+		{
+			auto_log_warning("Aborting to avoid dying a lot and making very little progress. To override:", "red");
+			auto_log_warning("set _auto_im_cool_with_dying_a_lot = -1", "red");
+			abort();
+		}
 	}
 
 	LX_handleIntroAdventures(); // handle early non-combats in challenge paths.

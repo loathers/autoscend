@@ -5989,3 +5989,29 @@ int auto_remainingShantyTurns()
 	}
 	return turns;
 }
+
+boolean auto_meetsMinimumRequirements()
+{
+	// If we're not a base class, we don't need perms
+	if (my_class().id > 6)
+	{
+		return true;
+	}
+
+	// If we're in bad moon we have other checks for that
+	if (in_bad_moon()) 
+	{
+		return true;
+	}
+
+	// If we're in Nuclear Autumn, You, Robot, Journeyman, Pokefam, or 
+	// either of the Class Acts, we can't meet these requirements by default.
+	// So we're not going to block for this reason. We may well yet block for other reasons.
+	if (in_nuclear() || in_robot() || in_journeyman() || in_pokefam() || in_class_act() || in_class_act_two())
+	{
+		return true;
+	}
+
+	// Otherwise, we just need Saucestorm and Cocoon.
+	return (have_skill($skill[Saucestorm]) && have_skill($skill[Cannelloni Cocoon]));
+}
