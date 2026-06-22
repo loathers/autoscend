@@ -21,44 +21,6 @@ boolean auto_isInEternityCodpiece(item it)
 	return false;
 }
 
-// function to equip items in codpiece
-// default behavior: keep heartstone in slot 1, rotate in other iotms to other mapped slots as necessary
-// start of run: unequip steely marble if included
-// prep function that puts all iotms in codpiece in correct location
-// should save a pre-autoscend state and a "default" codpiece state
-
-boolean auto_equipIOTMEternityCodpiece(item it) {
-	switch case $item...
-	equip($slot[CODPIECEX], $item[y])
-	default auto_log_warning(unsupported codpiece gem)
-}
-
-boolean auto_equipEternityCodpiece(item it, int cod_slot) {
-	switch case $item...
-	equip($slot[CODPIECEX], $item[y])
-	default auto_log_warning(unsupported slot given)
-}
-
-// start of day
-boolean backupCodpieceConfig() {
-
-}
-
-// bedtime
-void restoreBackupCodpieceConfig() {
-
-}
-
-// call beginning of day
-boolean auto_makeCodpieceDefault() {
-
-}
-
-// call in post adv
-void auto_restoreDefaultCodpiece() {
-	// loop thru list of saved gems and either equip or leave alone
-}
-
 boolean auto_haveLegendarySealClubbingClub()
 {
 	if(auto_is_valid($item[legendary seal-clubbing club]) && available_amount($item[legendary seal-clubbing club]) > 0 )
