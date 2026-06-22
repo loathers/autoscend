@@ -632,7 +632,7 @@ boolean canDrink(item toDrink, boolean checkValidity)
 	{
 		return count(sell_cost($coinmaster[Jarlsberg's Cosmic Kitchen], toDrink)) > 0;
 	}
-	if(in_nuclear() && (toDrink.inebriety != 1))
+	if(in_nuclear() && (toDrink.inebriety > 1))
 	{
 		return false;
 	}
@@ -756,6 +756,10 @@ boolean canEat(item toEat)
 boolean canChew(item toChew)
 {
 	if(!auto_is_valid(toChew))
+	{
+		return false;
+	}
+	if(in_nuclear() && (toChew.spleen > 1))
 	{
 		return false;
 	}

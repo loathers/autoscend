@@ -292,6 +292,10 @@ boolean[monster] peridotManuallyDesiredMonsters()
 	desired_monsters[$monster[modern zmobie]] = true;
 	desired_monsters[$monster[dairy goat]] = true;
 	desired_monsters[$monster[writing desk]] = true;
+	// we sniff the two-star, two-line monster, but we want exactly one star chart
+	if (item_amount($item[Star Chart]) == 0) {
+		desired_monsters[$monster[Astronomer]] = true;
+	}
 	// Quest gremlins need IDs because there's multiple
 	desired_monsters[$monster[547]] = true; // erudite gremlin (tool) 
 	desired_monsters[$monster[549]] = true; // batwinged gremlin (tool)
