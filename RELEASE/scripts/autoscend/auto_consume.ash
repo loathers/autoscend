@@ -1050,7 +1050,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				blacklist[dish] = true;
 			}
 		}
-		else if (numPreparedLegendaryNoodleDishes() < 0 && min(numBaseLegendaryNoodleDishes(), item_amount($item[legendary noodles)])) < 2) {
+		else if (numPreparedLegendaryNoodleDishes() < 0 && min(numBaseLegendaryNoodleDishes(), item_amount($item[legendary noodles])) < 2) {
 			foreach dish in baseLegendaryNoodleDishes() {
 				blacklist[dish] = true;
 			}
