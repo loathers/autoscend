@@ -330,7 +330,7 @@ item[item] baseLegendaryNoodleDishes() {
 
 int numBaseLegendaryNoodleDishes() {
 	int num = 0;
-	foreach dish in preparedBaseNoodleDishes(){
+	foreach dish in baseLegendaryNoodleDishes(){
 		num += item_amount(dish);
 	}
 	return num;
@@ -369,7 +369,7 @@ boolean auto_consumeLegendaryNoodles(string opt) {
 		case "fam xp": option = 4; break;
 		case "double effect": option = 5; break;
 		case "turnbloat": option = 1; break;// use a spleen instead of a fullness when consuming the noods
-		default: abort(opt + " is an unsupported Legendary Noodles option")
+		default: abort(opt + " is an unsupported Legendary Noodles option");
 	}
 	if (get_property("auto_limitConsume").to_boolean())
 	{
@@ -380,15 +380,16 @@ boolean auto_consumeLegendaryNoodles(string opt) {
 	int AUTO_ORGAN_STOMACH = 1;
 	int AUTO_OBTAIN_NULL  = 100;
 	int AUTO_OBTAIN_CRAFT = 101;
+	ConsumeAction action;
 
 	item prospective_dish = auto_findPreparedLegendaryNoods();
 	if (prospective_dish != $item[none]) {
-		ConsumeAction action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_NULL);
+		action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_NULL);
 	}
 	else {
 		item prospective_dish = auto_findBaseLegendaryNoods();
 		if (prospective_dish != $item[none]) {
-			ConsumeAction action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_CRAFT);
+			action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_CRAFT);
 		}
 		else { return false;}
 	}

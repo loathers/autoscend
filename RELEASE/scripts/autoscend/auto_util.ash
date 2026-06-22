@@ -5228,7 +5228,7 @@ boolean _auto_forceNextCombat(location loc, boolean speculative)
 	if(auto_legendaryNoodlesAvailable())
 	{
 		if(speculative) return true;
-		auto_consumeLegendaryNoodles("combat")
+		auto_consumeLegendaryNoodles("combat");
 		if(!auto_haveQueuedForcedCombat())
 		{
 			abort("Attempted to force a combat with legendary pasta noodles but was unable to.");
@@ -6086,7 +6086,7 @@ boolean pm_updateThrall(location place, boolean going_to_eat){
 */
 	boolean baseline_ver = (my_mp() >= (1.2 * mp_cost($skill[Bind Vermincelli]))) && auto_have_skill($skill[Bind Vermincelli]);
 	int ver_level = to_thrall("ver").level;
-	boolean base_spice = (my_mp() >= (1.2 * mp_cost($skill[Bind Spice Ghost]))) && auto_have_skill($skill[Bind Spice Ghost]) && (my_daycount() > 1) && (numeric_modifier("MP Regen Min").to_int() > 9)
+	boolean base_spice = (my_mp() >= (1.2 * mp_cost($skill[Bind Spice Ghost]))) && auto_have_skill($skill[Bind Spice Ghost]) && (my_daycount() > 1) && (numeric_modifier("MP Regen Min").to_int() > 9);
 	if (going_to_eat) {
 		// if we are consuming food and our spice thrall is lvl 11 (with pasta wand or spice whorl), +2 advs 1/day
 		if(base_spice && to_thrall("spice").level > 10 && get_property("_legendarySpiceGhostFood").to_boolean())
