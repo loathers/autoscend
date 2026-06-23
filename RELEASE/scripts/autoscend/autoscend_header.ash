@@ -665,6 +665,7 @@ boolean auto_unequipAprilShieldBuff();
 boolean auto_canNorthernExplosionFE();
 boolean auto_havePeridot();
 boolean[monster] peridotManuallyDesiredMonsters();
+boolean auto_peridotSetZone(location loc);
 void peridotChoiceHandler(int choice, string page);
 boolean haveUsedPeridot(int loc);
 boolean auto_havePrismaticBeret();
@@ -711,6 +712,14 @@ int auto_heartstoneKillRemaining();
 int auto_heartstoneLuckRemaining();
 int auto_heartstonePalsRemaining();
 int auto_heartstoneStunRemaining();
+boolean auto_haveArchaeologistSpade();
+int auto_spadeDigsRemaining();
+boolean auto_spadeDigItem();
+boolean auto_spadeDigAncient();
+boolean auto_spadeDigSkeleton();
+boolean auto_wantToSpadeDigSkeleton(location loc);
+boolean[location] spadeDelayZones();
+boolean auto_burnRemainingSpadeDigs();
 
 
 ########################################################################################################
@@ -857,6 +866,14 @@ boolean L8_slopeCasual();
 boolean LM_canInteract();
 
 ########################################################################################################
+//Defined in autoscend/paths/class_act.ash
+boolean in_class_act();
+
+########################################################################################################
+//Defined in autoscend/paths/class_act_two.ash
+boolean in_class_act_two();
+
+########################################################################################################
 //Defined in autoscend/paths/community_service.ash
 boolean in_community();
 
@@ -956,6 +973,10 @@ boolean iluh_foodConsumable(string str);
 boolean iluh_famAllowed(string fam);
 void iluh_buyEquiq();
 void iluh_pulls();
+
+########################################################################################################
+//Defined in autoscend/paths/journeyman.ash
+boolean in_journeyman();
 
 ########################################################################################################
 //Defined in autoscend/paths/kingdom_of_exploathing.ash
@@ -2215,3 +2236,4 @@ modifier damageModifier     (element el);
 modifier spellDamageModifier(element el);
 float auto_getElementalDamageMultiplier(element source, element target);
 int auto_remainingShantyTurns();
+boolean auto_meetsMinimumRequirements();

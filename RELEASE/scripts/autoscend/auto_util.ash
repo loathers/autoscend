@@ -5566,15 +5566,16 @@ boolean auto_burnMP(int mpToBurn)
 }
 
 boolean can_read_skillbook(item it) {
-	// can't read in Picky, Pokefam, Class Act or Journeyman
-	if (in_picky() || in_pokefam() || my_path() == $path[Class Act] || my_path() == $path[Class Act II: A Class For Pigs] || my_path() == $path[Journeyman]) {
+	// can't read in Nuclear Autumn, Picky, Pokefam, Class Act or Journeyman
+	if (in_nuclear() || in_picky() || in_pokefam() || in_class_act() || in_class_act_two() || in_journeyman()) {
 		return false;
+	}
+	// robots can read the emotion chip and nothing else
+	if (in_robot()) {
+		return it == $item[spinal-fluid-covered emotion chip];
 	}
 	// all the normal classes and AoSOL classes are literate
 	if ($classes[Seal Clubber, Turtle Tamer, Sauceror, Pastamancer, Disco Bandit, Accordion Thief, Pig Skinner, Cheese Wizard, Jazz Agent] contains my_class()) {
-		return true;
-	}
-	if (it == $item[spinal-fluid-covered emotion chip] && in_robot()) {
 		return true;
 	}
 	return false;
@@ -5988,4 +5989,30 @@ int auto_remainingShantyTurns()
 		turns = max(turns,have_effect(ef));
 	}
 	return turns;
+}
+
+boolean auto_meetsMinimumRequirements()
+{
+	// If we're not a base class, we don't need perms
+	if (my_class().id > 6)
+	{
+		return true;
+	}
+
+	// If we're in bad moon we have other checks for that
+	if (in_bad_moon()) 
+	{
+		return true;
+	}
+
+	// If we're in Nuclear Autumn, You, Robot, Journeyman, Pokefam, or 
+	// either of the Class Acts, we can't meet these requirements by default.
+	// So we're not going to block for this reason. We may well yet block for other reasons.
+	if (in_nuclear() || in_robot() || in_journeyman() || in_pokefam() || in_class_act() || in_class_act_two())
+	{
+		return true;
+	}
+
+	// Otherwise, we just need Saucestorm and Cocoon.
+	return (have_skill($skill[Saucestorm]) && have_skill($skill[Cannelloni Cocoon]));
 }
