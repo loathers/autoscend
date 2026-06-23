@@ -380,8 +380,8 @@ boolean auto_consumeLegendaryNoodles(string opt) {
 		else { return false;}
 	}
 	
+	set_property("auto_forceCombatWithLegendaryNoodles", true);
 	if (auto_autoConsumeOne(action)) {
-		run_choice(option);
 		return true;
 	}
 	return false;
