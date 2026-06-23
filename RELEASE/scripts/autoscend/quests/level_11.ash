@@ -2966,7 +2966,7 @@ boolean L11_shenCopperhead()
 				if (auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
 					if (L8_trapperNinjaLair()){ return true; } 
 				}
-				if (auto_haveCombatForceSource() && !isAboutToPowerlevel() && !get_property("auto_L8_extremeInstead").to_boolean()) {
+				if (internalQuestStatus("questL08Trapper").to_int() == 2 && auto_haveCombatForceSource() && !isAboutToPowerlevel() && !get_property("auto_L8_extremeInstead").to_boolean()) {
 					return false;
 				}
 			}
