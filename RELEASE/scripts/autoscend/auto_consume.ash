@@ -411,7 +411,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 			abort("Attempted to eat food from Black and White Apron Kit, but failed.");
 		}
 	}
-	if (get_property("_legendaryNoodlesSpleen").to_boolean() && preparedLegendaryNoodleDishes() contains toEat) {
+	if (get_property("_legendaryNoodlesSpleen").to_boolean() && legendaryNoodleDishes() contains toEat) {
 		switchToFamXP(); // gives famxp; want to attempt to have a fam equipped we want it on 
 	}
 	if(item_amount(toEat) < howMany)
@@ -1050,13 +1050,13 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	if(internalQuestStatus("questL08Trapper") < 3 && auto_havePastaWand()) { 
 		// consider blacklisting legendary noodles so we have some available for combat forcing if we still need to climb slope and have the wand
 		if (numPreparedLegendaryNoodleDishes() < 2) {
-			foreach dish in preparedLegendaryNoodleDishes() {
+			foreach dish in legendaryNoodleDishes() {
 				blacklist[dish] = true;
 			}
 		}
 		else if (numPreparedLegendaryNoodleDishes() < 0 && min(numBaseLegendaryNoodleDishes(), item_amount($item[legendary noodles])) < 2) {
-			foreach dish in baseLegendaryNoodleDishes() {
-				blacklist[dish] = true;
+			foreach dish in legendaryNoodleDishes() {
+				blacklist[legendaryNoodleDishes()[dish]] = true;
 			}
 		}
 	}
@@ -1169,7 +1169,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				potentialTurnGain[it] = 2.0;
 			}
-			else if (preparedLegendaryNoodleDishes() contains it && item_amount(it) > 0) {
+			else if (legendaryNoodleDishes() contains it && item_amount(it) > 0) {
 				// we have the option, after eating the dish, to consume spleen instead 1/day.
 				// which is quite good for minimizing daycount. We want that if it's available.
 				if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0) {
@@ -1412,7 +1412,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 					actions[n].desirability += keyLimePieDesirabilityBonus;
 				}
 				if ( (i == 0) &&
-				(it == $item[pheromone cocktail] || preparedLegendaryNoodleDishes() contains it) && potentialTurnGain[it] > 0)
+				(it == $item[pheromone cocktail] || legendaryNoodleDishes() contains it) && potentialTurnGain[it] > 0)
 				{
 					actions[n].desirability += potentialTurnGain[it];
 				}
