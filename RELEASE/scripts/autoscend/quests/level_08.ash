@@ -902,8 +902,8 @@ boolean L8_forceExtremeInstead()
 {
 	// If for some reason we've already got 2 ninja items, no need to get forcey
 	if(available_amount($item[ninja crampons]) > 0) { return false; }
-	// Set the variable if we're doing McHugeLarge items
-	if (auto_canEquipAllMcHugeLarge()) { set_property("auto_L8_extremeInstead", true); }
+	// Set the variable if we're doing McHugeLarge items and aren't already forcing combats for lair
+	if (auto_canEquipAllMcHugeLarge() && !auto_haveQueuedForcedCombat()) { set_property("auto_L8_extremeInstead", true); }
 	return get_property("auto_L8_extremeInstead").to_boolean();
 }
 
