@@ -643,7 +643,8 @@ void theeXtremeSlopeChoiceHandler(int choice)
 boolean L8_trapperNinjaLair()
 {
 	// adventure in the lair of the ninja snowmen to find and fight ninja snowman assassins.
-	// usually this would only occur in hardcore
+	// ~~usually this would only occur in hardcore~~
+	// UPDATE: as of the May '26 IOTM we like ninja lair, so this should be typical with that IOTM.
 	if(internalQuestStatus("questL08Trapper") != 2)
 	{
 		return false;
@@ -928,12 +929,13 @@ boolean L8_trapperSlope()
 	{
 		return false; // delay for You, Robot path
 	}
+	// similar if statements exist in the L11 quest file (shen)
 	// We want to go ninja lair if we can force the NSAs
 	if(auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
 		if(L8_trapperNinjaLair()) return true;
 	}
 	if (auto_haveCombatForceSource() && !isAboutToPowerlevel() && !get_property("auto_L8_extremeInstead").to_boolean()) {
-		return false; // we want to wait until we can force combats
+		return false; // we want to wait until we can force combats if we have a force source, unless we've decided to go extreme or have totally run out of tasks
 	}
 	// Checks for McHugeLarge skis
 	if (L8_forceExtremeInstead())

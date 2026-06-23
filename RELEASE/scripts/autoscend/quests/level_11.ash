@@ -2961,6 +2961,15 @@ boolean L11_shenCopperhead()
 				// Snakes have variable delay of 3-5 adventures but we can burn at least 3 of that.
 				return false;
 			}
+			// similar if statements exist in the L8 quest file (see comments over there)
+			if (goal == $location[Lair of the Ninja Snowmen]) { 
+				if (auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
+					if (L8_trapperNinjaLair()){ return true; } 
+				}
+				if (auto_haveCombatForceSource() && !isAboutToPowerlevel() && !get_property("auto_L8_extremeInstead").to_boolean()) {
+					return false;
+				}
+			}
 
 			return autoAdv(goal);
 		}
