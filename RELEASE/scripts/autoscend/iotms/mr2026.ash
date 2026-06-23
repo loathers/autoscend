@@ -283,38 +283,8 @@ boolean auto_havePastaWand()
 	return false;
 }
 
-boolean[item] preparedLegendaryNoodleDishes() {
-	boolean[item] dishes;
-	dishes[$item[Tubetto Gelatto]] = true;
-	dishes[$item[Formica e Pepe]] = true;
-	dishes[$item[Gnocci Domani]] = true;
-	dishes[$item[Linguini Ubriacapa]] = true;
-	dishes[$item[Pasta Grimavera]] = true;
-	dishes[$item[Orzo di Riso]] = true;
-	dishes[$item[Arrattabbattabiata]] = true;
-	dishes[$item[Pesto alla Marziano]] = true;
-	dishes[$item[Frutti di Scatoletta]] = true;
-	return dishes;
-}
-
-int numPreparedLegendaryNoodleDishes() {
-	int num = 0;
-	foreach dish in preparedLegendaryNoodleDishes(){
-		num += item_amount(dish);
-	}
-	return num;
-}
-
-// pick a legendary noodle to consume (or to check that we have one avail. to consume)
-item auto_findPreparedLegendaryNoods() {
-	foreach it in preparedLegendaryNoodleDishes() {
-		if (item_amount(it) > 0) {return it; }
-	}
-	return $item[none];
-}
-
-// also maps to prepared noodle dishes
-item[item] baseLegendaryNoodleDishes() {
+// keys are base dishes, values are the actual legendary dishes
+item[item] legendaryNoodleDishes() {
 	item[item] dishes;
 	dishes[$item[tomb aspic]] = $item[Tubetto Gelatto];
 	dishes[$item[hot honey ant]] = $item[Formica e Pepe];
@@ -328,9 +298,25 @@ item[item] baseLegendaryNoodleDishes() {
 	return dishes;
 }
 
+int numPreparedLegendaryNoodleDishes() {
+	int num = 0;
+	foreach baseDish in legendaryNoodleDishes(){
+		num += item_amount(legendaryNoodleDishes()[baseDish]);
+	}
+	return num;
+}
+
+// pick a legendary noodle to consume (or to check that we have one avail. to consume)
+item auto_findPreparedLegendaryNoods() {
+	foreach it in legendaryNoodleDishes() {
+		if (item_amount(legendaryNoodleDishes()[it]) > 0) {return legendaryNoodleDishes()[it]; }
+	}
+	return $item[none];
+}
+
 int numBaseLegendaryNoodleDishes() {
 	int num = 0;
-	foreach dish in baseLegendaryNoodleDishes(){
+	foreach dish in legendaryNoodleDishes(){
 		num += item_amount(dish);
 	}
 	return num;
@@ -342,8 +328,8 @@ item auto_findBaseLegendaryNoods() {
 	if (item_amount($item[legendary noodles]) < 1) {
 		return $item[none];
 	}
-	foreach it in baseLegendaryNoodleDishes() {
-		if (item_amount(it) > 0) {return baseLegendaryNoodleDishes()[it]; }
+	foreach it in legendaryNoodleDishes() {
+		if (item_amount(it) > 0) {return legendaryNoodleDishes()[it]; }
 	}
 	return $item[none];
 }
