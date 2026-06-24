@@ -632,9 +632,7 @@ generic_t zone_combatMod(location loc)
 		}
 		break;
 	case $location[Lair of the Ninja Snowmen]:
-	// important note: do not call L8_forceExtremeInstead() here because this function is called from auto_pre_adv and it's weird to try to decide if we want to go slope
-	// when we've already decided to adventure in the lair
-		if(internalQuestStatus("questL08Trapper") < 3 && !get_property("auto_L8_extremeInstead").to_boolean() && item_amount($item[Ninja Carabiner]) == 0)
+		if(internalQuestStatus("questL08Trapper") < 3 && !L8_forceExtremeInstead() && item_amount($item[Ninja Carabiner]) == 0)
 		{
 			value = 80;
 		}
