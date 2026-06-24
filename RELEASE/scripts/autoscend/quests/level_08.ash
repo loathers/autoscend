@@ -691,8 +691,17 @@ boolean L8_trapperNinjaLair()
 		return false;
 	}
 
-	// can we provide enough combat bonus to encounter snowman assassins?
-	if(!auto_forceNextCombat($location[Lair of the Ninja Snowmen]) && providePlusCombat(auto_combatModCap(), $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
+	// can we provide enough combat bonus to encounter snowman assassins, or force them?
+	boolean CForced = false;
+	if (auto_haveQueuedForcedCombat()) {
+		CForced = true;
+		auto_log_info("Not trying to force combat again at Lair of the Ninja Showmen because we already have a forced combat queued");
+	}
+	else {
+		CForced = auto_forceNextCombat($location[Lair of the Ninja Snowmen]);
+		auto_log_info("Trying to force combat at Lair of the Ninja Snowmen: "+CForced.to_string(), "blue");
+	}
+	if(!CForced && providePlusCombat(auto_combatModCap(), $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
 	{
 		if(isAboutToPowerlevel())
 		{
