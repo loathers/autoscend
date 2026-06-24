@@ -720,6 +720,7 @@ boolean auto_spadeDigSkeleton();
 boolean auto_wantToSpadeDigSkeleton(location loc);
 boolean[location] spadeDelayZones();
 boolean auto_burnRemainingSpadeDigs();
+void legendaryNoodlesChoiceHandler();
 
 
 ########################################################################################################

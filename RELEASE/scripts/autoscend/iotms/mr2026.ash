@@ -260,3 +260,15 @@ boolean auto_burnRemainingSpadeDigs()
 	}
 	return auto_spadeDigsRemaining()==0;
 }
+
+void legendaryNoodlesChoiceHandler() {
+	// force combats if requested
+	if (get_property("auto_forceCombatWithLegendaryNoodles").to_boolean()) { 
+			run_choice(2);
+			set_property("auto_forceCombatWithLegendaryNoodles", false);
+	}
+	// or use a spleen instead of a stomach
+	else if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0){ run_choice(1); }
+	// take famxp if nothing else
+	else { run_choice(4); }
+}
