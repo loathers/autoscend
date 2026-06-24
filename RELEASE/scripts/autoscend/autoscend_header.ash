@@ -729,6 +729,7 @@ item auto_findBaseLegendaryNoods();
 boolean auto_legendaryNoodlesAvailable();
 boolean auto_consumeLegendaryNoodles(string opt);
 boolean auto_consumeLegendaryNoodles();
+void legendaryNoodlesChoiceHandler();
 
 
 ########################################################################################################
