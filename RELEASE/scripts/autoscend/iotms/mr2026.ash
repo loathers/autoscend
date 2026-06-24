@@ -335,7 +335,7 @@ item auto_findBaseLegendaryNoods() {
 }
 
 boolean auto_legendaryNoodlesAvailable() {
-	if (stomach_left() < 1 || get_property("auto_limitConsume").to_boolean()) {return false;}
+	if (stomach_left() < 1 || get_property("auto_limitConsume").to_boolean() || in_small()) {return false;}
 	if(auto_findPreparedLegendaryNoods() != $item[none]){ return true;}
 	if(auto_findBaseLegendaryNoods() != $item[none]){ return true;}
 	return false;
