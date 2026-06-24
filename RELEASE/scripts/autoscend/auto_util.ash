@@ -5228,7 +5228,7 @@ boolean _auto_forceNextCombat(location loc, boolean speculative)
 	if(auto_legendaryNoodlesAvailable())
 	{
 		if(speculative) return true;
-		auto_consumeLegendaryNoodles("combat");
+		auto_forceCombatLegendaryNoodles();
 		if(!auto_haveQueuedForcedCombat())
 		{
 			abort("Attempted to force a combat with legendary pasta noodles but was unable to.");

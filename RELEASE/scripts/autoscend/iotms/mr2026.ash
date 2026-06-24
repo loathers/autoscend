@@ -342,32 +342,16 @@ boolean auto_legendaryNoodlesAvailable() {
 }
 
 
-// if opt is provided, we assume that the circumstances are already "optimal"-ish for consumption
-// but if it's omitted, we want to make sure that the famxp is going on a useful familiar
-boolean auto_consumeLegendaryNoodles(string opt) {
-	if (opt == "turnbloat" && get_property("_legendaryNoodlesSpleen").to_boolean()) {
-		auto_log_warning("Autoscend is trying to incorrectly use Legendary Noodles spleen. Defaulting to Fam XP for now.");
-		auto_consumeLegendaryNoodles();
-	}
-	int option;
-	switch (opt) {
-		case "combat": option = 2; break;
-		case "fam xp": option = 4; break;
-		case "double effect": option = 5; break;
-		case "turnbloat": option = 1; break;// use a spleen instead of a fullness when consuming the noods
-		default: abort(opt + " is an unsupported Legendary Noodles option");
-	}
-	if (get_property("auto_limitConsume").to_boolean())
-	{
-		return false;
-	}
-
+boolean auto_forceCombatLegendaryNoodles() {
+	// we are overriding the normal consumption loop due to the nature of the food's effect (eating when we are ready to force)
+	// so we make a ConsumeAction record to record what we want to eat and then feed it into auto_autoConsumeOne()
 	// values taken from auto_consume.ash
 	int AUTO_ORGAN_STOMACH = 1;
 	int AUTO_OBTAIN_NULL  = 100;
 	int AUTO_OBTAIN_CRAFT = 101;
 	ConsumeAction action;
 
+	// select a dish and then create a record, prioritizing dishes that are already crafted first
 	item prospective_dish = auto_findPreparedLegendaryNoods();
 	if (prospective_dish != $item[none]) {
 		action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_NULL);
@@ -380,6 +364,7 @@ boolean auto_consumeLegendaryNoodles(string opt) {
 		else { return false;}
 	}
 	
+	// we communicate via the pref to the ChoiceHandler below to take the amygdala force-combat option
 	set_property("auto_forceCombatWithLegendaryNoodles", true);
 	if (auto_autoConsumeOne(action)) {
 		return true;
@@ -387,9 +372,7 @@ boolean auto_consumeLegendaryNoodles(string opt) {
 	return false;
 }
 
-boolean auto_consumeLegendaryNoodles() {
-	return auto_consumeLegendaryNoodles("fam xp");// probably a safe default
-}void legendaryNoodlesChoiceHandler() {
+void legendaryNoodlesChoiceHandler() {
 	// force combats if requested
 	if (get_property("auto_forceCombatWithLegendaryNoodles").to_boolean()) { 
 			run_choice(2);

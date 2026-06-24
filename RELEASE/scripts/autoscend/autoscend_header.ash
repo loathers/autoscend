@@ -727,8 +727,7 @@ item auto_findPreparedLegendaryNoods();
 int numBaseLegendaryNoodleDishes();
 item auto_findBaseLegendaryNoods();
 boolean auto_legendaryNoodlesAvailable();
-boolean auto_consumeLegendaryNoodles(string opt);
-boolean auto_consumeLegendaryNoodles();
+boolean auto_forceCombatLegendaryNoodles();
 void legendaryNoodlesChoiceHandler();
 
 
