@@ -5276,7 +5276,7 @@ int auto_numQueuedForcedCombat()
 }
 
 boolean auto_haveCombatForceSource() {
-	return auto_havePastaWand() && can_eat() && !get_property("auto_limitConsume").to_boolean();
+	return auto_havePastaWand() && can_eat() && !get_property("auto_limitConsume").to_boolean() && !in_small() && !in_plumber();
 }
 
 // Function to Predict how many turns we will get from an AT buff
