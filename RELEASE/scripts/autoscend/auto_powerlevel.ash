@@ -363,7 +363,7 @@ boolean LX_freeCombats(boolean powerlevel)
 	if (my_class() == $class[Pastamancer] && to_thrall("ver").level > 10 
 	&& get_property("_legendaryVermincelliFreeRats").to_int() < 3 
 	&& zone_isAvailable(burrow, true) && appearance_rates(burrow)[$monster[Screambat]] < 0.01) {
-		// first three fights each day with Vermincelli vs rats are free. Choosing to go to the burrow, but need it to be available and no screambats.
+		// first three fights each day with Vermincelli vs rats are guaranteed free. Choosing to go to the burrow, but need it to be available and no screambats.
 		pm_updateThrall(burrow, false);
 		if (my_thrall() == $thrall[Vermincelli]) {
 			auto_log_debug("LX_freeCombats is adventuring in [The Batrat and Ratbat Burrow] with Vermincelli");
