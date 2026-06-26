@@ -2957,6 +2957,7 @@ boolean L11_shenCopperhead()
 				return auto_spadeDigSkeleton();
 			}
 			// similar if statements exist in the L8 quest file (see comments over there)
+			// before delayburn because we *want* to fight NSAs if we're going ninja lair, not avoid them by burning delay
 			if (goal == $location[Lair of the Ninja Snowmen]) { 
 				if (auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
 					if (L8_trapperNinjaLair()){ return true; } 
