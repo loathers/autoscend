@@ -64,6 +64,11 @@ boolean wantToClubEmBackInTime(location loc, monster enemy)
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
+// club next: use on hippies/war (simple to implement)???? note enamorang never imp.
+// skip maybe? possibly too hard to do.
+// club across: figure out if there is an existing proxy for "want items"
+
+
 boolean auto_haveHeartstone()
 {
 	if(!auto_is_valid($item[heartstone]))
@@ -132,6 +137,15 @@ int auto_heartstoneStunRemaining()
 	
 	return 5-to_int(get_property("_heartstoneStunUsed"));
 }
+
+// diamond:
+// function to equip to prime (get to 8 monsters)
+// implement monodent delayburn
+// list of monsters and conditions OK to use the thing
+// also implement YRing -- prob as last resort
+
+// legendary noods: use combat forcer for NSAs
+// stretch: update pasta thralling
 
 boolean auto_haveArchaeologistSpade()
 {
@@ -259,4 +273,115 @@ boolean auto_burnRemainingSpadeDigs()
 		auto_spadeDigAncient();
 	}
 	return auto_spadeDigsRemaining()==0;
+}
+
+boolean auto_havePastaWand()
+{
+	if(auto_is_valid($item[legendary pasta wand]) && available_amount($item[legendary pasta wand]) > 0 ) {
+		return true;
+	}
+	return false;
+}
+
+// keys are the legendary dishes, values are their respective base dishes
+item[item] legendaryNoodleDishes() {
+	item[item] dishes;
+	dishes[$item[Tubetto Gelatto]] = $item[tomb aspic];
+	dishes[$item[Formica e Pepe]] = $item[hot honey ant];
+	dishes[$item[Gnocci Domani]] = $item[later tots];
+	dishes[$item[Linguini Ubriacapa]] = $item[sauced mutton];
+	dishes[$item[Pasta Grimavera]] = $item[haunted crudit&eacute;s];
+	dishes[$item[Orzo di Riso]] = $item[spicy onigiri];
+	dishes[$item[Arrattabbattabiata]] = $item[ratbatatouille];
+	dishes[$item[Pesto alla Marziano]] = $item[alien salad];
+	dishes[$item[Frutti di Scatoletta]] = $item[can of tuna];
+	return dishes;
+}
+
+int numPreparedLegendaryNoodleDishes() {
+	int num = 0;
+	foreach dish in legendaryNoodleDishes(){
+		num += item_amount(dish);
+	}
+	return num;
+}
+
+// pick a legendary noodle to consume (or to check that we have one avail. to consume)
+item auto_findPreparedLegendaryNoods() {
+	foreach it in legendaryNoodleDishes() {
+		if (item_amount(it) > 0) {return it; }
+	}
+	return $item[none];
+}
+
+int numBaseLegendaryNoodleDishes() {
+	int num = 0;
+	foreach preparedDish in legendaryNoodleDishes(){
+		num += item_amount(legendaryNoodleDishes()[preparedDish]);
+	}
+	return num;
+}
+
+// pick a base noodle to consume, to be crafted into legendary (or to check that we have one avail. to consume)
+// returns the legendary dish the noods are crafted into
+item auto_findBaseLegendaryNoods() {
+	if (item_amount($item[legendary noodles]) < 1) {
+		return $item[none];
+	}
+	foreach it in legendaryNoodleDishes() {
+		if (item_amount(legendaryNoodleDishes()[it]) > 0) {return it; }
+	}
+	return $item[none];
+}
+
+boolean auto_legendaryNoodlesAvailable() {
+	// the specific dish we check for canEat doesn't matter, just that it's *A* legendary pasta dish
+	// We exclude small because we want to be careful about maximizing the quality of our food when we only have two space, and we exclude plumber because plumber consumption is weird
+	if (stomach_left() < 1 || !canEat($item[Orzo di Riso]) || get_property("auto_limitConsume").to_boolean() || in_small() || in_plumber()) {return false;}
+	if(auto_findPreparedLegendaryNoods() != $item[none]){ return true;}
+	if(auto_findBaseLegendaryNoods() != $item[none]){ return true;}
+	return false;
+}
+
+
+boolean auto_forceCombatLegendaryNoodles() {
+	// we are overriding the normal consumption loop due to the nature of the food's effect (eating when we are ready to force)
+	// so we make a ConsumeAction record to record what we want to eat and then feed it into auto_autoConsumeOne()
+	// values taken from auto_consume.ash
+	int AUTO_ORGAN_STOMACH = 1;
+	int AUTO_OBTAIN_NULL  = 100;
+	int AUTO_OBTAIN_CRAFT = 101;
+	ConsumeAction action;
+
+	// select a dish and then create a record, prioritizing dishes that are already crafted first
+	item prospective_dish = auto_findPreparedLegendaryNoods();
+	if (prospective_dish != $item[none]) {
+		action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_NULL);
+	}
+	else {
+		item prospective_dish = auto_findBaseLegendaryNoods();
+		if (prospective_dish != $item[none]) {
+			action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_CRAFT);
+		}
+		else { return false;}
+	}
+	
+	// we communicate via the pref to the ChoiceHandler below to take the amygdala force-combat option
+	set_property("auto_forceCombatWithLegendaryNoodles", true);
+	if (auto_autoConsumeOne(action)) {
+		return true;
+	}
+	return false;
+}
+
+void legendaryNoodlesChoiceHandler() {
+	// force combats if requested
+	if (get_property("auto_forceCombatWithLegendaryNoodles").to_boolean()) { 
+			run_choice(2);
+			set_property("auto_forceCombatWithLegendaryNoodles", false);
+	}
+	// or use a spleen instead of a stomach
+	else if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0){ run_choice(1); }
+	// take famxp if nothing else
+	else { run_choice(4); }
 }

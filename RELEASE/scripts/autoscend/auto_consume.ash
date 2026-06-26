@@ -411,6 +411,9 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 			abort("Attempted to eat food from Black and White Apron Kit, but failed.");
 		}
 	}
+	if (get_property("_legendaryNoodlesSpleen").to_boolean() && legendaryNoodleDishes() contains toEat) {
+		switchToFamXP(); // gives famxp; want to attempt to have a fam equipped we want it on 
+	}
 	if(item_amount(toEat) < howMany)
 	{
 		return false;
@@ -426,6 +429,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	acquireMilkOfMagnesiumIfUnused(true);
 	consumeMilkOfMagnesiumIfUnused();
 	wantDietPill(toEat);
+	if(my_class() == $class[Pastamancer]){ pm_updateThrall($location[Noob Cave], true); } // might switch to spice ghost for advs
 
 	if(possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
@@ -860,6 +864,7 @@ string to_debug_string(ConsumeAction action)
 	return ret;
 }
 
+// note that the ConsumeAction record is defined in autoscend_record.ash
 ConsumeAction MakeConsumeAction(item it)
 {
 	int organ = it.inebriety > 0 ? AUTO_ORGAN_LIVER : AUTO_ORGAN_STOMACH;
@@ -944,6 +949,7 @@ boolean autoConsume(ConsumeAction action)
 
 boolean loadConsumables(string _type, ConsumeAction[int] actions)
 {
+	// Step 0: Definitions
 	// Just in case!
 	if(in_darkGyffte())
 	{
@@ -1000,6 +1006,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean[item] blacklist;
 	boolean[item] craftable_blacklist;
 
+	// Step 1: Blacklist items we don't want to consume
 	foreach it in $items[Cursed Punch, Unidentified Drink, bag of QWOP, FantasyRealm turkey leg, FantasyRealm mead, waffle]
 	{
 		blacklist[it] = true;
@@ -1038,6 +1045,19 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		if(item_amount($item[Devil's Elbow Hot Sauce]) == 0)
 		{	//don't use hot wings if pirates quest still needs them
 			craftable_blacklist[$item[devil hair pasta]] = true;
+		}
+	}
+	if(internalQuestStatus("questL08Trapper") < 3 && auto_havePastaWand()) { 
+		// consider blacklisting legendary noodles so we have some available for combat forcing if we still need to climb slope and have the wand
+		if (numPreparedLegendaryNoodleDishes() < 2) {
+			foreach dish in legendaryNoodleDishes() {
+				blacklist[dish] = true;
+			}
+		}
+		else if (numPreparedLegendaryNoodleDishes() < 0 && min(numBaseLegendaryNoodleDishes(), item_amount($item[legendary noodles])) < 2) {
+			foreach dish in legendaryNoodleDishes() {
+				blacklist[legendaryNoodleDishes()[dish]] = true;
+			}
 		}
 	}
 
@@ -1095,7 +1115,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
  
 	add_mutex_craftables($items[perfect cosmopolitan, perfect old-fashioned, perfect mimosa, perfect dark and stormy, perfect paloma, perfect negroni]);
 	
-	int[item] potentialTurnGain; // for anything the charges up a banish, YR, sniff, etc.
+	// Step 2: move items to categorized source maps, and add turnsave
+
+	float[item] potentialTurnGain; // for anything the charges up a banish, YR, sniff, etc.
 
 	foreach it in $items[]
 	{
@@ -1145,7 +1167,17 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 			if(it == $item[pheromone cocktail] && item_amount(it) > 0 && banishSources() - item_amount(it) < 3)
 			{
-				potentialTurnGain[it] = 2;
+				potentialTurnGain[it] = 2.0;
+			}
+			else if (legendaryNoodleDishes() contains it && item_amount(it) > 0) {
+				// we have the option, after eating the dish, to consume spleen instead 1/day.
+				// which is quite good for minimizing daycount. We want that if it's available.
+				if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0) {
+					potentialTurnGain[it] = 20.0;// not actually 20, but we almost certainly want to consume it
+				} 
+				else if (auto_wantFamXP()){
+					potentialTurnGain[it] = 0.75; // arbitrary, but probably good enough
+				}
 			}
 			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
 			if (!isSpeakeasyDrink(it) && canPull(it))
@@ -1162,6 +1194,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 		}
 	}
+
+	// Step 3: Handle Key Lime Pie Desireability (turnsave)
 
 	float keyLimePieDesirabilityBonus;
 	string keyLimePieDesirabilityBonusType;
@@ -1310,6 +1344,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		}
 	}
 
+	// Step 4: Add the items to actions[n], incorporating incentives and penalties
+
 	void add(item it, int obtain_mode, int howmany)
 	{
 		for (int i = 0; i < howmany; i++)
@@ -1376,7 +1412,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 					actions[n].desirability += keyLimePieDesirabilityBonus;
 				}
 				if ( (i == 0) &&
-				(it == $item[pheromone cocktail]) && potentialTurnGain[it] > 0)
+				(it == $item[pheromone cocktail] || legendaryNoodleDishes() contains it) && potentialTurnGain[it] > 0)
 				{
 					actions[n].desirability += potentialTurnGain[it];
 				}
@@ -1406,6 +1442,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		add(it, AUTO_OBTAIN_CRAFT, howmany);
 	}
 
+	// Step 5: Special adds
 	// Add still suit if we are looking to drink
 	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit() && !in_kolhs() && !in_small())
 	{
@@ -1424,7 +1461,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		actions[count(actions)] = new ConsumeAction(apronKit, 0, size, adv, adv, AUTO_ORGAN_STOMACH, obtainMethod);
 	}
 
-	// Now, to load cafe consumables. This has some TCRS-specific code.
+	// Step 6: Now, to load cafe consumables. This has some TCRS-specific code.
 
 	if(type == AUTO_ORGAN_LIVER && !gnomads_available()) return false;
 	if(type == AUTO_ORGAN_STOMACH && !canadia_available()) return false;
@@ -2334,6 +2371,7 @@ boolean shouldUseSpleenForLowPriority()
 	int spleen_likely_to_use = 0;
 	spleen_likely_to_use += 2 * auto_CMCconsultsLeft();
 	spleen_likely_to_use += $item[dieting pill].spleen * available_amount($item[dieting pill]);
+	if (auto_havePastaWand() && !get_property("_legendaryNoodlesSpleen").to_boolean() && fullness_left() > 0) { spleen_likely_to_use += 1; }
 	
 	return spleen_left() > spleen_likely_to_use;
 }

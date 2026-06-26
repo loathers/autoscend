@@ -1,4 +1,4 @@
-since r29012; // non-thrifty familiars are unusable in thrifty
+since r29041; //  track level 11 pasta thrall abilities 
 
 /***
 	autoscend_header.ash must be first import
