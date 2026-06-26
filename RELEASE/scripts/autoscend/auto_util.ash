@@ -5275,8 +5275,9 @@ int auto_numQueuedForcedCombat()
 	return get_property("legendaryNoodlesAmygdala").to_int();
 }
 
+// the specific dish we check for canEat doesn't matter, just that it's *A* legendary pasta dish
 boolean auto_haveCombatForceSource() {
-	return auto_havePastaWand() && can_eat() && !get_property("auto_limitConsume").to_boolean() && !in_small() && !in_plumber();
+	return auto_havePastaWand() && canEat($item`Orzo di Riso`) && !get_property("auto_limitConsume").to_boolean() && !in_small() && !in_plumber();
 }
 
 // Function to Predict how many turns we will get from an AT buff
