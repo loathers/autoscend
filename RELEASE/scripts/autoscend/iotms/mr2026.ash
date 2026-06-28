@@ -334,10 +334,14 @@ item auto_findBaseLegendaryNoods() {
 	return $item[none];
 }
 
-boolean auto_legendaryNoodlesAvailable() {
+boolean auto_willEatLegendaryNoodles() {
 	// the specific dish we check for canEat doesn't matter, just that it's *A* legendary pasta dish
 	// We exclude small because we want to be careful about maximizing the quality of our food when we only have two space, and we exclude plumber because plumber consumption is weird
-	if (stomach_left() < 1 || !canEat($item[Orzo di Riso]) || get_property("auto_limitConsume").to_boolean() || in_small() || in_plumber()) {return false;}
+	return canEat($item[Orzo di Riso]) && !get_property("auto_limitConsume").to_boolean() && !in_small() && !in_plumber();
+}
+
+boolean auto_legendaryNoodlesAvailable() {
+	if (stomach_left() < 1 || !auto_willEatLegendaryNoodles()) { return false;}
 	if(auto_findPreparedLegendaryNoods() != $item[none]){ return true;}
 	if(auto_findBaseLegendaryNoods() != $item[none]){ return true;}
 	return false;
