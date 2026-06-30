@@ -1,4 +1,4 @@
-since r29041; //  track level 11 pasta thrall abilities 
+since r29081; //  turchucken, legendary bases
 
 /***
 	autoscend_header.ash must be first import
