@@ -1177,6 +1177,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 				// which is quite good for minimizing daycount. We want that if it's available.
 				if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0 && auto_willEatLegendaryNoodles()) {
 					potentialTurnGain[it] = 20.0;// not actually 20, but we almost certainly want to consume it
+					// doing the auto_willEatLegendaryNoodles() to exclude paths that might be too weird to assume this
 				} 
 				else if (auto_wantFamXP()){
 					potentialTurnGain[it] = 0.75; // arbitrary, but probably good enough
