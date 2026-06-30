@@ -1007,5 +1007,6 @@ boolean auto_wantFamXP() {
 }
 // switch to a familiar we want famxp on. Should never be called if we're about to adventure because doesn't check if we can change to familiar.
 void switchToFamXP() {
+	auto_log_debug("Possibly switching to a familiar we want famxp on");
 	if(auto_haveChestMimic() && $familiar[chest mimic].experience <= 300){ use_familiar($familiar[chest mimic]); }
 }
