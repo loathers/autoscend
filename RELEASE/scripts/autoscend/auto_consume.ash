@@ -411,7 +411,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 			abort("Attempted to eat food from Black and White Apron Kit, but failed.");
 		}
 	}
-	if (get_property("_legendaryNoodlesSpleen").to_boolean() && legendaryNoodleDishes() contains toEat) {
+	if ((get_property("_legendaryNoodlesSpleen").to_boolean() || spleen_left() < 1) && legendaryNoodleDishes() contains toEat) {
 		switchToFamXP(); // gives famxp; want to attempt to have a fam equipped we want it on 
 	}
 	if(item_amount(toEat) < howMany)
