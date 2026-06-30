@@ -262,13 +262,20 @@ boolean auto_burnRemainingSpadeDigs()
 }
 
 void legendaryNoodlesChoiceHandler() {
+	int target_choice;
 	// force combats if requested
 	if (get_property("auto_forceCombatWithLegendaryNoodles").to_boolean()) { 
-			run_choice(2);
+			target_choice = 2;
 			set_property("auto_forceCombatWithLegendaryNoodles", false);
 	}
 	// or use a spleen instead of a stomach
-	else if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0){ run_choice(1); }
+	else if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0){ target_choice = 1; }
 	// take famxp if nothing else
-	else { run_choice(4); }
+	else { target_choice = 4; }
+
+	// sometimes options 1 and 4 aren't available, so fallback to 5 (double food effects) which always is and shouldn't ever? be detrimental
+	if (available_choice_options() contains target_choice) {
+		run_choice(target_choice);
+	}
+	else {run_choice(5);}
 }
