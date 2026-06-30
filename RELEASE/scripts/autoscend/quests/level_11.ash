@@ -216,7 +216,7 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 
 boolean shenShouldDelayZone(location loc)
 {
-	return shenZonesToAvoidBecauseMaybeSnake()[loc];
+	return (shenZonesToAvoidBecauseMaybeSnake()[loc] && !isAboutToPowerlevel()); // don't bother with delaying a Shen zone if we've run out of stuff to do
 }
 
 int[location] getShenZonesTurnsSpent()
