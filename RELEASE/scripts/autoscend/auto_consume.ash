@@ -1175,7 +1175,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			else if (legendaryNoodleDishes() contains it) {
 				// we have the option, after eating the dish, to consume spleen instead 1/day.
 				// which is quite good for minimizing daycount. We want that if it's available.
-				if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0) {
+				if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0 && auto_willEatLegendaryNoodles()) {
 					potentialTurnGain[it] = 20.0;// not actually 20, but we almost certainly want to consume it
 				} 
 				else if (auto_wantFamXP()){
