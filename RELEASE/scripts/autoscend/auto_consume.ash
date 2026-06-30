@@ -411,8 +411,11 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 			abort("Attempted to eat food from Black and White Apron Kit, but failed.");
 		}
 	}
-	if ((get_property("_legendaryNoodlesSpleen").to_boolean() || spleen_left() < 1) && legendaryNoodleDishes() contains toEat) {
-		switchToFamXP(); // gives famxp; want to attempt to have a fam equipped we want it on 
+	if (legendaryNoodleDishes() contains toEat // This stuff relates to the Legendary Digestion choice adv from eating legendary noods
+		&& !get_property("auto_forceCombatWithLegendaryNoodles").to_boolean() // check that we aren't forcing combat via amygdala option
+		&& (get_property("_legendaryNoodlesSpleen").to_boolean() || spleen_left() < 1) // check that we aren't gonna take the spleen option
+		) {
+		switchToFamXP(); // we're getting famxp by process of elimination; trying to switch to a fam we want famxp on
 	}
 	if(item_amount(toEat) < howMany)
 	{
