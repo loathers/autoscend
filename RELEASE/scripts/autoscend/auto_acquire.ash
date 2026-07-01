@@ -812,7 +812,7 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[Bittycar Meatcar], 1, 0);
 		}
-		if((in_picky() || !canChangeFamiliar()) && (item_amount(wrap_item($item[Deck of Every Card])) == 0) && (fullness_left() >= 4))
+		if((in_picky() || !canChangeFamiliar()) && !get_property("auto_dontConsumeKeyLimePies").to_boolean() && (item_amount(wrap_item($item[Deck of Every Card])) == 0) && (fullness_left() >= 4))
 		{
 			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
 			{
