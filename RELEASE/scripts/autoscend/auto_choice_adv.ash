@@ -790,6 +790,9 @@ boolean auto_run_choice(int choice, string page)
 		case 1566: //Summon a wave
 			run_choice(1);
 			break;
+		case 1599: // Legendary Digestion: if we aren't forcing combat, by default use spleen, else take famxp
+			legendaryNoodlesChoiceHandler();
+			break;
 		default:
 			break;
 	}
