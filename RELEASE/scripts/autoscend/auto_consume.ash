@@ -1051,15 +1051,17 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		}
 	}
 	if(internalQuestStatus("questL08Trapper") < 3 && auto_havePastaWand()) { 
+		item[item] legendary_noodle_dishes = legendaryNoodleDishes();
 		// consider blacklisting legendary noodles so we have some available for combat forcing if we still need to climb slope and have the wand
-		if (numPreparedLegendaryNoodleDishes() < 2) {
-			foreach dish in legendaryNoodleDishes() {
+		if (numPreparedLegendaryNoodleDishes() == 1) {
+			foreach dish in legendary_noodle_dishes {
 				blacklist[dish] = true;
 			}
 		}
-		else if (numPreparedLegendaryNoodleDishes() < 0 && min(numBaseLegendaryNoodleDishes(), item_amount($item[legendary noodles])) < 2) {
-			foreach dish in legendaryNoodleDishes() {
-				blacklist[legendaryNoodleDishes()[dish]] = true;
+		else if (numPreparedLegendaryNoodleDishes() < 1 && min(numBaseLegendaryNoodleDishes(), item_amount($item[legendary noodles])) < 2) {
+			foreach dish in legendary_noodle_dishes {
+				blacklist[dish] = true;
+				blacklist[legendary_noodle_dishes[dish]] = true;
 			}
 		}
 	}
