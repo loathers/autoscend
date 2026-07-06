@@ -1415,12 +1415,13 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 					auto_log_info("If we ate a " + it + " we could skip getting a fat loot token...");
 					actions[n].desirability += keyLimePieDesirabilityBonus;
 				}
-				if ( (i == 0) &&
+			}
+			// below code not included next to the KLPs because sometime legendary noodles want crafting
+			if ( (i == 0) &&
 				(it == $item[pheromone cocktail] || legendaryNoodleDishes() contains it) && potentialTurnGain[it] > 0)
 				{
 					actions[n].desirability += potentialTurnGain[it];
 				}
-			}
 			actions[n].howToGet = obtain_mode;
 		}
 	}
