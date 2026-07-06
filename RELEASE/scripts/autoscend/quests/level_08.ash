@@ -645,6 +645,10 @@ boolean L8_trapperNinjaLair()
 	// adventure in the lair of the ninja snowmen to find and fight ninja snowman assassins.
 	// ~~usually this would only occur in hardcore~~
 	// UPDATE: as of the May '26 IOTM we like ninja lair, so this should be typical with that IOTM.
+	if(L8_trapperTalk()) // try to unlock lair (sometimes necessary if called from L11 Shen)
+	{
+		return true;
+	}
 	if(internalQuestStatus("questL08Trapper") != 2)
 	{
 		return false;
