@@ -415,7 +415,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 		&& !get_property("auto_forceCombatWithLegendaryNoodles").to_boolean() // check that we aren't forcing combat via amygdala option
 		&& (get_property("_legendaryNoodlesSpleen").to_boolean() || spleen_left() < 1) // check that we aren't gonna take the spleen option
 		) {
-		switchToFamXP(350); // we're getting famxp by process of elimination; trying to switch to a fam we want famxp on
+		switchToFamXP(400); // we're getting famxp by process of elimination; trying to switch to a fam we want famxp on
 	}
 	if(item_amount(toEat) < howMany)
 	{
@@ -1179,7 +1179,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 					potentialTurnGain[it] = 20.0;// not actually 20, but we almost certainly want to consume it
 					// doing the auto_willEatLegendaryNoodles() to exclude paths that might be too weird to assume this
 				} 
-				else if (auto_wantFamXP(350)){
+				else if (auto_wantFamXP(400)){
 					potentialTurnGain[it] = 0.75; // arbitrary, but probably good enough
 				}
 			}
