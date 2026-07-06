@@ -999,7 +999,7 @@ float auto_famModifiers(string mod)
 }
 
 // Fam XP specific stuff
-// used by mayam calendar and piccolo (in mr2024.ash) and legendary noodles (in consume.ash) to decide if we would like to choose a famxp option. Adventureless fam xp is definitely underutilized (piccolo is also only zooto-supported currently).
+// used by mayam calendar and legendary noodles (in consume.ash) to decide if we would like to choose a famxp option. Adventureless fam xp is definitely underutilized (piccolo is also only zooto-supported currently).
 // difference: auto_wantFamXP should be used to see if we should incentivize adventureless famxp (weight options giving famxp more), switchToFamXP should be used once we've decided to take the famxp option. 
 // requires max_fam_experience because famxp sources often fizzle if the familiar has too much experience (e.g. mayam fizzles if current familiar has 300+ xp)
 boolean auto_wantFamXP(int max_fam_experience) {
