@@ -1733,8 +1733,6 @@ boolean pathAllowsChangingFamiliar();
 boolean auto_have_familiar(familiar fam);
 boolean canChangeFamiliar();
 boolean canChangeToFamiliar(familiar target);
-boolean auto_wantFamXP();
-void switchToFamXP();
 familiar findNonRockFamiliarInTerrarium();
 familiar findRockFamiliarInTerrarium();
 familiar lookupFamiliarDatafile(string type);
@@ -1751,6 +1749,8 @@ int auto_famWeight();
 float auto_famModifiers(familiar fam, string mod, item famEquip);
 float auto_famModifiers(familiar fam, string mod);
 float auto_famModifiers(string mod);
+boolean auto_wantFamXP(int max_fam_experience);
+void switchToFamXP(int max_fam_experience);
 
 ########################################################################################################
 //Defined in autoscend/auto_list.ash

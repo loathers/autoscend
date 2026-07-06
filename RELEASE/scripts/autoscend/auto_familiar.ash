@@ -1001,12 +1001,13 @@ float auto_famModifiers(string mod)
 // Fam XP specific stuff
 // used by mayam calendar and piccolo (in mr2024.ash) and legendary noodles (in consume.ash) to decide if we would like to choose a famxp option. Adventureless fam xp is definitely underutilized (piccolo is also only zooto-supported currently).
 // difference: auto_wantFamXP should be used to see if we should incentivize adventureless famxp (weight options giving famxp more), switchToFamXP should be used once we've decided to take the famxp option. 
-boolean auto_wantFamXP() {
-	if(auto_haveChestMimic() && $familiar[chest mimic].experience <= 300) {return true;}
+// requires max_fam_experience because famxp sources often fizzle if the familiar has too much experience (e.g. mayam fizzles if current familiar has 300+ xp)
+boolean auto_wantFamXP(int max_fam_experience) {
+	if(auto_haveChestMimic() && $familiar[chest mimic].experience <= max_fam_experience) {return true;}
 	return false;
 }
 // switch to a familiar we want famxp on. Should never be called if we're about to adventure because doesn't check if we can change to familiar.
-void switchToFamXP() {
+void switchToFamXP(int max_fam_experience) {
 	auto_log_debug("Possibly switching to a familiar we want famxp on");
-	if(auto_haveChestMimic() && $familiar[chest mimic].experience <= 300){ use_familiar($familiar[chest mimic]); }
+	if(auto_haveChestMimic() && $familiar[chest mimic].experience <= max_fam_experience){ use_familiar($familiar[chest mimic]); }
 }
