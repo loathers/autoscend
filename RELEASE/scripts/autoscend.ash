@@ -1,4 +1,4 @@
-since r29081; //  turchucken, legendary bases
+since r29089; //  last legendaries [noodle dishes]
 
 /***
 	autoscend_header.ash must be first import
