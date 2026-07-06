@@ -64,11 +64,6 @@ boolean wantToClubEmBackInTime(location loc, monster enemy)
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
-// club next: use on hippies/war (simple to implement)???? note enamorang never imp.
-// skip maybe? possibly too hard to do.
-// club across: figure out if there is an existing proxy for "want items"
-
-
 boolean auto_haveHeartstone()
 {
 	if(!auto_is_valid($item[heartstone]))
@@ -137,15 +132,6 @@ int auto_heartstoneStunRemaining()
 	
 	return 5-to_int(get_property("_heartstoneStunUsed"));
 }
-
-// diamond:
-// function to equip to prime (get to 8 monsters)
-// implement monodent delayburn
-// list of monsters and conditions OK to use the thing
-// also implement YRing -- prob as last resort
-
-// legendary noods: use combat forcer for NSAs
-// stretch: update pasta thralling
 
 boolean auto_haveArchaeologistSpade()
 {
