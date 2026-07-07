@@ -326,10 +326,21 @@ item auto_findBaseLegendaryNoods() {
 	return $item[none];
 }
 
+boolean canEatSomeLegNoods() {
+	// testing Gnocci Domani first because it satisfies all three of the "current" letter-restricted paths (BHY, 11TIHAU, G-lover)
+	if (canEat($item[Gnocci Domani])) {return true;}
+	// all other paths "currently" must not be able to eat legendary noodles. 57 is Thrifty.
+	else if (my_path().id < 58) {return false;}
+	// heuristics not good enough here, we need to test each dish
+	foreach it in legendaryNoodleDishes() {
+		if(canEat(it)) {return true;}
+	}
+	return false;
+}
+
 boolean auto_willEatLegendaryNoodles() {
-	// the specific dish we check for canEat doesn't matter, just that it's *A* legendary pasta dish
 	// We exclude small because we want to be careful about maximizing the quality of our food when we only have two space, and we exclude plumber because plumber consumption is weird
-	return canEat($item[Orzo di Riso]) && !get_property("auto_limitConsume").to_boolean() && !in_small() && !in_plumber();
+	return canEatSomeLegNoods() && !get_property("auto_limitConsume").to_boolean() && !in_small() && !in_plumber();
 }
 
 boolean auto_legendaryNoodlesAvailable() {
