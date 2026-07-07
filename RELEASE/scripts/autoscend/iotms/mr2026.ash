@@ -287,7 +287,7 @@ item[item] legendaryNoodleDishes() {
 int numPreparedLegendaryNoodleDishes() {
 	int num = 0;
 	foreach dish in legendaryNoodleDishes(){
-		if (auto_is_valid(dish)) {
+		if (canEat(dish)) {
 			num += item_amount(dish);
 		}
 	}
@@ -297,7 +297,7 @@ int numPreparedLegendaryNoodleDishes() {
 // pick a legendary noodle to consume (or to check that we have one avail. to consume)
 item auto_findPreparedLegendaryNoods() {
 	foreach it in legendaryNoodleDishes() {
-		if (auto_is_valid(it) && item_amount(it) > 0) {return it; }
+		if (canEat(it) && item_amount(it) > 0) {return it; }
 	}
 	return $item[none];
 }
@@ -305,7 +305,7 @@ item auto_findPreparedLegendaryNoods() {
 int numBaseLegendaryNoodleDishes() {
 	int num = 0;
 	foreach preparedDish in legendaryNoodleDishes(){
-		if (auto_is_valid(preparedDish)) {
+		if (canEat(preparedDish)) {
 			num += item_amount(legendaryNoodleDishes()[preparedDish]);
 		}
 	}
@@ -319,7 +319,7 @@ item auto_findBaseLegendaryNoods() {
 		return $item[none];
 	}
 	foreach it in legendaryNoodleDishes() {
-		if (item_amount(legendaryNoodleDishes()[it]) > 0 && auto_is_valid(it)) {
+		if (item_amount(legendaryNoodleDishes()[it]) > 0 && canEat(it)) {
 			return it;
 		}
 	}
