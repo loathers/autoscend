@@ -287,7 +287,7 @@ item[item] legendaryNoodleDishes() {
 int numPreparedLegendaryNoodleDishes() {
 	int num = 0;
 	foreach dish in legendaryNoodleDishes(){
-		if auto_is_valid(dish) {
+		if (auto_is_valid(dish)) {
 			num += item_amount(dish);
 		}
 	}
