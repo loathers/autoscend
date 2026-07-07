@@ -891,7 +891,7 @@ void finalizeMaximize(boolean speculative)
 	}
 
 	if(my_class() == $class[Pastamancer] && auto_havePastaWand() && my_thrall().level < 11 && (my_thrall() == $thrall[Vermincelli] || my_thrall() == $thrall[Spice Ghost])) {
-		addBonusToMaximize($item[legendary pasta wand], 40); // bonus for the thrallxp, if we have a thrall we wanna lvl up
+		addToMaximize("40 Pasta Thrall Experience"); // bonus for the thrallxp, if we have a thrall we wanna lvl up
 	}
 
 	// We still need pixels in KoE, badly.
