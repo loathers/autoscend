@@ -1,4 +1,4 @@
-since r29012; // non-thrifty familiars are unusable in thrifty
+since r29089; //  last legendaries [noodle dishes]
 
 /***
 	autoscend_header.ash must be first import

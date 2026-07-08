@@ -6,7 +6,11 @@ boolean zone_unlock(location loc){
 	boolean unlocked = false;
 	if(loc == $location[The Thinknerd Warehouse]){
 		unlocked = LX_unlockThinknerdWarehouse(false);
-	} else{
+	} 
+	else if (loc == $location[Lair of the Ninja Snowmen] && L8_trapperTalk()) {
+		unlocked = true;
+	}
+	else{
 		auto_log_debug("Don't know how to unlock " + loc);
 		return false;
 	}

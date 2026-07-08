@@ -261,6 +261,126 @@ boolean auto_burnRemainingSpadeDigs()
 	return auto_spadeDigsRemaining()==0;
 }
 
+boolean auto_havePastaWand()
+{
+	if(auto_is_valid($item[legendary pasta wand]) && available_amount($item[legendary pasta wand]) > 0 ) {
+		return true;
+	}
+	return false;
+}
+
+// keys are the legendary dishes, values are their respective base dishes
+item[item] legendaryNoodleDishes() {
+	item[item] dishes;
+	dishes[$item[Tubetto Gelatto]] = $item[tomb aspic];
+	dishes[$item[Formica e Pepe]] = $item[hot honey ant];
+	dishes[$item[Gnocci Domani]] = $item[later tots];
+	dishes[$item[Linguini Ubriacapa]] = $item[sauced mutton];
+	dishes[$item[Pasta Grimavera]] = $item[haunted crudit&eacute;s];
+	dishes[$item[Orzo di Riso]] = $item[spicy onigiri];
+	dishes[$item[Arrattabbattabiata]] = $item[ratbatatouille];
+	dishes[$item[Pesto alla Marziano]] = $item[alien salad];
+	dishes[$item[Frutti di Scatoletta]] = $item[can of tuna];
+	return dishes;
+}
+
+int numPreparedLegendaryNoodleDishes() {
+	int num = 0;
+	foreach dish in legendaryNoodleDishes(){
+		if (canEat(dish)) {
+			num += item_amount(dish);
+		}
+	}
+	return num;
+}
+
+// pick a legendary noodle to consume (or to check that we have one avail. to consume)
+item auto_findPreparedLegendaryNoods() {
+	foreach it in legendaryNoodleDishes() {
+		if (canEat(it) && item_amount(it) > 0) {return it; }
+	}
+	return $item[none];
+}
+
+int numBaseLegendaryNoodleDishes() {
+	int num = 0;
+	foreach preparedDish in legendaryNoodleDishes(){
+		if (canEat(preparedDish)) {
+			num += item_amount(legendaryNoodleDishes()[preparedDish]);
+		}
+	}
+	return num;
+}
+
+// pick a base noodle to consume, to be crafted into legendary (or to check that we have one avail. to consume)
+// returns the legendary dish the noods are crafted into
+item auto_findBaseLegendaryNoods() {
+	if (item_amount($item[legendary noodles]) < 1) {
+		return $item[none];
+	}
+	foreach it in legendaryNoodleDishes() {
+		if (item_amount(legendaryNoodleDishes()[it]) > 0 && canEat(it)) {
+			return it;
+		}
+	}
+	return $item[none];
+}
+
+boolean canEatSomeLegNoods() {
+	// testing Gnocci Domani first because it satisfies all three of the "current" letter-restricted paths (BHY, 11TIHAU, G-lover)
+	if (canEat($item[Gnocci Domani])) {return true;}
+	// all other paths "currently" must not be able to eat legendary noodles. 57 is Thrifty.
+	else if (my_path().id < 58) {return false;}
+	// heuristics not good enough here, we need to test each dish
+	foreach it in legendaryNoodleDishes() {
+		if(canEat(it)) {return true;}
+	}
+	return false;
+}
+
+boolean auto_willEatLegendaryNoodles() {
+	// We exclude small because we want to be careful about maximizing the quality of our food when we only have two space, and we exclude plumber because plumber consumption is weird
+	return canEatSomeLegNoods() && !get_property("auto_limitConsume").to_boolean() && !in_small() && !in_plumber();
+}
+
+boolean auto_legendaryNoodlesAvailable() {
+	if (stomach_left() < 1 || !auto_willEatLegendaryNoodles()) { return false;}
+	if(auto_findPreparedLegendaryNoods() != $item[none]){ return true;}
+	if(auto_findBaseLegendaryNoods() != $item[none]){ return true;}
+	return false;
+}
+
+
+boolean auto_forceCombatLegendaryNoodles() {
+	// we are overriding the normal consumption loop due to the nature of the food's effect (eating when we are ready to force)
+	// so we make a ConsumeAction record to record what we want to eat and then feed it into auto_autoConsumeOne()
+	// values taken from auto_consume.ash
+	int AUTO_ORGAN_STOMACH = 1;
+	int AUTO_OBTAIN_NULL  = 100;
+	int AUTO_OBTAIN_CRAFT = 101;
+	ConsumeAction action;
+
+	// select a dish and then create a record, prioritizing dishes that are already crafted first
+	item prospective_dish = auto_findPreparedLegendaryNoods();
+	if (prospective_dish != $item[none]) {
+		action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_NULL);
+	}
+	else {
+		item prospective_dish = auto_findBaseLegendaryNoods();
+		if (prospective_dish != $item[none]) {
+			action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_CRAFT);
+		}
+		else { return false;}
+	}
+	
+	// we communicate via the pref to the ChoiceHandler below to take the amygdala force-combat option
+	set_property("auto_forceCombatWithLegendaryNoodles", true);
+	if (auto_autoConsumeOne(action)) {
+		return true;
+	}
+	return false;
+}
+
 void legendaryNoodlesChoiceHandler() {
 	int target_choice;
 	// force combats if requested
@@ -269,9 +389,13 @@ void legendaryNoodlesChoiceHandler() {
 			set_property("auto_forceCombatWithLegendaryNoodles", false);
 	}
 	// or use a spleen instead of a stomach
-	else if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0){ target_choice = 1; }
+	else if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0 && !isActuallyEd()) { 
+		target_choice = 1;
+	}
 	// take famxp if nothing else
-	else { target_choice = 4; }
+	else {
+		target_choice = 4;
+	}
 
 	// sometimes options 1 and 4 aren't available, so fallback to 5 (double food effects) which always is and shouldn't ever? be detrimental
 	if (available_choice_options() contains target_choice) {

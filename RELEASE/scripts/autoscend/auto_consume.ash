@@ -411,6 +411,12 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 			abort("Attempted to eat food from Black and White Apron Kit, but failed.");
 		}
 	}
+	if (legendaryNoodleDishes() contains toEat // This stuff relates to the Legendary Digestion choice adv from eating legendary noods
+		&& !get_property("auto_forceCombatWithLegendaryNoodles").to_boolean() // check that we aren't forcing combat via amygdala option
+		&& (get_property("_legendaryNoodlesSpleen").to_boolean() || spleen_left() < 1) // check that we aren't gonna take the spleen option
+		) {
+		switchToFamXP(400); // we're getting famxp by process of elimination; trying to switch to a fam we want famxp on
+	}
 	if(item_amount(toEat) < howMany)
 	{
 		return false;
@@ -426,6 +432,7 @@ boolean autoEat(int howMany, item toEat, boolean silent)
 	acquireMilkOfMagnesiumIfUnused(true);
 	consumeMilkOfMagnesiumIfUnused();
 	wantDietPill(toEat);
+	if(my_class() == $class[Pastamancer]){ pm_updateThrall($location[Noob Cave], true); } // might switch to spice ghost for advs
 
 	if(possessEquipment($item[Wrist-Boy]) && (my_meat() > 6500))
 	{
@@ -860,6 +867,7 @@ string to_debug_string(ConsumeAction action)
 	return ret;
 }
 
+// note that the ConsumeAction record is defined in autoscend_record.ash
 ConsumeAction MakeConsumeAction(item it)
 {
 	int organ = it.inebriety > 0 ? AUTO_ORGAN_LIVER : AUTO_ORGAN_STOMACH;
@@ -944,6 +952,7 @@ boolean autoConsume(ConsumeAction action)
 
 boolean loadConsumables(string _type, ConsumeAction[int] actions)
 {
+	// Step 0: Definitions
 	// Just in case!
 	if(in_darkGyffte())
 	{
@@ -1000,6 +1009,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 	boolean[item] blacklist;
 	boolean[item] craftable_blacklist;
 
+	// Step 1: Blacklist items we don't want to consume
 	foreach it in $items[Cursed Punch, Unidentified Drink, bag of QWOP, FantasyRealm turkey leg, FantasyRealm mead, waffle]
 	{
 		blacklist[it] = true;
@@ -1038,6 +1048,21 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		if(item_amount($item[Devil's Elbow Hot Sauce]) == 0)
 		{	//don't use hot wings if pirates quest still needs them
 			craftable_blacklist[$item[devil hair pasta]] = true;
+		}
+	}
+	if(internalQuestStatus("questL08Trapper") < 3 && auto_havePastaWand()) { 
+		item[item] legendary_noodle_dishes = legendaryNoodleDishes();
+		// consider blacklisting legendary noodles so we have some available for combat forcing if we still need to climb slope and have the wand
+		if (numPreparedLegendaryNoodleDishes() == 1) {
+			foreach dish in legendary_noodle_dishes {
+				blacklist[dish] = true;
+			}
+		}
+		else if (numPreparedLegendaryNoodleDishes() < 1 && min(numBaseLegendaryNoodleDishes(), item_amount($item[legendary noodles])) < 2) {
+			foreach dish in legendary_noodle_dishes {
+				blacklist[dish] = true;
+				blacklist[legendary_noodle_dishes[dish]] = true;
+			}
 		}
 	}
 
@@ -1095,7 +1120,9 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
  
 	add_mutex_craftables($items[perfect cosmopolitan, perfect old-fashioned, perfect mimosa, perfect dark and stormy, perfect paloma, perfect negroni]);
 	
-	int[item] potentialTurnGain; // for anything the charges up a banish, YR, sniff, etc.
+	// Step 2: move items to categorized source maps, and add turnsave
+
+	float[item] potentialTurnGain; // for anything the charges up a banish, YR, sniff, etc.
 
 	foreach it in $items[]
 	{
@@ -1145,7 +1172,18 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 			if(it == $item[pheromone cocktail] && item_amount(it) > 0 && banishSources() - item_amount(it) < 3)
 			{
-				potentialTurnGain[it] = 2;
+				potentialTurnGain[it] = 2.0;
+			}
+			else if (legendaryNoodleDishes() contains it) {
+				// we have the option, after eating the dish, to consume spleen instead 1/day.
+				// which is quite good for minimizing daycount. We want that if it's available (except Ed, who has better spleen).
+				if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0 && auto_willEatLegendaryNoodles() && !isActuallyEd()) {
+					potentialTurnGain[it] = 20.0;// not actually 20, but we almost certainly want to consume it
+					// doing the auto_willEatLegendaryNoodles() to exclude paths that might be too weird to assume this
+				} 
+				else if (auto_wantFamXP(400)){
+					potentialTurnGain[it] = 0.75; // arbitrary, but probably good enough
+				}
 			}
 			// speakeasy drinks are not available as items and will cause a crash here if not excluded.
 			if (!isSpeakeasyDrink(it) && canPull(it))
@@ -1162,6 +1200,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			}
 		}
 	}
+
+	// Step 3: Handle Key Lime Pie Desireability (turnsave)
 
 	float keyLimePieDesirabilityBonus;
 	string keyLimePieDesirabilityBonusType;
@@ -1310,6 +1350,8 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		}
 	}
 
+	// Step 4: Add the items to actions[n], incorporating incentives and penalties
+
 	void add(item it, int obtain_mode, int howmany)
 	{
 		for (int i = 0; i < howmany; i++)
@@ -1375,12 +1417,13 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 					auto_log_info("If we ate a " + it + " we could skip getting a fat loot token...");
 					actions[n].desirability += keyLimePieDesirabilityBonus;
 				}
-				if ( (i == 0) &&
-				(it == $item[pheromone cocktail]) && potentialTurnGain[it] > 0)
+			}
+			// below code not included next to the KLPs because sometime legendary noodles want crafting
+			if ( (i == 0) &&
+				(it == $item[pheromone cocktail] || legendaryNoodleDishes() contains it) && potentialTurnGain[it] > 0)
 				{
 					actions[n].desirability += potentialTurnGain[it];
 				}
-			}
 			actions[n].howToGet = obtain_mode;
 		}
 	}
@@ -1406,6 +1449,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		add(it, AUTO_OBTAIN_CRAFT, howmany);
 	}
 
+	// Step 5: Special adds
 	// Add still suit if we are looking to drink
 	if(type == AUTO_ORGAN_LIVER && auto_hasStillSuit() && !in_kolhs() && !in_small())
 	{
@@ -1424,7 +1468,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		actions[count(actions)] = new ConsumeAction(apronKit, 0, size, adv, adv, AUTO_ORGAN_STOMACH, obtainMethod);
 	}
 
-	// Now, to load cafe consumables. This has some TCRS-specific code.
+	// Step 6: Now, to load cafe consumables. This has some TCRS-specific code.
 
 	if(type == AUTO_ORGAN_LIVER && !gnomads_available()) return false;
 	if(type == AUTO_ORGAN_STOMACH && !canadia_available()) return false;
@@ -2334,6 +2378,7 @@ boolean shouldUseSpleenForLowPriority()
 	int spleen_likely_to_use = 0;
 	spleen_likely_to_use += 2 * auto_CMCconsultsLeft();
 	spleen_likely_to_use += $item[dieting pill].spleen * available_amount($item[dieting pill]);
+	if (auto_havePastaWand() && !get_property("_legendaryNoodlesSpleen").to_boolean() && fullness_left() > 0) { spleen_likely_to_use += 1; }
 	
 	return spleen_left() > spleen_likely_to_use;
 }

@@ -228,6 +228,16 @@ boolean auto_earlyRoutingHandling()
 		}
 	}
 
+	// force forcing combats.
+	if (auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
+		auto_log_debug("Possibly forcing a combat somewhere. Strap yourselves in, kids.");
+		if (L8_trapperSlope()) // could add LFM in the future
+		{
+			// quests where we want to force combats
+			return true;
+		}
+	}
+
 	// CMC routing for Breathitins
 	if (auto_haveColdMedCabinet() && auto_CMCconsultsLeft() > 0)
 	{
