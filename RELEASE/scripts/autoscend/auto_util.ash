@@ -5216,6 +5216,72 @@ boolean auto_haveQueuedForcedNonCombat()
 	return get_property("noncombatForcerActive").to_boolean();
 }
 
+// now time for combat forcing!
+boolean _auto_forceNextCombat(location loc, boolean speculative)
+{
+	// return true if already have a forcer acitve
+	if(auto_haveQueuedForcedCombat())
+	{
+		return true;
+	}
+
+	if(auto_legendaryNoodlesAvailable())
+	{
+		if(speculative) return true;
+		auto_forceCombatLegendaryNoodles();
+		if(!auto_haveQueuedForcedCombat())
+		{
+			abort("Attempted to force a combat with legendary pasta noodles but was unable to.");
+		}
+		set_property("auto_forceCombatSource", "legendary noodle dish");
+		return true;
+	}
+	return false;
+}
+
+boolean auto_canForceNextCombat()
+{
+	return _auto_forceNextCombat($location[none], true);
+}
+
+boolean _auto_forceNextCombat(location loc)
+{
+	return _auto_forceNextCombat(loc, false);
+}
+
+boolean auto_forceNextCombat(location loc)
+{
+	if(auto_haveQueuedForcedCombat())
+	{
+		auto_log_warning("Trying to force a combat adventure, but I think we've already forced one...", "red");
+		return true;
+	}
+	if (_auto_forceNextCombat(loc))
+	{	
+		string forceCMethod = get_property("auto_forceCombatSource");
+		auto_log_info("Next combat adventure has been forced with " + forceCMethod, "blue");
+		return true;
+	}
+	return false;
+}
+
+boolean auto_haveQueuedForcedCombat()
+{
+	return auto_numQueuedForcedCombat() > 0;
+}
+
+int auto_numQueuedForcedCombat()
+{
+	return get_property("legendaryNoodlesAmygdala").to_int();
+}
+
+boolean auto_haveCombatForceSource() {
+	if (auto_havePastaWand() && auto_willEatLegendaryNoodles()){
+		return true;
+	}
+	return false;
+}
+
 // Function to Predict how many turns we will get from an AT buff
 int auto_predictAccordionTurns()
 {
@@ -5989,6 +6055,85 @@ int auto_remainingShantyTurns()
 		turns = max(turns,have_effect(ef));
 	}
 	return turns;
+}
+
+boolean[location] rat_locations(){
+	boolean[location] rats;
+	rats[$location[The Batrat and Ratbat Burrow]] = true;
+	rats[$location[The Typical Tavern Cellar]] = true;
+	rats[$location[The Middle Chamber]] = true;
+	return rats;
+}
+
+// when updating this function, update the corresponding comment in auto_pre_adv
+// where this gets called to improve readability over there
+boolean pm_updateThrall(location place, boolean going_to_eat){
+	if(my_thrall() == $thrall[Vampieroghi] && place == $location[The Hidden Apartment Building]
+		&& auto_have_skill($skill[Dismiss Pasta Thrall]))
+	{
+		// vampieroghi can dispell the shaman curse, preventing us from making quest progress
+		use_skill($skill[Dismiss Pasta Thrall]);
+	}
+
+	thrall cur = my_thrall();
+	thrall consider = $thrall[none];
+
+/*							Cost		L1				L5				L10				L11
+		Vampieroghi			12			1-2 (Dmg, Heal)	Dispel Neg		+60 Max HP		Slight Spooky Resistance
+		Vermincelli			30			2 MP Regen		Dmg, Poison		+30 Max MP		First 3 rats each day free, then very occasionally up to 11
+		Angel Hair Wisp		60			5% init			Block Crits		Block			+20 Mys
+(Undead)Elbow Maraconi		100			Equalize Mus	+2 Weapon Dmg	+10% crit		+20 Mus
+		Penne Dreadful		150			Equalize Mox	Jump Delevel	DR + 10			+20 Mox
+		Spaghetti Elemental	150			+Stats Ceil(/3)	Block First Att	+5 spell dmg	+10 Spooky dmg
+		Lasagmbie			200			20+2 Meat		Spooky Dmg		+10 spooky spell dmg	Occasionally refills MP (capped at 10k, 11/day)
+		Spice Ghost			250			10+1 Item		Spices			Stun Increase	+2 advs to the first food eaten each day with spice ghost active
+*/
+	boolean baseline_ver = (my_mp() >= (1.2 * mp_cost($skill[Bind Vermincelli]))) && auto_have_skill($skill[Bind Vermincelli]);
+	int ver_level = to_thrall("ver").level;
+	boolean base_spice = (my_mp() >= (1.2 * mp_cost($skill[Bind Spice Ghost]))) && auto_have_skill($skill[Bind Spice Ghost]) && (my_daycount() > 1) && (numeric_modifier("MP Regen Min").to_int() > 9);
+	if (going_to_eat) {
+		// if we are consuming food and our spice thrall is lvl 11 (with pasta wand or spice whorl), +2 advs 1/day
+		if(base_spice && to_thrall("spice").level > 10 && !get_property("_legendarySpiceGhostFood").to_boolean())
+		{
+			consider = $thrall[Spice Ghost];
+		}
+	}
+	else {
+		if(baseline_ver && cur == $thrall[none])
+		{
+			consider = $thrall[Vermincelli];
+		}
+		if(base_spice)
+		{
+			consider = $thrall[Spice Ghost];
+		}
+		if (baseline_ver && ver_level > 10 && rat_locations() contains place)
+		{
+			consider = $thrall[Vermincelli];
+		}
+		else if (baseline_ver && ver_level < 11 && auto_havePastaWand()) 
+		{
+			consider = $thrall[Vermincelli];
+		}
+	}
+
+	if((consider != cur) && (consider != $thrall[none]))
+	{
+		skill toEquip = to_skill("Bind " + consider);
+		if(toEquip != $skill[none])
+		{
+			if(my_mp() >= mp_cost(toEquip))
+			{
+				use_skill(1, toEquip);
+			}
+		}
+		else
+		{
+			auto_log_warning("Thrall handler error. Could not generate appropriate skill.", "red");
+			return false;
+		}	
+	}
+	return true;
 }
 
 boolean auto_meetsMinimumRequirements()

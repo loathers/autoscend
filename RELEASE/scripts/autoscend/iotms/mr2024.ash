@@ -372,7 +372,7 @@ boolean auto_MayamClaimWhatever()
 	string ring4 = "BAD_VALUE";
 	boolean failure = false;
 	
-	if (!auto_MayamIsUsed("fur") && auto_haveChestMimic() && $familiar[chest mimic].experience <= 300)   { ring1 = "fur"; use_familiar($familiar[chest mimic]); }
+	if (!auto_MayamIsUsed("fur") && auto_wantFamXP(300))   { ring1 = "fur"; switchToFamXP(300); }
 	else if (!auto_MayamIsUsed("chair") && auto_haveCincho())   { ring1 = "chair"; }
 	else if (!auto_MayamIsUsed("eye"))    { ring1 = "eye"; }
 	else if (!auto_MayamIsUsed("vessel")) { ring1 = "vessel"; }

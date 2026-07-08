@@ -890,6 +890,10 @@ void finalizeMaximize(boolean speculative)
 		addBonusToMaximize($item[bat wings], 200); // get the 5 free fights
 	}
 
+	if(my_class() == $class[Pastamancer] && auto_havePastaWand() && my_thrall().level < 11 && (my_thrall() == $thrall[Vermincelli] || my_thrall() == $thrall[Spice Ghost])) {
+		addToMaximize("40 Pasta Thrall Experience"); // bonus for the thrallxp, if we have a thrall we wanna lvl up
+	}
+
 	// We still need pixels in KoE, badly.
 	if(in_koe() && auto_hasPowerfulGlove())
 	{

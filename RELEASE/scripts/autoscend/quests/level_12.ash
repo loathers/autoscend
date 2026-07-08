@@ -1357,7 +1357,20 @@ boolean L12_sonofaBeach()
 		pulverizeThing($item[Goatskin Umbrella]);
 	}
 
-	if(!in_lar())
+	boolean CForced = false;
+	// skills/items that let us select monsters can have the effect of forcing 
+	// combat here too. Think PoP is the only one implemented for this quest (map the monsters being the other, not implemented).
+	if (!auto_havePeridot() || haveUsedPeridot($location[Sonofa Beach])) {
+		if (auto_haveQueuedForcedCombat()) {
+			CForced = true;
+			auto_log_info("Not trying to force combat again at Sonofa Beach because we already have a forced combat queued");
+		}
+		else {
+			CForced = auto_forceNextCombat($location[Sonofa Beach]);
+			auto_log_info("Trying to force combat at Sonofa Beach: "+CForced.to_string(), "blue");
+		}
+	}
+	if(!in_lar() && !CForced)
 	{
 		float combat_bonus = providePlusCombat(auto_combatModCap(), $location[Sonofa Beach], true, true);
 		if(combat_bonus <= 0.0)

@@ -2956,6 +2956,16 @@ boolean L11_shenCopperhead()
 			else if (auto_wantToSpadeDigSkeleton(goal)) {
 				return auto_spadeDigSkeleton();
 			}
+			// similar if statements exist in the L8 quest file (see comments over there)
+			// before delayburn because we *want* to fight NSAs if we're going ninja lair, not avoid them by burning delay
+			if (goal == $location[Lair of the Ninja Snowmen]) { 
+				if (auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
+					if (L8_trapperNinjaLair()){ return true; } 
+				}
+				if (internalQuestStatus("questL08Trapper").to_int() == 2 && auto_haveCombatForceSource() && !isAboutToPowerlevel() && !get_property("auto_L8_extremeInstead").to_boolean()) {
+					return false;
+				}
+			}
 			if (canBurnDelay(goal))
 			{
 				// Snakes have variable delay of 3-5 adventures but we can burn at least 3 of that.
