@@ -403,3 +403,51 @@ void legendaryNoodlesChoiceHandler() {
 	}
 	else {run_choice(5);}
 }
+
+boolean auto_haveSwordOfSWords()
+{
+	if(auto_have_familiar($familiar[Sword of S Words]))
+	{
+		return true;
+	}
+	return false;
+}
+
+// called before doTasks in the main autoscend loop
+boolean auto_prepSwordOfSWords() {
+	familiar sword = $familiar[Sword of S Words];
+	// check that using Sword is allowed
+	if(!auto_haveSwordOfSwords() || !canChangeToFamiliar(sword)) {
+		return false;
+	}
+
+	// ========= Managing the Enable/Disable Sword pref ==========
+	// Check whether Sword has a current target we still want kills from
+	// if so, enable Sword for now if it has been disabled (due to overriding drops in the location)
+	//		and then skip the rest of this
+	// if we don't want kills anymore or are out of kills, disable sword of s words
+
+	// ========= Decide whether it makes sense to prep the Sword ==========
+	// skip if we're out of Sword targets
+	if (get_property("_swordOfSWordsMonsterChanged").to_int() > 2) {return false;}
+	// check that Sword will be selected from the drop familiars; no point in setting it if it won't be used
+	if (lookupFamiliarDatafile("drop") != sword) {return false;}
+
+	// ========= Pick a location to prep the Sword in, and adventure there ==========
+	// nook
+	// shadow slabs, with mimic
+	// Surgeon (dunno if works, need to figure out)
+	// bowling balls
+	// bridge parts
+	// a-boo clues
+	// tomb ratchets
+
+	// if loc != none, handleFamiliar(familiar fam)
+	// enable sword of s words pref
+}
+
+// called in the choose familiar function to disable S Word if it might override monster drops
+// normally item familiars will be chosen instead of drop familiars when items matter, but sometimes not (YRs, 100% drops like LFM)
+void auto_disableSwordOfSWords(location loc) {
+	if(!auto_haveSwordOfSwords()) {return;}
+}
