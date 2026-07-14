@@ -44,7 +44,7 @@ Cookbookbat	item:Yeast of Boris<4;!prop_boolean:auto_dontUseCookBookBat
 Cookbookbat	item:St. Sneaky Pete's Whey<4;!prop_boolean:auto_dontUseCookBookBat
 #
 # Get ascension-relevant items from monster A while fighting monster B
-# Sword of S Words prop:auto_preferSwordofSWords
+# Sword of S Words prop:auto_preferSword
 #
 # Below this lines drops are not needed more of for the run and are just grabbing for profit.
 # Most are useful in limited amounts which we already grab via boolean autoChooseFamiliar(location place)
