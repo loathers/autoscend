@@ -1174,7 +1174,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 			{
 				potentialTurnGain[it] = 2.0;
 			}
-			else if (legendaryNoodleDishes() contains it && get_property("auto_consumeMinAdvPerFill").to_int() <= 4) {
+			else if (legendaryNoodleDishes() contains it) {
 				// we have the option, after eating the dish, to consume spleen instead 1/day.
 				// which is quite good for minimizing daycount. We want that if it's available (except Ed, who has better spleen).
 				if (!get_property("_legendaryNoodlesSpleen").to_boolean() && spleen_left() > 0 && auto_willEatLegendaryNoodles() && !isActuallyEd()) {
