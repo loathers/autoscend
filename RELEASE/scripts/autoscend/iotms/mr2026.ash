@@ -369,7 +369,7 @@ boolean auto_forceCombatLegendaryNoodles() {
 	else {
 		item prospective_dish = auto_findBaseLegendaryNoods();
 		if (prospective_dish != $item[none]) {
-			action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_CRAFT);
+			action = new ConsumeAction(prospective_dish, 0, 1, 4, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_CRAFT);
 		}
 		else { return false;}
 	}
