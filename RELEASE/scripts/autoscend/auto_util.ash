@@ -5231,6 +5231,7 @@ boolean _auto_forceNextCombat(location loc, boolean speculative)
 		auto_forceCombatLegendaryNoodles();
 		if(!auto_haveQueuedForcedCombat())
 		{
+			set_property("auto_forceCombatWithLegendaryNoodles", false);
 			abort("Attempted to force a combat with legendary pasta noodles but was unable to.");
 		}
 		set_property("auto_forceCombatSource", "legendary noodle dish");
