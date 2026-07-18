@@ -488,6 +488,36 @@ boolean auto_wantCurrentSwordMonster() {
 	return auto_wantCurrentSwordMonster($monster[none]);
 }
 
+boolean auto_wantToSwitchSwordToDifferentSmutOrc() {
+	// supporting function for auto_prepSwordOfSwords; we can assume that bridge isn't built yet.
+	monster sword_monster = get("swordOfSWordsMonster").to_monster();
+
+	// handle case where we have wood sworded
+	if (sword_monster == $monster[smut orc jacker] || sword_monster == $monster[smut orc pipelayer]){
+		// switch if we have enough wood and we are at least four fasteners short of our goal
+		if (lumberCount() >= bridgeGoal() && fastenerCount() + 3 < bridgeGoal()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	// handle case where we have fasteners sworded
+	else if (sword_monster == $monster[smut orc nailer] || sword_monster == $monster[smut orc screwer]){
+		// switch if we have enough fasteners and we are at least four lumber short of our goal
+		if (fastenerCount() >= bridgeGoal() && lumberCount() + 3 < bridgeGoal()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	// not swording a smut orc right now. which is fine!
+	else { 
+		return false;
+	}
+}
+
 // called before doTasks in the main autoscend loop
 boolean auto_prepSwordOfSWords() {
 	familiar sword = $familiar[Sword of S Words];

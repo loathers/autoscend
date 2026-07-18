@@ -736,6 +736,7 @@ boolean auto_isSworded(location loc);
 int auto_neededShadowBricksSword();
 boolean auto_wantCurrentSwordMonster(monster speculative_current_mon);
 boolean auto_wantCurrentSwordMonster();
+boolean auto_wantToSwitchSwordToDifferentSmutOrc();
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
