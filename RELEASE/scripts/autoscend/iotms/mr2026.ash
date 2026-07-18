@@ -411,3 +411,43 @@ boolean auto_haveCupOf13s() {
 	}
 	return false;
 }
+
+item[int] auto_pickCupOf13sIngredients() {
+	item spoon = $item[spoon];
+	item spoon_alt;
+	// deciding on which other item we want if spoon isn't available
+	// these items partially come from the meatsmith, but that follows armory and leggery restrictions
+	if (knoll_available() && isHermitAvailable() && isArmoryAndLeggeryStoreAvailable() && my_meat() > 7200) {
+		spoon_alt = $item[dripping meat staff];
+	}
+	else if (my_meat() > 12200 && have_skill($skill[Armorcrafting]) && isArmoryAndLeggeryStoreAvailable()) {
+		spoon_alt = $item[meat shield];
+	}
+	else {spoon_alt = $item[none];}
+
+	// summon spoons if possible
+	while (item_amount($item[spoon]) < 3 && canUse($skill[Generate Irony]) && my_mp() > 30) {
+		useSkill($skill[Generate Irony]);
+	}
+
+	item[int] cup_ingredients;
+	for x from 1 to 3 {
+		if (item_amount(spoon) >= x) {
+			cup_ingredients[x] = spoon;
+		}
+		else {
+			cup_ingredients[x] = spoon_alt;
+		}
+	}
+	return cup_ingredients;
+}
+
+// answers the question of "are supported ingredients available"
+boolean auto_canMakeCupOf13sDrink() {
+	if (!auto_haveCupOf13s() || in_small()) {return false;} // taken from irrat's fork, using just in case we don't get 10x adv in small
+	item[int] tentative_ingredients = auto_pickCupOf13sIngredients();
+	if (tentative_ingredients[3] == $item[none]) {
+		return false;
+	}
+	return true;
+}

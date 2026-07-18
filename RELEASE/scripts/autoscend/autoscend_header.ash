@@ -732,6 +732,8 @@ boolean auto_legendaryNoodlesAvailable();
 boolean auto_forceCombatLegendaryNoodles();
 void legendaryNoodlesChoiceHandler();
 boolean auto_haveCupOf13s();
+item[int] auto_pickCupOf13sIngredients();
+boolean auto_canMakeCupOf13sDrink();
 
 
 ########################################################################################################
