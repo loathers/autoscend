@@ -434,6 +434,60 @@ int auto_neededShadowBricksSword() {
 		return max(0, 13 - currentBricks - bricksUsedToday);
 	}
 }
+
+// returns true if we want to keep the current sworded monster, false if not
+boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
+	monster sword_monster;
+	if (speculative_current_mon != $monster[none]) {
+		sword_monster = speculative_current_mon;
+	}
+	else {
+		sword_monster = get("swordOfSWordsMonster").to_monster();
+	}
+
+	// not having a set monster is functionally equivalent to being done with the current one
+	if (sword_monster == $monster[none]) {return true;}
+	int threshold;
+	switch (sword_monster) {
+		case $monster[shadow slab]:
+			if (auto_neededShadowBricks(false) > 0) {
+				return true;
+			}
+			else {return false;}
+			break;
+		case $monster[spiny skelelton]:
+		case $monster[toothy sklelton]:
+			L7_useEvilEyes();
+			if (get_property("cyrptNookEvilness").to_int() > 13) {
+				return true;
+			}
+			else {return false;}
+			break;
+		case $monster[pygmy bowler]:
+			// left hand side of the boolean computes to the number of bowling balls obtained, including ones used already
+			if (get_property("hiddenBowlingAlleyProgress").to_int() - 1 + item_amount($item[Bowling Ball]) < 5) {
+				return true;
+			}
+			else {return false;}
+			break;
+		case $monster[smut orc jacker]:
+		case $monster[smut orc nailer]:
+		case $monster[smut orc pipelayer]:
+		case $monster[smut orc screwer]:
+			if (internalQuestStatus("questL09Topping") != 0  || (fastenerCount() >= bridgeGoal() && lumberCount() >= bridgeGoal())) {
+				return false;
+			}
+			else {return true;}
+			break;
+		default:
+			return false;
+	}
+}
+
+boolean auto_wantCurrentSwordMonster() {
+	return auto_wantCurrentSwordMonster($monster[none]);
+}
+
 // called before doTasks in the main autoscend loop
 boolean auto_prepSwordOfSWords() {
 	familiar sword = $familiar[Sword of S Words];
