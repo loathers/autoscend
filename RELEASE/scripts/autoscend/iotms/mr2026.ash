@@ -451,3 +451,18 @@ boolean auto_canMakeCupOf13sDrink() {
 	}
 	return true;
 }
+
+float auto_CupOf13sDesirability() {
+	item[int] ingredients = auto_pickCupOf13sIngredients();
+	float net_adv_gain = 12.0;
+	for x from 1 to 3 {
+		if (tentative_ingredients[x] == $item[meat shield] && (free_crafts() - x < 1)) {
+			net_adv_gain -= 1;
+		}
+		else if (tentative_ingredients[x] == $item[meat shield]) {
+			// valuing free crafts at 0.5 adv
+			net_adv_gain -= 0.5;
+		}
+	}
+	return net_adv_gain;
+}

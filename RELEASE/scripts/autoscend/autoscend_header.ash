@@ -734,6 +734,7 @@ void legendaryNoodlesChoiceHandler();
 boolean auto_haveCupOf13s();
 item[int] auto_pickCupOf13sIngredients();
 boolean auto_canMakeCupOf13sDrink();
+float auto_CupOf13sDesirability();
 
 
 ########################################################################################################
