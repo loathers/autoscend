@@ -597,5 +597,8 @@ boolean auto_prepSwordOfSWords() {
 // called in the choose familiar function to disable S Word if it might override monster drops
 // normally item familiars will be chosen instead of drop familiars when items matter, but sometimes not (YRs, 100% drops like LFM)
 void auto_disableSwordOfSWords(location loc) {
-	if(!auto_haveSwordOfSwords()) {return;}
+	if (!auto_haveSwordOfSwords() || !get_property("auto_preferSwordFam").to_boolean()) {return;}
+	if (loc == $location[Sonofa Beach]) {
+		set_property("auto_preferSwordFam", false);
+	}
 }

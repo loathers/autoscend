@@ -738,6 +738,7 @@ boolean auto_wantCurrentSwordMonster(monster speculative_current_mon);
 boolean auto_wantCurrentSwordMonster();
 boolean auto_wantToSwitchSwordToDifferentSmutOrc();
 boolean auto_prepSwordOfSWords();
+void auto_disableSwordOfSWords(location loc);
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
