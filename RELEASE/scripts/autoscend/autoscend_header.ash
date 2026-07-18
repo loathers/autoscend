@@ -736,7 +736,9 @@ boolean auto_isSworded(location loc);
 int auto_neededShadowBricksSword();
 boolean auto_wantCurrentSwordMonster(monster speculative_current_mon);
 boolean auto_wantCurrentSwordMonster();
+boolean auto_wantToSword(monster enemy);
 boolean auto_wantToSwitchSwordToDifferentSmutOrc();
+boolean auto_wantToSwitchSwordToDifferentSmutOrc(monster enemy);
 boolean auto_prepSwordOfSWords();
 void auto_disableSwordOfSWords(location loc);
 

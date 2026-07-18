@@ -488,6 +488,11 @@ boolean auto_wantCurrentSwordMonster() {
 	return auto_wantCurrentSwordMonster($monster[none]);
 }
 
+// called from combat, where we've already intentionally adventured to prep sword
+boolean auto_wantToSword(monster enemy)  {
+	return auto_wantCurrentSwordMonster(enemy);
+}
+
 boolean auto_wantToSwitchSwordToDifferentSmutOrc() {
 	// supporting function for auto_prepSwordOfSwords; we can assume that bridge isn't built yet.
 	monster sword_monster = get("swordOfSWordsMonster").to_monster();
@@ -516,6 +521,38 @@ boolean auto_wantToSwitchSwordToDifferentSmutOrc() {
 	else { 
 		return false;
 	}
+}
+
+// following function is called from combat
+boolean auto_wantToSwitchSwordToDifferentSmutOrc(monster enemy) {
+	// check general condition to start with
+	if (!auto_wantToSwitchSwordToDifferentSmutOrc()) {return false;}
+
+	// now we need to check that our enemy is actually an "opposite" smut orc
+	monster sword_monster = get("swordOfSWordsMonster").to_monster();
+	switch (enemy) {
+		case $monster[smut orc jacker]:
+		case $monster[smut orc pipelayer]:
+			if (sword_monster == $monster[smut orc nailer] || sword_monster == $monster[smut orc screwer]) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		case $monster[smut orc nailer]:
+		case $monster[smut orc screwer]:
+			if (sword_monster == $monster[smut orc jacker] || sword_monster == $monster[smut orc pipelayer]) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		default:
+			return false;
+	}
+
 }
 
 // called before doTasks in the main autoscend loop
