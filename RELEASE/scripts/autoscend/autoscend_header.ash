@@ -741,6 +741,7 @@ boolean auto_wantToSwitchSwordToDifferentSmutOrc();
 boolean auto_wantToSwitchSwordToDifferentSmutOrc(monster enemy);
 boolean auto_prepSwordOfSWords();
 void auto_disableSwordOfSWords(location loc);
+boolean auto_haveCupOf13s();
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash

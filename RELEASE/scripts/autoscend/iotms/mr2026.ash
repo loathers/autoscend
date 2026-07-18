@@ -674,3 +674,10 @@ void auto_disableSwordOfSWords(location loc) {
 		set_property("auto_preferSwordFam", false);
 	}
 }
+
+boolean auto_haveCupOf13s() {
+	if(auto_is_valid($item[Cup of 13s]) && available_amount($item[Cup of 13s]) > 0 ) {
+		return true;
+	}
+	return false;
+}
