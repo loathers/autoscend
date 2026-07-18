@@ -404,3 +404,10 @@ void legendaryNoodlesChoiceHandler() {
 	}
 	else {run_choice(5);}
 }
+
+boolean auto_haveCupOf13s() {
+	if(auto_is_valid($item[Cup of 13s]) && available_amount($item[Cup of 13s]) > 0 ) {
+		return true;
+	}
+	return false;
+}
