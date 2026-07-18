@@ -1318,6 +1318,7 @@ int cyrptEvilBonus();
 boolean L7_crypt();
 boolean L7_override();
 boolean L7_defiledAlcove();
+void    L7_useEvilEyes  ();
 boolean L7_defiledNook  ();
 boolean L7_defiledNiche ();
 boolean L7_defiledCranny();

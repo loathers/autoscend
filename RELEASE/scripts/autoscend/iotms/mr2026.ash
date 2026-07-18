@@ -422,7 +422,7 @@ boolean auto_haveSwordFam()
 
 boolean auto_isSworded(location loc) {
 	// return true if sword monster is from loc. Used to delay zones.
-	monster sword_monster = get("swordOfSWordsMonster").to_monster();
+	monster sword_monster = get_property("swordOfSWordsMonster").to_monster();
 	if (sword_monster == $monster[none]) {return false;}
 	// even if sword monster is set, we should check that we want its drops
 	if (!get_property("auto_preferSwordFam").to_boolean()) {return false;}
@@ -434,13 +434,11 @@ boolean auto_isSworded(location loc) {
 				return true;
 			}
 			else {return false;}
-			break;
 		case $monster[pygmy bowler]:
 			if (loc == $location[The Hidden Bowling Alley]) {
 				return true;
 			}
 			else {return false;}
-			break;
 		case $monster[smut orc jacker]:
 		case $monster[smut orc nailer]:
 		case $monster[smut orc pipelayer]:
@@ -449,10 +447,8 @@ boolean auto_isSworded(location loc) {
 				return true;
 			}
 			else {return false;}
-			break;
-		default:
-			return false;
 	}
+	return false;
 
 }
 
@@ -460,15 +456,13 @@ boolean auto_isSworded(location loc) {
 int auto_neededShadowBricksSword() {
 	int currentBricks = item_amount($item[shadow brick]);
 	int bricksUsedToday = get_property("_shadowBricksUsed").to_int();
-	boolean slab_is_sword_mon = get("sword pref").to_monster() == $monster[shadow slab];
+	boolean slab_is_sword_mon = get_property("swordOfSWordsMonster").to_monster() == $monster[shadow slab];
 	// auto_runDayCount can be incorrect, but it's still better to consider it here than not
 	// at worst we'll overfarm 13 bricks
-	if (my_daycount() < get_property("auto_runDayCount").to_int()) {
+	if (my_daycount() < get_property("auto_runDayCount").to_int() && slab_is_sword_mon) {
 		return max(0, 26 - currentBricks - bricksUsedToday);
 	}
-	else {
-		return max(0, 13 - currentBricks - bricksUsedToday);
-	}
+	return max(0, 13 - currentBricks - bricksUsedToday);
 }
 
 // returns true if we want to keep the current sworded monster, false if not
@@ -490,7 +484,6 @@ boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
 				return true;
 			}
 			else {return false;}
-			break;
 		case $monster[spiny skelelton]:
 		case $monster[toothy sklelton]:
 			L7_useEvilEyes();
@@ -498,14 +491,12 @@ boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
 				return true;
 			}
 			else {return false;}
-			break;
 		case $monster[pygmy bowler]:
 			// left hand side of the boolean computes to the number of bowling balls obtained, including ones used already
 			if (get_property("hiddenBowlingAlleyProgress").to_int() - 1 + item_amount($item[Bowling Ball]) < 5) {
 				return true;
 			}
 			else {return false;}
-			break;
 		case $monster[smut orc jacker]:
 		case $monster[smut orc nailer]:
 		case $monster[smut orc pipelayer]:
@@ -514,10 +505,8 @@ boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
 				return false;
 			}
 			else {return true;}
-			break;
-		default:
-			return false;
 	}
+	return false;
 }
 
 boolean auto_wantCurrentSwordMonster() {
@@ -531,7 +520,7 @@ boolean auto_wantToSword(monster enemy)  {
 
 boolean auto_wantToSwitchSwordToDifferentSmutOrc() {
 	// supporting function for auto_prepSwordOfSwords; we can assume that bridge isn't built yet.
-	monster sword_monster = get("swordOfSWordsMonster").to_monster();
+	monster sword_monster = get_property("swordOfSWordsMonster").to_monster();
 
 	// handle case where we have wood sworded
 	if (sword_monster == $monster[smut orc jacker] || sword_monster == $monster[smut orc pipelayer]){
@@ -565,7 +554,7 @@ boolean auto_wantToSwitchSwordToDifferentSmutOrc(monster enemy) {
 	if (!auto_wantToSwitchSwordToDifferentSmutOrc()) {return false;}
 
 	// now we need to check that our enemy is actually an "opposite" smut orc
-	monster sword_monster = get("swordOfSWordsMonster").to_monster();
+	monster sword_monster = get_property("swordOfSWordsMonster").to_monster();
 	switch (enemy) {
 		case $monster[smut orc jacker]:
 		case $monster[smut orc pipelayer]:
@@ -575,7 +564,6 @@ boolean auto_wantToSwitchSwordToDifferentSmutOrc(monster enemy) {
 			else {
 				return false;
 			}
-			break;
 		case $monster[smut orc nailer]:
 		case $monster[smut orc screwer]:
 			if (sword_monster == $monster[smut orc jacker] || sword_monster == $monster[smut orc pipelayer]) {
@@ -584,10 +572,8 @@ boolean auto_wantToSwitchSwordToDifferentSmutOrc(monster enemy) {
 			else {
 				return false;
 			}
-			break;
-		default:
-			return false;
 	}
+	return false;
 
 }
 
@@ -596,7 +582,7 @@ boolean auto_wantToSwitchSwordToDifferentSmutOrc(monster enemy) {
 boolean auto_prepSwordOfSWords() {
 	familiar sword = $familiar[Sword of S Words];
 	// check that using Sword is allowed
-	if(!auto_haveSwordOfSwords() || !canChangeToFamiliar(sword)) {
+	if(!auto_haveSwordFam() || !canChangeToFamiliar(sword)) {
 		return false;
 	}
 
@@ -670,7 +656,7 @@ boolean auto_prepSwordOfSWords() {
 // called in the choose familiar function to disable S Word if it might override monster drops
 // normally item familiars will be chosen instead of drop familiars when items matter, but sometimes not (YRs, 100% drops like LFM)
 void auto_disableSwordOfSWords(location loc) {
-	if (!auto_haveSwordOfSwords() || !get_property("auto_preferSwordFam").to_boolean()) {return;}
+	if (!auto_haveSwordFam() || !get_property("auto_preferSwordFam").to_boolean()) {return;}
 	if (loc == $location[Sonofa Beach]) {
 		set_property("auto_preferSwordFam", false);
 	}
