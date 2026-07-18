@@ -117,8 +117,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	// And don't yellow ray if we'll be swooping
 	boolean swoopAvailable = canUse($skill[Swoop like a Bat], true) && get_property("_batWingsSwoopUsed").to_int() < 11;
 	boolean willSwoop = auto_swoopLocations() contains my_location() && swoopAvailable;
+
+	// And don't yellow ray if sword of s words is the current familiar
+	boolean swordFamiliaring = my_familiar() == $familiar[Sword of S Words];
 	
-	if(((!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location())) || combat_status_check("droptablereplaced")) && !willDouse && !willSwoop)
+	if(((!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location())) || combat_status_check("droptablereplaced")) && !willDouse && !willSwoop && !swordFamiliaring)
 	{
 		string combatAction = yellowRayCombatString(enemy, true, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains enemy);
 		if(combatAction != "")
