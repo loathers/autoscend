@@ -466,3 +466,42 @@ float auto_CupOf13sDesirability() {
 	}
 	return net_adv_gain;
 }
+
+boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
+	// get spoon count
+	int spoon_count = 0;
+	for x from 1 to 3 {
+		if (ing[x] == $item[spoon]) {
+			spoon_count += 1;
+		}
+	}
+	// make sure we have enough. Spoons are gotten elsewhere.
+	if (item_amount($item[spoon]) < spoon_count) {
+		return false;
+	}
+	// if we're only using spoons for our drink, we don't need to get any other ingredients
+	if (spoon_count > 2) {
+		return true;
+	}
+
+	// alt as in alternative to spoon (not that we expect spoon-having)
+	item alt = ingredients[3];
+	int alt_count = 3 - spoon_count;
+	if (alt == $item[meat shield]) {
+		return (
+			auto_buyUpTo(alt_count, $item[buckler buckle]) &&
+			cli_execute(`make {alt_count} dense meat stack`) &&
+			autoCraft("smith", alt_count, $item[buckler buckle], $item[dense meat stack]) >= alt_count
+		);
+	}
+	else if (alt == $item[dripping meat staff]) {
+		return (
+			auto_buyUpTo(alt_count, $item[big stick]) &&
+			cli_execute(`make {alt_count} meat stack`) &&
+			auto_hermit(alt_count, $item`ketchup`) &&
+			autoCraft("smith", alt_count, $item[big stick], $item[meat stack]) >= alt_count &&
+			autoCraft("smith", alt_count, $item[basic meat staff], $item[ketchup]) >= alt_count
+		);
+	}
+	else {return false;}
+}
