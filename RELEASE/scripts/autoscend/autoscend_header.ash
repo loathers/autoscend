@@ -731,7 +731,9 @@ boolean auto_willEatLegendaryNoodles();
 boolean auto_legendaryNoodlesAvailable();
 boolean auto_forceCombatLegendaryNoodles();
 void legendaryNoodlesChoiceHandler();
-
+boolean auto_haveSwordFam();
+boolean auto_isSworded(location loc);
+int auto_neededShadowBricksSword();
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash

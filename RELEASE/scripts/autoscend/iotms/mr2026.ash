@@ -419,6 +419,21 @@ boolean auto_haveSwordFam()
 	return false;
 }
 
+
+// diff than the one in the mr2023 file because we don't need shadow rift access
+int auto_neededShadowBricksSword() {
+	int currentBricks = item_amount($item[shadow brick]);
+	int bricksUsedToday = get_property("_shadowBricksUsed").to_int();
+	boolean slab_is_sword_mon = get("sword pref").to_monster() == $monster[shadow slab];
+	// auto_runDayCount can be incorrect, but it's still better to consider it here than not
+	// at worst we'll overfarm 13 bricks
+	if (my_daycount() < get_property("auto_runDayCount").to_int()) {
+		return max(0, 26 - currentBricks - bricksUsedToday);
+	}
+	else {
+		return max(0, 13 - currentBricks - bricksUsedToday);
+	}
+}
 // called before doTasks in the main autoscend loop
 boolean auto_prepSwordOfSWords() {
 	familiar sword = $familiar[Sword of S Words];
@@ -440,16 +455,43 @@ boolean auto_prepSwordOfSWords() {
 	if (lookupFamiliarDatafile("drop") != sword) {return false;}
 
 	// ========= Pick a location to prep the Sword in, and adventure there ==========
-	// nook
-	// shadow slabs, with mimic
-	// Surgeon (dunno if works, need to figure out)
-	// bowling balls
-	// bridge parts
-	// a-boo clues
-	// tomb ratchets
+	location target_location = $location[none];
+	// prioritize high drops, then use target usefulness as a tiebreaker
 
-	// if loc != none, handleFamiliar(familiar fam)
-	// enable sword of s words pref
+	// note that we don't want to sword stuff if it's trivial
+	// also, for the low drop ones we check for level because drop familiar override stat familiars,
+
+	// require that we're missing at least four of either part type before we consider
+	if ((fastenerCount() + 3 < bridgeGoal() || lumberCount() + 3 < bridgeGoal()) && zone_isAvailable($location[The Smut Orc Logging Camp])) {
+		target_location = $location[The Smut Orc Logging Camp];
+	}
+	// we check auto_availableBrickRift() becuase we don't want to farm bricks with sword if we can access them from the original IOTM source
+	if (auto_availableBrickRift() == $location[none] && canSummonMonster($monster[shadow slab]) && auto_neededShadowBricksSword() > 2) {
+		// represents "not a standard location", which works because this the only supported nonstandard target
+		target_location = $location[Noob Cave];
+	}
+	if (get_property("hiddenBowlingAlleyProgress").to_int() - 1 + item_amount($item[Bowling Ball]) < 2 && zone_isAvailable($location[The Hidden Bowling Alley])) {
+		target_location = $location[The Hidden Bowling Alley];
+	}
+	if (get_property("cyrptNookEvilness").to_int() > 13 && zone_isAvailable($location[The Defiled Nook])) {
+		target_location = $location[The Defiled Nook];
+	}
+
+	if (target_location != $location[none]){
+		handleFamiliar($familiar[Sword of S Words]);
+		boolean adv_success;
+		if (target_location == $location[Noob Cave]) {
+			adv_success = summonMonster($monster[shadow slab]);
+		}
+		else {
+			adv_success = autoAdv(1, target_location);
+		}
+		if (auto_wantCurrentSwordMonster()) {
+			set_property("auto_preferSwordFam", true);
+		}
+		return adv_success;
+	} 
+	
 }
 
 // called in the choose familiar function to disable S Word if it might override monster drops
