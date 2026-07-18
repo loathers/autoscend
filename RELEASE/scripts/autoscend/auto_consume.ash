@@ -164,6 +164,19 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		handleTracker(toDrink, stillsuitAdvs + "Advs", "auto_drunken");
 		return true;
 	}
+	if(toDrink == $item[Cup of 13s])
+	{
+		if(consumeCupOf13s())
+		{
+			handleTracker("Cup of 13s", "12 Advs", "auto_drunken");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Attempted to drink from the Cup of 13s, but failed.");
+			return false;
+		}
+	}
 	if(item_amount(toDrink) < howMany && !isSpeakeasy)
 	{
 		return false;

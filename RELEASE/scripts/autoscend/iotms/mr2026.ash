@@ -505,3 +505,21 @@ boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
 	}
 	else {return false;}
 }
+
+boolean consumeCupOf13s() {
+	item[int] ing = auto_pickCupOf13sIngredients();
+	if (!auto_acquireCupOf13sIngredients(ing)) {return false;}
+	int advs = my_adventures();
+  	visit_url(`inventory.php?pwd=${myHash()}&action=cupof13s`);
+  	visit_url(
+    `choice.php?pwd={my_hash()}&whichchoice=1601&option=1` +
+      `&whichitem1={to_int(ing[1])}&whichitem2={to_int(ing[2])}&whichitem3={to_int(ing[3])}`,
+  	);
+
+  	if (advs == my_adventures()) {
+    	visitUrl("main.php");
+		cliExecute("refresh inventory");
+		return false;
+	}
+	return true;
+}
