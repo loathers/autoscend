@@ -1468,6 +1468,11 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		actions[count(actions)] = new ConsumeAction(apronKit, 0, size, adv, adv, AUTO_ORGAN_STOMACH, obtainMethod);
 	}
 
+	// Add cup of 13s if we are looking to drink
+	if(type == AUTO_ORGAN_LIVER && auto_haveCupOf13s() && get_property("_cupOf13sJewels") >= 12 && auto_canMakeCupOf13sDrink()) {
+		actions[count(actions)] = new ConsumeAction($item[Cup of 13s], 0, 1, 12.0, auto_CupOf13sDesirability(), AUTO_ORGAN_LIVER, AUTO_OBTAIN_NULL);
+	}
+
 	// Step 6: Now, to load cafe consumables. This has some TCRS-specific code.
 
 	if(type == AUTO_ORGAN_LIVER && !gnomads_available()) return false;
