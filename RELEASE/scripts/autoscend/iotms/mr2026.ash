@@ -453,7 +453,7 @@ boolean auto_canMakeCupOf13sDrink() {
 }
 
 float auto_CupOf13sDesirability() {
-	item[int] ingredients = auto_pickCupOf13sIngredients();
+	item[int] tentative_ingredients = auto_pickCupOf13sIngredients();
 	float net_adv_gain = 12.0;
 	for x from 1 to 3 {
 		if (tentative_ingredients[x] == $item[meat shield] && (free_crafts() - x < 1)) {
@@ -471,7 +471,7 @@ boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
 	// get spoon count
 	int spoon_count = 0;
 	for x from 1 to 3 {
-		if (ing[x] == $item[spoon]) {
+		if (ingredients[x] == $item[spoon]) {
 			spoon_count += 1;
 		}
 	}
@@ -511,8 +511,8 @@ boolean consumeCupOf13s() {
 	if (!auto_acquireCupOf13sIngredients(ing)) {return false;}
 	int advs = my_adventures();
 	string url1 = `inventory.php?pwd=${my_hash()}&action=cupof13s`;
-	string url2 = `choice.php?pwd={my_hash()}&whichchoice=1601&option=1`
-	string url3 = `&whichitem1={to_int(ing[1])}&whichitem2={to_int(ing[2])}&whichitem3={to_int(ing[3])}`
+	string url2 = `choice.php?pwd={my_hash()}&whichchoice=1601&option=1`;
+	string url3 = `&whichitem1={to_int(ing[1])}&whichitem2={to_int(ing[2])}&whichitem3={to_int(ing[3])}`;
   	visit_url(url1);
   	visit_url(url2 + url3);
 
