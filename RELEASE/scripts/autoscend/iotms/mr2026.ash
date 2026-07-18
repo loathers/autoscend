@@ -420,7 +420,7 @@ item[int] auto_pickCupOf13sIngredients() {
 	if (knoll_available() && isHermitAvailable() && isArmoryAndLeggeryStoreAvailable() && my_meat() > 7200) {
 		spoon_alt = $item[dripping meat staff];
 	}
-	else if (my_meat() > 12200 && have_skill($skill[Armorcrafting]) && isArmoryAndLeggeryStoreAvailable()) {
+	else if (my_meat() > 12200 && have_skill($skill[Armorcraftiness]) && isArmoryAndLeggeryStoreAvailable()) {
 		spoon_alt = $item[meat shield];
 	}
 	else {spoon_alt = $item[none];}
@@ -498,7 +498,7 @@ boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
 		return (
 			auto_buyUpTo(alt_count, $item[big stick]) &&
 			cli_execute(`make {alt_count} meat stack`) &&
-			auto_hermit(alt_count, $item`ketchup`) &&
+			auto_hermit(alt_count, $item[ketchup]) &&
 			autoCraft("smith", alt_count, $item[big stick], $item[meat stack]) >= alt_count &&
 			autoCraft("smith", alt_count, $item[basic meat staff], $item[ketchup]) >= alt_count
 		);
@@ -510,15 +510,15 @@ boolean consumeCupOf13s() {
 	item[int] ing = auto_pickCupOf13sIngredients();
 	if (!auto_acquireCupOf13sIngredients(ing)) {return false;}
 	int advs = my_adventures();
-  	visit_url(`inventory.php?pwd=${myHash()}&action=cupof13s`);
-  	visit_url(
-    `choice.php?pwd={my_hash()}&whichchoice=1601&option=1` +
-      `&whichitem1={to_int(ing[1])}&whichitem2={to_int(ing[2])}&whichitem3={to_int(ing[3])}`,
-  	);
+	string url1 = `inventory.php?pwd=${my_hash()}&action=cupof13s`;
+	string url2 = `choice.php?pwd={my_hash()}&whichchoice=1601&option=1`
+	string url3 = `&whichitem1={to_int(ing[1])}&whichitem2={to_int(ing[2])}&whichitem3={to_int(ing[3])}`
+  	visit_url(url1);
+  	visit_url(url2 + url3);
 
   	if (advs == my_adventures()) {
-    	visitUrl("main.php");
-		cliExecute("refresh inventory");
+    	visit_url("main.php");
+		cli_execute("refresh inventory");
 		return false;
 	}
 	return true;
