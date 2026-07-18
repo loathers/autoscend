@@ -340,7 +340,8 @@ boolean canEatSomeLegNoods() {
 
 boolean auto_willEatLegendaryNoodles() {
 	// We exclude small because we want to be careful about maximizing the quality of our food when we only have two space, and we exclude plumber because plumber consumption is weird
-	return canEatSomeLegNoods() && !get_property("auto_limitConsume").to_boolean() && !in_small() && !in_plumber();
+	// Min adv per full filter is set to four because we don't differentiate between the quality of the noodles when we force-eat them, and the "worst" ones average 4 per full (others are 5)
+	return canEatSomeLegNoods() && !get_property("auto_limitConsume").to_boolean() && get_property("auto_consumeMinAdvPerFill").to_float() <= 4.0 && !in_small() && !in_plumber();
 }
 
 boolean auto_legendaryNoodlesAvailable() {
@@ -368,7 +369,7 @@ boolean auto_forceCombatLegendaryNoodles() {
 	else {
 		item prospective_dish = auto_findBaseLegendaryNoods();
 		if (prospective_dish != $item[none]) {
-			action = new ConsumeAction(prospective_dish, 0, 1, 5, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_CRAFT);
+			action = new ConsumeAction(prospective_dish, 0, 1, 4, 10, AUTO_ORGAN_STOMACH, AUTO_OBTAIN_CRAFT);
 		}
 		else { return false;}
 	}
