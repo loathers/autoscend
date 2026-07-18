@@ -519,6 +519,7 @@ boolean auto_wantToSwitchSwordToDifferentSmutOrc() {
 }
 
 // called before doTasks in the main autoscend loop
+// returning true restarts the loop (i.e. return true if an adventure was used)
 boolean auto_prepSwordOfSWords() {
 	familiar sword = $familiar[Sword of S Words];
 	// check that using Sword is allowed
@@ -527,10 +528,27 @@ boolean auto_prepSwordOfSWords() {
 	}
 
 	// ========= Managing the Enable/Disable Sword pref ==========
-	// Check whether Sword has a current target we still want kills from
-	// if so, enable Sword for now if it has been disabled (due to overriding drops in the location)
-	//		and then skip the rest of this
-	// if we don't want kills anymore or are out of kills, disable sword of s words
+	// don't use sword if we're out of kills
+	if (get_property("_swordOfSwordsKills").to_int() >= 100) {
+		if (get_property("auto_preferSwordFam").to_boolean()){
+			set_property("auto_preferSwordFam", false);
+		}
+		return false;
+	}
+	// if we aren't done with the current target, enable sword
+	// generally return here, except if we want to change our smut orc target
+	else if (auto_wantCurrentSwordMonster()) {
+		if (!get_property("auto_preferSwordFam").to_boolean()){
+			set_property("auto_preferSwordFam", true);
+		}
+		if (!auto_wantToSwitchSwordToDifferentSmutOrc()) {
+			return false;
+		}
+	}
+	// we don't want kills on our current monster, so disable pref if it's currently enabled
+	else if (get_property("auto_preferSwordFam").to_boolean()){
+		set_property("auto_preferSwordFam", false);
+	}
 
 	// ========= Decide whether it makes sense to prep the Sword ==========
 	// skip if we're out of Sword targets
@@ -541,9 +559,6 @@ boolean auto_prepSwordOfSWords() {
 	// ========= Pick a location to prep the Sword in, and adventure there ==========
 	location target_location = $location[none];
 	// prioritize high drops, then use target usefulness as a tiebreaker
-
-	// note that we don't want to sword stuff if it's trivial
-	// also, for the low drop ones we check for level because drop familiar override stat familiars,
 
 	// require that we're missing at least four of either part type before we consider
 	if ((fastenerCount() + 3 < bridgeGoal() || lumberCount() + 3 < bridgeGoal()) && zone_isAvailable($location[The Smut Orc Logging Camp])) {
@@ -576,6 +591,7 @@ boolean auto_prepSwordOfSWords() {
 		return adv_success;
 	} 
 	
+	return false;
 }
 
 // called in the choose familiar function to disable S Word if it might override monster drops
