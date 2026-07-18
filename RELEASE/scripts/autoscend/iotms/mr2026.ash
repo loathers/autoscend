@@ -472,7 +472,7 @@ boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
 		sword_monster = speculative_current_mon;
 	}
 	else {
-		sword_monster = get("swordOfSWordsMonster").to_monster();
+		sword_monster = get_property("swordOfSWordsMonster").to_monster();
 	}
 
 	// not having a set monster is functionally equivalent to being done with the current one
@@ -480,7 +480,7 @@ boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
 	int threshold;
 	switch (sword_monster) {
 		case $monster[shadow slab]:
-			if (auto_neededShadowBricks(false) > 0) {
+			if (auto_neededShadowBricksSword() > 0) {
 				return true;
 			}
 			else {return false;}
