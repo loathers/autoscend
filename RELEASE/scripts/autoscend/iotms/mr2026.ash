@@ -404,7 +404,13 @@ void legendaryNoodlesChoiceHandler() {
 	else {run_choice(5);}
 }
 
-boolean auto_haveSwordOfSWords()
+// currently supported sword options:
+// shadow slabs for shadow bricks
+// bowling balls
+// bridge parts
+// evil eyes
+
+boolean auto_haveSwordFam()
 {
 	if(auto_have_familiar($familiar[Sword of S Words]))
 	{
