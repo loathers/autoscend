@@ -361,6 +361,10 @@ boolean L9_chasmBuild()
 		// unless we have ran out of other stuff to do
 		return false;
 	}
+	// delay zone to allow sword of s words time to grab bridge parts
+	if (auto_isSworded($location[The Smut Orc Logging Camp]) && !isAboutToPowerlevel()) {
+		return false;
+	}
 
 	if (LX_loggingHatchet()) { return true; } // turn free, might save some adventures. May as well get it if we can.
 

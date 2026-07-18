@@ -2062,6 +2062,12 @@ boolean L11_hiddenCity()
 	{
 		auto_log_info("The idden [sic] bowling alley!", "blue");
 		L11_hiddenTavernUnlock(true);
+
+		// delay zone to allow sword of s words time to grab bowling balls
+		if (auto_isSworded($location[The Hidden Bowling Alley]) && !isAboutToPowerlevel()) {
+			return false;
+		}
+
 		if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
 		{
 			if(item_amount($item[Bowl Of Scorpions]) == 0 && !is_werewolf()) //can't access shops as werewolf

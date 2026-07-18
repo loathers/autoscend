@@ -419,6 +419,41 @@ boolean auto_haveSwordFam()
 	return false;
 }
 
+boolean auto_isSworded(location loc) {
+	// return true if sword monster is from loc. Used to delay zones.
+	monster sword_monster = get("swordOfSWordsMonster").to_monster();
+	if (sword_monster == $monster[none]) {return false;}
+	// even if sword monster is set, we should check that we want its drops
+	if (!get_property("auto_preferSwordFam").to_boolean()) {return false;}
+
+	switch (sword_monster) {
+		case $monster[spiny skelelton]:
+		case $monster[toothy sklelton]:
+			if (loc == $location[The Defiled Nook]) {
+				return true;
+			}
+			else {return false;}
+			break;
+		case $monster[pygmy bowler]:
+			if (loc == $location[The Hidden Bowling Alley]) {
+				return true;
+			}
+			else {return false;}
+			break;
+		case $monster[smut orc jacker]:
+		case $monster[smut orc nailer]:
+		case $monster[smut orc pipelayer]:
+		case $monster[smut orc screwer]:
+			if (loc == $location[The Smut Orc Logging Camp]) {
+				return true;
+			}
+			else {return false;}
+			break;
+		default:
+			return false;
+	}
+
+}
 
 // diff than the one in the mr2023 file because we don't need shadow rift access
 int auto_neededShadowBricksSword() {
