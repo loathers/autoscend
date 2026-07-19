@@ -508,7 +508,7 @@ boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
 
 boolean consumeCupOf13s() {
 	item[int] ing = auto_pickCupOf13sIngredients();
-	auto_log_info(`Consuming a delicious drink of {ing[1]}, {ing[2]}, and {ing[3]} from our Cup of 13s.`)
+	auto_log_info(`Consuming a delicious drink of {ing[1]}, {ing[2]}, and {ing[3]} from our Cup of 13s.`);
 	if (!auto_acquireCupOf13sIngredients(ing)) {return false;}
 	int advs = my_adventures();
 	string url1 = `inventory.php?pwd=${my_hash()}&action=cupof13s`;
