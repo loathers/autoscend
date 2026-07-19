@@ -425,7 +425,8 @@ item[int] auto_pickCupOf13sIngredients() {
 	}
 	else {spoon_alt = $item[none];}
 
-	// summon spoons if possible
+	// summon spoons if possible. We do this here because mafia doesn't track how many times we can cast generate irony
+	// Therefore we can't tell how many spoons we have available without actually generating them.
 	while (item_amount($item[spoon]) < 3 && canUse($skill[Generate Irony]) && my_mp() > 30) {
 		useSkill($skill[Generate Irony]);
 	}
