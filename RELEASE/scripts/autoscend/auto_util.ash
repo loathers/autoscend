@@ -3904,8 +3904,11 @@ boolean auto_is_valid(item it)
 	{
 		return is_trendy(it);
 	}
-	
-	if (it.combat) {return true;}
+
+	// combat items are usable out of standard. 
+	// could do this for combat items in general, but worried about unintended consequences
+	// (wouldn't cover out-of-standard items that are usable in combat but not outside)
+	if (it == $item[shadow brick]) {return true;}
 	return is_unrestricted(it);
 }
 
