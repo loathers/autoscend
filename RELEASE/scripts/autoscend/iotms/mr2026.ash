@@ -673,6 +673,11 @@ void auto_disableSwordOfSWords(location loc) {
 	list[$location[An Overgrown Shrine (Northeast)]] = true;
 	list[$location[A Massive Ziggurat]] = true;
 	list[$location[The Daily Dungeon]] = true;
+	list[$location[Lair of the Ninja Snowmen]] = true;
+	list[$location[Summoning Chamber]] = true;
+	list[$location[The Red Zeppelin]] = true; 
+	list[$location[Haert of the Cyrpt]] = true;
+
 	// we want some gauze garters, and we need item drops for that
 	if (get_property("hippiesDefeated").to_int() > 500) {
 		list[$location[The Battlefield (Frat Uniform)]] = true;
