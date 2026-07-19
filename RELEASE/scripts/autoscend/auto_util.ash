@@ -3905,6 +3905,7 @@ boolean auto_is_valid(item it)
 		return is_trendy(it);
 	}
 	
+	if (it.combat) {return true;}
 	return is_unrestricted(it);
 }
 
