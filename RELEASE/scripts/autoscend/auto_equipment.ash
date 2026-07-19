@@ -784,7 +784,7 @@ void finalizeMaximize(boolean speculative)
 		{
 			removeFromMaximize("-equip " + toEquip);
 			// quotes let us handle weird item names (cup of 13s, items with commas)
-			addToMaximize("\"+equip " + toEquip + "\"");
+			addToMaximize("\"equip " + toEquip + "\"");
 		}
 	}
 
