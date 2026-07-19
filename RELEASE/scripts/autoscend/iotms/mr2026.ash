@@ -663,7 +663,20 @@ boolean auto_prepSwordOfSWords() {
 // normally item familiars will be chosen instead of drop familiars when items matter, but sometimes not (YRs, 100% drops like LFM)
 void auto_disableSwordOfSWords(location loc) {
 	if (!auto_haveSwordFam() || !get_property("auto_preferSwordFam").to_boolean()) {return;}
-	if (loc == $location[Sonofa Beach]) {
+
+	// generate list of banned locations
+	boolean[location] = list;
+	list[$location[Sonofa Beach]] = true;
+	list[$location[An Overgrown Shrine (Southwest)]] = true;
+	list[$location[An Overgrown Shrine (Southeast)]] = true;
+	list[$location[An Overgrown Shrine (Northwest)]] = true;
+	list[$location[An Overgrown Shrine (Northeast)]] = true;
+	list[$location[A Massive Ziggurat]] = true;
+	// we want some gauze garters, and we need item drops for that
+	if (get_property("hippiesDefeated").to_int() > 500) {
+		list[$location[The Battlefield (Frat Uniform)]] = true;
+	}
+	if (list contains loc) {
 		set_property("auto_preferSwordFam", false);
 	}
 }
