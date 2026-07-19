@@ -672,6 +672,7 @@ void auto_disableSwordOfSWords(location loc) {
 	list[$location[An Overgrown Shrine (Northwest)]] = true;
 	list[$location[An Overgrown Shrine (Northeast)]] = true;
 	list[$location[A Massive Ziggurat]] = true;
+	list[$location[The Daily Dungeon]] = true;
 	// we want some gauze garters, and we need item drops for that
 	if (get_property("hippiesDefeated").to_int() > 500) {
 		list[$location[The Battlefield (Frat Uniform)]] = true;
