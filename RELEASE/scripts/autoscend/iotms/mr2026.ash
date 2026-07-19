@@ -417,6 +417,7 @@ item[int] auto_pickCupOf13sIngredients() {
 	item spoon_alt;
 	// deciding on which other item we want if spoon isn't available
 	// these items partially come from the meatsmith, but that follows armory and leggery restrictions
+	// these items can be expensive, so we have a meat threshold to probably avoid meat issues
 	if (knoll_available() && isHermitAvailable() && isArmoryAndLeggeryStoreAvailable() && my_meat() > 7200) {
 		spoon_alt = $item[dripping meat staff];
 	}
