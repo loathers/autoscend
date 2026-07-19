@@ -676,6 +676,9 @@ void auto_disableSwordOfSWords(location loc) {
 	if (get_property("hippiesDefeated").to_int() > 500) {
 		list[$location[The Battlefield (Frat Uniform)]] = true;
 	}
+	if (get_property("fratboysDefeated").to_int() > 500) {
+		list[$location[The Battlefield (Hippy Uniform)]] = true;
+	}
 	if (list contains loc) {
 		set_property("auto_preferSwordFam", false);
 	}
