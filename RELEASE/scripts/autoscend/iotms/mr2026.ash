@@ -665,7 +665,7 @@ void auto_disableSwordOfSWords(location loc) {
 	if (!auto_haveSwordFam() || !get_property("auto_preferSwordFam").to_boolean()) {return;}
 
 	// generate list of banned locations
-	boolean[location] = list;
+	boolean[location] list;
 	list[$location[Sonofa Beach]] = true;
 	list[$location[An Overgrown Shrine (Southwest)]] = true;
 	list[$location[An Overgrown Shrine (Southeast)]] = true;
