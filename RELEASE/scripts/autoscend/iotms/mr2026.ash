@@ -611,7 +611,11 @@ boolean auto_prepSwordOfSWords() {
 
 	// ========= Decide whether it makes sense to prep the Sword ==========
 	// skip if we're out of Sword targets
-	if (get_property("_swordOfSWordsMonsterChanged").to_int() > 2) {return false;}
+	// We can only target monsters 3x/day. We start with no targets, so on day 1 we can switch one less time.
+	int change_limit = 3;
+	if (my_daycount() == 1) {change_limit -= 1;}
+
+	if (get_property("_swordOfSWordsMonsterChanged").to_int() >= change_limit) {auto_log_debug("no sword targets"); return false;}
 	// check that Sword will be selected from the drop familiars; no point in setting it if it won't be used
 	// But temporarily set the pref to true first!
 	set_property("auto_preferSwordFam", true);
