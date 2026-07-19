@@ -476,7 +476,7 @@ boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
 	}
 
 	// not having a set monster is functionally equivalent to being done with the current one
-	if (sword_monster == $monster[none]) {return true;}
+	if (sword_monster == $monster[none]) {return false;}
 	int threshold;
 	switch (sword_monster) {
 		case $monster[shadow slab]:
