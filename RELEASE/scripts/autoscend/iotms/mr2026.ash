@@ -454,7 +454,8 @@ boolean auto_canMakeCupOf13sDrink() {
 
 float auto_CupOf13sDesirability() {
 	item[int] tentative_ingredients = auto_pickCupOf13sIngredients();
-	float net_adv_gain = 12.0;
+	// really, it's 12 adventures. But we lose one relative to the other options because ode doesn't apply
+	float net_adv_gain = 11.0;
 	for x from 1 to 3 {
 		if (tentative_ingredients[x] == $item[meat shield] && (free_crafts() - x < 1)) {
 			net_adv_gain -= 1;
