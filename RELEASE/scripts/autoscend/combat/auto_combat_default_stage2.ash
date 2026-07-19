@@ -111,7 +111,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 				return useSkill(kill_guys);
 			}
 			// should stop killing monsters with sword if we don't want the current sword monster or the current enemy
-			else if (canUse(stop_kill_guys)) {
+			else if (canUse(stop_kill_guys) && !haveUsed(kill_guys)) {
 				return useSkill(stop_kill_guys);
 			}
 		}
