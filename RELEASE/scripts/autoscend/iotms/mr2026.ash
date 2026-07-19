@@ -486,7 +486,7 @@ boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
 			else {return false;}
 		case $monster[spiny skelelton]:
 		case $monster[toothy sklelton]:
-			L7_useEvilEyes();
+			catch L7_useEvilEyes(); // we catch because this function is sometimes called from combat
 			if (get_property("cyrptNookEvilness").to_int() > 13) {
 				return true;
 			}
