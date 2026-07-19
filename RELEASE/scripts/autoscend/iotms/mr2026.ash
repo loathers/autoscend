@@ -466,7 +466,7 @@ int auto_neededShadowBricksSword() {
 }
 
 // returns true if we want to keep the current sworded monster, false if not
-boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
+boolean auto_wantCurrentSwordMonster(monster speculative_current_mon, boolean in_combat) {
 	monster sword_monster;
 	if (speculative_current_mon != $monster[none]) {
 		sword_monster = speculative_current_mon;
@@ -486,7 +486,7 @@ boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
 			else {return false;}
 		case $monster[spiny skelelton]:
 		case $monster[toothy sklelton]:
-			catch L7_useEvilEyes(); // we catch because this function is sometimes called from combat
+			if (!in_combat) {L7_useEvilEyes();}
 			if (get_property("cyrptNookEvilness").to_int() > 13) {
 				return true;
 			}
@@ -510,12 +510,12 @@ boolean auto_wantCurrentSwordMonster(monster speculative_current_mon) {
 }
 
 boolean auto_wantCurrentSwordMonster() {
-	return auto_wantCurrentSwordMonster($monster[none]);
+	return auto_wantCurrentSwordMonster($monster[none], false);
 }
 
 // called from combat, where we've already intentionally adventured to prep sword
-boolean auto_wantToSword(monster enemy)  {
-	return auto_wantCurrentSwordMonster(enemy);
+boolean auto_wantToSword(monster enemy, boolean in_combat)  {
+	return auto_wantCurrentSwordMonster(enemy, in_combat);
 }
 
 boolean auto_wantToSwitchSwordToDifferentSmutOrc() {
