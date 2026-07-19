@@ -2188,6 +2188,7 @@ boolean L11_hiddenCityZones()
 	{
 		return false;
 	}
+	auto_log_info("Opening up the hidden city");
 
 	boolean equipMachete()
 	{
