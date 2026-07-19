@@ -3252,7 +3252,7 @@ boolean L11_palindome()
 	}
 	else
 	{
-		if(pulls_remaining() == 0)
+		if(pulls_remaining() == 0 && !in_hardcore())
 		{
 			// used our pulls today before getting to palindrome. Delay until next day or run out of other stuff to do
 			if(!isAboutToPowerlevel())
