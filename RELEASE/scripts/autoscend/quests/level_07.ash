@@ -181,6 +181,14 @@ boolean L7_defiledAlcove()
 	return autoAdv($location[The Defiled Alcove]);
 }
 
+// originally part of function below, L7_defiledNook. moved because *certain things* can get evil eyes too.
+void L7_useEvilEyes() {
+	while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 13))
+	{
+		use(1, $item[Evil Eye]);
+	}
+}
+
 boolean L7_defiledNook()
 {
 	int evilBonus = cyrptEvilBonus();
@@ -190,9 +198,10 @@ boolean L7_defiledNook()
 	// in KoE, skeleton astronauts are random encounters that drop Evil Eyes.
 	// we might be able to reach the Nook boss without adventuring.
 
-	while((item_amount($item[Evil Eye]) > 0) && auto_is_valid($item[Evil Eye]) && (get_property("cyrptNookEvilness").to_int() > 13))
-	{
-		use(1, $item[Evil Eye]);
+	L7_useEvilEyes();
+	// delay zone to allow sword of s words time to grab evil eyes
+	if (auto_isSworded($location[The Hidden Bowling Alley]) && !isAboutToPowerlevel()) {
+		return false;
 	}
 
 	boolean skip_in_koe = in_koe() && (get_property("cyrptNookEvilness").to_int() > 13) && get_property("questL12HippyFrat") != "finished";

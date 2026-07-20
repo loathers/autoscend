@@ -2062,6 +2062,12 @@ boolean L11_hiddenCity()
 	{
 		auto_log_info("The idden [sic] bowling alley!", "blue");
 		L11_hiddenTavernUnlock(true);
+
+		// delay zone to allow sword of s words time to grab bowling balls
+		if (auto_isSworded($location[The Hidden Bowling Alley]) && !isAboutToPowerlevel()) {
+			return false;
+		}
+
 		if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
 		{
 			if(item_amount($item[Bowl Of Scorpions]) == 0 && !is_werewolf()) //can't access shops as werewolf
@@ -2182,6 +2188,7 @@ boolean L11_hiddenCityZones()
 	{
 		return false;
 	}
+	auto_log_info("Opening up the hidden city");
 
 	boolean equipMachete()
 	{
@@ -2215,7 +2222,7 @@ boolean L11_hiddenCityZones()
 	L11_hiddenTavernUnlock();
 
 	boolean canUseMachete = !is_boris() && !in_wotsf() && !in_pokefam() && !in_avantGuard();
-	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && (in_hardcore() || in_lol());
+	boolean needMachete = canUseMachete && !possessEquipment($item[Antique Machete]) && !possessEquipment($item[Muculent Machete]) && (in_hardcore() || in_lol());
 	boolean needRelocate = (get_property("relocatePygmyJanitor").to_int() != my_ascensions());
 
 	if (needMachete || needRelocate) {
@@ -3246,7 +3253,7 @@ boolean L11_palindome()
 	}
 	else
 	{
-		if(pulls_remaining() == 0)
+		if(pulls_remaining() == 0 && !in_hardcore())
 		{
 			// used our pulls today before getting to palindrome. Delay until next day or run out of other stuff to do
 			if(!isAboutToPowerlevel())

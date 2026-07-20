@@ -404,3 +404,308 @@ void legendaryNoodlesChoiceHandler() {
 	}
 	else {run_choice(5);}
 }
+
+// currently supported sword options:
+// shadow slabs for shadow bricks
+// bowling balls
+// bridge parts
+// evil eyes
+
+boolean auto_haveSwordFam()
+{
+	if(auto_have_familiar($familiar[Sword of S Words]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_isSworded(location loc) {
+	// return true if sword monster is from loc. Used to delay zones.
+	monster sword_monster = get_property("swordOfSWordsMonster").to_monster();
+	if (sword_monster == $monster[none]) {return false;}
+	// even if sword monster is set, we should check that we want its drops
+	if (!get_property("auto_preferSwordFam").to_boolean()) {return false;}
+
+	switch (sword_monster) {
+		case $monster[spiny skelelton]:
+		case $monster[toothy sklelton]:
+			if (loc == $location[The Defiled Nook]) {
+				return true;
+			}
+			else {return false;}
+		case $monster[pygmy bowler]:
+			if (loc == $location[The Hidden Bowling Alley]) {
+				return true;
+			}
+			else {return false;}
+		case $monster[smut orc jacker]:
+		case $monster[smut orc nailer]:
+		case $monster[smut orc pipelayer]:
+		case $monster[smut orc screwer]:
+			if (loc == $location[The Smut Orc Logging Camp]) {
+				return true;
+			}
+			else {return false;}
+	}
+	return false;
+
+}
+
+// diff than the one in the mr2023 file because we don't need shadow rift access
+int auto_neededShadowBricksSword() {
+	int currentBricks = item_amount($item[shadow brick]);
+	int bricksUsedToday = get_property("_shadowBricksUsed").to_int();
+	boolean slab_is_sword_mon = get_property("swordOfSWordsMonster").to_monster() == $monster[shadow slab];
+	// auto_runDayCount can be incorrect, but it's still better to consider it here than not
+	// at worst we'll overfarm 13 bricks
+	if (my_daycount() < get_property("auto_runDayCount").to_int() && slab_is_sword_mon) {
+		return max(0, 26 - currentBricks - bricksUsedToday);
+	}
+	return max(0, 13 - currentBricks - bricksUsedToday);
+}
+
+// returns true if we want to keep the current sworded monster, false if not
+boolean auto_wantCurrentSwordMonster(monster speculative_current_mon, boolean in_combat) {
+	monster sword_monster;
+	if (speculative_current_mon != $monster[none]) {
+		sword_monster = speculative_current_mon;
+	}
+	else {
+		sword_monster = get_property("swordOfSWordsMonster").to_monster();
+	}
+
+	// not having a set monster is functionally equivalent to being done with the current one
+	if (sword_monster == $monster[none]) {return false;}
+	int threshold;
+	switch (sword_monster) {
+		case $monster[shadow slab]:
+			if (auto_neededShadowBricksSword() > 0) {
+				return true;
+			}
+			else {return false;}
+		case $monster[spiny skelelton]:
+		case $monster[toothy sklelton]:
+			if (!in_combat) {L7_useEvilEyes();}
+			if (get_property("cyrptNookEvilness").to_int() > 13) {
+				return true;
+			}
+			else {return false;}
+		case $monster[pygmy bowler]:
+			// left hand side of the boolean computes to the number of bowling balls obtained, including ones used already
+			if (get_property("hiddenBowlingAlleyProgress").to_int() - 1 + item_amount($item[Bowling Ball]) < 5) {
+				return true;
+			}
+			else {return false;}
+		case $monster[smut orc jacker]:
+		case $monster[smut orc nailer]:
+		case $monster[smut orc pipelayer]:
+		case $monster[smut orc screwer]:
+			if (internalQuestStatus("questL09Topping") != 0  || (fastenerCount() >= bridgeGoal() && lumberCount() >= bridgeGoal())) {
+				return false;
+			}
+			else {return true;}
+	}
+	return false;
+}
+
+boolean auto_wantCurrentSwordMonster() {
+	return auto_wantCurrentSwordMonster($monster[none], false);
+}
+
+// called from combat, where we've already intentionally adventured to prep sword
+boolean auto_wantToSword(monster enemy, boolean in_combat)  {
+	return auto_wantCurrentSwordMonster(enemy, in_combat);
+}
+
+boolean auto_wantToSwitchSwordToDifferentSmutOrc() {
+	// supporting function for auto_prepSwordOfSwords; we can assume that bridge isn't built yet.
+	monster sword_monster = get_property("swordOfSWordsMonster").to_monster();
+
+	// handle case where we have wood sworded
+	if (sword_monster == $monster[smut orc jacker] || sword_monster == $monster[smut orc pipelayer]){
+		// switch if we have enough wood and we are at least four fasteners short of our goal
+		if (lumberCount() >= bridgeGoal() && fastenerCount() + 3 < bridgeGoal()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	// handle case where we have fasteners sworded
+	else if (sword_monster == $monster[smut orc nailer] || sword_monster == $monster[smut orc screwer]){
+		// switch if we have enough fasteners and we are at least four lumber short of our goal
+		if (fastenerCount() >= bridgeGoal() && lumberCount() + 3 < bridgeGoal()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	// not swording a smut orc right now. which is fine!
+	else { 
+		return false;
+	}
+}
+
+// following function is called from combat
+boolean auto_wantToSwitchSwordToDifferentSmutOrc(monster enemy) {
+	// check general condition to start with
+	if (!auto_wantToSwitchSwordToDifferentSmutOrc()) {return false;}
+
+	// now we need to check that our enemy is actually an "opposite" smut orc
+	monster sword_monster = get_property("swordOfSWordsMonster").to_monster();
+	switch (enemy) {
+		case $monster[smut orc jacker]:
+		case $monster[smut orc pipelayer]:
+			if (sword_monster == $monster[smut orc nailer] || sword_monster == $monster[smut orc screwer]) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		case $monster[smut orc nailer]:
+		case $monster[smut orc screwer]:
+			if (sword_monster == $monster[smut orc jacker] || sword_monster == $monster[smut orc pipelayer]) {
+				return true;
+			}
+			else {
+				return false;
+			}
+	}
+	return false;
+
+}
+
+// called before doTasks in the main autoscend loop
+// returning true restarts the loop (i.e. return true if an adventure was used)
+boolean auto_prepSwordOfSWords() {
+	familiar sword = $familiar[Sword of S Words];
+	// check that using Sword is allowed
+	if(!auto_haveSwordFam() || !canChangeToFamiliar(sword)) {
+		return false;
+	}
+
+	// ========= Managing the Enable/Disable Sword pref ==========
+	// don't use sword if we're out of kills
+	if (get_property("_swordOfSwordsKills").to_int() >= 100) {
+		if (get_property("auto_preferSwordFam").to_boolean()){
+			set_property("auto_preferSwordFam", false);
+		}
+		return false;
+	}
+	// if we aren't done with the current target, enable sword
+	// generally return here, except if we want to change our smut orc target
+	else if (auto_wantCurrentSwordMonster()) {
+		if (!get_property("auto_preferSwordFam").to_boolean()){
+			set_property("auto_preferSwordFam", true);
+		}
+		if (!auto_wantToSwitchSwordToDifferentSmutOrc()) {
+			return false;
+		}
+	}
+	// we don't want kills on our current monster, so disable pref if it's currently enabled
+	else if (get_property("auto_preferSwordFam").to_boolean()){
+		set_property("auto_preferSwordFam", false);
+	}
+
+	// ========= Decide whether it makes sense to prep the Sword ==========
+	// skip if we're out of Sword targets
+	// We can only target monsters 3x/day. We start with no targets, so on day 1 we can switch one less time.
+	int change_limit = 3;
+	if (my_daycount() == 1) {change_limit -= 1;}
+
+	if (get_property("_swordOfSWordsMonsterChanged").to_int() >= change_limit) {auto_log_debug("no sword targets"); return false;}
+	// check that Sword will be selected from the drop familiars; no point in setting it if it won't be used
+	// But temporarily set the pref to true first!
+	set_property("auto_preferSwordFam", true);
+	if (lookupFamiliarDatafile("drop") != sword) {
+		set_property("auto_preferSwordFam", false);
+		return false;
+	}
+	set_property("auto_preferSwordFam", false);
+
+	// ========= Pick a location to prep the Sword in, and adventure there ==========
+	location target_location = $location[none];
+	// prioritize high drops, then use target usefulness as a tiebreaker
+
+	// require that we're missing at least four of either part type before we consider
+	if ((fastenerCount() + 3 < bridgeGoal() || lumberCount() + 3 < bridgeGoal()) && zone_isAvailable($location[The Smut Orc Logging Camp])) {
+		target_location = $location[The Smut Orc Logging Camp];
+	}
+	// we check auto_availableBrickRift() becuase we don't want to farm bricks with sword if we can access them from the original IOTM source
+	if (auto_availableBrickRift() == $location[none] && canSummonMonster($monster[shadow slab]) && auto_neededShadowBricksSword() > 2) {
+		// represents "not a standard location", which works because this the only supported nonstandard target
+		target_location = $location[Noob Cave];
+	}
+	if (get_property("hiddenBowlingAlleyProgress").to_int() - 1 + item_amount($item[Bowling Ball]) < 2 && zone_isAvailable($location[The Hidden Bowling Alley])) {
+		target_location = $location[The Hidden Bowling Alley];
+	}
+	if (get_property("cyrptNookEvilness").to_int() > 13 && zone_isAvailable($location[The Defiled Nook])) {
+		target_location = $location[The Defiled Nook];
+	}
+	
+	// hidden bowling alley-specific bowl of scorpions stuff
+	if (target_location == $location[The Hidden Bowling Alley]) {
+		L11_hiddenTavernUnlock(true);
+		if(my_ascensions() == get_property("hiddenTavernUnlock").to_int())
+		{
+			if(item_amount($item[Bowl Of Scorpions]) == 0 && !is_werewolf()) //can't access shops as werewolf
+			{
+				auto_buyUpTo(1, $item[Bowl Of Scorpions]);
+				if(in_ocrs())
+				{
+					auto_buyUpTo(3, $item[Bowl Of Scorpions]);
+				}
+			}
+		}
+	}
+
+	if (target_location != $location[none]){
+		handleFamiliar($familiar[Sword of S Words]);
+		boolean adv_success;
+		if (target_location == $location[Noob Cave]) {
+			adv_success = summonMonster($monster[shadow slab]);
+		}
+		else {
+			adv_success = autoAdv(1, target_location);
+		}
+		if (auto_wantCurrentSwordMonster()) {
+			set_property("auto_preferSwordFam", true);
+		}
+		return adv_success;
+	} 
+	
+	return false;
+}
+
+// called in the choose familiar function to disable S Word if it might override monster drops
+// normally item familiars will be chosen instead of drop familiars when items matter, but sometimes not (YRs, 100% drops like LFM)
+void auto_disableSwordOfSWords(location loc) {
+	if (!auto_haveSwordFam() || !get_property("auto_preferSwordFam").to_boolean()) {return;}
+
+	// generate list of banned locations
+	boolean[location] list;
+	list[$location[Sonofa Beach]] = true;
+	list[$location[An Overgrown Shrine (Southwest)]] = true;
+	list[$location[An Overgrown Shrine (Southeast)]] = true;
+	list[$location[An Overgrown Shrine (Northwest)]] = true;
+	list[$location[An Overgrown Shrine (Northeast)]] = true;
+	list[$location[A Massive Ziggurat]] = true;
+	list[$location[The Daily Dungeon]] = true;
+	list[$location[Lair of the Ninja Snowmen]] = true;
+	list[$location[Summoning Chamber]] = true;
+	list[$location[The Red Zeppelin]] = true; 
+	list[$location[Haert of the Cyrpt]] = true;
+
+	// we want some gauze garters, and we need item drops for that
+	if (get_property("hippiesDefeated").to_int() > 500) {
+		list[$location[The Battlefield (Frat Uniform)]] = true;
+	}
+	if (get_property("fratboysDefeated").to_int() > 500) {
+		list[$location[The Battlefield (Hippy Uniform)]] = true;
+	}
+	if (list contains loc) {
+		set_property("auto_preferSwordFam", false);
+	}
+}

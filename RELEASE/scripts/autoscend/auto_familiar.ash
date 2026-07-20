@@ -726,6 +726,7 @@ boolean autoChooseFamiliar(location place)
 	//select the best familiar that drops items directly. Will prioritize useful items and awesome+ food and drink and then other drops.
 	if(famChoice == $familiar[none])
 	{
+		auto_disableSwordOfSWords(place); // sword of s words is a drop familiar we sometimes want to disable and not pick
 		famChoice = lookupFamiliarDatafile("drop");
 	}
 

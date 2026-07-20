@@ -101,6 +101,25 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		return useSkill($skill[Do an epic McTwist!]);
 	}
 
+	// Drop table copiers. Sword of S words is up to 100x drop table, shrunken head is 1x
+	if (my_familiar() == $familiar[Sword of S Words]) {
+		skill kill_guys = $skill[%fn\, kill a lot of these guys];
+		skill stop_kill_guys = $skill[%fn\, stop killing those guys];
+		// if the pref is false, we must have this fam equipped because we're looking into swording a different monster
+		// (the lookup drop familiar function didn't pick sword, auto_prepSwordOfSWords() did because the fam files have a boolean condition of this pref)
+		if (!get_property("auto_preferSwordFam").to_boolean()) {
+			if (auto_wantToSword(enemy, true) && canUse(kill_guys) && !auto_wantToSwitchSwordToDifferentSmutOrc()) {
+				return useSkill(kill_guys);
+			}
+			// should stop killing monsters with sword if we don't want the current sword monster or the current enemy
+			else if (canUse(stop_kill_guys) && !haveUsed(kill_guys)) {
+				return useSkill(stop_kill_guys);
+			}
+		}
+		if (auto_wantToSwitchSwordToDifferentSmutOrc(enemy) && canUse(kill_guys)) {
+			return useSkill(kill_guys);
+		}
+	}
 	if(auto_wantToShrunkenHead(enemy))
 	{
 		handleTracker(enemy, $skill[Prepare to reanimate your Foe], "auto_otherstuff");
@@ -117,8 +136,11 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	// And don't yellow ray if we'll be swooping
 	boolean swoopAvailable = canUse($skill[Swoop like a Bat], true) && get_property("_batWingsSwoopUsed").to_int() < 11;
 	boolean willSwoop = auto_swoopLocations() contains my_location() && swoopAvailable;
+
+	// And don't yellow ray if sword of s words is the current familiar
+	boolean swordFamiliaring = my_familiar() == $familiar[Sword of S Words];
 	
-	if(((!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location())) || combat_status_check("droptablereplaced")) && !willDouse && !willSwoop)
+	if(((!combat_status_check("yellowray") && auto_wantToYellowRay(enemy, my_location())) || combat_status_check("droptablereplaced")) && !willDouse && !willSwoop && !swordFamiliaring)
 	{
 		string combatAction = yellowRayCombatString(enemy, true, $monsters[bearpig topiary animal, elephant (meatcar?) topiary animal, spider (duck?) topiary animal, Knight (Snake)] contains enemy);
 		if(combatAction != "")
