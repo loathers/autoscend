@@ -198,9 +198,6 @@ boolean tryAddItemToMaximize(slot s, item it)
 	}
 
 	string itString = it.to_string();
-	// maximizer uses commas, so can't have a comma in an item name
-	// fortunately fuzzy matching means just stripping out the comma is fine
-	itString = itString.replace_string(",", "");
 	set_property(getMaximizeSlotPref(s), itString);
 	return true;
 }
@@ -786,7 +783,8 @@ void finalizeMaximize(boolean speculative)
 		if(toEquip != "")
 		{
 			removeFromMaximize("-equip " + toEquip);
-			addToMaximize("+equip " + toEquip);
+			// quotes let us handle weird item names (cup of 13s, items with commas)
+			addToMaximize("\"equip " + toEquip + "\"");
 		}
 	}
 

@@ -164,6 +164,19 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		handleTracker(toDrink, stillsuitAdvs + "Advs", "auto_drunken");
 		return true;
 	}
+	if(toDrink == $item[Cup of 13s])
+	{
+		if(consumeCupOf13s())
+		{
+			handleTracker("Cup of 13s", "12 Advs", "auto_drunken");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Attempted to drink from the Cup of 13s, but failed.");
+			return false;
+		}
+	}
 	if(item_amount(toDrink) < howMany && !isSpeakeasy)
 	{
 		return false;
@@ -1466,6 +1479,12 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		float adv = 12.0;
 		int obtainMethod = item_amount(apronKit) > 0 ? AUTO_OBTAIN_NULL : AUTO_OBTAIN_PULL;
 		actions[count(actions)] = new ConsumeAction(apronKit, 0, size, adv, adv, AUTO_ORGAN_STOMACH, obtainMethod);
+	}
+
+	// Add cup of 13s if we are looking to drink
+	if(type == AUTO_ORGAN_LIVER && auto_haveCupOf13s() && get_property("_cupOf13sJewels") >= 12 && auto_canMakeCupOf13sDrink()) {
+		// really, it's 12 adventures, not 11.0. But we lose one relative to the other options because ode doesn't apply
+		actions[count(actions)] = new ConsumeAction($item[Cup of 13s], 0, 1, 11.0, auto_CupOf13sDesirability(), AUTO_ORGAN_LIVER, AUTO_OBTAIN_NULL);
 	}
 
 	// Step 6: Now, to load cafe consumables. This has some TCRS-specific code.

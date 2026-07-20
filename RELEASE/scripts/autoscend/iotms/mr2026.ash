@@ -404,3 +404,131 @@ void legendaryNoodlesChoiceHandler() {
 	}
 	else {run_choice(5);}
 }
+
+boolean auto_haveCupOf13s() {
+	if(auto_is_valid($item[Cup of 13s]) && available_amount($item[Cup of 13s]) > 0 ) {
+		return true;
+	}
+	return false;
+}
+
+item[int] auto_pickCupOf13sIngredients() {
+	item spoon = $item[spoon];
+	item spoon_alt;
+	// deciding on which other item we want if spoon isn't available
+	// these items partially come from the meatsmith, but that follows armory and leggery restrictions
+	// these items can be expensive, so we have a meat threshold to probably avoid meat issues
+	if (knoll_available() && isHermitAvailable() && isArmoryAndLeggeryStoreAvailable() && my_meat() > 7200) {
+		spoon_alt = $item[dripping meat staff];
+	}
+	else if ((my_meat() > 12200 || (my_meat() + 5000 > meatReserve() && my_level() >= 11)) && have_skill($skill[Armorcraftiness]) && isArmoryAndLeggeryStoreAvailable()) {
+		spoon_alt = $item[meat shield];
+	}
+	// auto_canMakeCupOf13sDrink() expects that $item[none] is located in slot #3 (at least) of the return value if we were unable to pick an alternative to spoon
+	else {spoon_alt = $item[none];}
+
+	// summon spoons if possible. We do this here because mafia doesn't track how many times we can cast generate irony
+	// Therefore we can't tell how many spoons we have available without actually generating them.
+	while (item_amount($item[spoon]) < 3 && canUse($skill[Generate Irony]) && my_mp() > 30) {
+		useSkill($skill[Generate Irony]);
+	}
+
+	item[int] cup_ingredients;
+	for x from 1 to 3 {
+		if (item_amount(spoon) >= x) {
+			cup_ingredients[x] = spoon;
+		}
+		else {
+			cup_ingredients[x] = spoon_alt;
+		}
+	}
+	return cup_ingredients;
+}
+
+// answers the question of "are supported ingredients available"
+boolean auto_canMakeCupOf13sDrink() {
+	if (!auto_haveCupOf13s() || in_small()) {return false;} // taken from irrat's fork, using just in case we don't get 10x adv in small
+	item[int] tentative_ingredients = auto_pickCupOf13sIngredients();
+	if (tentative_ingredients[3] == $item[none]) {
+		return false;
+	}
+	return true;
+}
+
+float auto_CupOf13sDesirability() {
+	item[int] tentative_ingredients = auto_pickCupOf13sIngredients();
+	// really, it's 12 adventures. But we lose one relative to the other options because ode doesn't apply
+	float net_adv_gain = 11.0;
+	for x from 1 to 3 {
+		if (tentative_ingredients[x] == $item[meat shield] && (free_crafts() - x < 1)) {
+			// if we have to craft or use our last free craft, we value this drink 1 adv less.
+			net_adv_gain -= 1;
+		}
+		else if (tentative_ingredients[x] == $item[meat shield]) {
+			// valuing free crafts at 0.5 adv
+			net_adv_gain -= 0.5;
+		}
+	}
+	return net_adv_gain;
+}
+
+boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
+	// get spoon count
+	int spoon_count = 0;
+	for x from 1 to 3 {
+		if (ingredients[x] == $item[spoon]) {
+			spoon_count += 1;
+		}
+	}
+	// make sure we have enough. Spoons are gotten elsewhere.
+	if (item_amount($item[spoon]) < spoon_count) {
+		return false;
+	}
+	// if we're only using spoons for our drink, we don't need to get any other ingredients
+	if (spoon_count > 2) {
+		return true;
+	}
+
+	// alt as in alternative to spoon (not that we expect spoon-having)
+	// Note: auto_pickCupOf13sIngredients() puts x spoons in slots 1 to x and 3-x alternative ingredients in slots 3-x to 3.
+	// This code assumes that, so it will need modified if auto_pickCupOf13Ingredients() is modified to support other ingredients.
+	item alt = ingredients[3];
+	int alt_count = 3 - spoon_count;
+	if (alt == $item[meat shield]) {
+		return (
+			auto_buyUpTo(alt_count, $item[buckler buckle]) &&
+			cli_execute(`make {alt_count} dense meat stack`) &&
+			autoCraft("smith", alt_count, $item[buckler buckle], $item[dense meat stack]) >= alt_count
+		);
+	}
+	else if (alt == $item[dripping meat staff]) {
+		return (
+			auto_buyUpTo(alt_count, $item[big stick]) &&
+			cli_execute(`make {alt_count} meat stack`) &&
+			auto_hermit(alt_count, $item[ketchup]) &&
+			autoCraft("smith", alt_count, $item[big stick], $item[meat stack]) >= alt_count &&
+			autoCraft("smith", alt_count, $item[basic meat staff], $item[ketchup]) >= alt_count
+		);
+	}
+	else {return false;}
+}
+
+boolean consumeCupOf13s() {
+	// below code is based on Irrat's fork
+	item[int] ing = auto_pickCupOf13sIngredients();
+	auto_log_info(`Consuming a delicious drink of {ing[1]}, {ing[2]}, and {ing[3]} from our Cup of 13s.`);
+	if (!auto_acquireCupOf13sIngredients(ing)) {return false;}
+	int advs = my_adventures();
+	string url1 = `inventory.php?pwd=${my_hash()}&action=cupof13s`;
+	string url2 = `choice.php?pwd={my_hash()}&whichchoice=1601&option=1`;
+	string url3 = `&whichitem1={to_int(ing[1])}&whichitem2={to_int(ing[2])}&whichitem3={to_int(ing[3])}`;
+  	visit_url(url1);
+  	visit_url(url2 + url3);
+
+  	if (advs == my_adventures()) {
+    	visit_url("main.php");
+		cli_execute("refresh inventory");
+		return false;
+	}
+	return true;
+}
