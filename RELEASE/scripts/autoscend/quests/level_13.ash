@@ -1310,11 +1310,11 @@ boolean L13_towerNSTowerMeat()
 	}
 	equipBaseline();
 	shrugAT($effect[Polka of Plenty]);
-	provideMeat(526, true, false);
-	if(meat_drop_modifier() < 475)
+	if(provideMeat(475, true, false, true) < 475)
 	{
 		auto_getCitizenZone("meat");
 	}
+	provideMeat(526, true, false, false);
 
 	if(in_zombieSlayer())
 	{
