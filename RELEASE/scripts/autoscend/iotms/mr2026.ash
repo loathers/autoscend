@@ -491,6 +491,13 @@ boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
 		return true;
 	}
 
+	// warn users that might not have the spoon pref set up right
+	if (canUse($skill[Generate Irony]) && my_mp() > 50) {
+		auto_log_warning("Autoscend has detected that the \"skillLevel245\" property does not match the number of times you can cast \"Generate Irony\" per day");
+		auto_log_warning("Run \"set skillLevel245=[correct # here]\" in the gCLI to fix this\"");
+	}
+
+
 	// alt as in alternative to spoon (not that we expect spoon-having)
 	// Note: auto_pickCupOf13sIngredients() puts x spoons in slots 1 to x and 3-x alternative ingredients in slots 3-x to 3.
 	// This code assumes that, so it will need modified if auto_pickCupOf13Ingredients() is modified to support other ingredients.
