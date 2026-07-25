@@ -427,15 +427,12 @@ item[int] auto_pickCupOf13sIngredients() {
 	// auto_canMakeCupOf13sDrink() expects that $item[none] is located in slot #3 (at least) of the return value if we were unable to pick an alternative to spoon
 	else {spoon_alt = $item[none];}
 
-	// summon spoons if possible. We do this here because mafia doesn't track how many times we can cast generate irony
-	// Therefore we can't tell how many spoons we have available without actually generating them.
-	while (item_amount($item[spoon]) < 3 && canUse($skill[Generate Irony]) && my_mp() > 30) {
-		useSkill($skill[Generate Irony]);
-	}
+	int speculative_spoons = get_property("skillLevel245").to_int() - get_property("_generateIronyUsed").to_int() + item_amount($item[spoon]);
+	if (my_mp() < 50) {speculative_spoons = 0;}
 
 	item[int] cup_ingredients;
 	for x from 1 to 3 {
-		if (item_amount(spoon) >= x) {
+		if (speculative_spoons >= x) {
 			cup_ingredients[x] = spoon;
 		}
 		else {
@@ -477,7 +474,12 @@ boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
 	int spoon_count = 0;
 	for x from 1 to 3 {
 		if (ingredients[x] == $item[spoon]) {
-			spoon_count += 1;
+			if (canUse($skill[Generate Irony]) && my_mp() > 30 && useSkill($skill[Generate Irony])) {
+				spoon_count += 1;
+			}
+			else {
+				auto_log_warning("Failure to get a spoon (ironic, right?)");
+			}
 		}
 	}
 	// make sure we have enough. Spoons are gotten elsewhere.
