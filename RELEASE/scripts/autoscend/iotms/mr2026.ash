@@ -474,7 +474,7 @@ boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
 	int spoon_count = 0;
 	for x from 1 to 3 {
 		if (ingredients[x] == $item[spoon]) {
-			if (canUse($skill[Generate Irony]) && my_mp() > 30 && useSkill($skill[Generate Irony])) {
+			if (canUse($skill[Generate Irony]) && my_mp() > 30 && use_skill(1, $skill[Generate Irony])) {
 				spoon_count += 1;
 			}
 			else {
