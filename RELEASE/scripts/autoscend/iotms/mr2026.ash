@@ -418,10 +418,10 @@ item[int] auto_pickCupOf13sIngredients() {
 	// deciding on which other item we want if spoon isn't available
 	// these items partially come from the meatsmith, but that follows armory and leggery restrictions
 	// these items can be expensive, so we have a meat threshold to probably avoid meat issues
-	if (knoll_available() && isHermitAvailable() && isArmoryAndLeggeryStoreAvailable() && my_meat() > 7200) {
+	if (item_amount($item[dripping meat staff]) >= 3 || knoll_available() && isHermitAvailable() && isArmoryAndLeggeryStoreAvailable() && my_meat() > 7200) {
 		spoon_alt = $item[dripping meat staff];
 	}
-	else if ((my_meat() > 12200 || (my_meat() + 5000 > meatReserve() && my_level() >= 11)) && have_skill($skill[Armorcraftiness]) && isArmoryAndLeggeryStoreAvailable()) {
+	else if (item_amount($item[meat shield]) >= 3 || isArmoryAndLeggeryStoreAvailable() && (my_meat() > 12200 || (my_meat() + 5000 > meatReserve() && my_level() >= 11)) && have_skill($skill[Armorcraftiness])) {
 		spoon_alt = $item[meat shield];
 	}
 	// auto_canMakeCupOf13sDrink() expects that $item[none] is located in slot #3 (at least) of the return value if we were unable to pick an alternative to spoon
@@ -501,6 +501,9 @@ boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
 	// This code assumes that, so it will need modified if auto_pickCupOf13Ingredients() is modified to support other ingredients.
 	item alt = ingredients[3];
 	int alt_count = 3 - spoon_count;
+	if (item_amount(alt) >= alt_count) {
+		return true;
+	}
 	if (alt == $item[meat shield]) {
 		return (
 			auto_buyUpTo(alt_count, $item[buckler buckle]) &&
