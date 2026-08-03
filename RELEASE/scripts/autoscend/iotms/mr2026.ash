@@ -432,7 +432,7 @@ item[int] auto_pickCupOf13sIngredients() {
 	else {spoon_alt = $item[none];}
 
 	int speculative_spoons = get_property("skillLevel245").to_int() - get_property("_generateIronyUsed").to_int() + item_amount($item[spoon]);
-	if (my_mp() < 50) {speculative_spoons = 0;}
+	if (my_mp() < 50 || !auto_is_valid($skill[Generate Irony])) {speculative_spoons = 0;}
 
 	item[int] cup_ingredients;
 	for x from 1 to 3 {
