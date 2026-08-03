@@ -615,7 +615,7 @@ boolean auto_prepSwordOfSWords() {
 	int change_limit = 3;
 	if (my_daycount() == 1) {change_limit -= 1;}
 
-	if (get_property("_swordOfSWordsMonsterChanged").to_int() >= change_limit) {auto_log_debug("no sword targets"); return false;}
+	if (get_property("_swordOfSWordsMonsterChanged").to_int() >= change_limit) {auto_log_debug("We're out of sword targets"); return false;}
 	// check that Sword will be selected from the drop familiars; no point in setting it if it won't be used
 	// But temporarily set the pref to true first!
 	set_property("auto_preferSwordFam", true);
