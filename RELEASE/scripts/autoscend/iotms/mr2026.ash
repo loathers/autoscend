@@ -474,18 +474,16 @@ boolean auto_acquireCupOf13sIngredients(item[int] ingredients) {
 	int spoon_count = 0;
 	for x from 1 to 3 {
 		if (ingredients[x] == $item[spoon]) {
-			if (canUse($skill[Generate Irony]) && my_mp() > 30 && use_skill(1, $skill[Generate Irony])) {
-				spoon_count += 1;
-			}
-			else {
-				auto_log_warning("Failure to get a spoon (ironic, right?)");
-			}
+			spoon_count += 1;
 		}
 	}
-	// make sure we have enough. Spoons are gotten elsewhere.
-	if (item_amount($item[spoon]) < spoon_count) {
-		return false;
+	while (item_amount($item[spoon]) < spoon_count) {
+		if (!(canUse($skill[Generate Irony]) && my_mp() > 30 && use_skill(1, $skill[Generate Irony]))) {
+			auto_log_warning("Failure to get a spoon (ironic, right?)");
+			return false;
+		}
 	}
+	
 	// if we're only using spoons for our drink, we don't need to get any other ingredients
 	if (spoon_count > 2) {
 		return true;
