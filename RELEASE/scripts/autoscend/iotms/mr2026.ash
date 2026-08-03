@@ -421,7 +421,7 @@ item[int] auto_pickCupOf13sIngredients() {
 	if (item_amount($item[dripping meat staff]) >= 3 || knoll_available() && isHermitAvailable() && isArmoryAndLeggeryStoreAvailable() && my_meat() > 7200) {
 		spoon_alt = $item[dripping meat staff];
 	}
-	else if (item_amount($item[meat shield]) >= 3 || isArmoryAndLeggeryStoreAvailable() && (my_meat() > 12200 || (my_meat() > meatReserve() + 5000 && my_level() >= 11)) && have_skill($skill[Armorcraftiness])) {
+	else if (item_amount($item[meat shield]) >= 3 || !knoll_available() && isArmoryAndLeggeryStoreAvailable() && (my_meat() > 12200 || (my_meat() > meatReserve() + 5000 && my_level() >= 11)) && have_skill($skill[Armorcraftiness])) {
 		spoon_alt = $item[meat shield];
 	}
 	// auto_canMakeCupOf13sDrink() expects that $item[none] is located in slot #3 (at least) of the return value if we were unable to pick an alternative to spoon
