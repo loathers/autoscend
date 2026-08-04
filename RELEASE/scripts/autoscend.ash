@@ -2092,6 +2092,8 @@ boolean doTasks()
 
 void auto_begin()
 {
+	auto_settings();
+
 	if(get_auto_attack() != 0)
 	{
 		boolean shouldUnset = user_confirm("You have an auto attack enabled. This can cause issues. Would you like us to disable it? Will default to 'No' in 30 seconds.", 30000, false);
@@ -2150,8 +2152,6 @@ void auto_begin()
 	auto_log_info("You have: " + banishSources() + " banish sources, " + freeRunSources() + " free-run sources, " +
 	freeKillSources() + " free kill sources, " + instaKillSources() + " insta-kill sources, " + yellowRaySources() +
 	" yellow ray sources, " + copySources() + " copy sources, and " + sniffSources() + " sniff sources.");
-
-	auto_settings();
 
 	backupSetting("promptAboutCrafting", 0);
 	backupSetting("requireBoxServants", false);
