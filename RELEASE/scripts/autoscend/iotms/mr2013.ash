@@ -108,7 +108,7 @@ void trickMafiaAboutFlorist()
 
 void oldPeoplePlantStuff()
 {
-	if(!florist_available())
+	if(!get_property("floristFriarAvailable").to_boolean())
 	{
 		return;
 	}
