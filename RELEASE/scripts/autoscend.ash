@@ -1,4 +1,4 @@
-since r29089; //  last legendaries [noodle dishes]
+since r29167; // Blue vs. Red path and team pick
 
 /***
 	autoscend_header.ash must be first import
@@ -310,6 +310,7 @@ void initializeSettings() {
 	wereprof_initializeSettings();
 	ag_initializeSettings();
 	amw_initializeSettings();
+	bluevsred_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());

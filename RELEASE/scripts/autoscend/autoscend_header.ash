@@ -1269,6 +1269,13 @@ boolean rightKickHasInstaKill();
 boolean LX_zootoFight();
 
 ########################################################################################################
+//Defined in autoscend/paths/blue_vs_read.ash
+boolean in_bluevsred();
+boolean bluevsred_isBlue();
+boolean bluevsred_isRed();
+boolean bluevsred_initializeSettings();
+
+########################################################################################################
 //Defined in autoscend/quests/level_01.ash
 void tootOriole();
 void tootGetMeat();

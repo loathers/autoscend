@@ -1414,6 +1414,23 @@ boolean L11_aridDesert()
 
 		autoAdv(1, $location[The Arid\, Extra-Dry Desert]);
 
+		if (in_bluevsred())
+		{
+			// TODO: desertExploration tracking is currently not working for the same team noncombats
+			int initial = get_property("desertExploration").to_int();
+			string page = visit_url("place.php?whichplace=desertbeach");
+			matcher desert_matcher = create_matcher("title=\"[(](\\d+)% explored[)]\"", page);
+			if(desert_matcher.find())
+			{
+				int found = to_int(desert_matcher.group(1));
+				if(found != initial)
+				{
+					auto_log_info("Incorrectly had exploration value of " + initial + " when it should be at " + found + ". This was corrected. Trying to resume.", "blue");
+					set_property("desertExploration", found);
+				}
+			}
+		}
+
 		if(contains_text(get_property("lastEncounter"), "A Sietch in Time"))
 		{
 			auto_log_info("We've found the gnome!! Sightseeing pamphlets for everyone!", "green");
