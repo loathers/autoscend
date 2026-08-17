@@ -23,4 +23,9 @@ void bluevsred_initializeSettings()
 
 	// TODO: Remove when quest handling is correct.
 	set_property("auto_paranoia", 1);
+
+	if (bluevsred_isRed())
+	{
+		set_property("auto_hippyInstead", true);
+	}
 }
