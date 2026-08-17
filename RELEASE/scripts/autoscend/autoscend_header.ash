@@ -1273,7 +1273,7 @@ boolean LX_zootoFight();
 boolean in_bluevsred();
 boolean bluevsred_isBlue();
 boolean bluevsred_isRed();
-boolean bluevsred_initializeSettings();
+void bluevsred_initializeSettings();
 
 ########################################################################################################
 //Defined in autoscend/quests/level_01.ash
