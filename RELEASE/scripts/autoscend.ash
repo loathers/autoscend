@@ -1,4 +1,4 @@
-since r29167; // Blue vs. Red path and team pick
+since r29170; // feat: update quest progress on Blue vs Red NC
 
 /***
 	autoscend_header.ash must be first import
