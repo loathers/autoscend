@@ -27,5 +27,6 @@ void bluevsred_initializeSettings()
 	if (bluevsred_isRed())
 	{
 		set_property("auto_hippyInstead", true);
+		set_property("auto_skipNuns", true);
 	}
 }
