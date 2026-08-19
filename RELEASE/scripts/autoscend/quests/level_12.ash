@@ -300,6 +300,10 @@ WarPlan auto_bestWarPlan()
 	{
 		considerNuns = false;
 	}
+	if(get_property("auto_skipL12Farm").to_boolean())
+	{
+		considerFarm = false;
+	}
 	if(get_property("auto_ignoreFlyer").to_boolean())
 	{
 		considerArena = false;
