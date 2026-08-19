@@ -188,7 +188,7 @@ int auto_estimatedAdventuresForDooks()
 	advCost -= $location[McMillicancuddy's Other Back 40].turns_spent;
 	
 	//these paths cannot use butterfly
-	if(in_bhy() || in_pokefam() || in_glover())
+	if(in_bhy() || in_pokefam() || in_glover() || bluevsred_isRed())
 	{
 		return advCost;
 	}
