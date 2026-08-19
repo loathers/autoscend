@@ -1,4 +1,4 @@
-since r29170; // feat: update quest progress on Blue vs Red NC
+since r29171; // BvR: War Progress from NCs
 
 /***
 	autoscend_header.ash must be first import
