@@ -1,4 +1,4 @@
-since r29167; // Blue vs. Red path and team pick
+since r29171; // BvR: War Progress from NCs
 
 /***
 	autoscend_header.ash must be first import

@@ -21,9 +21,6 @@ void bluevsred_initializeSettings()
 	}
 	set_property("auto_wandOfNagamar", false);		//wand not used in this path
 
-	// TODO: Remove when quest handling is correct.
-	set_property("auto_paranoia", 1);
-
 	if (bluevsred_isRed())
 	{
 		set_property("auto_hippyInstead", true);
