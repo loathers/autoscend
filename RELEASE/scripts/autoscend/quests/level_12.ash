@@ -188,7 +188,7 @@ int auto_estimatedAdventuresForDooks()
 	advCost -= $location[McMillicancuddy's Other Back 40].turns_spent;
 	
 	//these paths cannot use butterfly
-	if(in_bhy() || in_pokefam() || in_glover())
+	if(in_bhy() || in_pokefam() || in_glover() || bluevsred_isRed())
 	{
 		return advCost;
 	}
@@ -299,6 +299,10 @@ WarPlan auto_bestWarPlan()
 	if(get_property("auto_skipNuns").to_boolean())
 	{
 		considerNuns = false;
+	}
+	if(get_property("auto_skipL12Farm").to_boolean())
+	{
+		considerFarm = false;
 	}
 	if(get_property("auto_ignoreFlyer").to_boolean())
 	{

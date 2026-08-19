@@ -25,5 +25,6 @@ void bluevsred_initializeSettings()
 	{
 		set_property("auto_hippyInstead", true);
 		set_property("auto_skipNuns", true);
+		set_property("auto_skipL12Farm", true); // can softlock
 	}
 }
