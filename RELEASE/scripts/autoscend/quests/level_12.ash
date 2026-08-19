@@ -292,10 +292,6 @@ WarPlan auto_bestWarPlan()
 	{
 		considerArena = false;
 	}
-	if(auto_warSide() == "hippy")		//arena not implemented for hippies yet. TODO implement it then remove this
-	{
-		considerArena = false;
-	}
 	if(get_property("auto_skipNuns").to_boolean())
 	{
 		considerNuns = false;
@@ -1692,6 +1688,11 @@ boolean L12_flyerFinish()
 	if(robot_delay("outfit"))
 	{
 		return false;	//delay for You, Robot path
+	}
+	//Does hippy side have access to arena yet?
+	if (get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 458))
+	{
+		return false;
 	}
 	
 	auto_log_info("Done with this Flyer crap", "blue");
