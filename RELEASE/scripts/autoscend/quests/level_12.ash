@@ -1618,6 +1618,11 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;		//let the powerlevel lock release first so we can do quests that are waiting for optimal conditions.
 	}
+	//Does hippy side have access to arena yet?
+	if (get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 458))
+	{
+		return false;
+	}
 
 	auto_log_info("Not enough flyer ML but we are ready for the war... uh oh", "blue");
 	if(LX_freeCombats(true)) return true;	//try to use free combats to make up the difference.
