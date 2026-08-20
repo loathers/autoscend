@@ -3511,7 +3511,7 @@ boolean L11_unlockEd()
 			{
 				provideItem(400, $location[The Middle Chamber], true);
 			}
-			autoAdv(1, $location[The Middle Chamber]);
+			return autoAdv(1, $location[The Middle Chamber]);
 		}
 		providePlusNonCombat(auto_combatModCap(), $location[The Upper Chamber], true);
 		return autoAdv(1, $location[The Upper Chamber]);
