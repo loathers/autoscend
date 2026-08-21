@@ -517,7 +517,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 			return useSkill($skill[Fire the Jokester\'s Gun]);
 		}
 
-		if(auto_wantToBCZ($skill[BCZ: Sweat Bullets]) && (wantFreeKillNowEspecially || !reserveFreekills))
+		if(canUse($skill[BCZ: Sweat Bullets]) && auto_wantToBCZ($skill[BCZ: Sweat Bullets]) && (wantFreeKillNowEspecially || !reserveFreekills))
 		{
 			handleTracker(enemy, $skill[BCZ: Sweat Bullets], "auto_instakill");
 			loopHandlerDelayAll();

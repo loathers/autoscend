@@ -1043,7 +1043,7 @@ boolean auto_BCZEquipped()
 boolean auto_wantToBCZ(skill sk)
 {
 	// zootomist doesn't have substats
-	if(!auto_haveBCZ() || !(canUse(sk)) || in_zootomist())
+	if(!auto_haveBCZ() || !(auto_is_valid(sk)) || in_zootomist())
 	{
 		return false;
 	}
