@@ -1174,6 +1174,7 @@ boolean auto_getCitizenZone(location loc, boolean inCombat)
 		if(use_familiar(eagle))
 		{
 			if(wantToFreeRun())	set_property("auto_forceFreeRun", true);
+			auto_log_info("Attempting to get citizen of a zone buff for " + goal + " goal");
 			if(!autoAdv(loc))
 			{
 				auto_log_debug("Attempted to get citizen of a zone buff for " + goal + " goal however we failed.");

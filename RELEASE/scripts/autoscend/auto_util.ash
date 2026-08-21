@@ -3904,7 +3904,7 @@ boolean auto_is_valid(item it)
 	{
 		return is_trendy(it);
 	}
-	
+
 	return is_unrestricted(it);
 }
 

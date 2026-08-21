@@ -2081,6 +2081,7 @@ boolean doTasks()
 	auto_lostStomach(false);
 	autoCleanse(); //running turbo only
 	if(auto_doPhoneQuest())				return true;
+	if(auto_prepSwordOfSWords())		return true;
 	
 	if(auto_doTempleSummit())		return true;
 	if(L8_mountainManSummon())		return true;
