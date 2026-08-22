@@ -193,7 +193,8 @@ boolean auto_setLeprecondo()
 
 boolean auto_useLeprecondoDrops()
 {
-	while (available_amount($item[crafting plans])>0 && free_crafts() < 2)
+	// picked 4 as craft threshold due to cup of 13s (as implemented) sometimes wanting up to 3 crafts
+	while (available_amount($item[crafting plans])>0 && free_crafts() < 4)
 	{
 		use($item[crafting plans]);
 	}
