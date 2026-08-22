@@ -180,7 +180,7 @@ item	40	Pair of Stomping Boots	!path:G-Lover
 item	41	Slimeling
 # More slightly special fairies
 item	42	Cooler Yeti
-item	43	Gelatinous Cubeling
+item	43	Gelatinous Cubeling	prop:cubelingProgress<12
 item	44	Steam-Powered Cheerleader
 item	45	Obtuse Angel
 item	46	Green Pixie
@@ -195,16 +195,17 @@ item	52	Bowlet
 item	53	Crimbo Elf
 # Barely special fairies
 item	54	Mechanical Songbird
-item	55	Grouper Groupie
-item	56	Peppermint Rhino
-item	57	Skeleton of Crimbo Past
+item	55	Skeleton of Crimbo Past
+item	56	Gelatinous Cubeling
+item	57	Grouper Groupie
+item	58	Peppermint Rhino
 # Turtles are cute
-item	58	Syncopated Turtle
+item	59	Syncopated Turtle
 # The original
-item	59	Baby Gravy Fairy
+item	60	Baby Gravy Fairy
 # Mutant Fire Ant multiplier is 1.3-(0.15*grimace darkness). Too marginal because of opportunity cost compared to leveling another familiar.
 # If we level it today when it gives a good bonus, tomorrow it might drop to bad bonus and we have to start leveling another fairy.
-item	60	Mutant Fire Ant
+item	61	Mutant Fire Ant
 
 # Wanna get that jar
 meat	0	Angry Jung Man	prop:_jungDrops<1;day:1
