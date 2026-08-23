@@ -731,6 +731,7 @@ boolean auto_willEatLegendaryNoodles();
 boolean auto_legendaryNoodlesAvailable();
 boolean auto_forceCombatLegendaryNoodles();
 void legendaryNoodlesChoiceHandler();
+boolean wantToThrowInterestingCoin(location loc, monster enemy);
 
 
 ########################################################################################################
