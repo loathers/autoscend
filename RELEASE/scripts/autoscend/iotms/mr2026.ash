@@ -404,3 +404,13 @@ void legendaryNoodlesChoiceHandler() {
 	}
 	else {run_choice(5);}
 }
+
+boolean wantToThrowInterestingCoin(location loc, monster enemy)
+{
+	if(item_amount($item[interesting coin]) == 0) return false;
+	if(!auto_is_valid($item[interesting coin])) return false;
+	if(get_property("_interestingCoinHeads").to_boolean()) return false;
+	if (isFreeMonster(enemy, loc)) { return false; } // don't use coin against inherently free fights
+	
+	return auto_wantToFreeKillWithNoDrops(loc, enemy);
+}
