@@ -78,7 +78,7 @@ boolean canOde(item toDrink)
 	{
 		return false;
 	}
-	if(toDrink == $item[tiny stillsuit])
+	if(toDrink == $item[tiny stillsuit] || toDrink == $item[Cup of 13s])
 	{
 		return false;
 	}
@@ -929,7 +929,7 @@ boolean autoConsume(ConsumeAction action)
 		abort("ConsumeAction not prepped: " + to_debug_string(action));
 	}
 
-	if (action.organ == AUTO_ORGAN_LIVER && action.it != $item[tiny stillsuit])
+	if (action.organ == AUTO_ORGAN_LIVER && action.it != $item[tiny stillsuit] && action.it != $item[Cup of 13s])
 	{
 		buffMaintain($effect[Ode to Booze], 20, 1, action.size);
 	}
@@ -1483,8 +1483,7 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 
 	// Add cup of 13s if we are looking to drink
 	if(type == AUTO_ORGAN_LIVER && auto_haveCupOf13s() && get_property("_cupOf13sJewels") >= 12 && auto_canMakeCupOf13sDrink()) {
-		// really, it's 12 adventures, not 11.0. But we lose one relative to the other options because ode doesn't apply
-		actions[count(actions)] = new ConsumeAction($item[Cup of 13s], 0, 1, 11.0, auto_CupOf13sDesirability(), AUTO_ORGAN_LIVER, AUTO_OBTAIN_NULL);
+		actions[count(actions)] = new ConsumeAction($item[Cup of 13s], 0, 1, 12.0, auto_CupOf13sDesirability(), AUTO_ORGAN_LIVER, AUTO_OBTAIN_NULL);
 	}
 
 	// Step 6: Now, to load cafe consumables. This has some TCRS-specific code.
