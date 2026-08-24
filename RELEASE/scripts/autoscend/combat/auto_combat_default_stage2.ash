@@ -168,6 +168,13 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 		}
 	}
 	
+	//throw interesting coin to free kill the enemy but don't get any items
+	if(canUse($item[interesting coin]) && wantToThrowInterestingCoin(my_location(), enemy))
+	{
+		handleTracker(enemy, $item[interesting coin], "auto_instakill");
+		return useItem($item[interesting coin]);
+	}
+
 	//throw gravel to free kill the enemy but don't get any items
 	if(wantToThrowGravel(my_location(), enemy))
 	{

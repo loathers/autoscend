@@ -737,7 +737,7 @@ boolean auto_canMakeCupOf13sDrink();
 float auto_CupOf13sDesirability();
 boolean auto_acquireCupOf13sIngredients(item[int] ingredients);
 boolean consumeCupOf13s();
-
+boolean wantToThrowInterestingCoin(location loc, monster enemy);
 
 ########################################################################################################
 //Defined in autoscend/iotms/ttt.ash
