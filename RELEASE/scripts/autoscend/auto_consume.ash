@@ -78,7 +78,7 @@ boolean canOde(item toDrink)
 	{
 		return false;
 	}
-	if(toDrink == $item[tiny stillsuit])
+	if(toDrink == $item[tiny stillsuit] || toDrink == $item[Cup of 13s])
 	{
 		return false;
 	}
@@ -163,6 +163,19 @@ boolean autoDrink(int howMany, item toDrink, boolean silent)
 		visit_url("choice.php?pwd&whichchoice=1476&option=1");
 		handleTracker(toDrink, stillsuitAdvs + "Advs", "auto_drunken");
 		return true;
+	}
+	if(toDrink == $item[Cup of 13s])
+	{
+		if(consumeCupOf13s())
+		{
+			handleTracker("Cup of 13s", "12 Advs", "auto_drunken");
+			return true;
+		}
+		else
+		{
+			auto_log_warning("Attempted to drink from the Cup of 13s, but failed.");
+			return false;
+		}
 	}
 	if(item_amount(toDrink) < howMany && !isSpeakeasy)
 	{
@@ -916,7 +929,7 @@ boolean autoConsume(ConsumeAction action)
 		abort("ConsumeAction not prepped: " + to_debug_string(action));
 	}
 
-	if (action.organ == AUTO_ORGAN_LIVER && action.it != $item[tiny stillsuit])
+	if (action.organ == AUTO_ORGAN_LIVER && action.it != $item[tiny stillsuit] && action.it != $item[Cup of 13s])
 	{
 		buffMaintain($effect[Ode to Booze], 20, 1, action.size);
 	}
@@ -1466,6 +1479,11 @@ boolean loadConsumables(string _type, ConsumeAction[int] actions)
 		float adv = 12.0;
 		int obtainMethod = item_amount(apronKit) > 0 ? AUTO_OBTAIN_NULL : AUTO_OBTAIN_PULL;
 		actions[count(actions)] = new ConsumeAction(apronKit, 0, size, adv, adv, AUTO_ORGAN_STOMACH, obtainMethod);
+	}
+
+	// Add cup of 13s if we are looking to drink
+	if(type == AUTO_ORGAN_LIVER && auto_haveCupOf13s() && get_property("_cupOf13sJewels") >= 12 && auto_canMakeCupOf13sDrink()) {
+		actions[count(actions)] = new ConsumeAction($item[Cup of 13s], 0, 1, 12.0, auto_CupOf13sDesirability(), AUTO_ORGAN_LIVER, AUTO_OBTAIN_NULL);
 	}
 
 	// Step 6: Now, to load cafe consumables. This has some TCRS-specific code.
