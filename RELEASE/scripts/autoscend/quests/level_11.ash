@@ -3500,10 +3500,21 @@ boolean L11_unlockEd()
 		}
 		return true;
 	}
-	if(total < 10)
+
+	// Crumbling wooden wheels are more consistent for Blue vs. Red
+	if(in_bluevsred())
 	{
-		// tomb ratchets have 20% drop rate
-		provideItem(400, $location[The Middle Chamber], true);
+		if(!get_property("controlRoomUnlock").to_boolean())
+		{
+			// Blue team can't fight tomb rats
+			if(bluevsred_isRed() && total < 10)
+			{
+				provideItem(400, $location[The Middle Chamber], true);
+			}
+			return autoAdv(1, $location[The Middle Chamber]);
+		}
+		providePlusNonCombat(auto_combatModCap(), $location[The Upper Chamber], true);
+		return autoAdv(1, $location[The Upper Chamber]);
 	}
 
 	if(get_property("controlRoomUnlock").to_boolean())
@@ -3512,6 +3523,12 @@ boolean L11_unlockEd()
 		{
 			return autoAdv(1, $location[The Upper Chamber]);
 		}
+	}
+
+	if(total < 10)
+	{
+		// tomb ratchets have 20% drop rate
+		provideItem(400, $location[The Middle Chamber], true);
 	}
 
 	if (canSniff($monster[Tomb Rat], $location[The Middle Chamber]) && auto_mapTheMonsters())

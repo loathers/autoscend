@@ -1,4 +1,4 @@
-since r29089; //  last legendaries [noodle dishes]
+since r29171; // BvR: War Progress from NCs
 
 /***
 	autoscend_header.ash must be first import
@@ -64,6 +64,7 @@ import <autoscend/paths/avatar_of_sneaky_pete.ash>
 import <autoscend/paths/avatar_of_shadows_over_loathing.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
 import <autoscend/paths/bees_hate_you.ash>
+import <autoscend/paths/blue_vs_red.ash>
 import <autoscend/paths/bugbear_invasion.ash>
 import <autoscend/paths/casual.ash>
 import <autoscend/paths/class_act.ash>
@@ -310,6 +311,7 @@ void initializeSettings() {
 	wereprof_initializeSettings();
 	ag_initializeSettings();
 	amw_initializeSettings();
+	bluevsred_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -2092,6 +2094,8 @@ boolean doTasks()
 
 void auto_begin()
 {
+	auto_settings();
+
 	if(get_auto_attack() != 0)
 	{
 		boolean shouldUnset = user_confirm("You have an auto attack enabled. This can cause issues. Would you like us to disable it? Will default to 'No' in 30 seconds.", 30000, false);
@@ -2150,8 +2154,6 @@ void auto_begin()
 	auto_log_info("You have: " + banishSources() + " banish sources, " + freeRunSources() + " free-run sources, " +
 	freeKillSources() + " free kill sources, " + instaKillSources() + " insta-kill sources, " + yellowRaySources() +
 	" yellow ray sources, " + copySources() + " copy sources, and " + sniffSources() + " sniff sources.");
-
-	auto_settings();
 
 	backupSetting("promptAboutCrafting", 0);
 	backupSetting("requireBoxServants", false);

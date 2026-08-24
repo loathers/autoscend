@@ -216,6 +216,12 @@ int auto_freeCombatsRemaining(boolean print_remaining_fights)
 		return 0;
 	}
 
+	if (in_bluevsred())
+	{
+		//monsters may not be free
+		return 0;
+	}
+
 	void logRemainingFights(string msg)
 	{
 	  if (!print_remaining_fights) return;

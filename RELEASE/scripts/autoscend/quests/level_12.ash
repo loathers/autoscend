@@ -188,7 +188,7 @@ int auto_estimatedAdventuresForDooks()
 	advCost -= $location[McMillicancuddy's Other Back 40].turns_spent;
 	
 	//these paths cannot use butterfly
-	if(in_bhy() || in_pokefam() || in_glover())
+	if(in_bhy() || in_pokefam() || in_glover() || bluevsred_isRed())
 	{
 		return advCost;
 	}
@@ -292,13 +292,13 @@ WarPlan auto_bestWarPlan()
 	{
 		considerArena = false;
 	}
-	if(auto_warSide() == "hippy")		//arena not implemented for hippies yet. TODO implement it then remove this
-	{
-		considerArena = false;
-	}
 	if(get_property("auto_skipNuns").to_boolean())
 	{
 		considerNuns = false;
+	}
+	if(get_property("auto_skipL12Farm").to_boolean())
+	{
+		considerFarm = false;
 	}
 	if(get_property("auto_ignoreFlyer").to_boolean())
 	{
@@ -1618,6 +1618,11 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;		//let the powerlevel lock release first so we can do quests that are waiting for optimal conditions.
 	}
+	//Does hippy side have access to arena yet?
+	if (get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 458))
+	{
+		return false;
+	}
 
 	auto_log_info("Not enough flyer ML but we are ready for the war... uh oh", "blue");
 	if(LX_freeCombats(true)) return true;	//try to use free combats to make up the difference.
@@ -1688,6 +1693,11 @@ boolean L12_flyerFinish()
 	if(robot_delay("outfit"))
 	{
 		return false;	//delay for You, Robot path
+	}
+	//Does hippy side have access to arena yet?
+	if (get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 458))
+	{
+		return false;
 	}
 	
 	auto_log_info("Done with this Flyer crap", "blue");
