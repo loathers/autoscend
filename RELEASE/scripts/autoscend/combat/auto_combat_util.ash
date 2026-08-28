@@ -842,6 +842,11 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Sea *dent: Throw a Lightning Bolt];
 	}
+
+	if(auto_have_skill($skill[Order a Kneecapping]) && (my_mp() > mp_cost($skill[Order a Kneecapping])) && !get_property("_kneecappingOrdered").to_boolean() && !(used contains "Order a Kneecapping"))
+	{
+		return "skill " + $skill[Order a Kneecapping];
+	}
 	
 	//[Nanorhino] familiar specific banish. fairly low priority as it consumes 40 to 50 adv worth of a decent buff.
 	if(canUse($skill[Unleash Nanites]) && have_effect($effect[Nanobrawny]) >= 40)

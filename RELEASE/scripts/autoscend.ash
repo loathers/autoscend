@@ -1,4 +1,4 @@
-since r29171; // BvR: War Progress from NCs
+since r29197; // Order a Kneecapping tracking
 
 /***
 	autoscend_header.ash must be first import
