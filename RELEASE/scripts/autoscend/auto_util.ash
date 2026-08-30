@@ -1361,6 +1361,7 @@ int banishSources()
 	// KGB Tranquilizer Dart: Equipment
 	// Monkey Slap: Equipment
 	// Sea *dent Lightning Bolt: Equipment
+	// Order a Kneecapping: Skill
 	// Unleash Nanites: Familiar
 	// Beancannon: Skill
 	// human musk: Item
@@ -1376,7 +1377,8 @@ int banishSources()
 
 	int count = 0;
 	foreach sk in $skills[peel out, Howl of the Alpha, Baleful Howl, Thunder Clap, Curse Of Vacation, Breathe Out, Batter Up!,
-	Banishing Shout, Walk Away From Explosion, Feel Hatred, [7510]Punt, Snokebomb, Punch Out Your Foe, [28021]Punt, Beancannon, Mark Your Territory]
+	Banishing Shout, Walk Away From Explosion, Feel Hatred, [7510]Punt, Snokebomb, Punch Out Your Foe, [28021]Punt, Beancannon, Mark Your Territory,
+	Order a Kneecapping]
 	{
 		if(auto_have_skill(sk))
 		{
