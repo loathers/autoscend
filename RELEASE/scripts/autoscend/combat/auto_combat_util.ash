@@ -17,7 +17,7 @@ boolean haveUsed(item it)
 
 int usedCount(skill sk)
 {
-	matcher m = create_matcher("(sk" + sk.to_int().to_string() + ")", get_property("_auto_combatState"));
+	matcher m = create_matcher("\\(sk" + sk.to_int().to_string() + "\\)", get_property("_auto_combatState"));
 	int count = 0;
 	while(m.find())
 	{
@@ -28,7 +28,7 @@ int usedCount(skill sk)
 
 int usedCount(item it)
 {
-	matcher m = create_matcher("(it" + it.to_int().to_string() + ")", get_property("_auto_combatState"));
+	matcher m = create_matcher("\\(it" + it.to_int().to_string() + "\\)", get_property("_auto_combatState"));
 	int count = 0;
 	while(m.find())
 	{
