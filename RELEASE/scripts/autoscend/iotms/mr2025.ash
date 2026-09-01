@@ -238,6 +238,11 @@ boolean auto_equipAprilShieldBuff()
 	{
 		return false;
 	}
+	if(is_boris())
+	{
+		auto_log_debug('Boris would neither be caught dead with a shield, nor showering', "gold");
+		return false;
+	}
 	//force equip the shield if this is called
 	if(weapon_hands(equipped_item($slot[weapon])) > 1)
 	{
