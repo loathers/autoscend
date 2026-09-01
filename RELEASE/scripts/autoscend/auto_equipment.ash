@@ -44,6 +44,7 @@ boolean autoEquip(slot s, item it)
 			return false;
 		}
 	}
+
 	auto_log_info("Equipping " + it + " to slot " + s, "gold");
 
 	return tryAddItemToMaximize(s, it);
