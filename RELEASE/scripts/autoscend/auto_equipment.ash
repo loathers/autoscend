@@ -44,6 +44,11 @@ boolean autoEquip(slot s, item it)
 			return false;
 		}
 	}
+	if($slot[off-hand] == s && is_boris())
+	{
+		auto_log_debug("Boris has no need for puny offhands, skipping", "gold");
+		return false;
+	}
 
 	auto_log_info("Equipping " + it + " to slot " + s, "gold");
 
@@ -60,6 +65,7 @@ boolean autoEquip(item it)
 // mostly for the Antique Machete and unstable fulminate
 boolean autoForceEquip(slot s, item it, boolean noMaximize)
 {
+	auto_log_debug('Forcing equip of "' + it + '"', "gold");
 	if(it == $item[none])
 	{
 		return equip(s, it);
@@ -1313,6 +1319,11 @@ void equipRollover(boolean silent)
 
 boolean auto_forceEquipSword(boolean speculative) {
 	item swordToEquip = $item[none];
+	// Boris won't be caught dead with a sword
+	if (is_boris()) {
+		return false;
+	}
+
 	// use the ebony epee if we have it
 	if (possessEquipment($item[ebony epee]))
 	{
