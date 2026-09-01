@@ -44,12 +44,6 @@ boolean autoEquip(slot s, item it)
 			return false;
 		}
 	}
-	if($slot[off-hand] == s && is_boris())
-	{
-		auto_log_debug("Boris has no need for puny offhands, skipping", "gold");
-		return false;
-	}
-
 	auto_log_info("Equipping " + it + " to slot " + s, "gold");
 
 	return tryAddItemToMaximize(s, it);
