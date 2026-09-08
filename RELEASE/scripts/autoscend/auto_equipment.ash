@@ -60,6 +60,7 @@ boolean autoEquip(item it)
 // mostly for the Antique Machete and unstable fulminate
 boolean autoForceEquip(slot s, item it, boolean noMaximize)
 {
+	auto_log_debug('Forcing equip of "' + it + '"', "gold");
 	if(it == $item[none])
 	{
 		return equip(s, it);
@@ -726,6 +727,41 @@ void finalizeMaximize(boolean speculative)
 			addToMaximize("-equip " + wrap_item($item[Kramco Sausage-o-Matic&trade;]).to_string());
 		}
 	}
+	if (auto_haveMobiusRing())
+	{
+		if (auto_timeCopFights() >= 11)
+		{
+			if(get_property("mappingMonsters").to_boolean() || auto_backupTarget() || !in_hardcore())
+			{
+				// don't equip for non free fights in softcore? (pending allowed conditions like delay zone && none of the monsters in the zone is a sniff/YR target?)
+				// don't interfere with backups or Map the Monsters
+				addToMaximize("-equip " + $item[M&ouml;bius ring].to_string());
+			}
+		}
+		else {
+			// we want to make sure we equip mobius ring in meatpath when it's important,
+			// so we increse the bonus we give to the ring in meatpath for the priming and the NC
+			int mobius_bonus = 200;
+			if (in_amw()){
+				mobius_bonus = 1000;
+			}
+			// if the ring hasn't been primed today, we want to prime it to kick the whole thing off
+			if (!get_property("_mobiusRingPrimed").to_boolean()) {
+				addBonusToMaximize($item[M&ouml;bius ring], mobius_bonus);
+			}
+			// If the current zone has any delay, equip the ring for a chance at a free time cop or +paradoxicity
+			// time cop chance is conjectured to be a flat chance, doubling every 5 paradoxicity, starting at 2%
+			// we probably want to target 15 for 16% chance
+			else if (!nextMonsterIsFree && zone_delay(my_location())._boolean)
+			{
+				addBonusToMaximize($item[M&ouml;bius ring], 200);
+			}
+			// otherwise, equip the ring if we can get the NC
+			else if (auto_timeIsAStripPossible()) {
+				addBonusToMaximize($item[M&ouml;bius ring], mobius_bonus);
+			}
+		}
+	}
 	if (auto_haveCursedMagnifyingGlass())
 	{
 		if (get_property("cursedMagnifyingGlassCount").to_int() == 13)
@@ -855,6 +891,10 @@ void finalizeMaximize(boolean speculative)
 		addBonusToMaximize($item[bat wings], 200); // get the 5 free fights
 	}
 
+	if(my_class() == $class[Pastamancer] && auto_havePastaWand() && my_thrall().level < 11 && (my_thrall() == $thrall[Vermincelli] || my_thrall() == $thrall[Spice Ghost])) {
+		addToMaximize("40 Pasta Thrall Experience"); // bonus for the thrallxp, if we have a thrall we wanna lvl up
+	}
+
 	// We still need pixels in KoE, badly.
 	if(in_koe() && auto_hasPowerfulGlove())
 	{
@@ -909,6 +949,11 @@ void finalizeMaximize(boolean speculative)
 		if (getSweat() < 90) {
 			addBonusToMaximize($item[designer sweatpants], 200);
 		}
+	}
+
+	if(my_location() == get_property("_seadentWaveZone").to_location())
+	{
+		addToMaximize("+equip " + $item[Monodent of the Sea]); //Don't want to spend an extra turn if we don't have to
 	}
 
 	if(!in_plumber() && get_property(getMaximizeSlotPref($slot[weapon])) == "" && !maximizeContains("-weapon") && my_primestat() != $stat[Mysticality])
@@ -1103,7 +1148,7 @@ void equipMaximizedGear()
 
 void equipOverrides()
 {
-	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc]
+	foreach slot_str in $strings[hat, back, shirt, weapon, off-hand, pants, acc, familiar]
 	{
 		string overrides = get_property("auto_equipment_override_" + slot_str);
 		if(overrides == "")
@@ -1214,11 +1259,11 @@ void equipBaseline()
 void ensureSealClubs()
 {
 	cli_execute("acquire 1 seal-clubbing club");
-	foreach club in $items[Meat Tenderizer Is Murder, Lead Pipe, Porcelain Police Baton, Stainless STeel Shillelagh, Frozen Seal Spine, Ghast Iron Cleaver, Oversized Pipe, Curmudgel, Elegant Nightstick, Maxwell's Silver Hammer, Red-Hot Poker, Giant Foam Finger, Hilarious Comedy Prop, Infernal Toilet Brush, Mannequin Leg, Gnawed-Up Dog Bone, Severed Flipper, Spiked Femur, Corrupt Club of Corrupt Corruption, Kneecapping Stick, Orcish frat-paddle, Flaming Crutch, Corrupt Club of Corruption, Skeleton Bone, Remaindered Axe, Club of Corruption, Gnollish Flyswatter, Seal-Clubbing Club]
+	foreach club in $items[legendary seal-clubbing club, Meat Tenderizer Is Murder, Lead Pipe, Porcelain Police Baton, Stainless STeel Shillelagh, Frozen Seal Spine, Ghast Iron Cleaver, Oversized Pipe, Curmudgel, Elegant Nightstick, Maxwell's Silver Hammer, Red-Hot Poker, Giant Foam Finger, Hilarious Comedy Prop, Infernal Toilet Brush, Mannequin Leg, Gnawed-Up Dog Bone, Severed Flipper, Spiked Femur, Corrupt Club of Corrupt Corruption, Kneecapping Stick, Orcish frat-paddle, Flaming Crutch, Corrupt Club of Corruption, Skeleton Bone, Remaindered Axe, Club of Corruption, Gnollish Flyswatter, Seal-Clubbing Club]
 	{
 		if(possessEquipment(club))
 		{
-			autoForceEquip(club);
+			autoForceEquip($slot[weapon], club);
 			return;
 		}
 	}
@@ -1269,6 +1314,11 @@ void equipRollover(boolean silent)
 
 boolean auto_forceEquipSword(boolean speculative) {
 	item swordToEquip = $item[none];
+	// Boris won't be caught dead with a sword
+	if (is_boris()) {
+		return false;
+	}
+
 	// use the ebony epee if we have it
 	if (possessEquipment($item[ebony epee]))
 	{
@@ -1448,4 +1498,57 @@ int[slot] powerMultipliers()
     }
 
 	return multiplier;
+}
+
+/**
+	Handles selecting and equiping an equipment that would allow a free kill skill to be cast, if able. 
+	Only selects one free kill at a time. 
+	Doesn't allow freekill equips in Advant guard or PocketFamiliars paths
+*/
+void auto_equipFreekill()
+{	
+	// Pocket familiars combat doesn't permit skills, and bodyguards in Advant Guard make freekills un-free, so we're not doing that.
+	if(in_avantGuard() || in_pokefam())
+	{
+		return;
+	} 
+
+	auto_log_info("Looking for an equipment with free kills available...");
+	item dartHolster = $item[Everfull Dart Holster];
+	item doctorBag = $item[Lil\' Doctor&trade; Bag];
+	item joksterGun = $item[The Jokester\'s Gun];
+	item bcz = auto_getItemToEquipBCZ();
+	item legendClub = $item[legendary seal-clubbing club];
+
+	boolean redDartAvailable = auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0;
+	boolean chestXrayAvailable = auto_chestXraysRemaining() > 0;
+	boolean fireGunAvailable = auto_jokesterGunFreeKillAvailable();
+	boolean sweatBulletsAvailable = auto_wantToBCZ($skill[BCZ: Sweat Bullets]);
+	boolean clubBackAvailable = auto_clubEmBackInTimesRemaining() > 0;
+
+	if(redDartAvailable)
+	{
+		auto_log_info("We don't have ELR so let's hit a bullseye. Equipping Everful Dart holster.");
+		autoEquip($slot[acc3], dartHolster);
+	} else if (chestXrayAvailable)
+	{
+		auto_log_info("We still have Chest X-Rays available. Equipping Lil' Doctor bag.");
+		autoEquip($slot[acc3], doctorBag);
+	} else if (fireGunAvailable)
+	{
+		auto_log_info("Let's be a jokester. Equipping The Jokester's gun.");
+		autoEquip($slot[weapon], joksterGun);
+	} else if (sweatBulletsAvailable) 
+	{
+		auto_log_info("Man, we about to sweat bullets up in here. Equipping BCZ.");
+		autoEquip($slot[acc3], bcz);
+	} else if (clubBackAvailable)
+	// club back is last because it destroys drops, so we may choose to not use it
+	{
+		auto_log_info("They may not be seals, but we're gonna kill them last week. Equipping Legendary Seal Clubbing Club.");
+		autoEquip($slot[weapon], legendClub);
+	} else 
+	{
+		auto_log_info("No free kill sources found to equip, maybe you have some others, but we'll let combat figure that out.");
+	}
 }

@@ -2,6 +2,12 @@
 float providePlusCombat(int amt, location loc, boolean doEquips, boolean speculative) {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " positive combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
 
+	//if the fam is important enough to add, it will be caught in preAdvUpdateFamiliar
+	if(auto_famModifiers("Combat Rate") < 0)
+	{
+		use_familiar($familiar[none]);
+	}
+
 	float alreadyHave = numeric_modifier("Combat Rate");
 	float need = amt - alreadyHave;
 
@@ -70,7 +76,10 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		if (speculative) {
 			delta += numeric_modifier(eff, "Combat Rate");
 			if (eff == $effect[Musk of the Moose] && have_effect($effect[Smooth Movements]) > 0) {
-				delta += (-1.0 * numeric_modifier($effect[Smooth Movements], "Combat Rate")); // numeric_modifer doesn't take into account uneffecting the opposite skill so we have to add it manually.
+				delta += (-1.0 * numeric_modifier($effect[Smooth Movements], "Combat Rate")); // numeric_modifier doesn't take into account uneffecting the opposite skill so we have to add it manually.
+			}
+			if(eff == $effect[Carlweather\'s Cantata Of Confrontation] && have_effect($effect[The Sonata of Sneakiness]) > 0) {
+				delta += (-1.0 * numeric_modifier($effect[The Sonata of Sneakiness], "Combat Rate"));
 			}
 		}
 		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
@@ -91,7 +100,7 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 	// Now handle buffs that cost MP, items or other resources
 	
 	// Cheap effects
-	shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
+	if(!speculative) shrugAT($effect[Carlweather\'s Cantata Of Confrontation]);
 	if (tryEffects($effects[
 		Musk of the Moose,
 		Carlweather's Cantata of Confrontation,
@@ -107,6 +116,11 @@ float providePlusCombat(int amt, location loc, boolean doEquips, boolean specula
 		Unmuffled
 	])) {
 		return result();
+	}
+
+	if (in_amw() && amw_canAfford($skill[Act Jerky])) // meatpath only
+	{
+		if (tryEffects($effects[Acting Jerky])){return result();}
 	}
 
 	// Do the April band
@@ -195,6 +209,12 @@ boolean providePlusCombat(int amt)
 
 float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean speculative) {
 	auto_log_info((speculative ? "Checking if we can" : "Trying to") + " provide " + amt + " negative combat rate, " + (doEquips ? "with" : "without") + " equipment", "blue");
+
+	//if the fam is important enough to add, it will be caught in preAdvUpdateFamiliar
+	if(auto_famModifiers("Combat Rate") > 0)
+	{
+		use_familiar($familiar[none]);
+	}
 
 	// numeric_modifier will return -combat as a negative value and +combat as a positive value
 	// so we will need to invert the return values otherwise this will be wrong (since amt is supposed to be positive).
@@ -285,7 +305,7 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 		if (speculative) {
 			delta += (-1.0 * numeric_modifier(eff, "Combat Rate"));
 			if (eff == $effect[Smooth Movements] && have_effect($effect[Musk of the Moose]) > 0) {
-				delta += numeric_modifier($effect[Musk of the Moose], "Combat Rate"); // numeric_modifer doesn't take into account uneffecting the opposite skill so we have to add it manually.
+				delta += numeric_modifier($effect[Musk of the Moose], "Combat Rate"); // numeric_modifier doesn't take into account uneffecting the opposite skill so we have to add it manually.
 			}
 		}
 		auto_log_debug("We " + (speculative ? "can gain" : "just gained") + " " + eff.to_string() + ", now we have " + result());
@@ -305,7 +325,12 @@ float providePlusNonCombat(int amt, location loc, boolean doEquips, boolean spec
 
 	// Now handle buffs that cost MP, items or other resources
 
-	shrugAT($effect[The Sonata of Sneakiness]);
+	if (in_amw() && amw_canAfford($skill[Dark Meat]))
+	{
+		if (tryEffects($effects[Darkened Meat])){return result();}
+	}
+
+	if(!speculative) shrugAT($effect[The Sonata of Sneakiness]);
 	if (tryEffects($effects[
 		Shelter Of Shed,
 		Brooding,
@@ -516,6 +541,7 @@ float provideInitiative(int amt, location loc, boolean doEquips, boolean specula
 		//organized by %/mp and %. Skills
 		Living Fast, //100%, 5mp
 		Stretched, //75%, 10mp
+		Slippery as a Seal, //+50%, 5mp
 		Cletus's Canticle of Celerity, //20%, 4mp
 		Springy Fusilli, //40%, 10mp
 		Soulerskates, //30%, 25 soulsauce
@@ -856,12 +882,15 @@ int [element] provideResistances(int [element] amt, location loc, boolean doEqui
 		{
 			//Buff fam weight early
 			buffMaintain($effect[Leash of Linguini]);
+			buffMaintain($effect[Thoughtful Empathy]);
 			buffMaintain($effect[Empathy]);
 			buffMaintain($effect[Blood Bond]);
+			buffMaintain($effect[Only Dogs Love a Drunken Sailor]);
+			buffMaintain($effect[Best Pals]);
 			//Manual override for the resfam to be the Cooler Yeti when we ONLY want Cold Resistance and it is better than what we already chose from one of the multi-res fams
 			if(auto_haveCoolerYeti() && count(amt) == 1 && amt[$element[Cold]] > 0)
 			{
-				if(((resfam == $familiar[Mu] || resfam == $familiar[Exotic Parrot]) && floor((familiar_weight(resfam) + weight_adjustment() - 5) / 20 + 1) < floor((familiar_weight($familiar[cooler yeti]) + weight_adjustment())/11)) || (5 < floor((familiar_weight($familiar[cooler yeti]) + weight_adjustment())/11)))
+				if(((resfam == $familiar[Mu] || resfam == $familiar[Exotic Parrot]) && floor((auto_famWeight(resfam) - 5) / 20 + 1) < floor(auto_famWeight($familiar[Cooler Yeti])/11)) || (5 < floor(auto_famWeight($familiar[Cooler Yeti])/11)))
 				{
 					resfam = $familiar[Cooler Yeti];
 				}
@@ -1100,6 +1129,8 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 		Juiced and Loose,					//+50% mus. nuclear autumn only. 3 MP/adv
 		Quiet Determination,				//+25% mus. facial expression. 1 MP/adv
 		Rage of the Reindeer,				//+10% mus. +10 weapon dmg. 1 MP/adv
+		Strength of the Tortoise,				//+10 mus. 0.2 MP/adv.
+		Disco over Matter,				//+10 mus. 0.2 MP/adv.
 		Power Ballad of the Arrowsmith,		//+10 mus. +20 maxHP. song. 5 MP (duration varies).
 		Seal Clubbing Frenzy,				//+2 mus. 0.2 MP/adv
 		Patience of the Tortoise,			//+1 mus. +3 maxHP. 0.2 MP/adv
@@ -1107,6 +1138,8 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 		// myst effects
 		Mind Vision,						//+50% mys. nuclear autumn only. 3 MP/adv
 		Quiet Judgement,					//+25% mys. facial expression. 1 MP/adv
+		Tubes of Universal Meat,				//+10 mys. 0.2 MP/adv.
+		Mariachi Moisture,				//+10 mus. 0.2 MP/adv.
 		The Magical Mojomuscular Melody,	//+10 mys. +20 maxMP. song. 3 MP (duration varies).
 		Pasta Oneness,						//+2 mys. 0.2 MP/adv
 		Saucemastery,						//+1 mys. +3 maxMP. 0.2 MP/adv
@@ -1114,6 +1147,8 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 		// moxie effects
 		Impeccable Coiffure,				//+50% mox. nuclear autumn only. 3 MP/adv
 		Song of Bravado,					//+15% all. NOT a song. 10 MP/adv
+		Slippery as a Seal,				//+10 mox. 0.2 MP/adv.
+		Lubricating Sauce,				//+10 mox. 0.2 MP/adv.
 		The Moxious Madrigal,				//+10 mox. song. 2 MP (duration varies).
 		Disco State of Mind,				//+2 mox. 0.2 MP/adv
 		Mariachi Mood,						//+1 mox. +3 maxHP. 0.2 MP/adv
@@ -1123,6 +1158,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 		Big,								//+20% all. 1.5 MP/adv
 		Song of Bravado,					//+15% all. NOT a song. 10 MP/adv
 		Stevedave's Shanty of Superiority,	//+10% all. song. 30 MP (duration varies).
+		Ultraheart,                         //+50% all, heartstone, 5/day.
 
 		// varying effects
 		Blessing of the Bird,
@@ -1167,6 +1203,7 @@ float [stat] provideStats(int [stat] amt, location loc, boolean doEquips, boolea
 			Woad Warrior,
 
 			// myst effects
+			Up to 11,
 			Baconstoned,
 			Erudite,
 			Far Out,
@@ -1383,8 +1420,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		familiar target = lookupFamiliarDatafile("meat");
 		if(target != $familiar[none] && target != my_familiar())
 		{
-			int famWeight = familiar_weight(target) + weight_adjustment();
-			delta += numeric_modifier(target, "Meat Drop",famWeight,$item[none]);
+			delta += auto_famModifiers(target, "Meat Drop", $item[none]);
 			auto_log_debug("With using familiar: " + target + " we can get to " + result());
 		}
 		else
@@ -1484,6 +1520,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Earning Interest, //50% meat
 		Bet Your Autumn Dollar, //50% meat
 		The Grass... \ Is Blue..., //40% meat, 20% item
+		Sweat Equity, //40% meat
 		Greedy Resolve, //30% meat
 		Tubes of Universal Meat, //30% meat
 		Worth Your Salt, //25% meat, max hp +25
@@ -1492,6 +1529,7 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		Heart of Pink, //20% meat, +3 all stats
 		Kindly Resolve, //5 fam weight
 		Human-Machine Hybrid, //5 fam weight, DA +50, DR 5
+		Only Dogs Love a Drunken Sailor, //5 fam weight, rivalrous with item drop
 		Sweet Heart, // Muscle +X, +2X% meat
 		So You Can Work More... //10% meat
 	]; // ef_to_try
@@ -1614,6 +1652,26 @@ float provideMeat(int amt, location loc, boolean doEverything, boolean speculati
 		}
 		if(pass())
 			return result();
+		if (!in_tcrs() && !in_small() && !get_property("auto_limitConsume").to_boolean() && have_effect($effect[Tryptofan]) == 0 && creatable_amount($item[prize turkey]) > 0 && canEat($item[prize turkey]) && stomach_left() > $item[prize turkey].fullness) {
+			if(!speculative)
+			{
+				buy($coinmaster[Skeleton of Crimbo Past], 1, $item[prize turkey]);
+				autoEat(1, $item[prize turkey]);
+			}
+			handleEffect($effect[Tryptofan]); //100% meat, 50 init
+			if(pass())
+				return result();
+		}
+		if (!in_tcrs() && have_effect($effect[Grueling Gravitas]) == 0 && creatable_amount($item[medicinal gruel]) > 0 && spleen_left() > $item[medicinal gruel].spleen) {
+			if(!speculative)
+			{
+				buy($coinmaster[Skeleton of Crimbo Past], 1, $item[medicinal gruel]);
+				autoChew(1, $item[medicinal gruel]);
+			}
+			handleEffect($effect[Grueling Gravitas]); //5 fam weight
+			if(pass())
+				return result();
+		}
 		if(auto_totalEffectWishesAvailable() > 0)
 		{
 			boolean success = true;
@@ -1751,8 +1809,7 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		familiar target = lookupFamiliarDatafile("item");
 		if(target != $familiar[none] && target != my_familiar())
 		{
-			int famWeight = familiar_weight(target) + weight_adjustment();
-			delta += numeric_modifier(target, "Item Drop",famWeight,$item[none]);
+			delta += auto_famModifiers(target, "Item Drop", $item[none]);
 			auto_log_debug("With using familiar: " + target + " we can get to " + result());
 		}
 		else
@@ -1790,10 +1847,16 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		buffMaintain($effect[Fishy Whiskers]); // HR only
 	}
 
+	if(in_amw() && amw_canAfford($skill[Beef Goggles]))
+	{
+		if(tryEffects($effects[Beef Goggles])){return result();} // meatpath only
+	}
+
 	// unlimited skills
 	if(tryEffects($effects[
 		Fat Leon\'s Phat Loot Lyric, //20% item
-		Singer\'s Faithful Ocelot //10% item
+		Singer\'s Faithful Ocelot, //10% item
+		Who's Going to Pay This Drunken Sailor? //25% item, rivalrous with +5 lb fam weight
 	]))
 		return result();
 
@@ -2000,6 +2063,26 @@ float provideItem(int amt, location loc, boolean doEverything, boolean speculati
 		}
 		if(pass())
 			return result();
+		if (!in_tcrs() && !in_small() && !get_property("auto_limitConsume").to_boolean() && have_effect($effect[Ordained]) == 0 && creatable_amount($item[Smoking Pope]) > 0 && canDrink($item[Smoking Pope]) && inebriety_left() > $item[Smoking Pope].inebriety) {
+			if(!speculative)
+			{
+				buy($coinmaster[Skeleton of Crimbo Past], 1, $item[Smoking Pope]);
+				autoDrink(1, $item[Smoking Pope]);
+			}
+			handleEffect($effect[Ordained]); //50% item, 50% skeleton damage
+			if(pass())
+				return result();
+		}
+		if (!in_tcrs() && have_effect($effect[Grueling Gravitas]) == 0 && creatable_amount($item[medicinal gruel]) > 0 && spleen_left() > $item[medicinal gruel].spleen) {
+			if(!speculative)
+			{
+				buy($coinmaster[Skeleton of Crimbo Past], 1, $item[medicinal gruel]);
+				autoChew(1, $item[medicinal gruel]);
+			}
+			handleEffect($effect[Grueling Gravitas]); //5 fam weight
+			if(pass())
+				return result();
+		}
 		if(auto_totalEffectWishesAvailable() > 0)
 		{
 			boolean success = true;
@@ -2183,6 +2266,7 @@ float provideFamExp(int amt, location loc, boolean doEquips, boolean doEverythin
 		}
 		candyEggDeviler(); //try to get a deviled candy egg
 		if(tryEffects($effects[
+			Best Pals, //+1
 			Warm Shoulders, //+5
 			Shortly Hydrated, //+5
 			Candied Devil, //+5

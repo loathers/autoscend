@@ -216,7 +216,7 @@ boolean[location] shenZonesToAvoidBecauseMaybeSnake()
 
 boolean shenShouldDelayZone(location loc)
 {
-	return shenZonesToAvoidBecauseMaybeSnake()[loc];
+	return (shenZonesToAvoidBecauseMaybeSnake()[loc] && !isAboutToPowerlevel()); // don't bother with delaying a Shen zone if we've run out of stuff to do
 }
 
 int[location] getShenZonesTurnsSpent()
@@ -326,6 +326,10 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 		resGoal[$element[stench]] = 9;
 		int [element] resPossible = provideResistances(resGoal, $location[The Haunted Kitchen], true, true, false);
 		auto_log_info("Looking for the Billards Room key (Hot/Stench:" + resPossible[$element[hot]] + "/" + resPossible[$element[stench]] + "): Progress " + get_property("manorDrawerCount") + "/24", "blue");
+		
+		if (auto_spadeDigsRemaining() > 0 && get_property("lastAdventure") == "The Haunted Kitchen"){
+			return auto_spadeDigSkeleton();
+		}
 		if (autoAdv($location[The Haunted Kitchen])) {
 			return true;
 		}
@@ -439,8 +443,8 @@ boolean LX_unlockHauntedLibrary()
 	{
 		// only force after we get the pool cue NC.
 		boolean NCForced = auto_forceNextNoncombat($location[The Haunted Billiards Room]);
-		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel())
+		// delay if we are out of NC forcers and haven't run out of things to do
+		if(!NCForced && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel())
 		{
 			resetMaximize();	//cancel equipping pool cue
 			return false;
@@ -501,7 +505,7 @@ boolean LX_unlockManorSecondFloor() {
 		}
 	}
 
-	auto_getCitizenZone($location[The Haunted Library]); //since want to adventure in the Haunted Library anyway
+	auto_getCitizenZone($location[The Haunted Library], false); //since want to adventure in the Haunted Library anyway
 	return autoAdv($location[The Haunted Library]);
 }
 
@@ -540,7 +544,7 @@ void hauntedBedroomChoiceHandler(int choice, string[int] options)
 {
 	if(choice == 876) // One Simple Nightstand (The Haunted Bedroom)
 	{
-		if(my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && !in_wotsf())
+		if((my_meat() < 1000 + meatReserve() && auto_is_valid($item[old leather wallet]) && !in_wotsf()) || in_amw())
 		{
 			run_choice(1); // get old leather wallet worth ~500 meat
 		}
@@ -572,7 +576,7 @@ void hauntedBedroomChoiceHandler(int choice, string[int] options)
 		{
 			run_choice(4); // get disposable instant camera
 		}
-		else if(my_primestat() != $stat[mysticality] || my_meat() < 1000 + meatReserve())
+		else if(my_primestat() != $stat[mysticality] || my_meat() < 1000 + meatReserve() || in_amw())
 		{
 			run_choice(1); // get ~500 meat
 		}
@@ -633,7 +637,10 @@ boolean LX_getLadySpookyravensFinestGown() {
 	if (is_boris() || in_wotsf() || (in_nuclear() && in_hardcore())) {
 		needSpectacles = false;
 	}
-	else if(needCamera && needSpectacles) {
+	if (in_pokefam()) {
+		needCamera = false;
+	}
+	if(needCamera && needSpectacles) {
 		// if in a path that needs both you want a two night stand with ornate, olfacting ornate nightstand is a problem
 		// for the script because it will work against the elegant nightstand and most olfaction skills aren't cancelled
 		// easily without changing locations, but Nosy Nose will be turned off once it's no longer the used familiar
@@ -714,8 +721,8 @@ boolean LX_getLadySpookyravensPowderPuff() {
 
 	if (!zone_delay($location[The Haunted Bathroom])._boolean) {
 		boolean NCForced = auto_forceNextNoncombat($location[The Haunted Bathroom]);
-		// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-		if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+		// delay if we are out of NC forcers and haven't run out of things to do
+		if(!NCForced && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel()) return false;
 	}
 	if (autoAdv($location[The Haunted Bathroom])) {
 		return true;
@@ -907,8 +914,8 @@ boolean L11_getBeehive()
 	auto_log_info("Must find a beehive!", "blue");
 
 	boolean NCForced = auto_forceNextNoncombat($location[The Black Forest]);
-	// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-	if(!NCForced && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+	// delay if we are out of NC forcers and haven't run out of things to do
+	if(!NCForced && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel()) return false;
 	boolean advSpent = autoAdv($location[The Black Forest]);
 	if(item_amount($item[beehive]) > 0)
 	{
@@ -1619,6 +1626,10 @@ boolean L11_hiddenTavernUnlock(boolean force)
 		if(!in_hardcore())
 		{
 			pullXWhenHaveY($item[Book of Matches], 1, 0);
+			if(item_amount($item[Book of Matches]) == 0)
+			{
+				auto_makeMonkeyPawWish($item[Book of Matches]);
+			}
 		}
 	}
 
@@ -1641,10 +1652,6 @@ void hiddenCityChoiceHandler(int choice)
 		if(have_effect($effect[Thrice-Cursed]) > 0)
 		{
 			run_choice(1); // fight the spirit
-		}
-		else if(in_pokefam() && get_property("relocatePygmyLawyer").to_int() != my_ascensions())
-		{
-			run_choice(3); // relocate lawyers to park
 		}
 		else if(available_choice_options() contains 4 && have_effect($effect[Thrice-Cursed]) == 0) // Use CCSC to get Cursed +1
 		{
@@ -1927,8 +1934,8 @@ boolean L11_hiddenCity()
 			if(shouldForceElevatorAction)
 			{
 				elevatorAction = auto_forceNextNoncombat($location[The Hidden Apartment Building]);
-				// delay to day 2 if we are out of NC forcers and haven't run out of things to do
-				if(!elevatorAction && my_daycount() == 1 && !isAboutToPowerlevel()) return false;
+				// delay if we are out of NC forcers and haven't run out of things to do
+				if(!elevatorAction && my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel()) return false;
 			}
 		}
 
@@ -2005,9 +2012,9 @@ boolean L11_hiddenCity()
 			{
 				workingHoliday = true;
 			}
-			else if(my_daycount() == 1 && !isAboutToPowerlevel())
+			else if(my_daycount() < get_property("auto_runDayCount").to_int() && !isAboutToPowerlevel())
 			{
-				// delay to day 2 if we are out of NC forcers and haven't run out of things to do
+				// delay if we are out of NC forcers and haven't run out of things to do
 				return false;
 			}
 		}
@@ -2319,12 +2326,14 @@ boolean L11_mauriceSpookyraven()
 			return false;
 		}
 
+		if(auto_wantToSpadeDigSkeleton($location[The Haunted Ballroom])) {
+			return auto_spadeDigSkeleton();
+		}
 		if (canBurnDelay($location[The Haunted Ballroom]))
 		{
 			// We'll All Be Flat choice adventure has a delay of 5 adventures.
 			return false;
 		}
-
 		return autoAdv($location[The Haunted Ballroom]);
 	}
 	if(item_amount($item[recipe: mortar-dissolving solution]) == 0)
@@ -2948,7 +2957,19 @@ boolean L11_shenCopperhead()
 			{
 				return true;
 			}
-
+			else if (auto_wantToSpadeDigSkeleton(goal)) {
+				return auto_spadeDigSkeleton();
+			}
+			// similar if statements exist in the L8 quest file (see comments over there)
+			// before delayburn because we *want* to fight NSAs if we're going ninja lair, not avoid them by burning delay
+			if (goal == $location[Lair of the Ninja Snowmen]) { 
+				if (auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
+					if (L8_trapperNinjaLair()){ return true; } 
+				}
+				if (internalQuestStatus("questL08Trapper").to_int() == 2 && auto_haveCombatForceSource() && !isAboutToPowerlevel() && !get_property("auto_L8_extremeInstead").to_boolean()) {
+					return false;
+				}
+			}
 			if (canBurnDelay(goal))
 			{
 				// Snakes have variable delay of 3-5 adventures but we can burn at least 3 of that.
@@ -3125,13 +3146,13 @@ boolean L11_palindome()
 			equipBaseline();
 			if((item_amount($item[Bird Rib]) == 0) || (item_amount($item[Lion Oil]) == 0))
 			{
-				doWhiteys();
+				return doWhiteys();
 			}
 			else if(item_amount($item[Stunt Nuts]) == 0)
 			{
 				auto_log_info("We got no nuts!! :O", "Blue");
 				autoEquip($slot[acc3], $item[Talisman o\' Namsilat]);
-				autoAdv(1, $location[Inside the Palindome]);
+				return autoAdv(1, $location[Inside the Palindome]);
 			}
 			else
 			{
@@ -3171,6 +3192,7 @@ boolean L11_palindome()
 			{
 				use(1, $item[&quot;2 Love Me\, Vol. 2&quot;]);
 				auto_log_info("Oh no, we died from reading a book. I'm going to take a nap.", "blue");
+				set_property("_auto_forcePokefamRestore", true);
 				acquireHP();
 				bat_reallyPickSkills(20);
 			}
@@ -3286,8 +3308,7 @@ boolean L11_palindome()
 			{
 				//may want to use an item familiar first for stunt nuts
 				//unfortunately the sniff condition system means if taking the nose later after using different sniffs on a dude it will only be able to whiff on the same dude
-				int famWeightWithoutEq = familiar_weight(my_familiar()) + weight_adjustment() - numeric_modifier(equipped_item($slot[familiar]), "Familiar Weight");
-				int stuntNutDropModifierWithoutFamiliar = item_drop_modifier() + numeric_modifier("Food Drop") - numeric_modifier(my_familiar(), "Item Drop", famWeightWithoutEq, equipped_item($slot[familiar]));
+				int stuntNutDropModifierWithoutFamiliar = item_drop_modifier() + numeric_modifier("Food Drop") - auto_famModifiers("Item Drop");
 				if(stuntNutDropModifierWithoutFamiliar < 234)	//30% base drop chance
 				{
 					noseDudesOn = false;
@@ -3483,10 +3504,21 @@ boolean L11_unlockEd()
 		}
 		return true;
 	}
-	if(total < 10)
+
+	// Crumbling wooden wheels are more consistent for Blue vs. Red
+	if(in_bluevsred())
 	{
-		// tomb ratchets have 20% drop rate
-		provideItem(400, $location[The Middle Chamber], true);
+		if(!get_property("controlRoomUnlock").to_boolean())
+		{
+			// Blue team can't fight tomb rats
+			if(bluevsred_isRed() && total < 10)
+			{
+				provideItem(400, $location[The Middle Chamber], true);
+			}
+			return autoAdv(1, $location[The Middle Chamber]);
+		}
+		providePlusNonCombat(auto_combatModCap(), $location[The Upper Chamber], true);
+		return autoAdv(1, $location[The Upper Chamber]);
 	}
 
 	if(get_property("controlRoomUnlock").to_boolean())
@@ -3495,6 +3527,12 @@ boolean L11_unlockEd()
 		{
 			return autoAdv(1, $location[The Upper Chamber]);
 		}
+	}
+
+	if(total < 10)
+	{
+		// tomb ratchets have 20% drop rate
+		provideItem(400, $location[The Middle Chamber], true);
 	}
 
 	if (canSniff($monster[Tomb Rat], $location[The Middle Chamber]) && auto_mapTheMonsters())
@@ -3508,7 +3546,7 @@ boolean L11_unlockEd()
 		handleFamiliar($familiar[Grey Goose]);
 	}
 
-	if(auto_can_equip($item[pro skateboard]) && equipmentAmount($item[pro skateboard]) > 0 && item_amount($item[Tangle of rat tails]) >= 1 && !get_property("_epicMcTwistUsed").to_boolean())
+	if(auto_can_equip($item[pro skateboard]) && equipmentAmount($item[pro skateboard]) > 0 && item_amount($item[Tangle of rat tails]) >= 1 && !get_property("_epicMcTwistUsed").to_boolean() && !in_pokefam())
 	{
 		auto_log_info("Be like Tony Hawk on a Tomb Rat King!");
 		autoEquip($item[pro skateboard]);

@@ -274,6 +274,21 @@ int changeClan()		//To BAFH
 
 
 int hotTubSoaksRemaining(){
+	// mafia will create popup confirming hottub use if in hidden apartment quest and have a curse
+	// don't want to break automation so don't allow hottub use in this condition
+	if(get_property("hiddenApartmentProgress").to_int() < 7){
+		// apartment not done, check if we have a curse
+		boolean haveCurse = false;
+		foreach eff in $effects[Once-Cursed, Thrice-Cursed, Twice-Cursed]
+		{
+			if(have_effect(eff) > 0)
+			{
+				haveCurse = true;
+			}
+		}
+		if(haveCurse) return 0;
+	}
+
 	return 5 - get_property("_hotTubSoaks").to_int();
 }
 

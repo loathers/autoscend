@@ -6,7 +6,11 @@ boolean zone_unlock(location loc){
 	boolean unlocked = false;
 	if(loc == $location[The Thinknerd Warehouse]){
 		unlocked = LX_unlockThinknerdWarehouse(false);
-	} else{
+	} 
+	else if (loc == $location[Lair of the Ninja Snowmen] && L8_trapperTalk()) {
+		unlocked = true;
+	}
+	else{
 		auto_log_debug("Don't know how to unlock " + loc);
 		return false;
 	}
@@ -1323,7 +1327,7 @@ boolean zone_available(location loc)
 		}
 		break;
 	case $location[Wartime Hippy Camp (Frat Disguise)]:
-		if((internalQuestStatus("questL12War") == 0) && have_outfit("frat warrior fatigues"))
+		if((internalQuestStatus("questL12War") == 0) && (have_outfit("frat warrior fatigues") || have_outfit("frat boy ensemble")))
 		{
 			retval = true;
 		}
@@ -1335,7 +1339,7 @@ boolean zone_available(location loc)
 		}
 		break;
 	case $location[Wartime Frat House (Hippy Disguise)]:
-		if((internalQuestStatus("questL12War") == 0) && have_outfit("war hippy fatigues"))
+		if((internalQuestStatus("questL12War") == 0) && (have_outfit("war hippy fatigues") || have_outfit("filthy hippy disguise")))
 		{
 			retval = true;
 		}

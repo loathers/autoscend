@@ -38,6 +38,10 @@ boolean buffMaintain(skill source, effect buff, item mustEquip, int mp_min, int 
 	{
 		return false;
 	}
+	if(my_meat() < (casts * meat_cost(source)))
+	{
+		return false;
+	}
 	//handling for buffs that must equip something first
 	boolean equip_changed = false;
 	item[int] equipped = auto_saveEquipped();
@@ -185,6 +189,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	#Jalapeno Saucesphere
 	case $effect[A Few Extra Pounds]:			useSkill = $skill[Holiday Weight Gain];			break;
 	case $effect[A Little Bit Poisoned]:		useSkill = $skill[Disco Nap];					break;
+	case $effect[Acting Jerky]:					useSkill = $skill[Act Jerky];					break;
 	case $effect[Adorable Lookout]:				useItem = $item[Giraffe-Necked Turtle];			break;
 	case $effect[Alacri Tea]:					useItem = $item[cuppa Alacri Tea];				break;
 	case $effect[All Fired Up]:					useItem = $item[Ant Agonist];					break;
@@ -241,11 +246,13 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Be A Mind Master]:				useItem = $item[Daily Affirmation: Be A Mind Master];	break;
 	case $effect[A Beastly Odor]:				useItem = $item[The Beast Within&trade; candle];break;
 	case $effect[Become Superficially Interested]:	useItem = $item[Daily Affirmation: Be Superficially Interested];	break;
+	case $effect[Beef Goggles]:					useSkill = $skill[Beef Goggles];				break;
 	case $effect[Bendin\' Hell]:				useSkill = $skill[Bend Hell];					break;
 	case $effect[Bent Knees]:					useSkill = $skill[Bendable Knees];				break;
 	case $effect[Benetton\'s Medley of Diversity]:	useSkill = $skill[Benetton\'s Medley of Diversity];		break;
 	case $effect[Berry Elemental]:				useItem = $item[Tapioc Berry];					break;
 	case $effect[Berry Statistical]:			useItem = $item[Snarf Berry];					break;
+	case $effect[Best Pals]:					useSkill = $skill[Heartstone: %pals];			break;
 	case $effect[Bet Your Autumn Dollar]:		useItem = $item[Autumn Dollar];					break;
 	case $effect[Big]:							useSkill = $skill[Get Big];						break;
 	case $effect[Big Meat Big Prizes]:			useItem = $item[Meat-Inflating Powder];			break;
@@ -269,6 +276,12 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Blood-Gorged]:					useItem = $item[Vial Of Blood Simple Syrup];	break;
 	case $effect[Blood Bond]:					useSkill = $skill[Blood Bond];					break;
 	case $effect[Blood Bubble]:					useSkill = $skill[Blood Bubble];				break;
+	case $effect[Bloodbathed]:
+		if(auto_haveBCZ())
+		{
+			mustEquip = auto_getItemToEquipBCZ();
+			useSkill = $skill[BCZ: Blood Bath];
+		}																						break;
 	case $effect[Bloody Potato Bits]:			useSkill = $skill[none];						break;
 	case $effect[Bloodstain-Resistant]:			useItem = $item[Bloodstain Stick];				break;
 	case $effect[Blooper Inked]:				useItem = $item[Blooper Ink];					break;
@@ -335,6 +348,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Crunchy Steps]:				useItem = $item[crunchy brush];					break;
 	case $effect[Cyber Resist x2000]:			useItem = $item[synapse blaster];				break;
 	case $effect[Dance of the Sugar Fairy]:		useItem = $item[Sugar Fairy];					break;
+	case $effect[Darkened Meat]:				useSkill = $skill[Dark Meat];					break;
 	case $effect[Destructive Resolve]:			useItem = $item[Resolution: Be Feistier];		break;
 	case $effect[Dexteri Tea]:					useItem = $item[cuppa Dexteri tea];				break;
 	case $effect[Digitally Converted]:			useItem = $item[Digital Underground Potion];	break;
@@ -492,6 +506,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Gummi-Grin]:					useItem = $item[Gummi Turtle];					break;
 	case $effect[Hairy Palms]:					useItem = $item[Orcish Hand Lotion];			break;
 	case $effect[Ham-Fisted]:					useItem = $item[Vial of Hamethyst Juice];		break;
+	case $effect[Hamming It Up]:				useSkill = $skill[Ham It Up];					break;
 	case $effect[Hardened Fabric]:				useItem = $item[Fabric Hardener];				break;
 	case $effect[Hardened Sweatshirt]:			useSkill = $skill[Magic Sweat];					break;
 	case $effect[Hardly Poisoned At All]:		useSkill = $skill[Disco Nap];					break;
@@ -621,6 +636,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 			useSkill = $skill[Mathematical Precision];
 		}																						break;
 	case $effect[Mayeaugh]:						useItem = $item[Glob of Spoiled Mayo];			break;
+	case $effect[Meat Puppet]:					useSkill = $skill[Meat Puppet];					break;
 	case $effect[Memories of Puppy Love]:		useItem = $item[Old Love Note];					break;
 	case $effect[Merry Smithsness]:				useItem = $item[Flaskfull of Hollow];			break;
 	case $effect[Milk of Familiar Cruelty ]:	useSkill = $skill[Drink The Milk of %n Cruelty ];break;
@@ -663,6 +679,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[OMG WTF]:						useItem = $item[Confiscated Cell Phone];		break;
 	case $effect[One Very Clear Eye]:			useItem = $item[Cyclops Eyedrops];				break;
+	case $effect[Only Dogs Love a Drunken Sailor]: useSkill = $skill[Only Dogs Love a Drunken Sailor]; break;
 	case $effect[Orange Crusher]:				useItem = $item[Pulled Orange Taffy];			break;
 	case $effect[Orange Tongue]:				useItem = $item[Orange Snowcone];				break;
 	case $effect[Paging Betty]:					useItem = $item[Bettie Page];					break;
@@ -917,8 +934,10 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Squatting and Thrusting]:		useItem = $item[Squat-Thrust Magazine];			break;
 	case $effect[Stabilizing Oiliness]:			useItem = $item[Oil of Stability];				break;
 	case $effect[Standard Issue Bravery]:		useItem = $item[CSA Bravery Badge];				break;
+	case $effect[Steak Skirt]:					useSkill = $skill[Steak Skirt];					break;
 	case $effect[Steely-Eyed Squint]:			useSkill = $skill[Steely-Eyed Squint];			break;
 	case $effect[Steroid Boost]:				useItem = $item[Knob Goblin Steroids];			break;
+	case $effect[Stewing]:						useSkill = $skill[Stew];						break;
 	case $effect[Stevedave\'s Shanty of Superiority]:useSkill = $skill[Stevedave\'s Shanty of Superiority];			break;
 	case $effect[Stickler for Promptness]:		useItem = $item[Potion of Punctual Companionship];	break;
 	case $effect[Stinky Hands]:					useItem = $item[Lotion of Stench];				break;
@@ -945,10 +964,17 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Superheroic]:					useItem = $item[Confiscated Comic Book];		break;
 	case $effect[Superhuman Sarcasm]:			useItem = $item[Serum of Sarcasm];				break;
 	case $effect[Suspicious Gaze]:				useSkill = $skill[Suspicious Gaze];				break;
+	case $effect[Sweat Equity]:
+	if(auto_haveBCZ())
+		{
+			mustEquip = auto_getItemToEquipBCZ();
+			useSkill = $skill[BCZ: Sweat Equity];
+		}																						break;
 	case $effect[Sweet Heart]:					useItem = $item[love song of sugary cuteness];			break;
 	case $effect[Sweet\, Nuts]:					useItem = $item[Crimbo Candied Pecan];			break;
 	case $effect[Sweetbreads Flamb&eacute;]:	useItem = $item[Greek Fire];					break;
 	case $effect[Takin\' It Greasy]:			useSkill = $skill[Grease Up];					break;
+	case $effect[Tapased Out]:					useItem = $item[Spinal Tapas];					break;
 	case $effect[Taped Up]:						useSkill = $skill[Tape Up];						break;
 	case $effect[Taunt of Horus]:				useItem = $item[Talisman of Horus];				break;
 	case $effect[Temporarily Filtered]:			useItem = $item[Single-use dust mask];			break;
@@ -958,6 +984,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		{
 			useSkill = $skill[Tenacity of the Snapper];
 		}																						break;
+	case $effect[Tenderized]:					useSkill = $skill[Self-Tenderize];				break;
 	case $effect[The Grass... \ Is Blue...]:		useItem = $item[Blue Grass];					break;
 	case $effect[There is a Spoon]:				useItem = $item[Dented Spoon];					break;
 	case $effect[They\'ve Got Fleas]:			useItem = $item[Out-of-work circus flea];		break;
@@ -998,6 +1025,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Twen Tea]:						useItem = $item[cuppa Twen tea];				break;
 	case $effect[Twinkly Weapon]:				useItem = $item[Twinkly Nuggets];				break;
 	case $effect[Ultra-Soft Steps]:				useItem = $item[ultra-soft ferns];				break;
+	case $effect[Ultraheart]:					useSkill = $skill[heartstone: %buff];			break;
 	case $effect[Unmuffled]:
 		if(get_property("peteMotorbikeMuffler") == "Extra-Loud Muffler")
 		{
@@ -1005,6 +1033,12 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 		}																						break;
 	case $effect[Unrunnable Face]:				useItem = $item[Runproof Mascara];				break;
 	case $effect[Unusual Perspective]:			useItem = $item[Unusual Oil];					break;
+	case $effect[Up to 11]:
+		if(auto_haveBCZ())
+		{
+			mustEquip = auto_getItemToEquipBCZ();
+			useSkill = $skill[BCZ: Dial it up to 11];
+		}																						break;
 	case $effect[Ur-Kel\'s Aria of Annoyance]:	useSkill = $skill[Ur-Kel\'s Aria of Annoyance];	break;
 	case $effect[Using Protection]:				useItem = $item[Orcish Rubber];					break;
 	case $effect[Visions of the Deep Dark Deeps]:useSkill = $skill[Deep Dark Visions];			break;
@@ -1023,6 +1057,7 @@ boolean buffMaintain(effect buff, int mp_min, int casts, int turns, boolean spec
 	case $effect[Well-Swabbed Ear]:				useItem = $item[Swabbie&trade; Swab];			break;
 	case $effect[Wet and Greedy]:				useItem = $item[Goblin Water];					break;
 	case $effect[Whispering Strands]:			useSkill = $skill[none];						break;
+	case $effect[Who's Going to Pay This Drunken Sailor?]: useSkill = $skill[Who's Going to Pay This Drunken Sailor?]; break;
 	case $effect[Wildsun Boon]:
 		if(auto_canARBSupplyDrop())
 		{

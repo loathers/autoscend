@@ -268,12 +268,41 @@ boolean L8_getGoatCheese()
 		return false;
 	}
 
+	// If we only need one and goats aren't already sniffed, just pull it.
+	if (auto_inRonin() && item_amount($item[Goat Cheese]) == 2 && !isSniffed($monster[dairy goat]))
+	{
+		pullXWhenHaveY($item[Goat Cheese],1,item_amount($item[Goat Cheese]));
+	}
+	// or on day 2+ just pull anyway, we have loads of pulls
+	else if (auto_inRonin() && my_daycount() > 1)
+	{
+		pullXWhenHaveY($item[Goat Cheese],1,item_amount($item[Goat Cheese]));
+	}
+
+	// If we have enough now, just stop here.
+	if(item_amount($item[Goat Cheese]) >= 3)
+	{
+		return false;
+	}
+
+	// Condider softblocking until day 2 for Mayam
+	if (auto_haveMayamCalendar() && item_amount($item[Goat Cheese]) == 2)
+	{
+		if (auto_waitForDay2())
+		{
+			auto_log_debug("Delaying Goatlet waiting for day 2.");
+			return false;
+		}
+	}
+
+	// Actually adventure for cheese
 	auto_log_info("Yay for goat cheese!", "blue");
 	if(get_property("_sourceTerminalDuplicateUses").to_int() == 0)
 	{
 		auto_sourceTerminalEducate($skill[Extract], $skill[Duplicate]);
 	}
-	if(auto_haveGreyGoose() && item_amount($item[Goat Cheese]) >= 2){
+	if(auto_haveGreyGoose() && item_amount($item[Goat Cheese]) <= 1)
+	{
 		auto_log_info("Bringing the Grey Goose to emit some drones at a Dairy Goat for cheese, Gromit.");
 		handleFamiliar($familiar[Grey Goose]);
 	}
@@ -614,7 +643,12 @@ void theeXtremeSlopeChoiceHandler(int choice)
 boolean L8_trapperNinjaLair()
 {
 	// adventure in the lair of the ninja snowmen to find and fight ninja snowman assassins.
-	// usually this would only occur in hardcore
+	// ~~usually this would only occur in hardcore~~
+	// UPDATE: as of the May '26 IOTM we like ninja lair, so this should be typical with that IOTM.
+	if(L8_trapperTalk()) // try to unlock lair (sometimes necessary if called from L11 Shen)
+	{
+		return true;
+	}
 	if(internalQuestStatus("questL08Trapper") != 2)
 	{
 		return false;
@@ -661,8 +695,17 @@ boolean L8_trapperNinjaLair()
 		return false;
 	}
 
-	// can we provide enough combat bonus to encounter snowman assassins?
-	if(providePlusCombat(auto_combatModCap(), $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
+	// can we provide enough combat bonus to encounter snowman assassins, or force them?
+	boolean CForced = false;
+	if (auto_haveQueuedForcedCombat()) {
+		CForced = true;
+		auto_log_info("Not trying to force combat again at Lair of the Ninja Showmen because we already have a forced combat queued");
+	}
+	else {
+		CForced = auto_forceNextCombat($location[Lair of the Ninja Snowmen]);
+		auto_log_info("Trying to force combat at Lair of the Ninja Snowmen: "+CForced.to_string(), "blue");
+	}
+	if(!CForced && providePlusCombat(auto_combatModCap(), $location[Lair of the Ninja Snowmen], true, true) <= 0.0) // ninja snowman does not show up if +combat is not greater than 0
 	{
 		if(isAboutToPowerlevel())
 		{
@@ -683,7 +726,7 @@ boolean L8_trapperNinjaLair()
 		adjustEdHat("myst");
 	}
 
-	auto_getCitizenZone($location[Lair of the Ninja Snowmen]); //since we want to adventure in the Lair anyway
+	auto_getCitizenZone($location[Lair of the Ninja Snowmen], false); //since we want to adventure in the Lair anyway
 	
 	if(autoAdv($location[Lair of the Ninja Snowmen]))
 	{
@@ -800,6 +843,14 @@ boolean L8_trapperGroar()
 	return retval;
 }
 
+int ninjaItemsRemaining() {
+	int items_remaining = 3;
+	if(item_amount($item[Ninja Carabiner]) > 0) {items_remaining -= 1;}
+	if(item_amount($item[Ninja Crampons]) > 0) {items_remaining -= 1;}
+	if(item_amount($item[Ninja Rope]) > 0) {items_remaining -= 1;}
+	return items_remaining;
+}
+
 boolean L8_trapperPeak()
 {
 	// unlock the peak in the trapper quest
@@ -809,7 +860,7 @@ boolean L8_trapperPeak()
 	}
 	
 	// unlock peak using ninja climbing gear
-	if(item_amount($item[Ninja Rope]) > 0 && item_amount($item[Ninja Carabiner]) > 0 && item_amount($item[Ninja Crampons]) > 0)
+	if(ninjaItemsRemaining() < 1)
 	{
 		int [element] resGoal;
 		resGoal[$element[cold]] = 5;
@@ -865,8 +916,13 @@ boolean L8_forceExtremeInstead()
 {
 	// If for some reason we've already got 2 ninja items, no need to get forcey
 	if(available_amount($item[ninja crampons]) > 0) { return false; }
-	// Set the variable if we're doing McHugeLarge items
-	if (auto_canEquipAllMcHugeLarge()) { set_property("auto_L8_extremeInstead", true); }
+	// Set the variable if we're doing McHugeLarge items and aren't already forcing combats for lair
+	if (auto_canEquipAllMcHugeLarge() 
+	&& !auto_haveQueuedForcedCombat() 
+	&& !auto_canForceNextCombat() 
+	&& (!auto_haveCombatForceSource() || isAboutToPowerlevel())) { 
+		set_property("auto_L8_extremeInstead", true); 
+	}
 	return get_property("auto_L8_extremeInstead").to_boolean();
 }
 
@@ -890,6 +946,14 @@ boolean L8_trapperSlope()
 	if(robot_delay("outfit"))
 	{
 		return false; // delay for You, Robot path
+	}
+	// similar if statements exist in the L11 quest file (shen)
+	// We want to go ninja lair if we can force the NSAs
+	if(auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
+		if(L8_trapperNinjaLair()) return true;
+	}
+	if (auto_haveCombatForceSource() && !isAboutToPowerlevel() && !get_property("auto_L8_extremeInstead").to_boolean()) {
+		return false; // we want to wait until we can force combats if we have a force source, unless we've decided to go extreme or have totally run out of tasks
 	}
 	// Checks for McHugeLarge skis
 	if (L8_forceExtremeInstead())

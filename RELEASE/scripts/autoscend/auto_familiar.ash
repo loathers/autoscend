@@ -109,7 +109,7 @@ boolean auto_famKill(familiar fam, location place)
 	{
 		if(freq<=0) continue;
 		//Mafia doesn't output the expected damage of the familiar so going with the highest possible for most users (NPZR)
-		if(mon != $monster[none] && monster_hp(mon) < (floor(1.5 * (familiar_weight(fam) +weight_adjustment() + 3)) + passiveDamage))
+		if(mon != $monster[none] && monster_hp(mon) < (floor(1.5 * (auto_famWeight(fam) + 3)) + passiveDamage))
 		{
 			return true;
 		}
@@ -699,7 +699,7 @@ boolean autoChooseFamiliar(location place)
 	}
 	
 	// places where meat drop is desirable due to high meat drop monsters.
-	if ($locations[The Boss Bat's Lair, The Icy Peak, The Filthworm Queen's Chamber] contains place) {
+	if ($locations[The Boss Bat's Lair, The Icy Peak, The Filthworm Queen's Chamber, Cobb's Knob Treasury] contains place) {
 		famChoice = lookupFamiliarDatafile("meat");
 	}
 	if (place == $location[Mist-Shrouded Peak] && place.turns_spent < 3) {
@@ -716,15 +716,34 @@ boolean autoChooseFamiliar(location place)
 	{
 		famChoice = lookupFamiliarDatafile("regen");
 	}
+
+	//in meatpath, prioritize meat if meat is a constraint
+	if (in_amw() && famChoice == $familiar[none] && amw_wantMeat()) 
+	{
+		famChoice = lookupFamiliarDatafile("meat");
+	}
 	
 	//select the best familiar that drops items directly. Will prioritize useful items and awesome+ food and drink and then other drops.
 	if(famChoice == $familiar[none])
 	{
 		famChoice = lookupFamiliarDatafile("drop");
 	}
+
+	//If a fam was selected that is contrary to the Combat Rate we want, deselect it. Probably won't select it in stat or regen but user should get better free-ish fams if it does
+	float famComRate = auto_famModifiers(famChoice, "Combat Rate");
+	boolean plusCombatInMaximize = create_matcher("(?<!-)200 ?combat", get_property("auto_maximize_current")).find();
+	boolean minusCombatInMaximize = create_matcher("-200 ?combat", get_property("auto_maximize_current")).find();
+	if(minusCombatInMaximize && famComRate > 0)
+	{
+		famChoice = $familiar[none];
+	}
+	else if(plusCombatInMaximize && famComRate < 0)
+	{
+		famChoice = $familiar[none];
+	}
 	
-	// Stats from combats makes runs go faster apparently.
-	if (famChoice == $familiar[none] && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
+	// Stats from combats makes runs go faster apparently, except in meatpath
+	if (famChoice == $familiar[none] && !in_amw() && (my_level() < 13 || get_property("auto_disregardInstantKarma").to_boolean())) {
 		famChoice = lookupFamiliarDatafile("stat");
 	}
 	
@@ -933,4 +952,64 @@ boolean auto_needsGoodFamiliarEquipment() {
 		return false;
 	}
 	return true;
+}
+
+int auto_famWeight(familiar fam, boolean include_equip)
+{
+	int famEquipWeight = 0;
+	if(fam == $familiar[none])
+	{
+		return 0;
+	}
+	if(!include_equip)
+	{
+		famEquipWeight = numeric_modifier(familiar_equipped_equipment(fam), "Familiar Weight");
+	}
+	return familiar_weight(fam) + weight_adjustment() - famEquipWeight;
+}
+
+int auto_famWeight(familiar fam)
+{
+	return auto_famWeight(fam, true);
+}
+
+int auto_famWeight()
+{
+	return auto_famWeight(my_familiar(), true);
+}
+
+float auto_famModifiers(familiar fam, string mod, item famEquip)
+{
+	if(fam == $familiar[none])
+	{
+		return 0.0;
+	}
+	return numeric_modifier(fam, mod, auto_famWeight(fam, false), famEquip);
+}
+
+float auto_famModifiers(familiar fam, string mod)
+{
+	return numeric_modifier(fam, mod, auto_famWeight(fam, false), familiar_equipped_equipment(fam));
+}
+
+float auto_famModifiers(string mod)
+{
+	familiar fam = my_familiar();
+	return numeric_modifier(fam, mod, auto_famWeight(fam, false), familiar_equipped_equipment(fam));
+}
+
+// Fam XP specific stuff
+// used by mayam calendar and legendary noodles (in consume.ash) to decide if we would like to choose a famxp option. Adventureless fam xp is definitely underutilized (piccolo is also only zooto-supported currently).
+// difference: auto_wantFamXP should be used to see if we should incentivize adventureless famxp (weight options giving famxp more), switchToFamXP should be used once we've decided to take the famxp option. 
+// requires max_fam_experience because famxp sources often fizzle if the familiar has too much experience (e.g. mayam fizzles if current familiar has 300+ xp)
+boolean auto_wantFamXP(int max_fam_experience) {
+	if (!pathAllowsChangingFamiliar()) {return false;}
+	if(auto_haveChestMimic() && $familiar[chest mimic].experience <= max_fam_experience) {return true;}
+	return false;
+}
+// switch to a familiar we want famxp on. Should never be called if we're about to adventure because doesn't check if we can change to familiar.
+void switchToFamXP(int max_fam_experience) {
+	if (!pathAllowsChangingFamiliar()) {return;}
+	auto_log_debug("Possibly switching to a familiar we want famxp on");
+	if(auto_haveChestMimic() && $familiar[chest mimic].experience <= max_fam_experience){ use_familiar($familiar[chest mimic]); }
 }

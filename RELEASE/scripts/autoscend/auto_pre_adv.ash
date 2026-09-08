@@ -51,7 +51,7 @@ void print_footer()
 	next_line = "";
 	if(pathHasFamiliar())
 	{
-		next_line += "Familiar: " +my_familiar()+ " @ " + familiar_weight(my_familiar()) + " + " + weight_adjustment() + "lbs. ";
+		next_line += "Familiar: " +my_familiar()+ " @ " + auto_famWeight() + "lbs. ";
 	}
 	if(my_class() == $class[Pastamancer])
 	{
@@ -114,7 +114,8 @@ void auto_ghost_prep(location place)
 		Fireball Toss,				//path of the plumber
 		Chill of the Tomb,			//dark gyffte
 		Lavafava, Pungent Mung, Beanstorm,			  //avatar of west of loathing
-		Hot Foot, Emmental Elemental, Sax of Violence //avatar of shadow over loathing
+		Hot Foot, Emmental Elemental, Sax of Violence,//avatar of shadow over loathing
+		Bacon Ray, Spicy Meatball	//adventurer meats world
 		]
 	{
 		if(auto_have_skill(sk))
@@ -242,12 +243,9 @@ boolean auto_pre_adventure()
 		uneffect($effect[Scarysauce]);
 		if(!uneffect($effect[Scariersauce])) abort("Could not uneffect [Scariersauce]");
 	}
-	
-	if(my_class() == $class[Pastamancer] && my_thrall() == $thrall[Vampieroghi] && place == $location[The Hidden Apartment Building]
-		&& auto_have_skill($skill[Dismiss Pasta Thrall]))
-	{
-		// vampieroghi can dispell the shaman curse, preventing us from making quest progress
-		use_skill($skill[Dismiss Pasta Thrall]);
+
+	if(my_class() == $class[Pastamancer]){
+		pm_updateThrall(place, false);//maybe dismiss Vampieroghi, maybe bind Spice Ghost or Vermincelli
 	}
 
 	//save some MP while buffing
@@ -370,14 +368,28 @@ boolean auto_pre_adventure()
 		}
 	}
 
+	if(place == $location[Cobb's Knob Treasury])
+	{
+		provideMeat(1800, $location[Cobb's Knob Treasury], true);
+		addToMaximize("200meat drop");
+	}
+	// need more meat than usual for skills + level in meatpath
+	// as of 2026-03-30 this values meat drop double item drop in the default maximizer statement
+	if (in_amw() && my_level()<13) {
+		addToMaximize("10meat");
+	}
+
 	// this calls the appropriate provider for +combat or -combat depending on the zone we are about to adventure in..
 	boolean burningDelay = auto_burningDelay();
 	boolean gettingLucky = auto_gettingLucky();
 	boolean forcedNonCombat = auto_haveQueuedForcedNonCombat();
 	generic_t combatModifier = zone_combatMod(place);
-	if (combatModifier._boolean && !auto_queueIgnore()) {
+	if (combatModifier._boolean && !auto_queueIgnore() && !auto_haveQueuedForcedCombat()) {//forced nc is included in queue ignore
 		acquireCombatMods(combatModifier._int, true);
 	}
+	
+	//evaluate a boolean prop for the familiar files
+	auto_wantSoCP();
 
 	// Update our familiar after combat modifiers (which can set the familiar), but before Crystal Ball (familiar equip)
 	preAdvUpdateFamiliar(place);
@@ -573,9 +585,14 @@ boolean auto_pre_adventure()
 		addBonusToMaximize(exting, 200); // extinguisher prevents per-round hot damage in wildfire path 
 	}
 
-	if(!haveUsedPeridot(place) && auto_havePeridot() && zoneHasWantedMonsters)
+	if(auto_wantToShrunkenHead(place))
 	{
-		//add a large bonus to Peridot of Peril if the zone has wanted monsters and we haven't visited there yet
+		addBonusToMaximize($item[shrunken head], 300);
+	}
+
+	if(!haveUsedPeridot(place) && auto_havePeridot() && (zoneHasWantedMonsters || auto_peridotSetZone(place)))
+	{
+		//add a large bonus to Peridot of Peril if the zone has wanted monsters (or we want to set the zone without using an adventure) and we haven't visited there yet
 		addBonusToMaximize($item[Peridot of Peril], 1000);
 	}
 
@@ -657,22 +674,7 @@ boolean auto_pre_adventure()
 		}
 	}
 
-	// Use some instakills. Can't use Chest X-Ray in Pocket Familiars.
-	item DOCTOR_BAG = $item[Lil\' Doctor&trade; Bag];
-	if(auto_is_valid(DOCTOR_BAG) && possessEquipment(DOCTOR_BAG) && auto_is_valid($skill[Chest X-Ray]) && (get_property("_chestXRayUsed").to_int() < 3) && my_adventures() <= 19 && !in_pokefam())
-	{
-		auto_log_info("We still haven't used Chest X-Ray, so let's equip the doctor bag.");
-		autoEquip($slot[acc3], DOCTOR_BAG);
-	}
-
-	item dartHolster = $item[Everfull Dart Holster];
-	if (auto_haveDarts() && have_effect($effect[Everything Looks Red]) == 0 && !in_avantGuard())
-	{
-		auto_log_info("We don't have ELR so let's hit a bullseye");
-		autoEquip($slot[acc3], dartHolster);
-	}
-
-
+	auto_equipFreekill();
 	equipOverrides();
 	kolhs_preadv(place);
 	ag_bgChat();

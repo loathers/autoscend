@@ -113,6 +113,12 @@ void oldPeoplePlantStuff()
 		return;
 	}
 
+	// Order of the Green Thumb Order Form isn't marked unavailable, check another 2013 item
+	if (!is_unrestricted($item[Snow Suit]))
+	{
+		return;
+	}
+
 	if(didWePlantHere(my_location()))
 	{
 		return;

@@ -145,6 +145,33 @@ boolean auto_post_adventure()
 		}
 	}
 
+	//assuming we're on the orchard sidequest if we're adventuring there
+	if(auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() > 0) 
+	{
+		//the scent glands are the only droppable items in their respective areas, so it's guaranteed from spade
+		if(my_location() == $location[The Hatching Chamber] && item_amount($item[Filthworm Hatchling Scent Gland]) == 0) 
+		{
+			auto_spadeDigItem();
+		}
+		else if(my_location() == $location[The Feeding Chamber] && item_amount($item[Filthworm Drone Scent Gland]) == 0)
+		{
+			auto_spadeDigItem();
+		}
+		else if(my_location() == $location[The Royal Guard Chamber] && item_amount($item[Filthworm Royal Guard Scent Gland]) == 0)
+		{
+			auto_spadeDigItem();
+		}
+		else if(my_location() == $location[Sonofa Beach] && item_amount($item[barrel of gunpowder]) < 5) 
+		{
+			//dig until we should have 5 barrels or we're out of digs
+			int barrelCount = item_amount($item[barrel of gunpowder]);
+			int digsRemaining = auto_spadeDigsRemaining();
+			for x from (barrelCount + 1) to min(5, digsRemaining) by 1 {
+				auto_spadeDigItem();
+			}
+		}
+	}
+
 	if (my_location() == $location[The Old Landfill] && item_amount($item[funky junk key]) > 0) {
 		// got a key drop, reset the tracking property.
 		set_property("auto_junkspritesencountered", 0);
@@ -344,6 +371,26 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Reliable Backup], 10, 1, 10);
 			buffMaintain($effect[Soothing Flute], 15, 1, 10);
 			//buffMaintain($effect[Tricky Timpani], 30, 1, 10); //Only on boss fights
+		}
+	}
+	if (in_amw()) // adventurer meats world
+	{
+		if(item_amount($item[briefcase]) > 0)
+		{
+			use(1, $item[briefcase]);// no need to run more than once because 1/combat
+		}
+		if (amw_canAfford($skill[Self-Tenderize])) // not necessary, but cheap
+		{
+			buffMaintain($effect[Tenderized], 0, 1, 5);
+		}
+		// Beef Goggles is in providers
+		if (amw_canAfford($skill[Meat Puppet])) // +famwt for our chaun
+		{
+			buffMaintain($effect[Meat Puppet], 0, 1, 5);
+		}
+		if (amw_canAfford($skill[Steak Skirt])) // not necessary, but cheap
+		{
+			buffMaintain($effect[Steak Skirt], 0, 1, 5);
 		}
 	}
 
@@ -762,6 +809,10 @@ boolean auto_post_adventure()
 			buffMaintain($effect[Empathy], 50, 1, 10);
 			buffMaintain($effect[Thoughtful Empathy], 50, 1, 10);
 			buffMaintain($effect[Leash of Linguini], 35, 1, 10);
+			// only do this one if we don't have another shanty up
+			if (auto_remainingShantyTurns() < 1) {
+				buffMaintain($effect[Only Dogs Love a Drunken Sailor], 50, 1, 1);
+			}
 		}
 
 		foreach sk in toCast
@@ -955,50 +1006,6 @@ boolean auto_post_adventure()
 			}
 		}
 		
-	}
-
-
-
-	if(my_class() == $class[Pastamancer])
-	{
-		thrall cur = my_thrall();
-		thrall consider = $thrall[none];
-
-/*							Cost		L1				L5				L10
-		Vampieroghi			12			1-2 (Dmg, Heal)	Dispel Neg		+60 Max HP
-		Vermincelli			30			2 MP Regen		Dmg, Poison		+30 Max MP
-		Angel Hair Wisp		60			5% init			Block Crits		Block
-(Undead)Elbow Maraconi		100			Equalize Mus	+2 Weapon Dmg	+10% crit
-		Penne Dreadful		150			Equalize Mox	Jump Delevel	DR + 10
-		Spaghetti Elemental	150			+Stats Ceil(/3)	Block First Att	+5 spell dmg
-		Lasagmbie			200			20+2 Meat		Spooky Dmg		+10 spooky spell dmg
-		Spice Ghost			250			10+1 Item		Spices			Stun Increase
-*/
-
-		if((my_mp() >= (1.2 * mp_cost($skill[Bind Vermincelli]))) && (cur == $thrall[none]) && auto_have_skill($skill[Bind Vermincelli]))
-		{
-			consider = $thrall[Vermincelli];
-		}
-		if((my_mp() >= (1.2 * mp_cost($skill[Bind Spice Ghost]))) && auto_have_skill($skill[Bind Spice Ghost]) && (my_daycount() > 1) && (numeric_modifier("MP Regen Min").to_int() > 9))
-		{
-			consider = $thrall[Spice Ghost];
-		}
-
-		if((consider != cur) && (consider != $thrall[none]))
-		{
-			skill toEquip = to_skill("Bind " + consider);
-			if(toEquip != $skill[none])
-			{
-				if(my_mp() >= mp_cost(toEquip))
-				{
-					use_skill(1, toEquip);
-				}
-			}
-			else
-			{
-				auto_log_warning("Thrall handler error. Could not generate appropriate skill.", "red");
-			}
-		}
 	}
 
 	if(!inAftercore())

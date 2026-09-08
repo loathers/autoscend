@@ -1109,12 +1109,17 @@ boolean LX_dronesOut()
 
 int freeCandyFightsLeft()
 {
+	// Map isn't valid
+	if(!auto_is_valid($item[Map to a candy-rich block]))
+	{
+		return 0;
+	}
 	// Map is done
 	if(get_property("_mapToACandyRichBlockUsed").to_boolean() && get_property("_auto_candyMapCompleted").to_boolean())
 	{
 		return 0;
 	}
-	if(!get_property("_mapToACandyRichBlockUsed").to_boolean() && item_amount($item[Map to a candy-rich block]) > 0 || !auto_is_valid($item[Map to a candy-rich block]))
+	if(!get_property("_mapToACandyRichBlockUsed").to_boolean() && item_amount($item[Map to a candy-rich block]) > 0)
 	{
 		return 5;
 	}

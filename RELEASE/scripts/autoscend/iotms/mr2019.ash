@@ -321,6 +321,29 @@ boolean auto_sausageGoblin(location loc, string option)
 	return false;
 }
 
+boolean auto_haveLilDoctorBag()
+{
+	if(auto_is_valid($item[Lil\' Doctor&trade; Bag]) && available_amount($item[Lil\' Doctor&trade; Bag]) > 0 )
+	{
+		return true;
+	}
+	return false;
+}
+
+int auto_chestXraysRemaining()
+{
+	if(!auto_haveLilDoctorBag() || !auto_is_valid($skill[Chest X-Ray])) return 0;
+
+	return 3 - to_int(get_property("_chestXRayUsed"));
+}
+
+int auto_reflexHammersRemaining()
+{
+	if(!auto_haveLilDoctorBag() || !auto_is_valid($skill[Reflex Hammer])) return 0;
+
+	return 3 - to_int(get_property("_reflexHammerUsed"));
+}
+
 boolean pirateRealmAvailable()
 {
 	if(!is_unrestricted($item[PirateRealm membership packet]))

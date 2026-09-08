@@ -12,7 +12,7 @@ for DIR in ./*/; do
 	SAVEIFS=$IFS
 	IFS=$(echo -en "\n\b")
   for FILENAME in $(ls ${DIR}*.dat | sort -i); do
-		SLOT=${FILENAME::-4}
+		SLOT=${FILENAME%.dat}
 		SLOT=${SLOT##*/}
 		NUM=0
 		cat $FILENAME | while read LINE; do

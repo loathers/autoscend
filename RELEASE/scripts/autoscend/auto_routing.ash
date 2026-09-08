@@ -89,7 +89,15 @@ boolean canBurnDelay(location loc)
 	{
 		return true;
 	}
-	else if (my_daycount() < 2 && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera() || auto_haveCursedMagnifyingGlass()))
+	// on all branches below, we don't return true because we can burn delay
+	// Instead, we return true because we should save zones where we can burn delay until the next day when our resources have refreshed
+	else if (auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() == 0 && my_daycount() < get_property("auto_runDayCount").to_int() && spadeDelayZones() contains loc) {
+		// the archaeologist's spade doesn't cleanly burn delay (because users without the PoP etc. might need to use an adv first--and even players using the PoP need to spend a free turn there) and is loc-specific
+		// Its delayburn isn't implemented in LX_burnDelay() like the other sources here for that reason, instead implemented directly into the quest functions such that we don't want to consider if we can use arch spade to burn delay
+		// so, as far as arch spade is concerned, we only want to save the zone and skip it if it's an early day and we're out of digs
+		return true;
+	}
+	else if (my_daycount() < get_property("auto_runDayCount").to_int() && (auto_haveVotingBooth() || auto_haveKramcoSausageOMatic() || auto_haveBackupCamera() || auto_haveCursedMagnifyingGlass()))
 	{
 		return true;
 	}
@@ -208,6 +216,17 @@ boolean auto_earlyRoutingHandling()
 		// Just make sure the other two quests are started too
 		visit_url("bigisland.php?place=lighthouse&action=pyro&pwd");
 		visit_url("bigisland.php?action=junkman&pwd");
+		return true;
+	}
+	
+	// Check we have flyers if war hippy and war is progressed, first because takes no turns.
+	if(!in_koe() && internalQuestStatus("questL12War") == 1 && get_property("auto_hippyInstead").to_boolean() &&
+	  (get_property("fratboysDefeated").to_int() >= 458) &&
+	  get_property("sidequestArenaCompleted")!="hippy" && available_amount($item[jam band flyers])==0)
+	{
+		outfit("war hippy fatigues"); // don't use the equipOutfit func here since this is just temporary, we don't want to adventure like this.
+		visit_url("bigisland.php?place=concert&pwd");
+		return true;
 	}
 
 	// force forcing non-combats.
@@ -216,6 +235,16 @@ boolean auto_earlyRoutingHandling()
 		if (L6_friarsGetParts() || L10_basement() || L10_topFloor() || L10_holeInTheSkyUnlock())
 		{
 			// quests where we want to force non-combats
+			return true;
+		}
+	}
+
+	// force forcing combats.
+	if (auto_canForceNextCombat() || auto_haveQueuedForcedCombat()) {
+		auto_log_debug("Possibly forcing a combat somewhere. Strap yourselves in, kids.");
+		if (L8_trapperSlope()) // could add LFM in the future
+		{
+			// quests where we want to force combats
 			return true;
 		}
 	}

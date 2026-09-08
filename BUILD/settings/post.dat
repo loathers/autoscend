@@ -6,3 +6,4 @@ auto_hippyInstead	boolean	Fight on the side of the hippies instead of the Frat W
 auto_ignoreFlyer	boolean	Do not do the flyer quest in this ascension? recommended to set true if fighting for the hippies.
 auto_wandOfNagamar	boolean	Do we need to get a Wand of Nagamar in this ascension?
 auto_dontPhylumBanish	boolean	If false will banish enemy phyla. Banishing should save some turns, but can interfere with the routing, and may mess up later banishes / tracks.
+auto_runDayCount	integer	How many days do you think your run will take? Defaults to 2.

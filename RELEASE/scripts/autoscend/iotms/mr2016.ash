@@ -2,6 +2,23 @@
 #	Handling: Witchess Set, Snojo, Source Terminal, Protonic Accelerator Pack
 #			Time-Spinner
 
+boolean auto_haveJokestersGun()
+{
+	if(possessEquipment($item[The Jokester\'s Gun]) && auto_can_equip($item[The Jokester\'s Gun]))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_jokesterGunFreeKillAvailable()
+{
+	if(!auto_haveJokestersGun() || !auto_is_valid($skill[Fire the Jokester\'s Gun])) return false;
+	
+	 return !get_property("_firedJokestersGun").to_boolean();
+}
+
+
 boolean snojoFightAvailable()
 {
 	if(!is_unrestricted($item[X-32-F Snowman Crate]))

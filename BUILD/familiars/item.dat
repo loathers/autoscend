@@ -20,12 +20,16 @@ Steam-Powered Cheerleader	prop:_cheerleaderSteam>0
 Grey Goose	prop_boolean:auto_prioritizeGoose
 # fairy that generates extra adventures
 Reagnimated Gnome	!path:Heavy Rains
+# Fairy with useful/valuable items that can be bought with its drops
+Skeleton of Crimbo Past	prop_boolean:auto_preferSoCP
 # Fairywhelp that drops x and o without limit. 1 each per 9 combats. 3 o for food. 3 x for drink, 23 x to skip half bridge.
 XO Skeleton
 # Fairy that drops bacon with no limit. 1 per combat
 Intergnat
 # Fairyeverything
 Jill-of-All-Trades
+# Fairychauns > fairyballs/whelps in meatpath
+Chest Mimic	path:Adventurer Meats World
 # Fairyballs
 Elf Operative
 Optimistic Candle
@@ -62,7 +66,7 @@ Pair of Stomping Boots	!path:G-Lover
 Slimeling
 # More slightly special fairies
 Cooler Yeti
-Gelatinous Cubeling
+Gelatinous Cubeling	prop:cubelingProgress<12
 Steam-Powered Cheerleader
 Obtuse Angel
 Green Pixie
@@ -77,6 +81,8 @@ Bowlet
 Crimbo Elf
 # Barely special fairies
 Mechanical Songbird
+Skeleton of Crimbo Past
+Gelatinous Cubeling
 Grouper Groupie
 Peppermint Rhino
 # Turtles are cute

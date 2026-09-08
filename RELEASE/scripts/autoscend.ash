@@ -1,4 +1,5 @@
-since r28604;	// wildsun boon is once/day, allied radio accepts uppercase
+since r29197; // Order a Kneecapping tracking
+
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -50,9 +51,11 @@ import <autoscend/iotms/mr2022.ash>
 import <autoscend/iotms/mr2023.ash>
 import <autoscend/iotms/mr2024.ash>
 import <autoscend/iotms/mr2025.ash>
+import <autoscend/iotms/mr2026.ash>
 import <autoscend/iotms/ttt.ash>
 
 import <autoscend/paths/actually_ed_the_undying.ash>
+import <autoscend/paths/adventurer_meats_world.ash>
 import <autoscend/paths/auto_path_util.ash>
 import <autoscend/paths/avant_guard.ash>
 import <autoscend/paths/avatar_of_boris.ash>
@@ -61,8 +64,11 @@ import <autoscend/paths/avatar_of_sneaky_pete.ash>
 import <autoscend/paths/avatar_of_shadows_over_loathing.ash>
 import <autoscend/paths/avatar_of_west_of_loathing.ash>
 import <autoscend/paths/bees_hate_you.ash>
+import <autoscend/paths/blue_vs_red.ash>
 import <autoscend/paths/bugbear_invasion.ash>
 import <autoscend/paths/casual.ash>
+import <autoscend/paths/class_act.ash>
+import <autoscend/paths/class_act_two.ash>
 import <autoscend/paths/community_service.ash>
 import <autoscend/paths/dark_gyffte.ash>
 import <autoscend/paths/disguises_delimit.ash>
@@ -74,6 +80,7 @@ import <autoscend/paths/grey_you.ash>
 import <autoscend/paths/hattrick.ash>
 import <autoscend/paths/heavy_rains.ash>
 import <autoscend/paths/i_love_u_hate.ash>
+import <autoscend/paths/journeyman.ash>
 import <autoscend/paths/kingdom_of_exploathing.ash>
 import <autoscend/paths/kolhs.ash>
 import <autoscend/paths/legacy_of_loathing.ash>
@@ -196,6 +203,7 @@ void initializeSettings() {
 	set_property("auto_disableAdventureHandling", false);
 	set_property("auto_doCombatCopy", "no");
 	set_property("auto_dontPhylumBanish", false);
+	set_property("auto_runDayCount", 2);
 	set_property("auto_drunken", "");
 	set_property("auto_eaten", "");
 	set_property("auto_familiarChoice", "");
@@ -226,6 +234,7 @@ void initializeSettings() {
 	set_property("auto_instakill", "");
 	set_property("auto_instakillSource", "");
 	set_property("auto_instakillSuccess", false);
+	set_property("auto_interruptedZones", "");
 	set_property("auto_iotm_claim", "");
 	set_property("auto_leaflet_done", false);
 	set_property("auto_lucky", "");
@@ -302,6 +311,8 @@ void initializeSettings() {
 	small_initializeSettings();
 	wereprof_initializeSettings();
 	ag_initializeSettings();
+	amw_initializeSettings();
+	bluevsred_initializeSettings();
 
 	set_property("auto_doneInitializePath", my_path().name);		//which path we initialized as
 	set_property("auto_doneInitialize", my_ascensions());
@@ -696,6 +707,12 @@ void initializeDay(int day)
 
 	invalidateRestoreOptionCache();
 
+	if(get_property("auto_pvpEnable").to_boolean() && !hippy_stone_broken())
+	{
+		visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
+		visit_url("peevpee.php?place=fight");
+	}
+
 	if (get_property("auto_day_init").to_int() < day)
 	{
 		set_property("auto_powerLevelLastLevel", "0");
@@ -960,12 +977,6 @@ void initializeDay(int day)
 			handleBjornify($familiar[El Vibrato Megadrone]);
 
 			string temp = visit_url("guild.php?place=challenge");
-
-			if(get_property("auto_pvpEnable").to_boolean() && !hippy_stone_broken())
-			{
-				visit_url("peevpee.php?action=smashstone&pwd&confirm=on", true);
-				visit_url("peevpee.php?place=fight");
-			}
 
 			auto_beachCombHead("exp");
 		}
@@ -1244,6 +1255,8 @@ boolean dailyEvents()
 	auto_MayamClaimAll();
 	auto_buyFromSeptEmberStore();
 	auto_getGlobs();
+	auto_setLeprecondo();
+	auto_getBCZItems();
 	
 	return true;
 }
@@ -1571,24 +1584,46 @@ boolean autosellCrap()
 	{
 		return false;		//do not autosell stuff in casual or postronin unless you are very poor
 	}
-	if(in_wotsf()) 
+	if(in_wotsf())
 	{
 		return false;		//selling things in the way of the surprising fist only donates the money to charity, so we should not autosell anything automatically
 	}
 
-	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
+	foreach it in $items[Ancient Vinyl Coin Purse, Black Pension Check, CSA Discount Card, Fat Wallet, Gathered Meat-Clip, Loose Meats, Old Leather Wallet, Penultimate Fantasy Chest, Pixellated Moneybag, Old Coin Purse, Shiny Stones, Warm Subject Gift Certificate]
 	{
 		if(item_amount(it) > 0 && auto_is_valid(it))
 		{
 			use(min(10,item_amount(it)), it);
 		}
 	}
-	foreach it in $items[Bag Of Park Garbage]		//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
+	//keeping 1 garbage in stock to avoid possible harmful loop with dinseylandfill_garbageMoney()
+	//keeping 1 briefcase in stock for the Infiltrationist choice 2
+	foreach it in $items[Bag Of Park Garbage, briefcase]
 	{
-		if(item_amount(it) > 1 && is_unrestricted(it))		//for these items we want to keep 1 in stock. use the rest
+		if(item_amount(it) > 1 && auto_is_valid(it))		//for these items we want to keep 1 in stock. use the rest
 		{
 			use(min(10,item_amount(it)-1), it);
 		}
+	}
+	if (!get_property("_governmentPerDiemUsed").to_boolean() && item_amount($item[government per-diem]) > 0) {
+		use(1, $item[government per-diem]);
+	}
+	if (get_property("handfulOfTipsMeat").to_int() < 9600 && item_amount($item[handful of tips]) > 0) {
+		use(1, $item[handful of tips]);
+	}
+	if (item_amount($item[stock certificate]) > 0) {
+		string turns = get_property("stockCertificateTurns");
+		if (turns != "") {
+			int earliestTurns = split_string(turns, ",")[0].to_int();
+			if (total_turns_played() - earliestTurns >= 500) {
+				use(1, $item[Stock Certificate]);
+			}
+		}
+	}
+
+	if(in_amw())
+	{
+		return false; // don't bother trying to autosell in Adventurer Meats World
 	}
 	
 	// Function to sell all of our items, optionally keeping some.
@@ -1932,6 +1967,7 @@ boolean doTasks()
 	boris_buySkills();
 	pete_buySkills();
 	zombieSlayer_buySkills();
+	pokefam_getHats();
 	auto_refreshQTFam();
 	lol_buyReplicas();
 	iluh_buyEquiq();
@@ -1962,12 +1998,12 @@ boolean doTasks()
 	auto_useWardrobe();
 	auto_MayamClaimAll();
 	auto_defaultBurnLeaves();
+	auto_waveTheZone();
 	
 	ocrs_postCombatResolve();
 	beatenUpResolution();
 	lar_safeguard();
 	
-	auto_setLeprecondo();
 	auto_useLeprecondoDrops();
 
 	if (LX_zootoFight()) { return true; }
@@ -1988,6 +2024,7 @@ boolean doTasks()
 	if(LM_robot())						return true;
 	if(LM_plumber())					return true;
 	if(LM_zombieSlayer())				return true;
+	if(LM_adventurerMeatsWorld())		return true;
 
 	{
 		cheeseWarMachine(0, 0, 0, 0);
@@ -2058,6 +2095,8 @@ boolean doTasks()
 
 void auto_begin()
 {
+	auto_settings();
+
 	if(get_auto_attack() != 0)
 	{
 		boolean shouldUnset = user_confirm("You have an auto attack enabled. This can cause issues. Would you like us to disable it? Will default to 'No' in 30 seconds.", 30000, false);
@@ -2083,6 +2122,21 @@ void auto_begin()
 		abort(failure);
 	}
 
+	if (!auto_meetsMinimumRequirements())
+	{
+		auto_log_warning("Minimum skill requirements to run autoscend are not met.", "red");
+		if(get_property("_auto_im_cool_with_dying_a_lot").to_int() == -1)
+		{
+			auto_log_warning("Don't come crying to us when you get beat up.", "red");
+		}
+		else
+		{
+			auto_log_warning("Aborting to avoid dying a lot and making very little progress. To override:", "red");
+			auto_log_warning("set _auto_im_cool_with_dying_a_lot = -1", "red");
+			abort();
+		}
+	}
+
 	LX_handleIntroAdventures(); // handle early non-combats in challenge paths.
 	cli_execute("refresh all");
 
@@ -2098,8 +2152,9 @@ void auto_begin()
 	auto_log_info("This is day " + my_daycount() + ".");
 	auto_log_info("Turns played: " + my_turncount() + " current adventures: " + my_adventures());
 	auto_log_info("Current Ascension: " + my_path().name);
-
-	auto_settings();
+	auto_log_info("You have: " + banishSources() + " banish sources, " + freeRunSources() + " free-run sources, " +
+	freeKillSources() + " free kill sources, " + instaKillSources() + " insta-kill sources, " + yellowRaySources() +
+	" yellow ray sources, " + copySources() + " copy sources, and " + sniffSources() + " sniff sources.");
 
 	backupSetting("promptAboutCrafting", 0);
 	backupSetting("requireBoxServants", false);

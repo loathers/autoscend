@@ -100,30 +100,13 @@ int auto_warEnemiesRemaining()
 	// Returns the number of enemies left to defeat in the fratboy-hippy war.
 	
 	int enemiesRemaining = 1000;
-	if(in_pokefam())
+	if(auto_warSide() == "hippy")
 	{
-		//Pokefam only has 500 total to defeat with all 6 sidequests immediately accessible.
-		//TODO: find out if pokefam starts with 500 enemies defeated out of 1000 total. or 0 defeated out of 500 total
-		//current code assumes it starts with 0 defeated out of 500 total. this is a guess.
-		if(auto_warSide() == "hippy")
-		{
-			enemiesRemaining = 500 - get_property("fratboysDefeated").to_int();
-		}
-		else
-		{
-			enemiesRemaining = 500 - get_property("hippiesDefeated").to_int();
-		}
+		enemiesRemaining = 1000 - get_property("fratboysDefeated").to_int();
 	}
 	else
 	{
-		if(auto_warSide() == "hippy")
-		{
-			enemiesRemaining = 1000 - get_property("fratboysDefeated").to_int();
-		}
-		else
-		{
-			enemiesRemaining = 1000 - get_property("hippiesDefeated").to_int();
-		}
+		enemiesRemaining = 1000 - get_property("hippiesDefeated").to_int();
 	}
 	return enemiesRemaining;
 }
@@ -309,13 +292,13 @@ WarPlan auto_bestWarPlan()
 	{
 		considerArena = false;
 	}
-	if(auto_warSide() == "hippy")		//arena not implemented for hippies yet. TODO implement it then remove this
-	{
-		considerArena = false;
-	}
 	if(get_property("auto_skipNuns").to_boolean())
 	{
 		considerNuns = false;
+	}
+	if(get_property("auto_skipL12Farm").to_boolean())
+	{
+		considerFarm = false;
 	}
 	if(get_property("auto_ignoreFlyer").to_boolean())
 	{
@@ -636,16 +619,14 @@ boolean L12_getOutfit()
 	if(auto_warSide() == "fratboy" && possessOutfit("Filthy Hippy Disguise"))
 	{
 		autoOutfit("Filthy Hippy Disguise");
-		//this should go to [Wartime Frat House (Hippy Disguise)] (despite war not started)
-		return autoAdv($location[The Orcish Frat House]);
+		return autoAdv($location[Wartime Frat House (Hippy Disguise)]);
 	}
 	
 	// if outfit could not be pulled and have a [Frat Boy Ensemble] outfit then wear it and adventure in Hippy Camp to get war outfit
 	if(auto_warSide() == "hippy" && possessOutfit("Frat Boy Ensemble"))
 	{
 		autoOutfit("Frat Boy Ensemble");
-		//this should go to [Wartime Hippy Camp (Frat Disguise)] (despite war not started)
-		return autoAdv($location[The Hippy Camp]);
+		return autoAdv($location[Wartime Hippy Camp (Frat Disguise)]);
 	}
 	
 	if(L12_preOutfit())
@@ -920,6 +901,10 @@ boolean L12_filthworms()
 	else if(canYellowRay($monster[filthworm drone]))
 	{
 		auto_log_info("We're going to yellow ray the stench glands.");
+	}
+	else if(auto_haveArchaeologistSpade() && auto_spadeDigsRemaining() >= 3) 
+	{
+		auto_log_info("Will dig up stench glands with Archaeologist's Spade if we don't get it in combat");
 	}
 	else if(item_drop_modifier() < 900.0)	//could not guarentee stealing. check if it should be delayed otherwise buff item drops instead
 	{
@@ -1228,7 +1213,7 @@ boolean L12_gremlins()
 			}
 		}
 	}
-
+	
 	if(0 < have_effect($effect[Curse of the Black Pearl Onion]))
 	{
 		uneffect($effect[Curse of the Black Pearl Onion]);
@@ -1332,13 +1317,6 @@ boolean L12_sonofaBeach()
 	{
 		return false;
 	}
-	if(!get_property("auto_hippyInstead").to_boolean())
-	{
-		if(get_property("sidequestJunkyardCompleted") == "none")
-		{
-			return false;
-		}
-	}
 	if(auto_warEnemiesRemaining() == 0)
 	{
 		return false;
@@ -1398,7 +1376,20 @@ boolean L12_sonofaBeach()
 		pulverizeThing($item[Goatskin Umbrella]);
 	}
 
-	if(!in_lar())
+	boolean CForced = false;
+	// skills/items that let us select monsters can have the effect of forcing 
+	// combat here too. Think PoP is the only one implemented for this quest (map the monsters being the other, not implemented).
+	if (!auto_havePeridot() || haveUsedPeridot($location[Sonofa Beach])) {
+		if (auto_haveQueuedForcedCombat()) {
+			CForced = true;
+			auto_log_info("Not trying to force combat again at Sonofa Beach because we already have a forced combat queued");
+		}
+		else {
+			CForced = auto_forceNextCombat($location[Sonofa Beach]);
+			auto_log_info("Trying to force combat at Sonofa Beach: "+CForced.to_string(), "blue");
+		}
+	}
+	if(!in_lar() && !CForced)
 	{
 		float combat_bonus = providePlusCombat(auto_combatModCap(), $location[Sonofa Beach], true, true);
 		if(combat_bonus <= 0.0)
@@ -1646,6 +1637,11 @@ boolean L12_lastDitchFlyer()
 	{
 		return false;		//let the powerlevel lock release first so we can do quests that are waiting for optimal conditions.
 	}
+	//Does hippy side have access to arena yet?
+	if (get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 458))
+	{
+		return false;
+	}
 
 	auto_log_info("Not enough flyer ML but we are ready for the war... uh oh", "blue");
 	if(LX_freeCombats(true)) return true;	//try to use free combats to make up the difference.
@@ -1716,6 +1712,11 @@ boolean L12_flyerFinish()
 	if(robot_delay("outfit"))
 	{
 		return false;	//delay for You, Robot path
+	}
+	//Does hippy side have access to arena yet?
+	if (get_property("auto_hippyInstead").to_boolean() && (get_property("fratboysDefeated").to_int() < 458))
+	{
+		return false;
 	}
 	
 	auto_log_info("Done with this Flyer crap", "blue");
@@ -2397,6 +2398,11 @@ boolean L12_finalizeWar()
 	{
 		buffMaintain($effect[Queso Fustulento], 10, 1, 10);
 		buffMaintain($effect[Tricky Timpani], 30, 1, 10);
+	}
+	// AMW buff
+	if(in_amw())
+	{
+		buffMaintain($effect[Stewing], 0, 1, 10);
 	}
 	acquireHP();
 	auto_log_info("Let's fight the boss!", "blue");

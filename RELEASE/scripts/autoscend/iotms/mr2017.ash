@@ -1179,6 +1179,11 @@ boolean getSpaceJelly()
 	return true;
 }
 
+int auto_breatheOutsLeft()
+{
+	return to_int(get_property("_hotJellyUses"));
+}
+
 boolean haveAsdonBuff()
 {
 	foreach eff in $effects[Driving Intimidatingly, Driving Obnoxiously, Driving Observantly, Driving Quickly, Driving Recklessly, Driving Safely, Driving Stealthily, Driving Wastefully, Driving Waterproofly]

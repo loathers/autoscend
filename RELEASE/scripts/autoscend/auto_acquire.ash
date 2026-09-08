@@ -558,8 +558,8 @@ boolean pull_meat(int target)
 		return false;	//can not pull meat & autoselling items just donates them
 	}
 	
-	//pull and autosell items
-	while(my_meat() < target && pulls_remaining() > 0)
+	//pull and autosell items, except in adventurer meats world
+	while(my_meat() < target && pulls_remaining() > 0 && !in_amw())
 	{
 		boolean fail = true;		//if true an item was not pulled and sold this loop
 		foreach it in $items[1\,970 carat gold]
@@ -674,7 +674,9 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[etched hourglass], 1, 0);
 		}
-		if(auto_is_valid($item[Infinite BACON Machine]))
+		
+		// generic pull for any path, but unusable in KoE
+		if(!in_koe() && auto_is_valid($item[Infinite BACON Machine]))
 		{
 			pullXWhenHaveY($item[Infinite BACON Machine], 1, 0);
 		}
@@ -810,7 +812,7 @@ int handlePulls(int day)
 		{
 			pullXWhenHaveY($item[Bittycar Meatcar], 1, 0);
 		}
-		if((in_picky() || !canChangeFamiliar()) && (item_amount(wrap_item($item[Deck of Every Card])) == 0) && (fullness_left() >= 4))
+		if((in_picky() || !canChangeFamiliar()) && !get_property("auto_dontConsumeKeyLimePies").to_boolean() && (item_amount(wrap_item($item[Deck of Every Card])) == 0) && (fullness_left() >= 4))
 		{
 			if((item_amount($item[Boris\'s Key]) == 0) && canEat($item[Boris\'s Key Lime Pie]) && !contains_text(get_property("nsTowerDoorKeysUsed"), $item[Boris\'s Key]))
 			{
@@ -917,7 +919,7 @@ boolean LX_craftAcquireItems()
 		}
 	}
 
-	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && auto_is_valid($item[Detuned Radio]))
+	if(knoll_available() && (item_amount($item[Detuned Radio]) == 0) && (my_meat() >= npc_price($item[Detuned Radio])) && auto_is_valid($item[Detuned Radio]) && (!in_amw() || my_level() >= 7))
 	{
 		auto_buyUpTo(1, $item[Detuned Radio]);
 		auto_setMCDToCap();
