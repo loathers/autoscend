@@ -19,7 +19,7 @@ boolean almostRollover()
 
 boolean needToConsumeForEmergencyRollover()
 {
-	int max_bonus_adv = round(numeric_modifier("adventures"));
+	int max_bonus_adv = round(numeric_modifier("adventures") - 40);
 	foreach n, rec in maximize("adventures", 0, 0, true, true)
 	{
 		if(rec.item != $item[none])
