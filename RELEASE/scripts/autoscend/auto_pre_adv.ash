@@ -211,7 +211,7 @@ boolean auto_pre_adventure()
 
 	if (item_amount($item[Handful of split pea soup]) == 0 && creatable_amount($item[Handful of split pea soup]) > 0)
 	{
-		return create(1, $item[Handful of split pea soup]);
+		create(1, $item[Handful of split pea soup]);
 	}
 
 	if(get_floundry_locations() contains place)
