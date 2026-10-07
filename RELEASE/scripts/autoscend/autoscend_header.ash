@@ -1529,7 +1529,6 @@ boolean LX_dronesOut();
 int freeCandyFightsLeft();
 boolean candyBlock();
 string candyBlockOutfit(string type);
-boolean LX_lastChance();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash
@@ -1675,7 +1674,6 @@ boolean prepare_food_xp_multi();
 void consumeStuff();
 boolean shouldUseSpleenForLowPriority();
 boolean isSpleenConsumable(item it);
-int auto_getConsumablePriceLimit();
 
 ########################################################################################################
 //Defined in autoscend/auto_craft.ash
