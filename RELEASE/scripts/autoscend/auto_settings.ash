@@ -320,6 +320,7 @@ void auto_settingsDelete()
 	remove_property("auto_waitingArrowAlcove"); // easier methods of handling this. Mafia has tracking properties for 10+ year old IotMs.
 	remove_property("auto_combatHandlerFingernailClippers"); // irrelevant in-run.
 	remove_property("auto_delayHauntedKitchen"); // We shouldn't need to rely on the user to tell us how to play because users are often terrible at the game.
+	remove_property("auto_consumablePriceLimit");
 }
 
 void defaultConfig(string prop, string val)
@@ -337,7 +338,6 @@ void auto_settingsDefaults()
 	//set default values for settings which have not yet been configured
 	defaultConfig("auto_delayTimer", "1");
 	defaultConfig("auto_abooclover", "true");		//Are we considering using a clover at A-Boo Peak?
-	defaultConfig("auto_consumablePriceLimit", "12000");	// Max mall price for consumables to eat/drink (also won't exceed mafia's autobuy limit).
 	defaultConfig("auto_paranoia", "-1");
 	defaultConfig("auto_inv_paranoia", "false");
 	defaultConfig("auto_save_adv_override", "-1");
