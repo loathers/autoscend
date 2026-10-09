@@ -1831,7 +1831,7 @@ boolean L11_hiddenCity()
 	{
 		if(!acquireHP())	//try to restore HP to max.
 		{
-			auto_log_warning("Delaying hidden city because we are unable to restore HP");
+			auto_log_info("Delaying hidden city because we are unable to restore HP");
 			return false;		//could not heal HP. we should go do something else first
 		}
 	}
@@ -3221,7 +3221,7 @@ boolean L11_palindome()
 
 		if(!possessEquipment($item[Mega Gem]))
 		{
-			auto_log_warning("No mega gem for us. Well, no raisin to go further here....", "red");
+			auto_log_info("No mega gem for us. Well, no raisin to go further here...", "red");
 			return false;
 		}
 		autoEquip($slot[acc2], $item[Mega Gem]);
@@ -3453,7 +3453,7 @@ boolean L11_unlockEd()
 
 	if (internalQuestStatus("questL03Rat") < 2)
 	{
-		auto_log_warning("Uh oh, didn\'t do the tavern and we are at the pyramid....", "red");
+		auto_log_info("Uh oh, didn\'t do the tavern and we are at the pyramid...", "red");
 
 		// Forcing Tavern.
 		set_property("auto_forceTavern", true);

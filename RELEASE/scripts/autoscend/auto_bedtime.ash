@@ -166,7 +166,7 @@ int pullsNeeded(string data)
 		ns_hedge2();
 		ns_hedge3();
 
-		auto_log_warning("Hedge time of 4 adventures. (Up to 10 without Elemental Resistances)", "red");
+		auto_log_info("Hedge time of 4 adventures. (Up to 10 without Elemental Resistances)", "red");
 		adv = adv + 4;
 	}
 
@@ -174,7 +174,7 @@ int pullsNeeded(string data)
 	{
 		if((item_amount($item[Richard\'s Star Key]) == 0) && (item_amount($item[Star Chart]) == 0))
 		{
-			auto_log_warning("Need star chart", "red");
+			auto_log_info("Need star chart", "red");
 			if(in_heavyrains() && (my_rain() >= 50))
 			{
 				auto_log_info("You should rain man a star chart", "blue");
@@ -192,12 +192,12 @@ int pullsNeeded(string data)
 
 			if(stars < 8)
 			{
-				auto_log_warning("Need " + (8-stars) + " stars.", "red");
+				auto_log_info("Need " + (8-stars) + " stars.", "red");
 				count = count + (8-stars);
 			}
 			if(lines < 7)
 			{
-				auto_log_warning("Need " + (7-lines) + " lines.", "red");
+				auto_log_info("Need " + (7-lines) + " lines.", "red");
 				count = count + (7-lines);
 			}
 		}
@@ -220,7 +220,7 @@ int pullsNeeded(string data)
 		adv = adv + 6;
 		if(get_property("auto_wandOfNagamar").to_boolean() && (item_amount($item[Wand Of Nagamar]) == 0) && (cloversAvailable() == 0))
 		{
-			auto_log_warning("Need a wand of nagamar (can be clovered).", "red");
+			auto_log_info("Need a wand of nagamar (can be clovered).", "red");
 			count = count + 1;
 		}
 	}
@@ -589,6 +589,11 @@ void bedtime_pulls()
 
 boolean doBedtime()
 {
+	if (inAftercore())
+	{
+		return false; 
+	}
+
 	auto_log_info("Starting bedtime: Pulls Left: " + pulls_remaining(), "blue");
 
 	if(get_property("lastEncounter") == "Like a Bat Into Hell")
