@@ -1,4 +1,4 @@
-since r29197; // Order a Kneecapping tracking
+since r29310; // eat: expose Base modifiers to numeric_modifier
 
 /***
 	autoscend_header.ash must be first import
