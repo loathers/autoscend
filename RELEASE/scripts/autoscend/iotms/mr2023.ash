@@ -1108,7 +1108,10 @@ boolean[location] citizenZones(string goal)
 }
 boolean auto_getCitizenZone(location loc, boolean inCombat)
 {
-	familiar eagle = $familiar[Patriotic Eagle];
+	if (!auto_haveEagle())
+	{
+		return false;
+	}
 	//zones are approximately organized by autoscend level quest structure
 	boolean[location] meatZones = citizenZones("meat");
 	boolean[location] itemZones = citizenZones("item");
@@ -1171,7 +1174,7 @@ boolean auto_getCitizenZone(location loc, boolean inCombat)
 	}
 	if(!inCombat)
 	{
-		if(use_familiar(eagle))
+		if(use_familiar($familiar[Patriotic Eagle]))
 		{
 			if(wantToFreeRun())	set_property("auto_forceFreeRun", true);
 			if(!autoAdv(loc))
