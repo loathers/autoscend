@@ -783,6 +783,10 @@ boolean canChew(item toChew)
 	{
 		return false;
 	}
+	if(toChew.levelreq >= 13 && !can_interact())
+	{
+		return false;
+	}
 
 	return true;
 }
