@@ -330,3 +330,8 @@ boolean LM_nuclear()
 
 	return false;
 }
+
+int nuclear_accessLevels()
+{
+	return get_property("nuclearAutumnPoints").to_int();
+}

@@ -590,12 +590,14 @@ boolean auto_getAprilingBandItems();
 boolean auto_playAprilPiccolo();
 boolean auto_playAprilSax();
 boolean auto_playAprilTuba();
+boolean auto_playAprilTom();
 boolean auto_setAprilBandNonCombat();
 boolean auto_setAprilBandCombat();
 boolean auto_setAprilBandDrops();
 int auto_AprilSaxLuckyLeft();
 int auto_AprilTubaForcesLeft();
 int auto_AprilPiccoloBoostsLeft();
+int auto_AprilSandwormsLeft();
 boolean auto_haveDarts();
 void dartChoiceHandler(int choice, string[int] options);
 int dartBullseyeChance();
@@ -969,6 +971,10 @@ boolean in_ggoo();
 boolean LA_grey_goo_tasks();
 
 ########################################################################################################
+//Defined in autoscend/paths/grey_goo.ash
+boolean in_gyou();
+
+########################################################################################################
 //Defined in autoscend/paths/hattrick.ash
 boolean in_hattrick();
 boolean ht_equip_hats();
@@ -1072,6 +1078,7 @@ void nuclear_initializeSettings();
 void nuclear_initializeDay(int day);
 boolean nuclear_buySkills();
 boolean LM_nuclear();
+int nuclear_accessLevels();
 
 ########################################################################################################
 //Defined in autoscend/paths/one_crazy_random_summer.ash
@@ -2208,6 +2215,7 @@ void meatReserveMessage();
 boolean auto_interruptZoneCheck();
 void auto_interruptCheck(boolean debug);
 void auto_interruptCheck();
+void auto_interrupt();
 element currentFlavour();
 boolean setFlavour(element ele);
 boolean executeFlavour();

@@ -70,6 +70,10 @@ void spookyForestChoiceHandler(int choice)
 		{
 			run_choice(2); // get the spooky-gro fertilizer
 		}
+		else if(hidden_temple_unlocked() && item_amount($item[spices]) == 0)
+		{
+			run_choice(1); // get spices if we don't have any and the temple is unlocked and we manage to get to this choice
+		}
 		else
 		{
 			run_choice(3); // go to O Lith, Mon (#507)
@@ -85,6 +89,14 @@ void spookyForestChoiceHandler(int choice)
 		{
 			run_choice(3); // skip
 		}
+	}
+	else if(choice == 26) // A Three-Tined Fork
+	{
+		run_choice(2); //Take the scorched path 
+	}
+	else if(choice == 28) //A Pair of Craters
+	{
+		run_choice(2); // get spices and a saucepan
 	}
 	else
 	{
