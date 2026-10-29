@@ -661,6 +661,13 @@ boolean L8_trapperNinjaLair()
 	{
 		return false;	
 	}
+	if (ninjaItemsRemaining() < 1) {
+		print("Have all the ninja climbing gear but not enough cold res to climb the peak","red");
+		print("Finish the peak yourself then run autoscend again","red");
+		print("If you wish to have autoscend ignore this and go do other stuff then enter in gCLI:","red");
+		print("set _auto_skip_L8_trapperGroar = true","red");
+		abort();
+	}
 	if(get_property("auto_L8_ninjaAssassinFail").to_boolean()) // we cannot survive against assassins
 	{
 		set_property("auto_L8_extremeInstead", true);
