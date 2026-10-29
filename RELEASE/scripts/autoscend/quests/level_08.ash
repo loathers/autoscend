@@ -930,6 +930,14 @@ boolean L8_forceExtremeInstead()
 	&& (!auto_haveCombatForceSource() || isAboutToPowerlevel())) { 
 		set_property("auto_L8_extremeInstead", true); 
 	}
+	// if we cannot get 5 cold res for the peak, do extreme for the outfit
+	int [element] resGoal;
+	resGoal[$element[cold]] = 5;
+	int [element] resPossible = provideResistances(resGoal, $location[The Icy Peak], true, true, true);
+	if(resPossible[$element[cold]] < 5)
+	{
+		set_property("auto_L8_extremeInstead", true);
+	}
 	return get_property("auto_L8_extremeInstead").to_boolean();
 }
 
