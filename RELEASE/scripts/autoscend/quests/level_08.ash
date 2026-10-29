@@ -640,6 +640,14 @@ void theeXtremeSlopeChoiceHandler(int choice)
 	}
 }
 
+int ninjaItemsRemaining() {
+	int items_remaining = 3;
+	if(item_amount($item[Ninja Carabiner]) > 0) {items_remaining -= 1;}
+	if(item_amount($item[Ninja Crampons]) > 0) {items_remaining -= 1;}
+	if(item_amount($item[Ninja Rope]) > 0) {items_remaining -= 1;}
+	return items_remaining;
+}
+
 boolean L8_trapperNinjaLair()
 {
 	// adventure in the lair of the ninja snowmen to find and fight ninja snowman assassins.
@@ -848,14 +856,6 @@ boolean L8_trapperGroar()
 		}
 	}
 	return retval;
-}
-
-int ninjaItemsRemaining() {
-	int items_remaining = 3;
-	if(item_amount($item[Ninja Carabiner]) > 0) {items_remaining -= 1;}
-	if(item_amount($item[Ninja Crampons]) > 0) {items_remaining -= 1;}
-	if(item_amount($item[Ninja Rope]) > 0) {items_remaining -= 1;}
-	return items_remaining;
 }
 
 boolean L8_trapperPeak()
