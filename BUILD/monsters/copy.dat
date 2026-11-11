@@ -6,3 +6,5 @@ pygmy witch accountant	loc:The Hidden Apartment Building;effect:Thrice-Cursed
 Camel's Toe	item:star<7;item:line<6
 Skinflute	item:star<7;item:line<6
 Swarm of Ghuol Whelps	prop:cyrptCrannyEvilness>17
+fantasy bandit	!prop_boolean:auto_acquiredFantasyRealmToken
+mountain man	prop:auto_trapperOres>0

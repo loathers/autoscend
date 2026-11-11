@@ -133,9 +133,6 @@ boolean EightBitRealmHandler()
 		case "red":
 			// limited buff that is helpful for 3 of 4 8-bit zones
 			buffMaintain($effect[shadow waters]);
-			if(meat_drop_modifier() < 395){
-				auto_getCitizenZone("meat");
-			}
 			adv_spent = autoAdv($location[The Fungus Plains]);
 			break;
 		case "blue":
@@ -1311,10 +1308,6 @@ boolean L13_towerNSTowerMeat()
 	equipBaseline();
 	shrugAT($effect[Polka of Plenty]);
 	provideMeat(526, true, false);
-	if(meat_drop_modifier() < 475)
-	{
-		auto_getCitizenZone("meat");
-	}
 
 	if(in_zombieSlayer())
 	{
@@ -1690,6 +1683,55 @@ boolean L13_towerNSFinal()
 
 	if(internalQuestStatus("questL13Final") < 13)
 	{
+
+		if (my_level() > 13 && auto_haveBCZ() && !get_property("auto_disregardInstantKarma").to_boolean())
+		{
+			// burn down our main stat using the appropriate BCZ skill so we can get an Instant Karma
+			// TODO: things for accounts without BCZ and/or when BCZ rotates out
+			boolean circuitBreaker = false;
+			while (my_level() > 13 && !circuitBreaker)
+			{
+				switch(my_primestat())
+				{
+					case $stat[muscle]:
+						if (auto_wantToBCZ($skill[BCZ: Create Blood Thinner]))
+						{
+							handleTracker($item[Blood Cubic Zirconia], $item[Blood Thinner],"auto_iotm_claim");
+							use_skill(1, $skill[BCZ: Create Blood Thinner]);
+						}
+						else
+						{
+							circuitBreaker = true;
+						}
+						break;
+					case $stat[mysticality]:
+						if (auto_wantToBCZ($skill[BCZ: Prepare Spinal Tapas]))
+						{
+							handleTracker($item[Blood Cubic Zirconia], $item[Spinal Tapas],"auto_iotm_claim");
+							use_skill(1, $skill[BCZ: Prepare Spinal Tapas]);
+						}
+						else
+						{
+							circuitBreaker = true;
+						}
+						break;
+					case $stat[moxie]:
+						if (auto_wantToBCZ($skill[BCZ: Craft a Pheromone Cocktail]))
+						{
+							handleTracker($item[Blood Cubic Zirconia], $item[Pheromone Cocktail],"auto_iotm_claim");
+							use_skill(1, $skill[BCZ: Craft a Pheromone Cocktail]);
+						}
+						else
+						{
+							circuitBreaker = true;
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
 		cli_execute("scripts/autoscend/auto_pre_adv.ash");
 		set_property("auto_disableAdventureHandling", true);
 		autoAdvBypass("place.php?whichplace=nstower&action=ns_10_sorcfight", $location[Noob Cave]);

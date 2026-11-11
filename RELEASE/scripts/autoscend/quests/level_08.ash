@@ -2,7 +2,7 @@ boolean needOre()
 {
 	// Determines if we need ore for the trapper or not.
 	
-	if(internalQuestStatus("questL08Trapper") > 2)
+	if(internalQuestStatus("questL08Trapper") > 1)
 	{
 		return false;
 	}
@@ -343,25 +343,19 @@ boolean L8_mountainManSummon()
 	}
 	
 	// use a summon if we can guarantee it will be enough via pro skateboard and YR
-	if(canSummonMonster($monster[mountain man]) && canYellowRay())
+	if (canSummonMonster($monster[mountain man]) && canYellowRay())
 	{
-		boolean need_dupe    = current_ore < 1;
-		boolean can_mctwist  = auto_can_equip($item[pro skateboard]) && !get_property("_epicMcTwistUsed").to_boolean();
-		boolean will_mctwist = can_mctwist && need_dupe;
+		boolean can_mctwist = auto_can_equip($item[pro skateboard]) && !get_property("_epicMcTwistUsed").to_boolean();
+		boolean will_mctwist = can_mctwist && current_ore < 1;
 		auto_log_info("Trying to summon a mountain man, which we will YR"+(will_mctwist?" and McTwist.":"."));
 		adjustForYellowRayIfPossible();
 		if (will_mctwist)
 		{
 			autoEquip($item[pro skateboard]);
-			return summonMonster($monster[mountain man]);
 		}
-		else if (!need_dupe)
+		if (summonMonster($monster[mountain man]))
 		{
-			return summonMonster($monster[mountain man]);
-		}
-		else
-		{
-			return false; // if we need to dupe drops but can't, don't summon.
+			return true;
 		}
 	}
 	return false;
@@ -726,8 +720,6 @@ boolean L8_trapperNinjaLair()
 		adjustEdHat("myst");
 	}
 
-	auto_getCitizenZone($location[Lair of the Ninja Snowmen], false); //since we want to adventure in the Lair anyway
-	
 	if(autoAdv($location[Lair of the Ninja Snowmen]))
 	{
 		return true;

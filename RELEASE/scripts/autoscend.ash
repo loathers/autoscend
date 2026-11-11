@@ -1256,7 +1256,6 @@ boolean dailyEvents()
 	auto_buyFromSeptEmberStore();
 	auto_getGlobs();
 	auto_setLeprecondo();
-	auto_getBCZItems();
 	
 	return true;
 }
@@ -1780,6 +1779,7 @@ void resetState() {
 	set_property("auto_parkaSetting", ""); // jurassic parka setting
 	set_property("auto_retrocapeSettings", ""); // retrocape config
 	set_property("auto_januaryToteAcquireCalledThisTurn", false); // january tote item switching
+	set_property("auto_trapperOres", (internalQuestStatus("questL08Trapper") < 2 ? 3 - item_amount(get_property("trapperOre").to_item()) : 0)); // track how many trapper Ores we need
 
 	horseDefault(); // horsery tracking
 
@@ -2249,11 +2249,6 @@ void print_help_text()
 	print_html("");
 }
 
-void sad_times()
-{
-	print_html('autoscend (formerly sl_ascend) is under new management. Soolar (the maintainer of sl_ascend) and Jeparo (the most active contributor) have decided to cease development of sl_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. New developers have taken over maintenance and rebranded sl_ascend to autoscend as per Soolar\'s request. Please be patient with us during this transition period. Please see the readme on the <a href="https://github.com/loathers/autoscend">github</a> page for more information.');
-}
-
 void safe_preference_reset_wrapper(int level)
 {
 	if(level <= 0)
@@ -2271,10 +2266,6 @@ void safe_preference_reset_wrapper(int level)
 		finally
 		{
 			restoreAllSettings();
-			if(level == 1)
-			{
-				sad_times();
-			}
 		}
 	}
 }
@@ -2309,7 +2300,6 @@ void main(string... input)
 	}
 
 	print_help_text();
-	sad_times();
 	if(!autoscend_migrate() && !user_confirm("autoscend might not have upgraded from a previous version correctly, do you want to continue? Will default to true in 10 seconds.", 10000, true)){
 		abort("User aborted script after failed migration.");
 	}

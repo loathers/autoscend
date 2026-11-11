@@ -2583,113 +2583,6 @@ boolean auto_deleteMail(kmailObject msg)
 	return false;
 }
 
-boolean LX_summonMonster()
-{
-	// summon screambat if we are at last wall to knock down and don't have a sonar-in-a-biscuit
-	if(internalQuestStatus("questL04Bat") == 2 && (!auto_is_valid($item[Sonar-In-A-Biscuit]) || item_amount($item[Sonar-In-A-Biscuit]) == 0) &&
-		canSummonMonster($monster[screambat]))
-	{
-		if(summonMonster($monster[screambat])) return true;
-	}
-
-	// summon mountain man if we know the ore we need and still need 2 or more
-	// don't summon if we have model train set as it is an easy source of ore
-	item oreGoal = to_item(get_property("trapperOre"));
-	if(internalQuestStatus("questL08Trapper") < 2 && auto_haveTrainSet() && oreGoal != $item[none] && 
-		item_amount(oreGoal) < 2 && canYellowRay() && canSummonMonster($monster[mountain man]))
-	{
-		adjustForYellowRayIfPossible();
-		boolean need_dupe    = item_amount(oreGoal) < 1;
-		boolean can_mctwist  = auto_can_equip($item[pro skateboard]) && !get_property("_epicMcTwistUsed").to_boolean();
-		boolean will_mctwist = can_mctwist && need_dupe;
-		auto_log_info("Trying to summon a mountain man"+(will_mctwist?" which we will McTwist.":"."));
-		if (will_mctwist)
-		{
-			autoEquip($item[pro skateboard]);
-		}
-		if(summonMonster($monster[mountain man])) return true;
-	}
-
-	if(auto_is_valid($item[Smut Orc Keepsake Box]) && item_amount($item[Smut Orc Keepsake Box]) == 0 && my_level() >= 9 && 
-		(lumberCount() < 30 || fastenerCount() < 30) && canSummonMonster($monster[smut orc pervert]))
-	{
-		// summon pervert here but handling of L9 quest will open box
-		if(auto_haveGreyGoose()){
-			handleFamiliar($familiar[Grey Goose]);
-		}
-		if(summonMonster($monster[smut orc pervert])) return true;
-	}
-
-	// summon LFM if don't have autumnaton since that guarantees 1 turn to get 5 barrels
-	int gunpowder_left = 5-item_amount($item[barrel of gunpowder]);
-	boolean canCopyLFM()
-	{
-		return (auto_canHabitat() || auto_backupUsesLeft() >= max(gunpowder_left-1,0));
-	}
-	if(get_property("sidequestLighthouseCompleted") == "none" && gunpowder_left > 0 &&
-	   my_level() >= 12 && canSummonMonster($monster[lobsterfrogman]) && 
-	   (canCopyLFM() || gunpowder_left == 1) && !(auto_habitatMonster() == $monster[lobsterfrogman]) &&
-	   (get_property("lastEncounter")!=$monster[lobsterfrogman]) && !auto_hasAutumnaton())
-	{
-		if(summonMonster($monster[lobsterfrogman])) return true;
-	}
-
-	// get war outfit if have yr available. 
-	// check for lvl 9 as that is when "L12_preOutfit" will try to get the prewar outfit. Better to summon and skip to war outfit
-	if(!possessOutfit("Frat Warrior Fatigues") && auto_warSide() == "fratboy" && canYellowRay() && my_level() >= 9 &&
-		(canSummonMonster($monster[War Frat 151st Infantryman]) || 
-		canSummonMonster($monster[War Frat Mobile Grill Unit]) ||
-		canSummonMonster($monster[orcish frat boy spy])))
-	{
-		adjustForYellowRayIfPossible();
-		// attempt to use calculate the universe
-		if(summonMonster($monster[War Frat 151st Infantryman])) return true;
-		// attempt to summon other sources of outfit
-		if(summonMonster($monster[War Frat Mobile Grill Unit])) return true;
-		if(summonMonster($monster[orcish frat boy spy])) return true;
-	}
-	if(!possessOutfit("War Hippy Fatigues") && auto_warSide() == "hippy" && canYellowRay() && my_level() >= 12 &&
-		(canSummonMonster($monster[War Hippy Airborne Commander]) || 
-		canSummonMonster($monster[war hippy spy])))
-	{
-		adjustForYellowRayIfPossible();
-		if(summonMonster($monster[War Hippy Airborne Commander])) return true;
-		if(summonMonster($monster[war hippy spy])) return true;
-	}
-
-	// summon astronomer if only missing star chart for star key
-	// only in Hardcore or if we have no pulls remaining as we can just pull a star chart in Normal
-	if (needStarKey() && item_amount($item[Star]) >= 8 && item_amount($item[Line]) >= 7 && canSummonMonster($monster[Astronomer]) && (in_hardcore() || pulls_remaining() < 1))
-	{
-		if(summonMonster($monster[Astronomer])) return true;
-	}
-
-	// summon additional monsters in heavy rains with rain man when available
-	if(have_skill($skill[Rain Man]) && my_rain() >= 50)
-	{
-		// summon Family Jewels or Bush to get only stars
-		if(needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) >= 7)
-		{
-			if(canSummonMonster($monster[Family Jewels]) && summonMonster($monster[Family Jewels])) return true;
-			if(canSummonMonster($monster[Bush]) && summonMonster($monster[Bush])) return true;
-		}
-		// summon Trouser Snake or Box to get only lines
-		if(needStarKey() && item_amount($item[star]) >= 8 && item_amount($item[line]) < 7)
-		{
-			if(canSummonMonster($monster[Trouser Snake]) && summonMonster($monster[Trouser Snake])) return true;	
-			if(canSummonMonster($monster[Box]) && summonMonster($monster[Box])) return true;
-		}
-		// summon Skinflute or Camel's Toe to get both stars and lines
-		if(needStarKey() && item_amount($item[star]) < 8 && item_amount($item[line]) < 7)
-		{
-			if(canSummonMonster($monster[Skinflute]) && summonMonster($monster[Skinflute])) return true;
-			if(canSummonMonster($monster[Camel's Toe]) && summonMonster($monster[Camel's Toe])) return true;
-		}
-	}
-
-	return false;
-}
-
 boolean canSummonMonster(monster mon)
 {
 	return summonMonster(mon, true);
@@ -4417,41 +4310,10 @@ int total_items(boolean [item] items)
 	return total;
 }
 
-boolean auto_badassBelt()
-{
-	if ((item_amount($item[Batskin Belt]) > 0 || equipped_amount($item[Batskin Belt]) > 0) && (item_amount($item[Skull of the Bonerdagon]) > 0 || equipped_amount($item[Skull of the Bonerdagon]) > 0))
-	{
-		if (have_equipped($item[Skull of the Bonerdagon]))
-		{
-			equip($slot[off-hand], $item[none]);
-		}
-		if (have_equipped($item[Batskin Belt]))
-		{
-			if (equipped_item($slot[acc1]) == $item[Batskin Belt])
-			{
-				equip($slot[acc1], $item[none]);
-			}
-			else if (equipped_item($slot[acc2]) == $item[Batskin Belt])
-			{
-				equip($slot[acc2], $item[none]);
-			}
-			else if (equipped_item($slot[acc3]) == $item[Batskin Belt])
-			{
-				equip($slot[acc3], $item[none]);
-			}
-		}
-		return create(1, $item[Badass Belt]);
-	}
-	else
-	{
-		return false;
-	}
-}
-
 void meatReserveMessage()
 {
 	int reserve = meatReserve();
-	if(reserve > 0)
+	if (reserve > 0 && my_meat() < reserve)
 	{
 		auto_log_info("Autoscend thinks that you need " + reserve + " meat for remaining quest requirements this ascension.");
 	}

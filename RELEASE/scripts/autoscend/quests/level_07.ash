@@ -461,7 +461,6 @@ boolean L7_crypt()
 		{
 			equipStatgainIncreasers();
 			use(1, $item[chest of the bonerdagon]);
-			auto_badassBelt(); // mafia doesn't make this any more even if autoCraft = true for some random reason so lets do it manually.
 		}
 		else if(get_property("questL07Cyrptic") == "finished")
 		{

@@ -4,14 +4,12 @@ woods_questStart
 LX_unlockPirateRealm
 catBurglarHeist
 auto_breakfastCounterVisit
-chateauPainting
 LX_setWorkshed
 LX_galaktikSubQuest
 L9_leafletQuest
 L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
-LX_summonMonster
 # Get Smashed Scientific Equipment ASAP
 LX_wereprof_getSmashedEquip
 # make sure we don't waste turns of Ultrahydrated doing something else.
@@ -27,7 +25,6 @@ LX_guildUnlock
 LX_bitchinMeatcar	LX_bitchinMeatcar_condition
 #	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
 LX_unlockDesert
-LX_lockPicking
 LX_fatLootToken
 # Get access to the island access ASAP because only Professor can do it
 LX_islandAccess

@@ -3,14 +3,12 @@ woods_questStart
 LX_unlockPirateRealm
 catBurglarHeist
 auto_breakfastCounterVisit
-chateauPainting
 LX_setWorkshed
 LX_galaktikSubQuest
 L9_leafletQuest
 L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
-LX_summonMonster
 resolveSixthDMT
 L11_aridDesert	L11_hasUltrahydrated
 handleRainDoh
@@ -21,7 +19,6 @@ L11_shenStartQuest
 auto_earlyRoutingHandling
 LX_guildUnlock
 LX_unlockDesert
-LX_lockPicking
 LX_fatLootToken
 L5_getEncryptionKey
 L5_findKnob

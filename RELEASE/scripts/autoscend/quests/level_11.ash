@@ -505,7 +505,6 @@ boolean LX_unlockManorSecondFloor() {
 		}
 	}
 
-	auto_getCitizenZone($location[The Haunted Library], false); //since want to adventure in the Haunted Library anyway
 	return autoAdv($location[The Haunted Library]);
 }
 
@@ -3250,7 +3249,7 @@ boolean L11_palindome()
 	}
 	else
 	{
-		if(pulls_remaining() == 0)
+		if(!in_hardcore() && pulls_remaining() == 0) // pulls aren't a thing in Hardcore. Maybe only care about pulls in lifestyles which have them?
 		{
 			// used our pulls today before getting to palindrome. Delay until next day or run out of other stuff to do
 			if(!isAboutToPowerlevel())

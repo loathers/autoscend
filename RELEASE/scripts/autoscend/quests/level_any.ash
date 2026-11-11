@@ -532,41 +532,50 @@ float estimateDailyDungeonAdvNeeded()
 
 boolean LX_fatLootToken()
 {
-	if(towerKeyCount(false) >= 3 && !get_property("auto_forceFatLootToken").to_boolean())
+	if (towerKeyCount(false) >= 3 && !get_property("auto_forceFatLootToken").to_boolean())
 	{
 		return false;	//have enough tokens
 	}
+
+	LX_lockPicking(); // get free key if possible.
 	
-	if(!canChangeToFamiliar($familiar[Gelatinous Cubeling]) && in_hardcore())
+	if (!canChangeToFamiliar($familiar[Gelatinous Cubeling]) && in_hardcore())
 	{
 		//if unable to get the daily dungeon tools then prefer to do fantasy realm over daily dungeon
-		if(fantasyRealmToken()) return true;
+		if (fantasyRealmToken())
+		{
+			return true;
+		}
 	}
-	if(LX_dailyDungeonToken()) return true;
-	if(get_property("dailyDungeonDone").to_boolean() && my_daycount() > 1)
+	if (LX_dailyDungeonToken())
+	{
+		return true;
+	}
+	if (get_property("dailyDungeonDone").to_boolean() && my_daycount() > 1)
 	{
 		//wait until daily dungeon is done before considering doing fantasy realm
-		if(fantasyRealmToken()) return true;
+		if (fantasyRealmToken())
+		{
+			return true;
+		}
 	}
-	if(towerKeyCount(false) < 3 && (internalQuestStatus("questL13Final") == 5 || auto_turbo()))
+	if (towerKeyCount(false) < 3 && (internalQuestStatus("questL13Final") == 5 || auto_turbo()))
 	{
 		// at NS tower door and still need hero keys or going for turbo
 
 		// summon and copy fantasy realm bandit. Allows for getting fantasy realm token without having FR available
-		if(!acquiredFantasyRealmToken() && ((auto_haveBackupCamera() && auto_backupUsesLeft() >= (4 - fantasyBanditsFought())) || auto_canHabitat()) && canSummonMonster($monster[fantasy bandit]))
+		if (!acquiredFantasyRealmToken() && ((auto_haveBackupCamera() && auto_backupUsesLeft() >= (4 - fantasyBanditsFought())) || auto_canHabitat()) && canSummonMonster($monster[fantasy bandit]))
 		{
 			return summonMonster($monster[fantasy bandit]);
 		}
 		// todo, add pref for 8bit token already being bought once mafia supports it
-		if(towerKeyCount() == 2)
+		if (towerKeyCount() == 2)
 		{
 			// get last fat loot token from 8-bit realm
 			// save until actually needed as takes many turns
 			return get8BitFatLootToken();
 		}
-
 	}
-	
 	return false;
 }
 

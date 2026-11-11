@@ -1123,34 +1123,25 @@ boolean auto_wantToBCZ(skill sk)
 	{
 		//Muscle Casts
 		case $skill[BCZ: Blood Geyser]:
-			return (statChange($stat[muscle], bloodGeyserCasts) && (bloodGeyserCasts < 6));
+			return statChange($stat[muscle], bloodGeyserCasts);
 		case $skill[BCZ: Blood Bath]:
-			return (statChange($stat[muscle], bloodBathCasts) && (bloodBathCasts < 6));
-		case $skill[BCZ: Create Blood Thinner]: //should never be cast, but if we want to support in the future, we can
-			if (!canChew($item[blood thinner])) {
-				return false;
-			}
-			return (statChange($stat[muscle], bloodThinnerCasts) && (bloodThinnerCasts == 0));
+			return statChange($stat[muscle], bloodBathCasts);
+		case $skill[BCZ: Create Blood Thinner]:
+			return statChange($stat[muscle], bloodThinnerCasts);
 		//Mysticality Casts
 		case $skill[BCZ: Dial it up to 11]:
-			return (statChange($stat[mysticality], dialItUpCasts) && (dialItUpCasts < 3));
+			return statChange($stat[mysticality], dialItUpCasts);
 		case $skill[BCZ: Refracted Gaze]:
-			return (statChange($stat[mysticality], refractedGazeCasts) && (refractedGazeCasts < 6));
+			return statChange($stat[mysticality], refractedGazeCasts);
 		case $skill[BCZ: Prepare Spinal Tapas]:
-			if (!canEat($item[spinal tapas])) {
-				return false;
-			}
-			return (statChange($stat[mysticality], spinalTapasCasts) && (spinalTapasCasts < 3));
+			return statChange($stat[mysticality], spinalTapasCasts);
 		//Moxie Casts
 		case $skill[BCZ: Sweat Bullets]:
-			return (statChange($stat[moxie], sweatBulletsCasts) && (sweatBulletsCasts < 6));
+			return statChange($stat[moxie], sweatBulletsCasts);
 		case $skill[BCZ: Sweat Equity]:
-			return (statChange($stat[moxie], sweatEquityCasts) && (sweatEquityCasts < 2));
+			return statChange($stat[moxie], sweatEquityCasts);
 		case $skill[BCZ: Craft a Pheromone Cocktail]:
-			if (!canDrink($item[pheromone cocktail])) {
-				return false;
-			}
-			return (statChange($stat[moxie], pheromoneCocktailCasts) && (pheromoneCocktailCasts < 6));
+			return statChange($stat[moxie], pheromoneCocktailCasts);
 		default:
 			return false;
 	}
@@ -1186,27 +1177,6 @@ boolean auto_bczRefractedGaze()
 		return true;
 	}
 	return false;
-}
-
-void auto_getBCZItems()
-{
-	if(!auto_haveBCZ())
-	{
-		return;
-	}
-	
-	if(auto_wantToBCZ($skill[BCZ: Craft a Pheromone Cocktail]))
-	{
-		handleTracker($item[Blood Cubic Zirconia], $item[Pheromone Cocktail],"auto_iotm_claim");
-		use_skill(1, $skill[BCZ: Craft a Pheromone Cocktail]);
-	}
-	if(auto_wantToBCZ($skill[BCZ: Prepare Spinal Tapas]))
-	{
-		handleTracker($item[Blood Cubic Zirconia], $item[Spinal Tapas],"auto_iotm_claim");
-		use_skill(1, $skill[BCZ: Prepare Spinal Tapas]);
-	}
-
-	return;
 }
 
 boolean auto_haveShrunkenHead()

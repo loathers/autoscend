@@ -130,11 +130,6 @@ boolean L4_batCave()
 			provideFamExp(50, $location[The Boss Bat\'s Lair], true, false);
 		}
 		autoAdv($location[The Boss Bat\'s Lair]);
-		# POCKET FAMILIARS remove once mafia tracks this
-		if(item_amount($item[Batskin Belt]) != batskinBelt)
-		{
-			auto_badassBelt(); // mafia doesn't make this any more even if autoCraft = true for some random reason so lets do it manually.
-		}
 		// TODO: Mafia currently does not advance the quest tracker when the Plumber boss is defeated.
 		// this breaks that infinite loop, while "refresh quests" apparently doesn't. Who knows?
 		visit_url("place.php?whichplace=bathole");

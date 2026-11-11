@@ -3,14 +3,12 @@ woods_questStart
 LX_unlockPirateRealm
 catBurglarHeist
 auto_breakfastCounterVisit
-chateauPainting
 LX_setWorkshed
 LX_galaktikSubQuest
 L9_leafletQuest
 L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
-LX_summonMonster
 resolveSixthDMT
 L11_aridDesert	L11_hasUltrahydrated
 L12_flyerFinish
@@ -30,7 +28,6 @@ L4_batCave
 L2_mosquito
 LX_unlockHiddenTemple
 L6_dakotaFanning
-LX_lockPicking
 LX_fatLootToken
 # *************Following task gives replica Mr A********************
 L5_slayTheGoblinKing

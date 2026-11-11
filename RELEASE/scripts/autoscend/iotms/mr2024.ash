@@ -545,7 +545,7 @@ boolean auto_goingToMouthwashLevel()
 	boolean disregard_karma = get_property("auto_disregardInstantKarma").to_boolean();
 	// If we have at least 4 embers remaining, don't overlevel, they can be used for something else
 	boolean happy_to_overlevel = disregard_karma && remainingEmbers() < 4;
-	boolean want_to_mouthwash_level = (my_level() < 13 || happy_to_overlevel);
+	boolean want_to_mouthwash_level = (my_level() < 12 || happy_to_overlevel);
 	// Even disregarding karma, never level above 15 using mouthwash as a sanity limit
 	want_to_mouthwash_level = want_to_mouthwash_level && my_level()<15;
 	return (remainingEmbers() >= 2 && want_to_mouthwash_level);
@@ -601,10 +601,6 @@ void auto_buyFromSeptEmberStore()
 			if (expected_level_after_mouthwash()<13) // use a wish if really need it
 			{
 				auto_wishForEffectIfNeeded($effect[Fever From the Flavor]);
-			}
-			if (expected_level_after_mouthwash()<13) // get Citizen of Outskirts of Cobb's Knob (+4 prismatic res) if we really need it
-			{
-				auto_getCitizenZone("spec");
 			}
 			if (expected_level_after_mouthwash()<13) // Beret busk if possible for more cold res
 			{

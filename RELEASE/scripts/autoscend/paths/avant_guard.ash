@@ -197,7 +197,7 @@ boolean LM_avantGuard()
 		return false;
 	}
 
-	if (LX_summonMonster() || L3_tavern() || L5_goblinKing() || L7_crypt() || L8_trapperGroar() || L11_defeatEd())
+	if (L3_tavern() || L5_goblinKing() || L7_crypt() || L8_trapperGroar() || L11_defeatEd())
 	{
 		// functions which spend adventures in non-adv.php locations.
 		// Do these with high priority so we get the cubeling drops in HC and/or farm consumables with CBB/Mini Kiwi

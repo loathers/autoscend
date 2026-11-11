@@ -397,7 +397,6 @@ boolean LX_lowkeySummer() {
 	if (L5_findKnob               ()) { return true; }
 	if (L12_sonofaPrefix          ()) { return true; }
 	if (LX_burnDelay              ()) { return true; }
-	if (LX_summonMonster          ()) { return true; }
 	// Lock in the Shen zones as soon as we can as it (potentially) unlocks a bunch of stuff.
 	if (L11_shenStartQuest()) { return true; }
 	// If we have everything to start the war instantly, just do it so we can start flyering.

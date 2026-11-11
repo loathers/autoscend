@@ -3,14 +3,12 @@ woods_questStart
 LX_unlockPirateRealm
 catBurglarHeist
 auto_breakfastCounterVisit
-chateauPainting
 LX_setWorkshed
 LX_galaktikSubQuest
 L9_leafletQuest
 L5_findKnob
 L12_sonofaPrefix
 LX_burnDelay
-LX_summonMonster
 # path handling which should be in it's own task order but pre-dates task order functionality (tech debt FTW).
 LM_edTheUndying
 LX_bugbearInvasion
@@ -29,7 +27,6 @@ auto_earlyRoutingHandling
 LX_guildUnlock
 #	Desert access, Daily Dungeon and other early random stuff that we don't want to miss.
 LX_unlockDesert
-LX_lockPicking
 LX_fatLootToken
 #	Get the Steel Organ if the user wants it (needs L6 quest complete)
 LX_steelOrgan
