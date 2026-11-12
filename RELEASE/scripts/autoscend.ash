@@ -396,6 +396,7 @@ boolean LX_burnDelay()
 	boolean backupTargetAvailable = auto_backupTarget();
 	boolean voidMonsterAvailable = auto_voidMonster();
 	boolean habitatingMonsters = auto_habitatMonster() != $monster[none];
+	boolean clubEmIntoNextWeekDue = auto_isclubEmNextWeekWandererDue();
 
 	// if we're a plumber and we're still stuck doing a flat 15 damage per attack
 	// then a scaling monster is probably going to be a bad time
@@ -451,6 +452,24 @@ boolean LX_burnDelay()
 			return true;
 		}
 		set_property("auto_nextEncounter","");
+	}
+
+	if (clubEmIntoNextWeekDue)
+	{
+		// Monsters clubbed into next week will happen regardless so prioritize handling them.
+		// hopefully they don't overwrite something we want to backup.
+		location clubEmNextWeekZone = solveDelayZone(isFreeMonster(get_property("clubEmNextWeekMonster").to_monster()) && get_property("breathitinCharges").to_int() > 0);
+		if (clubEmNextWeekZone == $location[none])
+		{
+			// if the monster is inherently free and we have Breathitin charges, fight it in the Noob Cave since we can't avoid it
+			// and we likely want to fight it. Noob Cave is available from turn 0 & is not outdoors so Breathitin won't trigger.
+			clubEmNextWeekZone = $location[Noob Cave];
+		}
+		auto_log_info(`Fighting a {get_property("clubEmNextWeekMonster")} in {clubEmNextWeekZone.to_string()} to burn delay!`, "green");
+		if (auto_clubEmNexWeekWanderer(clubEmNextWeekZone))
+		{
+			return true;
+		}
 	}
 
 	if (backupTargetAvailable)
@@ -519,6 +538,10 @@ boolean LX_burnDelay()
 	if (digitizeMonsterNext) 
 	{
 		auto_log_warning("Had overdue digitize but couldn't find a zone to burn delay", "red");
+	}
+	if (clubEmIntoNextWeekDue)
+	{
+		auto_log_warning("Had overdue clubbed into next week monster but couldn't find a zone to burn delay", "red");
 	}
 	if (sausageGoblinAvailable)
 	{
@@ -1764,7 +1787,6 @@ void resetState() {
 	set_property("_auto_tunedElement", ""); // Flavour of Magic elemental alignment
 	set_property("auto_nextEncounter", ""); // monster that was expected last turn
 	set_property("auto_habitatMonster", ""); // monster we want to cast Recall Facts: Monster Habitats
-	set_property("auto_purple_candled", ""); //monster we want to cast Blow the Purple Candle
 	set_property("auto_nonAdvLoc", false); // location is a non-adventure.php location
 
 	if(doNotBuffFamiliar100Run())		//some familiars are always bad
@@ -1779,6 +1801,7 @@ void resetState() {
 	set_property("auto_parkaSetting", ""); // jurassic parka setting
 	set_property("auto_retrocapeSettings", ""); // retrocape config
 	set_property("auto_januaryToteAcquireCalledThisTurn", false); // january tote item switching
+	set_property("auto_fantasyBanditsFought", fantasyBanditsFought().to_string()); // track how many Fantasy Bandits we have fought already today.
 	set_property("auto_trapperOres", (internalQuestStatus("questL08Trapper") < 2 ? 3 - item_amount(get_property("trapperOre").to_item()) : 0)); // track how many trapper Ores we need
 
 	horseDefault(); // horsery tracking

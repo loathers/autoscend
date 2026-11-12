@@ -321,6 +321,7 @@ void auto_settingsDelete()
 	remove_property("auto_combatHandlerFingernailClippers"); // irrelevant in-run.
 	remove_property("auto_delayHauntedKitchen"); // We shouldn't need to rely on the user to tell us how to play because users are often terrible at the game.
 	remove_property("auto_consumablePriceLimit");
+	remove_property("auto_purple_candled"); // unneccessary. replaced by native mafia property _chainedPurpleCandleMonster
 }
 
 void defaultConfig(string prop, string val)

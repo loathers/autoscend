@@ -307,6 +307,7 @@ boolean[monster] peridotManuallyDesiredMonsters()
 	desired_monsters[$monster[549]] = true; // batwinged gremlin (tool)
 	desired_monsters[$monster[551]] = true; // vegetable gremlin (tool)
 	desired_monsters[$monster[553]] = true; // spider gremlin (tool)
+	desired_monsters[$monster[blur]] = true;
 
 	return desired_monsters;
 }

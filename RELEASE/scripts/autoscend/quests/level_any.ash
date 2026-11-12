@@ -559,6 +559,19 @@ boolean LX_fatLootToken()
 			return true;
 		}
 	}
+
+	if (towerKeyCount(false) < 3 && get_property("auto_runDayCount").to_int() < 3 && (in_hardcore() || (!canEat($item[Boris\'s Key Lime Pie]) || get_property("auto_dontConsumeKeyLimePies").to_boolean())))
+	{
+ 		// if we can't pull & eat a key lime pie we need a 3rd key source in a 2 day
+
+		// summon and copy fantasy realm bandit. Allows for getting fantasy realm token without having FR available
+		if (!acquiredFantasyRealmToken() && canSummonMonster($monster[fantasy bandit]) && canCopy($monster[fantasy bandit])) // TODO: make sure we can copy it 4 times
+		{
+			return summonMonster($monster[fantasy bandit]);
+		}
+		// TODO: other token & key sources.
+	}
+
 	if (towerKeyCount(false) < 3 && (internalQuestStatus("questL13Final") == 5 || auto_turbo()))
 	{
 		// at NS tower door and still need hero keys or going for turbo

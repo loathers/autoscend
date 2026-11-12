@@ -1301,26 +1301,39 @@ boolean canCopy(monster enemy, location loc)
 	{
 		return false;
 	}
-	return getCopier(enemy, false) != $skill[none];
+	return count(getCopiers(enemy, false)) > 0;
+}
+
+boolean canCopy(monster enemy)
+{
+	if(!auto_wantToCopy(enemy))
+	{
+		return false;
+	}
+	return count(getCopiers(enemy, false)) > 0;
 }
 
 boolean adjustForCopyIfPossible(monster target)
 {
-	skill copier = getCopier(target, false);
-	if(copier == $skill[Blow the Purple Candle\!])
+	boolean[skill] copiers = getCopiers(target, false);
+	if (copiers contains $skill[Blow the Purple Candle!])
 	{
-		return autoEquip($item[Roman Candelabra]);
+		copiers[$skill[Blow the Purple Candle!]] = autoEquip($item[Roman Candelabra]);
 	}
-	if(copier == $skill[%fn\, fire a Red\, White and Blue Blast])
+	if (copiers contains $skill[Club 'Em Into Next Week])
 	{
-		handleFamiliar($familiar[Patriotic Eagle]);
+		copiers[$skill[Club 'Em Into Next Week]] = autoEquip($item[legendary seal-clubbing club]);
 	}
-	return false;
-}
-
-boolean adjustForCopyIfPossible()
-{
-	return adjustForCopyIfPossible($monster[none]);
+	if (copiers contains $skill[%fn\, fire a Red\, White and Blue Blast])
+	{
+		copiers[$skill[%fn\, fire a Red\, White and Blue Blast]] = handleFamiliar($familiar[Patriotic Eagle]);
+	}
+	foreach _, val in copiers {
+		if (!val) {
+			return false;
+		}
+	}
+	return true;
 }
 
 int banishSources()
@@ -5772,8 +5785,8 @@ boolean auto_wantToFreeKillWithNoDrops(location loc, monster enemy)
 		{
 			return true;
 		}
-		//This is called in stage2 and auto_purple_candled is set in stage 4 so this should only ever show up on the purple candled enemy
-		if(get_property("auto_purple_candled").to_monster() == enemy)
+		//This is called in stage2 and _chainedPurpleCandleMonster is set in stage 4 so this should only ever show up on the purple candled enemy
+		if(get_property("_chainedPurpleCandleMonster").to_monster() == enemy)
 		{
 			return true;
 		}

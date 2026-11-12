@@ -112,18 +112,17 @@ string auto_combatDefaultStage4(int round, monster enemy, string text)
 	}
 	
 	//iotm monster duplicator that creates a chained fight of the current monster
-	if(auto_wantToCopy(enemy, my_location()) && !ag_is_bodyguard())
+	if (auto_wantToCopy(enemy, my_location()) && !ag_is_bodyguard())
 	{
-		skill copier = getCopier(enemy);
-		if(copier != $skill[none] && canUse(copier))
+		boolean[skill] copiers = getCopiers(enemy);
+		foreach copier in copiers
 		{
-			if(copier == $skill[Blow the Purple Candle\!])		//mafia does not track the target of this skill so we must do so.
+			if (copier != $skill[none] && canUse(copier))
 			{
-				set_property("auto_purple_candled", enemy);
+				handleTracker(enemy, copier, "auto_copies");
+				combat_status_add("copied");
+				return useSkill(copier);
 			}
-			handleTracker(enemy, copier, "auto_copies");
-			combat_status_add("copied");
-			return useSkill(copier);
 		}
 	}
 

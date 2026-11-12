@@ -314,49 +314,27 @@ skill getSniffer(monster enemy)
 	return getSniffer(enemy, true);
 }
 
-boolean isCopied(monster enemy, skill sk)
+boolean[skill] getCopiers(monster enemy, boolean inCombat)
 {
-	//checks if the monster enemy is currently copied using the specific skill sk
-	boolean retval = false;
-	switch(sk)
+	boolean[skill] copyingSkills;
+	if ((auto_haveRoman() && have_effect($effect[Everything Looks Purple]) == 0) || (have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0))
 	{
-		case $skill[Blow the Purple Candle\!]:
-			retval = contains_text(get_property("auto_purple_candled"), enemy);
-			break;
-		case $skill[%fn\, fire a Red\, White and Blue Blast]:
-			retval = auto_RWBMonster() == enemy;
-		default:
-			abort("isCopied was asked to check an unidentified skill: " +sk);
+    copyingSkills[$skill[Blow the Purple Candle!]] = true;
 	}
-	return retval;
+	if ((auto_haveLegendarySealClubbingClub() && auto_clubEmIntoNextWeeksRemaining() > 0 && !inCombat) || (have_equipped($item[legendary seal-clubbing club]) && canUse($skill[Club 'Em Into Next Week], true, inCombat) && get_property("clubEmNextWeekMonster").to_monster() != enemy))
+	{
+    copyingSkills[$skill[Club 'Em Into Next Week]] = true;
+	}
+	if (auto_haveEagle() && canUse($skill[%fn\, fire a Red\, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
+	{
+    copyingSkills[$skill[%fn\, fire a Red\, White and Blue Blast]] = true;
+	}
+	return copyingSkills;
 }
 
-boolean isCopied(monster enemy)
+boolean[skill] getCopiers(monster enemy)
 {
-	//checks if the monster enemy is currently copied using any of the copy skills
-	foreach sk in $skills[Blow the Purple Candle\!, %fn\, fire a Red\, White and Blue Blast]
-	{
-		if(isCopied(enemy, sk)) return true;
-	}
-	return false;
-}
-
-skill getCopier(monster enemy, boolean inCombat)
-{
-	if((auto_haveRoman() && have_effect($effect[Everything Looks Purple]) == 0) || (have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0))
-	{
-		return $skill[Blow the Purple Candle\!];
-	}
-	if(auto_haveEagle() && canUse($skill[%fn\, fire a Red\, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
-	{
-		return $skill[%fn\, fire a Red\, White and Blue Blast];
-	}
-	return $skill[none];
-}
-
-skill getCopier(monster enemy)
-{
-	return getCopier(enemy, true);
+	return getCopiers(enemy, true);
 }
 
 skill getStunner(monster enemy)

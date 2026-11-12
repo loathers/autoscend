@@ -64,6 +64,36 @@ boolean wantToClubEmBackInTime(location loc, monster enemy)
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
 }
 
+boolean auto_isclubEmNextWeekWandererDue()
+{
+  if (get_counters("Club 'Em Into Next Week Monster", -10, 0).contains_text("Club 'Em Into Next Week Monster"))
+	{
+		return true;
+	}
+	return false;
+}
+
+boolean auto_clubEmNexWeekWanderer(location loc)
+{
+	if (!auto_isclubEmNextWeekWandererDue())
+	{
+		return false;
+	}
+
+	// we may want to chain copies e.g. fantasy bandits.
+	monster mon = get_property("clubEmNextWeekMonster").to_monster();
+	if (auto_wantToCopy(mon))
+	{
+		auto_log_info("We want to copy the " + mon + " so adjusting for our equipment if possible.");
+		adjustForCopyIfPossible(mon);
+	}
+
+	set_property("auto_nextEncounter", get_property("lastCopyableMonster"));
+	boolean success = autoAdv(loc);
+	set_property("auto_nextEncounter","");
+	return success;
+}
+
 boolean auto_haveHeartstone()
 {
 	if(!auto_is_valid($item[heartstone]))
