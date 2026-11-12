@@ -310,8 +310,9 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 		int [element] resGoals;
 		resGoals[$element[hot]] = 9;
 		resGoals[$element[stench]] = 9;
-		// check to see if we can acquire sufficient hot and stench res for the kitchen
-		int [element] resPossible = provideResistances(resGoals, $location[The Haunted Kitchen], true, false, true);
+		// check to see if we can acquire sufficient hot and stench res for the kitchen, counting the same sources
+		// (spleen items too) that the attempt below uses
+		int [element] resPossible = provideResistances(resGoals, $location[The Haunted Kitchen], true, true, true);
 		delayKitchen = (resPossible[$element[hot]] < 9 || resPossible[$element[stench]] < 9);
 	}
 
