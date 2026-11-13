@@ -279,6 +279,8 @@ void initializeSettings() {
 	set_property("auto_dontUseCookBookBat", false);
 	set_property("auto_dietpills", 0);
 	set_property("_auto_candyMapCompleted", false);
+	set_property("auto_fantasyBanditsFought", "0");
+	set_property("auto_trapperOres", "3");
 	beehiveConsider(false);
 
 	eudora_initializeSettings();
@@ -1802,7 +1804,7 @@ void resetState() {
 	set_property("auto_retrocapeSettings", ""); // retrocape config
 	set_property("auto_januaryToteAcquireCalledThisTurn", false); // january tote item switching
 	set_property("auto_fantasyBanditsFought", fantasyBanditsFought().to_string()); // track how many Fantasy Bandits we have fought already today.
-	set_property("auto_trapperOres", (internalQuestStatus("questL08Trapper") < 2 ? 3 - item_amount(get_property("trapperOre").to_item()) : 0)); // track how many trapper Ores we need
+	set_property("auto_trapperOres", (internalQuestStatus("questL08Trapper") < 2 ? 3 - item_amount(get_property("trapperOre").to_item()) : 0).to_string()); // track how many trapper Ores we need
 
 	horseDefault(); // horsery tracking
 

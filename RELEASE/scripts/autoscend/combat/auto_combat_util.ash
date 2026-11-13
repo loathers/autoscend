@@ -314,18 +314,31 @@ skill getSniffer(monster enemy)
 	return getSniffer(enemy, true);
 }
 
+int auto_copiesNeeded(monster enemy) {
+	int numCopies = 1; // assume if it's in copy.dat we want at least one copy.
+	switch(enemy) {
+		case $monster[fantasy bandit]:
+			numCopies = (acquiredFantasyRealmToken() ? 0 : 4 - fantasyBanditsFought());
+			break;
+		default:
+			break;
+	}
+	return numCopies;
+}
+
 boolean[skill] getCopiers(monster enemy, boolean inCombat)
 {
 	boolean[skill] copyingSkills;
-	if ((auto_haveRoman() && have_effect($effect[Everything Looks Purple]) == 0) || (have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0))
+	int copiesNeeded = auto_copiesNeeded(enemy); // since we can use multiple copiers in one combat, make sure we aren't wasting resources by copying multiple times unnecessarily.
+	if (count(copyingSkills) < copiesNeeded && (auto_haveRoman() && have_effect($effect[Everything Looks Purple]) == 0) || (have_equipped($item[Roman Candelabra]) && canUse($skill[Blow the Purple Candle\!], true, inCombat) && have_effect($effect[Everything Looks Purple]) == 0))
 	{
     copyingSkills[$skill[Blow the Purple Candle!]] = true;
 	}
-	if ((auto_haveLegendarySealClubbingClub() && auto_clubEmIntoNextWeeksRemaining() > 0 && !inCombat) || (have_equipped($item[legendary seal-clubbing club]) && canUse($skill[Club 'Em Into Next Week], true, inCombat) && get_property("clubEmNextWeekMonster").to_monster() != enemy))
+	if (count(copyingSkills) < copiesNeeded && (auto_haveLegendarySealClubbingClub() && auto_clubEmIntoNextWeeksRemaining() > 0 && !inCombat) || (have_equipped($item[legendary seal-clubbing club]) && canUse($skill[Club 'Em Into Next Week], true, inCombat) && get_property("clubEmNextWeekMonster").to_monster() != enemy))
 	{
     copyingSkills[$skill[Club 'Em Into Next Week]] = true;
 	}
-	if (auto_haveEagle() && canUse($skill[%fn\, fire a Red\, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
+	if (count(copyingSkills) < copiesNeeded && auto_haveEagle() && canUse($skill[%fn\, fire a Red\, White and Blue Blast], true, inCombat) && !(have_effect($effect[Everything Looks Red, White and Blue]) > 0) && enemy.copyable)
 	{
     copyingSkills[$skill[%fn\, fire a Red\, White and Blue Blast]] = true;
 	}
