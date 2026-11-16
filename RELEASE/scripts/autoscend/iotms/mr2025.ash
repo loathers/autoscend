@@ -278,6 +278,11 @@ boolean auto_canNorthernExplosionFE()
 	{
 		return false;
 	}
+	if (get_property("_auto_maximize_equip_off-hand") != "" && get_property("_auto_maximize_equip_off-hand") != $item[April Shower Thoughts shield].to_string())
+	{
+		// something 	else is already intended to be equipped to the off-hand and we have no third hand.
+		return false;
+	}
 	return true;
 }
 

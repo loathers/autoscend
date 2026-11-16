@@ -1842,8 +1842,10 @@ boolean acquireMP(int goal, int meat_reserve, boolean useFreeRests)
 	buffMaintain($effect[Tingly Tongue]);
 	buffMaintain($effect[Tingling Insides]);
 	buffMaintain($effect[Wisdom of the Autumn Years]);
-	if(auto_equipAprilShieldBuff() && !(get_property("_aprilShowerSimmer").to_boolean()))
+	if (false && auto_equipAprilShieldBuff() && !(get_property("_aprilShowerSimmer").to_boolean()))
 	{
+		// TODO: This forces the April Shower Thoughts shield into the off-hand AND THEN DOESN'T RESTORE WHAT WAS IN THE OFF-HAND AFTERWARDS.
+		// UNTIL SOMEONE FIXES THAT, HOW ABOUT WE DON'T DO THAT?
 		//Free mp regen on the first cast of the day with the April Shower Thoughts Shield equipped
 		buffMaintain($effect[Simmering]);
 	}

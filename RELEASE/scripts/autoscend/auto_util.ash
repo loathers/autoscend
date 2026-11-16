@@ -2628,6 +2628,11 @@ boolean summonMonster(monster mon, boolean speculative)
 			auto_log_info("We want to copy the " + mon + " so adjusting for our equipment if possible.");
 			adjustForCopyIfPossible(mon);
 		}
+		if (auto_wantToYellowRay(mon, $location[none]))
+		{
+			auto_log_info("We want to force drops from the " + mon + " so adjusting for our equipment if possible.");
+			adjustForYellowRayIfPossible(mon);
+		}
 	}
 	// methods which require specific circumstances
 	if(mon == $monster[War Frat 151st Infantryman])

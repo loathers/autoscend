@@ -570,10 +570,22 @@ boolean consumeCupOf13s() {
 	return true;
 }
 
+boolean auto_hasInterestingCoin()
+{
+	if (!get_property("hasInterestingCoin").to_boolean() || !auto_is_valid($item[interesting coin]))
+	{
+		return false;
+	}
+	return true;
+}
+
 boolean wantToThrowInterestingCoin(location loc, monster enemy)
 {
+	if (!auto_hasInterestingCoin())
+	{
+		return false;
+	}
 	if(item_amount($item[interesting coin]) == 0) return false;
-	if(!auto_is_valid($item[interesting coin])) return false;
 	if(get_property("_interestingCoinHeads").to_boolean()) return false;
 	if (isFreeMonster(enemy, loc)) { return false; } // don't use coin against inherently free fights
 	

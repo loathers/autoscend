@@ -180,16 +180,17 @@ string auto_combatHandler(int round, monster enemy, string text)
 	retval = auto_combatDefaultStage1(round, enemy, text);
 	if(retval != "") return retval;
 	
-	// stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
-	retval = auto_combatDefaultStage2(round, enemy, text);
-	if(retval != "") return retval;
-	
 	// stage 3 = debuff: delevel, stun, curse, damage over time
 	retval = auto_combatDefaultStage3(round, enemy, text);
 	if(retval != "") return retval;
 	
 	// stage 4 = prekill. copy, sing along, flyer and other things that need to be done after delevel but before killing
 	retval = auto_combatDefaultStage4(round, enemy, text);
+	if(retval != "") return retval;
+
+	// stage 2 = enders: escape, replace, instakill, yellowray and other actions that instantly end combat
+	// WHY THE ACTUAL FUCK WAS THIS BEFORE STAGES 3 AND 4? WHO IN THEIR RIGHT MIND THOUGHT DOING THINGS WHICH END COMBAT SHOULD HAPPEN BEFORE ANYTHING ELSE?
+	retval = auto_combatDefaultStage2(round, enemy, text);
 	if(retval != "") return retval;
 
 	// stage 5 = kill

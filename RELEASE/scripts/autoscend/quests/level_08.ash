@@ -342,21 +342,10 @@ boolean L8_mountainManSummon()
 		return summonMonster($monster[mountain man]);
 	}
 	
-	// use a summon if we can guarantee it will be enough via pro skateboard and YR
-	if (canSummonMonster($monster[mountain man]) && canYellowRay())
+	// use a summon if we can guarantee it will be enough via YR and copying
+	if (canSummonMonster($monster[mountain man]) && canCopy($monster[mountain man]) && canYellowRay())
 	{
-		boolean can_mctwist = auto_can_equip($item[pro skateboard]) && !get_property("_epicMcTwistUsed").to_boolean();
-		boolean will_mctwist = can_mctwist && current_ore < 1;
-		auto_log_info("Trying to summon a mountain man, which we will YR"+(will_mctwist?" and McTwist.":"."));
-		adjustForYellowRayIfPossible();
-		if (will_mctwist)
-		{
-			autoEquip($item[pro skateboard]);
-		}
-		if (summonMonster($monster[mountain man]))
-		{
-			return true;
-		}
+		return summonMonster($monster[mountain man]);
 	}
 	return false;
 }
