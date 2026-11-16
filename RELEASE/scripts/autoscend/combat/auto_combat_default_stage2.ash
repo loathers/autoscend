@@ -159,7 +159,7 @@ string auto_combatDefaultStage2(int round, monster enemy, string text)
 	}
 
 	//club em back in time to free kill the enemy but don't get any items
-	if(wantToClubEmBackInTime(my_location(), enemy))
+	if(auto_wantToClubEmBackInTime(my_location(), enemy))
 	{
 		if(canUse($skill[Club 'Em Back in Time]))
 		{

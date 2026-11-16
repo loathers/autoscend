@@ -51,7 +51,7 @@ int auto_clubEmIntoNextWeeksRemaining()
 	return 5-to_int(get_property("_clubEmNextWeekUsed"));
 }
 
-boolean wantToClubEmBackInTime(location loc, monster enemy)
+boolean auto_wantToClubEmBackInTime(location loc, monster enemy)
 {
 	// returns true if we want to use Club Em Back In Time, based off wantToThrowGravel
 
@@ -62,6 +62,20 @@ boolean wantToClubEmBackInTime(location loc, monster enemy)
 	if(can_interact()) return false;
 	
 	return auto_wantToFreeKillWithNoDrops(loc, enemy);
+}
+
+boolean auto_canClubEmIntoNextWeek()
+{
+	if (auto_clubEmIntoNextWeeksRemaining() == 0)
+	{
+		return false;
+	}
+  if (get_property("clubEmNextWeekMonster") != "")
+	{
+		// Can't reuse the skill until the wanderer is encountered.
+		return false;
+	}
+	return true;
 }
 
 boolean auto_isclubEmNextWeekWandererDue()

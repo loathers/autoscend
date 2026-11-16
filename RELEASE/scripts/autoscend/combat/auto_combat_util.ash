@@ -334,7 +334,7 @@ boolean[skill] getCopiers(monster enemy, boolean inCombat)
 	{
     copyingSkills[$skill[Blow the Purple Candle!]] = true;
 	}
-	if (count(copyingSkills) < copiesNeeded && (auto_haveLegendarySealClubbingClub() && auto_clubEmIntoNextWeeksRemaining() > 0 && !inCombat) || (have_equipped($item[legendary seal-clubbing club]) && canUse($skill[Club 'Em Into Next Week], true, inCombat) && get_property("clubEmNextWeekMonster").to_monster() != enemy))
+	if (count(copyingSkills) < copiesNeeded && (auto_canClubEmIntoNextWeek() && !inCombat) || (auto_canClubEmIntoNextWeek() && have_equipped($item[legendary seal-clubbing club]) && canUse($skill[Club 'Em Into Next Week], true, inCombat)))
 	{
     copyingSkills[$skill[Club 'Em Into Next Week]] = true;
 	}
