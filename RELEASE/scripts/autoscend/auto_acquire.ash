@@ -381,6 +381,19 @@ boolean auto_buyUpTo(int num, item it)
 		take_shop(min(missing, shop_amount(it)), it);
 		missing = num - item_amount(it);
 	}
+	if(missing > 0 && !can_interact() && pulls_remaining() > 0 && storage_amount(it) > 0 && canPull(it))
+	{
+		//in ronin, one pull gets 1000 meat from storage (see pull_meat), so pulling an item we already have in
+		//storage is cheaper than buying another whenever it costs more than that. e.g. an antique accordion is
+		//2375 meat every run while the ones bought in earlier runs sit in storage.
+		int price = npc_price(it) > 0 ? npc_price(it) : auto_mall_price(it);
+		if(price > 1000)
+		{
+			auto_log_info("Pulling " + it + " from storage instead of buying one for " + price + " meat.", "blue");
+			pullXWhenHaveY(it, 1, item_amount(it) + equipped_amount(it));
+			missing = num - item_amount(it);
+		}
+	}
 	if(missing > 0)
 	{
 		buy(missing, it, maxprice);
