@@ -47,12 +47,9 @@ boolean L8_slopeCasual()
 			abort("Mysteriously failed to buy [" +it+ "]. Buy it manually and run me again");
 		}
 	}
-	if(L8_trapperPeak())	//try to unlock peak
-	{
-		return true;	//successfully finished this part of the quest
-	}
-	abort("Mysteriously failed to unlock the mountain peak in trapper quest in casual or postronin. please unlock it and run me again");
-	return false;
+	//L8_trapperPeak only climbs with the outfit at 3 extremity, which is earned on the slope.
+	//L8_trapperExtreme unlocks the peak if we can already, otherwise wears the outfit and adventures there
+	return L8_trapperExtreme();
 }
 
 boolean LM_canInteract()
