@@ -311,7 +311,9 @@ boolean LX_unlockHauntedBilliardsRoom(boolean delayKitchen) {
 		resGoals[$element[hot]] = 9;
 		resGoals[$element[stench]] = 9;
 		// check to see if we can acquire sufficient hot and stench res for the kitchen, counting the same sources
-		// (spleen items too) that the attempt below uses
+		// the attempt below uses. doAll's only spleen source here (Synapse Blaster) is gated by
+		// shouldUseSpleenForLowPriority(), which refuses it for Ed, when a spleen familiar can be used,
+		// and when spleen is wanted for CMC consults, dieting pills or the pasta wand
 		int [element] resPossible = provideResistances(resGoals, $location[The Haunted Kitchen], true, true, true);
 		delayKitchen = (resPossible[$element[hot]] < 9 || resPossible[$element[stench]] < 9);
 	}
